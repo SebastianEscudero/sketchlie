@@ -3,7 +3,6 @@
 import { LogoSlider } from "./logo-slider";
 import { BlogSection } from "./blog-section";
 import { BlogTestimonials } from "./blog-testimonials";
-import { LandingVideo } from "./landing-video";
 import { PlatformYouCanTrust } from "./platform-you-can-trust";
 import { BlogLinks } from "./blog-links";
 
