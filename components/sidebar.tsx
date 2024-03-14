@@ -69,15 +69,15 @@ const components: { title: string; href: string}[] = [
   },
 ]
 
-const Sidebar = ({
+const Sidebar = ({ 
 }) => {
 
   const pathname = usePathname();
 
   return ( 
-      <div className="space-y-4 py-4 flex flex-col h-full bg-[#FFF] overflow-y-auto will-change:transform transform transition-transform duration-200 ease-in-out">
+      <div className="space-y-4 py-4 flex flex-col h-full bg-[#FFF]">
           <div className="px-3 py-2 flex-1">
-              <Link href="/dashboard" className="flex items-center pl-3 mb-14">
+              <div className="flex items-center pl-3 mb-14">
                   <div className="relative h-10 w-10 mr-4">
                       <Image 
                           fill
@@ -88,7 +88,7 @@ const Sidebar = ({
                   <h1 className="text-2xl font-bold">
                       Sketchlie
                   </h1>
-              </Link>
+              </div>
               <div className="space-y-1">
               <Accordion type="single" collapsible className="text-lg">
                     <AccordionItem value="item-1">

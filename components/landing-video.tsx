@@ -8,7 +8,6 @@ export const LandingVideo = () => {
                 muted
                 loop
                 playsInline
-                preload="auto"
             />
         </div>
     )

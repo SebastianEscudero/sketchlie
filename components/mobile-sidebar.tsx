@@ -5,10 +5,16 @@ import { Button } from "./ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import Sidebar from "./sidebar";
 import { useEffect, useState } from "react";
+import { usePathname, useSearchParams } from 'next/navigation'
 
-const MobileSidebar = ({
-}) => {
-    const[isMounted, setIsMounted] = useState(false);
+const MobileSidebar = () => {
+    const pathname = usePathname()
+    const [isMounted, setIsMounted] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
+
+    useEffect(() => {
+        setIsOpen(false);
+    }, [pathname])
 
     useEffect(() => {
         setIsMounted(true);
@@ -19,8 +25,8 @@ const MobileSidebar = ({
     }
 
     return ( 
-        <Sheet>
-            <SheetTrigger>
+        <Sheet open={isOpen}>
+            <SheetTrigger onClick={() => setIsOpen(true)}>
                 <Button variant="ghost" size="icon" className="lg:hidden">
                     <Menu />
                 </Button>
