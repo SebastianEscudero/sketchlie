@@ -13,6 +13,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
+import { usePathname } from "next/navigation"
 
 const porEquipo: { title: string; href: string}[] = [
   {
@@ -77,6 +78,9 @@ const porCasoDeUso: { title: string; href: string}[] = [
 ]
 
 export function NavigationMenuLanding() {
+
+  const pathname = usePathname();
+
   return (
     <NavigationMenu className="hidden lg:flex lg:flex-col">
       <NavigationMenuList>
@@ -95,27 +99,39 @@ export function NavigationMenuLanding() {
             <div className="grid w-[400px] gap-3 p-10 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                 <div>
                     <p className="px-3 text-[13px] mb-4">Por equipo</p>
-                    <ul>
-                        {porEquipo.map((component) => (
-                            <ListItem
-                                key={component.title}
-                                title={component.title}
-                                href={component.href}
-                            />
-                        ))}
-                    </ul>
+                    <ul className="flex flex-col">
+                          {porEquipo.map((component) => (
+                              <Link
+                                  className={cn(
+                                    "p-3 w-full hover:underline hover:bg-zinc-400/10",
+                                    pathname === component.href ? "text-custom-blue bg-white/10" : "text-black",
+                                )}
+                                  key={component.title}
+                                  title={component.title}
+                                  href={component.href}
+                              >
+                                  {component.title}
+                              </Link>
+                          ))}
+                      </ul>
                 </div>
                 <div>
                     <p className="px-3 text-[13px] mb-4">Por caso de uso</p>
-                    <ul>
-                        {porCasoDeUso.map((component) => (
-                            <ListItem
-                                key={component.title}
-                                title={component.title}
-                                href={component.href}
-                            />
-                        ))}
-                    </ul>
+                    <ul className="flex flex-col">
+                          {porCasoDeUso.map((component) => (
+                              <Link
+                                  className={cn(
+                                    "p-3 w-full hover:underline hover:bg-zinc-400/10",
+                                    pathname === component.href ? "text-custom-blue bg-white/10" : "text-black",
+                                )}
+                                  key={component.title}
+                                  title={component.title}
+                                  href={component.href}
+                              >
+                                  {component.title}
+                              </Link>
+                          ))}
+                      </ul>
                 </div>
             </div>
         </NavigationMenuContent>

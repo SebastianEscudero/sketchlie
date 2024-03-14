@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   Accordion,
   AccordionContent,
@@ -9,6 +9,8 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import { cn } from "@/lib/utils";
+import { SheetClose } from "./ui/sheet";
+import { useEffect, useRef } from "react";
 
 const components: { title: string; href: string}[] = [
   {
@@ -73,7 +75,19 @@ const Sidebar = ({
 }) => {
 
   const pathname = usePathname();
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const prevPathnameRef = useRef<string>();
 
+  useEffect(() => {
+    if (prevPathnameRef.current && prevPathnameRef.current !== pathname) {
+      if (closeRef.current) {
+        closeRef.current.click();
+        console.log(pathname);
+      }
+    }
+    prevPathnameRef.current = pathname;
+  }, [pathname]);
+  
   return ( 
       <div className="space-y-4 py-4 flex flex-col h-full bg-[#FFF]">
           <div className="px-3 py-2 flex-1">
@@ -88,6 +102,7 @@ const Sidebar = ({
                   <h1 className="text-2xl font-bold">
                       Sketchlie
                   </h1>
+                  <SheetClose ref={closeRef} />
               </div>
               <div className="space-y-1">
               <Accordion type="single" collapsible className="text-lg">
@@ -97,7 +112,7 @@ const Sidebar = ({
                             <Link 
                                 className="p-3 text-lg hover:underline ml-5"
                                 href="/product-overview">
-                                Descripción de Sketchlie
+                                Descripción de Sketchlie 🚧
                             </Link>
                         </AccordionContent>
                     </AccordionItem>

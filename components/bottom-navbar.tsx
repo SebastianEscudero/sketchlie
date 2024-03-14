@@ -100,7 +100,7 @@ export const BotNavbar = () => {
                             <Link 
                                 className="p-3 text-lg hover:underline ml-5"
                                 href="/product-overview">
-                                Descripción de Sketchlie
+                                Descripción de Sketchlie 🚧
                             </Link>
                         </AccordionContent>
                     </AccordionItem>
