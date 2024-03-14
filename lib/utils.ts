@@ -12,9 +12,6 @@ import {
   XYWH
 } from "@/types/canvas";
 
-import jsPDF from "jspdf";
-import Canvg from 'canvg'
-
 const COLORS = [
   "#DC2626", 
   "#D97706", 
