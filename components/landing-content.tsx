@@ -5,21 +5,13 @@ import { BlogSection } from "./blog-section";
 import { BlogTestimonials } from "./blog-testimonials";
 import { PlatformYouCanTrust } from "./platform-you-can-trust";
 import { BlogLinks } from "./blog-links";
+import { LandingVideo } from "./landing-video";
 
 export const LandingContent = () => {
     return (
         <div>
              <LogoSlider />
-             <div className="w-full lg:px-[10%] px-[5%] flex justify-center">
-                <video 
-                    className="rounded-2xl border border-black"
-                    src="/placeholders/landingvideo.mp4"
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                />
-            </div>
+             <LandingVideo />
             <div className="md:my-14 lg:my-16 my-10">
                 <BlogSection 
                     title="El punto de encuentro entre la planificación y la ejecución."

@@ -5,6 +5,7 @@ import { LogoSlider } from "@/components/logo-slider";
 import { FaqSection } from "@/components/faq-section";
 import { BlogLinks } from "@/components/blog-links";
 import { PlatformYouCanTrust } from "@/components/platform-you-can-trust";
+import { LandingVideo } from "@/components/landing-video";
 
 export const metadata: Metadata = {
     title: "Crea un Mapa Conceptual online gratis | Sketchlie",
@@ -63,16 +64,7 @@ const LandingPage = () => {
                 img="/placeholders/mapa-conceptual.png"
             />
             <LogoSlider />
-            <div className="w-full lg:px-[10%] px-[5%] flex justify-center">
-            <video 
-                className="rounded-2xl border border-black"
-                src="/placeholders/landingvideo.mp4"
-                autoPlay
-                loop
-                muted
-                playsInline
-                />
-            </div>
+            <LandingVideo />
             <div className="mb:my-28 my-14">
                 <BlogSection 
                     title="Crea un Mapa Conceptual Online de manera gratuita con Sketchlie" 

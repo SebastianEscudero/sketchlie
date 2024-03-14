@@ -5,6 +5,7 @@ import { LogoSlider } from "@/components/logo-slider";
 import { FaqSection } from "@/components/faq-section";
 import { BlogLinks } from "@/components/blog-links";
 import { PlatformYouCanTrust } from "@/components/platform-you-can-trust";
+import { LandingVideo } from "@/components/landing-video";
 
 export const metadata: Metadata = {
     title: "Crea tu Pizarra Online Gratis | Sketchlie",
@@ -56,16 +57,7 @@ const LandingPage = () => {
                 cta="Ir a pizarra online"
             />
             <LogoSlider />
-            <div className="w-full lg:px-[10%] px-[5%] flex justify-center">
-            <video 
-                className="rounded-2xl border border-black"
-                src="/placeholders/landingvideo.mp4"
-                autoPlay
-                loop
-                muted
-                playsInline
-                />
-            </div>
+            <LandingVideo />
             <div className="my-28">
                 <BlogSection 
                     title="Espacio de trabajo pensado en ti" 

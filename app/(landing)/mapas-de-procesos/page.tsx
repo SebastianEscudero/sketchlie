@@ -6,6 +6,7 @@ import { FaqSection } from "@/components/faq-section";
 import { HowToCreate } from "@/components/how-to-create";
 import { BlogLinks } from "@/components/blog-links";
 import { PlatformYouCanTrust } from "@/components/platform-you-can-trust";
+import { LandingVideo } from "@/components/landing-video";
 
 export const metadata: Metadata = {
     title: "La herramienta de Mapa de Procesos | Sketchlie",
@@ -76,16 +77,7 @@ const LandingPage = () => {
                 img="/placeholders/mapa-de-procesos.png"
             />
             <LogoSlider />
-            <div className="w-full lg:px-[10%] px-[5%] flex justify-center">
-            <video 
-                className="rounded-2xl border border-black"
-                src="/placeholders/landingvideo.mp4"
-                autoPlay
-                loop
-                muted
-                playsInline
-                />
-            </div>
+            <LandingVideo />
             <div className="mb:my-28 my-14">
                 <BlogSection 
                     title="Mejora la eficiencia operativa con mapas de procesos" 
