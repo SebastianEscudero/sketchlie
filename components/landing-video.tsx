@@ -1,12 +1,13 @@
 export const LandingVideo = () => {
     return (
-        <div className="w-full lg:px-[10%] px-[5%] flex justify-center">
+        <div className="w-full xl:px-[10%] lg:px-[7%] md:px-[5%] px-[5%] flex justify-center">
             <video 
                 className="rounded-2xl border border-black"
                 src="/placeholders/landingvideo.mp4"
                 autoPlay
                 muted
                 loop
+                playsInline={true}
             />
         </div>
     )

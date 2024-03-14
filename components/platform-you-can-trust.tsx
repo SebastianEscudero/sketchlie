@@ -4,16 +4,16 @@ import Link from "next/link"
 
 export const PlatformYouCanTrust = () => {
     return (
-        <div>
+        <div className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%]">
             <div className="text-center mb-10 mx-5">
                 <h2 className="text-3xl sm:text-4xl lg:text-5xl mb-5 text-[#000000]">
                     Plataforma en la que puedes confiar.
                 </h2>
-                <p className="text-zinc-700 text-lg md:text-xl font-normal text-center lg:mx-[10%] mx-0">   
+                <p className="text-zinc-700 text-lg md:text-xl font-normal text-center">   
                     Sketchlie es una plataforma segura y confiable que puede manejar cualquier situación que se presente
                 </p>
             </div>
-            <div className="bg-[#FFF] p-4 lg:pb-5 pb-5 border border-zinc-500 rounded-lg xl:mx-[20%] mx-[4%] lg:mx-[5%]">
+            <div className="bg-[#FFF] p-4 lg:pb-5 pb-5 border border-zinc-500 rounded-lg">
                 <div className="py-3">
                     <div className="grid grid-cols-1 grid-rows-2 lg:grid-cols-2 rounded-lg my-4">
                         <div className="md:p-7 py-6 m-2 rounded-md">

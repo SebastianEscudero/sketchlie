@@ -4,7 +4,7 @@ import Marquee from "react-fast-marquee"
 export const LogoSlider = () => {
     return (
     <Marquee 
-        className="py-10"
+        className="md:py-10 py-3 mx-0"
         speed={50}
         autoFill={true}
     >

@@ -43,7 +43,7 @@ const BlogPage = () => {
 
     return (
         <div>
-            <div className="lg:mx-[11%] mx-[4%] mb-10 mt-20">
+            <div className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mb-10 mt-20">
                 <HeaderBlog
                     blogImage="/placeholders/improve-performance.png"
                     blogHref="/dashboard"
@@ -51,7 +51,7 @@ const BlogPage = () => {
                     blogTitle="Sketchlie"
                 />
             </div>
-            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 lg:mx-[10%] mx-[2%]">
+            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%]">
                 {blogLinksData.map((blogLink, index) => (
                     <BlogLinks
                         key={index}

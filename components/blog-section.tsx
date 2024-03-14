@@ -15,7 +15,7 @@ export const BlogSection = ({
     side = 'right',
 }: BlogSectionProps) => {
     const imageElement = img && (
-        <div className="flex-1 w-full border border-[#837D7C] rounded-sm">
+        <div className="flex-1 w-full border border-[#837D7C]">
             <Image
                 src={img}
                 alt="Logo"
@@ -30,7 +30,7 @@ export const BlogSection = ({
     const TitleTag = text ? 'h3' : 'h2';
 
     return (
-        <div className={`flex flex-col lg:mx-[10%] mx-[5%] md:flex-row items-center my-10 font-normal md:space-x-20 xl:space-x-30 text-[#1c1c1e] ${!img && 'text-center'} ${side === 'left' && 'flex-col-reverse'}`}>
+        <div className={`flex flex-col xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] md:flex-row items-center my-10 font-normal md:space-x-20 xl:space-x-30 text-[#1c1c1e] ${!img && 'text-center'} ${side === 'left' && 'flex-col-reverse'}`}>
             {side === 'left' && imageElement}
             <div className="flex-1">
                 <TitleTag className={cn("mb-10 leading-snug space-y-5", {

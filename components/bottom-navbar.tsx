@@ -79,7 +79,7 @@ export const BotNavbar = () => {
     return (
         <footer className="bg-[#1C1C1E] text-white">
             <div className="py-10">
-                <div className="text-center mt-10 mx-[5%] lg:mx-[30%]">
+                <div className="text-center mt-10 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%]">
                     <h2 className="lg:text-5xl mb-8 md:text-4xl text-xl">
                         Únete a los 1000+ de usuarios de Sketchlie hoy mismo.
                     </h2>
@@ -93,7 +93,7 @@ export const BotNavbar = () => {
                     </Link>
                 </div>
                 <LogoSlider />
-                <Accordion type="single" collapsible className="lg:mx-[10%] sm:mx-[5%] mx-0 text-lg">
+                <Accordion type="single" collapsible className="text-lg xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%]">
                     <AccordionItem value="item-1">
                         <AccordionTrigger>Producto</AccordionTrigger>
                         <AccordionContent>
@@ -138,7 +138,7 @@ export const BotNavbar = () => {
                         </Link>
                     </div>
                 </Accordion>
-                <div className="lg:mx-[10%] sm:mx-[5%] mx-0 lg:text-lg text-xs mt-10 px-4 flex justify-center flex-col">
+                <div className="lg:text-lg text-xs mt-10 px-4 flex justify-center flex-col">
                   <Link
                     href="/dashboard"
                     className="flex justify-center"

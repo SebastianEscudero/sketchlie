@@ -16,7 +16,7 @@ export const BlogLinks = ({
     blogTitle
 }: BlogLinksProps) => {
     return(
-        <div className="flex flex-col w-auto border border-zinc-600 rounded-md mb-10 mx-3 transform transition-all duration-150 hover:scale-105">
+        <div className="flex flex-col w-auto border border-zinc-600 rounded-md md:m-3 mb-5 transform transition-all duration-150 hover:scale-105">
             <Link
                 href={blogHref}
                 className="flex"
