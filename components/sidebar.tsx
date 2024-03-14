@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import {
   Accordion,
   AccordionContent,
@@ -89,7 +89,7 @@ const Sidebar = ({
   }, [pathname]);
   
   return ( 
-      <div className="space-y-4 py-4 flex flex-col h-full bg-[#FFF]">
+      <div className="space-y-4 py-4 flex flex-col h-full bg-[#FFF] overflow-y-auto">
           <div className="px-3 py-2 flex-1">
               <div className="flex items-center pl-3 mb-14">
                   <div className="relative h-10 w-10 mr-4">
