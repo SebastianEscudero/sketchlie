@@ -78,7 +78,7 @@ const porCasoDeUso: { title: string; href: string}[] = [
 
 export function NavigationMenuLanding() {
   return (
-    <NavigationMenu className="hidden xl:flex xl:flex-col">
+    <NavigationMenu className="hidden lg:flex lg:flex-col">
       <NavigationMenuList>
         <NavigationMenuItem>
           <NavigationMenuTrigger>¿Qué es Sketchlie</NavigationMenuTrigger>
