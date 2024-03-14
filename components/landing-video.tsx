@@ -4,10 +4,11 @@ export const LandingVideo = () => {
             <video 
                 className="rounded-2xl border border-black"
                 src="/placeholders/landingvideo.mp4"
-                data-autoplay=""
-                muted={true}
+                autoPlay
+                muted
                 loop
                 playsInline
+                preload="auto"
             />
         </div>
     )
