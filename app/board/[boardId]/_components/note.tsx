@@ -51,6 +51,18 @@ export const Note = ({
     updateValue(e.target.value);
   };
 
+  const handlePaste = async (e: React.ClipboardEvent) => {
+    e.preventDefault();
+    const text = await navigator.clipboard.readText();
+    const selection = window.getSelection();
+    if (selection && selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+      range.deleteContents();
+      range.insertNode(document.createTextNode(text));
+    }
+  };
+
+
   return (
     <foreignObject
       x={x}
@@ -67,6 +79,7 @@ export const Note = ({
       <ContentEditable
         html={value || "Text"}
         onChange={handleContentChange}
+        onPaste={handlePaste}
         className={cn(
           "h-full w-full flex items-center justify-center text-center outline-none",
           font.className
@@ -75,6 +88,7 @@ export const Note = ({
           fontSize: calculateFontSize(width, height),
           color: fill ? getContrastingTextColor(fill) : "#000",
         }}
+        spellCheck={false}
       />
     </foreignObject>
   );

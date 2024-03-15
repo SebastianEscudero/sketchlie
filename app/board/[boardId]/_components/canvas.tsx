@@ -57,6 +57,8 @@ document.addEventListener('contextmenu', (e) => {
 export const Canvas = ({
   boardId,
 }: CanvasProps) => {
+  const [isClickingLayer, setIsClickingLayer] = useState(false);
+
   const proModal = useProModal();
   const layerIds = useStorage((root) => root.layerIds);
 
@@ -421,6 +423,7 @@ export const Canvas = ({
       canvasState.mode === CanvasMode.None ||
       canvasState.mode === CanvasMode.Pressing
     ) {
+      setIsClickingLayer(false);
       unselectLayers();
       setCanvasState({  
         mode: CanvasMode.None,
@@ -459,6 +462,8 @@ export const Canvas = ({
     e: React.PointerEvent,
     layerId: string,
   ) => {
+    setIsClickingLayer(true);
+
     if (
       canvasState.mode === CanvasMode.Pencil ||
       canvasState.mode === CanvasMode.Inserting
@@ -602,7 +607,9 @@ export const Canvas = ({
         }
         case "v": {
           if (e.ctrlKey || e.metaKey) {
-            pasteCopiedLayers(mousePosition);
+            if (isClickingLayer === false) {
+              pasteCopiedLayers(mousePosition);
+            }
           }
           break;
         }
@@ -624,7 +631,7 @@ export const Canvas = ({
     return () => {
       document.removeEventListener("keydown", onKeyDown)
     }
-  }, [copySelectedLayers, pasteCopiedLayers, deleteLayers, history, mousePosition]);
+  }, [copySelectedLayers, pasteCopiedLayers, deleteLayers, history, mousePosition, isClickingLayer]);
 
   return (
     <main
