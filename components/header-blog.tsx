@@ -27,14 +27,16 @@ export const HeaderBlog = ({
                     </p>
                 </div>
                 <div>
-                    <Button variant="outline" className="mt-3">
-                        Regístrate gratis
-                    </Button>
+                    <Link href={blogHref}>
+                        <Button variant="outline" className="mt-3 xl:text-xl xl:p-7 text-lg p-6">
+                            Leer más
+                        </Button>
+                    </Link>
                 </div>
             </div>
             <Link
                 href={blogHref}
-                className="md:flex-grow md:max-w-[70%]"
+                className="md:flex-grow md:max-w-[70%] bg-[#F5F5F5] flex items-center justify-center"
             >
                 <Image 
                     className="rounded-lg"
@@ -43,7 +45,6 @@ export const HeaderBlog = ({
                     width={300}
                     height={200}
                     layout="responsive"
-                    
                 />
             </Link>
         </div>

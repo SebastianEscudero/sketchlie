@@ -16,7 +16,7 @@ const BlogPage = () => {
     const blogLinksData = [
         {
             blogTitle: "Mapa Conceptual Online",
-            blogImage: "/placeholders/mapa-conceptual-online.png",
+            blogImage: "/placeholders/mapa-conceptual.png",
             blogHref: "/mapa-conceptual",
             blogDescription: "Descubre cómo desatar tu creatividad y potenciar la colaboración en tiempo real con Sketchlie."
         },
@@ -56,10 +56,10 @@ const BlogPage = () => {
         <div>
             <div className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mb-10 mt-20">
                 <HeaderBlog
-                    blogImage="/placeholders/improve-performance.png"
-                    blogHref="/dashboard"
-                    blogDescription="La mejor herramienta para colaborar."
-                    blogTitle="Sketchlie"
+                    blogImage="/placeholders/mapa-conceptual-online.png"
+                    blogHref="/blog/mapa-conceptual"
+                    blogDescription="Que son los mapas conceptuales y cual es su Importancia en el Mundo Online..."
+                    blogTitle="Mapa Conceptual"
                 />
             </div>
             <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%]">
