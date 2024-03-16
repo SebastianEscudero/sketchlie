@@ -2,7 +2,6 @@ import { Metadata } from "next";
 import {
     Breadcrumb,
     BreadcrumbItem,
-    BreadcrumbLink,
     BreadcrumbList,
     BreadcrumbPage,
     BreadcrumbSeparator,
@@ -12,11 +11,11 @@ import Link from "next/link";
 import { BlogLinks } from "@/components/blog-links";
 
 export const metadata: Metadata = {
-    title: "Crea tu mapa conceptual online gratis | Sketchlie",
-    description: "Crea mapas conceptuales online de forma gratuita con Sketchlie. Comienza ahora y colabora con tu equipo en el diseño de mapas conceptuales.",
-    keywords: ["mapa conceptual", "mapa conceptual online", "mapa conceptual gratis", "conceptos clave", "miembros de tu equipo", "frases de enlace", "conceptos complejos", "google drive", "creación de mapas", "plantillas de mapas conceptuales", "creador de mapas conceptuales", "compartir tu mapa conceptual", "forma rápida y sencilla", "temas y subtemas", "lluvia de ideas", "haz clic", "mapas conceptuales en línea", "colabora en tiempo real", "mapas conceptuales online"],
+    title: "Mapa Conceptual y su Importancia en el Mundo Online",
+    description: "Explora las herramientas versátiles de Sketchlie para crear mapas conceptuales online de forma colaborativa y eficiente. Potencia tu creatividad y productividad con nuestras herramientas gratuitas.",
+    keywords: ["mapa conceptual", "herramientas para mapas conceptuales", "crear mapas conceptuales online", "herramientas colaborativas", "mapa mental", "mapas de procesos", "herramientas digitales", "creatividad", "productividad"],
     alternates: {
-        canonical: "https://www.sketchlie.com/mapa-conceptual",
+        canonical: "https://www.sketchlie.com/blog/mapa-conceptual",
     }
 };
 
