@@ -15,10 +15,10 @@ export const metadata: Metadata = {
 const BlogPage = () => {
     const blogLinksData = [
         {
-            blogTitle: "Mapa Conceptual Online",
-            blogImage: "/placeholders/mapa-conceptual.png",
-            blogHref: "/mapa-conceptual",
-            blogDescription: "Descubre cómo desatar tu creatividad y potenciar la colaboración en tiempo real con Sketchlie."
+            blogTitle: "Wireframes Online: La Herramienta Esencial para Visualizar tus Ideas",
+            blogImage: "/placeholders/wireframe.png",
+            blogHref: "/blog/wireframes-online",
+            blogDescription: "Descubre cómo los wireframes online en Sketchlie pueden ayudarte a visualizar tus ideas."
         },
         {
             blogTitle: "Mapa de Procesos",
