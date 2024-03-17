@@ -58,9 +58,9 @@ export const BlogStructure = ({
                         }}
                     />
                 </div>
-                <div className="text-sm md:text-md xl:text-lg font-normal text-zinc-800 mx-auto">
+                <p className="text-sm md:text-md xl:text-lg font-normal text-zinc-800 mx-auto">
                     {description}
-                </div>
+                </p>
                 <div>
                     <Link href={"/dashboard"}>
                         <Button variant="outline" className="md:text-lg p-4 md:p-6 font-normal">
@@ -68,9 +68,9 @@ export const BlogStructure = ({
                         </Button>
                     </Link>
                 </div>
-                <div className="text-zinc-400 text-xs md:text-sm font-normal">
+                <p className="text-zinc-400 text-xs md:text-sm font-normal">
                     No se requiere tarjeta de crédito
-                </div>
+                </p>
             </div>
             {img && imageElement}
         </div>

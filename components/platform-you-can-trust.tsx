@@ -21,36 +21,36 @@ export const PlatformYouCanTrust = () => {
                                 <GaugeCircle className="mr-2 text-pink-500"/>
                                 99.99% de tiempo de actividad
                             </h3>
-                            <div className="text-zinc-700 text-lg md:text-xl font-normal">
+                            <p className="text-zinc-700 text-lg md:text-xl font-normal">
                                 Garantizamos un alto tiempo de actividad para que puedas colaborar sin interrupciones.
-                            </div>
+                            </p>
                         </div>
                         <div className="md:p-7 py-6 m-2 rounded-md">
                             <h3 className="lg:text-2xl md:text-xl text-lg flex items-center font-semibold mb-1">   
                                 <ChevronsUp className="mr-2 text-green-500" />
                                 Colaboración con todo tu equipo
                             </h3>
-                            <div className="text-zinc-700 text-lg md:text-xl font-normal">
+                            <p className="text-zinc-700 text-lg md:text-xl font-normal">
                                 Invita a tu equipo a colaborar en tiempo real. Innova, crea, diseña y ejecuta proyectos juntos.
-                            </div>
+                            </p>
                         </div>
                         <div className="md:p-7 py-6 m-2 rounded-md">
                             <h3 className="lg:text-2xl md:text-xl text-lg flex items-center font-semibold mb-1">   
                                 <GanttChart className="mr-2 text-orange-500"/>
                                 Planificación de Proyectos
                             </h3>
-                            <div className="text-zinc-700 text-lg md:text-xl font-normal">
+                            <p className="text-zinc-700 text-lg md:text-xl font-normal">
                                 Planifica tus proyectos sin preocupación el único que tiene acceso a tu espacio de trabajo es tu y tu equipo
-                            </div>
+                            </p>
                         </div>
                         <div className="md:p-7 py-6 m-2 rounded-md">
                             <h3 className="lg:text-2xl md:text-xl text-lg flex items-center font-semibold mb-1">   
                                 <LucideLockKeyhole className="mr-2 text-custom-blue"/>
                                 Seguridad con AWS
                             </h3>
-                            <div className="text-zinc-700 text-lg md:text-xl font-normal">
+                            <p className="text-zinc-700 text-lg md:text-xl font-normal">
                                 Utilizamos la seguridad de AWS para proteger tus imágenes y datos con la más alta tecnología.
-                            </div>
+                            </p>
                         </div>
                     </div>
                     <div className="text-center">

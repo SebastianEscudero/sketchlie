@@ -10,8 +10,8 @@ import { HowToCreate } from "@/components/how-to-create";
 
 export const metadata: Metadata = {
     title: "Crea tu mapa conceptual online gratis | Sketchlie",
-    description: "Crea mapas conceptuales online de forma gratuita con Sketchlie. Comienza ahora y colabora con tu equipo en el diseño de mapas conceptuales.",
-    keywords: ["mapa conceptual", "mapa conceptual online", "mapa conceptual gratis", "conceptos clave", "miembros de tu equipo", "frases de enlace", "conceptos complejos", "google drive", "creación de mapas", "plantillas de mapas conceptuales", "creador de mapas conceptuales", "compartir tu mapa conceptual", "forma rápida y sencilla", "temas y subtemas", "lluvia de ideas", "haz clic", "mapas conceptuales en línea", "colabora en tiempo real", "mapas conceptuales online"],
+    description: "Crea mapas conceptuales de forma gratuita con Sketchlie. Comienza ahora y colabora con tu equipo en el diseño de mapas conceptuales.",
+    keywords: ["mapa conceptual", "mapa conceptual online", "mapa conceptual gratis", "mapas conceptuales online"],
     alternates: {
         canonical: "https://www.sketchlie.com/mapa-conceptual",
     }
@@ -21,20 +21,24 @@ const LandingPage = () => {
 
     const steps = [
         {
-            trigger: "Paso 1: Identifica el tema central",
+            trigger: "Empieza con un tema o una idea central",
             text: "Antes de empezar, identifica el tema o problema que deseas explorar con tu mapa conceptual. Esto te dará una base sólida para construir tu mapa."
         },
         {
-            trigger: "Paso 2: Anota los conceptos clave",
+            trigger: "Anota los conceptos clave",
             text: "Una vez que tengas claro el tema central, comienza a anotar los conceptos clave relacionados con él. Estos pueden ser ideas, términos o elementos importantes que necesitas incluir en tu mapa."
         },
         {
-            trigger: "Paso 3: Establece relaciones y agrupaciones",
+            trigger: "Establece relaciones y agrupaciones",
             text: "A medida que añades conceptos a tu mapa, busca las relaciones entre ellos y agrúpalos en categorías o temas más amplios. Usa líneas o flechas para conectar los conceptos y mostrar cómo se relacionan."
         },
         {
-            trigger: "Paso 4: Refina y enriquece",
+            trigger: "Refina y enriquece",
             text: "Según avances, agrega detalles adicionales, como ejemplos, definiciones o explicaciones, para enriquecer tu mapa conceptual. Esto ayudará a clarificar las conexiones y aportará profundidad a tu representación visual."
+        },
+        {
+            trigger: "Comparte y colabora",
+            text: "Una vez que hayas creado tu mapa conceptual, compártelo con otros usuarios para colaborar en tiempo real. Esto te permitirá enriquecer tu mapa con ideas adicionales y obtener diferentes perspectivas sobre el tema que estás explorando."
         }
     ];
     
@@ -44,7 +48,7 @@ const LandingPage = () => {
         {
             value: "item-1",
             trigger: "¿Qué es un mapa conceptual?",
-            content: "Un mapa conceptual es una representación gráfica de ideas y conceptos interconectados. Se utiliza para organizar información de manera visual y comprender mejor las relaciones entre diferentes temas o elementos. En un mapa conceptual, los conceptos principales se colocan en el centro y se conectan con líneas a conceptos secundarios o relacionados, creando una estructura jerárquica. Esto ayuda a ver cómo se relacionan las ideas y cómo se agrupan en categorías o temas más amplios. Los mapas conceptuales son útiles para estudiar, planificar proyectos, tomar decisiones y comunicar ideas de manera clara y concisa. Son ampliamente utilizados en entornos educativos y profesionales debido a su capacidad para simplificar información compleja y facilitar la comprensión."
+            content: "Un mapa conceptual es una representación visual de ideas interrelacionadas. Es una poderosa herramienta para organizar y estructurar información de manera clara y concisa. Con nodos que representan conceptos y líneas que conectan estos nodos para mostrar relaciones, los mapas conceptuales permiten una comprensión más profunda y una comunicación más efectiva."
         },
         {
             value: "item-2",
@@ -88,38 +92,34 @@ const LandingPage = () => {
             />
             <LogoSlider />
             <LandingVideo />
-            <div className="mb:my-28 my-14">
-                <BlogSection 
-                    title="Organiza tus conceptos con figuras fáciles de usar" 
-                    text="Utilizando nuestra función de arrastrar y soltar, puedes estructurar de manera sencilla los conceptos y sus relaciones en tu mapa conceptual. Incorpora tus ideas al esquema y compártelo en tiempo real con quienes desees."
-                />
-            </div>
             <BlogSection 
-                title="Facilitando la Colaboración Remota con Mapas Conceptuales" 
-                text="En un mundo cada vez más conectado, la colaboración remota se ha vuelto esencial. Descubre cómo los mapas conceptuales online pueden facilitar la comunicación, la planificación y la ejecución de proyectos, permitiendo a equipos dispersos trabajar de manera efectiva hacia objetivos comunes. Colabora en tiempo real con tu equipo y desbloquea la creatividad para abordar conceptos complejos."
+                    title="Crea mapas conceptuales en minutos, no horas"
+                    text="Descubre la forma perfecta para transformar conceptos complejos en un mapa conceptual online digerible para ti, tus alumnos o tu equipo. Haz un mapa conceptual de cualquier tema o de tu investigación para cualquier ocasión, ya sea sobre un nuevo producto de tu empresa o para presentar una lección abrumadora en clase. Estructura un mapa conceptual creativo a partir de la pizarra online de Sketchlie y aprovecha todas las herramientas y elementos de diseño y cautiva a tu publico."
+                    img="/placeholders/wireframe.png"
+                    side="right"
+                />
+            <BlogSection 
+                title="El mapa conceptual online colaborativo" 
+                text="Hacer un mapa conceptual nunca habia sido sencillo, ahora con la pizarra online de Sketchlie puedes hacer tantos mapas conceptuales online como quieras. Importa imágenes, implementa objetos, dibuja lo que tu encuentres necesario para que tu mapa conceptual sea lo más completo posible"
+                text2="Comparte tu mapa conceptual con tus compañeros de trabajo o con tus alumnos y colabora en tiempo real para que todos puedan aportar sus ideas y hacer el mapa conceptual más completo. Con Sketchlie, hacer un mapa conceptual online nunca había sido tan sencillo y rápido."
                 img="/placeholders/mapa-mental.png"
                 side="right"
             />
             <BlogSection
-                title="Potenciando la Creatividad Colectiva" 
-                text="La colaboración en tiempo real se convierte en una experiencia fluida y dinámica. Imagina poder trabajar simultáneamente en un mapa conceptual con colegas de todo el mundo, intercambiando ideas y generando nuevas perspectivas en tiempo real. Descubre cómo esta herramienta puede transformar la forma en que trabajas. Utiliza plantillas de mapas conceptuales y frases de enlace para enriquecer tus sesiones de lluvia de ideas."
+                title="Haz mapas conceptuales complejos con facilidad" 
+                text="Organiza tus ideas y conceptos de la manera más sencilla. La pizarra online de Sketchlie te permite a ti y a tu equipo a hacer todos los cuadros conceptuales que tu quieras. Puedes subir imagenes, implementar objetos, dibujar y hacer todo lo que necesites para que tu mapa conceptual sea lo más completo posible."
+                text2="Conserva todas tus ideas, listas y relaciones en un lugar centralizado y seguro, colabora con tu equipo en tiempo real para hacer el mapa conceptual más completo."
                 img="/placeholders/improve-performance.png"
                 side="right"
             />
             <BlogSection
-                title="Desde la Idea hasta la Ejecución" 
-                text="Simplifica la planificación y gestión de proyectos, proporcionando una plataforma centralizada para organizar tareas, asignar responsabilidades y realizar un seguimiento del progreso. Con herramientas integradas para la colaboración y la comunicación, llevar tus proyectos desde la concepción hasta la ejecución nunca ha sido tan fácil. Comparte tus mapas conceptuales directamente desde Google Drive para una colaboración aún más fluida."
-                img="/placeholders/diagrama-de-flujo.png"
-                side="right"
-            />
-            <BlogSection
-                title="Tu Herramienta Esencial para la Creatividad Colaborativa" 
+                title="Anota las ideas y ponlas en práctica" 
                 text="Lleva la colaboración a un nivel completamente nuevo. Desde sesiones de lluvia de ideas hasta reuniones de seguimiento de proyectos, esta herramienta versátil y fácil de usar está diseñada para potenciar la creatividad y la productividad de tu equipo. Únete a la revolución de la colaboración online con Sketchlie. Haz clic para crear mapas conceptuales en línea y compartirlos con tu equipo en tiempo real."
                 img="/placeholders/pizarra-online.png"
                 side="right"
             />
             <HowToCreate steps={steps} title="Cómo hacer un mapa conceptual"/>
-            <FaqSection accordionData={faqData} sectionTitle="un mapa conceptual"/>
+            <FaqSection accordionData={faqData} sectionTitle="los mapas conceptuales online"/>
             <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] md:my-20 my-5">
                 <BlogLinks blogTitle="Diagramas de flujo" blogImage="/placeholders/mapa-conceptual.png" blogHref="/diagrama-de-flujo" blogDescription="Crea diagramas de flujo rápidamente y simplifica tus rutinas con el creador de diagramas de flujo de  con las herramientas de Sketchlie."/>
                 <BlogLinks blogTitle="Pizarra Online" blogImage="/placeholders/improve-performance.png" blogHref="/pizarra-online" blogDescription="Sketchlie es una pizarra online rápida, gratuita y fácil de usar pensada para  ayudarte a colaborar con cualquier persona desde cualquier lugar."/>
