@@ -15,10 +15,18 @@ export const metadata: Metadata = {
 const BlogPage = () => {
     const blogLinksData = [
         {
+            blogTitle: "Desata tu Creatividad con la Pizarra Virtual Online de Sketchlie",
+            blogImage: "/placeholders/pizarra-online.png",
+            blogHref: "/blog/desata-tu-creatividad",
+            blogDescription: "En un mundo cada vez más digitalizado, la necesidad de herramientas de colaboración efectivas se ha vuelto fundamental para empresas...",
+            isNew: true
+        },
+        {
             blogTitle: "Wireframes Online: La Herramienta Esencial para Visualizar tus Ideas",
             blogImage: "/placeholders/wireframe.png",
             blogHref: "/blog/wireframes-online",
-            blogDescription: "Descubre cómo los wireframes online en Sketchlie pueden ayudarte a visualizar tus ideas."
+            blogDescription: "Descubre cómo los wireframes online en Sketchlie pueden ayudarte a visualizar tus ideas.",
+            isNew: true
         },
         {
             blogTitle: "Mapa de Procesos",
@@ -60,9 +68,10 @@ const BlogPage = () => {
                     blogHref="/blog/mapa-conceptual"
                     blogDescription="Que son los mapas conceptuales y cual es su Importancia en el Mundo Online..."
                     blogTitle="Mapa Conceptual"
+                    isNew={true}
                 />
             </div>
-            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%]">
+            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5">
                 {blogLinksData.map((blogLink, index) => (
                     <BlogLinks
                         key={index}
@@ -70,6 +79,7 @@ const BlogPage = () => {
                         blogImage={blogLink.blogImage}
                         blogHref={blogLink.blogHref}
                         blogDescription={blogLink.blogDescription}
+                        isNew={blogLink.isNew}
                     />
                 ))}
             </div>

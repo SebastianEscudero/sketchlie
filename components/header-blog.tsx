@@ -1,24 +1,28 @@
 import Image from "next/image"
 import Link from "next/link";
 import { Button } from "./ui/button";
+import { Badge } from "./ui/badge";
 
 interface BlogLinksProps {
     blogImage: string;
     blogHref: string;
     blogDescription: string;
     blogTitle: string;
+    isNew?: boolean;
 }
 
 export const HeaderBlog = ({
     blogImage,
     blogHref,
     blogDescription,
-    blogTitle
+    blogTitle,
+    isNew,
 }: BlogLinksProps) => {
     return(
-        <div className="flex md:flex-row flex-col-reverse w-auto rounded-lg border border-zinc-600">
-            <div className="flex-1 flex flex-col justify-between p-10 bg-[#1C1C1E] md:rounded-l-lg rounded-l-none text-[#FFF]">
+        <div className="flex md:flex-row flex-col-reverse w-auto rounded-lg border border-zinc-400 transform transition-all duration-200 hover:scale-102 hover:border-black">
+            <div className="flex-1 flex flex-col justify-between p-10 bg-[#1C1C1E] md:rounded-l-lg md:rounded-r-none rounded-b-md text-[#FFF]">
                 <div>
+                    {isNew ? <Badge className="mb-3" variant="new">Reciente</Badge> : null} 
                     <h2 className="mb-5 xl:text-4xl md:text-2xl text-3xl">
                         {blogTitle}
                     </h2>
@@ -36,7 +40,7 @@ export const HeaderBlog = ({
             </div>
             <Link
                 href={blogHref}
-                className="md:flex-grow md:max-w-[70%] bg-[#F5F5F5] flex items-center justify-center"
+                className="md:flex-grow md:max-w-[60%] bg-[#F5F5F5] flex items-center justify-center md:rounded-r-lg rounded-t-lg"
             >
                 <Image 
                     className="rounded-lg"

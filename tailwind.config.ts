@@ -25,6 +25,9 @@ const config = {
         'roobert': ['Roobert PRO', 'Helvetica', 'Arial', 'sans-serif'],
         'figtree': ['Figtree', 'sans-serif']
       },
+      scale: {
+        '102': '1.02',
+      },
       colors: {
         'custom-blue': '#2E4DE6',
         'custom-blue-dark': '#1C3CB6',
