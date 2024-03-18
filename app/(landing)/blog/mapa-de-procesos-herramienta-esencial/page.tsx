@@ -44,7 +44,7 @@ const LandingPage = () => {
             Mapa de Procesos: La Herramienta Esencial para la Eficiencia Empresarial
          </h1>
            <Image
-                src="/placeholders/wireframe.png"
+                src="/placeholders/mapa-de-procesos.png"
                 alt="Mapa conceptual"
                 width={1920}
                 height={1080}

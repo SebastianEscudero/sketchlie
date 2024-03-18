@@ -15,6 +15,13 @@ export const metadata: Metadata = {
 const BlogPage = () => {
     const blogLinksData = [
         {
+            blogTitle: "Mapa de Procesos: La Herramienta Esencial para la Eficiencia Empresarial",
+            blogImage: "/placeholders/mapa-de-procesos.png",
+            blogHref: "/blog/mapa-de-procesos-herramienta-esencial",
+            blogDescription: "Descubre cómo los mapas de procesos pueden ayudarte a visualizar y optimizar tus procesos empresariales de manera colaborativa y eficiente en Sketchlie...",
+            isNew: true
+        },
+        {
             blogTitle: "Desata tu Creatividad con la Pizarra Virtual Online de Sketchlie",
             blogImage: "/placeholders/pizarra-online.png",
             blogHref: "/blog/desata-tu-creatividad",
