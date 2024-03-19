@@ -15,6 +15,13 @@ export const metadata: Metadata = {
 const BlogPage = () => {
     const blogLinksData = [
         {
+            blogTitle: "Diagrama de Flujo: Herramienta Esencial para la Colaboración Online",
+            blogImage: "/placeholders/diagrama-de-flujo.png",
+            blogHref: "/blog/diagrama-de-flujo-colabora-online",
+            blogDescription: "Descubre cómo los diagramas de flujo en línea pueden potenciar la colaboración y la creatividad. Explora las ventajas de usar Sketchlie...",
+            isNew: true
+        },
+        {
             blogTitle: "Mapa de Procesos: La Herramienta Esencial para la Eficiencia Empresarial",
             blogImage: "/placeholders/mapa-de-procesos.png",
             blogHref: "/blog/mapa-de-procesos-herramienta-esencial",
