@@ -11,7 +11,7 @@ import Link from "next/link";
 import { BlogLinks } from "@/components/blog-links";
 
 export const metadata: Metadata = {
-    title: "Wireframes Online: La Herramienta Esencial para Visualizar tus Ideas",
+    title: "Wireframes Online: La Herramienta Esencial para Visualizar tus Ideas | Sketchlie",
     description: "Descubre cómo los wireframes online en Sketchlie pueden ayudarte a visualizar tus ideas de forma colaborativa y eficiente. ¡Regístrate hoy y comienza a crear tus proyectos!",
     keywords: ["wireframes online", "herramientas de diseño", "colaboración en línea", "diseño web", "diseño de aplicaciones", "Sketchlie"],
     alternates: {

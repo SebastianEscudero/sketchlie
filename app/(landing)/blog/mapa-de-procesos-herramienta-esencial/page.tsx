@@ -11,7 +11,7 @@ import Link from "next/link";
 import { BlogLinks } from "@/components/blog-links";
 
 export const metadata: Metadata = {
-    title: "Mapa de Procesos: La Herramienta Esencial para la Eficiencia Empresarial",
+    title: "Mapa de Procesos: La Herramienta Esencial para la Eficiencia Empresarial | Sketchlie",
     description: "Descubre cómo los mapas de procesos pueden ayudarte a visualizar y optimizar tus procesos empresariales de manera colaborativa y eficiente en Sketchlie. ¡Regístrate hoy y comienza a crear tus mapas de procesos!",
     keywords: ["mapas de procesos", "eficiencia empresarial", "colaboración en línea", "optimización de procesos", "Sketchlie"],
     alternates: {

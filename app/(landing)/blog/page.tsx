@@ -15,6 +15,13 @@ export const metadata: Metadata = {
 const BlogPage = () => {
     const blogLinksData = [
         {
+            blogTitle: "Mapas Mentales Online: Herramientas y Ventajas",
+            blogImage: "/placeholders/mapa-mental.png",
+            blogHref: "/blog/mapas-mentales-herramientas-y-ventajas",
+            blogDescription: "Descubre cómo los mapas mentales online pueden potenciar tu creatividad y productividad. Conoce las herramientas disponibles y las ventajas que ofrecen en Sketchlie...",
+            isNew: true
+        },
+        {
             blogTitle: "Diagrama de Flujo: Herramienta Esencial para la Colaboración Online",
             blogImage: "/placeholders/diagrama-de-flujo.png",
             blogHref: "/blog/diagrama-de-flujo-colabora-online",
@@ -31,7 +38,7 @@ const BlogPage = () => {
         {
             blogTitle: "Desata tu Creatividad con la Pizarra Virtual Online de Sketchlie",
             blogImage: "/placeholders/pizarra-online.png",
-            blogHref: "/blog/desata-tu-creatividad",
+            blogHref: "/blog/pizarra-online-desata-tu-creatividad",
             blogDescription: "En un mundo cada vez más digitalizado, la necesidad de herramientas de colaboración efectivas se ha vuelto fundamental para empresas...",
             isNew: true
         },
@@ -57,7 +64,7 @@ const BlogPage = () => {
         {
             blogTitle: "Mapa Mental",
             blogImage: "/placeholders/mapa-mental.png",
-            blogHref: "/mapa-mental",
+            blogHref: "/mapa-mental-online",
             blogDescription: "Crea mapas mentales en línea con Sketchlie. Nuestra herramienta de mapas mentales te permite capturar tus ideas y organizar la información de manera visual."
         },
         {
@@ -81,7 +88,7 @@ const BlogPage = () => {
                     blogImage="/placeholders/mapa-conceptual-online.png"
                     blogHref="/blog/mapa-conceptual"
                     blogDescription="Que son los mapas conceptuales y cual es su Importancia en el Mundo Online..."
-                    blogTitle="Mapa Conceptual"
+                    blogTitle="Mapa Conceptual y su Importancia en el Mundo Online"
                     isNew={true}
                 />
             </div>

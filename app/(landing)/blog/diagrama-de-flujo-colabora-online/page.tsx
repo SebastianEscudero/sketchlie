@@ -11,7 +11,7 @@ import Link from "next/link";
 import { BlogLinks } from "@/components/blog-links";
 
 export const metadata: Metadata = {
-    title: "Diagrama de Flujo: Herramienta Esencial para la Colaboración Online",
+    title: "Diagrama de Flujo: Herramienta Esencial para la Colaboración Online | Sketchlie",
     description: "Descubre cómo los diagramas de flujo en línea pueden potenciar la colaboración y la creatividad. Explora las ventajas de usar Sketchlie para crear diagramas de flujo.",
     keywords: ["diagrama de flujo", "diagramas de flujo", "colaboración online", "Sketchlie"],
     alternates: {
