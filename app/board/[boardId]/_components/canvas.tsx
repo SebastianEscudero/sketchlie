@@ -254,7 +254,7 @@ export const Canvas = ({
         pencilDraft[0][0] === point.x &&
         pencilDraft[0][1] === point.y
           ? pencilDraft
-          : [...pencilDraft, [point.x, point.y]],
+          : [...pencilDraft, [point.x, point.y, e.pressure]],
     });
   }, [canvasState.mode]);
 
@@ -297,9 +297,10 @@ export const Canvas = ({
   const startDrawing = useMutation((
     { setMyPresence },
     point: Point,
+    pressure: number,
   ) => {
     setMyPresence({
-      pencilDraft: [[point.x, point.y]],
+      pencilDraft: [[point.x, point.y, pressure]],
       penColor: lastUsedColor,
     })
   }, [lastUsedColor]);
@@ -400,7 +401,7 @@ export const Canvas = ({
       }
   
       if (canvasState.mode === CanvasMode.Pencil) {
-        startDrawing(point);
+        startDrawing(point, e.pressure);
         return;
       }
   
