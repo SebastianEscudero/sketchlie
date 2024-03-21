@@ -5,7 +5,7 @@ import { authMiddleware } from "@clerk/nextjs";
 // See https://clerk.com/docs/references/nextjs/auth-middleware for more information about configuring your Middleware
 export default authMiddleware({
   publicRoutes: ["/", "/api/uploadthing", "/pizarra-online", "/mapa-conceptual", "/diagrama-de-flujo", "/wireframe", "/mapa-mental-online",
-  "/mapas-de-procesos", "/blog", "/blog(.*)"] // Add "/blog(.*)" to match all /blog posts
+  "/mapas-de-procesos", "/blog", "/blog(.*)", "/diagrama"] // Add "/blog(.*)" to match all /blog posts
 }); 
 
 export const config = {

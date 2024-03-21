@@ -80,7 +80,7 @@ const LandingPage = () => {
             <BlogStructure
                 title="Creador de diagramas de flujo online"
                 description="Crea diagramas de flujo rápidamente y simplifica tus rutinas con el creador de diagramas de flujo de Sketchlie. Visualiza los pasos del proceso que estés creando, desde alinear a los equipos hasta pasar a la acción con toda la información."
-                cta="Crear mapa conceptual"
+                cta="Crear diagrama de flujo"
                 img="/placeholders/diagrama-de-flujo.png"
             />
             <LogoSlider />

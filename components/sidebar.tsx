@@ -38,6 +38,10 @@ const components: { title: string; href: string}[] = [
     href: "/mapa-mental-online",
   },
   {
+    title: "Diagramas",
+    href: "/diagrama",
+  },
+  {
     title: "Gestión de producto 🚧",
     href: "/gestion-producto",
   },

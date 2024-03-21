@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     description: "Descubre cómo los mapas mentales online pueden potenciar tu creatividad y productividad. Conoce las herramientas disponibles y las ventajas que ofrecen en Sketchlie.",
     keywords: ["mapa mental", "mapa mental online", "mapas mentales"],
     alternates: {
-      canonical: "https://www.sketchlie.com/blog/mapas-mentales-herramientas-y-ventajas",
+      canonical: "https://www.sketchlie.com/blog/mapa-mental",
     }
 };
 

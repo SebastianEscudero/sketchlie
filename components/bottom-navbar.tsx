@@ -32,6 +32,18 @@ const components: { title: string; href: string}[] = [
       href: "/mapas-de-procesos",
     },
     {
+      title: "Wireframe",
+      href: "/wireframe",
+    },
+    {
+      title: "Mapas mentales",
+      href: "/mapa-mental-online",
+    },
+    {
+      title: "Diagramas",
+      href: "/diagrama",
+    },
+    {
       title: "Gestión de producto 🚧",
       href: "/gestion-producto",
     },
@@ -44,16 +56,8 @@ const components: { title: string; href: string}[] = [
       href: "/equipos-de-it",
     },
     {
-      title: "Wireframe",
-      href: "/wireframe",
-    },
-    {
       title: "Marketing 🚧",
       href: "/marketing",
-    },
-    {
-      title: "Mapas mentales",
-      href: "/mapa-mental-online",
     },
     {
       title: "Agencias y Consultorías 🚧",

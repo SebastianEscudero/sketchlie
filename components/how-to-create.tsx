@@ -20,7 +20,7 @@ export const HowToCreate = ({
     title,
 }: BlogSectionProps) => {
     return (
-        <div className={`bg-[#fff] rounded-lg border border-black xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] font-normal text-[#1c1c1e] px-0 xl:px-20 xl:py-15 py-5`}>
+        <div className={`bg-[#fff] rounded-lg border border-black xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] font-normal text-[#1c1c1e] p-4`}>
             <h2 className="text-3xl lg:text-4xl xl:text-5xl text-center my-8">
                 {title}
             </h2>

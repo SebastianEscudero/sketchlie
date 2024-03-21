@@ -25,6 +25,10 @@ const porEquipo: { title: string; href: string}[] = [
     href: "/equipos-de-ingenieria",
   },
   {
+    title: "Diseño 🚧",
+    href: "/diseno",
+  },
+  {
     title: "Equipos de IT 🚧",
     href: "/equipos-de-it",
   },
@@ -68,8 +72,8 @@ const porCasoDeUso: { title: string; href: string}[] = [
     href: "/mapas-de-procesos",
   },
   {
-    title: "Diseño 🚧",
-    href: "/diseno",
+    title: "Diagramas",
+    href: "/diagrama",
   },
   {
     title: "Lluvia de Ideas 🚧",

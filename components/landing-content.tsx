@@ -40,7 +40,7 @@ export const LandingContent = () => {
             </div>
             <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5">
                 <BlogLinks blogTitle="Mapa Conceptual y su Importancia en el Mundo Online" blogImage="/placeholders/mapa-conceptual-online.png" blogHref="/blog/mapa-conceptual" blogDescription="Explora las herramientas versátiles de Sketchlie para crear mapas conceptuales online de forma colaborativa y eficiente..." isNew={true}/>
-                <BlogLinks blogTitle="Desata tu Creatividad con la Pizarra Virtual Online de Sketchlie" blogImage="/placeholders/pizarra-online.png" blogHref="/blog/pizarra-online-desata-tu-creatividad" blogDescription="En un mundo cada vez más digitalizado, la necesidad de herramientas de colaboración efectivas se ha vuelto fundamental para empresas..." isNew={true}/>
+                <BlogLinks blogTitle="Desata tu Creatividad con la Pizarra Virtual Online de Sketchlie" blogImage="/placeholders/pizarra-online.png" blogHref="/blog/pizarra-online" blogDescription="En un mundo cada vez más digitalizado, la necesidad de herramientas de colaboración efectivas se ha vuelto fundamental para empresas..." isNew={true}/>
                 <BlogLinks blogTitle="Wireframes Online: La Herramienta Esencial para Visualizar tus Ideas" blogImage="/placeholders/wireframe.png" blogHref="/blog/wireframes-online" blogDescription="Descubre cómo los wireframes online en Sketchlie pueden ayudarte a visualizar tus ideas." isNew={true}/>
             </div>
             <BlogTestimonials

@@ -21,9 +21,9 @@ export const FaqSection = ({
     sectionTitle,
 }: FaqSectionProps) => {
     return (
-        <div className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mb-10">
-            <div className="my-10 font-normal text-[#1c1c1e]">
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl sm:text-left text-center">
+        <div className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mb-10 mt-32">
+            <div className="font-normal text-[#1c1c1e] mb-14 md:w-1/2">
+                <h2 className="text-4xl lg:text-5xl sm:text-left text-center">
                     Preguntas frecuentes sobre {sectionTitle}.
                 </h2>
             </div>

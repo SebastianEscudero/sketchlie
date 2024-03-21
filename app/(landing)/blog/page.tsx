@@ -17,28 +17,28 @@ const BlogPage = () => {
         {
             blogTitle: "Mapas Mentales Online: Herramientas y Ventajas",
             blogImage: "/placeholders/mapa-mental.png",
-            blogHref: "/blog/mapas-mentales-herramientas-y-ventajas",
+            blogHref: "/blog/mapa-mental",
             blogDescription: "Descubre cómo los mapas mentales online pueden potenciar tu creatividad y productividad. Conoce las herramientas disponibles y las ventajas que ofrecen en Sketchlie...",
             isNew: true
         },
         {
             blogTitle: "Diagrama de Flujo: Herramienta Esencial para la Colaboración Online",
             blogImage: "/placeholders/diagrama-de-flujo.png",
-            blogHref: "/blog/diagrama-de-flujo-colabora-online",
+            blogHref: "/blog/diagrama-de-flujo",
             blogDescription: "Descubre cómo los diagramas de flujo en línea pueden potenciar la colaboración y la creatividad. Explora las ventajas de usar Sketchlie...",
             isNew: true
         },
         {
             blogTitle: "Mapa de Procesos: La Herramienta Esencial para la Eficiencia Empresarial",
             blogImage: "/placeholders/mapa-de-procesos.png",
-            blogHref: "/blog/mapa-de-procesos-herramienta-esencial",
+            blogHref: "/blog/mapa-de-procesos",
             blogDescription: "Descubre cómo los mapas de procesos pueden ayudarte a visualizar y optimizar tus procesos empresariales de manera colaborativa y eficiente en Sketchlie...",
             isNew: true
         },
         {
             blogTitle: "Desata tu Creatividad con la Pizarra Virtual Online de Sketchlie",
             blogImage: "/placeholders/pizarra-online.png",
-            blogHref: "/blog/pizarra-online-desata-tu-creatividad",
+            blogHref: "/blog/pizarra-online",
             blogDescription: "En un mundo cada vez más digitalizado, la necesidad de herramientas de colaboración efectivas se ha vuelto fundamental para empresas...",
             isNew: true
         },

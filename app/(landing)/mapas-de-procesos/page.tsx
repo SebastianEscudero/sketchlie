@@ -73,7 +73,7 @@ const LandingPage = () => {
             <BlogStructure
                 title="Optimiza tus flujos de trabajo con mapas de procesos"
                 description="Libera tu imaginación y organiza tus ideas de manera visual con nuestra herramienta para crear mapas mentales en línea. Descubre cómo el diseño de mapas mentales puede potenciar tu creatividad y mejorar tu productividad en proyectos personales y profesionales."
-                cta="Crear mapa mental"
+                cta="Mapear proceso gratis"
                 img="/placeholders/mapa-de-procesos.png"
             />
             <LogoSlider />

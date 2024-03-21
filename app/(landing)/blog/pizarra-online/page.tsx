@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     description: "En un mundo cada vez más digitalizado, la necesidad de herramientas de colaboración efectivas se ha vuelto fundamental para empresas, educadores y equipos de trabajo. Descubre cómo la pizarra virtual online de Sketchlie puede ayudarte a potenciar tu creatividad y productividad en tiempo real.",
     keywords: ["pizarra virtual online", "colaboración en tiempo real", "herramientas de colaboración", "pizarra digital", "creatividad", "productividad", "trabajo en equipo", "herramientas colaborativas", "Sketchlie"],
     alternates: {
-        canonical: "https://www.sketchlie.com/blog/pizarra-online-desata-tu-creatividad",
+        canonical: "https://www.sketchlie.com/blog/pizarra-online",
     }
 };
 
