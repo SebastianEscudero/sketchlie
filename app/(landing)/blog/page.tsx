@@ -4,7 +4,7 @@ import { Metadata } from "next";
 
 
 export const metadata: Metadata = {
-    title: "Colabora, Diseña, Crea, Enseña | Sketchlie",
+    title: "Colabora, Diseña, Crea, Enseña | Sketchlie Blog",
     description: "¡Bienvenido al blog de Sketchlie! Sumérgete en un mundo de creatividad colaborativa mientras exploramos consejos, trucos y casos de estudio para sacar el máximo provecho de nuestra plataforma de pizarra en línea. Desde técnicas de dibujo hasta estrategias de colaboración remota, nuestro blog es tu guía definitiva para potenciar tus proyectos y liberar tu creatividad. Únete a nuestra comunidad y comienza a dibujar el futuro hoy mismo.",
     keywords: ["sketchlie blog", "blog", "sketchlie"],
     alternates: {
@@ -47,6 +47,13 @@ const BlogPage = () => {
             blogImage: "/placeholders/wireframe.png",
             blogHref: "/blog/wireframes-online",
             blogDescription: "Descubre cómo los wireframes online en Sketchlie pueden ayudarte a visualizar tus ideas.",
+            isNew: true
+        },
+        {
+            blogTitle: "Diseñar Online con Sketchlie: La Herramienta Perfecta para Colaborar",
+            blogImage: "/placeholders/improve-performance.png",
+            blogHref: "/blog/canvas-online",
+            blogDescription: "En el mundo digital actual, la colaboración es clave. Los equipos necesitan herramientas que les permitan trabajar juntos de manera eficiente, sin importar la distancia física que los separe...",
             isNew: true
         },
         {

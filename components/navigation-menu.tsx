@@ -76,7 +76,7 @@ const porCasoDeUso: { title: string; href: string}[] = [
     href: "/diagrama",
   },
   {
-    title: "Lluvia de Ideas 🚧",
+    title: "Lluvia de ideas ",
     href: "/lluvia-de-ideas",
   },
 ]

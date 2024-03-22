@@ -55,6 +55,7 @@ const LandingPage = () => {
                 title="La pizarra online para colaborar."
                 description="Sketchlie es una pizarra online rápida, gratuita y fácil de usar pensada para  ayudarte a colaborar con cualquier persona desde cualquier lugar."
                 cta="Ir a pizarra online"
+                alt="Pizarra online Image"
             />
             <LogoSlider />
             <LandingVideo />

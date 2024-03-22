@@ -90,6 +90,7 @@ const LandingPage = () => {
                 title="Crea diagramas online en minutos, no horas"
                 description="Los diagramas son recursos esenciales que facilitan la organización y visualización de información de forma efectiva. Se componen de nodos que representan conceptos o ideas, conectados por enlaces que ilustran las relaciones entre ellos."
                 cta="Crear diagrama"
+                alt="Diagrama Image"
                 img="/placeholders/mapa-conceptual-online.png"
             />
             <LogoSlider />

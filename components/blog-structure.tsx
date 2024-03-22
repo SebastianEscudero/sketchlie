@@ -12,13 +12,15 @@ interface BlogStructureProps {
     description: string;
     cta: string;
     img?: string;
+    alt: string
 }
 
 export const BlogStructure = ({
     title,
     description,
     cta,
-    img
+    img,
+    alt
 }: BlogStructureProps) => {
     const { user } = useUser();
 
@@ -26,7 +28,7 @@ export const BlogStructure = ({
         <div className="flex-1 w-full border border-[#837D7C] rounded-sm md:block hidden">
             <Image
                 src={img}
-                alt="Logo"
+                alt={alt}
                 layout="responsive"
                 width={10}
                 height={10}

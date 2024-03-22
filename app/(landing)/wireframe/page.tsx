@@ -66,6 +66,7 @@ const LandingPage = () => {
                 title="Herramienta para crear Wireframes Online"
                 description="Diseña tus proyectos web de manera efectiva y eficiente con nuestro creador de wireframes en línea. Visualiza la estructura y el diseño de tu sitio web antes de empezar a codificar, asegurando una experiencia de usuario óptima desde el principio."
                 cta="Crear wireframe"
+                alt="Wireframe Image"
                 img="/placeholders/wireframe.png"
             />
             <LogoSlider />

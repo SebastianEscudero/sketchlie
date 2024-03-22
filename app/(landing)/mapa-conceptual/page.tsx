@@ -88,6 +88,7 @@ const LandingPage = () => {
                 title="Creador de Mapas Conceptuales Online"
                 description="Los mapas conceptuales son valiosas herramientas que permiten organizar y representar información de manera visual. Consisten en una estructura compuesta por nodos, que representan conceptos o ideas, y enlaces que muestran las relaciones entre estos conceptos."
                 cta="Crear mapa conceptual"
+                alt="Mapa conceptual Image"
                 img="/placeholders/mapa-conceptual-online.png"
             />
             <LogoSlider />

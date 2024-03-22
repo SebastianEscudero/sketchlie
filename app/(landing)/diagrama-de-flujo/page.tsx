@@ -81,6 +81,7 @@ const LandingPage = () => {
                 title="Creador de diagramas de flujo online"
                 description="Crea diagramas de flujo rápidamente y simplifica tus rutinas con el creador de diagramas de flujo de Sketchlie. Visualiza los pasos del proceso que estés creando, desde alinear a los equipos hasta pasar a la acción con toda la información."
                 cta="Crear diagrama de flujo"
+                alt="Diagrama de Flujo Image"
                 img="/placeholders/diagrama-de-flujo.png"
             />
             <LogoSlider />

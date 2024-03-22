@@ -71,6 +71,7 @@ const LandingPage = () => {
                 title="Crea Mapas Mentales Online de Forma Creativa"
                 description="Libera tu imaginación y organiza tus ideas de manera visual con nuestra herramienta para crear mapas mentales en línea. Descubre cómo el diseño de mapas mentales puede potenciar tu creatividad y mejorar tu productividad en proyectos personales y profesionales."
                 cta="Crear mapa mental"
+                alt="Mapa mental Image"
                 img="/placeholders/mapa-mental.png"
             />
             <LogoSlider />

@@ -72,7 +72,7 @@ const components: { title: string; href: string}[] = [
       href: "/ventas",
     },
     {
-      title: "Lluvia de Ideas 🚧",
+      title: "Lluvia de ideas ",
       href: "/lluvia-de-ideas",
     },
   ]
