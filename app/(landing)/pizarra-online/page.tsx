@@ -6,6 +6,7 @@ import { FaqSection } from "@/components/faq-section";
 import { BlogLinks } from "@/components/blog-links";
 import { PlatformYouCanTrust } from "@/components/platform-you-can-trust";
 import { LandingVideo } from "@/components/landing-video";
+import { VerMas } from "@/components/ver-mas";
 
 export const metadata: Metadata = {
     title: "Crea tu Pizarra Online Gratis | Sketchlie",
@@ -98,6 +99,11 @@ const LandingPage = () => {
                 <BlogLinks blogTitle="Wireframes" blogImage="/placeholders/wireframe.png" blogHref="/wireframe" blogDescription="Empieza a visualizar tus ideas en minutos con nuestro intuitivo creador de wireframes. Crea esquemas de lo que necesites, desde páginas de inicio hasta formularios y menús, con nuestro creador de wireframes. "/>
             </div>
             <FaqSection accordionData={faqData} sectionTitle="las pizarras online"/>
+            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5 md:my-10 my-5">
+                <VerMas title="Cómo Utilizar una Pizarra Online" href="/pizarra-online/que-es-pizarra-online"/>
+                <VerMas title="Beneficios de una Pizarra Online" href="/pizarra-online/que-es-pizarra-online"/>
+                <VerMas title="¿Qué es una Pizarra Online?" href="/pizarra-online/que-es-pizarra-online"/>
+            </div>
         </div>
 
      );
