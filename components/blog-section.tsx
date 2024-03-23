@@ -30,7 +30,7 @@ export const BlogSection = ({
     );
 
     return (
-        <div className={`flex flex-col xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] md:flex-row items-center my-14 font-normal md:space-x-20 xl:space-x-30 text-[#1c1c1e] ${!img && 'text-center'} ${side === 'left' && 'flex-col-reverse'}`}>
+        <div className={`flex flex-col xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] md:flex-row items-center my-14 md:space-x-20 xl:space-x-30 text-[#1c1c1e] ${!img && 'text-center'} ${side === 'left' && 'flex-col-reverse'}`}>
             {side === 'left' && imageElement}
             <div className="flex-1">
                 <h2 className={cn("mb-10 leading-snug space-y-5", {

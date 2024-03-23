@@ -59,12 +59,12 @@ const LandingPage = () => {
                     </blockquote>
 
                     <div id="1" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">1. ¿Qué es un Mapa Mental?</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">1. ¿Qué es un Mapa Mental?</h2>
 
                     <p className="mb-10">Un mapa mental es una representación gráfica de ideas y conceptos que se utilizan para organizar, comprender y recordar información de manera más efectiva. Se estructuran a partir de una idea central que se ramifica en diferentes subtemas, conectados entre sí mediante líneas y palabras clave. Esta estructura visual facilita la comprensión de relaciones complejas y estimula la creatividad al permitir explorar asociaciones no lineales entre ideas.</p>
 
                     <div id="2" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">2. Herramientas para la Creación de Mapas Mentales Online</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">2. Herramientas para la Creación de Mapas Mentales Online</h2>
 
                     <p className="mb-10">En la actualidad, existen diversas herramientas en línea que facilitan la creación de mapas mentales de manera colaborativa y accesible desde cualquier dispositivo con conexión a internet. Algunas de las opciones más populares son:</p>
 
@@ -78,7 +78,7 @@ const LandingPage = () => {
                     </ul>
 
                     <div id="3" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">3. Ventajas del Uso de Mapas Mentales Online</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">3. Ventajas del Uso de Mapas Mentales Online</h2>
 
                     <p className="mb-10">La utilización de herramientas de mapas mentales online ofrece numerosas ventajas en comparación con métodos tradicionales de elaboración de diagramas y esquemas. Algunas de estas ventajas incluyen:</p>
 
@@ -95,14 +95,14 @@ const LandingPage = () => {
                     </ul>
 
                     <div id="4" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">4. El Rol del Mapa Mental en la Era Digital</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">4. El Rol del Mapa Mental en la Era Digital</h2>
 
                     <p className="mb-10">En un mundo cada vez más digitalizado y orientado hacia la colaboración en línea, el uso de mapas mentales online se ha convertido en una herramienta esencial para potenciar la productividad y la creatividad en diversos ámbitos. Ya sea en el ámbito educativo, empresarial o personal, los mapas mentales ofrecen una forma visual y efectiva de organizar ideas, planificar proyectos y resolver problemas de manera colaborativa y dinámica.</p>
 
                     <p className="mb-10">Descubre más sobre cómo potenciar tu creatividad y productividad con herramientas de mapas mentales online en <Link className="text-custom-blue hover:underline" href="/pizarra-online">Sketchlie</Link>.</p>
 
                     <div id="5" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">5. Aplicaciones Prácticas de los Mapas Mentales Online</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">5. Aplicaciones Prácticas de los Mapas Mentales Online</h2>
 
                     <p className="mb-10">Los mapas mentales online encuentran aplicación en una amplia variedad de contextos y situaciones. Algunos ejemplos de su uso incluyen:</p>
 
@@ -124,7 +124,7 @@ const LandingPage = () => {
                     <p className="mb-10">La versatilidad y facilidad de uso de las herramientas de mapas mentales online las convierten en una opción atractiva para cualquier persona que busque mejorar su organización, productividad y creatividad en el trabajo y en sus actividades cotidianas.</p>
 
                     <div id="6" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">6. Conclusiones</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">6. Conclusiones</h2>
 
                     <p className="mb-10">Los mapas mentales online son una herramienta valiosa para potenciar la creatividad, organizar ideas y colaborar de manera efectiva en la era digital. Con la variedad de herramientas disponibles en línea, como <Link className="text-custom-blue hover:underline" href="/mapa-mental-online">Mapa Mental Online</Link> y <Link className="text-custom-blue hover:underline" href="/pizarra-online">Sketchlie</Link>, es posible aprovechar al máximo el potencial de los mapas mentales en cualquier contexto.</p>
 

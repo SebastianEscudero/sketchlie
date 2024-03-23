@@ -54,11 +54,11 @@ const LandingPage = () => {
                     <p className="mb-10">En el vasto universo de la educación y la organización de ideas, el mapa conceptual emerge como una herramienta fundamental. En el contexto digital de hoy en día, donde la información fluye a velocidades vertiginosas, la capacidad de estructurar y visualizar conceptos es más crucial que nunca.</p>
                     <p className="mb-10">En <Link className="text-custom-blue hover:underline" href="/">Sketchlie</Link>, comprendemos la importancia de estas herramientas, por eso te ofrecemos una variedad de recursos para potenciar tu creatividad y productividad.</p>
                     <div id="1" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">1. ¿Qué es un Mapa Conceptual?</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">1. ¿Qué es un Mapa Conceptual?</h2>
                     <p className="mb-10">Un mapa conceptual es una representación gráfica de ideas y conceptos interrelacionados. A través de nodos y enlaces, se construye una red que captura la esencia de un tema, permitiendo una comprensión más profunda y una organización más efectiva de la información.</p>
                     <p className="mb-10">Este método no lineal de representación facilita la exploración de ideas desde diferentes perspectivas, fomentando la creatividad y el pensamiento crítico.</p>
                     <div id="2" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">2. Herramientas para la Creación de Mapas Conceptuales Online</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">2. Herramientas para la Creación de Mapas Conceptuales Online</h2>
                     <p className="mb-10">En el mundo digital, las herramientas para la creación de mapas conceptuales han cobrado una relevancia sin precedentes. <Link className="text-custom-blue hover:underline" href="/">Sketchlie</Link> te ofrece una plataforma versátil y fácil de usar para dar vida a tus ideas de manera colaborativa y eficiente. Algunas de nuestras herramientas más destacadas incluyen:</p>
                     <ul style={{ listStyleType: 'disc' }}>
                         <li className="mb-10 ml-5">
@@ -83,7 +83,7 @@ const LandingPage = () => {
                         </li>
                     </ul>
                     <div id="3" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">3. Ventajas del Uso de Mapas Conceptuales Online</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">3. Ventajas del Uso de Mapas Conceptuales Online</h2>
                     <p className="mb-10">La adopción de herramientas digitales para la creación de mapas conceptuales ofrece una serie de ventajas significativas:</p>
                     <ul style={{ listStyleType: 'disc' }}>
                         <li className="mb-10 ml-5">
@@ -97,7 +97,7 @@ const LandingPage = () => {
                         </li>
                     </ul>
                     <div id="4" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">4. El Rol del Mapa Conceptual en la Era Digital</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">4. El Rol del Mapa Conceptual en la Era Digital</h2>
                     <p className="mb-10">En un mundo dominado por la información, el mapa conceptual se erige como una brújula invaluable. Al proporcionar una estructura visual para la comprensión y organización de ideas, estas herramientas no solo facilitan el proceso de aprendizaje, sino que también potencian la creatividad y la innovación.</p>
                     <p className="mb-10">En <Link className="text-custom-blue hover:underline" href="/">Sketchlie</Link>, nos enorgullece ofrecer una gama de herramientas diseñadas para inspirar y empoderar a nuestros usuarios. Desde la creación de mapas conceptuales hasta la elaboración de diagramas de flujo y wireframes, estamos comprometidos a proporcionar las herramientas necesarias para llevar tus ideas al siguiente nivel.</p>
                     <p className="mb-10">Como parte de nuestra misión de fomentar el aprendizaje y la creatividad, también ofrecemos una variedad de recursos educativos en nuestro <Link className="text-custom-blue hover:underline" href="/blog">blog</Link>, donde puedes encontrar consejos, tutoriales y casos de estudio para sacar el máximo provecho de nuestras herramientas.</p>

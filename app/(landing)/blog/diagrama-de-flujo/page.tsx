@@ -55,7 +55,7 @@ const LandingPage = () => {
                     </p>
 
                     <div id="1" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">1. ¿Qué es un Diagrama de Flujo?</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">1. ¿Qué es un Diagrama de Flujo?</h2>
 
                     <p className="mb-10">
                         Un diagrama de flujo es una representación visual de los pasos o procesos de un sistema. Se utiliza para mostrar la secuencia de acciones, decisiones o eventos que conforman un procedimiento. Los diagramas de flujo son especialmente útiles para entender la lógica detrás de un proceso y para identificar posibles puntos de mejora o errores.
@@ -83,7 +83,7 @@ const LandingPage = () => {
                     </ul>
 
                     <div id="2" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">2. Herramientas para la Creación de Diagramas de Flujo Online</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">2. Herramientas para la Creación de Diagramas de Flujo Online</h2>
 
                     <p className="mb-10">
                         En el entorno digital actual, existen numerosas herramientas para la creación de diagramas de flujo en línea. Estas plataformas ofrecen funcionalidades avanzadas que facilitan la colaboración remota y la visualización de procesos. Entre las herramientas más destacadas se encuentran:
@@ -102,7 +102,7 @@ const LandingPage = () => {
                         Explora estas opciones y encuentra la herramienta que mejor se adapte a las necesidades de tu equipo. Con la colaboración online, la creación y edición de diagramas de flujo nunca ha sido tan sencilla y eficiente.
                     </p>
                     <div id="3" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">3. Ventajas del Uso de Diagramas de Flujo Online</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">3. Ventajas del Uso de Diagramas de Flujo Online</h2>
 
                     <p className="mb-10">
                         La adopción de herramientas de diagramación en línea, como los diagramas de flujo, conlleva una serie de ventajas significativas para los equipos de trabajo. Algunas de estas ventajas incluyen:
@@ -128,7 +128,7 @@ const LandingPage = () => {
                     </p>
 
                     <div id="4" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">4. El Rol del Diagrama de Flujo en la Era Digital</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">4. El Rol del Diagrama de Flujo en la Era Digital</h2>
 
                     <p className="mb-10">
                         En la era digital actual, donde la información fluye constantemente y la colaboración remota es la norma, los diagramas de flujo juegan un papel fundamental en la organización y comprensión de procesos complejos. Desde la planificación de proyectos hasta la documentación de sistemas, estas representaciones visuales son herramientas indispensables para cualquier equipo de trabajo.
@@ -142,7 +142,7 @@ const LandingPage = () => {
                         Descubre cómo puedes utilizar los diagramas de flujo en línea de <Link href="/" className="hover:underline text-custom-blue">Sketchlie</Link> para mejorar la colaboración en tus proyectos. ¡Visita nuestra plataforma y comienza a crear diagramas de flujo de manera colaborativa hoy mismo!
                     </p>
                     <div id="5" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">5. Integración de Diagramas de Flujo en Sketchlie</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">5. Integración de Diagramas de Flujo en Sketchlie</h2>
 
                     <p className="mb-10">
                         En Sketchlie, entendemos la importancia de la colaboración efectiva y la visualización clara de procesos. Es por eso que hemos integrado funcionalidades avanzadas de diagramación en nuestra plataforma de pizarra en línea. Con Sketchlie, puedes crear y compartir diagramas de flujo de manera colaborativa, aprovechando las siguientes características:

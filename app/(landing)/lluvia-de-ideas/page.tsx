@@ -7,13 +7,14 @@ import { BlogLinks } from "@/components/blog-links";
 import { PlatformYouCanTrust } from "@/components/platform-you-can-trust";
 import { LandingVideo } from "@/components/landing-video";
 import { HowToCreate } from "@/components/how-to-create";
+import { VerMas } from "@/components/ver-mas";
 
 export const metadata: Metadata = {
-    title: "Herramienta para crear diagramas online | Sketchlie",
-    description: "Crea diagramas online de forma gratuita con Sketchlie. Comienza ahora y colabora con tu equipo en el diseño de diagramas online.",
-    keywords: ["diagrama", "diagrama online"],
+    title: "Realiza una lluvia de ideas online | Sketchlie",
+    description: "Realiza una lluvia de ideas online de forma gratuita con Sketchlie. Comienza ahora y colabora con tu equipo en una sesion de lluvia de ideas.",
+    keywords: ["lluvia de ideas", "colaboración en línea", "lluvia de ideas online"],
     alternates: {
-        canonical: "https://www.sketchlie.com/diagrama",
+        canonical: "https://www.sketchlie.com/lluvia-de-ideas",
     }
 };
 
@@ -89,7 +90,7 @@ const LandingPage = () => {
     return ( 
         <div>
             <BlogStructure
-                title="Herramienta para crear diagramas online"
+                title="Realiza una lluvia de ideas efectiva"
                 description="Una sesión de lluvia de ideas es un proceso grupal para generar ideas sobre un tema. Se sigue un proceso estructurado que incluye la identificación del problema, la generación de ideas y la selección de las más prometedoras para su desarrollo. Esto fomenta la creatividad y la innovación en diferentes contextos."
                 cta="Empieza hoy gratis"
                 alt="Lluvia de Ideas Image"
@@ -105,8 +106,8 @@ const LandingPage = () => {
                 />
             <BlogSection 
                 title="Organiza una sesión de lluvia de ideas efectiva" 
-                text="Preparar una sesión de lluvia de ideas efectiva es clave para inspirar la creatividad y el pensamiento innovador en tu equipo. Con Sketchlie, simplifica este proceso al ofrecer una amplia gama de herramientas y funciones que facilitan la generación y captura de ideas. Utiliza nuestro editor intuitivo para desarrollar esquemas visuales que fomenten la colaboración y el flujo de ideas."
-                text2="Una vez finalizada la sesión, comparte fácilmente tus ideas utilizando el modo de presentación integrado en la plataforma. Además, características avanzadas como formatos condicionales y vinculación de datos garantizan una representación clara y organizada de las ideas, incluso en diagramas complejos."
+                text="Preparar una sesión de lluvia de ideas efectiva es clave para inspirar la creatividad y el pensamiento innovador en tu equipo. Con Sketchlie, simplifica este proceso al ofrecer una amplia gama de herramientas y funciones que facilitan la generación y captura de ideas."
+                text2="Una vez finalizada la sesión, comparte fácilmente tus ideas utilizando el modo de presentación integrado en la plataforma. Además, características avanzadas como formatos condicionales y vinculación de datos garantizan una representación clara y organizada de las ideas."
                 img="/placeholders/mapa-mental.png"
                 side="right"
             />
@@ -123,15 +124,20 @@ const LandingPage = () => {
                 img="/placeholders/pizarra-online.png"
                 side="right"
             />
+            <div className="my-20">
+                <PlatformYouCanTrust/>
+            </div>
             <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5 md:my-20 my-5">
                 <BlogLinks blogTitle="Diagramas de flujo" blogImage="/placeholders/mapa-conceptual.png" blogHref="/diagrama-de-flujo" blogDescription="Crea diagramas de flujo rápidamente y simplifica tus rutinas con el creador de diagramas de flujo de  con las herramientas de Sketchlie."/>
                 <BlogLinks blogTitle="Pizarra Online" blogImage="/placeholders/improve-performance.png" blogHref="/pizarra-online" blogDescription="Sketchlie es una pizarra online rápida, gratuita y fácil de usar pensada para  ayudarte a colaborar con cualquier persona desde cualquier lugar."/>
                 <BlogLinks blogTitle="Wireframes" blogImage="/placeholders/wireframe.png" blogHref="/wireframe" blogDescription="Empieza a visualizar tus ideas en minutos con nuestro intuitivo creador de wireframes. Crea esquemas de lo que necesites, desde páginas de inicio hasta formularios y menús, con nuestro creador de wireframes. "/>
             </div>
             <HowToCreate steps={steps} title="Cómo hacer una lluvia de ideas"/>
-            <FaqSection accordionData={faqData} sectionTitle="los diagramas"/>
-            <div className="my-20">
-                <PlatformYouCanTrust/>
+            <FaqSection accordionData={faqData} sectionTitle="las lluvias de ideas"/>
+            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5 md:my-10 my-5">
+                <VerMas title="¿Qué es una lluvia de ideas?" href="/lluvia-de-ideas/que-es-lluvia-de-ideas"/>
+                <VerMas title="Consejos y Trucos para una Lluvia de Ideas Exitosa" href="/lluvia-de-ideas/que-es-lluvia-de-ideas"/>
+                <VerMas title="Tipos de Lluvia de Ideas" href="/lluvia-de-ideas/que-es-lluvia-de-ideas"/>
             </div>
         </div>
 

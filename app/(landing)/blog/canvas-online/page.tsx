@@ -54,7 +54,7 @@ const LandingPage = () => {
                     <p className="mb-10">¿Estás buscando una forma eficiente de llevar tus ideas al mundo digital? ¡No busques más! Con <Link className="text-custom-blue hover:underline" href="/">Sketchlie</Link>, puedes diseñar online de manera colaborativa, permitiendo que tu equipo colabore y cree juntos desde cualquier lugar del mundo.</p>
 
                     <div id="1" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">1. Canvas Online: La Revolución del Diseño Colaborativo</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">1. Canvas Online: La Revolución del Diseño Colaborativo</h2>
 
                     <p className="mb-10">En el mundo digital actual, la colaboración es clave. Los equipos necesitan herramientas que les permitan trabajar juntos de manera eficiente, sin importar la distancia física que los separe. Es aquí donde entra en juego el concepto de <strong>canvas online</strong>.</p>
 
@@ -63,14 +63,14 @@ const LandingPage = () => {
                     <p className="mb-10">Con <Link className="text-custom-blue hover:underline" href="/">Sketchlie</Link>, puedes acceder a un lienzo digital ilimitado donde puedes dar rienda suelta a tu creatividad y trabajar con tu equipo en proyectos conjuntos. Ya sea que estés creando un nuevo diseño, planificando una estrategia de marketing o simplemente compartiendo ideas, Sketchlie te proporciona las herramientas necesarias para hacerlo de manera efectiva.</p>
 
                     <div id="2" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">2. Diseñar Online: Más que una Tendencia, una Necesidad</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">2. Diseñar Online: Más que una Tendencia, una Necesidad</h2>
 
                     <p className="mb-10">En un mundo cada vez más conectado, la capacidad de colaborar online se ha vuelto imprescindible. Ya no estamos limitados por las barreras físicas o geográficas; ahora podemos conectarnos con colegas, clientes y socios en cualquier parte del mundo con solo unos pocos clics.</p>
 
                     <p className="mb-10">Al diseñar online, no solo estás aprovechando la tecnología para mejorar la eficiencia y la productividad, sino que también estás fomentando un ambiente de colaboración y creatividad. Con herramientas como Sketchlie, puedes transformar la forma en que trabajas y crear resultados sorprendentes en menos tiempo.</p>
 
                     <div id="3" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">3. Beneficios de Utilizar Sketchlie para Diseñar Online</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">3. Beneficios de Utilizar Sketchlie para Diseñar Online</h2>
 
                     <ul style={{ listStyleType: 'disc' }}>
                     <li className="mb-10 ml-5">
@@ -87,12 +87,12 @@ const LandingPage = () => {
                     <p className="mb-10">Estos son solo algunos de los muchos beneficios que ofrece Sketchlie. Descubre por ti mismo cómo esta plataforma puede transformar la forma en que colaboras y diseñas online.</p>
 
                     <div id="4" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">4. El Rol del Diseño Online en la Era Digital</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">4. El Rol del Diseño Online en la Era Digital</h2>
 
                     <p className="mb-10">En la era digital actual, el diseño online se ha convertido en una herramienta indispensable para empresas, educadores, profesionales creativos y más. Ya sea que estés creando un logotipo para tu empresa, diseñando una presentación para clase o planificando el diseño de un sitio web, las herramientas de diseño online como Sketchlie te permiten hacerlo de manera rápida, eficiente y colaborativa.</p>
 
                     <div id="5" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">5. Transforma tu Creatividad con Sketchlie</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">5. Transforma tu Creatividad con Sketchlie</h2>
 
                     <p className="mb-10">¿Listo para llevar tu creatividad al siguiente nivel? Descubre más sobre cómo diseñar online con Sketchlie y desbloquea todo tu potencial creativo.</p>
 
@@ -101,7 +101,7 @@ const LandingPage = () => {
                     </blockquote>
 
                     <div id="6" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">6. ¡Comienza a Diseñar Online Hoy Mismo!</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">6. ¡Comienza a Diseñar Online Hoy Mismo!</h2>
 
                     <p className="mb-10">Ya sea que estés trabajando en un proyecto escolar, planificando una estrategia empresarial o simplemente explorando tus ideas creativas, Sketchlie es la herramienta perfecta para ayudarte a diseñar online de manera efectiva. ¡Comienza hoy mismo y descubre todo lo que puedes lograr con <Link className="text-custom-blue hover:underline" href="/">Sketchlie</Link>!</p>
                 </div>

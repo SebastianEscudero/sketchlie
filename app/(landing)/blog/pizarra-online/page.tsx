@@ -52,11 +52,11 @@ const LandingPage = () => {
            <div className="flex flex-col-reverse lg:flex-row justify-between mt-20">
                 <div className="lg:max-w-[70%] text-xl">
                     <div id="1" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">1. Una Mirada a la Pizarra Virtual Online</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">1. Una Mirada a la Pizarra Virtual Online</h2>
                     <p className="mb-10">En un mundo cada vez más digitalizado, la necesidad de herramientas de colaboración efectivas se ha vuelto fundamental para empresas, educadores y equipos de trabajo. Es en este contexto que surge la pizarra virtual online, una plataforma innovadora que permite a los usuarios colaborar en tiempo real, independientemente de su ubicación geográfica.</p>
                     <p className="mb-10">En <Link className="text-custom-blue hover:underline" href="/">Sketchlie</Link>, entendemos la importancia de la colaboración sin fronteras, por lo que hemos desarrollado una pizarra virtual online que facilita la creación, edición y compartición de ideas de manera fluida y eficiente.</p>
                     <div id="2" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">2. Herramientas para la Creación en Tiempo Real</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">2. Herramientas para la Creación en Tiempo Real</h2>
                     <p className="mb-10">Una de las características más destacadas de nuestra pizarra virtual es su conjunto de herramientas intuitivas, diseñadas para potenciar la creatividad y la productividad de los usuarios. Algunas de las herramientas más populares incluyen:</p>
                     <ul style={{ listStyleType: 'disc' }}>
                     <li className="mb-10 ml-5">
@@ -71,7 +71,7 @@ const LandingPage = () => {
                     </ul>
                     <p className="mb-10">Estas herramientas, combinadas con la capacidad de colaboración en tiempo real, transforman la experiencia de trabajo en equipo, permitiendo a los usuarios expresar sus ideas de manera creativa y colaborativa.</p>
                     <div id="3" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">3. Ventajas del Uso de la Pizarra Virtual Online</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">3. Ventajas del Uso de la Pizarra Virtual Online</h2>
                     <p className="mb-10">La adopción de una pizarra virtual online como la ofrecida por Sketchlie conlleva una serie de beneficios significativos para individuos y equipos:</p>
                     <ul style={{ listStyleType: 'disc' }}>
                     <li className="mb-10 ml-5">
@@ -86,12 +86,12 @@ const LandingPage = () => {
                     </ul>
                     <p className="mb-10">Estas ventajas no solo mejoran la eficiencia y la productividad, sino que también fomentan una cultura de colaboración y creatividad dentro de los equipos.</p>
                     <div id="4" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">4. El Rol de la Pizarra Virtual en la Era Digital</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">4. El Rol de la Pizarra Virtual en la Era Digital</h2>
                     <p className="mb-10">En un entorno empresarial y educativo cada vez más digitalizado, la pizarra virtual online se ha convertido en una herramienta indispensable para la comunicación y la colaboración efectivas. Su capacidad para facilitar la creación y el intercambio de ideas en tiempo real la posiciona como una herramienta esencial para abordar los desafíos de la colaboración en un mundo globalizado.</p>
                     <p className="mb-10">En Sketchlie, estamos comprometidos a seguir innovando y mejorando nuestra pizarra virtual para satisfacer las necesidades cambiantes de nuestros usuarios. Creemos que la colaboración no tiene límites y estamos orgullosos de ofrecer una plataforma que refleja esa creencia.</p>
                     <p className="mb-10">Para obtener más información sobre cómo nuestra pizarra virtual online puede transformar la forma en que trabajas, visita <Link className="text-custom-blue hover:underline" href="/pizarra-online">Sketchlie</Link>.</p>
                     <div id="5" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">5. Explora Más Recursos</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">5. Explora Más Recursos</h2>
                     <p className="mb-10">¿Interesado en conocer otras herramientas de colaboración disponibles en Sketchlie? Echa un vistazo a nuestros recursos:</p>
                     <ul style={{ listStyleType: 'disc' }}>
                     <li className="mb-10 ml-5">
@@ -112,7 +112,7 @@ const LandingPage = () => {
                     </ul>
                     <p className="mb-10">Visita nuestro <Link className="text-custom-blue hover:underline" href="/blog">blog</Link> para obtener consejos, tutoriales y casos de estudio sobre cómo aprovechar al máximo nuestras herramientas de colaboración.</p>
                     <div id="6" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">6. Conclusión</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">6. Conclusión</h2>
                     <p className="mb-10">La pizarra virtual online ha revolucionado la forma en que colaboramos y compartimos ideas en la era digital. En Sketchlie, estamos comprometidos a proporcionar una plataforma que permita a individuos y equipos trabajar juntos de manera más eficiente y creativa, sin importar la distancia.</p>
                     <p className="mb-10">¡Únete a nosotros en este viaje hacia una colaboración sin límites! Descubre más sobre nuestra pizarra virtual y otras herramientas de colaboración en <Link className="text-custom-blue hover:underline" href="/">Sketchlie</Link>.</p>
                 </div>

@@ -55,14 +55,14 @@ const LandingPage = () => {
                     <p className="mb-10">En el mundo empresarial actual, la eficiencia y la organización son clave para el éxito. Uno de los recursos más poderosos para lograr este objetivo es el <strong><Link className="text-custom-blue hover:underline" href="/mapas-de-procesos">mapa de procesos</Link></strong>. Este instrumento no solo proporciona una visión clara de cómo funcionan los diferentes aspectos de una empresa, sino que también identifica áreas de mejora y optimización. En este artículo, exploraremos a fondo qué es un mapa de procesos, sus beneficios y cómo puede impulsar la eficiencia en cualquier organización.</p>
 
                     <div id="1" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">1. ¿Qué es un Mapa de Procesos?</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">1. ¿Qué es un Mapa de Procesos?</h2>
 
                     <p className="mb-10">Un mapa de procesos es una representación visual de los pasos y actividades involucradas en la realización de un proceso específico dentro de una organización. Desde la entrada de materias primas hasta la entrega del producto final o servicio, un mapa de procesos ilustra cada etapa de manera clara y concisa. Estos mapas no solo muestran la secuencia de actividades, sino también las interacciones entre departamentos y los posibles puntos de mejora.</p>
 
                     <p className="mb-10">Los mapas de procesos pueden variar en complejidad y detalle según las necesidades de la organización. Algunos pueden abarcar todo el proceso de negocio, mientras que otros pueden centrarse en un aspecto específico, como la gestión de pedidos o el proceso de fabricación.</p>
 
                     <div id="2" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">2. Beneficios del Uso de Mapas de Procesos</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">2. Beneficios del Uso de Mapas de Procesos</h2>
 
                     <p className="mb-10">El uso de mapas de procesos conlleva una serie de beneficios significativos para cualquier organización. Algunas de las ventajas más destacadas incluyen:</p>
 
@@ -85,7 +85,7 @@ const LandingPage = () => {
                     </ul>
 
                     <div id="3" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">3. El Rol del Mapa de Procesos en la Era Digital</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">3. El Rol del Mapa de Procesos en la Era Digital</h2>
 
                     <blockquote className="mb-10">
                         En un mundo impulsado por la tecnología y la innovación, el mapa de procesos se convierte en una herramienta aún más vital para las empresas. Al integrar datos en tiempo real y análisis predictivos, los mapas de procesos digitales pueden proporcionar una visión aún más profunda de la operación empresarial, permitiendo una toma de decisiones más ágil y estratégica.
@@ -94,7 +94,7 @@ const LandingPage = () => {
                     <p className="mb-10">En la era digital, donde la velocidad y la agilidad son fundamentales, el uso de mapas de procesos digitales se vuelve indispensable. Plataformas como <strong><Link className="text-custom-blue hover:underline" href="/">Sketchlie</Link></strong> permiten a las empresas no solo crear mapas de procesos, sino también actualizarlos y ajustarlos en tiempo real según las necesidades cambiantes del mercado.</p>
 
                     <div id="4" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">4. Implementación de Mapas de Procesos</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">4. Implementación de Mapas de Procesos</h2>
 
                     <p className="mb-10">La implementación efectiva de mapas de procesos requiere un enfoque cuidadoso y estratégico. Algunos pasos clave en el proceso de implementación incluyen:</p>
 
@@ -117,7 +117,7 @@ const LandingPage = () => {
                     </ol>
 
                     <div id="5" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">5. Conclusión</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">5. Conclusión</h2>
 
                     <p className="mb-10">Los mapas de procesos son una herramienta esencial para cualquier organización que busque mejorar su eficiencia operativa y su competitividad en el mercado. Al proporcionar una visualización clara y detallada de los procesos comerciales, los mapas de procesos permiten a las empresas identificar áreas de mejora, optimizar la eficiencia y promover una cultura de mejora continua.</p>
 

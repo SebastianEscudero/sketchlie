@@ -54,21 +54,21 @@ const LandingPage = () => {
                     <p className="mb-10">¿Quieres desatar tu creatividad y potenciar la colaboración en línea? ¡No busques más! En Sketchlie, entendemos la importancia de las herramientas visuales para la comunicación efectiva. Una de esas herramientas indispensables es el <Link className="text-custom-blue hover:underline" href="/diagrama">diagrama</Link>. Permítenos llevarte a un viaje donde exploraremos cómo el diagrama en línea puede transformar tu proceso de trabajo colaborativo.</p>
 
                     <div id="1" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">1. ¿Qué es un Diagrama?</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">1. ¿Qué es un Diagrama?</h2>
 
                     <p className="mb-10">Un <Link className="text-custom-blue hover:underline" href="/diagrama">diagrama</Link> es una representación visual de información, datos o procesos. Puede variar desde simples gráficos hasta diagramas más complejos que representan relaciones entre varios elementos. Los diagramas son poderosas herramientas para organizar ideas, comunicar conceptos y facilitar la comprensión.</p>
 
                     <p className="mb-10">Los diagramas pueden adoptar diversas formas, desde diagramas de flujo que muestran la secuencia de pasos en un proceso, hasta diagramas de Venn que comparan conjuntos de datos.</p>
 
                     <div id="2" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">2. Herramientas para la Creación de Diagramas Online</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">2. Herramientas para la Creación de Diagramas Online</h2>
 
                     <p className="mb-10">En la era digital, contar con herramientas de diagramación en línea es esencial para la colaboración efectiva. <Link className="text-custom-blue hover:underline" href="/pizarra-online">Sketchlie</Link>, ofrecemos una plataforma intuitiva que permite a equipos colaborar en tiempo real en la creación de diagramas, mapas mentales, wireframes y más.</p>
 
                     <p className="mb-10">Con Sketchlie, puedes crear diagramas fácilmente arrastrando y soltando elementos, agregando enlaces y notas, y colaborando con otros usuarios en tiempo real.</p>
 
                     <div id="3" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">3. Ventajas del Uso de Diagramas Online</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">3. Ventajas del Uso de Diagramas Online</h2>
 
                     <p className="mb-10">La colaboración en línea mediante diagramas ofrece una serie de beneficios significativos:</p>
 
@@ -84,21 +84,21 @@ const LandingPage = () => {
                     <p className="mb-10">Además de mejorar la comunicación y la colaboración, los diagramas en línea también permiten a los equipos acceder y editar fácilmente la información desde cualquier lugar y en cualquier momento.</p>
 
                     <div id="4" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">4. El Rol del Diagrama en la Era Digital</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">4. El Rol del Diagrama en la Era Digital</h2>
 
                     <p className="mb-10">En la actualidad, donde la colaboración remota se ha vuelto omnipresente, el diagrama en línea se ha convertido en una herramienta indispensable para la productividad y la innovación. Al aprovechar las herramientas adecuadas, como las ofrecidas por <Link className="text-custom-blue hover:underline" href="/">Sketchlie</Link>, los equipos pueden visualizar sus ideas de manera clara y colaborar de manera efectiva, sin importar la distancia física.</p>
 
                     <p className="mb-10">Los diagramas no solo sirven para comunicar ideas, sino que también pueden transformar procesos empresariales. Al mapear los flujos de trabajo y identificar áreas de mejora, las organizaciones pueden optimizar sus operaciones y aumentar la eficiencia.</p>
 
                     <div id="5" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">5. Transformación de Procesos con Diagramas</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">5. Transformación de Procesos con Diagramas</h2>
 
                     <p className="mb-10">Los diagramas no solo sirven para comunicar ideas, sino que también pueden transformar procesos empresariales. Al mapear los flujos de trabajo y identificar áreas de mejora, las organizaciones pueden optimizar sus operaciones y aumentar la eficiencia.</p>
 
                     <p className="mb-10">Al crear diagramas que representan los procesos empresariales, las organizaciones pueden identificar cuellos de botella, eliminar redundancias y mejorar la eficiencia operativa en general.</p>
 
                     <div id="6" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">6. Diagramas: La Clave para la Innovación</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">6. Diagramas: La Clave para la Innovación</h2>
 
                     <blockquote className="text-gray-600 italic border-l-4 border-gray-400 pl-4 mb-8">La capacidad de visualizar ideas es fundamental para la innovación. Los diagramas permiten a los equipos explorar nuevas posibilidades y encontrar soluciones creativas a los desafíos empresariales.</blockquote>
 

@@ -54,10 +54,10 @@ const LandingPage = () => {
                 <div className="lg:max-w-[70%] text-xl">
                     <p className="mb-10">Los wireframes son la columna vertebral de cualquier proyecto de diseño. Son esquemas visuales que representan la estructura y funcionalidad básica de una página web o aplicación. En Sketchlie, entendemos la importancia de crear <Link className="text-custom-blue hover:underline" href="/wireframe">wireframes</Link> sólidos y eficientes para dar vida a tus ideas de forma colaborativa y efectiva.</p>
                     <div id="1" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">1. ¿Qué son los Wireframes?</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">1. ¿Qué son los Wireframes?</h2>
                     <p className="mb-10">Los wireframes son como los planos de una casa antes de construirla. Son representaciones visuales de la disposición de los elementos en una interfaz, sin preocuparse por los detalles visuales o estilos de diseño. Estos esquemas proporcionan una guía clara sobre la distribución de contenido, funciones y navegación de una aplicación o sitio web.</p>
                     <div id="2" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">2. Beneficios de Utilizar Wireframes:</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">2. Beneficios de Utilizar Wireframes:</h2>
                     <ul style={{ listStyleType: 'disc' }}>
                         <li className="mb-10 ml-5">
                             <strong>Claridad Visual: </strong>Los wireframes permiten a los equipos de diseño y desarrollo comprender la estructura y el flujo de una interfaz de manera clara y concisa.
@@ -70,10 +70,10 @@ const LandingPage = () => {
                         </li>
                     </ul>
                     <div id="3" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">3. La Importancia de los Wireframes Online</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">3. La Importancia de los Wireframes Online</h2>
                     <p className="mb-10">En el mundo digital actual, donde la colaboración remota es cada vez más común, contar con herramientas para crear wireframes online se vuelve crucial. En <Link className="text-custom-blue hover:underline" href="/">Sketchlie</Link>, ofrecemos una plataforma intuitiva y poderosa para colaborar en tiempo real en la creación de wireframes y otros diagramas.</p>
                     <div id="4" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">4. ¿Por qué Utilizar Sketchlie para tus Wireframes?</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">4. ¿Por qué Utilizar Sketchlie para tus Wireframes?</h2>
                     <ul style={{ listStyleType: 'disc' }}>
                         <li className="mb-10 ml-5">
                             <strong>Colaboración en Tiempo Real: </strong>Con Sketchlie, varios miembros del equipo pueden trabajar simultáneamente en un mismo proyecto, lo que agiliza el proceso de diseño y fomenta la creatividad colectiva.
@@ -86,7 +86,7 @@ const LandingPage = () => {
                         </li>
                     </ul>
                     <div id="5" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">5. Ejemplos Prácticos de Wireframes en Sketchlie</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">5. Ejemplos Prácticos de Wireframes en Sketchlie</h2>
                     <p className="mb-10">Wireframes para Páginas Web:</p>
                     <ul style={{ listStyleType: 'disc' }}>
                         <li className="mb-10 ml-5">
@@ -106,7 +106,7 @@ const LandingPage = () => {
                         </li>
                     </ul>
                     <div id="6" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-5xl mb-10">6. Conclusión</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">6. Conclusión</h2>
                     <p className="mb-10">Los wireframes son una herramienta esencial en el proceso de diseño de cualquier proyecto web o móvil. Con <Link className="text-custom-blue hover:underline" href="/">Sketchlie</Link>, puedes llevar tus ideas desde conceptos iniciales hasta diseños detallados de forma colaborativa y eficiente. ¡Regístrate hoy en <Link className="text-custom-blue hover:underline" href="/">Sketchlie</Link> y comienza a dar vida a tus proyectos!</p>
                 </div>
                 <div className="lg:w-[30%] xl:ml-10 lg:ml-5 border border-black rounded-lg p-10 bg-[#FFF] lg:sticky lg:z-30 lg:top-24 lg:h-[50%] lg:mb-0 mb-10">
