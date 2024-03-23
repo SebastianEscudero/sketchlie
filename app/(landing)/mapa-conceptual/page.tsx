@@ -7,6 +7,7 @@ import { BlogLinks } from "@/components/blog-links";
 import { PlatformYouCanTrust } from "@/components/platform-you-can-trust";
 import { LandingVideo } from "@/components/landing-video";
 import { HowToCreate } from "@/components/how-to-create";
+import { VerMas } from "@/components/ver-mas";
 
 export const metadata: Metadata = {
     title: "Crea tu mapa conceptual online gratis | Sketchlie",
@@ -129,6 +130,11 @@ const LandingPage = () => {
             </div>
             <HowToCreate steps={steps} title="Cómo hacer un mapa conceptual"/>
             <FaqSection accordionData={faqData} sectionTitle="los mapas conceptuales online"/>
+            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5 md:my-10 my-5">
+                <VerMas title="¿Qué es un Mapa Conceptual?" href="/mapa-conceptual/que-es-mapa-conceptual"/>
+                <VerMas title="Herramientas para la Creación de Mapas Conceptuales Online" href="/mapa-conceptual/que-es-mapa-conceptual"/>
+                <VerMas title="Ejemplos de Mapas Conceptuales" href="/mapa-conceptual/que-es-mapa-conceptual"/>
+            </div>
         </div>
 
      );

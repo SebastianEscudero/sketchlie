@@ -53,84 +53,140 @@ const LandingPage = () => {
             </div>
             <div className="flex flex-col-reverse lg:flex-row justify-between mt-20">
                 <div className="lg:max-w-[70%] text-xl">
-                <div id="1" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-4xl md:text-5xl mb-10">1. ¿Qué es la Lluvia de Ideas?</h2>
-                    <p className="mb-10">La <strong>Lluvia de Ideas</strong>, también conocida como tormenta de ideas, es una técnica de generación de ideas que fomenta la creatividad y la colaboración en grupos. En <Link className="text-custom-blue hover:underline" href="/">Sketchlie</Link>, la lluvia de ideas se convierte en una experiencia dinámica y visual, perfecta para impulsar la innovación y resolver problemas de manera colectiva.</p>
-                    <p className="mb-10">La esencia de la lluvia de ideas radica en la libre expresión de pensamientos y la ausencia de críticas. Los participantes comparten cualquier idea que se les ocurra, sin importar cuán salvaje o aparentemente irrazonable pueda parecer. Este proceso creativo permite explorar diferentes perspectivas y encontrar soluciones innovadoras.</p>
-                    <p className="mb-10">En Sketchlie, la lluvia de ideas se convierte en una experiencia visualmente estimulante, donde los usuarios pueden dibujar, agregar imágenes, objetos y colaborar en tiempo real. Esta plataforma en línea ofrece un entorno perfecto para desatar la creatividad y aprovechar el poder del trabajo en equipo.</p>
+                    <div id="1" className="h-[80px] mt-[-80px]"></div>
+                    <h2 className="text-4xl md:text-5xl mb-10">Introducción a la Lluvia de Ideas</h2>
+                    <p className="mb-10">La lluvia de ideas es una técnica ampliamente utilizada en diversos ámbitos, desde la generación de ideas hasta la resolución de problemas. Es un proceso creativo que permite a individuos y equipos explorar nuevas posibilidades y soluciones de manera colaborativa. En Sketchlie, una plataforma de pizarra online, la lluvia de ideas cobra vida, ofreciendo a los usuarios un espacio interactivo donde pueden dibujar, agregar imágenes, objetos y colaborar en tiempo real.</p>
+                    <p className="mb-10">En este artículo, exploraremos en profundidad qué es la lluvia de ideas, cómo se utiliza, cuál es su objetivo principal, cómo llevar a cabo una sesión efectiva, y más. Si estás buscando potenciar la creatividad y la colaboración en tu equipo, ¡sigue leyendo!</p>
                     <div id="2" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-4xl md:text-5xl mb-10">2. Beneficios de la Lluvia de Ideas en Sketchlie</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">Qué es una Lluvia de Ideas</h2>
+                    <p className="mb-10">Una lluvia de ideas, también conocida como brainstorming, es un proceso en el que un grupo de personas se reúne para generar una gran cantidad de ideas sobre un tema específico. El objetivo es fomentar la creatividad y la diversidad de ideas, sin juzgar ni descartar ninguna propuesta en las etapas iniciales.</p>
+                    <p className="mb-10">En Sketchlie, la lluvia de ideas se convierte en una experiencia interactiva y visualmente estimulante. Los usuarios pueden comenzar con una idea central y expandirla mediante dibujos, texto, imágenes y más. La plataforma facilita la colaboración en tiempo real, permitiendo que varios usuarios contribuyan y construyan sobre las ideas de los demás.</p>
                     <ul style={{ listStyleType: 'disc' }}>
-                    <li className="mb-10 ml-5">
-                            <strong>Estimula la Creatividad:</strong> La <Link className="text-custom-blue hover:underline" href="/lluvia-de-ideas">lluvia de ideas</Link> en Sketchlie brinda un espacio libre de restricciones donde los participantes pueden dejar volar su imaginación y explorar nuevas ideas sin límites.
-                    </li>
-                    <li className="mb-10 ml-5">
-                        <strong>Fomenta la Colaboración:</strong> Al permitir la colaboración en tiempo real, Sketchlie facilita la interacción entre los miembros del equipo, promoviendo un ambiente de trabajo colaborativo y productivo.
-                    </li>
-                    <li className="mb-10 ml-5">
-                        <strong>Genera Soluciones Innovadoras:</strong> La diversidad de perspectivas y la libre expresión de ideas en la lluvia de ideas de Sketchlie pueden llevar a soluciones creativas y fuera de lo común para problemas empresariales o creativos.
-                    </li>
-                    <li className="mb-10 ml-5">
-                        <strong>Facilita la Visualización:</strong> Con herramientas para dibujar y agregar objetos, Sketchlie convierte las ideas abstractas en conceptos visuales tangibles, lo que facilita la comprensión y la comunicación de ideas.
-                    </li>
+                        <li className="mb-10 ml-5">
+                            <strong>Cómo se utilizan las Lluvias de Ideas en Sketchlie:</strong> Los usuarios pueden iniciar una sesión de lluvia de ideas desde la plataforma de pizarra online de Sketchlie. Pueden invitar a otros miembros del equipo a unirse y colaborar en tiempo real, agregando notas, dibujos y más.
+                        </li>
+                        <li className="mb-10 ml-5">
+                            <strong>Objetivo principal de la Lluvia de Ideas:</strong> El principal objetivo de una lluvia de ideas es generar una gran cantidad de ideas en un corto período de tiempo. Esto puede ayudar a desbloquear la creatividad, identificar soluciones innovadoras y promover la colaboración entre los miembros del equipo.
+                        </li>
                     </ul>
-                    <p className="mb-10">La lluvia de ideas en Sketchlie no solo es beneficiosa para la generación de ideas, sino que también puede utilizarse para diversas aplicaciones, como la planificación de proyectos, el desarrollo de estrategias y la resolución de problemas.</p>
-                    <h2 className="text-4xl md:text-5xl mb-10">3. Consejos y Trucos para una Lluvia de Ideas Exitosa</h2>
-                    <p className="mb-10">Para aprovechar al máximo la lluvia de ideas en Sketchlie, aquí tienes algunos consejos y trucos útiles:</p>
+                    <div id="3" className="h-[80px] mt-[-80px]"></div>
+                    <h2 className="text-4xl md:text-5xl mb-10">Cómo Utilizar una Lluvia de Ideas en Sketchlie</h2>
+                    <p className="mb-10">Utilizar una lluvia de ideas en Sketchlie es fácil y efectivo. Aquí hay algunos pasos para comenzar:</p>
+                    <ol style={{ listStyleType: 'decimal' }}>
+                        <li className="mb-10 ml-5">
+                            <strong>Iniciar una sesión:</strong> Inicia sesión en tu cuenta de Sketchlie y selecciona la opción de lluvia de ideas en la plataforma. Puedes elegir comenzar desde cero o basarte en una idea central.
+                        </li>
+                        <li className="mb-10 ml-5">
+                            <strong>Invitar a colaboradores:</strong> Invita a otros miembros de tu equipo a unirse a la sesión de lluvia de ideas. Pueden colaborar en tiempo real y agregar sus propias ideas y aportes.
+                        </li>
+                        <li className="mb-10 ml-5">
+                            <strong>Generar ideas:</strong> Comienza a generar ideas sobre el tema seleccionado. Utiliza herramientas de dibujo, texto y imágenes para expresar tus pensamientos de manera clara y visual.
+                        </li>
+                        <li className="mb-10 ml-5">
+                            <strong>Construir sobre las ideas de los demás:</strong> Aprovecha la naturaleza colaborativa de Sketchlie para construir sobre las ideas de tus compañeros. Puedes agregar comentarios, sugerencias y mejoras a las ideas existentes.
+                        </li>
+                    </ol>
+                    <p className="mb-10">Al utilizar Sketchlie para la lluvia de ideas, los equipos pueden trabajar de manera más eficiente y creativa, aprovechando las capacidades interactivas y colaborativas de la plataforma.</p>
+                    <div id="4" className="h-[80px] mt-[-80px]"></div>
+                    <h2 className="text-4xl md:text-5xl mb-10">Objetivo Principal de la Lluvia de Ideas</h2>
+                    <p className="mb-10">El objetivo principal de una lluvia de ideas es generar una gran cantidad de ideas, sin restricciones ni filtros. Esto puede ayudar a desbloquear la creatividad individual y grupal, identificar nuevas soluciones y enfoques, y fomentar la colaboración entre los miembros del equipo.</p>
+                    <p className="mb-10">En Sketchlie, el objetivo es ofrecer a los usuarios un espacio interactivo donde puedan explorar libremente sus ideas, sin limitaciones impuestas por la herramienta. La plataforma proporciona herramientas intuitivas y flexibles que permiten a los usuarios expresarse de manera creativa y colaborativa.</p>
                     <ul style={{ listStyleType: 'disc' }}>
-                    <li className="mb-10 ml-5">
-                            <strong>Establece un Objetivo:</strong> Antes de comenzar la sesión de lluvia de ideas, asegúrate de tener un objetivo claro en mente. Define el problema o tema que deseas abordar para orientar la discusión y las ideas generadas.
-                    </li>
-                    <li className="mb-10 ml-5">
-                        <strong>Fomenta la Participación:</strong> Incentiva a todos los miembros del equipo a contribuir con sus ideas, sin importar lo extravagantes que puedan parecer. La diversidad de perspectivas puede conducir a soluciones innovadoras.
-                    </li>
-                    <li className="mb-10 ml-5">
-                        <strong>Utiliza Herramientas Visuales:</strong> Aprovecha las herramientas de dibujo y las funciones de agregado de imágenes en Sketchlie para convertir ideas abstractas en representaciones visuales claras y comprensibles.
-                    </li>
-                    <li className="mb-10 ml-5">
-                        <strong>Establece un Tiempo Límite:</strong> Para mantener el impulso y la concentración, establece un límite de tiempo para la sesión de lluvia de ideas. Esto ayuda a evitar la procrastinación y a mantener la energía creativa.
-                    </li>
+                        <li className="mb-10 ml-5">
+                            <strong>Cómo hacer una Lluvia de Ideas efectiva:</strong> Para que una lluvia de ideas sea efectiva, es importante establecer un ambiente de trabajo colaborativo y sin juicios. Fomenta la participación de todos los miembros del equipo y anima a pensar de manera creativa y fuera de lo común.
+                        </li>
+                        <li className="mb-10 ml-5">
+                            <strong>Tipos de técnicas de Lluvia de Ideas:</strong> Existen diversas técnicas de lluvia de ideas, como el brainwriting, el método SCAMPER, y más. Cada técnica tiene sus propias ventajas y puede adaptarse a diferentes situaciones y objetivos.
+                        </li>
                     </ul>
-                    <p className="mb-10">Al seguir estos consejos y trucos, puedes garantizar que tus sesiones de <Link className="text-custom-blue hover:underline" href="/lluvia-de-ideas">lluvia de ideas</Link> en Sketchlie sean productivas y efectivas, impulsando la innovación y la creatividad en tu equipo.</p>
-                    <h2 className="text-4xl md:text-5xl mb-10">4. Tipos de Lluvia de Ideas en Sketchlie</h2>
-                    <p className="mb-10">En Sketchlie, puedes aprovechar diferentes tipos de lluvias de ideas según tus necesidades y objetivos específicos:</p>
-                    <ul style={{ listStyleType: 'disc' }}>
-                    <li className="mb-10 ml-5">
-                            <strong>Brainstorming Tradicional:</strong> Una sesión de lluvia de ideas clásica donde los participantes comparten ideas de forma verbal o escrita en un entorno colaborativo en línea.
-                    </li>
-                    <li className="mb-10 ml-5">
-                        <strong>Lluvia de Ideas Visual:</strong> Utiliza herramientas de dibujo y funciones visuales en Sketchlie para representar ideas de manera gráfica y estimulante.
-                    </li>
-                    <li className="mb-10 ml-5">
-                        <strong>Brainwriting:</strong> Los participantes escriben ideas en tarjetas o notas virtuales dentro de Sketchlie, permitiendo una generación de ideas más estructurada y ordenada.
+                    <div id="5" className="h-[80px] mt-[-80px]"></div>
+                    <h2 className="text-4xl md:text-5xl mb-10">Beneficios de Crear una Lluvia de Ideas</h2>
 
-                    </li>
-                    <li className="mb-10 ml-5">
-                        <strong>Brainstorming Anónimo:</strong> Esta técnica permite a los participantes compartir ideas de manera anónima, eliminando cualquier inhibición y fomentando la creatividad sin temor al juicio.
-                    </li>
-                    </ul>
-                    <p className="mb-10">Al explorar estos diferentes tipos de lluvias de ideas en Sketchlie, puedes encontrar la opción que mejor se adapte a tu estilo de trabajo y objetivos específicos.</p>
-                    <h2 className="text-4xl md:text-5xl mb-10">5. Técnicas para una Lluvia de Ideas Efectiva</h2>
-                    <p className="mb-10">Además de los tipos de lluvias de ideas, existen diversas técnicas que puedes utilizar para maximizar la efectividad de tus sesiones en Sketchlie:</p>
+                    <p className="mb-10">Crear una lluvia de ideas en Sketchlie ofrece una serie de beneficios tanto para individuos como para equipos. Algunos de estos beneficios incluyen:</p>
                     <ul style={{ listStyleType: 'disc' }}>
-                    <li className="mb-10 ml-5">
-                        <strong>Método SCAMPER:</strong> Esta técnica propone siete enfoques diferentes para explorar un problema o idea, incluyendo sustituir, combinar, adaptar, modificar, poner en otro uso, eliminar y revertir.
-                    </li>
-                    <li className="mb-10 ml-5">
-                        <strong>Mapas Mentales:</strong> Utiliza la técnica de mapas mentales para organizar y visualizar ideas de manera jerárquica, lo que facilita la identificación de conexiones y patrones entre conceptos.
-                    </li>
-                    <li className="mb-10 ml-5">
-                        <strong>Técnica 6-3-5:</strong> En esta técnica, seis participantes generan tres ideas en cinco minutos, y luego pasan sus hojas de ideas a otro participante, quien las expande aún más. Este proceso se repite varias veces para obtener una amplia variedad de ideas.
-                    </li>
-                    <li className="mb-10 ml-5">
-                        <strong>Storyboarding:</strong> Utiliza la técnica de storyboard para crear una narrativa visual de tu idea, paso a paso. Esto puede ayudar a identificar problemas potenciales y a visualizar cómo se desarrollaría la idea en la práctica.
-                    </li>
+                        <li className="mb-10 ml-5">
+                            <strong>Promueve la creatividad:</strong> La lluvia de ideas es un proceso que estimula la creatividad al permitir que las ideas fluyan libremente sin restricciones.
+                        </li>
+                        <li className="mb-10 ml-5">
+                            <strong>Fomenta la colaboración:</strong> Al trabajar en una sesión de lluvia de ideas en Sketchlie, los equipos pueden colaborar en tiempo real, construir sobre las ideas de los demás y llegar a soluciones innovadoras de manera conjunta.
+                        </li>
+                        <li className="mb-10 ml-5">
+                            <strong>Identifica nuevas soluciones:</strong> Al generar una gran cantidad de ideas, es más probable que se identifiquen nuevas soluciones y enfoques para los problemas existentes.
+                        </li>
+                        <li className="mb-10 ml-5">
+                            <strong>Promueve la inclusión:</strong> La lluvia de ideas en Sketchlie ofrece un espacio donde todos los miembros del equipo pueden contribuir con sus ideas, independientemente de su rol o nivel jerárquico.
+                        </li>
                     </ul>
-                    <p className="mb-10">Experimenta con estas técnicas durante tus sesiones de <Link className="text-custom-blue hover:underline" href="/lluvia-de-ideas">lluvia de ideas</Link> en Sketchlie para encontrar la combinación perfecta que impulse la creatividad y la innovación en tu equipo.</p>
-                    <h2 className="text-4xl md:text-5xl mb-10">6. Conclusiones</h2>
-                    <p className="mb-10">La lluvia de ideas en <Link className="text-custom-blue hover:underline" href="/pizarra-online">Sketchlie</Link> es mucho más que simplemente compartir ideas; es una experiencia colaborativa y visual que fomenta la creatividad, la innovación y la resolución de problemas. Con herramientas intuitivas y diversas técnicas disponibles, Sketchlie se convierte en el aliado perfecto para equipos que buscan impulsar su creatividad y alcanzar nuevos niveles de productividad.</p>
-                    <p className="mb-10">Ya sea que estés planificando un proyecto, desarrollando estrategias empresariales o simplemente buscando nuevas ideas, la lluvia de ideas en Sketchlie puede ayudarte a alcanzar tus objetivos de manera efectiva y estimulante.</p>
-                    <p className="mb-10">¡Empieza tu próxima sesión de lluvia de ideas en Sketchlie y descubre el poder de la colaboración creativa en línea!</p>
+                    <p className="mb-10">Estos beneficios hacen que la lluvia de ideas sea una herramienta valiosa para la innovación y el desarrollo de soluciones creativas en cualquier contexto.</p>
+                    <div id="6" className="h-[80px] mt-[-80px]"></div>
+                    <h2 className="text-4xl md:text-5xl mb-10">Consejos para Crear una Lluvia de Ideas Eficaz</h2>
+                    <p className="mb-10">Para aprovechar al máximo una sesión de lluvia de ideas en Sketchlie, considera seguir estos consejos:</p>
+                    <ol style={{ listStyleType: 'decimal' }}>
+                        <li className="mb-10 ml-5">
+                            <strong>Establece un ambiente inclusivo:</strong> Crea un ambiente de trabajo donde todos se sientan cómodos compartiendo sus ideas sin temor a críticas o juicios.
+                        </li>
+                        <li className="mb-10 ml-5">
+                            <strong>Define un objetivo claro:</strong> Antes de comenzar la sesión, asegúrate de tener un objetivo claro en mente. Esto ayudará a enfocar la discusión y generar ideas relevantes.
+                        </li>
+                        <li className="mb-10 ml-5">
+                            <strong>Utiliza herramientas visuales:</strong> En Sketchlie, aprovecha las herramientas visuales disponibles, como dibujos y diagramas, para expresar tus ideas de manera clara y memorable.
+                        </li>
+                        <li className="mb-10 ml-5">
+                            <strong>Fomenta la participación:</strong> Anima a todos los miembros del equipo a participar activamente en la sesión, incluso si sus ideas parecen fuera de lo común en un principio.
+                        </li>
+                    </ol>
+                    <p className="mb-10">Siguiendo estos consejos, puedes asegurarte de que tu sesión de lluvia de ideas en Sketchlie sea productiva y estimulante para todos los involucrados.</p>
+                    <div id="7" className="h-[80px] mt-[-80px]"></div>
+                    <h2 className="text-4xl md:text-5xl mb-10">Ejemplos de Lluvias de Ideas en Sketchlie</h2>
+                    <p className="mb-10">Para ilustrar cómo se puede utilizar la lluvia de ideas en Sketchlie, aquí hay tres ejemplos prácticos:</p>
+                    <ol style={{ listStyleType: 'decimal' }}>
+                        <li className="mb-10 ml-5">
+                            <strong>Desarrollo de un nuevo producto:</strong> Un equipo de innovación utiliza Sketchlie para generar ideas sobre características, diseño y funcionalidades para un nuevo producto. Los miembros del equipo colaboran en tiempo real, agregando dibujos y comentarios para enriquecer las ideas.
+                        </li>
+                        <li className="mb-10 ml-5">
+                            <strong>Planificación de un evento:</strong> Un comité de eventos utiliza Sketchlie para planificar un evento comunitario. Utilizan la plataforma para generar ideas sobre actividades, logística y promoción, y asignar tareas a los miembros del equipo.
+                        </li>
+                        <li className="mb-10 ml-5">
+                            <strong>Resolución de problemas:</strong> Un equipo de resolución de problemas utiliza Sketchlie para identificar y abordar los desafíos en un proceso existente. Generan ideas sobre posibles soluciones, evalúan su viabilidad y desarrollan un plan de acción.
+                        </li>
+                    </ol>
+                    <p className="mb-10">Estos ejemplos ilustran cómo la lluvia de ideas en Sketchlie puede aplicarse en una variedad de contextos para promover la creatividad, la colaboración y la innovación.</p>
+                    <div id="8" className="h-[80px] mt-[-80px]"></div>
+                    <h2 className="text-4xl md:text-5xl mb-10">Cómo Organizar un Taller de Lluvia de Ideas</h2>
+                    <p className="mb-10">Organizar un taller de lluvia de ideas en Sketchlie puede ser una excelente manera de fomentar la creatividad y la colaboración en tu equipo. Aquí hay algunos consejos para hacerlo:</p>
+                    <ol style={{ listStyleType: 'decimal' }}>
+                        <li className="mb-10 ml-5">
+                            <strong>Selecciona un tema:</strong> Elige un tema relevante para el taller de lluvia de ideas, como la planificación estratégica, la resolución de problemas o la innovación de productos.
+                        </li>
+                        <li className="mb-10 ml-5">
+                            <strong>Invita a participantes:</strong> Invita a los miembros relevantes de tu equipo a participar en el taller. Asegúrate de incluir a personas con diferentes antecedentes y perspectivas para promover la diversidad de ideas.
+                        </li>
+                        <li className="mb-10 ml-5">
+                            <strong>Prepara materiales:</strong> Prepara materiales de apoyo, como una pizarra en línea de Sketchlie y herramientas de dibujo. Asegúrate de que todos los participantes tengan acceso a la plataforma y sepan cómo utilizarla.
+                        </li>
+                        <li className="mb-10 ml-5">
+                            <strong>Facilita la sesión:</strong> Como facilitador del taller, guía la discusión y fomenta la participación de todos los participantes. Utiliza técnicas de moderación para asegurarte de que todos tengan la oportunidad de contribuir y que la discusión se mantenga enfocada en el tema seleccionado.
+                        </li>
+                    </ol>
+                    <p className="mb-10">Organizar un taller de lluvia de ideas en Sketchlie puede ser una experiencia gratificante y productiva para tu equipo. Al seguir estos consejos, puedes crear un entorno propicio para la generación de ideas innovadoras y la colaboración efectiva.</p>
+                    <div id="9" className="h-[80px] mt-[-80px]"></div>
+                    <h2 className="text-4xl md:text-5xl mb-10">Consejos para tus Actividades de Lluvia de Ideas</h2>
+                    <p className="mb-10">Para maximizar la efectividad de tus actividades de lluvia de ideas en Sketchlie, considera estos consejos útiles:</p>
+                    <ul style={{ listStyleType: 'disc' }}>
+                        <li className="mb-10 ml-5">
+                            <strong>Establece límites de tiempo:</strong> Limitar el tiempo de una sesión de lluvia de ideas puede ayudar a mantener la energía y el enfoque del equipo.
+                        </li>
+                        <li className="mb-10 ml-5">
+                            <strong>Promueve la diversidad de ideas:</strong> Anima a los participantes a pensar de manera creativa y fuera de lo común, y valora todas las contribuciones, independientemente de lo poco convencionales que puedan parecer.
+                        </li>
+                        <li className="mb-10 ml-5">
+                            <strong>Utiliza técnicas de facilitación:</strong> Como facilitador, utiliza técnicas de moderación y facilitación para mantener la sesión enfocada y asegurarte de que todos los participantes tengan la oportunidad de contribuir.
+                        </li>
+                        <li className="mb-10 ml-5">
+                            <strong>Registra las ideas:</strong> Durante la sesión, registra todas las ideas generadas, ya sea en la plataforma de Sketchlie o en un documento separado. Esto te permitirá revisar y evaluar las ideas más tarde.
+                        </li>
+                    </ul>
+                    <p className="mb-10">Siguiendo estos consejos, puedes garantizar que tus actividades de lluvia de ideas en Sketchlie sean productivas y estimulantes para todos los involucrados, y que generen resultados innovadores y creativos.</p>
                 </div>
                 <div className="lg:w-[30%] xl:ml-10 lg:ml-5 border border-black rounded-lg p-10 bg-[#FFF] lg:sticky lg:z-30 lg:top-24 lg:h-[50%] lg:mb-0 mb-10">
                     <h3 className="text-2xl mb-3">
@@ -138,22 +194,31 @@ const LandingPage = () => {
                     </h3>
                     <ul>
                         <li className="mb-4">
-                            <Link href="#1" className="text-custom-blue hover:underline mb-10">1. ¿Qué es una Lluvia de Ideas?</Link>
+                            <Link href="#1" className="text-custom-blue hover:underline mb-10">Introducción a la Lluvia de Ideas</Link>
                         </li>
                         <li className="mb-4">
-                            <Link href="#2" className="text-custom-blue hover:underline mb-10">2. Tipos de Lluvias de Ideas</Link>
+                            <Link href="#2" className="text-custom-blue hover:underline mb-10">Qué es una Lluvia de Ideas</Link>
                         </li>
                         <li className="mb-4">
-                            <Link href="#3" className="text-custom-blue hover:underline mb-10">3. Beneficios de la Lluvia de Ideas en Línea</Link>
+                            <Link href="#3" className="text-custom-blue hover:underline mb-10">Cómo Utilizar una Lluvia de Ideas en Sketchlie</Link>
                         </li>
                         <li className="mb-4">
-                            <Link href="#4" className="text-custom-blue hover:underline mb-10">4. Técnicas para una Lluvia de Ideas Exitosa</Link>
+                            <Link href="#4" className="text-custom-blue hover:underline mb-10">Objetivo Principal de la Lluvia de Ideas</Link>
                         </li>
                         <li className="mb-4">
-                            <Link href="#5" className="text-custom-blue hover:underline mb-10">5. Colabora con Sketchlie para Lluvias de Ideas Creativas</Link>
+                            <Link href="#5" className="text-custom-blue hover:underline mb-10">Beneficios de Crear una Lluvia de Ideas</Link>
                         </li>
                         <li className="mb-4">
-                            <Link href="#6" className="text-custom-blue hover:underline mb-10">Conclusión</Link>
+                            <Link href="#6" className="text-custom-blue hover:underline mb-10">Consejos para Crear una Lluvia de Ideas Eficaz</Link>
+                        </li>
+                        <li className="mb-4">
+                            <Link href="#7" className="text-custom-blue hover:underline mb-10">Ejemplos de Lluvias de Ideas en Sketchlie</Link>
+                        </li>
+                        <li className="mb-4">
+                            <Link href="#8" className="text-custom-blue hover:underline mb-10">Cómo Organizar un Taller de Lluvia de Ideas</Link>
+                        </li>
+                        <li className="mb-4">
+                            <Link href="#9" className="text-custom-blue hover:underline mb-10">Consejos para tus Actividades de Lluvia de Ideas</Link>
                         </li>
                     </ul>
                 </div>

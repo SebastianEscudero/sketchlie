@@ -7,6 +7,7 @@ import { HowToCreate } from "@/components/how-to-create";
 import { BlogLinks } from "@/components/blog-links";
 import { PlatformYouCanTrust } from "@/components/platform-you-can-trust";
 import { LandingVideo } from "@/components/landing-video";
+import { VerMas } from "@/components/ver-mas";
 
 export const metadata: Metadata = {
     title: "Creador de Diagramas de Flujo | Sketchlie",
@@ -127,6 +128,11 @@ const LandingPage = () => {
             </div>
             <HowToCreate steps={steps} title="Cómo hacer un diagrama de flujo"/>
             <FaqSection accordionData={faqData} sectionTitle="diagramas de flujo" />
+            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5 md:my-10 my-5">
+                <VerMas title="Cómo hacer un Diagrama de Flujo" href="/diagrama-de-flujo/que-es-diagrama-de-flujo"/>
+                <VerMas title="Tipos de Diagramas de Flujo" href="/diagrama-de-flujo/que-es-diagrama-de-flujo"/>
+                <VerMas title="Beneficios de Crear Diagramas de Flujo" href="/diagrama-de-flujo/que-es-diagrama-de-flujo"/>
+            </div>
         </div>
 
      );
