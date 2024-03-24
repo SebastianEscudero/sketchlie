@@ -198,7 +198,7 @@ const LandingPage = () => {
                             <strong>Inicia sesión o regístrate:</strong> Si aún no tienes una cuenta, crea una de forma gratuita en nuestro sitio web. Si ya eres usuario, inicia sesión para acceder a todas nuestras herramientas.
                         </li>
                         <li className="mb-10 ml-5">
-                            <strong>Selecciona la herramienta de mapa de procesos:</strong> Una vez dentro de tu cuenta, dirígete a la sección de herramientas y elige la opción de "Mapa de Procesos".
+                            <strong>Selecciona la herramienta de mapa de procesos:</strong> Una vez dentro de tu cuenta, dirígete a la sección de herramientas y elige la opción de Mapa de Procesos.
                         </li>
                         <li className="mb-10 ml-5">
                             <strong>Comienza a diseñar:</strong> Utiliza nuestras herramientas intuitivas para crear tu mapa de procesos. Arrastra y suelta elementos, añade texto y colores para representar cada paso de manera clara.
