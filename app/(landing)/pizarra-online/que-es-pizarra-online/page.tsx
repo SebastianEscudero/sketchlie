@@ -45,8 +45,8 @@ const LandingPage = () => {
                     Pizarra online
                 </h1>
                 <Image
-                    src="/placeholders/mapa-conceptual.png"
-                    alt="Mapa conceptual"
+                    src="/placeholders/pizarra-online.png"
+                    alt="Pizarra Online Image"
                     width={1920}
                     height={1080}
                     className="rounded-2xl border border-black md:max-w-[60%] md:mt-0 mt-10"

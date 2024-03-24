@@ -45,8 +45,8 @@ const LandingPage = () => {
                     Wireframes
                 </h1>
                 <Image
-                    src="/placeholders/mapa-conceptual.png"
-                    alt="Mapa conceptual"
+                    src="/placeholders/wireframe.png"
+                    alt="Wireframe Image"
                     width={1920}
                     height={1080}
                     className="rounded-2xl border border-black md:max-w-[60%] md:mt-0 mt-10"

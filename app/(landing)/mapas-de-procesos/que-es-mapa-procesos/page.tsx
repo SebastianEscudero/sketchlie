@@ -45,8 +45,8 @@ const LandingPage = () => {
                     Mapa de procesos
                 </h1>
                 <Image
-                    src="/placeholders/mapa-conceptual.png"
-                    alt="Mapa conceptual"
+                    src="/placeholders/mapa-de-procesos.png"
+                    alt="Mapa de Procesos Image"
                     width={1920}
                     height={1080}
                     className="rounded-2xl border border-black md:max-w-[60%] md:mt-0 mt-10"
