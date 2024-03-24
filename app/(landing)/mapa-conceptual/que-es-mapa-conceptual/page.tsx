@@ -12,7 +12,7 @@ import { BlogLinks } from "@/components/blog-links";
 
 export const metadata: Metadata = {
     title: "¿Qué es un mapa conceptual? Técnicas y beneficios | Sketchlie",
-    description: "Descubre cómo la mapa conceptual en línea puede mejorar la colaboración y la creatividad de tu equipo. Aprende sobre las técnicas, beneficios y tipos de mapas conceptuales con Sketchlie.",
+    description: "Descubre cómo los mapa conceptuales online puede mejorar la colaboración y la creatividad de tu equipo. Aprende sobre las técnicas, beneficios y tipos de mapas conceptuales con Sketchlie.",
     keywords: ["mapa conceptual", "colaboración en línea", "mapa conceptual online"],
     alternates: {
         canonical: "https://www.sketchlie.com/mapa-conceptual/que-es-mapa-conceptual/",

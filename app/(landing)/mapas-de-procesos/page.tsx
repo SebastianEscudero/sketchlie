@@ -7,6 +7,7 @@ import { HowToCreate } from "@/components/how-to-create";
 import { BlogLinks } from "@/components/blog-links";
 import { PlatformYouCanTrust } from "@/components/platform-you-can-trust";
 import { LandingVideo } from "@/components/landing-video";
+import { VerMas } from "@/components/ver-mas";
 
 export const metadata: Metadata = {
     title: "La herramienta de Mapa de Procesos | Sketchlie",
@@ -119,6 +120,11 @@ const LandingPage = () => {
             </div>
             <HowToCreate steps={steps} title="¿Cómo se crea un mapa mental?"/>
             <FaqSection accordionData={faqData} sectionTitle="mapas mentales" />
+            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5 md:my-10 my-5">
+                <VerMas title="¿Qué es un mapa de procesos?" href="/mapas-de-procesos/que-es-mapa-procesos"/>
+                <VerMas title="¿Cómo se crea un mapa de procesos?" href="/mapas-de-procesos/que-es-mapa-procesos"/>
+                <VerMas title="¿Cuáles son las ventajas de utilizar un mapa de procesos?" href="/mapas-de-procesos/que-es-mapa-procesos"/>
+            </div>
         </div>
      );
 }

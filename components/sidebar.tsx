@@ -26,7 +26,7 @@ const components: { title: string; href: string}[] = [
     href: "/diagrama-de-flujo",
   },
   {
-    title: "Mapeo de procesos",
+    title: "Mapa de procesos",
     href: "/mapas-de-procesos",
   },
   {

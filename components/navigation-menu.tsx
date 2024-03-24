@@ -68,7 +68,7 @@ const porCasoDeUso: { title: string; href: string}[] = [
     href: "/mapa-mental-online",
   },
   {
-    title: "Mapeo de procesos",
+    title: "Mapa de procesos",
     href: "/mapas-de-procesos",
   },
   {

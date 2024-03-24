@@ -28,7 +28,7 @@ const components: { title: string; href: string}[] = [
       href: "/mapa-conceptual",
     },
     {
-      title: "Mapeo de procesos",
+      title: "Mapa de procesos",
       href: "/mapas-de-procesos",
     },
     {

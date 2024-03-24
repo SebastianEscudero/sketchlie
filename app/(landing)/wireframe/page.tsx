@@ -7,6 +7,7 @@ import { HowToCreate } from "@/components/how-to-create";
 import { BlogLinks } from "@/components/blog-links";
 import { PlatformYouCanTrust } from "@/components/platform-you-can-trust";
 import { LandingVideo } from "@/components/landing-video";
+import { VerMas } from "@/components/ver-mas";
 
 export const metadata: Metadata = {
     title: "Crea Wireframes online gratis | Sketchlie",
@@ -112,6 +113,11 @@ const LandingPage = () => {
             </div>
             <HowToCreate steps={steps} title="Cómo hacer un wireframe"/>
             <FaqSection accordionData={faqData} sectionTitle="los wireframes" />
+            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5 md:my-10 my-5">
+                <VerMas title="¿Qué es un wireframe?" href="/wireframe/que-es-wireframe"/>
+                <VerMas title="Cómo hacer un Wireframe" href="/wireframe/que-es-wireframe"/>
+                <VerMas title="¿Cuáles son los beneficios de utilizar wireframes en Sketchlie?" href="/wireframe/que-es-wireframe"/>
+            </div>
         </div>
 
      );
