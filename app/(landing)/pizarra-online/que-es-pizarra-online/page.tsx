@@ -12,8 +12,8 @@ import { BlogLinks } from "@/components/blog-links";
 
 export const metadata: Metadata = {
     title: "¿Qué es un Pizarra Online? Tipos y Ejemplos | Sketchlie",
-    description: "Descubre cómo la Pizarra Online en línea puede mejorar la colaboración y la creatividad de tu equipo. Aprende sobre las técnicas, beneficios y tipos de pizarras online con Sketchlie.",
-    keywords: ["Pizarra Online", "colaboración en línea", "Pizarra Virtual"],
+    description: "Descubre cómo la Pizarra Online puede mejorar la colaboración y la creatividad de tu equipo. Aprende sobre las técnicas, beneficios y tipos de pizarras online con Sketchlie.",
+    keywords: ["Pizarra Online", "colaboración online", "Pizarra Virtual"],
     alternates: {
         canonical: "https://www.sketchlie.com/pizarra-online/que-es-pizarra-online/",
     }
@@ -30,7 +30,7 @@ const LandingPage = () => {
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
-                            <Link href="/lluvia-de-ideas">Pizarra Online</Link>
+                            <Link href="/pizarra-online">Pizarra Online</Link>
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
@@ -40,7 +40,8 @@ const LandingPage = () => {
                 </Breadcrumb>
             </div>
             <div className="md:flex mt-10 items-center justify-between">
-                <h1 className="md:text-6xl text-5xl md:pr-20" style={{ lineHeight: "1.2" }}>
+                <h1 className="lg:text-6xl md:text-5xl text-4xl md:px-5" style={{ lineHeight: "1.2" }}>
+
                     Pizarra online
                 </h1>
                 <Image

@@ -13,7 +13,7 @@ import { BlogLinks } from "@/components/blog-links";
 export const metadata: Metadata = {
     title: "¿Qué es un mapa conceptual? Técnicas y beneficios | Sketchlie",
     description: "Descubre cómo los mapa conceptuales online puede mejorar la colaboración y la creatividad de tu equipo. Aprende sobre las técnicas, beneficios y tipos de mapas conceptuales con Sketchlie.",
-    keywords: ["mapa conceptual", "colaboración en línea", "mapa conceptual online"],
+    keywords: ["mapa conceptual", "colaboración online", "mapa conceptual online"],
     alternates: {
         canonical: "https://www.sketchlie.com/mapa-conceptual/que-es-mapa-conceptual/",
     }
@@ -30,7 +30,7 @@ const LandingPage = () => {
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
-                            <Link href="/lluvia-de-ideas">Mapa Conceptual</Link>
+                            <Link href="/mapa-conceptual">Mapa Conceptual</Link>
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
@@ -40,7 +40,8 @@ const LandingPage = () => {
                 </Breadcrumb>
             </div>
             <div className="md:flex mt-10 items-center justify-between">
-                <h1 className="md:text-6xl text-5xl md:pr-20" style={{ lineHeight: "1.2" }}>
+                <h1 className="lg:text-6xl md:text-5xl text-4xl md:px-5" style={{ lineHeight: "1.2" }}>
+
                     Mapa conceptual online
                 </h1>
                 <Image

@@ -12,8 +12,8 @@ import { BlogLinks } from "@/components/blog-links";
 
 export const metadata: Metadata = {
     title: "¿Qué es una lluvia de ideas? Ejemplos y técnicas | Sketchlie",
-    description: "Descubre cómo la lluvia de ideas en línea puede mejorar la colaboración y la creatividad de tu equipo. Aprende sobre las técnicas, beneficios y tipos de lluvias de ideas con Sketchlie.",
-    keywords: ["lluvia de ideas", "colaboración en línea", "lluvia de ideas online"],
+    description: "Descubre cómo la lluvia de ideas online puede mejorar la colaboración y la creatividad de tu equipo. Aprende sobre las técnicas, beneficios y tipos de lluvias de ideas con Sketchlie.",
+    keywords: ["lluvia de ideas", "colaboración online", "lluvia de ideas online"],
     alternates: {
         canonical: "https://www.sketchlie.com/lluvia-de-ideas/que-es-lluvia-de-ideas/",
     }
@@ -40,7 +40,8 @@ const LandingPage = () => {
                 </Breadcrumb>
             </div>
             <div className="md:flex mt-10 items-center justify-between">
-                <h1 className="md:text-6xl text-5xl md:pr-10" style={{ lineHeight: "1.2" }}>
+                <h1 className="lg:text-6xl md:text-5xl text-4xl md:px-5" style={{ lineHeight: "1.2" }}>
+
                     Lluvia de Ideas
                 </h1>
                 <Image
@@ -162,7 +163,7 @@ const LandingPage = () => {
                             <strong>Invita a participantes:</strong> Invita a los miembros relevantes de tu equipo a participar en el taller. Asegúrate de incluir a personas con diferentes antecedentes y perspectivas para promover la diversidad de ideas.
                         </li>
                         <li className="mb-10 ml-5">
-                            <strong>Prepara materiales:</strong> Prepara materiales de apoyo, como una pizarra en línea de Sketchlie y herramientas de dibujo. Asegúrate de que todos los participantes tengan acceso a la plataforma y sepan cómo utilizarla.
+                            <strong>Prepara materiales:</strong> Prepara materiales de apoyo, como una pizarra online de Sketchlie y herramientas de dibujo. Asegúrate de que todos los participantes tengan acceso a la plataforma y sepan cómo utilizarla.
                         </li>
                         <li className="mb-10 ml-5">
                             <strong>Facilita la sesión:</strong> Como facilitador del taller, guía la discusión y fomenta la participación de todos los participantes. Utiliza técnicas de moderación para asegurarte de que todos tengan la oportunidad de contribuir y que la discusión se mantenga enfocada en el tema seleccionado.

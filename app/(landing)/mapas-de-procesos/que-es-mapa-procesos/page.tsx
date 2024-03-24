@@ -13,7 +13,7 @@ import { BlogLinks } from "@/components/blog-links";
 export const metadata: Metadata = {
     title: "¿Qué es un mapa de procesos? Técnicas y beneficios | Sketchlie",
     description: "Descubre cómo los mapas de procesos puede mejorar la colaboración y la creatividad de tu equipo. Aprende sobre las técnicas, beneficios y tipos de mapas de procesos con Sketchlie.",
-    keywords: ["mapa de procesos", "colaboración en línea", "mapa de procesos online"],
+    keywords: ["mapa de procesos", "colaboración online", "mapa de procesos online"],
     alternates: {
         canonical: "https://www.sketchlie.com/mapa-de-procesos/que-es-mapa-procesos",
     }
@@ -30,7 +30,7 @@ const LandingPage = () => {
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
-                            <Link href="/lluvia-de-ideas">Mapa de Procesos</Link>
+                            <Link href="/mapa-de-procesos">Mapa de Procesos</Link>
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
@@ -40,7 +40,8 @@ const LandingPage = () => {
                 </Breadcrumb>
             </div>
             <div className="md:flex mt-10 items-center justify-between">
-                <h1 className="md:text-6xl text-5xl md:pr-20" style={{ lineHeight: "1.2" }}>
+                <h1 className="lg:text-6xl md:text-5xl text-4xl md:px-5" style={{ lineHeight: "1.2" }}>
+
                     Mapa de procesos
                 </h1>
                 <Image
@@ -107,7 +108,7 @@ const LandingPage = () => {
 
                     <ul style={{ listStyleType: 'disc' }}>
                         <li className="mb-10 ml-5">
-                            <strong>Enlace compartido:</strong> Genera un enlace único que puedes enviar a tus colegas para que accedan al mapa de procesos en línea.
+                            <strong>Enlace compartido:</strong> Genera un enlace único que puedes enviar a tus colegas para que accedan al mapa de procesos online.
                         </li>
                         <li className="mb-10 ml-5">
                             <strong>Exportación:</strong> Exporta el mapa en diferentes formatos, como imagen o PDF, para compartirlo a través de correo electrónico o mensajes.
