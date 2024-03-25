@@ -18,6 +18,7 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:text-accent-foreground hover:bg-accent-foreground/10",
         blog: "hover:bg-custom-blue hover:text-accent-foreground border border-black rounded-md hover:text-[#FFF] hover:border-none",
+        landing: "hover:bg-[#FBFBFB] hover:text-accent-foreground border border-zinc-400 rounded-md bg-[#FFF]",
         link: "text-primary underline-offset-4 hover:underline",
         board: "hover:bg-blue-500/20 hover:text-blue-800",
         boardActive: "bg-blue-500/20 text-blue-800",

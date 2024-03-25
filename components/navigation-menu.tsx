@@ -92,7 +92,7 @@ export function NavigationMenuLanding() {
           <NavigationMenuTrigger>¿Qué es Sketchlie</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[400px] gap-3 p-8 md:w-[500px] lg:w-[300px]">
-              <p className="px-3 text-[13px]">Producto</p>
+              <p className="px-3 text-[16px]">Producto</p>
               <ListItem href="/product-overview" title="Descripción de Sketchlie 🚧"/>
             </ul>
           </NavigationMenuContent>
@@ -102,7 +102,7 @@ export function NavigationMenuLanding() {
           <NavigationMenuContent>
             <div className="grid w-[400px] gap-3 p-10 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                 <div>
-                    <p className="px-3 text-[13px] mb-4">Por equipo</p>
+                    <p className="px-3 text-[16px] mb-4">Equipos</p>
                     <ul className="flex flex-col">
                           {porEquipo.map((component) => (
                               <Link
@@ -120,7 +120,7 @@ export function NavigationMenuLanding() {
                       </ul>
                 </div>
                 <div>
-                    <p className="px-3 text-[13px] mb-4">Por caso de uso</p>
+                    <p className="px-3 text-[16px] mb-4">Casos de uso</p>
                     <ul className="flex flex-col">
                           {porCasoDeUso.map((component) => (
                               <Link

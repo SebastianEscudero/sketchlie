@@ -11,7 +11,7 @@ export const LandingHero = () => {
     return (
         <div className="text-[#1c1c1e] pt-24 space-y-5 lg:mx-[25%] md:mx-[15%] mx-[5%]">
             <div className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl space-y-5 text-center">
-                <h1 style={{ lineHeight: "1.2" }}>
+                <h1 style={{ lineHeight: "1.1" }}>
                     Dibuja tus sueños y hazlos realidad.
                 </h1>
                 <div className="text-center bg-clip-text text-[#2E4DE6] leading-small">

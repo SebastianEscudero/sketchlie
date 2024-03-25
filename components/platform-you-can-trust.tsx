@@ -55,7 +55,7 @@ export const PlatformYouCanTrust = () => {
                     </div>
                     <div className="text-center">
                         <Link href={"/dashboard"}>
-                        <Button variant="outline" className="text-lg p-l mt-4">
+                        <Button variant="outline" className="text-lg p-6 mt-4">
                             {"Regístrate gratis"}
                         </Button>
                         </Link>
