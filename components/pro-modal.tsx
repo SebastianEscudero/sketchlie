@@ -9,13 +9,14 @@ const tools = [
     {
         label: "Starter",
         description: "Desbloquea espacios de trabajo infinitos con todas las herramientas que necesitas",
-        price: "$9.990",
+        price: "14.990$CLP",
         features: {
             "Espacios de trabajo": "Ilimitados",
             "Capas máximas": "500",
             "Herramientas": "Todas",
             "Soporte": "Básico",
             "Export a PDF": "Sí",
+            "Equipos": "3",
         }
     },
 ]

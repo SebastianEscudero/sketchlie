@@ -4,17 +4,28 @@ import Link from "next/link";
 import Image from "next/image";
 import { Poppins } from "next/font/google";
 import { LayoutDashboard, Star } from "lucide-react";
-import { OrganizationSwitcher } from "@clerk/nextjs";
+import { OrganizationSwitcher, useOrganization } from "@clerk/nextjs";
 import { useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-
+import { useProModal } from "@/hooks/use-pro-modal";
 const font = Poppins({
   subsets: ["latin"],
   weight: ["600"],
 });
 
 export const OrgSidebar = () => {
+  const { organization } = useOrganization();
+
+  const proModal = useProModal();
+
+  const onClick = (event: any) => {
+    if (organization) {
+        event.stopPropagation();
+        proModal.onOpen();
+    }
+}
+
   const searchParams = useSearchParams();
   const favorites = searchParams.get("favorites");
   return (
@@ -35,27 +46,32 @@ export const OrgSidebar = () => {
           </span>
         </div>
       </Link>
-      <OrganizationSwitcher
-        hidePersonal
-        appearance={{
-          elements: {
-            rootBox: {
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              width: "100%",
-            },
-            organizationSwitcherTrigger: {
-              padding: "6px",
-              width: "100%",
-              borderRadius: "8px",
-              border: "1px solid #E5E7EB",
-              justifyContent: "space-between",
-              backgroundColor: "white",
+      <div
+        onClick={onClick}
+      >
+        <OrganizationSwitcher
+          hidePersonal
+          
+          appearance={{
+            elements: {
+              rootBox: {
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+              },
+              organizationSwitcherTrigger: {
+                padding: "6px",
+                width: "100%",
+                borderRadius: "8px",
+                border: "1px solid #E5E7EB",
+                justifyContent: "space-between",
+                backgroundColor: "white",
+              }
             }
-          }
-        }}
-      />
+          }}
+        />
+      </div>
       <div className="space-y-1 w-full">
         <Button
           variant={favorites ? "ghost" : "secondary"}
