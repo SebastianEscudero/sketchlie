@@ -19,6 +19,7 @@ const config = {
     },
     extend: {
       backgroundImage: theme => ({
+        'hero-background': "url('/hero-bg.png')",
         'blur-background': "url('/placeholders/landingcta.jpg')",
       }),
       fontFamily: {
