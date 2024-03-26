@@ -40,11 +40,11 @@ export const LandingHero = () => {
                                 {user ? "Ir al Tablero" : "Regístrate gratis"}
                             </Button>
                         </Link>
-                        <Link href="#about">
+                        <a href="#about">
                             <Button variant="landing" className="p-4 md:p-5 md:text-lg">
                                 Aprende más
                             </Button>
-                        </Link>
+                        </a>
                     </div>
                 </div>
             </div>

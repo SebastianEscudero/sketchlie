@@ -12,8 +12,8 @@ export const LandingContent = () => {
         <div>
              <LogoSlider />
              <LandingVideo />
-            <div className="md:my-14 lg:my-16 my-10">
-                <BlogSection 
+            <div id="about" className="md:my-14 lg:my-16 my-10">
+                <BlogSection
                     title="El punto de encuentro entre la planificación y la ejecución."
                 />
             </div>
