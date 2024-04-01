@@ -10,8 +10,8 @@ export const SendPasswordResetTemplate: React.FC<Readonly<SendPasswordResetProps
     <table style={{ width: '100%', backgroundColor: '#FFF3D9', padding: '14px', paddingTop: "20px", height: "100%"}}>
         <tr>
             <td align="center">
-                <img src="https://www.sketchlie.com/logo.png" style={{ height: "50px", width: "auto"}}/>
-                <span style={{fontSize: '35px', fontWeight: 500, marginBottom: "10px"}}>Sketchlie</span>
+                <img src="https://www.sketchlie.com/logo.png" style={{ height: "50px", width: "auto", verticalAlign: 'middle'}}/>
+                <span style={{fontSize: '35px', fontWeight: 500, marginBottom: "10px", verticalAlign: 'middle'}}>Sketchlie</span>
                 <div style={{ display: 'block', padding: '40px', backgroundColor: '#FFF', borderRadius: '10px', border: '1px solid black', width: '100%', maxWidth: '500px', marginTop: '20px', textAlign: 'center' }}>
                     <p style={{ fontSize: '1.5em', marginLeft: '4px' }}>Click here to reset your password</p>
                     <div style={{ display: 'block', textAlign: 'center', marginTop: '40px' }}>
@@ -58,8 +58,8 @@ export const SendOrganizationInviteTemplate: React.FC<Readonly<SendOrganizationI
     <table style={{ width: '100%', backgroundColor: '#FFF3D9', padding: '14px', paddingTop: "20px", height: "100%" }}>
         <tr>
             <td align="center">
-                <img src="https://www.sketchlie.com/logo.png" style={{ height: "50px", width: "auto"}}/>
-                <span style={{fontSize: '35px', fontWeight: 500, marginBottom: "10px"}}>Sketchlie</span>
+                <img src="https://www.sketchlie.com/logo.png" style={{ height: "50px", width: "auto", verticalAlign: 'middle'}}/>
+                <span style={{fontSize: '35px', fontWeight: 500, marginBottom: "10px", verticalAlign: 'middle'}}>Sketchlie</span>
                 <div style={{ display: 'block', padding: '40px', backgroundColor: '#FFF', borderRadius: '10px', border: '1px solid black', width: '100%', maxWidth: '500px', marginTop: '20px', textAlign: 'center' }}>
                     <p style={{ fontSize: '1.5em', marginLeft: '4px' }}>{user.name} has invited you to join {activeOrgName}.</p>
                     <div style={{ display: 'block', textAlign: 'center', marginTop: '40px' }}>
@@ -101,8 +101,8 @@ export const SendVerificationEmailTemplate: React.FC<Readonly<SendVerificationEm
     <table style={{ width: '100%', backgroundColor: '#FFF3D9', padding: '14px', paddingTop: "20px", height: "100%"}}>
         <tr>
             <td align="center">
-                <img src="https://www.sketchlie.com/logo.png" style={{ height: "50px", width: "auto"}}/>
-                <span style={{fontSize: '35px', fontWeight: 500, marginBottom: "10px"}}>Sketchlie</span>
+                <img src="https://www.sketchlie.com/logo.png" style={{ height: "50px", width: "auto", verticalAlign: 'middle'}}/>
+                <span style={{fontSize: '35px', fontWeight: 500, verticalAlign: 'middle'}}>Sketchlie</span>
                 <div style={{ display: 'block', padding: '40px', backgroundColor: '#FFF', borderRadius: '10px', border: '1px solid black', width: '100%', maxWidth: '500px', marginTop: '20px', textAlign: 'center' }}>
                     <p style={{ fontSize: '1.5em', marginLeft: '4px' }}>Click here to confirm your email</p>
                     <div style={{ display: 'block', textAlign: 'center', marginTop: '40px' }}>
