@@ -79,12 +79,6 @@ export const OrganizationSettings = ({
       .catch(() => setError("Something went wrong!"));
   }
 
-  {
-    activeOrg?.users.map((orgUser: any) => (
-      console.log(orgUser)
-    ))
-  }
-
   if (!user) return null;
 
   return (

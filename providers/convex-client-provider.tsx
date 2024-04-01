@@ -26,7 +26,6 @@ export const ConvexClientProvider = ({
         const fetchSession = async () => {
             const session = await getSession();
             setSession(session);
-            console.log(session)
             };
 
         fetchSession();

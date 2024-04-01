@@ -86,7 +86,6 @@ const Sidebar = ({
     if (prevPathnameRef.current && prevPathnameRef.current !== pathname) {
       if (closeRef.current) {
         closeRef.current.click();
-        console.log(pathname);
       }
     }
     prevPathnameRef.current = pathname;

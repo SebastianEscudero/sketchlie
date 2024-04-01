@@ -8,6 +8,7 @@ import { EmptyOrg } from "@/components/empty-org";
 import { Navbar } from "./_components/navbar";
 import { OrgSidebar } from "./_components/org-sidebar";
 import { Sidebar } from "./_components/sidebar";
+import { Loading } from "@/components/auth/loading";
 
 const DashboardPage = () => {
   const searchParams = useSearchParams();
@@ -26,7 +27,7 @@ const DashboardPage = () => {
 
   const user = useCurrentUser();
 
-  if (!user) return null;
+  if (!user) return <Loading />;
   
   const activeOrg = user?.organizations.find(org => org.id === activeOrganization);
   return (

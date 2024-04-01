@@ -10,7 +10,7 @@ export const AuthNavbar = () => {
     const user = useCurrentUser();
     const pathname = usePathname();
 
-    const linkPath = pathname === "/auth/login" ? "/sign-up" : "/login";
+    const linkPath = pathname === "/auth/login" ? "/auth/register" : "/auth/login";
     const buttonText = pathname === "/auth/login" ? "Sign Up" : "Login";
 
     return (
