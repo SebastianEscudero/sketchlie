@@ -29,6 +29,8 @@ export const create = mutation({
 
     const randomImage = images[Math.floor(Math.random() * images.length)];
 
+    console.log(userId, userName)
+
     if (!userId || !userName) {
       throw new Error("Unauthorized");
     }
