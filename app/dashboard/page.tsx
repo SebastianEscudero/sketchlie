@@ -8,7 +8,6 @@ import { EmptyOrg } from "@/components/empty-org";
 import { Navbar } from "./_components/navbar";
 import { OrgSidebar } from "./_components/org-sidebar";
 import { Sidebar } from "./_components/sidebar";
-import { SendPasswordResetTemplate } from "@/components/auth/email-template";
 
 const DashboardPage = () => {
   const searchParams = useSearchParams();
@@ -49,9 +48,15 @@ const DashboardPage = () => {
               activeOrg={activeOrg}
             />
             <div className="flex-1 h-[calc(100%-80px)] p-6">
-              <SendPasswordResetTemplate
-                resetLink="https://example.com"
-              />
+              {!activeOrg ? (
+                <EmptyOrg setActiveOrganization={setActiveOrganization} />
+              ) : (
+                <BoardList
+                  userId={user.id}
+                  orgId={activeOrg.id}
+                  query={{search, favorites }}
+                />
+              )}
             </div>
           </div>
         </div>
