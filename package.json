@@ -27,6 +27,7 @@
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-tooltip": "^1.0.7",
     "@tldraw/tldraw": "^2.0.0-alpha.19",
+    "@types/uuid": "^9.0.7",
     "@uploadthing/react": "^6.2.2",
     "attr-accept": "^2.2.2",
     "bcrypt": "^5.1.1",
