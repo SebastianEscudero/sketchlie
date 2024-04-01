@@ -11,7 +11,7 @@ export const SendPasswordResetTemplate: React.FC<Readonly<SendPasswordResetProps
         <tr>
             <td align="center">
                 <img src="https://www.sketchlie.com/logo.png" style={{ height: "50px", width: "auto"}}/>
-                <span style={{fontSize: '35px', fontWeight: 500}}>Sketchlie</span>
+                <span style={{fontSize: '35px', fontWeight: 500, marginBottom: "10px"}}>Sketchlie</span>
                 <div style={{ display: 'block', padding: '40px', backgroundColor: '#FFF', borderRadius: '10px', border: '1px solid black', width: '100%', maxWidth: '500px', marginTop: '20px', textAlign: 'center' }}>
                     <p style={{ fontSize: '1.5em', marginLeft: '4px' }}>Click here to reset your password</p>
                     <div style={{ display: 'block', textAlign: 'center', marginTop: '40px' }}>
@@ -59,7 +59,7 @@ export const SendOrganizationInviteTemplate: React.FC<Readonly<SendOrganizationI
         <tr>
             <td align="center">
                 <img src="https://www.sketchlie.com/logo.png" style={{ height: "50px", width: "auto"}}/>
-                <span style={{fontSize: '35px', fontWeight: 500}}>Sketchlie</span>
+                <span style={{fontSize: '35px', fontWeight: 500, marginBottom: "10px"}}>Sketchlie</span>
                 <div style={{ display: 'block', padding: '40px', backgroundColor: '#FFF', borderRadius: '10px', border: '1px solid black', width: '100%', maxWidth: '500px', marginTop: '20px', textAlign: 'center' }}>
                     <p style={{ fontSize: '1.5em', marginLeft: '4px' }}>{user.name} has invited you to join {activeOrgName}.</p>
                     <div style={{ display: 'block', textAlign: 'center', marginTop: '40px' }}>
@@ -102,7 +102,7 @@ export const SendVerificationEmailTemplate: React.FC<Readonly<SendVerificationEm
         <tr>
             <td align="center">
                 <img src="https://www.sketchlie.com/logo.png" style={{ height: "50px", width: "auto"}}/>
-                <span style={{fontSize: '35px', fontWeight: 500}}>Sketchlie</span>
+                <span style={{fontSize: '35px', fontWeight: 500, marginBottom: "10px"}}>Sketchlie</span>
                 <div style={{ display: 'block', padding: '40px', backgroundColor: '#FFF', borderRadius: '10px', border: '1px solid black', width: '100%', maxWidth: '500px', marginTop: '20px', textAlign: 'center' }}>
                     <p style={{ fontSize: '1.5em', marginLeft: '4px' }}>Click here to confirm your email</p>
                     <div style={{ display: 'block', textAlign: 'center', marginTop: '40px' }}>
