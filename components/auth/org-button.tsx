@@ -25,7 +25,7 @@ export const NewOrgButton = ({
                     </Hint>
                 </div>
             </DialogTrigger>
-            <DialogContent className="max-w-[480px] w-full">
+            <DialogContent className="max-w-[1080px] w-full">
                 <CreateOrganization 
                     setActiveOrganization={setActiveOrganization}
                 />

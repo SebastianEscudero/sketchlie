@@ -177,7 +177,7 @@ export const OrganizationSwitcher = ({
                             <PlusIcon className="h-4 w-4 mr-2" />
                             <p className="ml-5">Create organization</p>
                         </DialogTrigger>
-                        <DialogContent className="max-w-[480px] w-full">
+                        <DialogContent className="w-full max-w-[1080px]">
                             <CreateOrganization
                                 setActiveOrganization={setActiveOrganization}
                             />

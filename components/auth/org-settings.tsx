@@ -22,7 +22,7 @@ import { FormSuccess } from "@/components/form-success";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import Image from "next/image";
 import { Button } from "../ui/button";
-import { Menu, Settings, User, X } from "lucide-react";
+import { Ellipsis, Settings, User, X } from "lucide-react";
 import { organizationSettings } from "@/actions/organization-settings";
 import { deleteOrganization } from "@/actions/delete-organization";
 import { DialogClose } from "../ui/dialog";
@@ -145,7 +145,7 @@ export const OrganizationSettings = ({
                 <DropdownMenu>
                   <DropdownMenuTrigger className="ml-auto">
                     <Button variant="ghost">
-                      <Menu className="text-zinc-500 w-4 h-4" />
+                      <Ellipsis className="text-zinc-500 w-4 h-4" />
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="start" className="rounded-xl shadow-xl">

@@ -24,7 +24,7 @@ export const NewBoardButton = ({
     disabled,
 }: NewBoardButtonProps) => {
 
-    const maxAmountOfBoards = 4;
+    const maxAmountOfBoards = 3;
 
     const user = useCurrentUser();
     const data = useQuery(api.boards.get, { 

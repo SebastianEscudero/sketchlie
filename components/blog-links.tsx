@@ -42,7 +42,7 @@ export const BlogLinks = ({
                         {blogDescription}
                     </p>
                 </div>
-                <p className="mt-10">
+                <div className="mt-10">
                     <Link
                         href={blogHref}
                     >
@@ -50,7 +50,7 @@ export const BlogLinks = ({
                             Leer más
                         </Button>
                     </Link>
-                </p>
+                </div>
             </div>
         </div>
     )
