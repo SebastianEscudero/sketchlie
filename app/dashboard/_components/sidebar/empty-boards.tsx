@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { useRouter } from 'next/navigation';
 import { ConfirmBoardModal } from '@/components/create-board-modal';
 import { useState } from 'react';
+import { useCurrentUser } from "@/hooks/use-current-user";
 
 interface EmptyBoardsProps {
     orgId: string;
@@ -19,15 +20,21 @@ export const EmptyBoards = ({
 }: EmptyBoardsProps) => {
     const router = useRouter();
     const [title, setTitle] = useState('New Board');
-
+    const user = useCurrentUser();
     const { mutate, pending } = useApiMutation(api.board.create);
+
+    if (!user) {
+        return null;
+    }
 
     const onClick = () => {
         if (!orgId) return;
 
         mutate({
-            orgId: orgId,
+            orgId,
             title,
+            userId: user.id,
+            userName: user.name,
         })
             .then((id) => {
                 toast.success("Board created");
