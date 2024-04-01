@@ -1,4 +1,4 @@
-import { EmailTemplate } from "@/components/auth/email-template";
+import { SendOrganizationInviteTemplate, SendPasswordResetTemplate, SendVerificationEmailTemplate } from "@/components/auth/email-template";
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -12,14 +12,11 @@ export const sendPasswordResetEmail = async (
   const resetLink = `${domain}/auth/new-password?token=${token}`
 
   await resend.emails.send({
-    from: "onboarding@resend.dev",
+    from: "Sketchlie <resetpassword@sketchlie.com>",
     to: email,
     subject: "Reset your password",
-    html: `
-      <div style="text-align: center;">
-        <p>Click <a href="${resetLink}">here</a> to reset password.</p>
-      </div>
-    `
+    text: `$Click here to reset your password ${resetLink}`,
+    react: SendPasswordResetTemplate({ resetLink: resetLink}),
   });
 };
 
@@ -30,14 +27,11 @@ export const sendVerificationEmail = async (
   const confirmLink = `${domain}/auth/new-verification?token=${token}`;
 
   await resend.emails.send({
-    from: "onboarding@resend.dev",
+    from: "Sketchlie <verification@sketchlie.com>",
     to: email,
     subject: "Confirm your email",
-    html: `
-      <div style="text-align: center;">
-        <p>Click <a href="${confirmLink}">here</a> to confirm email.</p>
-      </div>
-    `
+    text: `$Click here to confirm your email ${confirmLink}`,
+    react: SendVerificationEmailTemplate({ confirmLink: confirmLink}),
   });
 };
 
@@ -46,13 +40,13 @@ export const sendOrganizationInvite = async (
   activeOrgName: any,
   user: any
 ) => {
-  const dashboardLink = `http://localhost:3000/dashboard`;
+  const dashboardLink = `${domain}/dashboard`;
 
   await resend.emails.send({
-    from: "onboarding@resend.dev",
+    from: "Sketchlie <invitations@sketchlie.com>",
     to: email,
     subject: `${user.name} has invited you to join ${activeOrgName} - Sketchlie`,
     text: `${user.name} has invited you to join ${activeOrgName} - Sketchlie. Click here to join: ${dashboardLink}`,
-    react: EmailTemplate({ user: user, activeOrgName: activeOrgName, dashboardLink: dashboardLink}),
+    react: SendOrganizationInviteTemplate({ user: user, activeOrgName: activeOrgName, dashboardLink: dashboardLink}),
   });
 };
