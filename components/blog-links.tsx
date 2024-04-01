@@ -25,13 +25,11 @@ export const BlogLinks = ({
                 className="flex"
             >
                 <Image 
-                    className="rounded-md"
+                    className="rounded-md w-full"
                     src={blogImage}
                     alt="Blog Image"
-                    width={300}
-                    height={200}
-                    layout="responsive"
-                    
+                    width={1920}
+                    height={1080}
                 />
             </Link>
             <div className="flex-1 flex flex-col justify-between p-5 bg-[#FFF] rounded-md">

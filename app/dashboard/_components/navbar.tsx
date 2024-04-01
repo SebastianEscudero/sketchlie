@@ -1,12 +1,21 @@
 "use client";
 
-import { OrganizationSwitcher, UserButton, useOrganization } from "@clerk/nextjs";
+import { OrganizationSwitcher } from "@/components/auth/org-switcher";
+import { UserButton } from "@/components/auth/user-button";
+import { InviteButton } from "./org-invite-button";
 import { SearchInput } from "./search-input";
-import { InviteButton } from "./invite-button";
 
-export const Navbar = () => {
+interface NavbarProps {
+    activeOrganization: string | null;
+    setActiveOrganization: (id: string) => void;
+    activeOrg: any
+  }
 
-    const { organization } = useOrganization();
+export const Navbar = ({
+    activeOrganization,
+    setActiveOrganization,
+    activeOrg
+}: NavbarProps) => {
 
     return (
         <div className="flex items-center gap-x-4 p-5">
@@ -14,31 +23,15 @@ export const Navbar = () => {
                 <SearchInput />
             </div>
             <div className="block lg:hidden flex-1">
-            <OrganizationSwitcher
-                hidePersonal
-                appearance={{
-                elements: {
-                    rootBox: {
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: "100%",
-                    maxWidth: "376px",
-                    },
-                    organizationSwitcherTrigger: {
-                    padding: "6px",
-                    width: "100%",
-                    borderRadius: "8px",
-                    border: "1px solid #E5E7EB",
-                    justifyContent: "space-between",
-                    backgroundColor: "white",
-                    }
-                }
-                }}
-            />
+                <OrganizationSwitcher 
+                    setActiveOrganization={setActiveOrganization}
+                    activeOrganization={activeOrganization}
+                />
             </div>
-            {organization && (
-                <InviteButton />
+            {activeOrg && (
+                <InviteButton 
+                    activeOrganization={activeOrganization}
+                />
             )}
             <UserButton />
         </div>

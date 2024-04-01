@@ -1,17 +1,14 @@
 "use client";
 
 import { Menu } from "lucide-react";
-import { Button } from "./ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import Sidebar from "./sidebar";
 
-const MobileSidebar = () => {
+export const MobileSidebar = () => {
     return ( 
         <Sheet>
-            <SheetTrigger>
-                <Button variant="ghost" size="icon" className="lg:hidden">
-                    <Menu />
-                </Button>
+            <SheetTrigger className="lg:hidden">
+                <Menu />
             </SheetTrigger>
             <SheetContent side="left" className="p-0">
                 <Sidebar/>
@@ -20,4 +17,3 @@ const MobileSidebar = () => {
      );
 }
  
-export default MobileSidebar;

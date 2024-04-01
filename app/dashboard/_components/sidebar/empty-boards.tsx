@@ -4,25 +4,29 @@ import { api } from "@/convex/_generated/api"
 
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
-import { useOrganization } from '@clerk/nextjs';
 import { useApiMutation } from '@/hooks/use-api-mutation';
 import { toast } from "sonner";
 import { useRouter } from 'next/navigation';
 import { ConfirmBoardModal } from '@/components/create-board-modal';
 import { useState } from 'react';
 
-export const EmptyBoards = () => {
+interface EmptyBoardsProps {
+    orgId: string;
+}
+
+export const EmptyBoards = ({
+    orgId
+}: EmptyBoardsProps) => {
     const router = useRouter();
     const [title, setTitle] = useState('New Board');
 
-    const { organization } = useOrganization();
     const { mutate, pending } = useApiMutation(api.board.create);
 
     const onClick = () => {
-        if (!organization) return;
+        if (!orgId) return;
 
         mutate({
-            orgId: organization.id,
+            orgId: orgId,
             title,
         })
             .then((id) => {
@@ -38,7 +42,7 @@ export const EmptyBoards = () => {
             description="You can also edit the board name in the canvas"
             disabled={pending}
             onConfirm={onClick}
-            setTitle={setTitle}  // Pass setTitle to ConfirmBoardModal
+            setTitle={setTitle}
         >
             <div className='h-full flex flex-col items-center justify-center'>
                 <Image 

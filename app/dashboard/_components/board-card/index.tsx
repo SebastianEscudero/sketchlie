@@ -3,7 +3,6 @@
 import { toast } from "sonner";
 import Link from "next/link";
 import Image from "next/image";
-import { useAuth } from "@clerk/nextjs";
 import { MoreHorizontal } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 
@@ -14,6 +13,7 @@ import { useApiMutation } from "@/hooks/use-api-mutation";
 
 import { Footer } from "./footer";
 import { Overlay } from "./overlay";
+import { useCurrentUser } from "@/hooks/use-current-user";
 
 interface BoardCardProps {
   id: string;
@@ -36,7 +36,7 @@ export const BoardCard = ({
   orgId,
   isFavorite,
 }: BoardCardProps) => {
-  const { userId } = useAuth();
+  const userId = useCurrentUser()?.id;
 
   const authorLabel = userId === authorId ? "You" : authorName;
   const createdAtLabel = formatDistanceToNow(createdAt, {
@@ -54,12 +54,17 @@ export const BoardCard = ({
 
   const toggleFavorite = () => {
     if (isFavorite) {
-      onUnfavorite({ id })
+      onUnfavorite({ id, userId: userId })
         .catch(() => toast.error("Failed to unfavorite"))
     } else {
-      onFavorite({ id, orgId })
+      onFavorite({ id, orgId, userId: userId})
         .catch(() => toast.error("Failed to favorite"))
     }
+
+    if (!userId) {
+      return null;
+    }
+
   };
 
   return (

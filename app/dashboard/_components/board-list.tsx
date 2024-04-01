@@ -11,6 +11,7 @@ import { NewBoardButton } from "./new-board-button";
 import { EmptyBoards } from "./sidebar/empty-boards";
 
 interface BoardListProps {
+  userId: string;
   orgId: string;
   query: {
     search?: string;
@@ -21,11 +22,14 @@ interface BoardListProps {
 export const BoardList = ({
   orgId,
   query,
+  userId,
 }: BoardListProps) => {
+
   const data = useQuery(api.boards.get, { 
     orgId,
     ...query,
-  });
+    userId: userId,
+});
 
   if (data === undefined) {
     return (
@@ -53,7 +57,9 @@ export const BoardList = ({
   }
 
   if (!data?.length) {
-    return <EmptyBoards />
+    return <EmptyBoards 
+      orgId={orgId}
+    />
   }
 
   return (

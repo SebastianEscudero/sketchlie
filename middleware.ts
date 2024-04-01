@@ -1,10 +1,56 @@
-import { authMiddleware } from "@clerk/nextjs";
+import NextAuth from "next-auth";
 
-//Use the req object to match against urls. The following example makes all routes but /dashboard public.
-export default authMiddleware({
-  publicRoutes: (req) => !req.url.includes("/dashboard") && !req.url.includes("/board"),
-});
+import authConfig from "@/auth.config";
+import {
+  DEFAULT_LOGIN_REDIRECT,
+  apiAuthPrefix,
+  authRoutes,
+  publicRoutes,
+} from "@/routes";
 
+const { auth } = NextAuth(authConfig);
+
+export default auth((req) => {
+  const { nextUrl } = req;
+  const isLoggedIn = !!req.auth;
+
+  const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
+  const isDashboardRoute = nextUrl.pathname.startsWith('/dashboard');
+  const isBoardRoute = nextUrl.pathname.startsWith('/board');
+  const isAuthRoute = authRoutes.includes(nextUrl.pathname);
+
+  if (isApiAuthRoute) {
+    return null;
+  }
+
+  if (isAuthRoute) {
+    if (isLoggedIn) {
+      return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl))
+    }
+    return null;
+  }
+
+  if (isDashboardRoute || isBoardRoute) {
+    if (!isLoggedIn) {
+      let callbackUrl = nextUrl.pathname;
+      if (nextUrl.search) {
+        callbackUrl += nextUrl.search;
+      }
+
+      const encodedCallbackUrl = encodeURIComponent(callbackUrl);
+
+      return Response.redirect(new URL(
+        `/auth/login?callbackUrl=${encodedCallbackUrl}`,
+        nextUrl
+      ));
+    }
+    return null;
+  }
+
+  return null;
+})
+
+// Optionally, don't invoke Middleware on some paths
 export const config = {
-  matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
-};
+  matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)'],
+}

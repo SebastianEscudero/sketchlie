@@ -1,5 +1,6 @@
 User-agent: *
 Disallow: /dashboard/
 Disallow: /board/
+Disallow: /auth/
 
 Sitemap: https://www.sketchlie.com/sitemap.xml

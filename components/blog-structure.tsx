@@ -2,10 +2,10 @@
 
 import Link from "next/link"
 import { Button } from "./ui/button"
-import { useUser } from "@clerk/nextjs";
 import TypewriterComponent from "typewriter-effect";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { useCurrentUser } from "@/hooks/use-current-user";
 
 interface BlogStructureProps {
     title: string;
@@ -22,16 +22,16 @@ export const BlogStructure = ({
     img,
     alt
 }: BlogStructureProps) => {
-    const { user } = useUser();
+    const user = useCurrentUser();
 
     const imageElement = img && (
         <div className="flex-1 w-full border border-[#837D7C] rounded-sm md:block hidden">
             <Image
                 src={img}
                 alt={alt}
-                layout="responsive"
-                width={10}
-                height={10}
+                className="w-full"
+                width={1920}
+                height={1080}
                 
             />
         </div>
@@ -65,7 +65,7 @@ export const BlogStructure = ({
                 </p>
                 <div>
                     <Link href={"/dashboard"}>
-                        <Button variant="outline" className="md:text-lg p-4 md:p-6 font-normal">
+                        <Button variant="auth" className="md:text-lg p-4 md:p-6 font-normal">
                             {user ? "Ir a Tablero" : cta}
                         </Button>
                     </Link>

@@ -45,7 +45,7 @@ export const Info = ({
 
     return(
         <div className="absolute top-2 left-2 bg-white rounded-md px-1.5 h-12 flex items-center shadow-md">
-            <Hint label="Go to main menu" side="bottom" sideOffset={10}>
+            <Hint label="Go to Dashboard" side="bottom" sideOffset={10}>
                 <Button asChild variant="board" className="px-2">
                     <Link href="/dashboard">
                         <Image 

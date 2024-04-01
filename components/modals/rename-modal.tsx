@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useApiMutation } from "@/hooks/use-api-mutation";
 import { api } from "@/convex/_generated/api";
+import { useCurrentUser } from "@/hooks/use-current-user";
 
 export const RenameModal = () => {
   const { 
@@ -30,11 +31,16 @@ export const RenameModal = () => {
     initialValues,
   } = useRenameModal();
 
+  const user = useCurrentUser();
   const [title, setTitle] = useState(initialValues.title);
 
   useEffect(() => {
     setTitle(initialValues.title);
   }, [initialValues.title]);
+
+  if (!user) {
+    return null;
+  }
 
   const onSubmit: FormEventHandler<HTMLFormElement> = (
     e,
@@ -44,6 +50,7 @@ export const RenameModal = () => {
     mutate({
       id: initialValues.id,
       title,
+      userId: user.id
     })
       .then(() => {
         toast.success("Board renamed");
@@ -74,7 +81,7 @@ export const RenameModal = () => {
           />
           <DialogFooter>
             <DialogClose asChild>
-              <Button type="button" variant="outline">
+              <Button type="button" variant="auth">
                 Cancel
               </Button>
             </DialogClose>

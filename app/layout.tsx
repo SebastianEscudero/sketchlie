@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ConvexClientProvider } from "@/providers/convex-client-provider";
-
 import { Toaster } from "@/components/ui/sonner"
 import { ModalProvider } from "@/providers/modal-provider";
 import { Suspense } from "react";
 import { Loading } from "@/components/auth/loading";
 import { ProModalProvider } from "@/providers/max-layers-provider";
+import { SettingsModalProvider } from "@/providers/settings";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,6 +30,7 @@ export const metadata: Metadata = {
   },
 };
 
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -42,6 +43,7 @@ export default function RootLayout({
           <ConvexClientProvider>
             <Toaster />
             <ProModalProvider />
+            <SettingsModalProvider />
             <ModalProvider />
             {children}
           </ConvexClientProvider>

@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { Button } from "./ui/button";
 import Image from "next/image";
-import { useUser } from "@clerk/nextjs";
 import {
     Accordion,
     AccordionContent,
@@ -11,6 +10,7 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion"
 import { LogoSlider } from "./logo-slider";
+import { useCurrentUser } from "@/hooks/use-current-user";
 
 const porEquipo: { title: string; href: string }[] = [
     {
@@ -149,7 +149,7 @@ const queEs: { title: string; href: string }[] = [
 ]
 
 export const BotNavbar = () => {
-    const { user } = useUser();
+    const user = useCurrentUser();
 
     return (
         <footer className="bg-[#1C1C1E] text-white">
@@ -162,7 +162,7 @@ export const BotNavbar = () => {
                         Sé parte de la comunidad que impulsa la innovación y la colaboración con Sketchlie. Regístrate ahora con tu correo electrónico laboral y comienza a transformar tus ideas en realidad.
                     </p>
                     <Link href={"/dashboard"}>
-                        <Button variant="outline" className="text-lg p-6 font-normal mt-10">
+                        <Button variant="auth" className="text-lg p-6 font-normal mt-10">
                             {user ? "Ir al Tablero" : "Regístrate gratis"}
                         </Button>
                     </Link>

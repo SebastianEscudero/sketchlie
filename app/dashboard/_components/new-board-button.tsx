@@ -10,6 +10,7 @@ import { ConfirmBoardModal } from "@/components/create-board-modal";
 import React, { useState } from 'react';
 import { useQuery } from "convex/react";
 import { useProModal } from "@/hooks/use-pro-modal";
+import { useCurrentUser } from "@/hooks/use-current-user";
 
 
 
@@ -22,21 +23,30 @@ export const NewBoardButton = ({
     orgId,
     disabled,
 }: NewBoardButtonProps) => {
+
+    const maxAmountOfBoards = 4;
+
+    const user = useCurrentUser();
     const data = useQuery(api.boards.get, { 
         orgId,
       });
 
+
     const proModal = useProModal();
-
     const router = useRouter();
-
     const [title, setTitle] = useState('New Board');
-
     const { mutate, pending} = useApiMutation(api.board.create);
+
+    if (!user) {
+        return null;
+    }
+
     const onClick = () => {
         mutate({
             orgId,
             title,
+            userId: user.id,
+            userName: user.name,
         })
             .then((id) => {
                 toast.success("Board created");
@@ -48,7 +58,7 @@ export const NewBoardButton = ({
     }
 
     const onConfirm = () => {
-        if ((data?.length ?? 0) < 3) {
+        if ((data?.length ?? 0) < maxAmountOfBoards) {
             onClick();
         } else {
             proModal.onOpen();

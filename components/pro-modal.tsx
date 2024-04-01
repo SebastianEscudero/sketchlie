@@ -70,7 +70,7 @@ export const ProModal = () => {
                                     <Button
                                         size="lg"
                                         className="w-full mt-10"
-                                        variant="outline"
+                                        variant="auth"
                                     >
                                         Mejorar Plan
                                         <Zap className="w-4 h-4 ml-2 fill-white"/>

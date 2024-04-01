@@ -159,9 +159,9 @@ const Sidebar = ({
                 </Accordion>
               </div>
           </div>
-          <Link href="/dashboard" className="text-center">
+          <Link href="/auth/register" className="text-center">
             <Button
-                variant="outline"
+                variant="auth"
                 className="w-[90%]"
             >
               Regístrate gratis

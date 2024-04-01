@@ -18,6 +18,7 @@ import { useRenameModal } from "@/store/use-rename-modal";
 import { useRouter } from "next/navigation";
 import { exportToPdf } from "@/lib/utils";
 import { Badge } from "./ui/badge";
+import { useCurrentUser } from "@/hooks/use-current-user";
 
 interface ActionsProps {
   children: React.ReactNode;
@@ -46,9 +47,14 @@ export const Actions = ({
   };
 
   const router = useRouter();
+  const user = useCurrentUser();
+
+  if (!user) {
+    return null;
+  }
 
   const onDelete = () => {
-    mutate({ id })
+    mutate({ id, userId: user.id })
       .then(() => toast.success("Board deleted"))
       .then (() => router.push("/dashboard"))
       .catch(() => toast.error("Failed to delete board"));

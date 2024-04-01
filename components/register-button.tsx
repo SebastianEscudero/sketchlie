@@ -1,14 +1,14 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { useCurrentUser } from "@/hooks/use-current-user";
 import Link from "next/link";
-import { useUser } from "@clerk/nextjs";
 
 export const DashboardButton = () => {
-    const { user } = useUser();
+    const user = useCurrentUser();
     return (
-        <Link href="/dashboard">
-            <Button variant="outline" className="md:text-lg p-4 md:p-6 font-normal">
+        <Link href="/auth/register">
+            <Button variant="auth" className="md:text-lg p-4 md:p-6 font-normal">
                 {user ? "Ir al Tablero" : "Regístrate gratis"}
             </Button>
         </Link>

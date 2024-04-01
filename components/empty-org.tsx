@@ -1,5 +1,4 @@
 import Image from "next/image"
-import { CreateOrganization } from "@clerk/nextjs"
 import { Button } from "@/components/ui/button"
 
 import {
@@ -7,8 +6,16 @@ import {
     DialogContent,
     DialogTrigger
 } from "@/components/ui/dialog"
+import { CreateOrganization } from "./auth/create-organization"
 
-export const EmptyOrg = () => {
+interface EmptyOrgProps {
+    setActiveOrganization: (id: string) => void;
+};
+
+
+export const EmptyOrg = ({
+    setActiveOrganization,
+}: EmptyOrgProps) => {
     return (
         <div className="h-full flex flex-col items-center justify-center">
             <Image 
@@ -30,8 +37,10 @@ export const EmptyOrg = () => {
                             Create organization
                         </Button>
                     </DialogTrigger>
-                    <DialogContent className="p-0 bg-transparent border-none max-w-[480px]">
-                        <CreateOrganization />
+                    <DialogContent className="border-none max-w-[480px] w-full">
+                        <CreateOrganization 
+                            setActiveOrganization={setActiveOrganization}
+                        />
                     </DialogContent>
                 </Dialog>
             </div>

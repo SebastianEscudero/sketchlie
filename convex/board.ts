@@ -17,25 +17,27 @@ const images = [
 
 export const create = mutation({
   args: {
+    userId: v.optional(v.string()),
+    userName: v.optional(v.string()),
     orgId: v.string(),
     title: v.string(),
   },
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
 
-    if (!identity) {
-      throw new Error("Unauthorized");
-    }
+    const userId = args.userId as string
+    const userName = args.userName as string
 
     const randomImage = images[Math.floor(Math.random() * images.length)];
 
-    console.log(randomImage, "TEST")
+    if (!userId || !userName) {
+      throw new Error("Unauthorized");
+    }
 
     const board = await ctx.db.insert("boards", {
       title: args.title,
       orgId: args.orgId,
-      authorId: identity.subject,
-      authorName: identity.name!,
+      authorId: userId,
+      authorName: userName!,
       imageUrl: randomImage,
     });
 
@@ -44,15 +46,16 @@ export const create = mutation({
 });
 
 export const remove = mutation({
-  args: { id: v.id("boards") },
+  args: { 
+    id: v.id("boards"),
+    userId: v.optional(v.string()),
+  },
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
+    const userId = args.userId as string
 
-    if (!identity) {
+    if (!userId) {
       throw new Error("Unauthorized");
     }
-
-    const userId = identity.subject;
 
     const existingFavorite = await ctx.db
       .query("userFavorites")
@@ -72,11 +75,15 @@ export const remove = mutation({
 });
 
 export const update = mutation({
-  args: { id: v.id("boards"), title: v.string() },
+  args: { 
+    id: v.id("boards"), 
+    title: v.string(),
+    userId: v.optional(v.string()), 
+  },
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
+    const userId = args.userId as string
 
-    if (!identity) {
+    if (!userId) {
       throw new Error("Unauthorized");
     }
 
@@ -99,11 +106,15 @@ export const update = mutation({
 });
 
 export const favorite = mutation({
-  args: { id: v.id("boards"), orgId: v.string() },
+  args: { 
+    id: v.id("boards"), 
+    orgId: v.string(),
+    userId: v.optional(v.string()), 
+  },
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
+    const userId = args.userId as string
 
-    if (!identity) {
+    if (!userId) {
       throw new Error("Unauthorized");
     }
 
@@ -112,8 +123,6 @@ export const favorite = mutation({
     if (!board) {
       throw new Error("Board not found");
     }
-
-    const userId = identity.subject;
 
     const existingFavorite = await ctx.db
       .query("userFavorites")
@@ -140,11 +149,15 @@ export const favorite = mutation({
 
 
 export const unfavorite = mutation({
-  args: { id: v.id("boards") },
+  args: { 
+    id: v.id("boards"),
+    userId: v.optional(v.string()), 
+  },
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
 
-    if (!identity) {
+    const userId = args.userId as string
+
+    if (!userId) {
       throw new Error("Unauthorized");
     }
 
@@ -153,8 +166,6 @@ export const unfavorite = mutation({
     if (!board) {
       throw new Error("Board not found");
     }
-
-    const userId = identity.subject;
 
     const existingFavorite = await ctx.db
       .query("userFavorites")

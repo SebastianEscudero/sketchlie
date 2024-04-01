@@ -92,8 +92,8 @@ export function NavigationMenuLanding() {
           <NavigationMenuTrigger>¿Qué es Sketchlie</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[400px] gap-3 p-8 md:w-[500px] lg:w-[300px]">
-              <p className="px-3 text-[16px]">Producto</p>
-              <ListItem href="/product-overview" title="Descripción de Sketchlie 🚧"/>
+              <li className="px-3 text-[16px] font-bold">Producto</li>
+              <ListItem href="/product-overview" title="Descripción de Sketchlie 🚧" className="font-semibold"/>
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
@@ -102,12 +102,12 @@ export function NavigationMenuLanding() {
           <NavigationMenuContent>
             <div className="grid w-[400px] gap-3 p-10 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                 <div>
-                    <p className="px-3 text-[16px] mb-4">Equipos</p>
+                    <p className="px-3 text-[16px] mb-4 font-bold">Equipos</p>
                     <ul className="flex flex-col">
                           {porEquipo.map((component) => (
                               <Link
                                   className={cn(
-                                    "p-3 w-full hover:underline hover:bg-zinc-400/10",
+                                    "p-3 w-full hover:underline hover:bg-zinc-400/10 font-semibold",
                                     pathname === component.href ? "text-custom-blue bg-white/10" : "text-black",
                                 )}
                                   key={component.title}
@@ -120,12 +120,12 @@ export function NavigationMenuLanding() {
                       </ul>
                 </div>
                 <div>
-                    <p className="px-3 text-[16px] mb-4">Casos de uso</p>
+                    <p className="px-3 text-[16px] mb-4 font-bold">Casos de uso</p>
                     <ul className="flex flex-col">
                           {porCasoDeUso.map((component) => (
                               <Link
                                   className={cn(
-                                    "p-3 w-full hover:underline hover:bg-zinc-400/10",
+                                    "p-3 w-full hover:underline hover:bg-zinc-400/10 font-semibold",
                                     pathname === component.href ? "text-custom-blue bg-white/10" : "text-black",
                                 )}
                                   key={component.title}
@@ -141,15 +141,11 @@ export function NavigationMenuLanding() {
         </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
-        <Link href="/blog">
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+          <Link href="/blog" className="px-[16px] font-semibold">
               Blog
-            </NavigationMenuLink>
           </Link>
-          <Link href="/pricing" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+          <Link href="/pricing" className="px-[16px] font-semibold">
               Precios 🚧
-            </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
       </NavigationMenuList>

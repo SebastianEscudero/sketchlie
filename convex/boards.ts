@@ -6,22 +6,20 @@ import { query } from "./_generated/server";
 export const get = query({
   args: {
     orgId: v.string(),
+    userId: v.optional(v.string()),
     search: v.optional(v.string()),
     favorites: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-
-    if (!identity) {
-      throw new Error("Unauthorized");
-    }
+    
+    const userId = args.userId as string
 
     if (args.favorites) {
       const favoritedBoards = await ctx.db
         .query("userFavorites")
         .withIndex("by_user_org", (q) => 
           q
-            .eq("userId", identity.subject)
+            .eq("userId", userId)
             .eq("orgId", args.orgId)
         )
         .order("desc")
@@ -62,7 +60,7 @@ export const get = query({
         .query("userFavorites")
         .withIndex("by_user_board", (q) => 
           q
-            .eq("userId", identity.subject)
+            .eq("userId", userId)
             .eq("boardId", board._id)
         )
         .unique()

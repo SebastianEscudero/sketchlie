@@ -21,10 +21,9 @@ export const BlogSection = ({
             <Image
                 src={img}
                 alt="Logo"
-                layout="responsive"
-                width={10}
-                height={10}
-                
+                className="w-full"
+                width={1920}
+                height={1080}
             />
         </div>
     );

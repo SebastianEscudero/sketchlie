@@ -3,11 +3,12 @@
 import Image from 'next/image';
 import { Button } from './ui/button';
 import Link from 'next/link';
-import { useUser } from '@clerk/nextjs';
 import TypewriterComponent from 'typewriter-effect';
+import { useCurrentUser } from '@/hooks/use-current-user';
 
 export const LandingHero = () => {
-    const { user } = useUser();
+    
+    const user = useCurrentUser();
 
     return (
         <div className="relative flex h-screen w-full overflow-hidden" style={{ backgroundImage: "url(/dot-grid.png)", backgroundSize: 'cover' }}>
@@ -36,7 +37,7 @@ export const LandingHero = () => {
                     <p className="max-w-[800px] text-center text-sm text-gray-600 sm:text-lg">Haz una lluvia de ideas, colabora y da vida a tus ideas en nuestro espacio de colaboración en tiempo real. Únete a nosotros y convierte tus ideas en realidad.</p>
                     <div className="flex gap-4">
                         <Link href="/dashboard">
-                            <Button variant="outline" className="p-4 md:p-5 md:text-lg">
+                            <Button variant="auth" className="p-4 md:p-5 md:text-lg">
                                 {user ? "Ir al Tablero" : "Regístrate gratis"}
                             </Button>
                         </Link>

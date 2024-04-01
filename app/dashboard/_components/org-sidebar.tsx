@@ -3,19 +3,30 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Poppins } from "next/font/google";
-import { LayoutDashboard, Star } from "lucide-react";
-import { OrganizationSwitcher } from "@clerk/nextjs";
-import { useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { OrganizationSwitcher } from "@/components/auth/org-switcher";
+import { LayoutDashboard, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useSearchParams } from "next/navigation";
+
 const font = Poppins({
   subsets: ["latin"],
   weight: ["600"],
 });
 
-export const OrgSidebar = () => {
+interface OrgSidebarProps {
+  activeOrganization: string | null;
+  setActiveOrganization: (id: string) => void;
+}
+
+export const OrgSidebar = ({
+    activeOrganization,
+    setActiveOrganization,
+}: OrgSidebarProps) => {
+
   const searchParams = useSearchParams();
   const favorites = searchParams.get("favorites");
+
   return (
     <div className="hidden lg:flex flex-col space-y-6 w-[206px] pl-5 pt-5">
       <Link href="/">
@@ -34,26 +45,9 @@ export const OrgSidebar = () => {
           </span>
         </div>
       </Link>
-      <OrganizationSwitcher
-        hidePersonal
-        appearance={{
-          elements: {
-            rootBox: {
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              width: "100%",
-            },
-            organizationSwitcherTrigger: {
-              padding: "6px",
-              width: "100%",
-              borderRadius: "8px",
-              border: "1px solid #E5E7EB",
-              justifyContent: "space-between",
-              backgroundColor: "white",
-            }
-          }
-        }}
+      <OrganizationSwitcher 
+        setActiveOrganization={setActiveOrganization}
+        activeOrganization={activeOrganization}
       />
       <div className="space-y-1 w-full">
         <Button
