@@ -27,6 +27,8 @@ const DashboardPage = () => {
 
   const user = useCurrentUser();
 
+  console.log(user);
+
   if (!user) return <Loading />;
   
   const activeOrg = user?.organizations.find(org => org.id === activeOrganization);
