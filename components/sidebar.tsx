@@ -3,171 +3,204 @@ import Link from "next/link";
 import { Button } from "./ui/button";
 import { usePathname } from "next/navigation";
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
 } from "@/components/ui/accordion"
-import { cn } from "@/lib/utils";
 import { SheetClose } from "./ui/sheet";
-import { useEffect, useRef } from "react";
 
-const components: { title: string; href: string}[] = [
-  {
-    title: "Pizarra Online",
-    href: "/pizarra-online",
-  },
-  {
-    title: "Mapa Conceptual",
-    href: "/mapa-conceptual",
-  },
-  {
-    title: "Diagrama de Flujo",
-    href: "/diagrama-de-flujo",
-  },
-  {
-    title: "Mapa de procesos",
-    href: "/mapas-de-procesos",
-  },
-  {
-    title: "Wireframe",
-    href: "/wireframe",
-  },
-  {
-    title: "Mapas mentales",
-    href: "/mapa-mental-online",
-  },
-  {
-    title: "Diagramas",
-    href: "/diagrama",
-  },
-  {
-    title: "Gestión de producto 🚧",
-    href: "/gestion-producto",
-  },
-  {
-    title: "Equipos de Ingeniería 🚧",
-    href: "/equipos-de-ingenieria",
-  },
-  {
-    title: "Equipos de IT 🚧",
-    href: "/equipos-de-it",
-  },
-  {
-    title: "Marketing 🚧",
-    href: "/marketing",
-  },
-  {
-    title: "Agencias y Consultorías 🚧",
-    href: "/agencias-consultorías",
-  },
-  {
-    title: "Diseño 🚧",
-    href: "/diseno",
-  },
-  {
-    title: "Ventas 🚧",
-    href: "/ventas",
-  },
-  {
-    title: "Lluvia de ideas ",
-    href: "/lluvia-de-ideas",
-  },
+const porCasoDeUso: { title: string; href: string }[] = [
+    {
+        title: "Pizarra Online",
+        href: "/pizarra-online",
+    },
+    {
+        title: "Mapa Conceptual",
+        href: "/mapa-conceptual",
+    },
+    {
+        title: "Diagrama de Flujo",
+        href: "/diagrama-de-flujo",
+    },
+    {
+        title: "Wireframe",
+        href: "/wireframe",
+    },
+    {
+        title: "Mapas mentales",
+        href: "/mapa-mental-online",
+    },
+    {
+        title: "Mapa de procesos",
+        href: "/mapas-de-procesos",
+    },
+    {
+        title: "Diagramas",
+        href: "/diagrama",
+    },
+    {
+        title: "Lluvia de ideas ",
+        href: "/lluvia-de-ideas",
+    },
+    {
+        title: "Customer Journey Map ",
+        href: "/customer-journey-map",
+    },
 ]
 
-const Sidebar = ({ 
+const porEquipo: { title: string; href: string }[] = [
+    {
+        title: "Gestión de producto 🚧",
+        href: "/gestion-producto",
+    },
+    {
+        title: "Equipos de Ingeniería 🚧",
+        href: "/equipos-de-ingenieria",
+    },
+    {
+        title: "Diseño 🚧",
+        href: "/diseno",
+    },
+    {
+        title: "Equipos de IT 🚧",
+        href: "/equipos-de-it",
+    },
+    {
+        title: "Marketing 🚧",
+        href: "/marketing",
+    },
+    {
+        title: "Agencias y Consultorías 🚧",
+        href: "/agencias-consultorías",
+    },
+    {
+        title: "Ventas 🚧",
+        href: "/ventas",
+    },
+]
+
+const Sidebar = ({
 }) => {
 
-  const pathname = usePathname();
-  const closeRef = useRef<HTMLButtonElement>(null);
-  const prevPathnameRef = useRef<string>();
+    const pathname = usePathname();
 
-  useEffect(() => {
-    if (prevPathnameRef.current && prevPathnameRef.current !== pathname) {
-      if (closeRef.current) {
-        closeRef.current.click();
-      }
-    }
-    prevPathnameRef.current = pathname;
-  }, [pathname]);
-  
-  return ( 
-      <div className="space-y-4 py-4 flex flex-col h-full bg-[#FFF] overflow-y-auto">
-          <div className="px-3 py-2 flex-1">
-              <div className="flex items-center pl-3 mb-14">
-                  <div className="relative h-10 w-10 mr-4">
-                      <Image 
-                          fill
-                          alt="Logo"
-                          src="/logo.svg"
-                      />
-                  </div>
-                  <h1 className="text-2xl font-bold">
-                      Sketchlie
-                  </h1>
-                  <SheetClose ref={closeRef} />
-              </div>
-              <div className="space-y-1">
-              <Accordion type="single" collapsible className="text-lg">
-                    <AccordionItem value="item-1">
-                        <AccordionTrigger>Producto</AccordionTrigger>
-                        <AccordionContent>
-                            <Link 
-                                className="p-3 text-lg hover:underline ml-5"
-                                href="/product-overview">
-                                Descripción de Sketchlie 🚧
-                            </Link>
-                        </AccordionContent>
-                    </AccordionItem>
-                    <AccordionItem value="item-2">
-                        <AccordionTrigger>Soluciones</AccordionTrigger>
-                        <AccordionContent>
-                        <ul className="flex flex-col">
-                            {components.map((component) => (
+    return (
+        <div className="space-y-4 py-4 flex flex-col h-full bg-[#FFF] overflow-y-auto">
+            <div className="py-2 flex-1">
+                <div className="flex items-center pl-8">
+                    <div className="mr-4">
+                        <Image
+                            width={75}
+                            height={75}
+                            alt="Logo"
+                            src="/logo.svg"
+                        />
+                    </div>
+                    <h1 className="text-2xl font-semibold">
+                        Sketchlie
+                    </h1>
+                </div>
+                <div className="space-y-1 mt-2">
+                    <Accordion type="single" collapsible className="text-lg">
+                        <AccordionItem value="item-1" className="px-4">
+                            <AccordionTrigger className="font-semibold">Producto</AccordionTrigger>
+                            <AccordionContent className="flex flex-col w-full gap-1">
+                                <SheetClose asChild>
+                                    <Link
+                                        href="/descripcion"
+                                    >
+                                        <Button
+                                            className='w-full justify-start my-[2px] text-[16px]'
+                                            variant={pathname === "/descripcion" ? 'auth' : 'ghost'}
+                                        >
+                                            Descripcion de Sketchlie 🚧
+                                        </Button>
+                                    </Link>
+                                </SheetClose>
+                            </AccordionContent>
+                        </AccordionItem>
+                        <AccordionItem value="item-2" className="px-4">
+                            <AccordionTrigger className="font-semibold">Soluciones</AccordionTrigger>
+                            <AccordionContent className="flex flex-col w-full gap-1">
+                                {porCasoDeUso.map((component) => (
+                                    <SheetClose asChild key={component.title}>
+                                        <Link
+                                            href={component.href}
+                                        >
+                                            <Button
+                                                className='w-full justify-start my-[2px] text-[16px]'
+                                                variant={pathname === component.href ? 'auth' : 'ghost'}
+                                            >
+                                                {component.title}
+                                            </Button>
+                                        </Link>
+                                    </SheetClose>
+                                ))}
+                            </AccordionContent>
+                        </AccordionItem>
+                        <AccordionItem value="item-3" className="px-4">
+                            <AccordionTrigger className="font-semibold">Equipos</AccordionTrigger>
+                            <AccordionContent className="flex flex-col w-full gap-1">
+                                {porEquipo.map((component) => (
+                                    <SheetClose asChild key={component.title}>
+                                        <Link
+                                            href={component.href}
+                                        >
+                                            <Button
+                                                className='w-full justify-start my-[2px] text-[16px]'
+                                                variant={pathname === component.href ? 'auth' : 'ghost'}
+                                            >
+                                                {component.title}
+                                            </Button>
+                                        </Link>
+                                    </SheetClose>
+                                ))}
+                            </AccordionContent>
+                        </AccordionItem>
+                        <div className="flex flex-col w-full border-b">
+                            <SheetClose asChild>
                                 <Link
-                                    className={cn(
-                                      "text-lg p-3 w-full hover:underline hover:bg-zinc-400/10 ml-5",
-                                      pathname === component.href ? "text-custom-blue bg-white/10" : "text-black",
-                                  )}
-                                    key={component.title}
-                                    title={component.title}
-                                    href={component.href}
+                                    className="py-[9.5px] text-lg hover:underline ml-5"
+                                    href="/blog"
                                 >
-                                    {component.title}
+                                    <Button
+                                        className='w-full justify-start gap-1 text-lg font-semibold'
+                                        variant={pathname === "/blog" ? 'auth' : 'ghost'}
+                                    >
+                                        Blog
+                                    </Button>
                                 </Link>
-                            ))}
-                        </ul>
-                        </AccordionContent>
-                    </AccordionItem>
-                    <div className="py-4 text-lg border-b font-medium">
-                        <Link
-                            className="py-5 text-lg hover:underline ml-5"
-                            href="/blog"
-                        >
-                            Blog 
-                        </Link>
-                    </div>
-                    <div className="py-4 text-lg border-b font-medium">
-                        <Link
-                            className="py-5 text-lg hover:underline ml-5"
-                            href="/precios"
-                        >
-                            Precios 🚧
-                        </Link>
-                    </div>
-                </Accordion>
-              </div>
-          </div>
-          <Link href="/auth/register" className="text-center">
-            <Button
-                variant="auth"
-                className="w-[90%]"
-            >
-              Regístrate gratis
-            </Button>
-          </Link>
-      </div>
-   );
+                            </SheetClose>
+                        </div>
+                        <div className="flex flex-col w-full border-b">
+                            <SheetClose asChild>
+                                <Link
+                                    className="py-[9.5px] text-lg hover:underline ml-5"
+                                    href="/pricing"
+                                >
+                                    <Button
+                                        className='w-full justify-start gap-1 text-lg font-semibold'
+                                        variant={pathname === "/pricing" ? 'auth' : 'ghost'}
+                                    >
+                                        Precios  🚧
+                                    </Button>
+                                </Link>
+                            </SheetClose>
+                        </div>
+                    </Accordion>
+                </div>
+            </div>
+            <Link href="/auth/register" className="text-center">
+                <Button
+                    variant="auth"
+                    className="w-[90%]"
+                >
+                    Regístrate gratis
+                </Button>
+            </Link>
+        </div>
+    );
 }
 
 export default Sidebar;

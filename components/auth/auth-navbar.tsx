@@ -18,9 +18,10 @@ export const AuthNavbar = () => {
             <div className="flex items-center justify-between xl:mx-[5%] lg:mx-[3%] md:mx-[2%] mx-[1%]">
                 <div className="flex items-center">
                     <Link href="/" className="flex items-center mr-3">
-                        <div className="relative h-12 w-12 mr-4">
+                        <div className="mr-4">
                             <Image
-                                fill
+                                width={65}
+                                height={65}
                                 alt="Logo"
                                 src="/logo.svg"    
                             />

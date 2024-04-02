@@ -61,7 +61,7 @@ export const RenameModal = () => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent>
+      <DialogContent className="w-full max-w-[480px]">
         <DialogHeader>
           <DialogTitle>
             Edit board title

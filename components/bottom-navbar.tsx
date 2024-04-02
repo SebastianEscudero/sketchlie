@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/accordion"
 import { LogoSlider } from "./logo-slider";
 import { useCurrentUser } from "@/hooks/use-current-user";
+import { usePathname } from "next/navigation";
 
 const porEquipo: { title: string; href: string }[] = [
     {
@@ -76,6 +77,10 @@ const porCasoDeUso: { title: string; href: string }[] = [
         title: "Lluvia de ideas ",
         href: "/lluvia-de-ideas",
     },
+    {
+        title: "Customer Journey Map ",
+        href: "/customer-journey-map",
+    }
 ]
 
 const blog: { title: string; href: string }[] = [
@@ -145,12 +150,16 @@ const queEs: { title: string; href: string }[] = [
     {
         title: "Wireframe",
         href: "/wireframe/que-es-wireframe"
+    },
+    {
+        title: "Customer Journey Map ",
+        href: "/customer-journey-map/que-es-customer-journey-map",
     }
 ]
 
 export const BotNavbar = () => {
     const user = useCurrentUser();
-
+    const pathname = usePathname();
     return (
         <footer className="bg-[#1C1C1E] text-white">
             <div className="py-10">
@@ -167,95 +176,110 @@ export const BotNavbar = () => {
                         </Button>
                     </Link>
                 </div>
-                <LogoSlider/>
+                <LogoSlider />
             </div>
-            <div className="lg:flex xl:mx-[15%] lg:mx-[5%] text-xl justify-between hidden">
+            <div className="lg:flex xl:mx-[15%] lg:mx-[5%] text-xl justify-between hidden GAP-">
                 <nav className="flex flex-col">
-                    <h6 className="font-bold">Soluciones</h6>
+                    <h6 className="font-bold mb-2">Soluciones</h6>
                     {porCasoDeUso.map((component, index) => (
-                        <Link key={index} href={component.href} className="py-3 hover:underline font-semibold">{component.title}</Link>
+                        <Link key={index} href={component.href}><Button variant={pathname === component.href ? 'secondary' : 'ghostDark'} className="my-1 text-lg">{component.title}</Button></Link>
                     ))}
                 </nav>
                 <nav className="flex flex-col">
-                    <h6 className="font-bold">Equipos</h6>
+                    <h6 className="font-bold mb-2">Equipos</h6>
                     {porEquipo.map((component, index) => (
-                        <Link key={index} href={component.href} className="py-3 hover:underline font-semibold">{component.title}</Link>
+                        <Link key={index} href={component.href}><Button variant={pathname === component.href ? 'secondary' : 'ghostDark'} className="my-1 text-lg">{component.title}</Button></Link>
                     ))}
                 </nav>
                 <nav className="flex flex-col">
-                    <h6 className="font-bold">Blogs</h6>
+                    <h6 className="font-bold mb-2">Blogs</h6>
                     {blog.map((component, index) => (
-                        <Link key={index} href={component.href} className="py-3 hover:underline font-semibold">{component.title}</Link>
+                        <Link key={index} href={component.href}><Button variant={pathname === component.href ? 'secondary' : 'ghostDark'} className="my-1 text-lg">{component.title}</Button></Link>
                     ))}
                 </nav>
                 <nav className="flex flex-col">
-                    <h6 className="font-bold">Contenido Informativo</h6>
+                    <h6 className="font-bold mb-2">Contenido Informativo</h6>
                     {queEs.map((component, index) => (
-                        <Link key={index} href={component.href} className="py-3 hover:underline font-semibold">¿Qué es un {component.title}?</Link>
+                        <Link key={index} href={component.href}><Button variant={pathname === component.href ? 'secondary' : 'ghostDark'} className="my-1 text-lg">¿Qué es un {component.title}</Button></Link>
                     ))}
                 </nav>
             </div>
             <Accordion type="single" collapsible className="text-lg xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] lg:hidden">
-                <AccordionItem value="item-1">
-                    <AccordionTrigger className="text-xl">Producto</AccordionTrigger>
-                    <AccordionContent>
+                <AccordionItem value="item-1" className="px-4">
+                    <AccordionTrigger className="font-semibold">Producto</AccordionTrigger>
+                    <AccordionContent className="flex flex-col w-full gap-1">
                         <Link
-                            className="p-3 text-lg hover:underline ml-5 font-semibold"
-                            href="/product-overview">
-                            Descripción de Sketchlie 🚧
+                            href="/descripcion"
+                        >
+                            <Button
+                                className='w-full justify-start my-[2px] text-[16px]'
+                                variant={pathname === "/descripcion" ? 'secondary' : 'ghostDark'}
+                            >
+                                Descripcion de Sketchlie 🚧
+                            </Button>
                         </Link>
                     </AccordionContent>
                 </AccordionItem>
-                <AccordionItem value="item-2">
-                    <AccordionTrigger className="text-xl">Soluciones</AccordionTrigger>
-                    <AccordionContent>
-                        <ul className="flex flex-col font-semibold">
-                            {porCasoDeUso.map((component) => (
-                                <Link
-                                    className="p-3 text-lg hover:underline ml-5"
-                                    key={component.title}
-                                    title={component.title}
-                                    href={component.href}
+                <AccordionItem value="item-2" className="px-4">
+                    <AccordionTrigger className="font-semibold">Soluciones</AccordionTrigger>
+                    <AccordionContent className="flex flex-col w-full gap-1">
+                        {porCasoDeUso.map((component) => (
+                            <Link
+                                key={component.title}
+                                href={component.href}
+                            >
+                                <Button
+                                    className='w-full justify-start my-[2px] text-[16px]'
+                                    variant={pathname === component.href ? 'secondary' : 'ghostDark'}
                                 >
                                     {component.title}
-                                </Link>
-                            ))}
-                            {porEquipo.map((component) => (
-                                <Link
-                                    className="p-3 text-lg hover:underline ml-5"
-                                    key={component.title}
-                                    title={component.title}
-                                    href={component.href}
-                                >
-                                    {component.title}
-                                </Link>
-                            ))}
-                        </ul>
+                                </Button>
+                            </Link>
+                        ))}
                     </AccordionContent>
                 </AccordionItem>
-                <AccordionItem value="item-3">
-                    <AccordionTrigger className="text-xl">Blogs</AccordionTrigger>
-                    <AccordionContent>
-                        <ul className="flex flex-col font-semibold">
-                            {blog.map((component) => (
+                <AccordionItem value="item-3" className="px-4">
+                    <AccordionTrigger className="font-semibold">Equipos</AccordionTrigger>
+                    <AccordionContent className="flex flex-col w-full gap-1">
+                        {porEquipo.map((component) => (
                                 <Link
-                                    className="p-3 text-lg hover:underline ml-5"
                                     key={component.title}
-                                    title={component.title}
                                     href={component.href}
                                 >
-                                    {component.title}
+                                    <Button
+                                        className='w-full justify-start my-[2px] text-[16px]'
+                                        variant={pathname === component.href ? 'secondary' : 'ghostDark'}
+                                    >
+                                        {component.title}
+                                    </Button>
                                 </Link>
-                            ))}
-                        </ul>
+                        ))}
                     </AccordionContent>
                 </AccordionItem>
-                <div className="py-4 border-b font-medium text-xl">
+                <div className="flex flex-col w-full border-b">
                     <Link
-                        className="py-5 hover:underline ml-5"
-                        href="/precios"
+                        className="py-[9.5px] text-lg hover:underline ml-5"
+                        href="/blog"
                     >
-                        Precios 🚧
+                        <Button
+                            className='w-full justify-start gap-1 text-lg font-semibold'
+                            variant={pathname === "/blog" ? 'secondary' : 'ghostDark'}
+                        >
+                            Blog
+                        </Button>
+                    </Link>
+                </div>
+                <div className="flex flex-col w-full border-b">
+                    <Link
+                        className="py-[9.5px] text-lg hover:underline ml-5"
+                        href="/pricing"
+                    >
+                        <Button
+                            className='w-full justify-start gap-1 text-lg font-semibold'
+                            variant={pathname === "/pricing" ? 'secondary' : 'ghostDark'}
+                        >
+                            Precios  🚧
+                        </Button>
                     </Link>
                 </div>
             </Accordion>
