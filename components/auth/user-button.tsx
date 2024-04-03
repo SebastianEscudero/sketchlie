@@ -49,13 +49,13 @@ export const UserButton = () => {
             </div>
           </div>
           <SettingsButton>
-            <DropdownMenuItem className="py-3 px-5">
+            <DropdownMenuItem className="py-3 px-5 cursor-pointer">
               <Settings className="h-4 w-4 mr-2" />
               <p className="ml-5">Manage account</p>
             </DropdownMenuItem>
           </SettingsButton>
           <LogoutButton>
-            <DropdownMenuItem className="py-3 px-5 mb-5">
+            <DropdownMenuItem className="py-3 px-5 mb-5 cursor-pointer">
               <LogOut className="h-4 w-4 mr-2" />
               <p className="ml-5">Sign out</p>
             </DropdownMenuItem>
