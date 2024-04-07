@@ -35,7 +35,7 @@ export const Path = ({
       }}
       x={0}
       y={0}
-      fill={fill}
+      fill={fill === "transparent" ? "#000" : fill}
       stroke={stroke}
       strokeWidth={1}
     />

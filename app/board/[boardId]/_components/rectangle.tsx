@@ -16,6 +16,10 @@ export const Rectangle = ({
 }: RectangleProps) => {
   const { x, y, width, height, fill } = layer;
 
+  if (!fill) {
+    return null;
+  }
+
   return (
     <rect
       className="drop-shadow-md"
@@ -29,7 +33,7 @@ export const Rectangle = ({
       height={height}
       strokeWidth={1}
       fill={fill ? colorToCss(fill) : "#000"}
-      stroke={selectionColor || "transparent"}
+      stroke={selectionColor || (colorToCss(fill) === "transparent" ? "#000" : "transparent")}
     />
   );
 };

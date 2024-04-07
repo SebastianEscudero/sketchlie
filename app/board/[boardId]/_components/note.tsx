@@ -62,6 +62,9 @@ export const Note = ({
     }
   };
 
+  if (!fill) {
+    return null;
+  }
 
   return (
     <foreignObject
@@ -71,8 +74,8 @@ export const Note = ({
       height={height}
       onPointerDown={(e) => onPointerDown(e, id)}
       style={{
-        outline: selectionColor ? `1px solid ${selectionColor}` : "none",
-        backgroundColor: fill ? colorToCss(fill) : "#000",
+          outline: selectionColor ? `1px solid ${selectionColor}` : (colorToCss(fill) === "transparent" ? "1px solid #000" : "1px solid transparent"),
+          backgroundColor: fill ? colorToCss(fill) : "#000",
       }}
       className="shadow-md drop-shadow-xl"
     >

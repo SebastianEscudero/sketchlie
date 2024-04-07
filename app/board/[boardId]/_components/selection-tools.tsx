@@ -99,7 +99,7 @@ export const SelectionTools = memo(({
   
   return (
     <div
-      className="absolute p-3 rounded-xl bg-white shadow-sm border flex select-none"
+      className="absolute p-3 rounded-xl bg-white shadow-sm border flex select-none gap-x-2 items-center"
       style={{
         transform: `translate(
           calc(${x}px - 50%),
@@ -111,26 +111,24 @@ export const SelectionTools = memo(({
       <ColorPicker
         onChange={setFill}
       />}
-      <div className="flex flex-col gap-y-0.5">
-        <Hint label="Bring to front">
-          <Button
-            onClick={moveToFront}
-            variant="board"
-            size="icon"
-          >
-            <BringToFront />
-          </Button>
-        </Hint>
-        <Hint label="Send to back" side="bottom">
-          <Button
-            onClick={moveToBack}
-            variant="board"
-            size="icon"
-          >
-            <SendToBack />
-          </Button>
-        </Hint>
-      </div>
+      <Hint label="Bring to front">
+        <Button
+          onClick={moveToFront}
+          variant="board"
+          size="icon"
+        >
+          <BringToFront />
+        </Button>
+      </Hint>
+      <Hint label="Send to back" side="bottom">
+        <Button
+          onClick={moveToBack}
+          variant="board"
+          size="icon"
+        >
+          <SendToBack />
+        </Button>
+      </Hint>
       <div className="flex items-center pl-2 ml-2 border-l border-neutral-200">
         <Hint label="Delete">
           <Button

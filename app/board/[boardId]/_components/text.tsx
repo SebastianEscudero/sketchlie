@@ -36,6 +36,7 @@ export const Text = ({
   id,
   selectionColor,
 }: TextProps) => {
+  
   const { x, y, width, height, fill, value } = layer;
 
   const updateValue = useMutation((
@@ -84,6 +85,10 @@ export const Text = ({
     }
   };
 
+  if (!fill) {
+    return null;
+  }
+
   return (
     <foreignObject
       x={x}
@@ -106,7 +111,7 @@ export const Text = ({
           )}
         style={{
           fontSize: calculateFontSize(width, height),
-          color: fill ? colorToCss(fill) : "#000",
+          color: colorToCss(fill) === "transparent" ? "#000" : colorToCss(fill),
         }}
         spellCheck={false}
       />
