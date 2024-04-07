@@ -191,6 +191,14 @@ const Sidebar = ({
                     </Accordion>
                 </div>
             </div>
+            <Link href="/auth/login" className="text-center">
+                <Button
+                    variant="outline"
+                    className="w-[90%]"
+                >
+                    Login
+                </Button>
+            </Link>
             <Link href="/auth/register" className="text-center">
                 <Button
                     variant="auth"

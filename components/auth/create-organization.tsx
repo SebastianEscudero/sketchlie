@@ -6,8 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useTransition, useState } from "react";
 import { useSession } from "next-auth/react";
 import { OrganizationSchema } from "@/schemas";
-import { Check, Zap } from "lucide-react";
-import { DialogClose, DialogHeader, DialogDescription, DialogTitle } from '@/components/ui/dialog';
+import { Check } from "lucide-react";
+import { DialogClose, DialogHeader, DialogDescription, DialogTitle, DialogContent } from '@/components/ui/dialog';
 import { Button } from "@/components/ui/button";
 import {
     Form,
@@ -24,6 +24,9 @@ import { FormSuccess } from "@/components/form-success";
 import { organization } from "@/actions/organization";
 import { Card } from "@/components/card";
 import { Badge } from "../ui/badge";
+import axios from "axios";
+import { toast } from "sonner";
+import { SubscriptionButton } from "../subscription-button";
 
 interface CreateOrganizationProps {
     setActiveOrganization: (id: string) => void;
@@ -92,6 +95,16 @@ export const CreateOrganization = ({
         }
     });
 
+    const onClick = async () => {
+        try {
+            const { data } = await axios.post("/api/mercadoPago");
+            console.log(data);
+            window.location.href = data.init_point;
+        } catch (error) {
+            toast.error("Something went wrong.");
+        }
+    }
+
     if (!user) {
         setError("Unauthorized");
         return;
@@ -99,69 +112,64 @@ export const CreateOrganization = ({
 
     if (user.organizations.length > 0) {
         return (
-            <DialogHeader>
-                <DialogTitle className="flex justify-center items-center flex-col gap-y-4 pb-2">
-                    <Badge className="uppercase text-sm py-1" variant="inProgress">
-                        Pronto estará disponible
-                    </Badge>
-                    <div className="flex items-center gap-x-2 font-bold py-1">
-                        Sketchlie
-                        <Badge className="uppercase text-sm py-1" variant="outline">
-                            Pro
+            <DialogContent className="max-w-[1080px] w-full">
+                <DialogHeader>
+                    <DialogTitle className="flex justify-center items-center flex-col gap-y-4 pb-2">
+                        <Badge className="uppercase text-sm py-1" variant="inProgress">
+                            Pronto estará disponible
                         </Badge>
-                    </div>
-                </DialogTitle>
-                <DialogDescription className="gap-4 text-zinc-900 font-medium flex flex-col md:flex-row overflow-y-auto max-h-[700px]">
-                    {tools.map((tool) => (
-                        <Card
-                            key={tool.label}
-                            className={`p-5 md:flex flex-col flex-1 ${tool.recommended && 'border-2 border-custom-blue'}`}>
-                            <div className="h-[120px]">
-                                <div className="gap-x-4 font-semibold text-xl mb-2 flex ">
-                                    {tool.recommended ? 
-                                        <>
-                                            {tool.label} 
-                                            <Badge variant="outline" className="uppercase text-sm py-1">
-                                                Recommended
-                                            </Badge>
-                                        </> 
-                                        : tool.label}                                
-                                </div>
-                                <div className="font-normal text-sm mb-auto">
-                                    {tool.description}
-                                </div>
-                            </div>
-                            <div className="flex font-bold text-xl">
-                                {tool.price}
-                            </div>
-                            <div className="flex flex-col gap-y-2 mt-8 flex-1">
-                                <p>Todas las características del plan gratis más:</p>
-                                {Object.entries(tool.features).map(([feature, value]) => (
-                                    <div key={feature} className="flex items-center gap-x-2">
-                                        <Check className="w-4 h-4 text-blue-500 flex-shrink-0" />
-                                        <span className="text-black-5">{feature}:</span>
-                                        <span className="text-black-5 font-bold">{value}</span>
+                        <div className="flex items-center gap-x-2 font-bold py-1">
+                            Sketchlie
+                            <Badge className="uppercase text-sm py-1" variant="outline">
+                                Pro
+                            </Badge>
+                        </div>
+                    </DialogTitle>
+                    <DialogDescription className="gap-4 text-zinc-900 font-medium flex flex-col md:flex-row overflow-y-auto max-h-[700px]">
+                        {tools.map((tool) => (
+                            <Card
+                                key={tool.label}
+                                className={`p-5 md:flex flex-col flex-1 ${tool.recommended && 'border-2 border-custom-blue'}`}>
+                                <div className="h-[120px]">
+                                    <div className="gap-x-4 font-semibold text-xl mb-2 flex">
+                                        {tool.recommended ? 
+                                            <>
+                                                {tool.label} 
+                                                <Badge variant="outline" className="uppercase text-sm py-1">
+                                                    Popular
+                                                </Badge>
+                                            </> 
+                                            : tool.label}                                
                                     </div>
-                                ))}
-                                {tool.extraFeatures && (
-                                    <div className="flex items-center gap-x-2">
-                                        <Check className="w-4 h-4 text-blue-500 flex-shrink-0" />
-                                        <span className="text-black-5 font-bold">{tool.extraFeatures}</span>
+                                    <div className="font-normal text-sm mb-auto">
+                                        {tool.description}
                                     </div>
-                                )}
-                            </div>
-                            <Button
-                                size="lg"
-                                className="w-full mt-10"
-                                variant="auth"
-                            >
-                                Mejorar Plan
-                                <Zap className="w-4 h-4 ml-2 fill-white" />
-                            </Button>
-                        </Card>
-                    ))}
-                </DialogDescription>
-            </DialogHeader>
+                                </div>
+                                <div className="flex font-bold text-xl">
+                                    {tool.price}
+                                </div>
+                                <div className="flex flex-col gap-y-2 mt-8 flex-1 mb-2">
+                                    <p>Todas las características del plan gratis más:</p>
+                                    {Object.entries(tool.features).map(([feature, value]) => (
+                                        <div key={feature} className="flex items-center gap-x-2">
+                                            <Check className="w-4 h-4 text-blue-500 flex-shrink-0" />
+                                            <span className="text-black-5">{feature}:</span>
+                                            <span className="text-black-5 font-bold">{value}</span>
+                                        </div>
+                                    ))}
+                                    {tool.extraFeatures && (
+                                        <div className="flex items-center gap-x-2">
+                                            <Check className="w-4 h-4 text-blue-500 flex-shrink-0" />
+                                            <span className="text-black-5 font-bold">{tool.extraFeatures}</span>
+                                        </div>
+                                    )}
+                                </div>
+                                <SubscriptionButton />
+                            </Card>
+                        ))}
+                    </DialogDescription>
+                </DialogHeader>
+            </DialogContent>
         )
     }
 
@@ -186,7 +194,7 @@ export const CreateOrganization = ({
     };
 
     return (
-        <>
+        <DialogContent className="max-w-[480px] w-full">
             <DialogHeader>
                 <DialogTitle>Create Organization</DialogTitle>
             </DialogHeader>
@@ -226,6 +234,6 @@ export const CreateOrganization = ({
                     </DialogClose>
                 </form>
             </Form>
-        </>
+        </DialogContent>
     )
 }

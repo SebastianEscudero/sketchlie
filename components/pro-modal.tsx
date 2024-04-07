@@ -1,9 +1,9 @@
 import { Card } from "@/components/card";
-import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useProModal } from "@/hooks/use-pro-modal";
-import { Check, Zap } from "lucide-react";
+import { Check } from "lucide-react";
 import { Badge } from "./ui/badge";
+import { SubscriptionButton } from "./subscription-button";
 
 const tools = [
     {
@@ -56,7 +56,7 @@ export const ProModal = () => {
     return (
         <div>
             <Dialog open={proModal.isOpen} onOpenChange={proModal.onClose}>
-                <DialogContent className="w-full max-w-[1080px]">
+                <DialogContent className="max-w-[1080px] w-full">
                     <DialogHeader>
                         <DialogTitle className="flex justify-center items-center flex-col gap-y-4 pb-2">
                             <Badge className="uppercase text-sm py-1" variant="inProgress">
@@ -75,12 +75,12 @@ export const ProModal = () => {
                                     key={tool.label}
                                     className={`p-5 md:flex flex-col flex-1 ${tool.recommended && 'border-2 border-custom-blue'}`}>
                                     <div className="h-[120px]">
-                                        <div className="gap-x-4 font-semibold text-xl mb-2 flex ">
+                                        <div className="gap-x-4 font-semibold text-xl mb-2 flex">
                                             {tool.recommended ?
                                                 <>
                                                     {tool.label}
                                                     <Badge variant="outline" className="uppercase text-sm py-1">
-                                                        Recommended
+                                                        Popular
                                                     </Badge>
                                                 </>
                                                 : tool.label}
@@ -92,7 +92,7 @@ export const ProModal = () => {
                                     <div className="flex font-bold text-xl">
                                         {tool.price}
                                     </div>
-                                    <div className="flex flex-col gap-y-2 mt-8 flex-1">
+                                    <div className="flex flex-col gap-y-2 mt-8 flex-1 mb-2">
                                         <p>Todas las características del plan gratis más:</p>
                                         {Object.entries(tool.features).map(([feature, value]) => (
                                             <div key={feature} className="flex items-center gap-x-2">
@@ -108,14 +108,7 @@ export const ProModal = () => {
                                             </div>
                                         )}
                                     </div>
-                                    <Button
-                                        size="lg"
-                                        className="w-full mt-10"
-                                        variant="auth"
-                                    >
-                                        Mejorar Plan
-                                        <Zap className="w-4 h-4 ml-2 fill-white" />
-                                    </Button>
+                                    <SubscriptionButton />
                                 </Card>
                             ))}
                         </DialogDescription>

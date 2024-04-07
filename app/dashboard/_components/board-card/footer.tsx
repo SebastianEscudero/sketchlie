@@ -33,7 +33,7 @@ export const Footer = ({
       <p className="text-[13px] truncate max-w-[calc(100%-20px)]">
         {title}
       </p>
-      <p className="opacity-0 group-hover:opacity-100 transition-opacity text-[11px] text-muted-foreground truncate">
+      <p className="transition-opacity text-[11px] text-muted-foreground truncate">
         {authorLabel}, {createdAtLabel}
       </p>
       <button

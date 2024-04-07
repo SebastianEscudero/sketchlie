@@ -38,7 +38,7 @@ export const ConfirmModal = ({ children, disabled, header, onConfirm, descriptio
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction className="bg-custom-blue" disabled={disabled} onClick={handleConfirm}>Confirm</AlertDialogAction>
+                    <AlertDialogAction className="bg-custom-blue sm:mt-0 mt-2" disabled={disabled} onClick={handleConfirm}>Confirm</AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>

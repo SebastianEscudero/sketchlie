@@ -4,6 +4,10 @@ import { OrganizationSwitcher } from "@/components/auth/org-switcher";
 import { UserButton } from "@/components/auth/user-button";
 import { InviteButton } from "./org-invite-button";
 import { SearchInput } from "./search-input";
+import { MobileSidebar } from "./mobile-sidebar/mobile-sidebar";
+import { Button } from "@/components/ui/button";
+import { Zap } from "lucide-react";
+import { useProModal } from "@/hooks/use-pro-modal";
 
 interface NavbarProps {
     activeOrganization: string | null;
@@ -16,24 +20,39 @@ export const Navbar = ({
     setActiveOrganization,
     activeOrg
 }: NavbarProps) => {
+    const isPro = false
+    const proModal = useProModal();
+    const onClick = () => {
+        proModal.onOpen();
+    }
 
     return (
-        <div className="flex items-center gap-x-4 p-5">
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-2 p-3 justify-between">
             <div className="hidden lg:flex lg:flex-1">
                 <SearchInput />
             </div>
-            <div className="block lg:hidden flex-1">
+            <div className="flex lg:hidden items-center gap-x-4 flex-grow">
+                <MobileSidebar 
+                    activeOrganization={activeOrganization}
+                    setActiveOrganization={setActiveOrganization}
+                />
                 <OrganizationSwitcher 
                     setActiveOrganization={setActiveOrganization}
                     activeOrganization={activeOrganization}
                 />
             </div>
-            {activeOrg && (
-                <InviteButton 
-                    activeOrganization={activeOrganization}
-                />
-            )}
-            <UserButton />
+            <div className="flex items-center gap-x-2">
+                {activeOrg && (
+                    <InviteButton 
+                        activeOrganization={activeOrganization}
+                    />
+                )}
+                <Button variant="premium" onClick={onClick}>
+                    {isPro ? "Pausar Subscripcion" : "Upgrade"}
+                    {!isPro && <Zap className="w-4 h-4 ml-2 fill-white"/>}
+                </Button>
+                <UserButton />
+            </div>
         </div>
     )
 }

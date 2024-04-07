@@ -41,9 +41,9 @@ export const OrganizationSwitcher = ({
 
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger className="border border-zinc-200 rounded-lg p-[10px] flex items-center hover:bg-zinc-200 w-full max-w-[380px]">
+            <DropdownMenuTrigger className="border border-zinc-200 rounded-lg p-[10px] flex items-center hover:bg-zinc-200 w-full">
                 {hasOrg && activeOrg ? (
-                    <>
+                    <div className="flex items-center truncate">
                         <div className="aspect-square relative w-[33px] flex-shrink-0">
                             <Image
                                 fill
@@ -52,13 +52,13 @@ export const OrganizationSwitcher = ({
                                 className="rounded-md"
                             />
                         </div>
-                        <div className="flex items-center truncate pr-2">
+                        <div className="flex items-center truncate w-full sm:max-w-[150px] max-w-[200px] pr-2">
                             <p className="ml-3 text-sm truncate">{activeOrg.name}</p>
                             {invitations.length > 0 && (
                                 <p className="ml-2 bg-custom-blue text-white px-1 mt-0.5 text-[10px] rounded-sm items-center animate-popup">{invitations.length}</p>
                             )}
                         </div>
-                    </>
+                    </div>
                 ) : (
                     <div className="flex items-center truncate pr-2">
                         <p className="ml-3 text-sm truncate">No organization selected</p>
@@ -69,7 +69,7 @@ export const OrganizationSwitcher = ({
                 )}
                 <ChevronsUpDown className="ml-auto text-zinc-400 flex-shrink-0" width={20} />
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="rounded-2xl shadow-xl w-[400px]">
+            <DropdownMenuContent align="start" className="rounded-2xl shadow-xl w-[350px]">
                 {hasOrg && activeOrg && (
                     <>
                         <div className="flex mb-3 items-center p-5 pb-0">
@@ -80,24 +80,24 @@ export const OrganizationSwitcher = ({
                                 width={45}
                                 height={45}
                             />
-                            <div className="ml-3">
+                            <div className="ml-3 truncate">
                                 <p>{activeOrg.name}</p>
                             </div>
                         </div>
-                            <Dialog>
-                                <div className="border-b py-3 px-8 text-[14px] hover:bg-slate-100 w-full">
-                                    <DialogTrigger className="flex items-center">
-                                        <Settings className="h-4 w-4 mr-2" />
-                                        <p className="ml-5">Manage organization</p>
-                                    </DialogTrigger>
-                                </div>
-                                <DialogContent className="min-h-[500px] w-full max-w-[768px]">
-                                    <OrganizationSettings
-                                        setActiveOrganization={setActiveOrganization}
-                                        activeOrganization={activeOrganization}
-                                    />
-                                </DialogContent>
-                            </Dialog>
+                        <Dialog>
+                            <div className="border-b py-3 px-8 text-[14px] hover:bg-slate-100 w-full">
+                                <DialogTrigger className="flex items-center">
+                                    <Settings className="h-4 w-4 mr-2" />
+                                    <p className="ml-5">Manage organization</p>
+                                </DialogTrigger>
+                            </div>
+                            <DialogContent className="min-h-[500px] w-full max-w-[768px]">
+                                <OrganizationSettings
+                                    setActiveOrganization={setActiveOrganization}
+                                    activeOrganization={activeOrganization}
+                                />
+                            </DialogContent>
+                        </Dialog>
                     </>
                 )}
                 {invitations.length > 0 && (
@@ -121,8 +121,9 @@ export const OrganizationSwitcher = ({
                                     <Button
                                         onClick={() => {
                                             rejectInvite(invitation.id)
-                                                .then(() => {;
-                                                update({ event: "session" });
+                                                .then(() => {
+                                                    ;
+                                                    update({ event: "session" });
                                                 });
                                         }}
                                         variant="destructive"
@@ -177,11 +178,9 @@ export const OrganizationSwitcher = ({
                             <PlusIcon className="h-4 w-4 mr-2" />
                             <p className="ml-5">Create organization</p>
                         </DialogTrigger>
-                        <DialogContent className="w-full max-w-[1080px]">
-                            <CreateOrganization
-                                setActiveOrganization={setActiveOrganization}
-                            />
-                        </DialogContent>
+                        <CreateOrganization
+                            setActiveOrganization={setActiveOrganization}
+                        />
                     </Dialog>
                 </div>
             </DropdownMenuContent>

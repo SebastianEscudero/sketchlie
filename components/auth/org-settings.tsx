@@ -38,6 +38,10 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { InviteButton } from "@/app/dashboard/_components/org-invite-button";
+import { api } from "@/convex/_generated/api";
+import { useApiMutation } from "@/hooks/use-api-mutation";
+import { useQuery } from "convex/react";
 
 interface OrganizationSettingsProps {
     activeOrganization: string | null;
@@ -56,6 +60,8 @@ export const OrganizationSettings = ({
     const [selectedSection, setSelectedSection] = useState('Members');
     const { update } = useSession();
 
+    const { mutate } = useApiMutation(api.board.remove);
+
     const form = useForm<z.infer<typeof OrganizationSchema>>({
         resolver: zodResolver(OrganizationSchema),
         defaultValues: {
@@ -63,6 +69,20 @@ export const OrganizationSettings = ({
         }
     });
 
+    const data = useQuery(api.boards.get, { 
+        orgId: activeOrg.id,
+        userId: user?.id,
+    });
+
+    const onDelete = () => deleteOrganization(activeOrg.id)
+    .then(() => {
+        {data?.map((board) => (
+            mutate({ id: board._id, userId: user?.id })
+        ))}
+        setActiveOrganization("null");
+        localStorage.setItem("activeOrganization", "null");
+        update();
+    })
 
     const onSubmit = (values: z.infer<typeof OrganizationSchema>) => {
         organizationSettings(values, activeOrg)
@@ -82,8 +102,8 @@ export const OrganizationSettings = ({
     if (!user) return null;
 
     return (
-        <div className="flex">
-            <div className="w-1/3 space-y-4 pr-4 border-r">
+        <div className="flex sm:flex-row flex-col max-h-[600px]">
+            <div className="sm:w-1/3 w-full space-y-4 sm:pr-4 sm:pb-0 pb-4 sm:border-r sm:border-b-0 border-b">
                 <div className="flex mb-3 items-center pb-0">
                     <Image
                         alt={activeOrg.name}
@@ -93,10 +113,10 @@ export const OrganizationSettings = ({
                         height={35}
                     />
                     <div className="ml-3 text-sm">
-                        <p>{activeOrg.name}</p>
+                        <p className="truncate sm:max-w-[100px] max-w-[200px]">{activeOrg.name}</p>
                     </div>
                 </div>
-                <div className="flex flex-col">
+                <div className="flex flex-col gap-y-2">
                     <Button
                         onClick={() => setSelectedSection('Members')}
                         variant="ghost"
@@ -111,15 +131,18 @@ export const OrganizationSettings = ({
                     >
                         <Settings className="w-4 h-4 mr-2" />Settings
                     </Button>
+                    <InviteButton 
+                        activeOrganization={activeOrganization}
+                    />
                 </div>
             </div>
-            <div className="w-2/3 pl-4">
-                <h3 className="text-3xl font-semibold mb-4">
+            <div className="sm:w-2/3 w-full sm:pl-4">
+                <h3 className="text-3xl font-semibold mb-4 sm:pt-0 pt-4">
                     {selectedSection}
                 </h3>
                 {selectedSection === 'Members' ? (
-                    <ul className="border-t pt-4">
-                        {activeOrg?.users.map((orgUser: any) => (
+                    <ul className="pt-4 overflow-y-auto max-h-[380px]">
+                        {activeOrg.users.map((orgUser: any) => (
                             <li key={orgUser.id} className="flex pb-3">
                                 <Avatar>
                                     <AvatarImage src={orgUser.image || ""} />
@@ -165,7 +188,6 @@ export const OrganizationSettings = ({
                     <div>
                         <Form {...form}>
                             <form
-                                className="space-y-6"
                                 onSubmit={form.handleSubmit(onSubmit)}
                             >
                                 <FormField
@@ -174,24 +196,26 @@ export const OrganizationSettings = ({
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel className="font-normal">Organization Name</FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    {...field}
-                                                    placeholder="Sebastian's Team"
-                                                />
-                                            </FormControl>
+                                            <div className="flex flex-row space-x-4 mb-2">
+                                                <FormControl className="max-w-[300px]">
+                                                    <Input
+                                                        {...field}
+                                                        placeholder="Sebastian's Team"
+                                                    />
+                                                </FormControl>
+                                                <Button
+                                                    type="submit"
+                                                    variant="auth"
+                                                >
+                                                    Save Changes
+                                                </Button>
+                                            </div>
                                             <FormMessage />
                                         </FormItem>
                                     )}
                                 />
                                 <FormError message={error} />
                                 <FormSuccess message={success} />
-                                <Button
-                                    type="submit"
-                                    variant="auth"
-                                >
-                                    Save
-                                </Button>
                             </form>
                         </Form>
                         <div className="mt-4">
@@ -230,12 +254,7 @@ export const OrganizationSettings = ({
                             </Button>
                             <DialogClose>
                                 <Button variant="destructive"
-                                    onClick={() => deleteOrganization(activeOrg.id)
-                                        .then(() => {
-                                            setActiveOrganization("null");
-                                            localStorage.setItem("activeOrganization", "null");
-                                            update();
-                                        })}
+                                    onClick={onDelete}
                                 >
                                     Delete Organization
                                 </Button>

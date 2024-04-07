@@ -1,4 +1,4 @@
-import { Plus } from "lucide-react";
+import { UserPlus } from "lucide-react";
 
 import {
     Dialog,
@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button";
 import { OrganizationInvite } from "@/components/auth/organization-invite";
+import { Hint } from "@/components/hint";
 
 interface InviteButtonProps {
     activeOrganization: string | null;
@@ -20,11 +21,11 @@ export const InviteButton = ({
             <Dialog>
                 <DialogTrigger asChild>
                     <Button variant="auth">
-                        <Plus className="h-4 w-4 mr-2"/>
+                        <UserPlus className="h-4 w-4 mr-2" />
                         Invite Members
                     </Button>
                 </DialogTrigger>
-                <DialogContent className="min-h-[450px] w-full max-w-[768px]">
+                <DialogContent className="min-h-[500px] w-full max-w-[768px]">
                     <OrganizationInvite
                         activeOrganization={activeOrganization}
                     />

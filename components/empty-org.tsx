@@ -37,11 +37,9 @@ export const EmptyOrg = ({
                             Create organization
                         </Button>
                     </DialogTrigger>
-                    <DialogContent className="border-none max-w-[480px] w-full">
-                        <CreateOrganization 
-                            setActiveOrganization={setActiveOrganization}
-                        />
-                    </DialogContent>
+                    <CreateOrganization 
+                        setActiveOrganization={setActiveOrganization}
+                    />
                 </Dialog>
             </div>
         </div>

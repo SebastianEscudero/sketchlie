@@ -38,6 +38,13 @@ export const getUserById = async (id: string) => {
               }
             }
           }
+        },
+        subscription: {
+          select: {
+            id: true,
+            subscriptionId: true,
+            mercadoPagoCurrentPeriodEnd: true
+          }
         }
       },
     });
