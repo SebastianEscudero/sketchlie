@@ -58,7 +58,7 @@ export const Canvas = ({
   boardId,
 }: CanvasProps) => {
   const [isClickingLayer, setIsClickingLayer] = useState(false);
-
+  const [zoom, setZoom] = useState(1);
   const proModal = useProModal();
   const layerIds = useStorage((root) => root.layerIds);
 
@@ -339,12 +339,49 @@ export const Canvas = ({
     });
   }, [history]);
 
-  const onWheel = useCallback((e: React.WheelEvent) => {
-    setCamera((camera) => ({
-      x: camera.x - e.deltaX,
-      y: camera.y - e.deltaY,
-    }));
+  useEffect(() => {
+    const handleWheel = (e: WheelEvent) => {
+      if (e.ctrlKey) {
+        e.preventDefault();
+      }
+    };
+  
+    window.addEventListener('wheel', handleWheel, { passive: false });
+  
+    return () => {
+      window.removeEventListener('wheel', handleWheel);
+    };
   }, []);
+
+  const onWheel = useCallback((e: React.WheelEvent) => {
+    const svgRect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - svgRect.left; // calculate the x value relative to the SVG canvas
+    const y = e.clientY - svgRect.top; // calculate the y value relative to the SVG canvas
+  
+    if (e.ctrlKey) {
+      e.preventDefault();
+  
+      let newZoom = zoom;
+      if (e.deltaY < 0) {
+        newZoom = Math.min(zoom * 1.1, 3);
+      } else {
+        newZoom = Math.max(zoom / 1.1, 0.5);
+      }
+  
+      const zoomFactor = newZoom / zoom;
+      const newX = x - (x - camera.x) * zoomFactor;
+      const newY = y - (y - camera.y) * zoomFactor;
+  
+      setZoom(newZoom);
+      setCamera({ x: newX, y: newY });
+    } 
+    else {
+      setCamera((camera) => ({
+        x: camera.x - e.deltaX / zoom,
+        y: camera.y - e.deltaY / zoom,
+      }));
+    }
+  }, [zoom, camera]);
 
   const onPointerMove = useMutation((
     { setMyPresence }, 
@@ -359,7 +396,7 @@ export const Canvas = ({
       setCamera(newCameraPosition);
       setStartPanPoint({ x: e.clientX, y: e.clientY });
     }
-    const current = pointerEventToCanvasPoint(e, camera);
+    const current = pointerEventToCanvasPoint(e, camera, zoom);
 
     if (canvasState.mode === CanvasMode.Pressing) {
       startMultiSelection(current, canvasState.origin);
@@ -393,7 +430,7 @@ export const Canvas = ({
   const onPointerDown = useCallback((
     e: React.PointerEvent,
   ) => {
-    const point = pointerEventToCanvasPoint(e, camera);
+    const point = pointerEventToCanvasPoint(e, camera, zoom);
 
     if (e.button === 0) {
       if (canvasState.mode === CanvasMode.Inserting) {
@@ -410,7 +447,7 @@ export const Canvas = ({
       setIsPanning(true);
       setStartPanPoint({ x: e.clientX, y: e.clientY });
       document.body.style.cursor = 'grabbing';
-    }}, [camera, canvasState.mode, setCanvasState, startDrawing, setIsPanning]);
+    }}, [camera, canvasState.mode, setCanvasState, startDrawing, setIsPanning, zoom]);
 
   const onPointerUp = useMutation((
     {},
@@ -418,7 +455,7 @@ export const Canvas = ({
   ) => {
     setIsPanning(false);
     document.body.style.cursor = 'default';
-    const point = pointerEventToCanvasPoint(e, camera);
+    const point = pointerEventToCanvasPoint(e, camera, zoom);
 
     if (
       canvasState.mode === CanvasMode.None ||
@@ -475,7 +512,7 @@ export const Canvas = ({
     history.pause();
     e.stopPropagation();
 
-    const point = pointerEventToCanvasPoint(e, camera);
+    const point = pointerEventToCanvasPoint(e, camera, zoom);
     if (!self.presence.selection.includes(layerId)) {
       setMyPresence({ selection: [layerId] }, { addToHistory: true });
     }
@@ -585,8 +622,8 @@ export const Canvas = ({
   useEffect(() => {
     function onPointerMove(e: PointerEvent) {
       setMousePosition({ 
-        x: Math.round(e.clientX) - camera.x,
-        y: Math.round(e.clientY) - camera.y,
+        x: (Math.round(e.clientX) - camera.x) / zoom,
+        y: (Math.round(e.clientY) - camera.y) / zoom,
        });
     }
   
@@ -595,7 +632,7 @@ export const Canvas = ({
     return () => {
       document.removeEventListener("pointermove", onPointerMove);
     };
-  }, [camera, mousePosition, setMousePosition]);
+  }, [camera, mousePosition, setMousePosition, zoom]);
 
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
@@ -636,7 +673,7 @@ export const Canvas = ({
 
   return (
     <main
-      className="h-full w-full relative bg-neutral-100 touch-none overscroll-none"
+      className="h-full w-full relative bg-neutral-100 touch-none overscroll-none" style={{ backgroundImage: "url(/dot-grid.png)", backgroundSize: 'cover' }}
     >
       <Info boardId={boardId} />
       <Participants />
@@ -652,6 +689,7 @@ export const Canvas = ({
         redo={history.redo}
       />
       <SelectionTools
+        zoom={zoom}
         camera={camera}
         setLastUsedColor={setLastUsedColor}
       />
@@ -666,7 +704,8 @@ export const Canvas = ({
       >
         <g
           style={{
-            transform: `translate(${camera.x}px, ${camera.y}px)`,
+            transform: `translate(${camera.x}px, ${camera.y}px) scale(${zoom})`,
+            transformOrigin: 'top left',
           }}
         >
           {layerIds.map((layerId) => (

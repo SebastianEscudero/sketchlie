@@ -15,11 +15,13 @@ import { ColorPicker } from "./color-picker";
 interface SelectionToolsProps {
   camera: Camera;
   setLastUsedColor: (color: Color) => void;
+  zoom: number;
 };
 
 export const SelectionTools = memo(({
   camera,
   setLastUsedColor,
+  zoom,
 }: SelectionToolsProps) => {
 
   const soleLayerId = useSelf((me) =>
@@ -92,9 +94,9 @@ export const SelectionTools = memo(({
     return null;
   }
 
-  const x = selectionBounds.width / 2 + selectionBounds.x + camera.x;
-  const y = selectionBounds.y + camera.y;
-
+  const x = (selectionBounds.width / 2 + selectionBounds.x) * zoom + camera.x;
+  const y = (selectionBounds.y) * zoom + camera.y;
+  
   return (
     <div
       className="absolute p-3 rounded-xl bg-white shadow-sm border flex select-none"

@@ -31,10 +31,11 @@ export function connectionIdToColor(connectionId: number): string {
 export function pointerEventToCanvasPoint(
   e: React.PointerEvent,
   camera: Camera,
+  zoom: number,
 ) {
   return {
-    x: Math.round(e.clientX) - camera.x,
-    y: Math.round(e.clientY) - camera.y,
+    x: (Math.round(e.clientX) - camera.x) / zoom,
+    y: (Math.round(e.clientY) - camera.y) / zoom,
   };
 };
 
