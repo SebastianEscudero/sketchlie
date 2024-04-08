@@ -2,6 +2,7 @@ import { Card } from "@/components/card";
 import { SubscriptionButton } from "@/components/subscription-button";
 import { Badge } from "@/components/ui/badge";
 import { Check } from "lucide-react";
+import { Metadata } from "next";
 
 const tools = [
     {
@@ -50,6 +51,15 @@ const tools = [
         recommended: true
     },
 ]
+
+export const metadata: Metadata = {
+    title: "Precios | Sketchlie",
+    description: "Los planes de Sketchlie, Gratis, Starter, Business. Comienza gratis y desbloquea todas las herramientas que necesitas para colaborar en tus proyectos.",
+    keywords: ["sketchlie pricing", "sketchlie precios", "sketchlie planes", "sketchlie planes precios"],
+    alternates: {
+        canonical: "https://www.sketchlie.com/pricing",
+    }
+};
 
 const PricingPage = () => {
     return (
