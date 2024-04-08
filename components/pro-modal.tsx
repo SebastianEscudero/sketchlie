@@ -12,7 +12,7 @@ const tools = [
         price: "0$CLP/m",
         features: {
             "Boards": "3",
-            'Carga de Imagenes': "Hasta 1MB",
+            'Imagenes': "Hasta 1MB",
             "Capas máximas": "200",
             "Herramientas": "Todas",
             "Equipos": "1",
@@ -24,7 +24,7 @@ const tools = [
         price: "14.990$CLP/m",
         features: {
             "Boards": "Ilimitados",
-            'Carga de Imagenes': "Hasta 10MB",
+            'Imagenes': "Hasta 10MB",
             "Capas máximas": "1000",
             "Herramientas": "Todas",
             "Soporte": "Básico",
@@ -38,14 +38,14 @@ const tools = [
         price: "19.990$CLP/m",
         features: {
             "Boards": "Ilimitados",
-            'Carga de Imagenes': "Hasta 25MB",
+            'Imagenes': "Hasta 25MB",
             "Capas máximas": "Ilimitados",
             "Herramientas": "Todas",
             "Soporte": "Básico",
             "Export a PDF": "Sí",
             "Equipos": "Ilimitados",
         },
-        extraFeatures: "Proteccón de datos con inicio de sesión único de NextAuth",
+        extraFeatures: "Proteccón de datos con inicio de sesión de NextAuth",
         recommended: true
     },
 ]
@@ -56,7 +56,7 @@ export const ProModal = () => {
     return (
         <div>
             <Dialog open={proModal.isOpen} onOpenChange={proModal.onClose}>
-                <DialogContent className="max-w-[1080px] w-full">
+                <DialogContent className="max-w-[1080px] w-full md:mt-0 mt-20">
                     <DialogHeader>
                         <DialogTitle className="flex justify-center items-center flex-col gap-y-4 pb-2">
                             <Badge className="uppercase text-sm py-1" variant="inProgress">
@@ -92,7 +92,7 @@ export const ProModal = () => {
                                     <div className="flex font-bold text-xl">
                                         {tool.price}
                                     </div>
-                                    <div className="flex flex-col gap-y-2 mt-8 flex-1 mb-2">
+                                    <div className="flex flex-col gap-y-2 mt-8 flex-1 mb-4">
                                         <p>Todas las características del plan gratis más:</p>
                                         {Object.entries(tool.features).map(([feature, value]) => (
                                             <div key={feature} className="flex items-center gap-x-2">

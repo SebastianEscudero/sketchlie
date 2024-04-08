@@ -161,7 +161,7 @@ const Sidebar = ({
                         <div className="flex flex-col w-full border-b">
                             <SheetClose asChild>
                                 <Link
-                                    className="my-2 text-lg hover:underline pl-5"
+                                    className="my-2 text-lg hover:underline px-5"
                                     href="/blog"
                                 >
                                     <Button
@@ -176,7 +176,7 @@ const Sidebar = ({
                         <div className="flex flex-col w-full border-b">
                             <SheetClose asChild>
                                 <Link
-                                    className="my-2 text-lg hover:underline pl-5"
+                                    className="my-2 text-lg hover:underline px-5"
                                     href="/pricing"
                                 >
                                     <Button

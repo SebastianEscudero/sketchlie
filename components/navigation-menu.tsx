@@ -154,7 +154,7 @@ export function NavigationMenuLanding() {
                         href={"/blog"}
                     >
                         <Button
-                            className='justify-start my-[3px] text-[16px]'
+                            className='justify-start my-[3px] text-[16px] mr-2'
                             variant={pathname === "/blog" ? 'auth' : 'ghost'}
                         >
                             Blog
@@ -167,7 +167,7 @@ export function NavigationMenuLanding() {
                             className='justify-start my-[3px] text-[16px]'
                             variant={pathname === "/pricing" ? 'auth' : 'ghost'}
                         >
-                            Precios 🚧
+                            Precios
                         </Button>
                     </NavigationMenuLink>
                 </NavigationMenuItem>
