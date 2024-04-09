@@ -1,6 +1,6 @@
 "use client";
 
-import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
+import { Dialog, DialogTrigger } from "../ui/dialog";
 import { CreateOrganization } from "./create-organization";
 import { Hint } from "../hint";
 import { Plus } from "lucide-react";

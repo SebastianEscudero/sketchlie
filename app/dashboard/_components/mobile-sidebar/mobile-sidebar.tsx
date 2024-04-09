@@ -3,7 +3,6 @@ import { Sheet, SheetClose, SheetContent, SheetTrigger } from "@/components/ui/s
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 import { List } from "../sidebar/list";
-import { InviteButton } from "../org-invite-button";
 
 interface SideBarProps {
     activeOrganization: string | null;

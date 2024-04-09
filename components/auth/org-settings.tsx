@@ -196,7 +196,7 @@ export const OrganizationSettings = ({
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel className="font-normal">Organization Name</FormLabel>
-                                            <div className="flex flex-row space-x-4 mb-2">
+                                            <div className="flex flex-row space-x-4">
                                                 <FormControl className="max-w-[300px]">
                                                     <Input
                                                         {...field}
@@ -214,8 +214,10 @@ export const OrganizationSettings = ({
                                         </FormItem>
                                     )}
                                 />
-                                <FormError message={error} />
-                                <FormSuccess message={success} />
+                                <div className="mt-4">
+                                    <FormError message={error}/>
+                                    <FormSuccess message={success} />
+                                </div>
                             </form>
                         </Form>
                         <div className="mt-4">

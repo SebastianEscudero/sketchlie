@@ -1,31 +1,25 @@
+"use client";
+
 import { Card } from "@/components/card";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useProModal } from "@/hooks/use-pro-modal";
-import { Check } from "lucide-react";
+import { Check, ChevronsDown } from "lucide-react";
 import { Badge } from "./ui/badge";
 import { SubscriptionButton } from "./subscription-button";
+import { useState } from "react";
+import { useCurrentUser } from "@/hooks/use-current-user";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
+import { Button } from "./ui/button";
 
-const tools = [
-    {
-        label: "Gratis",
-        description: "Todo lo que necesitas para empezar a colaborar.",
-        price: "0$CLP/m",
-        features: {
-            "Boards": "3",
-            'Imagenes': "Hasta 1MB",
-            "Capas máximas": "200",
-            "Herramientas": "Todas",
-            "Equipos": "1",
-        }
-    },
+const subscriptionPlans = [
     {
         label: "Starter",
         description: "Desbloquea espacios de trabajo infinitos con todas las herramientas que necesitas.",
-        price: "14.990$CLP/m",
+        price: 14990,
         features: {
             "Boards": "Ilimitados",
             'Imagenes': "Hasta 10MB",
-            "Capas máximas": "1000",
+            "Objetos máximos": "1000",
             "Herramientas": "Todas",
             "Soporte": "Básico",
             "Export a PDF": "Sí",
@@ -34,29 +28,36 @@ const tools = [
     },
     {
         label: "Business",
-        description: "Necesitas algo mas personalizado? Contacta con nosotros para obtener para tu empresa.",
-        price: "19.990$CLP/m",
+        description: "Escala tu equipo con herramientas de colaboración avanzadas y soporte prioritario.",
+        price: 19990,
         features: {
             "Boards": "Ilimitados",
             'Imagenes': "Hasta 25MB",
-            "Capas máximas": "Ilimitados",
+            "Objetos máximos": "Ilimitados",
             "Herramientas": "Todas",
             "Soporte": "Básico",
             "Export a PDF": "Sí",
             "Equipos": "Ilimitados",
         },
-        extraFeatures: "Proteccón de datos con inicio de sesión de NextAuth",
+        extraFeatures: "Proteccón de datos con inicio de sesión",
         recommended: true
     },
 ]
 
-
 export const ProModal = () => {
     const proModal = useProModal();
+    const [selectedOrganization, setSelectedOrganization] = useState<any>("");
+    const user = useCurrentUser();
+    const organizations = user?.organizations;
+
+    if (!organizations) {
+        return null;
+    }
+
     return (
         <div>
             <Dialog open={proModal.isOpen} onOpenChange={proModal.onClose}>
-                <DialogContent className="max-w-[1080px] w-full md:mt-0 mt-20">
+                <DialogContent className="max-w-[1080px] w-full overflow-y-auto md:h-auto h-[650px]">
                     <DialogHeader>
                         <DialogTitle className="flex justify-center items-center flex-col gap-y-4 pb-2">
                             <Badge className="uppercase text-sm py-1" variant="inProgress">
@@ -69,46 +70,86 @@ export const ProModal = () => {
                                 </Badge>
                             </div>
                         </DialogTitle>
-                        <DialogDescription className="gap-4 text-zinc-900 font-medium flex flex-col md:flex-row overflow-y-auto max-h-[700px]">
-                            {tools.map((tool) => (
+                        <div className="flex justify-center text-xl sm:text-2xl items-center flex-wrap">
+                            <p>Choose organization to upgrade:</p>
+                            <DropdownMenu>
+                                <DropdownMenuTrigger>
+                                    <Button
+                                        variant="selectOrg"
+                                        className="text-2xl ml-1"
+                                    >
+                                        {selectedOrganization.name || "Select organization"}
+                                        <ChevronsDown className="ml-2"/>
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent>
+                                    <div className="flex flex-col gap-y-2">
+                                        {organizations.map((organization) => (
+                                            <DropdownMenuItem
+                                                className="w-[180px] truncate"
+                                                key={organization.id}
+                                            >
+                                                <Button
+                                                    onClick={() => setSelectedOrganization(organization)}
+                                                    variant="selectOrg"
+                                                    className="p-0 w-full flex justify-start">
+                                                    <div className="ml-2 text-left">
+                                                        <p className="truncate text-[14px]">
+                                                            {organization.name}
+                                                        </p>
+                                                        <p className="truncate text-[12px] text-zinc-400">{organization.subscriptionPlan} - {organization.users.length} members </p>
+                                                    </div>
+                                                </Button>
+                                            </DropdownMenuItem>
+                                        ))}
+                                    </div>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        </div>
+                        <DialogDescription className="gap-4 text-zinc-900 font-medium flex flex-col md:flex-row max-h-[700px] pt-4">
+                            {subscriptionPlans.map((subscriptionPlan) => (
                                 <Card
-                                    key={tool.label}
-                                    className={`p-5 md:flex flex-col flex-1 ${tool.recommended && 'border-2 border-custom-blue'}`}>
+                                    key={subscriptionPlan.label}
+                                    className={`p-5 md:flex flex-col flex-1 ${subscriptionPlan.recommended && 'border-2 border-custom-blue'}`}>
                                     <div className="h-[120px]">
                                         <div className="gap-x-4 font-semibold text-xl mb-2 flex">
-                                            {tool.recommended ?
+                                            {subscriptionPlan.recommended ?
                                                 <>
-                                                    {tool.label}
+                                                    {subscriptionPlan.label}
                                                     <Badge variant="outline" className="uppercase text-sm py-1">
                                                         Popular
                                                     </Badge>
                                                 </>
-                                                : tool.label}
+                                                : subscriptionPlan.label}
                                         </div>
                                         <div className="font-normal text-sm mb-auto">
-                                            {tool.description}
+                                            {subscriptionPlan.description}
                                         </div>
                                     </div>
                                     <div className="flex font-bold text-xl">
-                                        {tool.price}
+                                        {subscriptionPlan.price}$/m
                                     </div>
+                                    <p>por miembro</p>
                                     <div className="flex flex-col gap-y-2 mt-8 flex-1 mb-4">
                                         <p>Todas las características del plan gratis más:</p>
-                                        {Object.entries(tool.features).map(([feature, value]) => (
+                                        {Object.entries(subscriptionPlan.features).map(([feature, value]) => (
                                             <div key={feature} className="flex items-center gap-x-2">
                                                 <Check className="w-4 h-4 text-blue-500 flex-shrink-0" />
                                                 <span className="text-black-5">{feature}:</span>
                                                 <span className="text-black-5 font-bold">{value}</span>
                                             </div>
                                         ))}
-                                        {tool.extraFeatures && (
+                                        {subscriptionPlan.extraFeatures && (
                                             <div className="flex items-center gap-x-2">
                                                 <Check className="w-4 h-4 text-blue-500 flex-shrink-0" />
-                                                <span className="text-black-5 font-bold">{tool.extraFeatures}</span>
+                                                <span className="text-black-5 font-bold">{subscriptionPlan.extraFeatures}</span>
                                             </div>
                                         )}
                                     </div>
-                                    <SubscriptionButton />
+                                    <SubscriptionButton 
+                                        plan={subscriptionPlan}
+                                        selectedOrganization={selectedOrganization}
+                                    />
                                 </Card>
                             ))}
                         </DialogDescription>

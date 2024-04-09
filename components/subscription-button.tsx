@@ -3,22 +3,33 @@
 import { Zap } from "lucide-react";
 import { Button } from "./ui/button";
 import axios from "axios";
-import { toast } from "sonner";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { checkSubscription } from "@/lib/subscription";
+import { toast } from "sonner";
 
-export const SubscriptionButton = () => {
+interface SubscriptionButtonProps {
+    selectedOrganization: any;
+    plan: any;
+}
+
+export const SubscriptionButton = ({
+    selectedOrganization,
+    plan,
+}: SubscriptionButtonProps) => {
     const user = useCurrentUser();
     
     const isPro = checkSubscription(user);
 
     const onClick = async () => {
+        if (!selectedOrganization) {
+            return toast.error("Choose an organization to upgrade.");
+        }
         try {
-            const { data } = await axios.post("/api/mercadoPago");
+            const { data } = await axios.post("/api/mercadoPago", { organization: selectedOrganization, plan});
             console.log(data);
             window.location.href = data.init_point;
         } catch (error) {
-            toast.error("Coming soon!");
+            console.error("Mercado Pago", error);
         }
     }
 

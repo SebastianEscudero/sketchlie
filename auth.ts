@@ -43,7 +43,6 @@ export const {
       }
 
       if (session.user) {
-        session.user.subscriptions = token.subscriptions as any[];
         session.user.invitations = token.invitations as any[];
         session.user.organizations = token.organizations as any[];
         session.user.name = token.name;
@@ -68,10 +67,11 @@ export const {
       token.name = existingUser.name;
       token.email = existingUser.email;
       token.invitations = existingUser.invitations;
-      token.subscriptions = existingUser.subscription;
       token.organizations = await Promise.all(existingUser.organizations.map(async (org) => ({
         id: org.organization.id,
         name: org.organization.name,
+        subscription: org.organization.subscription,
+        subscriptionPlan: org.organization.subscriptionPlan,
         users: await Promise.all(org.organization.users.map(async ({userId}) => {
           const user = await getUserById(userId);
             return {

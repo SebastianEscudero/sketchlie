@@ -44,7 +44,7 @@ import { SelectionTools } from "./selection-tools";
 import { CursorsPresence } from "./cursors-presence";
 import { useProModal } from "@/hooks/use-pro-modal";
 
-const MAX_LAYERS = 200; //max amount of stuff on the whtieboard
+const MAX_LAYERS = 100; //max amount of stuff on the whtieboard
 
 interface CanvasProps {
   boardId: string;

@@ -21,6 +21,8 @@ export const getUserById = async (id: string) => {
               select: {
                 id: true,
                 name: true,
+                subscriptionPlan: true,
+                subscription: true,
                 users: true
               }
             }
@@ -39,13 +41,6 @@ export const getUserById = async (id: string) => {
             }
           }
         },
-        subscription: {
-          select: {
-            id: true,
-            subscriptionId: true,
-            mercadoPagoCurrentPeriodEnd: true
-          }
-        }
       },
     });
 

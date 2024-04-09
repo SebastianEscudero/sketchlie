@@ -19,7 +19,6 @@ model User {
   accounts      Account[]
   organizations OrganizationUser[]
   invitations   OrganizationInvitation[]
-  subscription  UserSubscription?
 }
 
 model Organization {
@@ -27,6 +26,8 @@ model Organization {
   name String
   users OrganizationUser[]
   invitations OrganizationInvitation[]
+  subscriptionPlan SubscriptionType @default(Gratis)
+  subscription  OrganizationSubscription?
 }
 
 model OrganizationUser {
@@ -87,10 +88,16 @@ model OrganizationInvitation {
   @@unique([email, organizationId])
 }
 
-model UserSubscription {
+model OrganizationSubscription {
   id String @id @default(cuid())
-  userId String @unique
+  organizationId String @unique
   subscriptionId String
   mercadoPagoCurrentPeriodEnd DateTime? @map(name: "mercado_pago_current_period_end")
-  user User @relation(fields: [userId], references: [id])
+  organization Organization @relation(fields: [organizationId], references: [id])
+}
+
+enum SubscriptionType {
+  Gratis
+  Starter
+  Business
 }

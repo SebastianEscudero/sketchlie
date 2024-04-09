@@ -25,6 +25,10 @@ const buttonVariants = cva(
         auth: "border-input bg-custom-blue text-white hover:bg-custom-blue-dark hover:text-white",
         boardActive: "bg-blue-500/20 text-blue-800",
         premium: "bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white border-0",
+        selectOrg: "text-custom-blue hover:bg-accent",
+        gratis: "bg-accent text-accent-foreground hover:bg-accent/90",
+        starter: "bg-yellow-500 text-black hover:bg-yellow-600",
+        business: "bg-[#1C1C1E] text-white hover:text-accent-foreground hover:bg-accent/90",
       },
       size: {
         default: "h-10 px-4 py-2",
