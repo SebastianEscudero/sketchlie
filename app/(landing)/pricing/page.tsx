@@ -1,8 +1,9 @@
 import { Card } from "@/components/card";
-import { SubscriptionButton } from "@/components/subscription-button";
 import { Badge } from "@/components/ui/badge";
-import { Check } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Check, Zap } from "lucide-react";
 import { Metadata } from "next";
+import Link from "next/link";
 
 const tools = [
     {
@@ -114,7 +115,25 @@ const PricingPage = () => {
                                 </div>
                             )}
                         </div>
-                        <SubscriptionButton />
+                        {tool.label === "Gratis" ? (
+                            <Link
+                                href='/auth/register'
+                                className='w-full'
+                            >
+                                <Button variant="outline" className="w-full text-lg">
+                                    Comienza gratis
+                                </Button>
+                            </Link>
+                        ) : (
+                            <Link
+                                href='/dashboard'
+                                className='w-full'
+                            >
+                                <Button variant="auth" className="w-full text-lg">
+                                    Upgrade <Zap className="w-4 h-4 ml-2 fill-white" />
+                                </Button>
+                            </Link>
+                        )}
                     </Card>
                 ))}
             </div>
