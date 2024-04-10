@@ -3,13 +3,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { NavigationMenuLanding } from "./navigation-menu";
-import { useCurrentUser } from "@/hooks/use-current-user";
 import { MobileSidebar } from "./mobile-sidebar";
 import { Button } from "./ui/button";
 
 export const LandingNavbar = () => {
-    const user = useCurrentUser();
-
     return (
         <nav className="py-3 bg-[#FFFFFF] border-b border-zinc-600 sticky top-0 z-50">
             <div className="flex items-center justify-between xl:mx-[5%] lg:mx-[3%] md:mx-[2%] mx-[1%]">
@@ -33,7 +30,7 @@ export const LandingNavbar = () => {
                 <div className="hidden sm:flex items-center gap-x-2">
                     <Link href="/auth/register">
                         <Button variant="auth" className="rounded-lg">
-                            {user ? "Ir al Tablero" : "Regístrate gratis"}
+                            Regístrate gratis
                         </Button>
                     </Link>
                 </div>
