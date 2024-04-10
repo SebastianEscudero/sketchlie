@@ -33,49 +33,6 @@ export const OrgSidebar = ({
     const favorites = searchParams.get("favorites");
     const user = useCurrentUser();
     const activeOrg = user?.organizations.find(org => org.id === activeOrganization);
-
-    const subscriptionPlans = [
-        {
-            label: "Gratis",
-            description: "Todo lo que necesitas para empezar a colaborar.",
-            price: 0,
-            features: {
-                "Boards": "3",
-                "Objetos máximos": "100",
-                "Equipos": "1",
-            },
-        },
-        {
-            label: "Starter",
-            description: "Desbloquea espacios de trabajo infinitos con todas las herramientas que necesitas.",
-            price: 14990,
-            features: {
-                "Boards": "Ilimitados",
-                "Objetos máximos": "1000",
-                "Equipos": "10",
-            },
-        },
-        {
-            label: "Business",
-            description: "Escala tu equipo con herramientas de colaboración avanzadas y soporte prioritario.",
-            price: 19990,
-            features: {
-                "Boards": "Ilimitados",
-                "Objetos máximos": "Ilimitados",
-                "Equipos": "Ilimitados",
-            },
-            extraFeatures: "Proteccón de datos con inicio de sesión",
-            recommended: true
-        },
-    ]
-
-    const featureIcons: { [key: string]: JSX.Element } = {
-        "Boards": <SquareMousePointer className="h-4 w-4" />,
-        "Objetos máximos": <Shapes className="h-4 w-4" />,
-        "Equipos": <Users className="h-4 w-4" />,
-    };
-
-    const plan = subscriptionPlans.find(plan => plan.label === activeOrg.subscriptionPlan);
     const isPro = false
     const proModal = useProModal();
     const onClick = () => {
@@ -106,29 +63,70 @@ export const OrgSidebar = ({
                         <DropdownMenuTrigger className="flex outline-none">
                             <Button
                                 className="text-[16px]"
-                                variant={plan?.label === "Gratis" ? "gratis" : plan?.label === "Starter" ? "starter" : "business"}
+                                variant={activeOrg.subscriptionPlan === "Gratis" ? "gratis" : activeOrg.subscriptionPlan === "Starter" ? "starter" : "business"}
                             >
                                 <span className={cn(
                                     "text-lg",
                                     font.className,
                                 )}>
-                                    Plan {plan?.label}
+                                    Plan {activeOrg.subscriptionPlan}
                                 </span>
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="start">
                             <div className="px-3 py-2 flex flex-col space-y-3">
-                                <p className="font-semibold">{activeOrg.name} esta con plan {plan?.label}</p>
+                                <p className="font-semibold">{activeOrg.name} esta con plan {activeOrg.subscriptionPlan}</p>
                                 <div className="text-sm space-y-2">
-                                    {
-                                        plan && Object.entries(plan.features).map(([feature, value]) => (
-                                            <div key={feature} className="flex flex-row gap-x-2">
-                                                {featureIcons[feature]} {feature}: {value}
+                                    {activeOrg.subscriptionPlan === "Gratis" && (
+                                        <div className="flex flex-col gap-y-2">
+                                            <div className="flex flex-row gap-x-2">
+                                                <SquareMousePointer className="h-4 w-4" />
+                                                <span>Boards: 3</span>
                                             </div>
-                                        ))
-                                    }
+                                            <div className="flex flex-row gap-x-2">
+                                                <Shapes className="h-4 w-4" />
+                                                <span>Objetos máximos: 100</span>
+                                            </div>
+                                            <div className="flex flex-row gap-x-2">
+                                                <Users className="h-4 w-4" />
+                                                <span>Equipos: 1</span>
+                                            </div>
+                                        </div>
+                                    )}
+                                    {activeOrg.subscriptionPlan === "Starter" && (
+                                        <div className="flex flex-col gap-y-2">
+                                            <div className="flex flex-row gap-x-2">
+                                                <SquareMousePointer className="h-4 w-4" />
+                                                <span>Boards: Ilimitados</span>
+                                            </div>
+                                            <div className="flex flex-row gap-x-2">
+                                                <Shapes className="h-4 w-4" />
+                                                <span>Objetos máximos: 1000</span>
+                                            </div>
+                                            <div className="flex flex-row gap-x-2">
+                                                <Users className="h-4 w-4" />
+                                                <span>Equipos: 10</span>
+                                            </div>
+                                        </div>
+                                    )}
+                                    {activeOrg.subscriptionPlan === "Business" && (
+                                        <div className="flex flex-col gap-y-2">
+                                            <div className="flex flex-row gap-x-2">
+                                                <SquareMousePointer className="h-4 w-4" />
+                                                <span>Boards: Ilimitados</span>
+                                            </div>
+                                            <div className="flex flex-row gap-x-2">
+                                                <Shapes className="h-4 w-4" />
+                                                <span>Objetos máximos: Ilimitados</span>
+                                            </div>
+                                            <div className="flex flex-row gap-x-2">
+                                                <Users className="h-4 w-4" />
+                                                <span>Equipos: Ilimitados</span>
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
-                                {plan?.label !== "Business" && (
+                                {activeOrg.subscriptionPlan !== "Business" && (
                                     <div className="bg-blue-100/70 p-3 space-y-2">
                                         <p className="flex flex-row items-center">
                                             <Infinity className="w-4 h-4 mr-2 text-custom-blue" /> Crea tableros ilimitados
