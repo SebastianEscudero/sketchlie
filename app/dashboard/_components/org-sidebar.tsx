@@ -31,6 +31,7 @@ export const OrgSidebar = ({
     const favorites = searchParams.get("favorites");
     const user = useCurrentUser();
     const activeOrg = user?.organizations.find(org => org.id === activeOrganization);
+    const subscriptionPlan = activeOrg ? activeOrg.subscriptionPlan : null;
     const proModal = useProModal();
     const onClick = () => {
         proModal.onOpen();
@@ -60,21 +61,21 @@ export const OrgSidebar = ({
                         <DropdownMenuTrigger className="flex outline-none">
                             <Button
                                 className="text-[16px]"
-                                variant={activeOrg.subscriptionPlan === "Gratis" ? "gratis" : activeOrg.subscriptionPlan === "Starter" ? "starter" : "business"}
+                                variant={subscriptionPlan === "Gratis" ? "gratis" : subscriptionPlan === "Starter" ? "starter" : "business"}
                             >
                                 <span className={cn(
                                     "text-lg",
                                     font.className,
                                 )}>
-                                    Plan {activeOrg.subscriptionPlan}
+                                    Plan {subscriptionPlan}
                                 </span>
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="start">
                             <div className="px-3 py-2 flex flex-col space-y-3">
-                                <p className="font-semibold">{activeOrg.name} esta con plan {activeOrg.subscriptionPlan}</p>
+                                <p className="font-semibold">{activeOrg.name} esta con plan {subscriptionPlan}</p>
                                 <div className="text-sm space-y-2">
-                                    {activeOrg.subscriptionPlan === "Gratis" && (
+                                    {subscriptionPlan === "Gratis" && (
                                         <div className="flex flex-col gap-y-2">
                                             <div className="flex flex-row gap-x-2">
                                                 <SquareMousePointer className="h-4 w-4" />
@@ -90,7 +91,7 @@ export const OrgSidebar = ({
                                             </div>
                                         </div>
                                     )}
-                                    {activeOrg.subscriptionPlan === "Starter" && (
+                                    {subscriptionPlan === "Starter" && (
                                         <div className="flex flex-col gap-y-2">
                                             <div className="flex flex-row gap-x-2">
                                                 <SquareMousePointer className="h-4 w-4" />
@@ -106,7 +107,7 @@ export const OrgSidebar = ({
                                             </div>
                                         </div>
                                     )}
-                                    {activeOrg.subscriptionPlan === "Business" && (
+                                    {subscriptionPlan === "Business" && (
                                         <div className="flex flex-col gap-y-2">
                                             <div className="flex flex-row gap-x-2">
                                                 <SquareMousePointer className="h-4 w-4" />
@@ -123,7 +124,7 @@ export const OrgSidebar = ({
                                         </div>
                                     )}
                                 </div>
-                                {activeOrg.subscriptionPlan !== "Business" && (
+                                {subscriptionPlan !== "Business" && (
                                     <div className="bg-blue-100/70 p-3 space-y-2">
                                         <p className="flex flex-row items-center">
                                             <Infinity className="w-4 h-4 mr-2 text-custom-blue" /> Crea tableros ilimitados
