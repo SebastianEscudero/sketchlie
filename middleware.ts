@@ -18,8 +18,9 @@ export default auth((req) => {
   const isDashboardRoute = nextUrl.pathname.startsWith('/dashboard');
   const isBoardRoute = nextUrl.pathname.startsWith('/board');
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
+  const isPublicRoute = publicRoutes.includes(nextUrl.pathname); 
 
-  if (isApiAuthRoute) {
+  if (isApiAuthRoute || isPublicRoute) { 
     return null;
   }
 
