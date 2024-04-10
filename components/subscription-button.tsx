@@ -3,8 +3,6 @@
 import { Zap } from "lucide-react";
 import { Button } from "./ui/button";
 import axios from "axios";
-import { useCurrentUser } from "@/hooks/use-current-user";
-import { checkSubscription } from "@/lib/subscription";
 import { toast } from "sonner";
 
 interface SubscriptionButtonProps {
@@ -16,10 +14,6 @@ export const SubscriptionButton = ({
     selectedOrganization,
     plan,
 }: SubscriptionButtonProps) => {
-    const user = useCurrentUser();
-    
-    const isPro = checkSubscription(user);
-
     const onClick = async () => {
         if (!selectedOrganization) {
             return toast.error("Choose an organization to upgrade.");
@@ -35,8 +29,7 @@ export const SubscriptionButton = ({
 
     return (
         <Button variant="auth" onClick={onClick}>
-            {isPro ? "Pausar Subscripcion" : "Upgrade"}
-            {!isPro && <Zap className="w-4 h-4 ml-2 fill-white"/>}
+            Upgrade <Zap className="w-4 h-4 ml-2 fill-white"/>
         </Button>
     )
 }

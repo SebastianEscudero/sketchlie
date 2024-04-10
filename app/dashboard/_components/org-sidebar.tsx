@@ -10,8 +10,6 @@ import { Button } from "@/components/ui/button";
 import { useSearchParams } from "next/navigation";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Badge } from "@/components/ui/badge";
-import { SubscriptionButton } from "@/components/subscription-button";
 import { useProModal } from "@/hooks/use-pro-modal";
 
 const font = Poppins({
@@ -33,7 +31,6 @@ export const OrgSidebar = ({
     const favorites = searchParams.get("favorites");
     const user = useCurrentUser();
     const activeOrg = user?.organizations.find(org => org.id === activeOrganization);
-    const isPro = false
     const proModal = useProModal();
     const onClick = () => {
         proModal.onOpen();
@@ -135,8 +132,7 @@ export const OrgSidebar = ({
                                             <Infinity className="w-4 h-4 mr-2 text-custom-blue" /> Objetos ilimitados
                                         </p>
                                         <Button variant="auth" onClick={onClick} className="w-full">
-                                            {isPro ? "Pausar Subscripcion" : "Upgrade"}
-                                            {!isPro && <Zap className="w-4 h-4 ml-2 fill-white" />}
+                                            Upgrade <Zap className="w-4 h-4 ml-2 fill-white" />
                                         </Button>
                                     </div>
                                 )}

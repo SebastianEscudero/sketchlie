@@ -1,22 +1,20 @@
 const DAY_IN_MS = 86_400_000;
-export const checkSubscription = (user: any) => {
+export const checkSubscription = (activeOrg: any) => {
+    const organizationId = activeOrg.id;
 
-    const userId = user?.id
-    
-    if (!userId) {
+    if (!organizationId) {
         return false;
     }
 
-    const userSubscription = user.subscriptions
+    const orgSubscription = activeOrg.subscription;
 
-
-    if (!userSubscription) {
+    if (!orgSubscription) {
         return false;
     }
 
     const isValid = 
-        userSubscription.subscriptionId &&
-        userSubscription.mercadoPagoCurrentPeriodEnd!.getTime() + DAY_IN_MS > Date.now();
+        orgSubscription.subscriptionId &&
+        new Date(orgSubscription.mercadoPagoCurrentPeriodEnd!).getTime() + DAY_IN_MS > Date.now();
 
     return !!isValid;
 };

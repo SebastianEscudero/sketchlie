@@ -37,9 +37,9 @@ export async function POST(req: NextRequest) {
             },
             body: JSON.stringify({
                 "reason": `Sketchlie ${plan.label} Plan`,
-                "external_reference": userId,
+                "external_reference": `${organizationId}-${plan.label}`,
                 "payer_email": user.email,
-                "notificacion_url": `${process.env.NEXT_PUBLIC_APP_URL}/api/webhook`, 
+                "notificacion_url": `https://2344-152-230-201-53.ngrok-free.app/api/webhook`, 
                 "auto_recurring": {
                     "frequency": 1,
                     "frequency_type": "months",

@@ -22,7 +22,7 @@ import { FormSuccess } from "@/components/form-success";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import Image from "next/image";
 import { Button } from "../ui/button";
-import { Ellipsis, Settings, User, X } from "lucide-react";
+import { Ellipsis, Settings, User, X, Zap } from "lucide-react";
 import { organizationSettings } from "@/actions/organization-settings";
 import { deleteOrganization } from "@/actions/delete-organization";
 import { DialogClose } from "../ui/dialog";
@@ -42,6 +42,7 @@ import { InviteButton } from "@/app/dashboard/_components/org-invite-button";
 import { api } from "@/convex/_generated/api";
 import { useApiMutation } from "@/hooks/use-api-mutation";
 import { useQuery } from "convex/react";
+import { useProModal } from "@/hooks/use-pro-modal";
 
 interface OrganizationSettingsProps {
     activeOrganization: string | null;
@@ -97,6 +98,15 @@ export const OrganizationSettings = ({
                 }
             })
             .catch(() => setError("Something went wrong!"));
+    }
+
+    const proModal = useProModal();
+    const onClick = () => {
+        if (activeOrg.subscriptionPlan === "Gratis") {
+            proModal.onOpen();
+        } else {
+            window.location.href = "https://www.mercadopago.cl/subscriptions#from-section=menu"
+        }
     }
 
     if (!user) return null;
@@ -241,6 +251,20 @@ export const OrganizationSettings = ({
                                     }
                                 >
                                     <X className="h-4 w-4 mr-2" /> Leave Organization
+                                </Button>
+                            </div>
+                        </div>
+                        <div className="mt-4">
+                            <p className="mt-4 pb-1 border-b">
+                                Subscription
+                            </p>
+                            <div className="flex md:flex-row flex-col justify-center">
+                                <Button
+                                    onClick={onClick}
+                                    variant={activeOrg.subscriptionPlan !== "Gratis" ? "auth" : "premium"} className="mt-4 w-full"
+                                >
+                                    {activeOrg.subscriptionPlan !== "Gratis" ? "Pausar Subscripcion" : "Upgrade"}
+                                    {activeOrg.subscriptionPlan === "Gratis" && <Zap className="w-4 h-4 ml-2 fill-white" />}
                                 </Button>
                             </div>
                         </div>

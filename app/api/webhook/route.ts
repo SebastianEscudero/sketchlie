@@ -29,6 +29,9 @@ export async function POST(request: NextRequest) {
 
     console.log(payment.response.date_approved)
 
+    const [organizationId, planLabel] = payment.response.external_reference.split('-');
+    const subscriptionId = payment?.response?.payer.id
+
     const startDate = new Date(
         payment.response.date_approved
     );
@@ -36,28 +39,36 @@ export async function POST(request: NextRequest) {
     const endDate = addMonths(startDate, 1); // one month from the current date
 
     const OrganizationSubscription = await db.organizationSubscription.findFirst({
-        where: { organizationId: payment?.response?.external_reference }
+        where: { organizationId: organizationId }
     });
 
+    await db.organization.update({
+        where: {
+            id: organizationId
+        },
+        data: {
+            subscriptionPlan: planLabel,
+        }
+    });
 
     if (OrganizationSubscription) {
         await db.organizationSubscription.update({
             where: {
-                organizationId: payment?.response?.external_reference
+                organizationId: organizationId
             },
             data: {
-                subscriptionId: payment?.response?.payer.id,
+                subscriptionId: subscriptionId,
                 mercadoPagoCurrentPeriodEnd: endDate,
             }
-        })
+        });
     } else {
         await db.organizationSubscription.create({
             data: {
-                organizationId: payment?.response?.external_reference,
-                subscriptionId: payment?.response?.payer.id,
+                organizationId: organizationId,
+                subscriptionId: subscriptionId,
                 mercadoPagoCurrentPeriodEnd: endDate,
             }
-        })
+        });
     }
 
     return new Response(JSON.stringify({ success: true }), { status: 200 })

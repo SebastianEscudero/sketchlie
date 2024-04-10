@@ -8,6 +8,7 @@ import { MobileSidebar } from "./mobile-sidebar/mobile-sidebar";
 import { Button } from "@/components/ui/button";
 import { Zap } from "lucide-react";
 import { useProModal } from "@/hooks/use-pro-modal";
+import { checkSubscription } from "@/lib/subscription";
 
 interface NavbarProps {
     activeOrganization: string | null;
@@ -20,7 +21,7 @@ export const Navbar = ({
     setActiveOrganization,
     activeOrg
 }: NavbarProps) => {
-    const isPro = false
+    const IsbusinessPlan = activeOrg.subscriptionPlan === "Business";
     const proModal = useProModal();
     const onClick = () => {
         proModal.onOpen();
@@ -48,8 +49,8 @@ export const Navbar = ({
                     />
                 )}
                 <Button variant="premium" onClick={onClick}>
-                    {isPro ? "Pausar Subscripcion" : "Upgrade"}
-                    {!isPro && <Zap className="w-4 h-4 ml-2 fill-white"/>}
+                    {IsbusinessPlan ? "Pausar Subscripcion" : "Upgrade"}
+                    {!IsbusinessPlan && <Zap className="w-4 h-4 ml-2 fill-white"/>}
                 </Button>
                 <UserButton />
             </div>
