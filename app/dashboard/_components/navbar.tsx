@@ -8,7 +8,6 @@ import { MobileSidebar } from "./mobile-sidebar/mobile-sidebar";
 import { Button } from "@/components/ui/button";
 import { Zap } from "lucide-react";
 import { useProModal } from "@/hooks/use-pro-modal";
-import { checkSubscription } from "@/lib/subscription";
 
 interface NavbarProps {
     activeOrganization: string | null;
@@ -21,7 +20,7 @@ export const Navbar = ({
     setActiveOrganization,
     activeOrg
 }: NavbarProps) => {
-    
+
     let IsbusinessPlan = false;
 
     if (activeOrg) {
