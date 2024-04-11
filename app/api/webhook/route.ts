@@ -4,7 +4,7 @@ import { addMonths } from 'date-fns';
 import { db } from '@/lib/db';
 
 mercadopago.configure({
-    access_token: process.env.MERCADO_PAGO_API_KEY_TEST!
+    access_token: process.env.MERCADO_PAGO_API_KEY!
 });
 
 export async function POST(request: NextRequest) {
