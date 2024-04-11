@@ -20,18 +20,11 @@ export const Navbar = ({
     setActiveOrganization,
     activeOrg
 }: NavbarProps) => {
-
-    let IsbusinessPlan = false;
-
-    if (activeOrg) {
-        IsbusinessPlan = activeOrg.subscriptionPlan === "Business";
-    }
-
     const proModal = useProModal();
     const onClick = () => {
         proModal.onOpen();
     }
-
+    
     return (
         <div className="flex flex-wrap items-center gap-x-2 gap-y-2 p-3 justify-between">
             <div className="hidden lg:flex lg:flex-1">
@@ -49,14 +42,24 @@ export const Navbar = ({
             </div>
             <div className="flex items-center gap-x-2">
                 {activeOrg && (
+                    <>
                     <InviteButton 
                         activeOrganization={activeOrganization}
                     />
+                    {activeOrg.subscriptionPlan === "Gratis" && (
+                        <Button variant="premium" onClick={onClick}>
+                        Upgrade
+                        <Zap className="w-4 h-4 ml-2 fill-white"/>
+                        </Button>
+                    )}
+                    {activeOrg.subscriptionPlan === "Starter" && (
+                        <Button variant="business" onClick={onClick}>
+                        Business Plan
+                        <Zap className="w-4 h-4 ml-2 fill-white"/>
+                        </Button>
+                    )}
+                    </>
                 )}
-                <Button variant="premium" onClick={onClick}>
-                    {IsbusinessPlan ? "Pausar Subscripcion" : "Upgrade"}
-                    {!IsbusinessPlan && <Zap className="w-4 h-4 ml-2 fill-white"/>}
-                </Button>
                 <UserButton />
             </div>
         </div>

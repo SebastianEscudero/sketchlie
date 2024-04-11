@@ -56,15 +56,15 @@ export const ProModal = () => {
                                     <div className="flex flex-col gap-y-2">
                                         {organizations.map((organization) => (
                                             <DropdownMenuItem
-                                                className="w-[180px] truncate"
+                                                className="w-[200px] truncate"
                                                 key={organization.id}
                                             >
                                                 <Button
                                                     onClick={() => setSelectedOrganization(organization)}
                                                     variant="selectOrg"
                                                     className="p-0 w-full flex justify-start">
-                                                    <div className="ml-2 text-left">
-                                                        <p className="truncate text-[14px]">
+                                                    <div className="ml-2 text-left w-[180px]">
+                                                        <p className="text-[14px] truncate">
                                                             {organization.name}
                                                         </p>
                                                         <p className="truncate text-[12px] text-zinc-400">{organization.subscriptionPlan} - {organization.users.length} members </p>

@@ -80,7 +80,7 @@ export const OrganizationSwitcher = ({
                                 width={45}
                                 height={45}
                             />
-                            <div className="ml-3 truncate">
+                            <div className="ml-3 truncate w-[230px]">
                                 <p>{activeOrg.name}</p>
                             </div>
                         </div>
