@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
         const response = await fetch('https://api.mercadopago.com/preapproval_plan', {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${process.env.MERCADO_PAGO_API_KEY}`,
+                'Authorization': `Bearer ${process.env.MERCADO_PAGO_API_KEY_TEST}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
