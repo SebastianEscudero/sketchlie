@@ -20,7 +20,6 @@ export const SubscriptionButton = ({
         }
         try {
             const { data } = await axios.post("/api/mercadoPago", { organization: selectedOrganization, plan});
-            console.log(data);
             window.location.href = data.init_point;
         } catch (error) {
             console.error("Mercado Pago", error);
