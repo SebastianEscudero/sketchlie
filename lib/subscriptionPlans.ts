@@ -2,7 +2,7 @@ export const subscriptionPlans = [
     {
         label: "Gratis",
         description: "Todo lo que necesitas para empezar a colaborar.",
-        price: "0$CLP/m",
+        price: 0,
         features: {
             "Boards": "3",
             'Imagenes': "Hasta 1MB",
@@ -15,7 +15,7 @@ export const subscriptionPlans = [
     {
         label: "Starter",
         description: "Desbloquea espacios de trabajo infinitos con todas las herramientas que necesitas.",
-        price: "14.990$CLP/m",
+        price: 12990,
         features: {
             "Boards": "Ilimitados",
             'Imagenes': "Hasta 10MB",
@@ -30,7 +30,7 @@ export const subscriptionPlans = [
     {
         label: "Business",
         description: "Necesitas algo mas personalizado? Contacta con nosotros para obtener para tu empresa.",
-        price: "19.990$CLP/m",
+        price: 17990,
         features: {
             "Boards": "Ilimitados",
             'Imagenes': "Hasta 25MB",

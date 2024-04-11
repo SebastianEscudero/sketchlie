@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
             }
         })
 
-        if (OrganizationSubscription && OrganizationSubscription.subscriptionId) {
+        if (OrganizationSubscription && OrganizationSubscription.subscriptionId && plan.label === "Business") {
             const data = {
                 init_point: "https://www.mercadopago.cl/subscriptions#from-section=menu"
             }

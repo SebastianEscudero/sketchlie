@@ -51,8 +51,8 @@ const PricingPage = () => {
                                 {subscriptionPlan.description}
                             </div>
                         </div>
-                        <div className="flex font-bold text-xl">
-                            {subscriptionPlan.price}
+                        <div className="flex font-bold text-3xl">
+                            {subscriptionPlan.price}$/m
                         </div>
                         <div className="flex flex-col gap-y-2 mt-8 flex-1 mb-4">
                             <p>Todas las características del plan gratis más:</p>
