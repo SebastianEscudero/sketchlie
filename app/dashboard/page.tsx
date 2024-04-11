@@ -56,7 +56,7 @@ const DashboardPage = () => {
               ) : (
                 <BoardList
                   userId={user.id}
-                  orgId={activeOrg.id}
+                  org={activeOrg}
                   query={{search, favorites }}
                 />
               )}

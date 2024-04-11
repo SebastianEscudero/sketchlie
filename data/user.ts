@@ -49,13 +49,3 @@ export const getUserById = async (id: string) => {
     return null;
   }
 };
-
-export const getOrgById = async (id: string) => {
-  try {
-    const org = await db.organization.findUnique({ where: { id } });
-
-    return org;
-  } catch {
-    return null;
-  }
-};

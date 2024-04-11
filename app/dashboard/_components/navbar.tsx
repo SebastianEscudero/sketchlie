@@ -21,7 +21,13 @@ export const Navbar = ({
     setActiveOrganization,
     activeOrg
 }: NavbarProps) => {
-    const IsbusinessPlan = activeOrg.subscriptionPlan === "Business";
+    
+    let IsbusinessPlan = false;
+
+    if (activeOrg) {
+        IsbusinessPlan = activeOrg.subscriptionPlan === "Business";
+    }
+
     const proModal = useProModal();
     const onClick = () => {
         proModal.onOpen();

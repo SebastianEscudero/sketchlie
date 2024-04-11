@@ -10,39 +10,9 @@ import { useState } from "react";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
+import { subscriptionPlans } from "@/lib/subscriptionPlans";
 
-const subscriptionPlans = [
-    {
-        label: "Starter",
-        description: "Desbloquea espacios de trabajo infinitos con todas las herramientas que necesitas.",
-        price: 14990,
-        features: {
-            "Boards": "Ilimitados",
-            'Imagenes': "Hasta 10MB",
-            "Objetos máximos": "1000",
-            "Herramientas": "Todas",
-            "Soporte": "Básico",
-            "Export a PDF": "Sí",
-            "Equipos": "10",
-        },
-    },
-    {
-        label: "Business",
-        description: "Escala tu equipo con herramientas de colaboración avanzadas y soporte prioritario.",
-        price: 19990,
-        features: {
-            "Boards": "Ilimitados",
-            'Imagenes': "Hasta 25MB",
-            "Objetos máximos": "Ilimitados",
-            "Herramientas": "Todas",
-            "Soporte": "Básico",
-            "Export a PDF": "Sí",
-            "Equipos": "Ilimitados",
-        },
-        extraFeatures: "Proteccón de datos con inicio de sesión",
-        recommended: true
-    },
-]
+const paidPlans = subscriptionPlans.filter(plan => plan.label !== "Gratis");
 
 export const ProModal = () => {
     const proModal = useProModal();
@@ -107,7 +77,7 @@ export const ProModal = () => {
                             </DropdownMenu>
                         </div>
                         <DialogDescription className="gap-4 text-zinc-900 font-medium flex flex-col md:flex-row max-h-[700px] pt-4">
-                            {subscriptionPlans.map((subscriptionPlan) => (
+                            {paidPlans.map((subscriptionPlan) => (
                                 <Card
                                     key={subscriptionPlan.label}
                                     className={`p-5 md:flex flex-col flex-1 ${subscriptionPlan.recommended && 'border-2 border-custom-blue'}`}>

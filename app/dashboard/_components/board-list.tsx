@@ -12,7 +12,7 @@ import { EmptyBoards } from "./sidebar/empty-boards";
 
 interface BoardListProps {
   userId: string;
-  orgId: string;
+  org: any
   query: {
     search?: string;
     favorites?: string;
@@ -20,13 +20,15 @@ interface BoardListProps {
 };
 
 export const BoardList = ({
-  orgId,
+  org,
   query,
   userId,
 }: BoardListProps) => {
 
+  const orgId = org.id;
+
   const data = useQuery(api.boards.get, { 
-    orgId,
+    orgId: orgId,
     ...query,
     userId: userId,
 });
@@ -38,7 +40,7 @@ export const BoardList = ({
           {query.favorites ? "Favorite boards" : "Team boards"}
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-5 mt-8 pb-10">
-          <NewBoardButton orgId={orgId} disabled />
+          <NewBoardButton org={org} disabled />
           <BoardCard.Skeleton />
           <BoardCard.Skeleton />
           <BoardCard.Skeleton />
@@ -68,7 +70,7 @@ export const BoardList = ({
         {query.favorites ? "Favorite boards" : "Team boards"}
       </h2>
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-5 mt-8 pb-10">
-        <NewBoardButton orgId={orgId} />
+        <NewBoardButton org = {org} />
         {data?.map((board) => (
           <BoardCard
             key={board._id}

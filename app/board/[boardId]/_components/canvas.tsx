@@ -43,8 +43,11 @@ import { SelectionBox } from "./selection-box";
 import { SelectionTools } from "./selection-tools";
 import { CursorsPresence } from "./cursors-presence";
 import { useProModal } from "@/hooks/use-pro-modal";
-
-const MAX_LAYERS = 100; //max amount of stuff on the whtieboard
+import { getMaxCapas } from "@/lib/planLimits";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { Id } from "@/convex/_generated/dataModel";
+import { useCurrentUser } from "@/hooks/use-current-user";
 
 interface CanvasProps {
   boardId: string;
@@ -57,11 +60,18 @@ document.addEventListener('contextmenu', (e) => {
 export const Canvas = ({
   boardId,
 }: CanvasProps) => {
+  const board = useQuery(api.board.get, {
+    id: boardId as Id<"boards">
+  });
+  
+  const user = useCurrentUser();
+  const orgId = board?.orgId;
+  const org = user?.organizations.find(org => org.id === orgId);
+
   const [isClickingLayer, setIsClickingLayer] = useState(false);
   const [zoom, setZoom] = useState(1);
   const proModal = useProModal();
   const layerIds = useStorage((root) => root.layerIds);
-
   const [copiedLayers, setCopiedLayers] = useState<Map<string, LiveObject<any>>>(new Map());
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 }); 
 
@@ -81,7 +91,6 @@ export const Canvas = ({
 
   const [selectedImage, setSelectedImage] = useState<string>("");
   const [isUploading, setIsUploading] = useState(false);
- 
 
   useDisableScrollBounce();
   const history = useHistory();
@@ -94,7 +103,7 @@ export const Canvas = ({
     position: Point,
   ) => {
     const liveLayers = storage.get("layers");
-    if (liveLayers.size >= MAX_LAYERS) {
+    if (org && liveLayers.size >= getMaxCapas(org)) {
       proModal.onOpen();
       return;
     }
@@ -124,7 +133,7 @@ export const Canvas = ({
     selectedImage: string,
   ) => {
     const liveLayers = storage.get("layers");
-    if (liveLayers.size >= MAX_LAYERS) {
+    if (org && liveLayers.size >= getMaxCapas(org)) {
       proModal.onOpen();
       return;
     }
@@ -264,7 +273,7 @@ export const Canvas = ({
     const liveLayers = storage.get("layers");
     const { pencilDraft } = self.presence;
 
-    if (liveLayers.size >= MAX_LAYERS) {
+    if (org && liveLayers.size >= getMaxCapas(org)) {
       proModal.onOpen();
       setMyPresence({ pencilDraft: null });
       return;
@@ -541,37 +550,6 @@ export const Canvas = ({
 
   const deleteLayers = useDeleteLayers();
 
-  // useEffect(() => {
-  //   const handlePaste = (event: any) => {
-  //     const centerX = window.innerWidth / 2;
-  //     const centerY = window.innerHeight / 2;
-  //     const items = (event.clipboardData || event.originalEvent.clipboardData).items;
-  //     for (let index in items) {
-  //       const item = items[index];
-  //       if (item.kind === 'file') {
-  //         const blob = item.getAsFile();
-  //         const reader = new FileReader();
-  //         reader.onload = function(event) { 
-  //           const image = new Image();
-  //           image.onload = function() {
-  //             insertImage(LayerType.Image, { x: centerX, y: centerY }, event?.target?.result as string);
-  //           };
-  //           image.src = event?.target?.result as string;
-  //         };
-  //         reader.readAsDataURL(blob);
-  //       }
-  //     }
-  //   }
-
-  //   window.addEventListener('paste', handlePaste);
-  //   return () => {
-  //     window.removeEventListener('paste', handlePaste);
-  //   };
-  // }, [insertImage, camera]);
-
-// Add a new state variable to hold the copied layers
-
-  // Function to copy selected layers
   const copySelectedLayers = useMutation(({ storage, self }) => {
     const liveLayers = storage.get("layers");
     const copied = new Map();
@@ -589,12 +567,11 @@ export const Canvas = ({
     const liveLayers = storage.get("layers");
     const liveLayerIds = storage.get("layerIds");
   
-    if (copiedLayers.size + liveLayers.size > MAX_LAYERS) {
+    if (org && (copiedLayers.size + liveLayers.size > getMaxCapas(org))) {
       proModal.onOpen();
       return;
     }
   
-    // Find the top-left corner of the copied layers
     let minX = Infinity;
     let minY = Infinity;
     for (const layer of Array.from(copiedLayers.values())) {

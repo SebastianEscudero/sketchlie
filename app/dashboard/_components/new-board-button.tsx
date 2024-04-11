@@ -11,24 +11,27 @@ import React, { useState } from 'react';
 import { useQuery } from "convex/react";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { useCurrentUser } from "@/hooks/use-current-user";
+import { getMaxBoards } from "@/lib/planLimits";
 
 
 
 interface NewBoardButtonProps {
-    orgId: string;
+    org: any
     disabled?: boolean;
 }
 
 export const NewBoardButton = ({
-    orgId,
+    org,
     disabled,
 }: NewBoardButtonProps) => {
 
-    const maxAmountOfBoards = 4;
+    const orgId = org.id;
+
+    const maxAmountOfBoards = getMaxBoards(org);
 
     const user = useCurrentUser();
     const data = useQuery(api.boards.get, { 
-        orgId,
+        orgId: orgId,
       });
 
 
@@ -43,7 +46,7 @@ export const NewBoardButton = ({
 
     const onClick = () => {
         mutate({
-            orgId,
+            orgId: orgId,
             title,
             userId: user.id,
             userName: user.name,
@@ -58,7 +61,7 @@ export const NewBoardButton = ({
     }
 
     const onConfirm = () => {
-        if ((data?.length ?? 0) < maxAmountOfBoards) {
+        if (maxAmountOfBoards !== null && (data?.length ?? 0) < maxAmountOfBoards) {
             onClick();
         } else {
             proModal.onOpen();
