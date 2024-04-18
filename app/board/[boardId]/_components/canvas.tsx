@@ -321,15 +321,15 @@ export const Canvas = ({
     if (canvasState.mode !== CanvasMode.Resizing) {
       return;
     }
+    const liveLayers = storage.get("layers");
+    const layer = liveLayers.get(self.presence.selection[0]);
 
     const bounds = resizeBounds(
+      layer?.get("type"),
       canvasState.initialBounds,
       canvasState.corner,
       point,
     );
-
-    const liveLayers = storage.get("layers");
-    const layer = liveLayers.get(self.presence.selection[0]);
 
     if (layer) {
       layer.update(bounds);

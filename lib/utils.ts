@@ -51,6 +51,7 @@ export function colorToCss(color: Color) {
 }
 
 export function resizeBounds(
+  type: any,
   bounds: XYWH, 
   corner: Side, 
   point: Point
@@ -62,24 +63,50 @@ export function resizeBounds(
     height: bounds.height,
   };
 
-  if ((corner & Side.Left) === Side.Left) {
-    result.x = Math.min(point.x, bounds.x + bounds.width);
-    result.width = Math.abs(bounds.x + bounds.width - point.x);
-  }
+  const isCorner = corner === (Side.Top + Side.Left) || corner === (Side.Top + Side.Right) || corner === (Side.Bottom + Side.Left) || corner === (Side.Bottom + Side.Right);
+  const aspectRatio = bounds.width / bounds.height;
 
-  if ((corner & Side.Right) === Side.Right) {
-    result.x = Math.min(point.x, bounds.x);
-    result.width = Math.abs(point.x - bounds.x);
-  }
+  if (type === 3 && isCorner) {
+    let newWidth = (corner & Side.Left) === Side.Left ? Math.abs(bounds.x + bounds.width - point.x) : Math.abs(point.x - bounds.x);
+    let newHeight = newWidth / aspectRatio;
 
-  if ((corner & Side.Top) === Side.Top) {
-    result.y = Math.min(point.y, bounds.y + bounds.height);
-    result.height = Math.abs(bounds.y + bounds.height - point.y);
-  }
+    if ((corner & Side.Left) === Side.Left) {
+      result.x = bounds.x + (bounds.width - newWidth);
+      result.width = newWidth;
+    }
 
-  if ((corner & Side.Bottom) === Side.Bottom) {
-    result.y = Math.min(point.y, bounds.y);
-    result.height = Math.abs(point.y - bounds.y);
+    if ((corner & Side.Right) === Side.Right) {
+      result.width = newWidth;
+    }
+
+    if ((corner & Side.Top) === Side.Top) {
+      result.y = bounds.y + (bounds.height - newHeight);
+      result.height = newHeight;
+    }
+
+    if ((corner & Side.Bottom) === Side.Bottom) {
+      result.height = newHeight;
+    }
+  } else {
+    if ((corner & Side.Left) === Side.Left) {
+      result.x = Math.min(point.x, bounds.x + bounds.width);
+      result.width = Math.abs(bounds.x + bounds.width - point.x);
+    }
+
+    if ((corner & Side.Right) === Side.Right) {
+      result.x = Math.min(point.x, bounds.x);
+      result.width = Math.abs(point.x - bounds.x);
+    }
+
+    if ((corner & Side.Top) === Side.Top) {
+      result.y = Math.min(point.y, bounds.y + bounds.height);
+      result.height = Math.abs(bounds.y + bounds.height - point.y);
+    }
+
+    if ((corner & Side.Bottom) === Side.Bottom) {
+      result.y = Math.min(point.y, bounds.y);
+      result.height = Math.abs(point.y - bounds.y);
+    }
   }
 
   return result;
