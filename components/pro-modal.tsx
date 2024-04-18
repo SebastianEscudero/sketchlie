@@ -92,7 +92,7 @@ export const ProModal = () => {
                                                 </>
                                                 : subscriptionPlan.label}
                                         </div>
-                                        <div className="font-normal text-sm mb-auto">
+                                        <div className="text-sm mb-auto">
                                             {subscriptionPlan.description}
                                         </div>
                                     </div>

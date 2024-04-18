@@ -17,7 +17,7 @@ export const PlatformYouCanTrust = () => {
                 <div className="py-3">
                     <div className="grid grid-cols-1 grid-rows-2 lg:grid-cols-2 rounded-lg my-4">
                         <div className="md:p-7 py-6 m-2 rounded-md">
-                            <h3 className="lg:text-2xl md:text-xl text-lg flex items-center font-normal mb-1">   
+                            <h3 className="lg:text-2xl md:text-xl text-lg flex items-center mb-1">   
                                 <GaugeCircle className="mr-2 text-pink-500"/>
                                 99.99% de tiempo de actividad
                             </h3>
@@ -26,7 +26,7 @@ export const PlatformYouCanTrust = () => {
                             </p>
                         </div>
                         <div className="md:p-7 py-6 m-2 rounded-md">
-                            <h3 className="lg:text-2xl md:text-xl text-lg flex items-center font-normal mb-1">   
+                            <h3 className="lg:text-2xl md:text-xl text-lg flex items-center mb-1">   
                                 <ChevronsUp className="mr-2 text-green-500" />
                                 Colaboración con todo tu equipo
                             </h3>
@@ -35,7 +35,7 @@ export const PlatformYouCanTrust = () => {
                             </p>
                         </div>
                         <div className="md:p-7 py-6 m-2 rounded-md">
-                            <h3 className="lg:text-2xl md:text-xl text-lg flex items-center font-normal mb-1">   
+                            <h3 className="lg:text-2xl md:text-xl text-lg flex items-center mb-1">   
                                 <GanttChart className="mr-2 text-orange-500"/>
                                 Planificación de Proyectos
                             </h3>
@@ -44,7 +44,7 @@ export const PlatformYouCanTrust = () => {
                             </p>
                         </div>
                         <div className="md:p-7 py-6 m-2 rounded-md">
-                            <h3 className="lg:text-2xl md:text-xl text-lg flex items-center font-normal mb-1">   
+                            <h3 className="lg:text-2xl md:text-xl text-lg flex items-center mb-1">   
                                 <LucideLockKeyhole className="mr-2 text-custom-blue"/>
                                 Seguridad con AWS
                             </h3>

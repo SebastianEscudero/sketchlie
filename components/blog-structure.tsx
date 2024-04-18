@@ -60,17 +60,17 @@ export const BlogStructure = ({
                         }}
                     />
                 </div>
-                <p className="text-sm md:text-md xl:text-lg font-normal text-zinc-800 mx-auto">
+                <p className="text-sm md:text-md xl:text-lg text-zinc-800 mx-auto">
                     {description}
                 </p>
                 <div>
                     <Link href={"/dashboard"}>
-                        <Button variant="auth" className="md:text-lg p-4 md:p-6 font-normal">
+                        <Button variant="auth" className="md:text-lg p-4 md:p-6">
                             {user ? "Ir a Tablero" : cta}
                         </Button>
                     </Link>
                 </div>
-                <p className="text-zinc-400 text-xs md:text-sm font-normal">
+                <p className="text-zinc-400 text-xs md:text-sm">
                     No se requiere tarjeta de crédito
                 </p>
             </div>

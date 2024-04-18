@@ -151,7 +151,7 @@ export const OrgSidebar = ({
                     variant={favorites ? "ghost" : "secondary"}
                     asChild
                     size="lg"
-                    className="font-normal justify-start px-2 w-full"
+                    className="justify-start px-2 w-full"
                 >
                     <Link href="/dashboard">
                         <LayoutDashboard className="h-4 w-4 mr-2" />
@@ -162,7 +162,7 @@ export const OrgSidebar = ({
                     variant={favorites ? "secondary" : "ghost"}
                     asChild
                     size="lg"
-                    className="font-normal justify-start px-2 w-full"
+                    className="justify-start px-2 w-full"
                 >
                     <Link href={{
                         pathname: "/dashboard",

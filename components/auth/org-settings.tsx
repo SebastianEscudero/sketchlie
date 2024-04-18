@@ -205,7 +205,7 @@ export const OrganizationSettings = ({
                                     name="name"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel className="font-normal">Organization Name</FormLabel>
+                                            <FormLabel>Organization Name</FormLabel>
                                             <div className="flex flex-row space-x-4">
                                                 <FormControl className="max-w-[300px]">
                                                     <Input

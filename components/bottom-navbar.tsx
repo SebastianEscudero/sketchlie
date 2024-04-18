@@ -12,6 +12,7 @@ import {
 import { LogoSlider } from "./logo-slider";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { usePathname } from "next/navigation";
+import { FaFacebook, FaLinkedin, FaTwitter } from "react-icons/fa";
 
 const porEquipo: { title: string; href: string }[] = [
     {
@@ -171,7 +172,7 @@ export const BotNavbar = () => {
                         Sé parte de la comunidad que impulsa la innovación y la colaboración con Sketchlie. Regístrate ahora con tu correo electrónico laboral y comienza a transformar tus ideas en realidad.
                     </p>
                     <Link href={"/dashboard"}>
-                        <Button variant="auth" className="text-lg p-6 font-normal mt-10">
+                        <Button variant="auth" className="text-lg p-6 mt-10">
                             {user ? "Ir al Tablero" : "Regístrate gratis"}
                         </Button>
                     </Link>
@@ -298,6 +299,17 @@ export const BotNavbar = () => {
                         Sketchlie
                     </p>
                 </Link>
+                <div className="flex items-center flex-row justify-center space-x-4 mt-4">
+                    <Link href="https://www.facebook.com/people/Sketchlie/61558420300592/" target="_blank">
+                        <FaFacebook className="text-2xl ml-2" />
+                    </Link>
+                    <Link href="https://twitter.com/sketchlieteam" target="_blank">
+                        <FaTwitter className="text-2xl ml-2" />
+                    </Link>
+                    <Link href="https://www.linkedin.com/company/sketchlie" target="_blank">
+                        <FaLinkedin className="text-2xl ml-2" />
+                    </Link>
+                </div>
                 <p className="ml-2 text-center mt-3">
                     © 2024. Todos los derechos reservados.
                 </p>

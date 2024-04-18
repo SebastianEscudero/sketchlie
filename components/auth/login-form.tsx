@@ -112,7 +112,7 @@ export const LoginForm = () => {
                       size="sm"
                       variant="link"
                       asChild
-                      className="px-0 font-normal"
+                      className="px-0"
                     >
                       <Link href="/auth/reset">
                         Forgot password?
