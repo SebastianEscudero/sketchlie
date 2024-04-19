@@ -40,7 +40,7 @@ const LandingPage = () => {
             </Breadcrumb>
            </div>
            <h1 className="xl:text-6xl lg:text-5xl md:text-4xl text-3xl mt-20 lg:pr-20" style={{lineHeight: "1.2"}}>
-                Desata tu Creatividad con la Pizarra Virtual Online de Sketchlie
+                Colabora facilmente con la Pizarra Online de Sketchlie
             </h1>
            <Image
                 src="/placeholders/pizarra-online.png"

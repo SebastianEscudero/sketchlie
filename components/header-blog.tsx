@@ -23,9 +23,9 @@ export const HeaderBlog = ({
             <div className="flex-1 flex flex-col justify-between p-10 bg-[#1C1C1E] md:rounded-l-lg md:rounded-r-none rounded-b-md text-[#FFF]">
                 <div>
                     {isNew ? <Badge className="mb-3" variant="new">Reciente</Badge> : null} 
-                    <h2 className="mb-5 xl:text-4xl md:text-2xl text-3xl">
+                    <h1 className="mb-5 xl:text-4xl md:text-2xl text-3xl">
                         {blogTitle}
-                    </h2>
+                    </h1>
                     <p className="h-[70%] md:mb-0 mb-5 text-zinc-200 xl:text-2xl md:text-xl text-2xl">
                         {blogDescription}
                     </p>
