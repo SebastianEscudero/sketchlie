@@ -39,10 +39,10 @@ export const ImageButton = ({
         console.log(maxFileSize)
         onClick();
     };
-
-    const { startUpload } = useUploadThing(`${subscriptionPlan}`, {
+    
+    const { startUpload } = useUploadThing(subscriptionPlan, {
         onClientUploadComplete: () => {
-          toast.success("Image Processed, you can now add it to the board!");
+        toast.success("Image Processed, you can now add it to the board!");
         },
     });
 

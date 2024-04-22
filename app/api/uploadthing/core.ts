@@ -17,10 +17,10 @@ export const ourFileRouter = {
     Gratis: f({ image: { maxFileSize: "1MB", maxFileCount: 1 } })
     .middleware(() => HandleAuth())
     .onUploadComplete(() => {}),
-    Starter: f({ image: { maxFileSize: "2MB", maxFileCount: 1 } })
+    Starter: f({ image: { maxFileSize: "4MB", maxFileCount: 1 } })
     .middleware(() => HandleAuth())
     .onUploadComplete(() => {}),
-    Business: f({ image: { maxFileSize: "10MB", maxFileCount: 1 } })
+    Business: f({ image: { maxFileSize: "8MB", maxFileCount: 1 } })
     .middleware(() => HandleAuth())
     .onUploadComplete(() => {})
 
