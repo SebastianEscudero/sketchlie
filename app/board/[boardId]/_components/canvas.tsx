@@ -53,10 +53,6 @@ interface CanvasProps {
   boardId: string;
 };
 
-document.addEventListener('contextmenu', (e) => {
-  e.preventDefault();
-});
-
 export const Canvas = ({
   boardId,
 }: CanvasProps) => {
@@ -368,6 +364,7 @@ export const Canvas = ({
     const y = e.clientY - svgRect.top; // calculate the y value relative to the SVG canvas
   
     if (e.ctrlKey) {
+      e.preventDefault();
   
       let newZoom = zoom;
       if (e.deltaY < 0) {
@@ -646,6 +643,20 @@ export const Canvas = ({
       document.removeEventListener("keydown", onKeyDown)
     }
   }, [copySelectedLayers, pasteCopiedLayers, deleteLayers, history, mousePosition, isClickingLayer]);
+
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      const handleContextMenu = (e: MouseEvent) => {
+        e.preventDefault();
+      };
+  
+      document.addEventListener('contextmenu', handleContextMenu);
+  
+      return () => {
+        document.removeEventListener('contextmenu', handleContextMenu);
+      };
+    }
+  }, []);
 
   return (
     <main

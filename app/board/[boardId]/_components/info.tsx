@@ -5,22 +5,17 @@ import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { cn } from "@/lib/utils";
 import { useQuery } from "convex/react";
-import { Poppins } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 import { Hint } from "@/components/hint";
 import { useRenameModal } from "@/store/use-rename-modal";
-import { Menu } from "lucide-react";
+import { Menu, Zap } from "lucide-react";
 import { Actions } from "@/components/actions";
+import { useProModal } from "@/hooks/use-pro-modal";
 
 interface InfoProps {
     boardId: string;
 }
-
-const font = Poppins({
-    subsets: ["latin"],
-    weight: ["600"],
-});
 
 const TabSeparator = () => {
     return(
@@ -36,7 +31,7 @@ export const Info = ({
 }: InfoProps) => {
 
     const { onOpen } = useRenameModal();
-
+    const proModal = useProModal();
     const data = useQuery(api.board.get, {
         id: boardId as Id<"boards">
     });
@@ -54,10 +49,7 @@ export const Info = ({
                         height={40}
                         width={40}
                         />
-                        <span className={cn(
-                            "font-semibold text-xl ml-2 text-black",
-                            font.className
-                        )}>
+                        <span className="font-semibold text-xl ml-2 text-black">
                             Sketchlie
                         </span>
                     </Link>
@@ -79,6 +71,14 @@ export const Info = ({
                     </Hint>
                 </div>
             </Actions>
+            <TabSeparator />
+            <Hint label="Upgrade" side="bottom" sideOffset={10}>
+                <Button variant="board"
+                    onClick={proModal.onOpen}
+                >
+                    <Zap className="h-5 w-5 fill-custom-blue text-custom-blue"/>
+                </Button>
+            </Hint>
         </div>
     )
 }
