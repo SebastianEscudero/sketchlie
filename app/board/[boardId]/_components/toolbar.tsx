@@ -27,6 +27,7 @@ import { Dispatch, SetStateAction } from "react";
     redo: () => void;
     canUndo: boolean;
     canRedo: boolean;
+    org: any;
   };
   
   export const Toolbar = ({
@@ -38,7 +39,8 @@ import { Dispatch, SetStateAction } from "react";
     redo,
     canUndo,
     canRedo,
-    onImageSelect
+    onImageSelect,
+    org,
   }: ToolbarProps) => {
     return (
       <div className="absolute top-[50%] -translate-y-[50%] left-2 flex flex-col gap-y-4">
@@ -106,6 +108,7 @@ import { Dispatch, SetStateAction } from "react";
             }
           />
           <ImageButton 
+            org={org}
             isUploading={isUploading} 
             setIsUploading={setIsUploading}
             onImageSelect={onImageSelect}

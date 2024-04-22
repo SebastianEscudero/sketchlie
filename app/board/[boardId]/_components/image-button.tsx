@@ -6,6 +6,7 @@ import { LucideIcon } from "lucide-react";
 import { toast } from "sonner"
 import { useUploadThing } from "@/lib/uploadthingutil";
 import { useRef, Dispatch, SetStateAction } from "react";
+import { getMaxImageSize } from "@/lib/planLimits";
 
 
 interface ImageButtonProps {
@@ -17,10 +18,10 @@ interface ImageButtonProps {
     isActive?: boolean;
     isDisabled?: boolean;
     setIsUploading: Dispatch<SetStateAction<boolean>>;
+    org: any;
 };
 
 export const ImageButton = ({
-    isUploading,
     setIsUploading,
     label,
     icon: Icon,
@@ -28,16 +29,18 @@ export const ImageButton = ({
     isActive,
     isDisabled,
     onImageSelect,
+    org
 }: ImageButtonProps) => {
     const inputFileRef = useRef<HTMLInputElement>(null);
-    const maxFileSizeInBytes = 1024 * 1024; // 1MB
-
+    const maxFileSize = org && getMaxImageSize(org) || 0;
+    const subscriptionPlan = org && org.subscriptionPlan || null;
     const handleButtonClick = () => {
         inputFileRef.current?.click();
+        console.log(maxFileSize)
         onClick();
     };
 
-    const { startUpload } = useUploadThing("Image", {
+    const { startUpload } = useUploadThing(`${subscriptionPlan}`, {
         onClientUploadComplete: () => {
           toast.success("Image Processed, you can now add it to the board!");
         },
@@ -52,10 +55,10 @@ export const ImageButton = ({
         }
     
         // Check file size
-        const fileSizeInBytes = e.target.files[0].size;
-        if (fileSizeInBytes > maxFileSizeInBytes) {
+        const fileSizeInMB = e.target.files[0].size / 1024 / 1024;
+        if (fileSizeInMB > maxFileSize) {
             setIsUploading(false);
-            toast.error("File size has to be lower than 1MB. Please try again.");
+            toast.error(`File size has to be lower than ${maxFileSize}MB. Please try again.`);
             return;
         }
     

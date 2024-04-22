@@ -14,9 +14,17 @@ const HandleAuth = async () => {
  
 // FileRouter for your app, can contain multiple FileRoutes
 export const ourFileRouter = {
-    Image: f({ image: { maxFileSize: "1MB", maxFileCount: 1 } })
+    Gratis: f({ image: { maxFileSize: "1MB", maxFileCount: 1 } })
+    .middleware(() => HandleAuth())
+    .onUploadComplete(() => {}),
+    Starter: f({ image: { maxFileSize: "2MB", maxFileCount: 1 } })
+    .middleware(() => HandleAuth())
+    .onUploadComplete(() => {}),
+    Business: f({ image: { maxFileSize: "10MB", maxFileCount: 1 } })
     .middleware(() => HandleAuth())
     .onUploadComplete(() => {})
+
+    
 } satisfies FileRouter;
  
 export type OurFileRouter = typeof ourFileRouter;

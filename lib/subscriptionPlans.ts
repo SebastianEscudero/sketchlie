@@ -5,7 +5,7 @@ export const subscriptionPlans = [
         price: 0,
         features: {
             "Boards": "3",
-            'Imagenes': "Hasta 1MB",
+            'Imágenes': "Hasta 1MB",
             "Capas máximas": "200",
             "Herramientas": "Basicas",
             "Teams": "1",
@@ -18,7 +18,7 @@ export const subscriptionPlans = [
         price: 12990,
         features: {
             "Boards": "Ilimitados",
-            'Imagenes': "Hasta 10MB",
+            'Imágenes': "Hasta 2MB",
             "Capas máximas": "1000",
             "Herramientas": "Todas",
             "Soporte": "Básico",
@@ -33,7 +33,7 @@ export const subscriptionPlans = [
         price: 17990,
         features: {
             "Boards": "Ilimitados",
-            'Imagenes': "Hasta 25MB",
+            'Imágenes': "Hasta 10MB",
             "Capas máximas": "Ilimitados",
             "Herramientas": "Todas",
             "Soporte": "Básico",

@@ -674,6 +674,7 @@ export const Canvas = ({
         canUndo={canUndo}
         undo={history.undo}
         redo={history.redo}
+        org={org}
       />
       <SelectionTools
         zoom={zoom}

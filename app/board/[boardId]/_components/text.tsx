@@ -8,8 +8,6 @@ const calculateFontSize = (width: number, height: number) => {
     const scaleFactor = 0.4;
     const fontSizeBasedOnHeight = height * scaleFactor;
     const fontSizeBasedOnWidth = width * scaleFactor;
-    const ratio = width / height;
-    console.log(ratio)
     return Math.min(
       fontSizeBasedOnHeight, 
       fontSizeBasedOnWidth
