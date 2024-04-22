@@ -59,9 +59,12 @@ export const OrgSidebar = ({
                 <div className="flex items-center">
                     <DropdownMenu>
                         <DropdownMenuTrigger className="flex outline-none">
-                            <Button
-                                className="text-[16px]"
-                                variant={subscriptionPlan === "Gratis" ? "gratis" : subscriptionPlan === "Starter" ? "starter" : "business"}
+                            <div
+                                className={`text-[16px] px-2 py-1 rounded-md ${
+                                    subscriptionPlan === "Gratis" ? "bg-accent text-accent-foreground hover:bg-accent/90" :
+                                    subscriptionPlan === "Starter" ? "bg-yellow-500 text-black hover:bg-yellow-600" :
+                                    "bg-[#1C1C1E] text-white hover:text-accent-foreground hover:bg-accent/90"
+                                }`}
                             >
                                 <span className={cn(
                                     "text-lg",
@@ -69,11 +72,11 @@ export const OrgSidebar = ({
                                 )}>
                                     Plan {subscriptionPlan}
                                 </span>
-                            </Button>
+                            </div>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="start">
                             <div className="px-3 py-2 flex flex-col space-y-3">
-                                <p className="font-semibold">{activeOrg.name} esta con plan {subscriptionPlan}</p>
+                                <p className="font-semibold">{activeOrg.name} está con plan {subscriptionPlan}</p>
                                 <div className="text-sm space-y-2">
                                     {subscriptionPlan === "Gratis" && (
                                         <div className="flex flex-col gap-y-2">

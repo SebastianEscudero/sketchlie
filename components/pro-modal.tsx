@@ -44,13 +44,12 @@ export const ProModal = () => {
                             <p>Choose organization to upgrade:</p>
                             <DropdownMenu>
                                 <DropdownMenuTrigger>
-                                    <Button
-                                        variant="selectOrg"
-                                        className="text-2xl ml-1"
+                                    <div
+                                        className="text-2xl flex flex-row items-center ml-3 text-custom-blue hover:bg-accent p-2 rounded-md"
                                     >
                                         {selectedOrganization.name || "Select organization"}
                                         <ChevronsDown className="ml-2"/>
-                                    </Button>
+                                    </div>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent>
                                     <div className="flex flex-col gap-y-2">

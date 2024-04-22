@@ -15,17 +15,17 @@ export const NewOrgButton = ({
 }: NewOrgButtonProps) => {
 
   return (
-        <Dialog>
-            <DialogTrigger>
-                <Hint label="Create Organization" side="right" align="start" sideOffset={18}>
-                    <button className="bg-white/25 sm:h-[36px] sm:w-[36px] h-[45px] w-[45px] rounded-md flex items-center justify-center opacity-60 hover:opacity-100 transition">
-                        <Plus className="text-white sm:h-6 sm:w-6 h-8 w-8"/>
-                    </button>
-                </Hint>
-            </DialogTrigger>
-            <CreateOrganization 
-                setActiveOrganization={setActiveOrganization}
-            />
-        </Dialog>
+    <Dialog>
+        <DialogTrigger>
+            <Hint label="Create Organization" side="right" align="start" sideOffset={18}>
+                <div className="bg-white/25 sm:h-[36px] sm:w-[36px] h-[45px] w-[45px] rounded-md flex items-center justify-center opacity-60 hover:opacity-100 transition">
+                    <Plus className="text-white sm:h-6 sm:w-6 h-8 w-8"/>
+                </div>
+            </Hint>
+        </DialogTrigger>
+        <CreateOrganization 
+            setActiveOrganization={setActiveOrganization}
+        />
+    </Dialog>
   );
 };
