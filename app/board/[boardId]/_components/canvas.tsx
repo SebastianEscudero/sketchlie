@@ -368,7 +368,6 @@ export const Canvas = ({
     const y = e.clientY - svgRect.top; // calculate the y value relative to the SVG canvas
   
     if (e.ctrlKey) {
-      e.preventDefault();
   
       let newZoom = zoom;
       if (e.deltaY < 0) {

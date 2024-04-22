@@ -5,11 +5,6 @@ import { NoteLayer } from "@/types/canvas";
 import { cn, colorToCss, getContrastingTextColor } from "@/lib/utils";
 import { useMutation } from "@/liveblocks.config";
 
-const font = Kalam({
-  subsets: ["latin"],
-  weight: ["400"],
-});
-
 const calculateFontSize = (width: number, height: number) => {
   const maxFontSize = 96;
   const scaleFactor = 0.15;
@@ -83,10 +78,7 @@ export const Note = ({
         html={value || "Text"}
         onChange={handleContentChange}
         onPaste={handlePaste}
-        className={cn(
-          "h-full w-full flex items-center justify-center text-center outline-none",
-          font.className
-        )}
+        className="h-full w-full flex items-center justify-center text-center outline-none"
         style={{
           fontSize: calculateFontSize(width, height),
           color: fill ? getContrastingTextColor(fill) : "#000",
