@@ -72,11 +72,11 @@ export const Testimonials = () => {
                     </CardTitle>
                     <CardContent className="px-0 text-lg font-semibold">
                         <div className="flex justify-start mb-2">
-                                <Star fill="#EAB308"/>
-                                <Star fill="#EAB308"/>
-                                <Star fill="#EAB308"/>
-                                <Star fill="#EAB308"/>
-                                <Star fill="#EAB308"/>
+                                <Star fill="#EAB308" className="w-4 h-4"/>
+                                <Star fill="#EAB308" className="w-4 h-4"/>
+                                <Star fill="#EAB308" className="w-4 h-4"/>
+                                <Star fill="#EAB308" className="w-4 h-4"/>
+                                <Star fill="#EAB308" className="w-4 h-4"/>
                             </div>
                         {item.description}
                     </CardContent>
