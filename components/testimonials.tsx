@@ -5,37 +5,38 @@ import {
     CarouselItem,
   } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
+import { Star } from "lucide-react";
 
 const testimonials = [
     {
-        name: "Maximilian Smith",
+        name: "Max Smith",
         avatar: "M",
         title: "CRM Manager",
         description: `"Sketchlie is awesome!. It helps me enhance the overall editing process and collaborate with my team in real time."`
     },
     {
-        name: "Paula Verastegui",
-        avatar: "P",
+        name: "Alonso Rodríguez",
+        avatar: "A",
         title: "Teacher",
         description: `"Sketchlie is a great tool for educators. It helps me create engaging and interactive lessons for my students."`
     },
     {
-        name: "Matheus Kasakoff",
-        avatar: "M",
+        name: "Fernando Garcia",
+        avatar: "f",
         title: "Student",
         description: `"Sketchlie is a game-changer for me. It helps me understand complex concepts and solve problems in a fun and interactive way."`
     },
     {
-        name: "Sebastián Kopp",
-        avatar: "S",
-        title: "Designer",
-        description: `"I love using Sketchlie to create and share my ideas and projects in real time. It is a great tool for professionals and students."`
+        name: "Diego Escudero",
+        avatar: "D",
+        title: "Engineer",
+        description: `"Sketchlie is an invaluable resource for professionals. It streamlines my workflow and fosters effective team collaboration."`
     },
     {
         name: "Mariana Sánchez",
         avatar: "M",
-        title: "Engineer",
-        description: `"Sketchlie is an invaluable resource for professionals. It streamlines my workflow and fosters effective team collaboration."`
+        title: "Designer",
+        description: `"I love using Sketchlie to create and share my ideas and projects in real time. It is a great tool for professionals and students."`
     },
     {
         name: "Javier Pérez",
@@ -61,15 +62,22 @@ export const Testimonials = () => {
                 <Card key={item.description} className="bg-[#FFFFFF] border-black text-black rounded-2xl lg:mx-[30%] sm:mx-[10%] mx-[2%]">
                     <CardHeader>
                     <CardTitle className="flex gap-x-2">
-                        <div className="flex items-center justify-center w-9 h-9 bg-gray-300 rounded-full">
-                            <p className="text-black font-bold lg:text-lg text-md">{item.avatar}</p>
+                        <div className="flex items-center justify-center w-9 h-9 bg-custom-blue rounded-full">
+                            <p className="text-white font-bold text-sm text-md">{item.avatar}</p>
                         </div>
                         <div>
-                            <p className="lg:text-sm text-xs">{item.name}</p>
-                            <p className="text-[#535151] lg:text-sm text-xs">{item.title}</p>
+                            <p className="text-sm">{item.name}</p>
+                            <p className="text-[#535151] text-sm">{item.title}</p>
                         </div>
                     </CardTitle>
-                    <CardContent className="pt-4 px-0 text-xs lg:text-sm">
+                    <CardContent className="px-0 text-lg font-semibold">
+                        <div className="flex justify-start mb-2">
+                                <Star fill="#EAB308"/>
+                                <Star fill="#EAB308"/>
+                                <Star fill="#EAB308"/>
+                                <Star fill="#EAB308"/>
+                                <Star fill="#EAB308"/>
+                            </div>
                         {item.description}
                     </CardContent>
                     </CardHeader>

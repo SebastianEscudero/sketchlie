@@ -22,6 +22,7 @@ import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { organization } from "@/actions/organization";
 import { useProModal } from "@/hooks/use-pro-modal";
+import { getMaxOrganizations } from "@/lib/planLimits";
 
 interface CreateOrganizationProps {
     setActiveOrganization: (id: string) => void;
@@ -36,6 +37,8 @@ export const CreateOrganization = ({
     const [success, setSuccess] = useState<string | undefined>();
     const { update } = useSession();
     const [isPending, startTransition] = useTransition();
+    const proModal = useProModal();
+    const maxOrganizations = getMaxOrganizations(user);
 
     const form = useForm<z.infer<typeof OrganizationSchema>>({
         resolver: zodResolver(OrganizationSchema),
@@ -44,8 +47,6 @@ export const CreateOrganization = ({
         }
     });
 
-    const proModal = useProModal();
-
     if (!user) {
         setError("Unauthorized");
         return;
@@ -53,7 +54,7 @@ export const CreateOrganization = ({
 
     const onSubmit = (values: z.infer<typeof OrganizationSchema>) => {
 
-        if (user.organizations.length >= 3) {
+        if (user.organizations.length >= maxOrganizations) {
             proModal.onOpen();
         } else {
             setError("");

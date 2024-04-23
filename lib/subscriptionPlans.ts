@@ -9,7 +9,6 @@ export const subscriptionPlans = [
             "Capas máximas": "200",
             "Herramientas": "Basicas",
             "Teams": "1",
-            "Team members": "Ilimitados",
         }
     },
     {
@@ -22,9 +21,7 @@ export const subscriptionPlans = [
             "Capas máximas": "1000",
             "Herramientas": "Todas",
             "Soporte": "Básico",
-            "Export a PDF": "Sí",
             "Teams": "10",
-            "Team members": "Ilimitados",
         },
     },
     {
@@ -36,10 +33,8 @@ export const subscriptionPlans = [
             'Imágenes': "Hasta 8MB",
             "Capas máximas": "Ilimitados",
             "Herramientas": "Todas",
-            "Soporte": "Básico",
-            "Export a PDF": "Sí",
+            "Soporte": "Avanzado",
             "Teams": "Ilimitados",
-            "Team members": "Ilimitados",
         },
         extraFeatures: "Proteccón de datos con inicio de sesión único",
         recommended: true
