@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
 import { TextLayer } from "@/types/canvas";
-import { colorToCss } from "@/lib/utils";
+import { cn, colorToCss } from "@/lib/utils";
 import { useMutation } from "@/liveblocks.config";
+import { Kalam } from "next/font/google";
 
 const calculateFontSize = (width: number, height: number) => {
     const scaleFactor = 0.4;
@@ -14,6 +15,10 @@ const calculateFontSize = (width: number, height: number) => {
     );
 }
 
+const font = Kalam({
+    subsets: ["latin"],
+    weight: ["400"],
+});
 
 interface TextProps {
     id: string;
@@ -106,7 +111,10 @@ export const Text = ({
                 onChange={handleContentChange}
                 onPaste={handlePaste}
                 onKeyDown={handleKeyDown}
-                className="outline-none w-full h-full text-center justify-center items-center flex"
+                className={cn(
+                    "outline-none w-full h-full text-center justify-center items-center flex",
+                    font.className
+                )}
                 style={{
                     fontSize: fontSize,
                     color: colorToCss(fill) === "transparent" ? "#000" : colorToCss(fill),
