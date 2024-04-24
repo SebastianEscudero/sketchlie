@@ -1,5 +1,6 @@
 import { 
     Circle, 
+    Hand, 
     Image, 
     MousePointer2, 
     Pencil, 
@@ -57,6 +58,16 @@ import { Dispatch, SetStateAction } from "react";
               canvasState.mode === CanvasMode.SelectionNet ||
               canvasState.mode === CanvasMode.Pressing ||
               canvasState.mode === CanvasMode.Resizing
+            }
+          />
+          <ToolButton
+            label="Move"
+            icon={Hand}
+            onClick={() => setCanvasState({ 
+              mode: CanvasMode.Moving
+            })}
+            isActive={
+              canvasState.mode === CanvasMode.Moving
             }
           />
           <ToolButton

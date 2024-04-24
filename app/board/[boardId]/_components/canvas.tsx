@@ -393,7 +393,7 @@ export const Canvas = ({
     e: React.PointerEvent
   ) => {
     e.preventDefault();
-    if (isPanning) {
+    if (canvasState.mode === CanvasMode.Moving && isPanning) {
       const newCameraPosition = {
         x: camera.x + e.clientX - startPanPoint.x,
         y: camera.y + e.clientY - startPanPoint.y,
@@ -438,10 +438,20 @@ export const Canvas = ({
     const point = pointerEventToCanvasPoint(e, camera, zoom);
 
     if (e.button === 0) {
+      if (canvasState.mode === CanvasMode.Moving) {
+        setIsPanning(true);
+        setStartPanPoint({ x: e.clientX, y: e.clientY });
+        document.body.style.cursor = 'grabbing';
+      }
+
       if (canvasState.mode === CanvasMode.Inserting) {
         return;
       }
   
+      if (canvasState.mode === CanvasMode.Moving) {
+        return;
+      }
+      
       if (canvasState.mode === CanvasMode.Pencil) {
         startDrawing(point, e.pressure);
         return;
@@ -449,19 +459,18 @@ export const Canvas = ({
   
       setCanvasState({ origin: point, mode: CanvasMode.Pressing });
     } else if (e.button === 2) {
-      setIsPanning(true);
-      setStartPanPoint({ x: e.clientX, y: e.clientY });
-      document.body.style.cursor = 'grabbing';
+        setCanvasState({ mode: CanvasMode.Moving });
     }}, [camera, canvasState.mode, setCanvasState, startDrawing, setIsPanning, zoom]);
 
   const onPointerUp = useMutation((
     {},
     e
   ) => {
-    setIsPanning(false);
     document.body.style.cursor = 'default';
     const point = pointerEventToCanvasPoint(e, camera, zoom);
-
+    if (canvasState.mode === CanvasMode.Moving) {
+      document.body.style.cursor = 'pointer';
+    }
     if (
       canvasState.mode === CanvasMode.None ||
       canvasState.mode === CanvasMode.Pressing
@@ -478,6 +487,8 @@ export const Canvas = ({
       insertImage(LayerType.Image, point, selectedImage);
     } else if (canvasState.mode === CanvasMode.Inserting && canvasState.layerType !== LayerType.Image) {
       insertLayer(canvasState.layerType, point);
+    } else if (canvasState.mode === CanvasMode.Moving) {
+      setIsPanning(false);
     } else {
       setCanvasState({
         mode: CanvasMode.None,
@@ -657,6 +668,14 @@ export const Canvas = ({
       };
     }
   }, []);
+
+  useEffect(() => {
+    if (canvasState.mode === CanvasMode.Moving) {
+      document.body.style.cursor = 'pointer';
+    } else {
+      document.body.style.cursor = 'default';
+    }
+  }, [canvasState.mode]);
 
   return (
     <main

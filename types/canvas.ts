@@ -128,7 +128,10 @@ export type Color = {
         mode: CanvasMode.Resizing,
         initialBounds: XYWH;
         corner: Side;
-      };
+      }
+    | {
+        mode: CanvasMode.Moving,
+    }
   
   export enum CanvasMode {
     None,
@@ -138,6 +141,7 @@ export type Color = {
     Inserting,
     Resizing,
     Pencil,
+    Moving
   };
   
   export type Layer = RectangleLayer | EllipseLayer | PathLayer | TextLayer | NoteLayer | ImageLayer;
