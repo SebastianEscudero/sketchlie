@@ -77,6 +77,7 @@ export const Canvas = ({
   });
   const [camera, setCamera] = useState<Camera>({ x: 0, y: 0 });
   const [isPanning, setIsPanning] = useState(false);
+  const [rightClickPanning, setIsRightClickPanning] = useState(false);
   const [startPanPoint, setStartPanPoint] = useState({ x: 0, y: 0 });
 
   const [lastUsedColor, setLastUsedColor] = useState<Color>({
@@ -360,8 +361,8 @@ export const Canvas = ({
 
   const onWheel = useCallback((e: React.WheelEvent) => {
     const svgRect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - svgRect.left; // calculate the x value relative to the SVG canvas
-    const y = e.clientY - svgRect.top; // calculate the y value relative to the SVG canvas
+    const x = e.clientX - svgRect.left; 
+    const y = e.clientY - svgRect.top; 
   
     if (e.ctrlKey) {
       e.preventDefault();
@@ -393,6 +394,16 @@ export const Canvas = ({
     e: React.PointerEvent
   ) => {
     e.preventDefault();
+
+    if (rightClickPanning) {
+      const newCameraPosition = {
+        x: camera.x + e.clientX - startPanPoint.x,
+        y: camera.y + e.clientY - startPanPoint.y,
+      };
+      setCamera(newCameraPosition);
+      setStartPanPoint({ x: e.clientX, y: e.clientY });
+    }
+
     if (canvasState.mode === CanvasMode.Moving && isPanning) {
       const newCameraPosition = {
         x: camera.x + e.clientX - startPanPoint.x,
@@ -426,6 +437,7 @@ export const Canvas = ({
     startMultiSelection,
     updateSelectionNet,
     isPanning,
+    rightClickPanning,
   ]);
 
   const onPointerLeave = useMutation(({ setMyPresence }) => {
@@ -459,13 +471,16 @@ export const Canvas = ({
   
       setCanvasState({ origin: point, mode: CanvasMode.Pressing });
     } else if (e.button === 2) {
-        setCanvasState({ mode: CanvasMode.Moving });
-    }}, [camera, canvasState.mode, setCanvasState, startDrawing, setIsPanning, zoom]);
+      setIsRightClickPanning(true);
+      setStartPanPoint({ x: e.clientX, y: e.clientY });
+      document.body.style.cursor = 'grabbing';
+    }}, [camera, canvasState.mode, setCanvasState, startDrawing, setIsPanning, setIsRightClickPanning, zoom]);
 
   const onPointerUp = useMutation((
     {},
     e
   ) => {
+    setIsRightClickPanning(false);
     document.body.style.cursor = 'default';
     const point = pointerEventToCanvasPoint(e, camera, zoom);
     if (canvasState.mode === CanvasMode.Moving) {
