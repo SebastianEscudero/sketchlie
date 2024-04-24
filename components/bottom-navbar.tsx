@@ -309,7 +309,7 @@ export const BotNavbar = () => {
                     <Link href="https://www.linkedin.com/company/sketchlie" target="_blank">
                         <FaLinkedin className="text-2xl ml-2" />
                     </Link>
-                    <Link href="http://www.instagram.com/sketchlieux">
+                    <Link href="http://www.instagram.com/sketchlieux" target="_blank">
                         <FaInstagram className="text-2xl ml-2" />
                     </Link>
                 </div>
