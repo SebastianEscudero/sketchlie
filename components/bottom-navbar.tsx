@@ -12,7 +12,7 @@ import {
 import { LogoSlider } from "./logo-slider";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { usePathname } from "next/navigation";
-import { FaFacebook, FaLinkedin, FaTwitter } from "react-icons/fa";
+import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
 
 const porEquipo: { title: string; href: string }[] = [
     {
@@ -308,6 +308,9 @@ export const BotNavbar = () => {
                     </Link>
                     <Link href="https://www.linkedin.com/company/sketchlie" target="_blank">
                         <FaLinkedin className="text-2xl ml-2" />
+                    </Link>
+                    <Link href="http://www.instagram.com/sketchlieux">
+                        <FaInstagram className="text-2xl ml-2" />
                     </Link>
                 </div>
                 <p className="ml-2 text-center mt-3">
