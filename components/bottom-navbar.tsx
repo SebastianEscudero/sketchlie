@@ -153,7 +153,7 @@ const queEs: { title: string; href: string }[] = [
         href: "/wireframe/que-es-wireframe"
     },
     {
-        title: "Customer Journey Map ",
+        title: "Customer J. Map",
         href: "/customer-journey-map/que-es-customer-journey-map",
     }
 ]

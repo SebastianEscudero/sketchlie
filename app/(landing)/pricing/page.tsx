@@ -19,7 +19,7 @@ const plans = subscriptionPlans
 
 const PricingPage = () => {
     return (
-        <div className="flex flex-col justify-center items-center mt-14 xl:mx-[15%] lg:mx-[8%] mx-[2%]">
+        <div className="flex flex-col justify-center items-center mt-14 xl:mx-[15%] lg:mx-[5%] mx-[2%]">
             <div className="flex items-center gap-x-2 font-semibold text-5xl">
                 <h1>Sketchlie</h1>
                 <Zap className="w-8 h-8 text-custom-blue fill-custom-blue mt-2" />
