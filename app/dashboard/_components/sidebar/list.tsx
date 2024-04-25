@@ -21,6 +21,7 @@ export const List = ({
         <ul className={`space-y-4 ${hasOrganizations ? 'sm:mb-4 mb:0' : ''}`}>
             {user?.organizations.map((org) => (
                 <Item 
+                    plan={org.subscriptionPlan}
                     key={org.id} 
                     id={org.id} 
                     name={org.name} 

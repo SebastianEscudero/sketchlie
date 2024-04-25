@@ -19,15 +19,29 @@ import { acceptInvite } from "@/actions/accept-invite";
 import { useSession } from "next-auth/react";
 import { rejectInvite } from "@/actions/reject-invite";
 
+function getPlanColor(plan: string) {
+    switch (plan) {
+        case 'Gratis':
+            return { color: '6C47FF', letterColor: 'FFFFFF' };
+        case 'Starter':
+            return { color: 'F59E0B', letterColor: '000000' };
+        case 'Business':
+            return { color: '000000', letterColor: 'FFFFFF' };
+        default:
+            return { color: '6C47FF', letterColor: 'FFFFFF' };
+    }
+}
 
 interface OrganizationSwitcherProps {
     activeOrganization: string | null;
     setActiveOrganization: (id: string) => void;
+    plan: string;
 }
 
 export const OrganizationSwitcher = ({
     activeOrganization,
     setActiveOrganization,
+    plan
 }: OrganizationSwitcherProps) => {
     const user = useCurrentUser();
     const { update } = useSession();
@@ -36,8 +50,27 @@ export const OrganizationSwitcher = ({
 
     const activeOrg = user?.organizations.find(org => org.id === activeOrganization);
     const otherOrgs = user.organizations.filter(org => org.id !== activeOrganization);
-    const Initial = activeOrg?.name.charAt(0).toUpperCase();
     const invitations = user.invitations;
+
+    const Initial = activeOrg?.name.charAt(0).toUpperCase();
+    let Color, LetterColor;
+    switch (plan) {
+        case 'Gratis':
+            Color = '6C47FF';
+            LetterColor = 'FFFFFF';
+            break;
+        case 'Starter':
+            Color = 'F59E0B';
+            LetterColor = '000000';
+            break;
+        case 'Business':
+            Color = '000000';
+            LetterColor = 'FFFFFF';
+            break;
+        default:
+            Color = '6C47FF';
+            LetterColor = '000000';
+    }
 
     return (
         <DropdownMenu>
@@ -48,7 +81,7 @@ export const OrganizationSwitcher = ({
                             <Image
                                 fill
                                 alt={activeOrg.name}
-                                src={`https://img.clerk.com/preview.png?size=144&seed=seed&initials=${Initial}&isSquare=true&bgType=marble&bgColor=6c47ff&fgType=initials&fgColor=FFFFFF&type=organization&w=48&q=75`}
+                                src={`https://img.clerk.com/preview.png?size=144&seed=seed&initials=${Initial}&isSquare=true&bgType=marble&bgColor=${Color}&fgType=initials&fgColor=${LetterColor}&type=organization&w=48&q=75`}
                                 className="rounded-md"
                             />
                         </div>
@@ -75,7 +108,7 @@ export const OrganizationSwitcher = ({
                         <div className="flex mb-3 items-center p-5 pb-0">
                             <Image
                                 alt={activeOrg.name}
-                                src={`https://img.clerk.com/preview.png?size=144&seed=seed&initials=${Initial}&isSquare=true&bgType=marble&bgColor=6c47ff&fgType=initials&fgColor=FFFFFF&type=organization&w=48&q=75`}
+                                src={`https://img.clerk.com/preview.png?size=144&seed=seed&initials=${Initial}&isSquare=true&bgType=marble&bgColor=${Color}&fgType=initials&fgColor=${LetterColor}&type=organization&w=48&q=75`}
                                 className="rounded-md"
                                 width={45}
                                 height={45}
@@ -93,6 +126,7 @@ export const OrganizationSwitcher = ({
                             </div>
                             <DialogContent className="min-h-[500px] w-full max-w-[768px]">
                                 <OrganizationSettings
+                                    plan={plan}
                                     setActiveOrganization={setActiveOrganization}
                                     activeOrganization={activeOrganization}
                                 />
@@ -151,25 +185,28 @@ export const OrganizationSwitcher = ({
                 )}
                 {otherOrgs.length > 0 && (
                     <div className="py-2">
-                        {otherOrgs.map((org) => (
-                            <DropdownMenuItem
-                                onClick={() => setActiveOrganization(org.id)}
-                                key={org.id}
-                                className="py-1.5 px-5 flex items-center hover:bg-zinc-100 cursor-pointer"
-                            >
-                                <Image
-                                    alt={org.name}
-                                    src={`https://img.clerk.com/preview.png?size=144&seed=seed&initials=${org.name.charAt(0).toUpperCase()}&isSquare=true&bgType=marble&bgColor=6c47ff&fgType=initials&fgColor=FFFFFF&type=organization&w=48&q=75`}
-                                    className="rounded-md flex-shrink-0"
-                                    width={35}
-                                    height={35}
-                                />
-                                <p className="ml-5 text-sm truncate">
-                                    {org.name}
-                                </p>
-                                <ArrowLeftRight className="h-4 w-4 ml-auto text-zinc-400" />
-                            </DropdownMenuItem>
-                        ))}
+                        {otherOrgs.map((org) => {
+                            const { color, letterColor } = getPlanColor(org.subscriptionPlan);
+                            return (
+                                <DropdownMenuItem
+                                    onClick={() => setActiveOrganization(org.id)}
+                                    key={org.id}
+                                    className="py-1.5 px-5 flex items-center hover:bg-zinc-100 cursor-pointer"
+                                >
+                                    <Image
+                                        alt={org.name}
+                                        src={`https://img.clerk.com/preview.png?size=144&seed=seed&initials=${org.name.charAt(0).toUpperCase()}&isSquare=true&bgType=marble&bgColor=${color}&fgType=initials&fgColor=${letterColor}&type=organization&w=48&q=75`}
+                                        className="rounded-md flex-shrink-0"
+                                        width={35}
+                                        height={35}
+                                    />
+                                    <p className="ml-5 text-sm truncate">
+                                        {org.name}
+                                    </p>
+                                    <ArrowLeftRight className="h-4 w-4 ml-auto text-zinc-400" />
+                                </DropdownMenuItem>
+                            );
+                        })}
                     </div>
                 )}
                 <div className="py-3 px-8 text-[14px] hover:bg-slate-100">

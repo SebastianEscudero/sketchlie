@@ -25,6 +25,11 @@ export const Navbar = ({
         proModal.onOpen();
     }
     
+    let plan = null;
+    if (activeOrg) {
+        plan = activeOrg.subscriptionPlan
+    }
+    
     return (
         <div className="flex flex-wrap items-center gap-x-2 gap-y-2 p-3 justify-between">
             <div className="hidden lg:flex lg:flex-1">
@@ -36,6 +41,7 @@ export const Navbar = ({
                     setActiveOrganization={setActiveOrganization}
                 />
                 <OrganizationSwitcher 
+                    plan={plan}
                     setActiveOrganization={setActiveOrganization}
                     activeOrganization={activeOrganization}
                 />

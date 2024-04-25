@@ -9,12 +9,14 @@ import { Navbar } from "./_components/navbar";
 import { OrgSidebar } from "./_components/org-sidebar";
 import { Sidebar } from "./_components/sidebar";
 import { Loading } from "@/components/auth/loading";
+import { useProModal } from "@/hooks/use-pro-modal";
 
 const DashboardPage = () => {
   const searchParams = useSearchParams();
   const search = searchParams.get("search") || undefined;
   const favorites = searchParams.get("favorites") || undefined
   const [activeOrganization, setActiveOrganization] = useState<string | null>(null);
+  const proModal = useProModal();
 
   useEffect(() => {
     setActiveOrganization(localStorage.getItem("activeOrganization"));
@@ -24,6 +26,12 @@ const DashboardPage = () => {
     if (!activeOrganization) return;
     localStorage.setItem("activeOrganization", activeOrganization);
   }, [activeOrganization]);
+
+  useEffect(() => {
+    if (searchParams.get("openProModal")) {
+        proModal.onOpen();
+    }
+}, []);
 
   const user = useCurrentUser();
 

@@ -75,7 +75,7 @@ export const ProModal = () => {
                                 <Card
                                     key={subscriptionPlan.label}
                                     className={`p-5 md:flex flex-col flex-1 ${subscriptionPlan.recommended && 'border-2 border-custom-blue'}`}>
-                                    <div className="h-[120px]">
+                                    <div className="h-[100px]">
                                         <div className="gap-x-4 font-semibold text-lg md:text-xl mb-2 flex">
                                             {subscriptionPlan.recommended ?
                                                 <>
@@ -90,12 +90,12 @@ export const ProModal = () => {
                                             {subscriptionPlan.description}
                                         </div>
                                     </div>
-                                    <div className="flex font-bold text-lg md:text-xl">
-                                        {subscriptionPlan.price}$/m
+                                    <div className="flex">
+                                        <p className="font-bold text-3xl">${subscriptionPlan.price}/m</p>
                                     </div>
                                     <p className="text-sm md:text-base">por miembro</p>
                                     <div className="flex flex-col gap-y-2 mt-8 flex-1 mb-4 text-sm md:text-base">
-                                        <p>Todas las características del plan gratis más:</p>
+                                        <p>{subscriptionPlan.characteristicsDescription}</p>
                                         {Object.entries(subscriptionPlan.features).map(([feature, value]) => (
                                             <div key={feature} className="flex items-center gap-x-2">
                                                 <Check className="w-4 h-4 text-blue-500 flex-shrink-0" />

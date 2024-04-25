@@ -19,25 +19,18 @@ const plans = subscriptionPlans
 
 const PricingPage = () => {
     return (
-        <div className="flex flex-col justify-center items-center mt-14">
-            <h1>
-                <Badge className="uppercase text-xl py-1" variant="inProgress">
-                    Pronto estará disponible
-                </Badge>
-                <div className="flex items-center text-xl gap-x-2 font-bold py-1 justify-center mt-2">
-                    Sketchlie
-                    <Badge className="uppercase text-sm py-1" variant="outline">
-                        Pro
-                    </Badge>
-                </div>
-            </h1>
-            <div className="lg:gap-4 gap-x-2 gap-y-4 text-zinc-900 font-medium flex flex-col md:flex-row lg:mx-[5%] mx-[3%] mb-10 mt-14">
+        <div className="flex flex-col justify-center items-center mt-14 xl:mx-[15%] lg:mx-[8%] mx-[2%]">
+            <div className="flex items-center gap-x-2 font-semibold text-5xl">
+                <h1>Sketchlie</h1>
+                <Zap className="w-8 h-8 text-custom-blue fill-custom-blue mt-2" />
+            </div>
+            <div className="lg:gap-x-4 gap-x-1 gap-y-4 text-zinc-900 font-medium flex flex-col md:flex-row mb-10 mt-10 w-full">
                 {plans.map((subscriptionPlan) => (
                     <Card
                         key={subscriptionPlan.label}
-                        className={`md:p-5 p-10 md:flex flex-col flex-1 border border-black ${subscriptionPlan.recommended && 'border-2 border-custom-blue'}`}>
+                        className={`md:p-5 p-10 md:flex flex-col flex-1 border border-black ${subscriptionPlan.recommended && 'border-2 border-custom-blue w-full'}`}>
                         <div className="h-[120px]">
-                            <div className="gap-x-4 font-semibold text-xl mb-2 flex">
+                            <div className="gap-x-4 font-semibold text-3xl mb-2 flex">
                                 {subscriptionPlan.recommended ?
                                     <>
                                         {subscriptionPlan.label}
@@ -51,11 +44,11 @@ const PricingPage = () => {
                                 {subscriptionPlan.description}
                             </div>
                         </div>
-                        <div className="flex font-bold text-3xl">
-                            {subscriptionPlan.price}$/m
+                        <div className="flex font-bold text-4xl">
+                            ${subscriptionPlan.price}/m
                         </div>
                         <div className="flex flex-col gap-y-2 mt-8 flex-1 mb-4">
-                            <p>Todas las características del plan gratis más:</p>
+                            <p>{subscriptionPlan.characteristicsDescription}</p>
                             {Object.entries(subscriptionPlan.features).map(([feature, value]) => (
                                 <div key={feature} className="flex items-center gap-x-2">
                                     <Check className="w-4 h-4 text-blue-500 flex-shrink-0" />
@@ -81,7 +74,7 @@ const PricingPage = () => {
                             </Link>
                         ) : (
                             <Link
-                                href='/dashboard'
+                                href='/dashboard?openProModal=true'
                                 className='w-full'
                             >
                                 <Button variant="auth" className="w-full text-lg">

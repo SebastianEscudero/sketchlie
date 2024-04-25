@@ -121,7 +121,7 @@ export const CreateOrganization = ({
                                 type="submit"
                                 variant="auth"
                             > 
-                                Save changes 
+                                Create organization
                             </Button> 
                         </DialogClose> )}
                     </form>

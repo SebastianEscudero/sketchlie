@@ -47,15 +47,37 @@ import { useProModal } from "@/hooks/use-pro-modal";
 interface OrganizationSettingsProps {
     activeOrganization: string | null;
     setActiveOrganization: (id: string) => void;
+    plan: string;
 }
 
 export const OrganizationSettings = ({
     activeOrganization,
     setActiveOrganization,
+    plan,
 }: OrganizationSettingsProps) => {
     const user = useCurrentUser();
     const activeOrg = user?.organizations.find(org => org.id === activeOrganization);
     const Initial = activeOrg?.name.charAt(0).toUpperCase();
+
+    let Color, LetterColor;
+    switch (plan) {
+        case 'Gratis':
+            Color = '6C47FF';
+            LetterColor = 'FFFFFF';
+            break;
+        case 'Starter':
+            Color = 'F59E0B';
+            LetterColor = '000000';
+            break;
+        case 'Business':
+            Color = '000000';
+            LetterColor = 'FFFFFF';
+            break;
+        default:
+            Color = '6C47FF';
+            LetterColor = '000000';
+    }
+
     const [error, setError] = useState<string | undefined>();
     const [success, setSuccess] = useState<string | undefined>();
     const [selectedSection, setSelectedSection] = useState('Members');
@@ -117,7 +139,7 @@ export const OrganizationSettings = ({
                 <div className="flex mb-3 items-center pb-0">
                     <Image
                         alt={activeOrg.name}
-                        src={`https://img.clerk.com/preview.png?size=144&seed=seed&initials=${Initial}&isSquare=true&bgType=marble&bgColor=6c47ff&fgType=initials&fgColor=FFFFFF&type=organization&w=48&q=75`}
+                        src={`https://img.clerk.com/preview.png?size=144&seed=seed&initials=${Initial}&isSquare=true&bgType=marble&bgColor=${Color}&fgType=initials&fgColor=${LetterColor}&type=organization&w=48&q=75`}
                         className="rounded-md"
                         width={35}
                         height={35}
