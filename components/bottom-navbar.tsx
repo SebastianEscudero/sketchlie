@@ -300,16 +300,16 @@ export const BotNavbar = () => {
                     </p>
                 </Link>
                 <div className="flex items-center flex-row justify-center space-x-4 mt-4">
-                    <Link href="https://www.facebook.com/people/Sketchlie/61558420300592/" target="_blank">
+                    <Link href="https://www.facebook.com/people/Sketchlie/61558420300592/" target="_blank" aria-label="Sketchlie on Facebook">
                         <FaFacebook className="text-2xl ml-2" />
                     </Link>
-                    <Link href="https://twitter.com/sketchlieteam" target="_blank">
+                    <Link href="https://twitter.com/sketchlieteam" target="_blank" aria-label="Sketchlie on Twitter">
                         <FaTwitter className="text-2xl ml-2" />
                     </Link>
-                    <Link href="https://www.linkedin.com/company/sketchlie" target="_blank">
+                    <Link href="https://www.linkedin.com/company/sketchlie" target="_blank" aria-label="Sketchlie on LinkedIn">
                         <FaLinkedin className="text-2xl ml-2" />
                     </Link>
-                    <Link href="http://www.instagram.com/sketchlieux" target="_blank">
+                    <Link href="http://www.instagram.com/sketchlieux" target="_blank" aria-label="Sketchlie on Instagram">
                         <FaInstagram className="text-2xl ml-2" />
                     </Link>
                 </div>
