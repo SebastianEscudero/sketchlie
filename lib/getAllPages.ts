@@ -13,7 +13,7 @@ export function getAllRoutes() {
       if (stat.isDirectory()) {
         routes = [...routes, ...getRoutesFromDirectory(filePath, `${prefix}/${file}`)];
       } else if (stat.isFile() && path.extname(file) === '.tsx') {
-        let route = `${prefix}/${file.replace(/\.tsx?$/, '')}`;
+        let route = `${prefix}/${file.replace(/\.tsx?$/, '')}/`;
         route = route.replace('/page', ''); // strip "/page" from the route
         routes.push(route);
       }
