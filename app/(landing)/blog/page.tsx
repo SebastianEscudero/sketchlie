@@ -15,6 +15,13 @@ export const metadata: Metadata = {
 const BlogPage = () => {
     const blogLinksData = [
         {
+            blogTitle: "Tutorial de la Pizarra Online",
+            blogImage: "/placeholders/pizarra-online.png",
+            blogHref: "/blog/pizarra-online-tutorial",
+            blogDescription: "La Pizarra Online de Sketchlie cuenta con una amplia gama de funcionalidades diseñadas para potenciar tu creatividad y aumentar tu productividad. En este tutorial, te guiaremos a través de las herramientas...",
+            isNew: true
+        },
+        {
             blogTitle: "Mapas Mentales Online: Herramientas y Ventajas",
             blogImage: "/placeholders/mapa-mental.png",
             blogHref: "/blog/mapa-mental",
