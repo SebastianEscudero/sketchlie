@@ -102,8 +102,8 @@ const blog: { title: string; href: string }[] = [
         href: "/blog/mapa-conceptual"
     },
     {
-        title: "Mapeo de Procesos",
-        href: "/blog/mapeo-de-procesos"
+        title: "Mapas de Procesos",
+        href: "/blog/mapa-de-procesos"
     },
     {
         title: "Mapa Mental",
@@ -115,7 +115,7 @@ const blog: { title: string; href: string }[] = [
     },
     {
         title: "Wireframe",
-        href: "/blog/wireframe"
+        href: "/blog/wireframes-online"
     }
 ]
 

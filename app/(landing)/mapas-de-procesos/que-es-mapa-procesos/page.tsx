@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     description: "Descubre cómo los mapas de procesos puede mejorar la colaboración y la creatividad de tu equipo. Aprende sobre las técnicas, beneficios y tipos de mapas de procesos con Sketchlie.",
     keywords: ["mapa de procesos", "colaboración online", "mapa de procesos online"],
     alternates: {
-        canonical: "https://www.sketchlie.com/mapa-de-procesos/que-es-mapa-procesos",
+        canonical: "https://www.sketchlie.com/mapas-de-procesos/que-es-mapa-procesos",
     }
 };
 
@@ -30,7 +30,7 @@ const LandingPage = () => {
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
-                            <Link href="/mapa-de-procesos">Mapa de Procesos</Link>
+                            <Link href="/mapas-de-procesos">Mapa de Procesos</Link>
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
@@ -59,7 +59,7 @@ const LandingPage = () => {
 
                     <p className="mb-10">Un <strong>mapa de procesos</strong> es una representación gráfica de los pasos y actividades necesarias para completar un proceso específico dentro de una organización. En Sketchlie, entendemos la importancia de visualizar estos procesos de manera clara y accesible para todos los miembros del equipo.</p>
 
-                    <p className="mb-10">Con nuestra herramienta de <Link className="text-custom-blue hover:underline" href="/mapa-de-procesos">mapas de procesos</Link>, puedes crear diagramas detallados que muestran cada etapa del proceso, los roles de los participantes y las interacciones entre ellos.</p>
+                    <p className="mb-10">Con nuestra herramienta de <Link className="text-custom-blue hover:underline" href="/mapas-de-procesos">mapas de procesos</Link>, puedes crear diagramas detallados que muestran cada etapa del proceso, los roles de los participantes y las interacciones entre ellos.</p>
 
                     <div id="2" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">¿Cómo se crea un mapa de procesos?</h2>
@@ -99,12 +99,12 @@ const LandingPage = () => {
                         </li>
                     </ul>
 
-                    <p className="mb-10">En <Link className="text-custom-blue hover:underline" href="/mapa-de-procesos">Sketchlie</Link>, entendemos que estos beneficios son cruciales para el éxito de cualquier organización, por lo que ofrecemos herramientas intuitivas para crear y compartir mapas de procesos de manera eficiente.</p>
+                    <p className="mb-10">En <Link className="text-custom-blue hover:underline" href="/mapas-de-procesos">Sketchlie</Link>, entendemos que estos beneficios son cruciales para el éxito de cualquier organización, por lo que ofrecemos herramientas intuitivas para crear y compartir mapas de procesos de manera eficiente.</p>
 
                     <div id="5" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">¿Cómo se comparte un mapa de procesos?</h2>
 
-                    <p className="mb-10">Una vez que hayas creado tu mapa de procesos en <Link className="text-custom-blue hover:underline" href="/mapa-de-procesos">Sketchlie</Link>, compartirlo con tu equipo es fácil y rápido.</p>
+                    <p className="mb-10">Una vez que hayas creado tu mapa de procesos en <Link className="text-custom-blue hover:underline" href="/mapas-de-procesos">Sketchlie</Link>, compartirlo con tu equipo es fácil y rápido.</p>
 
                     <ul style={{ listStyleType: 'disc' }}>
                         <li className="mb-10 ml-5">
@@ -118,7 +118,7 @@ const LandingPage = () => {
                         </li>
                     </ul>
 
-                    <p className="mb-10">Con <Link className="text-custom-blue hover:underline" href="/mapa-de-procesos">Sketchlie</Link>, garantizamos que la colaboración y la comunicación en torno a tus mapas de procesos sean tan fluidas como el proceso mismo.</p>
+                    <p className="mb-10">Con <Link className="text-custom-blue hover:underline" href="/mapas-de-procesos">Sketchlie</Link>, garantizamos que la colaboración y la comunicación en torno a tus mapas de procesos sean tan fluidas como el proceso mismo.</p>
                     <div id="4" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">¿Cuáles son las ventajas de utilizar un mapa de procesos?</h2>
 
@@ -134,12 +134,12 @@ const LandingPage = () => {
                         </li>
                     </ul>
 
-                    <p className="mb-10">En <Link className="text-custom-blue hover:underline" href="/mapa-de-procesos">Sketchlie</Link>, nuestras herramientas de mapa de procesos están diseñadas para maximizar estas ventajas y ayudar a los equipos a trabajar de manera más efectiva y colaborativa.</p>
+                    <p className="mb-10">En <Link className="text-custom-blue hover:underline" href="/mapas-de-procesos">Sketchlie</Link>, nuestras herramientas de mapa de procesos están diseñadas para maximizar estas ventajas y ayudar a los equipos a trabajar de manera más efectiva y colaborativa.</p>
 
                     <div id="5" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">¿Cómo puedo compartir un mapa de procesos?</h2>
 
-                    <p className="mb-10">Una vez que hayas creado un mapa de procesos en <Link className="text-custom-blue hover:underline" href="/mapa-de-procesos">Sketchlie</Link>, compartirlo con tu equipo o clientes es fácil y conveniente. Puedes exportarlo en diferentes formatos, como PDF o imagen, y también puedes invitar a otros a ver y colaborar en tiempo real directamente desde la plataforma.</p>
+                    <p className="mb-10">Una vez que hayas creado un mapa de procesos en <Link className="text-custom-blue hover:underline" href="/mapas-de-procesos">Sketchlie</Link>, compartirlo con tu equipo o clientes es fácil y conveniente. Puedes exportarlo en diferentes formatos, como PDF o imagen, y también puedes invitar a otros a ver y colaborar en tiempo real directamente desde la plataforma.</p>
 
                     <p className="mb-10">Además, puedes integrar tus mapas de procesos en presentaciones o documentos utilizando nuestras herramientas de exportación, lo que facilita su uso en diferentes contextos y comunicaciones.</p>
 
@@ -160,18 +160,18 @@ const LandingPage = () => {
                         </li>
                     </ul>
 
-                    <p className="mb-10">En <Link className="text-custom-blue hover:underline" href="/mapa-de-procesos">Sketchlie</Link>, ofrecemos herramientas para crear y colaborar en todos estos tipos de diagramas, permitiendo a los usuarios elegir la mejor opción para sus necesidades específicas.</p>
+                    <p className="mb-10">En <Link className="text-custom-blue hover:underline" href="/mapas-de-procesos">Sketchlie</Link>, ofrecemos herramientas para crear y colaborar en todos estos tipos de diagramas, permitiendo a los usuarios elegir la mejor opción para sus necesidades específicas.</p>
                     <div id="7" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">¿Puedo utilizar un mapa de procesos para mejorar la eficiencia de mi negocio?</h2>
 
                     <p className="mb-10">¡Absolutamente! Los mapas de procesos son herramientas poderosas para identificar áreas de mejora y optimización dentro de un negocio. Al visualizar claramente cada paso de un proceso, puedes identificar cuellos de botella, redundancias o pasos innecesarios que ralentizan la operación.</p>
 
-                    <p className="mb-10">En <Link className="text-custom-blue hover:underline" href="/mapa-de-procesos">Sketchlie</Link>, ofrecemos una plataforma intuitiva para crear y colaborar en mapas de procesos, lo que facilita la identificación y implementación de mejoras en la eficiencia de tu negocio.</p>
+                    <p className="mb-10">En <Link className="text-custom-blue hover:underline" href="/mapas-de-procesos">Sketchlie</Link>, ofrecemos una plataforma intuitiva para crear y colaborar en mapas de procesos, lo que facilita la identificación y implementación de mejoras en la eficiencia de tu negocio.</p>
 
                     <div id="8" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">¿Cómo puedo comenzar a utilizar un mapa de procesos en mi empresa?</h2>
 
-                    <p className="mb-10">Comenzar a utilizar un mapa de procesos en tu empresa es simple con <Link className="text-custom-blue hover:underline" href="/mapa-de-procesos">Sketchlie</Link>. Sigue estos pasos para empezar:</p>
+                    <p className="mb-10">Comenzar a utilizar un mapa de procesos en tu empresa es simple con <Link className="text-custom-blue hover:underline" href="/mapas-de-procesos">Sketchlie</Link>. Sigue estos pasos para empezar:</p>
 
                     <ol style={{ listStyleType: 'decimal' }}>
                         <li className="mb-10 ml-5">
@@ -192,7 +192,7 @@ const LandingPage = () => {
                     <div id="9" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">¿Cómo puedo empezar a utilizar un mapa de procesos en Sketchlie?</h2>
 
-                    <p className="mb-10">¡Comenzar a utilizar un mapa de procesos en <Link className="text-custom-blue hover:underline" href="/mapa-de-procesos">Sketchlie</Link> es fácil y rápido! Sigue estos sencillos pasos para aprovechar al máximo nuestra plataforma:</p>
+                    <p className="mb-10">¡Comenzar a utilizar un mapa de procesos en <Link className="text-custom-blue hover:underline" href="/mapas-de-procesos">Sketchlie</Link> es fácil y rápido! Sigue estos sencillos pasos para aprovechar al máximo nuestra plataforma:</p>
 
                     <ol style={{ listStyleType: 'decimal' }}>
                         <li className="mb-10 ml-5">

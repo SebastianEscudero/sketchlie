@@ -1,7 +1,7 @@
 "use client";
 
 import { memo } from "react";
-import { BringToFront, SendToBack, Trash2 } from "lucide-react";
+import { BringToFront, SendToBack, Sparkles, Trash2 } from "lucide-react";
 
 import { Hint } from "@/components/hint";
 import { Camera, Color, LayerType } from "@/types/canvas";
@@ -25,13 +25,21 @@ export const SelectionTools = memo(({
 }: SelectionToolsProps) => {
 
   const soleLayerId = useSelf((me) =>
-  me.presence.selection.length === 1 ? me.presence.selection[0] : null
+    me.presence.selection.length === 1 ? me.presence.selection[0] : null
   );
 
-  const type = useStorage((root) => 
+  const type = useStorage((root) =>
     soleLayerId && root.layers.get(soleLayerId)?.type)
 
+  const layer = useStorage((root) => soleLayerId && root.layers.get(soleLayerId));
+
   const selection = useSelf((me) => me.presence.selection);
+
+  function removeBackground(layer: any) {
+    console.log(layer.src);
+
+    // add logic to remove image background
+  }
 
   const moveToFront = useMutation((
     { storage }
@@ -96,7 +104,7 @@ export const SelectionTools = memo(({
 
   const x = (selectionBounds.width / 2 + selectionBounds.x) * zoom + camera.x;
   const y = (selectionBounds.y) * zoom + camera.y;
-  
+
   return (
     <div
       className="absolute p-3 rounded-xl bg-white shadow-sm border flex select-none gap-x-2 items-center"
@@ -107,10 +115,10 @@ export const SelectionTools = memo(({
         )`
       }}
     >
-      {type !== LayerType.Image && 
-      <ColorPicker
-        onChange={setFill}
-      />}
+      {type !== LayerType.Image &&
+        <ColorPicker
+          onChange={setFill}
+        />}
       <Hint label="Bring to front">
         <Button
           onClick={moveToFront}
@@ -129,6 +137,17 @@ export const SelectionTools = memo(({
           <SendToBack />
         </Button>
       </Hint>
+      {type === LayerType.Image &&
+        <Hint label="Remove Background" side="bottom">
+          <Button
+            onClick={() => removeBackground(layer)}
+            variant="board"
+            size="icon"
+          >
+            <Sparkles className="fill-custom-blue text-custom-blue"/>
+          </Button>
+        </Hint>
+      }
       <div className="flex items-center pl-2 ml-2 border-l border-neutral-200">
         <Hint label="Delete">
           <Button

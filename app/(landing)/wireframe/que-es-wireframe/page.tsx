@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     description: "Descubre qué son los wireframes, cómo se utilizan, tipos, historia, consejos para crearlos y más. Mejora tu diseño de interfaz con Sketchlie.",
     keywords: ["wireframes", "diseño de interfaz", "diseño web", "UX", "Sketchlie"],
     alternates: {
-        canonical: "https://www.sketchlie.com/wireframes/que-es-wireframe/",
+        canonical: "https://www.sketchlie.com/wireframe/que-es-wireframe",
     }
 };
 
@@ -42,7 +42,7 @@ const LandingPage = () => {
             <div className="md:flex mt-10 items-center justify-between">
                 <h1 className="lg:text-6xl md:text-5xl text-4xl md:px-5" style={{ lineHeight: "1.2" }}>
 
-                    Wireframes
+                    Wireframe
                 </h1>
                 <Image
                     src="/placeholders/wireframe.png"
