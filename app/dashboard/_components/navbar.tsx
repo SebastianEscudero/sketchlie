@@ -60,7 +60,7 @@ export const Navbar = ({
                     )}
                     {activeOrg.subscriptionPlan === "Starter" && (
                         <Button variant="business" onClick={onClick}>
-                        Business Plan
+                        Business
                         <Zap className="w-4 h-4 ml-2 fill-white"/>
                         </Button>
                     )}
