@@ -15,10 +15,10 @@ export const metadata: Metadata = {
 const BlogPage = () => {
     const blogLinksData = [
         {
-            blogTitle: "Tutorial de la Pizarra Online",
-            blogImage: "/placeholders/pizarra-online.png",
-            blogHref: "/blog/pizarra-online-tutorial",
-            blogDescription: "La Pizarra Online de Sketchlie cuenta con una amplia gama de funcionalidades diseñadas para potenciar tu creatividad y aumentar tu productividad. En este tutorial, te guiaremos a través de las herramientas...",
+            blogImage: "/placeholders/mapa-conceptual-online.png",
+            blogHref: "/blog/mapa-conceptual",
+            blogDescription: "Que son los mapas conceptuales y cual es su Importancia en el Mundo Online...",
+            blogTitle: "Mapa Conceptual y su Importancia en el Mundo Online",
             isNew: true
         },
         {
@@ -64,6 +64,13 @@ const BlogPage = () => {
             isNew: true
         },
         {
+            blogTitle: "Tutorial de la Pizarra Online",
+            blogImage: "/placeholders/pizarra-online.png",
+            blogHref: "/blog/pizarra-online-tutorial",
+            blogDescription: "La Pizarra Online de Sketchlie cuenta con una amplia gama de funcionalidades diseñadas para potenciar tu creatividad y aumentar tu productividad. En este tutorial, te guiaremos a través de las herramientas...",
+            isNew: true
+        },
+        {
             blogTitle: "Mapa de Procesos",
             blogImage: "/placeholders/mapa-de-procesos.png",
             blogHref: "/mapas-de-procesos",
@@ -99,11 +106,11 @@ const BlogPage = () => {
         <div>
             <div className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mb-10 mt-20">
                 <HeaderBlog
-                    blogImage="/placeholders/mapa-conceptual-online.png"
-                    blogHref="/blog/mapa-conceptual"
-                    blogDescription="Que son los mapas conceptuales y cual es su Importancia en el Mundo Online..."
-                    blogTitle="Mapa Conceptual y su Importancia en el Mundo Online"
-                    isNew={true}
+                    blogTitle= "Tutorial de la Pizarra Online"
+                    blogImage= "/placeholders/pizarra-online.png"
+                    blogHref= "/blog/pizarra-online-tutorial"
+                    blogDescription= "La Pizarra Online de Sketchlie cuenta con una amplia gama de funcionalidades en este tutorial, te guiaremos a través de las herramientas..."
+                    isNew = {true}
                 />
             </div>
             <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5">
