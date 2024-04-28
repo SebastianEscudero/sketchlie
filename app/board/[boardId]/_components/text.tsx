@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
-import { TextLayer } from "@/types/canvas";
+import { LayerType, TextLayer } from "@/types/canvas";
 import { cn, colorToCss } from "@/lib/utils";
 import { useMutation } from "@/liveblocks.config";
 import { Kalam } from "next/font/google";
+import { LiveObject } from '@liveblocks/client';
 
 const calculateFontSize = (width: number, height: number) => {
     const scaleFactor = 0.4;
@@ -33,11 +34,20 @@ export const Text = ({
     id,
     selectionColor,
 }: TextProps) => {
-    const { x, y, width, height, fill, value } = layer;
+    const { x, y, width, height, fill, value, textFontSize } = layer;
+    const initialFontsize = textFontSize
     const [prevWidth, setPrevWidth] = useState(width);
     const [prevHeight, setPrevHeight] = useState(height);
-    const [fontSize, setFontSize] = useState(calculateFontSize(width, height));
+    const [fontSize, setFontSize] = useState(initialFontsize);
     const textRef = useRef<any>(null);
+
+    const updateFontSize = useMutation(({ storage }, newFontSize: number) => {
+        const liveLayers = storage.get("layers");
+        const layer = liveLayers.get(id) as LiveObject<TextLayer>;
+        if (layer?.get("type") === LayerType.Text) {
+            layer.set("textFontSize", newFontSize);
+        }
+    }, []);
 
     const updateValue = useMutation(( { storage }, newValue: string ) => {
         const liveLayers = storage.get("layers");
@@ -82,6 +92,7 @@ export const Text = ({
             const heightScaleFactor = height / prevHeight;
             const newFontSize = fontSize * Math.min(widthScaleFactor, heightScaleFactor);
             setFontSize(newFontSize);
+            updateFontSize(newFontSize);
         }
     }, [width, height, prevWidth, prevHeight]);
     

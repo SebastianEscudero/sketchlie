@@ -31,7 +31,6 @@ export const ImageButton = ({
 }: ImageButtonProps) => {
     const inputFileRef = useRef<HTMLInputElement>(null);
     const maxFileSize = org && getMaxImageSize(org) || 0;
-    const subscriptionPlan = org && org.subscriptionPlan || null;
 
     const handleButtonClick = () => {
         inputFileRef.current?.click();

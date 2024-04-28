@@ -29,6 +29,7 @@ import {
   LayerType,
   Point,
   Side,
+  TextLayer,
   XYWH,
 } from "@/types/canvas";
 import { useDisableScrollBounce } from "@/hooks/use-disable-scroll-bounce";
@@ -107,14 +108,29 @@ export const Canvas = ({
 
     const liveLayerIds = storage.get("layerIds");
     const layerId = nanoid();
-    const layer = new LiveObject({
-      type: layerType,
-      x: position.x,
-      y: position.y,
-      height: 100,
-      width: 100,
-      fill: lastUsedColor,
-    });
+
+    let layer 
+
+    if (layerType === LayerType.Text) {
+      layer = new LiveObject<TextLayer>({
+        type: layerType,
+        x: position.x,
+        y: position.y,
+        height: 100,
+        width: 100,
+        fill: lastUsedColor,
+        textFontSize: 40
+      });
+    } else {
+      layer = new LiveObject({
+        type: layerType,
+        x: position.x,
+        y: position.y,
+        height: 100,
+        width: 100,
+        fill: lastUsedColor,
+      });
+    }
 
     liveLayerIds.push(layerId);
     liveLayers.set(layerId, layer);
