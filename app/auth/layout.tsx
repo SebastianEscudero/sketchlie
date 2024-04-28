@@ -8,7 +8,7 @@ const AuthLayout = ({
   return ( 
     <div className="h-full flex flex-col">
       <AuthNavbar />
-      <div className="flex-grow flex items-center justify-center bg-[#FFF3D9]">
+      <div className="flex-grow flex items-center justify-center bg-[#FFF3D9] p-3">
         {children}
       </div>
     </div>

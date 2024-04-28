@@ -36,7 +36,7 @@ export const Social = () => {
         variant="outline"
         onClick={() => onClick("github")}
       >
-        <FaGithub className="h-5 w-5" />
+        <FaGithub className="h-5 w-5 flex-shrink-0" />
         <p className="ml-2 text-[16px]">Continue with Github</p>
       </Button>
     </div>
