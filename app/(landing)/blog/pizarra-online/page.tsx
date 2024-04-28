@@ -12,7 +12,7 @@ import { BlogLinks } from "@/components/blog-links";
 
 export const metadata: Metadata = {
     title: "Desata tu Creatividad con la Pizarra Virtual Online de Sketchlie",
-    description: "En un mundo cada vez más digitalizado, la necesidad de herramientas de colaboración efectivas se ha vuelto fundamental para empresas, educadores y equipos de trabajo. Descubre cómo la pizarra virtual online de Sketchlie puede ayudarte a potenciar tu creatividad y productividad en tiempo real.",
+    description: "En un mundo digitalizado, la colaboración efectiva es crucial. Descubre cómo la pizarra virtual de Sketchlie potencia creatividad y productividad en tiempo real.",
     keywords: ["pizarra virtual online", "colaboración en tiempo real", "herramientas de colaboración", "pizarra digital", "creatividad", "productividad", "trabajo en equipo", "herramientas colaborativas", "Sketchlie"],
     alternates: {
         canonical: "https://www.sketchlie.com/blog/pizarra-online/",

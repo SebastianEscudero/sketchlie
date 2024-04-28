@@ -11,7 +11,7 @@ import { VerMas } from "@/components/ver-mas";
 
 export const metadata: Metadata = {
     title: "Creador de Diagramas de Flujo | Sketchlie",
-    description: "Crea tus diagramas de flujo en línea en minutos con Sketchlie y comienza a colaborar con tu equipo! Con una amplia gama de símbolos y plantillas gratuitas, simplifica tus flujos de trabajo. ¡Regístrate ahora y empieza!",
+    description: "Crea diagramas de flujo online con Sketchlie en minutos y colabora con tu equipo. Simplifica tus flujos de trabajo con símbolos y plantillas gratuitas.",
     keywords: ["diagrama de flujo", "diagrama de flujo online", "diagrama de flujo gratis"],
     alternates: {
         canonical: "https://www.sketchlie.com/diagrama-de-flujo/",

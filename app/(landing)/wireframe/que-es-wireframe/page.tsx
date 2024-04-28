@@ -11,7 +11,7 @@ import Link from "next/link";
 import { BlogLinks } from "@/components/blog-links";
 
 export const metadata: Metadata = {
-    title: "Wireframes: Herramientas y Técnicas de Diseño de Interfaz - Sketchlie",
+    title: "Wireframes: Herramientas y Técnicas de Diseño de Interfaz | Sketchlie",
     description: "Descubre qué son los wireframes, cómo se utilizan, tipos, historia, consejos para crearlos y más. Mejora tu diseño de interfaz con Sketchlie.",
     keywords: ["wireframes", "diseño de interfaz", "diseño web", "UX", "Sketchlie"],
     alternates: {

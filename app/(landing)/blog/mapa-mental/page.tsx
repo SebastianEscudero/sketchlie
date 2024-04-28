@@ -12,7 +12,7 @@ import { BlogLinks } from "@/components/blog-links";
 
 export const metadata: Metadata = {
     title: "Mapas Mentales Online: Herramientas y Ventajas | Sketchlie",
-    description: "Descubre cómo los mapas mentales online pueden potenciar tu creatividad y productividad. Conoce las herramientas disponibles y las ventajas que ofrecen en Sketchlie.",
+    description: "Potencia tu innovación y productividad con mapas mentales online en Sketchlie. Descubre las herramientas disponibles y como puedes usarlas a tu favor.",
     keywords: ["mapa mental", "mapa mental online", "mapas mentales"],
     alternates: {
       canonical: "https://www.sketchlie.com/blog/mapa-mental/",

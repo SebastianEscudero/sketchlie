@@ -4,13 +4,12 @@ import { BlogSection } from "@/components/blog-section";
 import { LogoSlider } from "@/components/logo-slider";
 import { FaqSection } from "@/components/faq-section";
 import { BlogLinks } from "@/components/blog-links";
-import { PlatformYouCanTrust } from "@/components/platform-you-can-trust";
 import { LandingVideo } from "@/components/landing-video";
 import { VerMas } from "@/components/ver-mas";
 
 export const metadata: Metadata = {
     title: "Crea tu Pizarra Online Gratis | Sketchlie",
-    description: "La pizarra online de Sketchlie ayuda a las personas a colaborar y presentar ideas de manera efectiva, logrando mejores productos todo desde una pizarra online. Segura y pensada para tu empresas.",
+    description: "Colabora de manera efectiva y presenta ideas con la pizarra online de Sketchlie. Mejora tus productos desde una plataforma segura diseñada para empresas.",
     keywords: ["pizarra online", "pizarra online gratis", "pizarra online colaborativa"],
     alternates: {
         canonical: "https://www.sketchlie.com/pizarra-online/",

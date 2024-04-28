@@ -12,7 +12,7 @@ import { BlogLinks } from "@/components/blog-links";
 
 export const metadata: Metadata = {
     title: "Mapa Conceptual y su Importancia en el Mundo Online | Sketchlie",
-    description: "Explora las herramientas versátiles de Sketchlie para crear mapas conceptuales online de forma colaborativa y eficiente. Potencia tu creatividad y productividad con nuestras herramientas gratuitas.",
+    description: "Descubre las herramientas de Sketchlie para crear mapas conceptuales online de manera colaborativa y eficiente. Potencia tu creatividad con nuestras herramientas gratuitas.",
     keywords: ["mapa conceptual", "herramientas para mapas conceptuales", "crear mapas conceptuales online", "herramientas colaborativas", "mapa mental", "mapas de procesos", "herramientas digitales", "creatividad", "productividad"],
     alternates: {
         canonical: "https://www.sketchlie.com/blog/mapa-conceptual/",
