@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     description: "Descubre cómo usar diagramas en línea para colaborar de manera efectiva. Explora las ventajas de las herramientas de diagramación en Sketchlie.",
     keywords: ["diagrama", "diagrama online", "colaboración visual", "Sketchlie"],
     alternates: {
-        canonical: "https://www.sketchlie.com/blog/diagrama",
+        canonical: "https://www.sketchlie.com/blog/diagrama/",
     }
 };
 

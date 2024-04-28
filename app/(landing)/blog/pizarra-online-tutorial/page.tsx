@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     description: "Un tutorial de cómo la pizarra online de Sketchlie puede ayudarte a potenciar tu creatividad y productividad en tiempo real. Aprende a utilizar sus herramientas de colaboración efectivas para empresas, educadores y equipos de trabajo.",
     keywords: ["pizarra virtual online", "colaboración en tiempo real", "herramientas de colaboración", "pizarra digital", "creatividad", "productividad", "trabajo en equipo", "herramientas colaborativas", "Sketchlie"],
     alternates: {
-        canonical: "https://www.sketchlie.com/blog/pizarra-online-tutorial",
+        canonical: "https://www.sketchlie.com/blog/pizarra-online-tutorial/",
     }
 };
 

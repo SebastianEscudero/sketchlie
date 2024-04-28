@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     description: "Descubre cómo los mapas de procesos puede mejorar la colaboración y la creatividad de tu equipo. Aprende sobre las técnicas, beneficios y tipos de mapas de procesos con Sketchlie.",
     keywords: ["mapa de procesos", "colaboración online", "mapa de procesos online"],
     alternates: {
-        canonical: "https://www.sketchlie.com/mapas-de-procesos/que-es-mapa-procesos",
+        canonical: "https://www.sketchlie.com/mapas-de-procesos/que-es-mapa-procesos/",
     }
 };
 

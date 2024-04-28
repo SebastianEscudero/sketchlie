@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     description: "Descubre cómo los mapas de procesos pueden ayudarte a visualizar y optimizar tus procesos empresariales de manera colaborativa y eficiente en Sketchlie. ¡Regístrate hoy y comienza a crear tus mapas de procesos!",
     keywords: ["mapas de procesos", "eficiencia empresarial", "colaboración en línea", "optimización de procesos", "Sketchlie"],
     alternates: {
-        canonical: "https://www.sketchlie.com/blog/mapa-de-procesos",
+        canonical: "https://www.sketchlie.com/blog/mapa-de-procesos/",
     }
 };
 

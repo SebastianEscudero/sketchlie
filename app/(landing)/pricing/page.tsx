@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     description: "Los planes de Sketchlie, Gratis, Starter, Business. Comienza gratis y desbloquea todas las herramientas que necesitas para colaborar en tus proyectos.",
     keywords: ["sketchlie pricing", "sketchlie precios", "sketchlie planes", "sketchlie planes precios"],
     alternates: {
-        canonical: "https://www.sketchlie.com/pricing",
+        canonical: "https://www.sketchlie.com/pricing/",
     }
 };
 

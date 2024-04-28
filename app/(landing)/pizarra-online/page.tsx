@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     description: "La pizarra online de Sketchlie ayuda a las personas a colaborar y presentar ideas de manera efectiva, logrando mejores productos todo desde una pizarra online. Segura y pensada para tu empresas.",
     keywords: ["pizarra online", "pizarra online gratis", "pizarra online colaborativa"],
     alternates: {
-        canonical: "https://www.sketchlie.com/pizarra-online",
+        canonical: "https://www.sketchlie.com/pizarra-online/",
     }
   };
 

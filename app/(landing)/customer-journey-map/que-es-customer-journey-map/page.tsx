@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     description: "Descubre cómo el customer journey maps puede mejorar la colaboración y la creatividad de tu equipo. Aprende sobre las técnicas, beneficios y tipos de customer journey maps con Sketchlie.",
     keywords: ["Customer journey map", "Customer journey maps", "Customer journey map online", "Customer journey map gratis", "Customer journey map online gratis"],
     alternates: {
-        canonical: "https://www.sketchlie.com/customer-journey-map/que-es-customer-journey-map",
+        canonical: "https://www.sketchlie.com/customer-journey-map/que-es-customer-journey-map/",
     }
 };
 

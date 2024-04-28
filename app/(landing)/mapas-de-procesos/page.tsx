@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     description: "El mapa de procesos ayuda a los equipos a mapear y implementar mejoras. Registrate hoy con una 3 espacios de trabajo gratuitos para empezar a utilizar la mejor herramienta de mapa de procesos. Empieza hoy gratis.",
     keywords: ["mapa de procesos", "mapa de procesos online", "mapa de procesos gratis"],
     alternates: {
-        canonical: "https://www.sketchlie.com/mapas-de-procesos",
+        canonical: "https://www.sketchlie.com/mapas-de-procesos/",
     }
 };
 

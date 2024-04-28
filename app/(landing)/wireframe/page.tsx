@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     description: "Diseña wireframes de aplicaciones y sitios web de manera sencilla utilizando Sketchlie, una herramienta gratuita para crear wireframes. Ideal para equipos que trabajan de forma remota.",
     keywords: ["wireframes", "wireframes online", "wireframes gratis"],
     alternates: {
-        canonical: "https://www.sketchlie.com/wireframe",
+        canonical: "https://www.sketchlie.com/wireframe/",
     }
 };
 

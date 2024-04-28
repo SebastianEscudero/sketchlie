@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     description: "Crea tus diagramas de flujo en línea en minutos con Sketchlie y comienza a colaborar con tu equipo! Con una amplia gama de símbolos y plantillas gratuitas, simplifica tus flujos de trabajo. ¡Regístrate ahora y empieza!",
     keywords: ["diagrama de flujo", "diagrama de flujo online", "diagrama de flujo gratis"],
     alternates: {
-        canonical: "https://www.sketchlie.com/diagrama-de-flujo",
+        canonical: "https://www.sketchlie.com/diagrama-de-flujo/",
     }
 };
 

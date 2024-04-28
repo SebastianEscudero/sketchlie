@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     description: "Realiza una lluvia de ideas online de forma gratuita con Sketchlie. Comienza ahora y colabora con tu equipo en una sesion de lluvia de ideas.",
     keywords: ["lluvia de ideas", "colaboración en línea", "lluvia de ideas online"],
     alternates: {
-        canonical: "https://www.sketchlie.com/lluvia-de-ideas",
+        canonical: "https://www.sketchlie.com/lluvia-de-ideas/",
     }
 };
 

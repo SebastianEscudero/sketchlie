@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     description: "Libera tu imaginación. Diseña mapas mentales en línea. Crea fácilmente un mapa mental con nuestra herramienta de mapas mentales. ¡Prueba el plan gratuito o elige Pro!",
     keywords: ["mapa mental", "mapa mental online", "mapa mental gratis"],
     alternates: {
-        canonical: "https://www.sketchlie.com/mapa-mental-online",
+        canonical: "https://www.sketchlie.com/mapa-mental-online/",
     }
 };
 

@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     description: "Crea mapas conceptuales de forma gratuita con Sketchlie. Comienza ahora y colabora con tu equipo en el diseño de mapas conceptuales.",
     keywords: ["mapa conceptual", "mapa conceptual online", "mapa conceptual gratis", "mapas conceptuales online"],
     alternates: {
-        canonical: "https://www.sketchlie.com/mapa-conceptual",
+        canonical: "https://www.sketchlie.com/mapa-conceptual/",
     }
 };
 

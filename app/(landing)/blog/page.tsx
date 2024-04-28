@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     description: "¡Bienvenido al blog de Sketchlie! Sumérgete en un mundo de creatividad colaborativa mientras exploramos consejos, trucos y casos de estudio para sacar el máximo provecho de nuestra plataforma de pizarra en línea. Desde técnicas de dibujo hasta estrategias de colaboración remota, nuestro blog es tu guía definitiva para potenciar tus proyectos y liberar tu creatividad. Únete a nuestra comunidad y comienza a dibujar el futuro hoy mismo.",
     keywords: ["sketchlie blog", "blog", "sketchlie"],
     alternates: {
-        canonical: "https://www.sketchlie.com/blog",
+        canonical: "https://www.sketchlie.com/blog/",
     }
 };
 

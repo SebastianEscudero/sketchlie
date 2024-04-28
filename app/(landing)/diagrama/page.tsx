@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     description: "Crea diagramas online de forma gratuita con Sketchlie. Comienza ahora y colabora con tu equipo en el diseño de diagramas online.",
     keywords: ["diagrama", "diagrama online"],
     alternates: {
-        canonical: "https://www.sketchlie.com/diagrama",
+        canonical: "https://www.sketchlie.com/diagrama/",
     }
 };
 

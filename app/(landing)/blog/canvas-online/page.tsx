@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     description: "Descubre cómo usar Sketchlie, una pizarra online para diseñar y colaborar en tiempo real. Diseña mapas conceptuales, diagramas de flujo y más.",
     keywords: ["canvas online", "diseñar online", "pizarra online", "colaboración online"],
     alternates: {
-        canonical: "https://www.sketchlie.com/blog/canvas-online",
+        canonical: "https://www.sketchlie.com/blog/canvas-online/",
     }
 };
 

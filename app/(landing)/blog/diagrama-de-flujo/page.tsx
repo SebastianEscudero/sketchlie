@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     description: "Descubre cómo los diagramas de flujo en línea pueden potenciar la colaboración y la creatividad. Explora las ventajas de usar Sketchlie para crear diagramas de flujo.",
     keywords: ["diagrama de flujo", "diagramas de flujo", "colaboración online", "Sketchlie"],
     alternates: {
-        canonical: "https://www.sketchlie.com/blog/diagrama-de-flujo",
+        canonical: "https://www.sketchlie.com/blog/diagrama-de-flujo/",
     }
 };
 const LandingPage = () => {

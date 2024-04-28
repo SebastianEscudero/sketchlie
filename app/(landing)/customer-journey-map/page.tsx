@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     description: "Crea customer journey maps de forma gratuita con Sketchlie. Comienza ahora y colabora con tu equipo.",
     keywords: ["Customer journey map", "Customer journey maps", "Customer journey map online", "Customer journey map gratis", "Customer journey map online gratis"],
     alternates: {
-        canonical: "https://www.sketchlie.com/customer-journey-map",
+        canonical: "https://www.sketchlie.com/customer-journey-map/",
     }
 };
 
