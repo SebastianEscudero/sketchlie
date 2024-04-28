@@ -11,6 +11,7 @@ import { useDeleteLayers } from "@/hooks/use-delete-layers";
 import { useSelectionBounds } from "@/hooks/use-selection-bounds";
 
 import { ColorPicker } from "./color-picker";
+import { toast } from "sonner";
 
 interface SelectionToolsProps {
   camera: Camera;
@@ -36,6 +37,7 @@ export const SelectionTools = memo(({
   const selection = useSelf((me) => me.presence.selection);
 
   function removeBackground(layer: any) {
+    toast.info("Coming soon!")
     console.log(layer.src);
 
     // add logic to remove image background
@@ -137,7 +139,7 @@ export const SelectionTools = memo(({
           <SendToBack />
         </Button>
       </Hint>
-      {/* {type === LayerType.Image &&
+      {type === LayerType.Image &&
         <Hint label="Remove Background" side="bottom">
           <Button
             onClick={() => removeBackground(layer)}
@@ -147,7 +149,7 @@ export const SelectionTools = memo(({
             <Sparkles className="fill-custom-blue text-custom-blue"/>
           </Button>
         </Hint>
-      } */}
+      }
       <div className="flex items-center pl-2 ml-2 border-l border-neutral-200">
         <Hint label="Delete">
           <Button
