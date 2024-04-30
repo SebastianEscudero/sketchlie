@@ -27,19 +27,12 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function connectionIdToColor(connectionId: number): string {
-  return COLORS[connectionId % COLORS.length];
-};
-
-export function pointerEventToCanvasPoint(
-  e: React.PointerEvent,
-  camera: Camera,
-  zoom: number,
-) {
-  return {
-    x: (Math.round(e.clientX) - camera.x) / zoom,
-    y: (Math.round(e.clientY) - camera.y) / zoom,
-  };
+export function connectionIdToColor(connectionId: string): string {
+  let sum = 0;
+  for(let i = 0; i < connectionId.length; i++) {
+      sum += connectionId.charCodeAt(i);
+  }
+  return COLORS[sum % COLORS.length];
 };
 
 export function colorToCss(color: Color) {
@@ -114,7 +107,7 @@ export function resizeBounds(
 
 export function findIntersectingLayersWithRectangle(
   layerIds: readonly string[],
-  layers: ReadonlyMap<string, Layer>,
+  layers: { [key: string]: Layer },
   a: Point,
   b: Point,
 ) {
@@ -128,7 +121,7 @@ export function findIntersectingLayersWithRectangle(
   const ids = [];
 
   for (const layerId of layerIds) {
-    const layer = layers.get(layerId);
+    const layer = layers[layerId];
 
     if (layer == null) {
       continue;

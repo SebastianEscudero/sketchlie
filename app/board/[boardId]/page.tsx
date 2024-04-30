@@ -6,6 +6,10 @@ import { Loading } from "./_components/loading";
 import { useEffect } from "react";
 import { toast } from "sonner";
 import { Mouse } from "lucide-react";
+import { useCurrentUser } from "@/hooks/use-current-user";
+import { Id } from "@/convex/_generated/dataModel";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 interface BoardIdPageProps {
   params: {
@@ -17,6 +21,11 @@ const BoardIdPage = ({
   params,
 }: BoardIdPageProps) => {
   
+  const user = useCurrentUser();
+  const board = useQuery(api.board.get, {
+    id: params.boardId as Id<"boards">
+  });
+
   useEffect(() => {
     toast("Heads up!", {
       description: (
@@ -27,11 +36,15 @@ const BoardIdPage = ({
       position: "top-center",
       closeButton: true
     });
-  })
+  }, [])
+
+  if (!user || !board) {
+    return <Loading />;
+  }
 
   return (
-    <Room roomId={params.boardId} fallback={<Loading />}>
-      <Canvas boardId={params.boardId} />
+    <Room roomId={params.boardId} board={board} userInfo={user} fallback={<Loading />}>
+      <Canvas boardId={params.boardId}/>
     </Room>
   );
 };

@@ -1,34 +1,39 @@
 "use client";
 
-import { memo } from "react";
+import { memo, useMemo } from "react";
 
-import { LayerType, Side, XYWH } from "@/types/canvas";
-import { useSelf, useStorage } from "@/liveblocks.config";
+import { Layers, LayerType, Side, XYWH } from "@/types/canvas";
 import { useSelectionBounds } from "@/hooks/use-selection-bounds";
 
 interface SelectionBoxProps {
   onResizeHandlePointerDown: (corner: Side, initialBounds: XYWH) => void;
+  selectedLayers: string[];
+  liveLayers: Layers;
 };
 
 const HANDLE_WIDTH = 8;
 
 export const SelectionBox = memo(({
   onResizeHandlePointerDown,
+  selectedLayers,
+  liveLayers
 }: SelectionBoxProps) => {
 
   const handleRightClick = (event: React.MouseEvent) => {
     event.preventDefault();
   };
 
-  const soleLayerId = useSelf((me) =>
-    me.presence.selection.length === 1 ? me.presence.selection[0] : null
-  );
+  const soleLayerId = selectedLayers.length === 1 ? selectedLayers[0] : null;
 
-  const isShowingHandles = useStorage((root) => 
-    soleLayerId && root.layers.get(soleLayerId)?.type !== LayerType.Path
-  );
+  const isShowingHandles = useMemo(() => {
+    if (soleLayerId) {
+      const soleLayer = liveLayers[soleLayerId];
+      return soleLayer && soleLayer.type !== LayerType.Path;
+    }
+    return false;
+  }, [soleLayerId, liveLayers]);
 
-  const bounds = useSelectionBounds();
+  const bounds = useSelectionBounds(selectedLayers, liveLayers);
 
   if (!bounds) {
     return null;

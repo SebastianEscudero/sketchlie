@@ -1,9 +1,11 @@
 import { Kalam } from "next/font/google";
 import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
 
-import { NoteLayer } from "@/types/canvas";
+import { NoteLayer, UpdateLayerMutation } from "@/types/canvas";
 import { cn, colorToCss, getContrastingTextColor } from "@/lib/utils";
-import { useMutation } from "@/liveblocks.config";
+import { useEffect, useState } from "react";
+import { useRoom } from "@/components/room";
+import { debounce } from "lodash";
 
 const font = Kalam({
   subsets: ["latin"],
@@ -28,6 +30,7 @@ interface NoteProps {
   layer: NoteLayer;
   onPointerDown: (e: React.PointerEvent, id: string) => void;
   selectionColor?: string;
+  updateLayer: UpdateLayerMutation;
 };
 
 export const Note = ({
@@ -35,21 +38,39 @@ export const Note = ({
   onPointerDown,
   id,
   selectionColor,
+  updateLayer,
 }: NoteProps) => {
-  const { x, y, width, height, fill, value} = layer;
+  const { x, y, width, height, fill, value: initialValue } = layer;
+  const [value, setValue] = useState(initialValue);
+  const { liveLayers, socket, board } = useRoom();
 
-  const updateValue = useMutation((
-    { storage },
-    newValue: string,
-  ) => {
-    const liveLayers = storage.get("layers");
+  useEffect(() => {
+    setValue(liveLayers[id]?.value);
+  }, [id, liveLayers]);
+  
+  const updateValue = (newValue: string) => {
+    if (liveLayers[id]) {
+      liveLayers[id].value = newValue;
+      setValue(newValue);
+    }
 
-    liveLayers.get(id)?.set("value", newValue);
-  }, []);
+    updateLayer({
+      boardId: board._id,
+      layerId: id,
+      layerUpdates: liveLayers[id]
+    });
+
+    if (socket) {
+      socket.emit('layer-update', id, liveLayers[id]);
+    }
+
+  };
 
   const handleContentChange = (e: ContentEditableEvent) => {
     updateValue(e.target.value);
   };
+
+  const debouncedHandleContentChange = debounce(handleContentChange, 500);
 
   const handlePaste = async (e: React.ClipboardEvent) => {
     e.preventDefault();
@@ -81,7 +102,7 @@ export const Note = ({
     >
       <ContentEditable
         html={value || "Text"}
-        onChange={handleContentChange}
+        onChange={debouncedHandleContentChange}
         onPaste={handlePaste}
         className={cn(
           "h-full w-full flex items-center justify-center text-center outline-none",

@@ -4,11 +4,9 @@ import {
     Image, 
     MousePointer2, 
     Pencil, 
-    Redo2, 
     Square, 
     StickyNote, 
     Type,
-    Undo2
   } from "lucide-react";
   
 import { CanvasMode, CanvasState, LayerType } from "@/types/canvas";
@@ -24,10 +22,6 @@ import { Dispatch, SetStateAction } from "react";
     onImageSelect: (src: string) => void;
     canvasState: CanvasState;
     setCanvasState: (newState: CanvasState) => void;
-    undo: () => void;
-    redo: () => void;
-    canUndo: boolean;
-    canRedo: boolean;
     org: any;
   };
   
@@ -36,10 +30,6 @@ import { Dispatch, SetStateAction } from "react";
     setIsUploading,
     canvasState,
     setCanvasState,
-    undo,
-    redo,
-    canUndo,
-    canRedo,
     onImageSelect,
     org,
   }: ToolbarProps) => {
@@ -143,20 +133,6 @@ import { Dispatch, SetStateAction } from "react";
             isActive={
               canvasState.mode === CanvasMode.Pencil
             }
-          />
-        </div>
-        <div className="bg-white rounded-md p-1.5 flex flex-col items-center shadow-md">
-          <ToolButton
-            label="Undo"
-            icon={Undo2}
-            onClick={undo}
-            isDisabled={!canUndo}
-          />
-          <ToolButton
-            label="Redo"
-            icon={Redo2}
-            onClick={redo}
-            isDisabled={!canRedo}
           />
         </div>
       </div>

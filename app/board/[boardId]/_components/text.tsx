@@ -1,20 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
-import { LayerType, TextLayer } from "@/types/canvas";
+import { LayerType, TextLayer, UpdateLayerMutation } from "@/types/canvas";
 import { cn, colorToCss } from "@/lib/utils";
-import { useMutation } from "@/liveblocks.config";
 import { Kalam } from "next/font/google";
-import { LiveObject } from '@liveblocks/client';
-
-const calculateFontSize = (width: number, height: number) => {
-    const scaleFactor = 0.4;
-    const fontSizeBasedOnHeight = height * scaleFactor;
-    const fontSizeBasedOnWidth = width * scaleFactor;
-    return Math.min(
-      fontSizeBasedOnHeight, 
-      fontSizeBasedOnWidth
-    );
-}
+import { useRoom } from '@/components/room';
+import { debounce } from 'lodash';
 
 const font = Kalam({
     subsets: ["latin"],
@@ -26,6 +16,8 @@ interface TextProps {
     layer: TextLayer;
     onPointerDown: (e: React.PointerEvent, id: string) => void;
     selectionColor?: string;
+    setLiveLayers: (layers: any) => void;
+    updateLayer: UpdateLayerMutation;
 };
 
 export const Text = ({
@@ -33,6 +25,8 @@ export const Text = ({
     onPointerDown,
     id,
     selectionColor,
+    setLiveLayers,
+    updateLayer
 }: TextProps) => {
     const { x, y, width, height, fill, value, textFontSize } = layer;
     const initialFontsize = textFontSize
@@ -40,24 +34,36 @@ export const Text = ({
     const [prevHeight, setPrevHeight] = useState(height);
     const [fontSize, setFontSize] = useState(initialFontsize);
     const textRef = useRef<any>(null);
+    const { liveLayers, socket, board } = useRoom();
 
-    const updateFontSize = useMutation(({ storage }, newFontSize: number) => {
-        const liveLayers = storage.get("layers");
-        const layer = liveLayers.get(id) as LiveObject<TextLayer>;
-        if (layer?.get("type") === LayerType.Text) {
-            layer.set("textFontSize", newFontSize);
+    const updateValue = (newValue: string) => {
+        const newLiveLayers = { ...liveLayers };
+        if (newLiveLayers[id] && newLiveLayers[id].type === LayerType.Text) {
+            const textLayer = newLiveLayers[id] as TextLayer;
+            textLayer.value = newValue;
+            textLayer.textFontSize = fontSize;
         }
-    }, []);
 
-    const updateValue = useMutation(( { storage }, newValue: string ) => {
-        const liveLayers = storage.get("layers");
-        const layer = liveLayers.get(id);
-        layer?.set("value", newValue);
-    }, []);
+        return newLiveLayers;
+    };
 
     const handleContentChange = (e: ContentEditableEvent) => {
-        updateValue(e.target.value);
+        const newLiveLayers = updateValue(e.target.value);
+        setLiveLayers(newLiveLayers);
+
+        if (socket) {
+            socket.emit('layer-update', id, newLiveLayers[id]);
+        }
+
+        updateLayer({
+            boardId: board._id,
+            layerId: id,
+            layerUpdates: newLiveLayers[id]
+        })
+
     };
+
+    const debouncedHandleContentChange = debounce(handleContentChange, 500);
 
     function handleKeyDown(e: React.KeyboardEvent) {
         if (e.key === 'Enter' && !e.shiftKey) {
@@ -87,12 +93,14 @@ export const Text = ({
     };
 
     useEffect(() => {
-        if (width !== prevWidth && height !== prevHeight) {
+        if (width !== prevWidth && height !== prevHeight && liveLayers[id]?.type === LayerType.Text) {
             const widthScaleFactor = width / prevWidth;
             const heightScaleFactor = height / prevHeight;
             const newFontSize = fontSize * Math.min(widthScaleFactor, heightScaleFactor);
             setFontSize(newFontSize);
-            updateFontSize(newFontSize);
+            const textLayer = liveLayers[id] as TextLayer;
+            textLayer.textFontSize = newFontSize;
+            setLiveLayers(liveLayers);
         }
     }, [width, height, prevWidth, prevHeight]);
     
@@ -119,7 +127,7 @@ export const Text = ({
             <ContentEditable
                 ref={textRef}
                 html={value || "Text"}
-                onChange={handleContentChange}
+                onChange={debouncedHandleContentChange}
                 onPaste={handlePaste}
                 onKeyDown={handleKeyDown}
                 className={cn(

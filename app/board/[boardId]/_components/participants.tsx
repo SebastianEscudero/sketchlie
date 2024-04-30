@@ -1,46 +1,53 @@
 "use client";
+
 import { connectionIdToColor } from "@/lib/utils";
+import { User } from "@/types/canvas";
 import { UserAvatar } from "./user-avatar";
-import { useOthers, useSelf } from "@/liveblocks.config";
 
 const MAX_SHOWN_USERS = 4;
 
+interface ParticipantsProps {
+    otherUsers: User[] | null;
+    User: User
+}
 
-export const Participants = () => {
-    const users = useOthers();
-    const currentUser = useSelf();
-    const hasMoreUsers = users.length> MAX_SHOWN_USERS;
+export const Participants = ({
+    otherUsers,
+    User
+}: ParticipantsProps) => {
+
+    const hasMoreUsers = otherUsers && otherUsers.length> MAX_SHOWN_USERS;
 
     return(
         <div className="absolute h-12 top-2 right-2 bg-white rounded-md p-3 flex items-center shadow-md">
             <div className="flex gap-x-2">
-                {users.slice(0, MAX_SHOWN_USERS)
-                    .map(({ connectionId, info}) => {
+                {otherUsers && otherUsers.slice(0, MAX_SHOWN_USERS)
+                    .map(({ userId, information}) => {
                         return(
                             <UserAvatar
-                                borderColor={connectionIdToColor(connectionId)}
-                                key={connectionId}
-                                src={info?.picture}
-                                name={info?.name}
-                                fallback={info?.name?.[0] || "T"}
+                                borderColor={connectionIdToColor(userId)}
+                                key={userId}
+                                src={information?.picture}
+                                name={information?.name}
+                                fallback={information?.name?.[0] || "T"}
                             />
                         );
                     
                     })}
 
-                    {currentUser && (
+                    {User && (
                         <UserAvatar
-                            borderColor={connectionIdToColor(currentUser.connectionId)}
-                            src={currentUser.info?.picture}
-                            name={`${currentUser.info?.name} (You)`}
-                            fallback={currentUser.info?.name?.[0] || "T"}
+                            borderColor={connectionIdToColor(User.userId)}
+                            src={User.information?.picture}
+                            name={`${User.information?.name} (You)`}
+                            fallback={User.information?.name?.[0] || "T"}
                         />
                     )}
 
                     {hasMoreUsers && (
                         <UserAvatar 
-                            name={`${users.length - MAX_SHOWN_USERS} more`}
-                            fallback={`+${users.length - MAX_SHOWN_USERS}`}
+                            name={`${otherUsers.length - MAX_SHOWN_USERS} more`}
+                            fallback={`+${otherUsers.length - MAX_SHOWN_USERS}`}
                         />
                     )}
             </div>

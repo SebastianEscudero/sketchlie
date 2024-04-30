@@ -1,7 +1,5 @@
-import { shallow } from "@liveblocks/react";
-
-import { Layer, XYWH } from "@/types/canvas";
-import { useStorage, useSelf } from "@/liveblocks.config";
+import { Layer, Layers, XYWH } from "@/types/canvas";
+import { useMemo } from "react";
 
 export const boundingBox = (layers: Layer[]): XYWH | null => {
   const first = layers[0];
@@ -43,14 +41,12 @@ export const boundingBox = (layers: Layer[]): XYWH | null => {
   };
 };
 
-export const useSelectionBounds = () => {
-  const selection = useSelf((me) => me.presence.selection);
-
-  return useStorage((root) => {
-    const selectedLayers = selection
-      .map((layerId) => root.layers.get(layerId)!)
+export const useSelectionBounds = (selectedLayers: string[], liveLayers: Layers) => {
+  return useMemo(() => {
+    const selectedLayerObjects = selectedLayers
+      .map((layerId) => liveLayers[layerId])
       .filter(Boolean);
 
-    return boundingBox(selectedLayers);
-  }, shallow);
+    return boundingBox(selectedLayerObjects);
+  }, [selectedLayers, liveLayers]);
 };

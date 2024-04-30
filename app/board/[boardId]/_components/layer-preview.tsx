@@ -1,30 +1,34 @@
 "use client";
 
 import { memo } from "react";
-
 import { colorToCss } from "@/lib/utils";
-import { LayerType } from "@/types/canvas";
-import { useStorage } from "@/liveblocks.config";
-
+import { LayerType, UpdateLayerMutation } from "@/types/canvas";
+import { Path } from "./path";
+import { Note } from "./note";
 import { Text } from "./text";
 import { Ellipse } from "./ellipse";
 import { Rectangle } from "./rectangle";
-import { Note } from "./note";
-import { Path } from "./path";
 import { InsertImage } from "./image";
 
 interface LayerPreviewProps {
   id: string;
   onLayerPointerDown: (e: React.PointerEvent, layerId: string) => void;
   selectionColor?: string;
+  liveLayers: any;
+  setLiveLayers: (layers: any) => void;
+  updateLayer: UpdateLayerMutation;
 };
 
 export const LayerPreview = memo(({
   id,
   onLayerPointerDown,
   selectionColor,
+  liveLayers,
+  setLiveLayers,
+  updateLayer
 }: LayerPreviewProps) => {
-  const layer = useStorage((root) => root.layers.get(id));
+
+  const layer = liveLayers[id];
 
   if (!layer) {
     return null;
@@ -46,6 +50,7 @@ export const LayerPreview = memo(({
     case LayerType.Note:
       return (
         <Note
+          updateLayer={updateLayer}
           id={id}
           layer={layer}
           onPointerDown={onLayerPointerDown}
@@ -55,6 +60,8 @@ export const LayerPreview = memo(({
     case LayerType.Text:
       return (
         <Text
+          updateLayer={updateLayer}
+          setLiveLayers={setLiveLayers}
           id={id}
           layer={layer}
           onPointerDown={onLayerPointerDown}
@@ -79,17 +86,17 @@ export const LayerPreview = memo(({
           selectionColor={selectionColor}
         />
       );
-    case LayerType.Image:
-      return (
-        <InsertImage
-          isUploading={false}
-          id={id}
-          layer={layer}
-          onPointerDown={onLayerPointerDown}
-          selectionColor={selectionColor}
-        />
-      );
-    default:
+      case LayerType.Image:
+        return (
+          <InsertImage
+            isUploading={false}
+            id={id}
+            layer={layer}
+            onPointerDown={onLayerPointerDown}
+            selectionColor={selectionColor}
+          />
+        );
+      default:
       return null;
   }
 });

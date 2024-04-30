@@ -1,104 +1,172 @@
 "use client";
 
-import { memo } from "react";
-import { BringToFront, SendToBack, Sparkles, Trash2 } from "lucide-react";
+import { memo, useCallback } from "react";
+import { BringToFront, SendToBack, Trash2 } from "lucide-react";
 
 import { Hint } from "@/components/hint";
-import { Camera, Color, LayerType } from "@/types/canvas";
+import { Camera, Color, UpdateLayerMutation  } from "@/types/canvas";
 import { Button } from "@/components/ui/button";
-import { useMutation, useSelf, useStorage } from "@/liveblocks.config";
-import { useDeleteLayers } from "@/hooks/use-delete-layers";
 import { useSelectionBounds } from "@/hooks/use-selection-bounds";
-
 import { ColorPicker } from "./color-picker";
-import { toast } from "sonner";
+import { Socket } from "socket.io-client";
+import { useApiMutation } from "@/hooks/use-api-mutation";
+import { api } from "@/convex/_generated/api";
 
 interface SelectionToolsProps {
+  boardId: string;
   camera: Camera;
   setLastUsedColor: (color: Color) => void;
   zoom: number;
+  selectedLayers: string[];
+  liveLayers: any;
+  liveLayerIds: string[];
+  setLiveLayers: (layers: any) => void;
+  setLiveLayerIds: (ids: string[]) => void;
+  socket: Socket | null;
+  updateLayer: UpdateLayerMutation;
 };
 
 export const SelectionTools = memo(({
+  boardId,
   camera,
   setLastUsedColor,
   zoom,
+  selectedLayers,
+  setLiveLayers,
+  setLiveLayerIds,
+  liveLayers,
+  liveLayerIds,
+  socket,
+  updateLayer
 }: SelectionToolsProps) => {
-
-  const soleLayerId = useSelf((me) =>
-    me.presence.selection.length === 1 ? me.presence.selection[0] : null
-  );
-
-  const type = useStorage((root) =>
-    soleLayerId && root.layers.get(soleLayerId)?.type)
-
-  const layer = useStorage((root) => soleLayerId && root.layers.get(soleLayerId));
-
-  const selection = useSelf((me) => me.presence.selection);
-
-  function removeBackground(layer: any) {
-    toast.info("Coming soon!")
-    console.log(layer.src);
-
-    // add logic to remove image background
-  }
-
-  const moveToFront = useMutation((
-    { storage }
-  ) => {
-    const liveLayerIds = storage.get("layerIds");
+  const { mutate: updateLayerIds } = useApiMutation(api.board.updateLayerIds);
+  const { mutate: deleteLayer } = useApiMutation(api.board.deleteLayer);
+  const moveToFront = useCallback(() => {
     const indices: number[] = [];
-
-    const arr = liveLayerIds.toImmutable();
+  
+    if (!liveLayerIds) {
+      return;
+    }
+  
+    let arr = [...liveLayerIds];
 
     for (let i = 0; i < arr.length; i++) {
-      if (selection.includes(arr[i])) {
+      if (selectedLayers.includes(arr[i])) {
         indices.push(i);
       }
     }
-
-    for (let i = indices.length - 1; i >= 0; i--) {
-      liveLayerIds.move(
-        indices[i],
-        arr.length - 1 - (indices.length - 1 - i)
-      );
+  
+    const move = (arr: any[], fromIndex: number, toIndex: number) => {
+      var element = arr[fromIndex];
+      arr.splice(fromIndex, 1);
+      arr.splice(toIndex, 0, element);
     }
-  }, [selection]);
-
-  const moveToBack = useMutation((
-    { storage }
-  ) => {
-    const liveLayerIds = storage.get("layerIds");
-    const indices: number[] = [];
-
-    const arr = liveLayerIds.toImmutable();
-
-    for (let i = 0; i < arr.length; i++) {
-      if (selection.includes(arr[i])) {
-        indices.push(i);
-      }
-    }
-
+  
     for (let i = 0; i < indices.length; i++) {
-      liveLayerIds.move(indices[i], i);
+      move(arr, indices[i], arr.length - indices.length + i);
     }
-  }, [selection]);
+    
+    setLiveLayerIds(arr);
+    
+    updateLayerIds({ 
+      boardId: boardId,
+      layerIds: arr
+    });
 
-  const setFill = useMutation((
-    { storage },
-    fill: Color,
-  ) => {
-    const liveLayers = storage.get("layers");
+    if (socket) {
+      socket.emit('layer-send', arr);
+    }
+
+  }, [selectedLayers, setLiveLayerIds, liveLayerIds, updateLayerIds, boardId, socket]);
+  
+  const moveToBack = useCallback(() => {
+    const indices: number[] = [];
+  
+    if (!liveLayerIds) {
+      return;
+    }
+  
+    let arr = [...liveLayerIds];
+  
+    for (let i = 0; i < arr.length; i++) {
+      if (selectedLayers.includes(arr[i])) {
+        indices.push(i);
+      }
+    }
+  
+    const move = (arr: any[], fromIndex: number, toIndex: number) => {
+      var element = arr[fromIndex];
+      arr.splice(fromIndex, 1);
+      arr.splice(toIndex, 0, element);
+    }
+  
+    for (let i = 0; i < indices.length; i++) {
+      move(arr, indices[i], i);
+    }
+    
+    setLiveLayerIds(arr);
+
+    updateLayerIds({ 
+      boardId: boardId,
+      layerIds: arr
+    });
+
+    if (socket) {
+      socket.emit('layer-send', arr);
+    }
+
+  }, [selectedLayers, setLiveLayerIds, liveLayerIds, updateLayerIds, boardId, socket]);
+  
+  const setFill = useCallback((fill: Color) => {
     setLastUsedColor(fill);
+  
+    setLiveLayers((prevLayers: any) => {
+      const newLayers = { ...prevLayers };
+  
+      selectedLayers.forEach((id) => {
+        const layer = newLayers[id];
+        if (layer) {
+          newLayers[id].fill = fill;
+        }
+        if (socket) {
+          socket.emit('layer-update', id, newLayers[id]);
+        }
+        
+        updateLayer({ 
+          boardId: boardId,
+          layerId: id,
+          layerUpdates: { fill }
+        });
 
-    selection.forEach((id) => {
-      liveLayers.get(id)?.set("fill", fill);
-    })
-  }, [selection, setLastUsedColor]);
+      });
 
-  const deleteLayers = useDeleteLayers();
+      return newLayers;
+    });
+  }, [selectedLayers, setLastUsedColor, setLiveLayers, socket, updateLayer, boardId]);
 
-  const selectionBounds = useSelectionBounds();
+  const deleteLayers = useCallback(() => {  
+    let newLiveLayers = { ...liveLayers };
+    let newLiveLayerIds = liveLayerIds.filter(id => !selectedLayers.includes(id));
+  
+    selectedLayers.forEach((id) => {
+      delete newLiveLayers[id];
+  
+      if (socket) {
+        socket.emit('layer-delete', id);
+      }
+  
+      deleteLayer({ 
+        boardId: boardId,
+        layerId: id 
+      });
+    });
+  
+    setLiveLayers(newLiveLayers);
+    setLiveLayerIds(newLiveLayerIds);
+  
+  }, [selectedLayers, liveLayers, setLiveLayers, liveLayerIds, setLiveLayerIds, socket, deleteLayer, boardId]);
+
+  const selectionBounds = useSelectionBounds(selectedLayers, liveLayers);
 
   if (!selectionBounds) {
     return null;
@@ -117,10 +185,9 @@ export const SelectionTools = memo(({
         )`
       }}
     >
-      {type !== LayerType.Image &&
-        <ColorPicker
-          onChange={setFill}
-        />}
+      <ColorPicker
+        onChange={setFill}
+      />
       <Hint label="Bring to front">
         <Button
           onClick={moveToFront}
@@ -139,17 +206,6 @@ export const SelectionTools = memo(({
           <SendToBack />
         </Button>
       </Hint>
-      {type === LayerType.Image &&
-        <Hint label="Remove Background" side="bottom">
-          <Button
-            onClick={() => removeBackground(layer)}
-            variant="board"
-            size="icon"
-          >
-            <Sparkles className="fill-custom-blue text-custom-blue"/>
-          </Button>
-        </Hint>
-      }
       <div className="flex items-center pl-2 ml-2 border-l border-neutral-200">
         <Hint label="Delete">
           <Button

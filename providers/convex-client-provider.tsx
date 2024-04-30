@@ -1,6 +1,5 @@
 "use client";
 
-import { Loading } from "@/components/auth/loading";
 import {
     ConvexProvider,
     ConvexReactClient,

@@ -21,6 +21,8 @@ export const create = mutation({
     userName: v.optional(v.string()),
     orgId: v.string(),
     title: v.string(),
+    layerIds: v.optional(v.array(v.string())),
+    layers: v.optional(v.any()),
   },
   handler: async (ctx, args) => {
 
@@ -39,6 +41,8 @@ export const create = mutation({
       authorId: userId,
       authorName: userName!,
       imageUrl: randomImage,
+      layerIds: [],
+      layers: {},
     });
 
     return board;
@@ -191,6 +195,83 @@ export const get = query({
   handler: async (ctx, args) => {
     const board = ctx.db.get(args.id);
 
+    return board;
+  },
+});
+
+export const addLayer = mutation({
+  args: {
+    boardId: v.id("boards"),
+    layer: v.any(),
+    layerId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const board = await ctx.db.get(args.boardId);
+    if (!board) {
+      throw new Error("Board not found");
+    }
+    board.layers[args.layerId] = args.layer;
+    board.layerIds.push(args.layerId);
+    await ctx.db.patch(args.boardId, board);
+    return board;
+  },
+});
+
+export const deleteLayer = mutation({
+  args: {
+    boardId: v.id("boards"),
+    layerId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const board = await ctx.db.get(args.boardId);
+    if (!board) {
+      throw new Error("Board not found");
+    }
+    if (!board.layers[args.layerId]) {
+      throw new Error("Layer not found");
+    }
+    delete board.layers[args.layerId];
+    const layerIndex = board.layerIds.indexOf(args.layerId);
+    if (layerIndex !== -1) {
+      board.layerIds.splice(layerIndex, 1);
+    }
+    await ctx.db.patch(args.boardId, board);
+    return board;
+  },
+});
+
+export const updateLayer = mutation({
+  args: {
+    boardId: v.id("boards"),
+    layerId: v.string(),
+    layerUpdates: v.any(),
+  },
+  handler: async (ctx, args) => {
+    const board = await ctx.db.get(args.boardId);
+    if (!board) {
+      throw new Error("Board not found");
+    }
+    if (!board.layers[args.layerId]) {
+      throw new Error("Layer not found");
+    }
+    board.layers[args.layerId] = { ...board.layers[args.layerId], ...args.layerUpdates };
+    await ctx.db.patch(args.boardId, board);
+    return board;
+  },
+});
+
+export const updateLayerIds = mutation({
+  args: {
+    boardId: v.id("boards"),
+    layerIds: v.array(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const board = await ctx.db.get(args.boardId);
+    if (!board) {
+      throw new Error("Board not found");
+    }
+    board.layerIds = args.layerIds;
+    await ctx.db.patch(args.boardId, board);
     return board;
   },
 });

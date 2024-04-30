@@ -1,66 +1,63 @@
-"use client";
-
 import { memo } from "react";
-import { shallow } from "@liveblocks/client";
-
-import { 
-  useOthersConnectionIds, 
-  useOthersMapped
-} from "@/liveblocks.config";
-import { colorToCss } from "@/lib/utils";
-
 import { Cursor } from "./cursor";
+import { User } from '@/types/canvas';
+import { colorToCss } from "@/lib/utils";
 import { Path } from "./path";
 
-const Cursors = () => {
-  const ids = useOthersConnectionIds();
-
-  return (
-    <>
-      {ids.map((connectionId) => (
-        <Cursor
-          key={connectionId}
-          connectionId={connectionId}
-        />
-      ))}
-    </>
-  );
-};
-
-const Drafts = () => {
-  const others = useOthersMapped((other) => ({
-    pencilDraft: other.presence.pencilDraft,
-    penColor: other.presence.penColor,
-  }), shallow);
-
-  return (
-    <>
-      {others.map(([key, other]) => {
-        if (other.pencilDraft) {
-          return (
-            <Path
-              key={key}
-              x={0}
-              y={0}
-              points={other.pencilDraft}
-              fill={other.penColor ? colorToCss (other.penColor) : "#000"}
-            />
-          );
-        }
-
-        return null;
-      })}
-    </>
-  )
+interface CursorsProps {
+    otherUsers: User[];
 }
 
-export const CursorsPresence = memo(() => {
-  return (
-    <>
-      <Drafts />
-      <Cursors />
-    </>
-  );
+const Cursors = ({
+    otherUsers
+}: CursorsProps) => {
+    return (
+        <>
+            {otherUsers.map((otherUser) => (
+                <Cursor
+                    otherUserName = {otherUser.information?.name}
+                    key={otherUser.userId}
+                    connectionId={otherUser.userId}
+                    otherUserPresence={otherUser.presence}
+                />
+            ))}
+        </>
+    );
+};
+
+const Drafts = ({
+    otherUsers
+}: CursorsProps) => {
+    return (
+        <>
+            {otherUsers.map((otherUser) => {
+                if (otherUser.presence?.pencilDraft) {
+                    return (
+                        <Path
+                            key={otherUser.userId}
+                            x={0}
+                            y={0}
+                            points={otherUser.presence.pencilDraft}
+                            fill={otherUser.presence.penColor ? colorToCss(otherUser.presence.penColor) : "#000"}
+                        />
+                    );
+                }
+
+                return null;
+            })}
+        </>
+    )
+}
+
+export const CursorsPresence = memo(({
+    otherUsers,
+}: CursorsProps) => {
+    return (
+        <>
+            <Drafts otherUsers={otherUsers} />
+            <Cursors otherUsers={otherUsers} />
+        </>
+    );
 });
 
 CursorsPresence.displayName = "CursorsPresence";
