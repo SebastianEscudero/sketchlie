@@ -32,7 +32,6 @@ interface RoomProps {
 }
 
 export const Room = ({ children, roomId, fallback, userInfo, board }: RoomProps) => {
-
   const orgId = board?.orgId;
   const org = userInfo.organizations.find((org: any) => org.id === orgId);
 
@@ -76,7 +75,11 @@ export const Room = ({ children, roomId, fallback, userInfo, board }: RoomProps)
   }, [socket, User]);
 
   useEffect(() => {
-    const newSocket = io('https://sketchlie-server-little-resonance-2329.fly.dev', {
+    if (!process.env.SKETCHLIE_SERVER) {
+      throw new Error("no server");
+    }
+
+    const newSocket = io(process.env.SKETCHLIE_SERVER, {
       query: { roomId }
     });
     setSocket(newSocket);
