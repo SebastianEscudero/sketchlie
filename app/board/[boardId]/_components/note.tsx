@@ -98,7 +98,6 @@ export const Note = ({
           outline: selectionColor ? `1px solid ${selectionColor}` : (colorToCss(fill) === "transparent" ? "1px solid #000" : "1px solid transparent"),
           backgroundColor: fill ? colorToCss(fill) : "#000",
       }}
-      className="shadow-md drop-shadow-xl"
     >
       <ContentEditable
         html={value || "Text"}

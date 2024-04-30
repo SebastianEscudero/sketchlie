@@ -1,13 +1,14 @@
 "use client";
 
 import { nanoid } from "nanoid";
-import { useCallback, useMemo, useState, useEffect } from "react";
+import { useCallback, useMemo, useState, useEffect, useRef } from "react";
 
 import {
   colorToCss,
   connectionIdToColor,
   findIntersectingLayersWithRectangle,
   penPointsToPathLayer,
+  pointerEventToCanvasPoint,
   resizeBounds,
 } from "@/lib/utils";
 
@@ -50,7 +51,6 @@ export const Canvas = ({
   const proModal = useProModal();
   const { liveLayers, liveLayerIds, User, otherUsers, setLiveLayers, setLiveLayerIds, org } = useRoom();
   const [copiedLayers, setCopiedLayers] = useState<Map<string, any>>(new Map());
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [pencilDraft, setPencilDraft] = useState<[number, number, number][]>([]);
   const [canvasState, setCanvasState] = useState<CanvasState>({
     mode: CanvasMode.None,
@@ -192,14 +192,14 @@ export const Canvas = ({
     setCanvasState({ mode: CanvasMode.None });
   }, [liveLayers, liveLayerIds, myPresence, socket, org, proModal, User.userId, setLiveLayers, setLiveLayerIds, boardId, addLayer]);
 
-  const translateSelectedLayers = useCallback((mousePosition: Point) => {
+  const translateSelectedLayers = useCallback((point: Point) => {
     if (canvasState.mode !== CanvasMode.Translating) {
       return;
     }
 
     const offset = {
-      x: mousePosition.x - canvasState.current.x,
-      y: mousePosition.y - canvasState.current.y
+      x: (point.x - canvasState.current.x),
+      y: (point.y - canvasState.current.y)
     };
 
     const newLayers = { ...liveLayers };
@@ -220,7 +220,7 @@ export const Canvas = ({
       });
 
     setLiveLayers(newLayers);
-    setCanvasState({ mode: CanvasMode.Translating, current: mousePosition });
+    setCanvasState({ mode: CanvasMode.Translating, current: point });
   }, [canvasState, selectedLayers, setCanvasState, setLiveLayers, socket, liveLayers]);
 
   const unselectLayers = useCallback(() => {
@@ -445,11 +445,6 @@ export const Canvas = ({
   const onPointerMove = useCallback((e: React.PointerEvent) => {
     e.preventDefault();
 
-    setMousePosition({
-      x: (Math.round(e.clientX) - camera.x) / zoom,
-      y: (Math.round(e.clientY) - camera.y) / zoom,
-    });
-
     if (rightClickPanning) {
       const newCameraPosition = {
         x: camera.x + e.clientX - startPanPoint.x,
@@ -458,6 +453,8 @@ export const Canvas = ({
       setCamera(newCameraPosition);
       setStartPanPoint({ x: e.clientX, y: e.clientY });
     }
+
+    const current = pointerEventToCanvasPoint(e, camera, zoom);
 
     if (canvasState.mode === CanvasMode.Moving && isPanning) {
       const newCameraPosition = {
@@ -470,7 +467,7 @@ export const Canvas = ({
 
     const newPresence: Presence = {
       ...myPresence,
-      cursor: { x: mousePosition.x, y: mousePosition.y },
+      cursor: { x: current.x, y: current.y },
     };
 
     setMyPresence(newPresence);
@@ -480,15 +477,15 @@ export const Canvas = ({
     }
 
     if (canvasState.mode === CanvasMode.Pressing) {
-      startMultiSelection(mousePosition, canvasState.origin);
+      startMultiSelection(current, canvasState.origin);
     } else if (canvasState.mode === CanvasMode.SelectionNet) {
-      updateSelectionNet(mousePosition, canvasState.origin);
+      updateSelectionNet(current, canvasState.origin);
     } else if (canvasState.mode === CanvasMode.Translating) {
-      translateSelectedLayers(mousePosition);
+      translateSelectedLayers(current);
     } else if (canvasState.mode === CanvasMode.Resizing) {
-      resizeSelectedLayer(mousePosition);
+      resizeSelectedLayer(current);
     } else if (canvasState.mode === CanvasMode.Pencil) {
-      continueDrawing(mousePosition, e);
+      continueDrawing(current, e);
     }
   },
     [
@@ -507,7 +504,6 @@ export const Canvas = ({
       myPresence,
       socket,
       User.userId,
-      mousePosition,
       zoom
     ]);
 
@@ -527,6 +523,8 @@ export const Canvas = ({
   const onPointerDown = useCallback((
     e: React.PointerEvent,
   ) => {
+    const point = pointerEventToCanvasPoint(e, camera, zoom);
+
     if (e.button === 0) {
       if (canvasState.mode === CanvasMode.Moving) {
         setIsPanning(true);
@@ -543,21 +541,22 @@ export const Canvas = ({
       }
 
       if (canvasState.mode === CanvasMode.Pencil) {
-        startDrawing(mousePosition, e.pressure);
+        startDrawing(point, e.pressure);
         return;
       }
 
-      setCanvasState({ origin: mousePosition, mode: CanvasMode.Pressing });
+      setCanvasState({ origin: point, mode: CanvasMode.Pressing });
     } else if (e.button === 2) {
       setIsRightClickPanning(true);
       setStartPanPoint({ x: e.clientX, y: e.clientY });
       document.body.style.cursor = 'grabbing';
     }
-  }, [canvasState.mode, setCanvasState, startDrawing, setIsPanning, setIsRightClickPanning, mousePosition]);
+  }, [canvasState.mode, setCanvasState, startDrawing, setIsPanning, setIsRightClickPanning, camera, zoom]);
 
   const onPointerUp = useCallback((e: React.PointerEvent) => {
     setIsRightClickPanning(false);
     document.body.style.cursor = 'default';
+    const point = pointerEventToCanvasPoint(e, camera, zoom);
     if (canvasState.mode === CanvasMode.Moving) {
       document.body.style.cursor = 'pointer';
     }
@@ -574,9 +573,9 @@ export const Canvas = ({
       insertPath();
     } else if (canvasState.mode === CanvasMode.Inserting && canvasState.layerType === LayerType.Image) {
       setSelectedImage("");
-      insertImage(LayerType.Image, mousePosition, selectedImage);
+      insertImage(LayerType.Image, point, selectedImage);
     } else if (canvasState.mode === CanvasMode.Inserting && canvasState.layerType !== LayerType.Image) {
-      insertLayer(canvasState.layerType, mousePosition);
+      insertLayer(canvasState.layerType, point);
     } else if (canvasState.mode === CanvasMode.Moving) {
       setIsPanning(false);
     } else if (canvasState.mode === CanvasMode.Translating) {
@@ -624,11 +623,12 @@ export const Canvas = ({
       selectedImage,
       setSelectedImage,
       insertImage,
-      mousePosition,
       selectedLayers,
       liveLayers,
       updateLayer,
       boardId,
+      camera,
+      zoom
     ]);
 
   const onLayerPointerDown = useCallback((e: React.PointerEvent, layerId: string) => {
@@ -643,7 +643,9 @@ export const Canvas = ({
 
     e.stopPropagation();
 
-    setCanvasState({ mode: CanvasMode.Translating, current: mousePosition });
+    const point = pointerEventToCanvasPoint(e, camera, zoom);
+
+    setCanvasState({ mode: CanvasMode.Translating, current: point });
 
     if (selectedLayers.includes(layerId)) {
       return;
@@ -652,14 +654,14 @@ export const Canvas = ({
     const newPresence: Presence = {
       ...myPresence,
       selection: [layerId],
-      cursor: mousePosition
+      cursor: point
     };
 
     setMyPresence(newPresence);
 
     setSelectedLayers([layerId]);
 
-  }, [setCanvasState, canvasState.mode, selectedLayers, myPresence, setMyPresence, mousePosition]);
+  }, [setCanvasState, canvasState.mode, selectedLayers, myPresence, setMyPresence, camera, zoom]);
 
   const layerIdsToColorSelection = useMemo(() => {
     const layerIdsToColorSelection: Record<string, string> = {};
@@ -755,42 +757,43 @@ export const Canvas = ({
 
   }, [copiedLayers, myPresence, setLiveLayers, setLiveLayerIds, setMyPresence, org, proModal, liveLayerIds, socket, liveLayers, addLayer, boardId]);
 
-  useEffect(() => {
-    function onKeyDown(e: KeyboardEvent) {
-      switch (e.key.toLocaleLowerCase()) {
-        case "c": {
-          if (e.ctrlKey || e.metaKey) {
-            copySelectedLayers();
-          }
-          break;
-        }
-        case "v": {
-          if (e.ctrlKey || e.metaKey) {
-            if (isClickingLayer === false) {
-              pasteCopiedLayers(mousePosition);
+  const mousePositionRef = useRef({ x: 0, y: 0 });
+
+      useEffect(() => {
+        const onMouseMove = (e: any) => {
+            if (e.buttons === 0) {
+              mousePositionRef.current = pointerEventToCanvasPoint(e, camera, zoom);
+            }
+          };
+      
+        document.addEventListener('mousemove', onMouseMove);
+      
+        function onKeyDown(e: KeyboardEvent) {
+          switch (e.key.toLocaleLowerCase()) {
+            case "c": {
+              if (e.ctrlKey || e.metaKey) {
+                copySelectedLayers();
+              }
+              break;
+            }
+            case "v": {
+              if (e.ctrlKey || e.metaKey) {
+                if (isClickingLayer === false) {
+                  pasteCopiedLayers(mousePositionRef.current);
+                }
+              }
+              break;
             }
           }
-          break;
         }
-        // case "z": {
-        //   if (e.ctrlKey || e.metaKey) {
-        //     if (e.shiftKey) {
-        //       history.redo();
-        //     } else {
-        //       history.undo();
-        //     }
-        //     break;
-        //   }
-        // }
-      }
-    }
-
-    document.addEventListener("keydown", onKeyDown);
-
-    return () => {
-      document.removeEventListener("keydown", onKeyDown)
-    }
-  }, [copySelectedLayers, pasteCopiedLayers, mousePosition, isClickingLayer]);
+      
+        document.addEventListener("keydown", onKeyDown);
+      
+        return () => {
+          document.removeEventListener("keydown", onKeyDown);
+          document.removeEventListener('mousemove', onMouseMove);
+        }
+      }, [copySelectedLayers, pasteCopiedLayers, isClickingLayer, camera, zoom]);
 
   useEffect(() => {
     if (typeof document !== 'undefined') {

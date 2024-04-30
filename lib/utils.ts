@@ -27,6 +27,17 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+export function pointerEventToCanvasPoint(
+  e: React.PointerEvent,
+  camera: Camera,
+  zoom: number,
+) {
+  return {
+    x: (Math.round(e.clientX) - camera.x) / zoom,
+    y: (Math.round(e.clientY) - camera.y) / zoom,
+  };
+};
+
 export function connectionIdToColor(connectionId: string): string {
   let sum = 0;
   for(let i = 0; i < connectionId.length; i++) {
