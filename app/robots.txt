@@ -3,6 +3,6 @@ Disallow: /dashboard/
 Disallow: /board/
 Disallow: /auth/error
 Disallow: /auth/new-verification
-Disallow: /auth/reset
+Disallow: /auth/new-password
 
 Sitemap: https://www.sketchlie.com/sitemap.xml
