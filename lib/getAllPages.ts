@@ -24,5 +24,7 @@ export function getAllRoutes() {
   const landingRoutes = getRoutesFromDirectory(landingDirectory)
     .filter(route => !['/dashboard', '/board'].includes(route) && !route.includes('/layout'));
 
+  landingRoutes.push('/auth/register/', '/auth/login/', '/auth/new-password/');
+
   return [...landingRoutes];
 }
