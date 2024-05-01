@@ -1,8 +1,11 @@
 User-agent: *
 Disallow: /dashboard/
 Disallow: /board/
-Disallow: /auth/error
-Disallow: /auth/new-verification
-Disallow: /auth/new-password
+Disallow: /auth/error/
+Disallow: /auth/new-verification/
+Disallow: /auth/new-password/
+Allow: /auth/register/
+Allow: /auth/login/
+Allow: /auth/reset/
 
 Sitemap: https://www.sketchlie.com/sitemap.xml
