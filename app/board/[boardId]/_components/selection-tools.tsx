@@ -1,13 +1,13 @@
 "use client";
 
-import { memo, useCallback } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import { BringToFront, SendToBack, Trash2 } from "lucide-react";
-
 import { Hint } from "@/components/hint";
-import { Camera, Color, UpdateLayerMutation  } from "@/types/canvas";
+import { Camera, Color, LayerType, UpdateLayerMutation  } from "@/types/canvas";
 import { Button } from "@/components/ui/button";
 import { useSelectionBounds } from "@/hooks/use-selection-bounds";
 import { ColorPicker } from "./color-picker";
+import { FontSizePicker } from "./font-size-picker"
 import { Socket } from "socket.io-client";
 import { useApiMutation } from "@/hooks/use-api-mutation";
 import { api } from "@/convex/_generated/api";
@@ -24,6 +24,7 @@ interface SelectionToolsProps {
   setLiveLayerIds: (ids: string[]) => void;
   socket: Socket | null;
   updateLayer: UpdateLayerMutation;
+  lastUsedColor: Color;
 };
 
 export const SelectionTools = memo(({
@@ -37,10 +38,24 @@ export const SelectionTools = memo(({
   liveLayers,
   liveLayerIds,
   socket,
-  updateLayer
+  updateLayer,
+  lastUsedColor
 }: SelectionToolsProps) => {
   const { mutate: updateLayerIds } = useApiMutation(api.board.updateLayerIds);
   const { mutate: deleteLayer } = useApiMutation(api.board.deleteLayer);
+
+  let isText = selectedLayers.every(layer => liveLayers[layer]?.type === LayerType.Text);
+  const [initialPosition, setInitialPosition] = useState<{x: number, y: number} | null>(null);
+  const selectionBounds = useSelectionBounds(selectedLayers, liveLayers);
+
+  useEffect(() => {
+    if (selectionBounds) {
+      const x = (selectionBounds.width / 2 + selectionBounds.x) * zoom + camera.x;
+      const y = (selectionBounds.y) * zoom + camera.y;
+      setInitialPosition({x, y});
+    }
+  }, [selectedLayers]);
+
   const moveToFront = useCallback(() => {
     const indices: number[] = [];
   
@@ -166,26 +181,34 @@ export const SelectionTools = memo(({
   
   }, [selectedLayers, liveLayers, setLiveLayers, liveLayerIds, setLiveLayerIds, socket, deleteLayer, boardId]);
 
-  const selectionBounds = useSelectionBounds(selectedLayers, liveLayers);
-
   if (!selectionBounds) {
     return null;
   }
 
-  const x = (selectionBounds.width / 2 + selectionBounds.x) * zoom + camera.x;
-  const y = (selectionBounds.y) * zoom + camera.y;
-
   return (
     <div
-      className="absolute p-3 rounded-xl bg-white shadow-sm border flex select-none gap-x-2 items-center"
+      className="absolute p-1 rounded-sm bg-white shadow-sm border flex select-none gap-x-2 items-center"
       style={{
-        transform: `translate(
-          calc(${x}px - 50%),
-          calc(${y - 16}px - 100%)
-        )`
+        transform: initialPosition
+          ? `translate(
+              calc(${initialPosition.x}px - 50%),
+              calc(${initialPosition.y - 30}px - 100%)
+            )`
+          : undefined
       }}
     >
+      {isText && (
+        <FontSizePicker
+          selectedLayers={selectedLayers}
+          setLiveLayers={setLiveLayers}
+          liveLayers={liveLayers}
+          updateLayer={updateLayer}
+          boardId={boardId}
+          socket={socket}
+        />
+      )}
       <ColorPicker
+        lastUsedColor={lastUsedColor}
         onChange={setFill}
       />
       <Hint label="Bring to front">
@@ -206,7 +229,7 @@ export const SelectionTools = memo(({
           <SendToBack />
         </Button>
       </Hint>
-      <div className="flex items-center pl-2 ml-2 border-l border-neutral-200">
+      <div className="flex items-center pl-2 border-l border-neutral-200">
         <Hint label="Delete">
           <Button
             variant="board"

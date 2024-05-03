@@ -18,7 +18,7 @@ export const LandingHero = () => {
             <div className="z-40 flex h-full w-full items-center justify-center gap-6 px-6 text-black" id="home">
                 <div className="flex flex-col items-center justify-start gap-3">
                     <h1 className="max-w-[800px] text-center text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold">
-                        Dibuja tus sueños y conviertelos en realidad
+                        Dibuja tus sueños y conviértelos en realidad
                         <div className="text-center bg-clip-text text-[#2E4DE6] leading-small">
                         <TypewriterComponent 
                             options = {{

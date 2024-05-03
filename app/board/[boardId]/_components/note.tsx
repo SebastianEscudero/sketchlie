@@ -3,9 +3,9 @@ import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
 
 import { NoteLayer, UpdateLayerMutation } from "@/types/canvas";
 import { cn, colorToCss, getContrastingTextColor } from "@/lib/utils";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRoom } from "@/components/room";
-import { debounce } from "lodash";
+import { throttle } from "lodash";
 
 const font = Kalam({
   subsets: ["latin"],
@@ -28,10 +28,24 @@ const calculateFontSize = (width: number, height: number) => {
 interface NoteProps {
   id: string;
   layer: NoteLayer;
-  onPointerDown: (e: React.PointerEvent, id: string) => void;
+  onPointerDown?: (e: React.PointerEvent, id: string) => void;
   selectionColor?: string;
-  updateLayer: UpdateLayerMutation;
+  updateLayer?: UpdateLayerMutation;
 };
+
+const throttledUpdateLayer = throttle((updateLayer, socket, boardId, layerId, layerUpdates) => {
+  if (updateLayer) {
+    updateLayer({
+      boardId,
+      layerId,
+      layerUpdates
+    });
+  }
+
+  if (socket) {
+    socket.emit('layer-update', layerId, layerUpdates);
+  }
+}, 1000); 
 
 export const Note = ({
   layer,
@@ -43,6 +57,8 @@ export const Note = ({
   const { x, y, width, height, fill, value: initialValue } = layer;
   const [value, setValue] = useState(initialValue);
   const { liveLayers, socket, board } = useRoom();
+  const fillColor = colorToCss(fill);
+  const isTransparent = fillColor === 'rgba(0,0,0,0)';
 
   useEffect(() => {
     setValue(liveLayers[id]?.value);
@@ -52,25 +68,13 @@ export const Note = ({
     if (liveLayers[id]) {
       liveLayers[id].value = newValue;
       setValue(newValue);
+      throttledUpdateLayer(updateLayer, socket, board._id, id, liveLayers[id]);
     }
-
-    updateLayer({
-      boardId: board._id,
-      layerId: id,
-      layerUpdates: liveLayers[id]
-    });
-
-    if (socket) {
-      socket.emit('layer-update', id, liveLayers[id]);
-    }
-
   };
 
   const handleContentChange = (e: ContentEditableEvent) => {
     updateValue(e.target.value);
   };
-
-  const debouncedHandleContentChange = debounce(handleContentChange, 500);
 
   const handlePaste = async (e: React.ClipboardEvent) => {
     e.preventDefault();
@@ -93,15 +97,16 @@ export const Note = ({
       y={y}
       width={width}
       height={height}
-      onPointerDown={(e) => onPointerDown(e, id)}
+      onPointerDown={onPointerDown ? (e) => onPointerDown(e, id) : undefined}
       style={{
-          outline: selectionColor ? `1px solid ${selectionColor}` : (colorToCss(fill) === "transparent" ? "1px solid #000" : "1px solid transparent"),
-          backgroundColor: fill ? colorToCss(fill) : "#000",
+        outline: `${selectionColor || (isTransparent ? "#000" : "transparent")} 1px solid`,
+        backgroundColor: fillColor,
       }}
+      className="shadow-md drop-shadow-xl"
     >
       <ContentEditable
         html={value || "Text"}
-        onChange={debouncedHandleContentChange}
+        onChange={handleContentChange}
         onPaste={handlePaste}
         className={cn(
           "h-full w-full flex items-center justify-center text-center outline-none",
@@ -110,6 +115,7 @@ export const Note = ({
         style={{
           fontSize: calculateFontSize(width, height),
           color: fill ? getContrastingTextColor(fill) : "#000",
+          textWrap: "wrap",
         }}
         spellCheck={false}
       />

@@ -21,9 +21,11 @@ import {
   LayerType,
   Point,
   Presence,
+  PreviewLayer,
   Side,
   XYWH,
 } from "@/types/canvas";
+
 import { useDisableScrollBounce } from "@/hooks/use-disable-scroll-bounce";
 import { Info } from "./info";
 import { Path } from "./path";
@@ -38,6 +40,7 @@ import { getMaxCapas } from "@/lib/planLimits";
 import { api } from "@/convex/_generated/api";
 import { useRoom } from "@/components/room";
 import { useApiMutation } from "@/hooks/use-api-mutation";
+import { CurrentPreviewLayer } from "./current-preview-layer";
 
 interface CanvasProps {
   boardId: any;
@@ -46,61 +49,72 @@ interface CanvasProps {
 export const Canvas = ({
   boardId,
 }: CanvasProps) => {
-  const [isClickingLayer, setIsClickingLayer] = useState(false);
-  const [zoom, setZoom] = useState(1);
-  const proModal = useProModal();
-  const { liveLayers, liveLayerIds, User, otherUsers, setLiveLayers, setLiveLayerIds, org } = useRoom();
+  const mousePositionRef = useRef({ x: 0, y: 0 });
+  const { liveLayers, liveLayerIds, User, otherUsers, setLiveLayers, setLiveLayerIds, org, socket, board } = useRoom();
+  const [selectedLayers, setSelectedLayers] = useState<string[]>([]);
+  const [zoom, setZoom] = useState(localStorage.getItem("zoom") ? parseFloat(localStorage.getItem("zoom") || '1') : 1);
   const [copiedLayers, setCopiedLayers] = useState<Map<string, any>>(new Map());
   const [pencilDraft, setPencilDraft] = useState<[number, number, number][]>([]);
+  const [textRef, setTextRef] = useState<any>(null);
   const [canvasState, setCanvasState] = useState<CanvasState>({
     mode: CanvasMode.None,
   });
-  const [camera, setCamera] = useState<Camera>({ x: 0, y: 0 });
+  const [camera, setCamera] = useState<Camera>(localStorage.getItem("camera") ? JSON.parse(localStorage.getItem("camera") || '{"x":0,"y":0}') : { x: 0, y: 0 });
   const [isPanning, setIsPanning] = useState(false);
   const [rightClickPanning, setIsRightClickPanning] = useState(false);
   const [startPanPoint, setStartPanPoint] = useState({ x: 0, y: 0 });
+  const [selectedImage, setSelectedImage] = useState<string>("");
+  const [isUploading, setIsUploading] = useState(false);
+  const [currentPreviewLayer, setCurrentPreviewLayer] = useState<PreviewLayer | null>(null);
   const [lastUsedColor, setLastUsedColor] = useState<Color>({
     r: 0,
     g: 0,
     b: 0,
+    a: 0,
   });
-  const [selectedImage, setSelectedImage] = useState<string>("");
-  const [selectedLayers, setSelectedLayers] = useState<string[]>([]);
-  const [isUploading, setIsUploading] = useState(false);
   const [myPresence, setMyPresence] = useState<Presence | null>(null);
-  const { socket } = useRoom();
   const { mutate: addLayer } = useApiMutation(api.board.addLayer);
   const { mutate: updateLayer } = useApiMutation(api.board.updateLayer);
+  const { mutate: deleteLayer } = useApiMutation(api.board.deleteLayer);
+  const proModal = useProModal();
 
   useDisableScrollBounce();
 
-  const insertLayer = useCallback((layerType: LayerType, position: Point) => {
+  const insertLayer = useCallback((layerType: LayerType, position: Point, width: number, height: number) => {
     if (org && liveLayerIds.length >= getMaxCapas(org)) {
       proModal.onOpen();
       return;
     }
 
-    const layerId = nanoid();
+    console.log(height, width, layerType)
+
+
+    const layerId = nanoid().replace(/_/g, '');
 
     let layer
 
     if (layerType === LayerType.Text) {
+
+      if (width < 130) {
+        width = 130;
+      }
+
       layer = {
         type: layerType,
         x: position.x,
         y: position.y,
-        height: 100,
-        width: 100,
+        height: height,
+        width: width,
         fill: lastUsedColor,
-        textFontSize: 40
+        textFontSize: 12,
       };
     } else {
       layer = {
         type: layerType,
         x: position.x,
         y: position.y,
-        height: 100,
-        width: 100,
+        height: height,
+        width: width,
         fill: lastUsedColor,
       };
     }
@@ -145,8 +159,7 @@ export const Canvas = ({
       return;
     }
 
-    const layerId = nanoid();
-
+  const layerId = nanoid().replace(/_/g, '');
 
     if (selectedImage === "") {
       return;
@@ -203,21 +216,21 @@ export const Canvas = ({
     };
 
     const newLayers = { ...liveLayers };
-      
-    selectedLayers.forEach(id => {
-        const layer = newLayers[id];
-        
-        if (layer) {
-          const newLayer = { ...layer };
-          newLayer.x += offset.x;
-          newLayer.y += offset.y;
-          newLayers[id] = newLayer;
-        }
 
-        if (socket) {
-          socket.emit('layer-update', id, newLayers[id]);
-        }
-      });
+    selectedLayers.forEach(id => {
+      const layer = newLayers[id];
+
+      if (layer) {
+        const newLayer = { ...layer };
+        newLayer.x += offset.x;
+        newLayer.y += offset.y;
+        newLayers[id] = newLayer;
+      }
+
+      if (socket) {
+        socket.emit('layer-update', id, newLayers[id]);
+      }
+    });
 
     setLiveLayers(newLayers);
     setCanvasState({ mode: CanvasMode.Translating, current: point });
@@ -332,7 +345,7 @@ export const Canvas = ({
       return;
     }
 
-    const id = nanoid();
+    const id = nanoid().replace(/_/g, '');
     liveLayers[id] = penPointsToPathLayer(pencilDraft, lastUsedColor);
 
     liveLayerIds.push(id);
@@ -368,13 +381,25 @@ export const Canvas = ({
 
 
     const layer = liveLayers[selectedLayers[0]];
+    let bounds
 
-    const bounds = resizeBounds(
-      layer?.type,
-      canvasState.initialBounds,
-      canvasState.corner,
-      point,
-    );
+    if (layer.type === LayerType.Text) {
+      bounds = resizeBounds(
+        layer?.type,
+        canvasState.initialBounds,
+        canvasState.corner,
+        point,
+        textRef,
+        layer,
+      );
+    } else {
+      bounds = resizeBounds(
+        layer?.type,
+        canvasState.initialBounds,
+        canvasState.corner,
+        point,
+      );
+    }
 
     if (layer) {
       Object.assign(layer, bounds);
@@ -387,7 +412,7 @@ export const Canvas = ({
 
     }
 
-  }, [canvasState, liveLayers, selectedLayers, setLiveLayers, socket]);
+  }, [canvasState, liveLayers, selectedLayers, setLiveLayers, socket, textRef]);
 
   const onResizeHandlePointerDown = useCallback((
     corner: Side,
@@ -419,28 +444,58 @@ export const Canvas = ({
     const x = e.clientX - svgRect.left;
     const y = e.clientY - svgRect.top;
 
-    if (e.ctrlKey) {
-      let newZoom = zoom;
-      if (e.deltaY < 0) {
-        newZoom = Math.min(zoom * 1.1, 3);
-      } else {
-        newZoom = Math.max(zoom / 1.1, 0.5);
+    let newZoom = zoom;
+    if (e.deltaY < 0) {
+      newZoom = Math.min(zoom * 1.1, 3);
+    } else {
+      newZoom = Math.max(zoom / 1.1, 0.5);
+    }
+
+    const zoomFactor = newZoom / zoom;
+    const newX = x - (x - camera.x) * zoomFactor;
+    const newY = y - (y - camera.y) * zoomFactor;
+
+    setZoom(newZoom);
+    localStorage.setItem("zoom", newZoom.toString());
+    setCamera({ x: newX, y: newY });
+    localStorage.setItem("camera", JSON.stringify({ x: newX, y: newY }));
+  }, [zoom, camera]);
+
+  const onPointerDown = useCallback((
+    e: React.PointerEvent,
+  ) => {
+    const point = pointerEventToCanvasPoint(e, camera, zoom);
+
+    if (e.button === 0) {
+      if (canvasState.mode === CanvasMode.Moving) {
+        setIsPanning(true);
+        setStartPanPoint({ x: e.clientX, y: e.clientY });
+        document.body.style.cursor = 'url(/custom-cursors/grab.svg) 8 8, auto';
+        return;
       }
 
-      const zoomFactor = newZoom / zoom;
-      const newX = x - (x - camera.x) * zoomFactor;
-      const newY = y - (y - camera.y) * zoomFactor;
+      if (canvasState.mode === CanvasMode.Inserting) {
+        const point = pointerEventToCanvasPoint(e, camera, zoom);
+        if (e.button === 0 && canvasState.mode === CanvasMode.Inserting) {
+          setStartPanPoint(point);
+          setIsPanning(false);
+          return;
+        }
+      }
 
-      setZoom(newZoom);
-      setCamera({ x: newX, y: newY });
+      if (canvasState.mode === CanvasMode.Pencil) {
+        startDrawing(point, e.pressure);
+        return;
+      }
+
+      setCanvasState({ origin: point, mode: CanvasMode.Pressing });
+    } else if (e.button === 2 || e.button === 1) {
+      setIsRightClickPanning(true);
+      setStartPanPoint({ x: e.clientX, y: e.clientY });
+      document.body.style.cursor = 'url(/custom-cursors/grab.svg) 8 8, auto';
     }
-    else {
-      setCamera((camera) => ({
-        x: camera.x - e.deltaX / zoom,
-        y: camera.y - e.deltaY / zoom,
-      }));
-    }
-  }, [zoom, camera]);
+  }, [camera, canvasState.mode, setCanvasState, startDrawing, setIsPanning, setIsRightClickPanning, zoom]);
+
 
   const onPointerMove = useCallback((e: React.PointerEvent) => {
     e.preventDefault();
@@ -451,10 +506,9 @@ export const Canvas = ({
         y: camera.y + e.clientY - startPanPoint.y,
       };
       setCamera(newCameraPosition);
+      localStorage.setItem("camera", JSON.stringify(newCameraPosition));
       setStartPanPoint({ x: e.clientX, y: e.clientY });
     }
-
-    const current = pointerEventToCanvasPoint(e, camera, zoom);
 
     if (canvasState.mode === CanvasMode.Moving && isPanning) {
       const newCameraPosition = {
@@ -462,8 +516,11 @@ export const Canvas = ({
         y: camera.y + e.clientY - startPanPoint.y,
       };
       setCamera(newCameraPosition);
+      localStorage.setItem("camera", JSON.stringify(newCameraPosition));
       setStartPanPoint({ x: e.clientX, y: e.clientY });
     }
+
+    const current = pointerEventToCanvasPoint(e, camera, zoom);
 
     const newPresence: Presence = {
       ...myPresence,
@@ -486,6 +543,34 @@ export const Canvas = ({
       resizeSelectedLayer(current);
     } else if (canvasState.mode === CanvasMode.Pencil) {
       continueDrawing(current, e);
+    } else if (
+      e.buttons === 1 &&
+      canvasState.mode === CanvasMode.Inserting &&
+      startPanPoint &&
+      canvasState.layerType !== LayerType.Path &&
+      canvasState.layerType !== LayerType.Image
+    ) {
+      const point = pointerEventToCanvasPoint(e, camera, zoom);
+      const x = Math.min(point.x, startPanPoint.x);
+      const y = Math.min(point.y, startPanPoint.y);
+      const width = Math.abs(point.x - startPanPoint.x);
+      const height = Math.abs(point.y - startPanPoint.y);
+      setIsPanning(true);
+
+      switch (canvasState.layerType) {
+        case LayerType.Rectangle:
+          setCurrentPreviewLayer({ x, y, width, height, type: LayerType.Rectangle, fill: { r: 0, g: 0, b: 0, a: 0 } });
+          break;
+        case LayerType.Ellipse:
+          setCurrentPreviewLayer({ x, y, width, height, type: LayerType.Ellipse, fill: { r: 0, g: 0, b: 0, a: 0 } });
+          break;
+        case LayerType.Text:
+          setCurrentPreviewLayer({ x, y, width, height: 20, type: LayerType.Rectangle, fill: { r: 0, g: 0, b: 0, a: 0 } });
+          break;
+        case LayerType.Note:
+          setCurrentPreviewLayer({ x, y, width, height, type: LayerType.Note, fill: { r: 0, g: 0, b: 0, a: 0 } });
+          break;
+      }
     }
   },
     [
@@ -499,84 +584,54 @@ export const Canvas = ({
       isPanning,
       rightClickPanning,
       setCamera,
-      startPanPoint,
-      setMyPresence,
-      myPresence,
-      socket,
       User.userId,
       zoom
     ]);
 
-  const onPointerLeave = useCallback(() => {
-    const newPresence: Presence = {
-      ...myPresence,
-      cursor: null,
-    };
-
-    setMyPresence(newPresence);
-
-    if (socket) {
-      socket.emit('presence', null, User.userId);
-    }
-  }, [setMyPresence, myPresence, socket, User.userId]);
-
-  const onPointerDown = useCallback((
-    e: React.PointerEvent,
-  ) => {
-    const point = pointerEventToCanvasPoint(e, camera, zoom);
-
-    if (e.button === 0) {
-      if (canvasState.mode === CanvasMode.Moving) {
-        setIsPanning(true);
-        setStartPanPoint({ x: e.clientX, y: e.clientY });
-        document.body.style.cursor = 'grabbing';
-      }
-
-      if (canvasState.mode === CanvasMode.Inserting) {
-        return;
-      }
-
-      if (canvasState.mode === CanvasMode.Moving) {
-        return;
-      }
-
-      if (canvasState.mode === CanvasMode.Pencil) {
-        startDrawing(point, e.pressure);
-        return;
-      }
-
-      setCanvasState({ origin: point, mode: CanvasMode.Pressing });
-    } else if (e.button === 2) {
-      setIsRightClickPanning(true);
-      setStartPanPoint({ x: e.clientX, y: e.clientY });
-      document.body.style.cursor = 'grabbing';
-    }
-  }, [canvasState.mode, setCanvasState, startDrawing, setIsPanning, setIsRightClickPanning, camera, zoom]);
-
   const onPointerUp = useCallback((e: React.PointerEvent) => {
     setIsRightClickPanning(false);
-    document.body.style.cursor = 'default';
     const point = pointerEventToCanvasPoint(e, camera, zoom);
-    if (canvasState.mode === CanvasMode.Moving) {
-      document.body.style.cursor = 'pointer';
-    }
+
     if (
       canvasState.mode === CanvasMode.None ||
       canvasState.mode === CanvasMode.Pressing
     ) {
-      setIsClickingLayer(false);
+      document.body.style.cursor = 'default';
       unselectLayers();
       setCanvasState({
         mode: CanvasMode.None,
       });
     } else if (canvasState.mode === CanvasMode.Pencil) {
+      document.body.style.cursor = "url(/custom-cursors/pencil.svg) 8 8, auto";
       insertPath();
     } else if (canvasState.mode === CanvasMode.Inserting && canvasState.layerType === LayerType.Image) {
       setSelectedImage("");
       insertImage(LayerType.Image, point, selectedImage);
     } else if (canvasState.mode === CanvasMode.Inserting && canvasState.layerType !== LayerType.Image) {
-      insertLayer(canvasState.layerType, point);
+      const layerType = canvasState.layerType;
+      if (isPanning && currentPreviewLayer) {
+        insertLayer(layerType, { x: currentPreviewLayer.x, y: currentPreviewLayer.y }, currentPreviewLayer.width, currentPreviewLayer.height);
+        setCurrentPreviewLayer(null);
+      } else {
+        let width
+        let height
+        if (layerType === LayerType.Text) {
+          width = 130;
+          height = 37;
+          point.x = point.x - width / 2
+          point.y = point.y - height / 2
+          insertLayer(layerType, point, width, height)
+        } else {
+          width = 80;
+          height = 80;
+          point.x = point.x - width / 2
+          point.y = point.y - height / 2
+          insertLayer(layerType, point, width, height);
+        }
+        setIsPanning(false);
+      }
     } else if (canvasState.mode === CanvasMode.Moving) {
+      document.body.style.cursor = 'url(/custom-cursors/hand.svg) 8 8, auto';
       setIsPanning(false);
     } else if (canvasState.mode === CanvasMode.Translating) {
       selectedLayers.forEach(id => {
@@ -607,6 +662,7 @@ export const Canvas = ({
         mode: CanvasMode.None,
       });
     } else {
+      document.body.style.cursor = 'default';
       setCanvasState({
         mode: CanvasMode.None,
       });
@@ -628,11 +684,26 @@ export const Canvas = ({
       updateLayer,
       boardId,
       camera,
-      zoom
+      zoom,
+      currentPreviewLayer,
+      isPanning,
     ]);
 
+  const onPointerLeave = useCallback(() => {
+    const newPresence: Presence = {
+      ...myPresence,
+      cursor: null,
+    };
+
+    setMyPresence(newPresence);
+
+    if (socket) {
+      socket.emit('presence', null, User.userId);
+    }
+  }, [setMyPresence, myPresence, socket, User.userId]);
+
+
   const onLayerPointerDown = useCallback((e: React.PointerEvent, layerId: string) => {
-    setIsClickingLayer(true);
 
     if (
       canvasState.mode === CanvasMode.Pencil ||
@@ -670,7 +741,7 @@ export const Canvas = ({
       for (const user of otherUsers) {
         const connectionId = user.userId;
         const selection = user.presence?.selection || [];
-  
+
         for (const layerId of selection) {
           layerIdsToColorSelection[layerId] = connectionIdToColor(connectionId)
         }
@@ -724,7 +795,7 @@ export const Canvas = ({
     const newLiveLayers = { ...liveLayers };
     const newLiveLayerIds = [...liveLayerIds];
     copiedLayers.forEach((layer) => {
-      const newId = nanoid();
+      const newId = nanoid().replace(/_/g, '');
       newSelection.push(newId);
       newLiveLayerIds.push(newId);
       const clonedLayer = { ...layer };
@@ -757,43 +828,70 @@ export const Canvas = ({
 
   }, [copiedLayers, myPresence, setLiveLayers, setLiveLayerIds, setMyPresence, org, proModal, liveLayerIds, socket, liveLayers, addLayer, boardId]);
 
-  const mousePositionRef = useRef({ x: 0, y: 0 });
+  useEffect(() => {
+    const onMouseMove = (e: any) => {
+      if (e.buttons === 0) {
+        mousePositionRef.current = pointerEventToCanvasPoint(e, camera, zoom);
+      }
+    };
 
-      useEffect(() => {
-        const onMouseMove = (e: any) => {
-            if (e.buttons === 0) {
-              mousePositionRef.current = pointerEventToCanvasPoint(e, camera, zoom);
-            }
-          };
-      
-        document.addEventListener('mousemove', onMouseMove);
-      
-        function onKeyDown(e: KeyboardEvent) {
-          switch (e.key.toLocaleLowerCase()) {
-            case "c": {
-              if (e.ctrlKey || e.metaKey) {
-                copySelectedLayers();
-              }
-              break;
-            }
-            case "v": {
-              if (e.ctrlKey || e.metaKey) {
-                if (isClickingLayer === false) {
-                  pasteCopiedLayers(mousePositionRef.current);
-                }
-              }
-              break;
+    document.addEventListener('mousemove', onMouseMove);
+
+    function onKeyDown(e: KeyboardEvent) {
+      switch (e.key.toLocaleLowerCase()) {
+        case "c": {
+          if (e.ctrlKey || e.metaKey) {
+            copySelectedLayers();
+          }
+          break;
+        }
+        case "v": {
+          if (document.activeElement instanceof HTMLTextAreaElement) {
+            break;
+          }
+          if (e.ctrlKey || e.metaKey) {
+            if (copiedLayers.size > 0) {
+              pasteCopiedLayers(mousePositionRef.current);
             }
           }
+          break;
         }
-      
-        document.addEventListener("keydown", onKeyDown);
-      
-        return () => {
-          document.removeEventListener("keydown", onKeyDown);
-          document.removeEventListener('mousemove', onMouseMove);
-        }
-      }, [copySelectedLayers, pasteCopiedLayers, isClickingLayer, camera, zoom]);
+        case "backspace":
+          if (
+            document.activeElement instanceof HTMLTextAreaElement ||
+            document.activeElement instanceof HTMLInputElement ||
+            (document.activeElement instanceof HTMLElement && document.activeElement.contentEditable === "true")
+        ) {
+            break;
+          }
+          if (selectedLayers.length > 0) {
+            const newLayers = { ...liveLayers };
+            selectedLayers.forEach(id => {
+              delete newLayers[id];
+              if (socket) {
+                socket.emit('layer-delete', id);
+              }
+          
+              deleteLayer({ 
+                boardId: board._id,
+                layerId: id 
+              });
+            });
+            setLiveLayers(newLayers);
+            setLiveLayerIds(liveLayerIds.filter(id => !selectedLayers.includes(id)));
+            setSelectedLayers([]);
+          }
+
+      }
+    }
+
+    document.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.removeEventListener('mousemove', onMouseMove);
+    }
+  }, [copySelectedLayers, pasteCopiedLayers, camera, zoom, liveLayers, selectedLayers, copiedLayers, liveLayerIds]);
 
   useEffect(() => {
     if (typeof document !== 'undefined') {
@@ -810,12 +908,20 @@ export const Canvas = ({
   }, []);
 
   useEffect(() => {
-    if (canvasState.mode === CanvasMode.Moving) {
-      document.body.style.cursor = 'pointer';
+    if (canvasState.mode === CanvasMode.Inserting) {
+      if (canvasState.layerType === LayerType.Text) {
+        document.body.style.cursor = 'url(/custom-cursors/text-cursor.svg) 8 8, auto';
+      } else {
+        document.body.style.cursor = 'url(/custom-cursors/inserting.svg) 8 8, auto';
+      }
+    } else if (canvasState.mode === CanvasMode.Pencil) {
+      document.body.style.cursor = 'url(/custom-cursors/pencil.svg) 8 8, auto';
+    } else if (canvasState.mode === CanvasMode.Moving) {
+      document.body.style.cursor = 'url(/custom-cursors/hand.svg) 8 8, auto';
     } else {
       document.body.style.cursor = 'default';
     }
-  }, [canvasState.mode]);
+  }, [canvasState.mode, canvasState]);
 
   return (
     <main
@@ -834,19 +940,22 @@ export const Canvas = ({
         setCanvasState={setCanvasState}
         org={org}
       />
-      <SelectionTools
-        updateLayer={updateLayer}
-        boardId={boardId}
-        socket={socket}
-        setLiveLayerIds={setLiveLayerIds}
-        setLiveLayers={setLiveLayers}
-        liveLayerIds={liveLayerIds}
-        liveLayers={liveLayers}
-        selectedLayers={selectedLayers}
-        zoom={zoom}
-        camera={camera}
-        setLastUsedColor={setLastUsedColor}
-      />
+      {canvasState.mode !== CanvasMode.Translating && (
+        <SelectionTools
+          lastUsedColor={lastUsedColor}
+          setLiveLayerIds={setLiveLayerIds}
+          setLiveLayers={setLiveLayers}
+          liveLayerIds={liveLayerIds}
+          liveLayers={liveLayers}
+          selectedLayers={selectedLayers}
+          zoom={zoom}
+          camera={camera}
+          setLastUsedColor={setLastUsedColor}
+          updateLayer={updateLayer}
+          socket={socket}
+          boardId={boardId}
+        />
+      )}
       <svg
         id="canvas"
         className="h-[100vh] w-[100vw]"
@@ -871,8 +980,14 @@ export const Canvas = ({
               id={layerId}
               onLayerPointerDown={onLayerPointerDown}
               selectionColor={layerIdsToColorSelection[layerId]}
+              onRefChange={setTextRef}
             />
           ))}
+          {currentPreviewLayer && (
+            <CurrentPreviewLayer
+              layer={currentPreviewLayer}
+            />
+          )}
           <SelectionBox
             liveLayers={liveLayers}
             selectedLayers={selectedLayers}
@@ -880,7 +995,11 @@ export const Canvas = ({
           />
           {canvasState.mode === CanvasMode.SelectionNet && canvasState.current != null && (
             <rect
-              className="fill-blue-500/5 stroke-blue-500 stroke-1"
+              style={{
+                fill: 'rgba(59, 130, 246, 0.3)',
+                stroke: '#3B82F6',
+                strokeWidth: 0.5
+              }}
               x={Math.min(canvasState.origin.x, canvasState.current.x)}
               y={Math.min(canvasState.origin.y, canvasState.current.y)}
               width={Math.abs(canvasState.origin.x - canvasState.current.x)}

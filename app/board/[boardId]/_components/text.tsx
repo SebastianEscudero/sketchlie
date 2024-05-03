@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
-import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
-import { LayerType, TextLayer, UpdateLayerMutation } from "@/types/canvas";
+import React, { useEffect, useRef } from 'react';
+import { TextLayer, UpdateLayerMutation } from "@/types/canvas";
 import { cn, colorToCss } from "@/lib/utils";
 import { Kalam } from "next/font/google";
 import { useRoom } from '@/components/room';
-import { debounce } from 'lodash';
+import { throttle } from 'lodash';
 
 const font = Kalam({
     subsets: ["latin"],
@@ -14,11 +13,28 @@ const font = Kalam({
 interface TextProps {
     id: string;
     layer: TextLayer;
-    onPointerDown: (e: React.PointerEvent, id: string) => void;
+    onPointerDown?: (e: React.PointerEvent, id: string) => void;
     selectionColor?: string;
-    setLiveLayers: (layers: any) => void;
-    updateLayer: UpdateLayerMutation;
+    setLiveLayers?: (layers: any) => void;
+    liveLayers?: any;
+    updateLayer?: UpdateLayerMutation;
+    onRefChange?: (ref: React.RefObject<any>) => void;
 };
+
+const throttledUpdateLayer = throttle((updateLayer, socket, boardId, layerId, layerUpdates) => {
+    if (updateLayer) {
+      updateLayer({
+        boardId,
+        layerId,
+        layerUpdates
+      });
+    }
+  
+    if (socket) {
+      socket.emit('layer-update', layerId, layerUpdates);
+    }
+  }, 1000); 
+
 
 export const Text = ({
     layer,
@@ -26,94 +42,49 @@ export const Text = ({
     id,
     selectionColor,
     setLiveLayers,
-    updateLayer
+    updateLayer,
+    onRefChange,
 }: TextProps) => {
     const { x, y, width, height, fill, value, textFontSize } = layer;
-    const initialFontsize = textFontSize
-    const [prevWidth, setPrevWidth] = useState(width);
-    const [prevHeight, setPrevHeight] = useState(height);
-    const [fontSize, setFontSize] = useState(initialFontsize);
+    const { liveLayers, board, socket } = useRoom();
     const textRef = useRef<any>(null);
-    const { liveLayers, socket, board } = useRoom();
+    const fillColor = colorToCss(layer.fill);
+    const isTransparent = fillColor === 'rgba(0,0,0,0)';
 
     const updateValue = (newValue: string) => {
-        const newLiveLayers = { ...liveLayers };
-        if (newLiveLayers[id] && newLiveLayers[id].type === LayerType.Text) {
-            const textLayer = newLiveLayers[id] as TextLayer;
-            textLayer.value = newValue;
-            textLayer.textFontSize = fontSize;
-        }
-
-        return newLiveLayers;
+        layer.value = newValue;
+        return layer;
     };
 
-    const handleContentChange = (e: ContentEditableEvent) => {
-        const newLiveLayers = updateValue(e.target.value);
-        setLiveLayers(newLiveLayers);
-
-        if (socket) {
-            socket.emit('layer-update', id, newLiveLayers[id]);
-        }
-
-        updateLayer({
-            boardId: board._id,
-            layerId: id,
-            layerUpdates: newLiveLayers[id]
-        })
-
-    };
-
-    const debouncedHandleContentChange = debounce(handleContentChange, 500);
-
-    function handleKeyDown(e: React.KeyboardEvent) {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            const selection = document.getSelection();
-            if (selection && selection.rangeCount > 0) {
-                const range = selection.getRangeAt(0);
-                const br = document.createElement('br');
-                range.insertNode(br);
-                range.setStartAfter(br);
-                range.setEndAfter(br);
-                selection.removeAllRanges();
-                selection.addRange(range);
-            }
-        }
-    }
-
-    const handlePaste = async (e: React.ClipboardEvent) => {
-        e.preventDefault();
-        const text = await navigator.clipboard.readText();
-        const selection = window.getSelection();
-        if (selection && selection.rangeCount > 0) {
-            const range = selection.getRangeAt(0);
-            range.deleteContents();
-            range.insertNode(document.createTextNode(text));
+    const handleContentChange = (newValue: string) => {
+        const newLayer = updateValue(newValue);
+        newLayer.height = textRef.current.scrollHeight;
+        if (setLiveLayers) {
+            const layers = { ...liveLayers };
+            layers[id] = newLayer;
+            setLiveLayers(layers);
+            throttledUpdateLayer(updateLayer, socket, board._id, id, liveLayers[id]);
         }
     };
 
     useEffect(() => {
-        if (width !== prevWidth && height !== prevHeight && liveLayers[id]?.type === LayerType.Text) {
-            const widthScaleFactor = width / prevWidth;
-            const heightScaleFactor = height / prevHeight;
-            const newFontSize = fontSize * Math.min(widthScaleFactor, heightScaleFactor);
-            setFontSize(newFontSize);
-            const textLayer = liveLayers[id] as TextLayer;
-            textLayer.textFontSize = newFontSize;
-            setLiveLayers(liveLayers);
+        if (onRefChange) {
+            onRefChange(textRef);
         }
-    }, [width, height, prevWidth, prevHeight]);
-    
+    }, [textRef, onRefChange]);
+
     useEffect(() => {
-        setPrevWidth(width);
-        setPrevHeight(height);
-    }, [width, height]);
+        const newHeight = textRef.current?.scrollHeight || height;
+        layer.height = newHeight;
+        textRef.current.style.height = 'auto';
+        textRef.current.style.height = `${textRef.current.scrollHeight}px`;
+    }, [width, value, height, id, layer]);
     
     if (!fill) {
         return null;
     }
 
-    return (
+       return (
         <foreignObject
             x={x}
             y={y}
@@ -122,27 +93,37 @@ export const Text = ({
             style={{
                 outline: selectionColor ? `1px solid ${selectionColor}` : "none",
             }}
-            onPointerDown={(e) => onPointerDown(e, id)}
+            onPointerDown={onPointerDown ? (e) => onPointerDown(e, id) : undefined}
         >
-            <ContentEditable
+            <textarea
                 ref={textRef}
-                html={value || "Text"}
-                onChange={debouncedHandleContentChange}
-                onPaste={handlePaste}
-                onKeyDown={handleKeyDown}
+                value={value || ""}
+                onChange={e => handleContentChange(e.target.value)}
+                autoComplete="off"
+                autoCapitalize="off"
+                autoCorrect="off"
+                spellCheck={false}
+                placeholder='Type something...'
                 className={cn(
-                    "outline-none w-full h-full text-center justify-center items-center flex",
+                    "outline-none w-full h-full text-center flex",
                     font.className
                 )}
                 style={{
-                    fontSize: fontSize,
-                    color: colorToCss(fill) === "transparent" ? "#000" : colorToCss(fill),
+                    color: isTransparent ? "#000" : fillColor,
                     wordWrap: 'break-word',
                     overflowWrap: 'break-word',
                     wordBreak: 'break-all',
                     display: 'flex',
+                    backgroundColor: 'transparent',
+                    textAlign: 'left',
+                    resize: "none",
+                    overflowY: "hidden",
+                    overflowX: "hidden",
+                    userSelect: "none",
+                    fontSize: textFontSize,
+                    padding: 0.5,
+                    margin: 0,
                 }}
-                spellCheck={false}
             />
         </foreignObject>
     );

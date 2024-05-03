@@ -1,5 +1,5 @@
 import { Layers, User } from "@/types/canvas";
-import { createContext, ReactNode, Suspense, useContext, useEffect, useState } from "react";
+import React, { createContext, ReactNode, Suspense, useContext, useEffect, useState } from "react";
 import io, { Socket } from "socket.io-client";
 
 interface RoomContextValue {
@@ -31,7 +31,7 @@ interface RoomProps {
   board: any;
 }
 
-export const Room = ({ children, roomId, fallback, userInfo, board }: RoomProps) => {
+export const Room = React.memo(({ children, roomId, fallback, userInfo, board }: RoomProps) => {
 
   const orgId = board?.orgId;
   const org = userInfo.organizations.find((org: any) => org.id === orgId);
@@ -47,6 +47,7 @@ export const Room = ({ children, roomId, fallback, userInfo, board }: RoomProps)
       picture: userInfo.image || undefined,
     }
   });
+
   const [otherUsers, setOtherUsers] = useState<User[]>([]);
 
   useEffect(() => {
@@ -76,7 +77,7 @@ export const Room = ({ children, roomId, fallback, userInfo, board }: RoomProps)
   }, [socket, User]);
 
   useEffect(() => {
-    const newSocket = io('https://sketchlie-server-little-resonance-2329.fly.dev', {
+    const newSocket = io('http://localhost:3001', {
       query: { roomId }
     });
     setSocket(newSocket);
@@ -118,7 +119,9 @@ export const Room = ({ children, roomId, fallback, userInfo, board }: RoomProps)
       </LayerContext.Provider>
     </RoomContext.Provider>
   );
-};
+});
+
+Room.displayName = 'Room'
 
 export const useRoom = () => {
   const roomContext = useContext(RoomContext);

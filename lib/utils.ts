@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+// import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 
 import { 
   Camera, 
@@ -11,6 +12,7 @@ import {
   Side, 
   XYWH
 } from "@/types/canvas";
+import { toast } from "sonner";
 
 const COLORS = [
   "#DC2626", // Red
@@ -46,26 +48,31 @@ export function connectionIdToColor(connectionId: string): string {
   return COLORS[sum % COLORS.length];
 };
 
-export function colorToCss(color: Color) {
-  if (!color || (color.r === 0 && color.g === 0 && color.b === 0)) {
-    return "transparent";
-  }
 
-  return `#${color.r.toString(16).padStart(2, "0")}${color.g.toString(16).padStart(2, "0")}${color.b.toString(16).padStart(2, "0")}`;
+export function colorToCss(color: Color) {
+  return `rgba(${color.r},${color.g},${color.b},${color.a})`;
 }
 
 export function resizeBounds(
   type: any,
   bounds: XYWH, 
   corner: Side, 
-  point: Point
+  point: Point,
+  textareaRef?: React.RefObject<HTMLTextAreaElement>,
+  layer?: Layer
 ): XYWH {
+
   const result = {
     x: bounds.x,
     y: bounds.y,
     width: bounds.width,
     height: bounds.height,
+    textFontSize: 0
   };
+
+  if (layer?.type === LayerType.Text) {
+    result.textFontSize = layer.textFontSize;
+  }
 
   const isCorner = corner === (Side.Top + Side.Left) || corner === (Side.Top + Side.Right) || corner === (Side.Bottom + Side.Left) || corner === (Side.Bottom + Side.Right);
   const aspectRatio = bounds.width / bounds.height;
@@ -112,6 +119,18 @@ export function resizeBounds(
       result.height = Math.abs(point.y - bounds.y);
     }
   }
+
+  if (layer && layer?.height/layer?.width === result.height/result.width && textareaRef && textareaRef.current && layer.type === LayerType.Text) {
+    const newFontSize = result.height/layer.height * layer.textFontSize
+    result.textFontSize = newFontSize
+    console.log(result.textFontSize)
+    return result
+  }
+
+  if (!isCorner && textareaRef && textareaRef.current) {
+    result.height = textareaRef.current.scrollHeight;
+    return result
+  } 
 
   return result;
 };
@@ -226,6 +245,20 @@ export function getSvgPathFromStroke(stroke: number[][]) {
 
 export const NAME = "Sketchlie";
 
-export const exportToPdf = async (title: string) => {
-  console.log("soon")
+export const exportToPdf = async (selectedLayers: string[]) => {
+  toast.info("Coming soon!", {
+    position: "top-center",
+    closeButton: true
+  });
+  // const liveLayers: Layers = JSON.parse(localStorage.getItem("layers") || '{}');
+  // let layersList: Layer[] = [];
+
+  // if (!selectedLayers.length || !liveLayers) {
+  //   toast.info("Selecciona los objetos para exportar", {
+  //     position: "top-center",
+  //     closeButton: true
+  //   });
+  //   return;
+  // }
+
 }

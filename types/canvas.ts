@@ -2,6 +2,7 @@ export type Color = {
   r: number;
   g: number;
   b: number;
+  a: number;
 };
 
 export type Camera = {
@@ -24,7 +25,7 @@ export type RectangleLayer = {
   y: number;
   height: number;
   width: number;
-  fill: Color | null;
+  fill: Color;
   value?: string;
 };
 
@@ -34,7 +35,7 @@ export type EllipseLayer = {
   y: number;
   height: number;
   width: number;
-  fill: Color | null;
+  fill: Color;
   value?: string;
 };
 
@@ -44,7 +45,7 @@ export type PathLayer = {
   y: number;
   height: number;
   width: number;
-  fill: Color | null;
+  fill: Color;
   points: number[][];
   value?: string;
 };
@@ -56,7 +57,7 @@ export type ImageLayer = {
   width: number;
   height: number;
   src: string;
-  fill: Color | null;
+  fill: Color;
   value?: string;
 };
 
@@ -66,7 +67,7 @@ export type TextLayer = {
   y: number;
   height: number;
   width: number;
-  fill: Color | null;
+  fill: Color;
   value?: string;
   textFontSize: number
 };
@@ -77,7 +78,7 @@ export type NoteLayer = {
   y: number;
   height: number;
   width: number;
-  fill: Color | null;
+  fill: Color;
   value?: string;
 };
 
@@ -116,7 +117,7 @@ export type CanvasState =
   }
   | {
     mode: CanvasMode.Inserting,
-    layerType: LayerType.Ellipse | LayerType.Rectangle | LayerType.Text | LayerType.Note | LayerType.Image;
+    layerType: LayerType.Ellipse | LayerType.Rectangle | LayerType.Text | LayerType.Note | LayerType.Image | LayerType.Path;
   }
   | {
     mode: CanvasMode.Pencil,
@@ -155,7 +156,7 @@ export type Presence = {
   cursor?: { x: number, y: number } | null,
   selection?: string[];
   pencilDraft?: [x: number, y: number, pressure: number][] | null;
-  penColor?: Color | null;
+  penColor?: Color;
 };
 
 export type User = {
@@ -172,3 +173,5 @@ export type UpdateLayerMutation = (args: {
   layerId: string;
   layerUpdates: Record<string, unknown>;
 }) => Promise<any>;
+
+export type PreviewLayer = RectangleLayer | EllipseLayer | TextLayer | NoteLayer;

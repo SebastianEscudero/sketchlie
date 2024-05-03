@@ -7,7 +7,7 @@ interface PathProps {
   y: number;
   points: number[][];
   fill: string;
-  onPointerDown?: (e: React.PointerEvent)  => void;
+  onPointerDown?: (e: React.PointerEvent) => void;
   stroke?: string;
 };
 
@@ -19,6 +19,9 @@ export const Path = ({
   onPointerDown,
   stroke,
 }: PathProps) => {
+
+  const isTransparent = fill === 'rgba(0,0,0,0)';
+
   return (
     <path
       onPointerDown={onPointerDown}
@@ -35,7 +38,7 @@ export const Path = ({
       }}
       x={0}
       y={0}
-      fill={fill === "transparent" ? "#000" : fill}
+      fill={isTransparent ? '#000' : fill}
       stroke={stroke}
       strokeWidth={1}
     />

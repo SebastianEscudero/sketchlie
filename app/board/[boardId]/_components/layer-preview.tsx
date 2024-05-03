@@ -17,6 +17,7 @@ interface LayerPreviewProps {
   liveLayers: any;
   setLiveLayers: (layers: any) => void;
   updateLayer: UpdateLayerMutation;
+  onRefChange?: (ref: React.RefObject<any>) => void;
 };
 
 export const LayerPreview = memo(({
@@ -25,7 +26,8 @@ export const LayerPreview = memo(({
   selectionColor,
   liveLayers,
   setLiveLayers,
-  updateLayer
+  updateLayer,
+  onRefChange,
 }: LayerPreviewProps) => {
 
   const layer = liveLayers[id];
@@ -60,6 +62,7 @@ export const LayerPreview = memo(({
     case LayerType.Text:
       return (
         <Text
+          onRefChange={onRefChange}
           updateLayer={updateLayer}
           setLiveLayers={setLiveLayers}
           id={id}

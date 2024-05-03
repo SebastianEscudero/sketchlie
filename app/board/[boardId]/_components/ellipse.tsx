@@ -4,7 +4,7 @@ import { EllipseLayer } from "@/types/canvas";
 interface EllipseProps {
   id: string;
   layer: EllipseLayer;
-  onPointerDown: (e: React.PointerEvent, id: string) => void;
+  onPointerDown?: (e: React.PointerEvent, id: string) => void;
   selectionColor?: string;
 };
 
@@ -15,6 +15,9 @@ export const Ellipse = ({
   selectionColor,
 }: EllipseProps) => {
 
+  const fillColor = colorToCss(layer.fill);
+  const isTransparent = fillColor === 'rgba(0,0,0,0)';
+
   if (!layer.fill) {
     return null;
   }
@@ -22,7 +25,7 @@ export const Ellipse = ({
   return (
     <ellipse
       className="drop-shadow-md"
-      onPointerDown={(e) => onPointerDown(e, id)}
+      onPointerDown={onPointerDown ? (e) => onPointerDown(e, id) : undefined}
       style={{
         transform: `translate(
           ${layer.x}px,
@@ -33,8 +36,8 @@ export const Ellipse = ({
       cy={layer.height / 2}
       rx={layer.width / 2}
       ry={layer.height / 2}
-      fill={layer.fill ? colorToCss(layer.fill) : "#000"}
-      stroke={selectionColor || (colorToCss(layer.fill) === "transparent" ? "#000" : "transparent")}
+      fill={fillColor}
+      stroke={selectionColor || (isTransparent ? "#000" : "transparent")}
       strokeWidth="1"
     />
   );

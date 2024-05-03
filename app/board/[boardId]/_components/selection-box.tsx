@@ -11,7 +11,7 @@ interface SelectionBoxProps {
   liveLayers: Layers;
 };
 
-const HANDLE_WIDTH = 8;
+const HANDLE_WIDTH = 4;
 
 export const SelectionBox = memo(({
   onResizeHandlePointerDown,
@@ -33,6 +33,14 @@ export const SelectionBox = memo(({
     return false;
   }, [soleLayerId, liveLayers]);
 
+  const isTextLayer = useMemo(() => {
+    if (soleLayerId) {
+      const soleLayer = liveLayers[soleLayerId];
+      return soleLayer && soleLayer.type === LayerType.Text;
+    }
+    return false;
+  }, [soleLayerId, liveLayers]);
+
   const bounds = useSelectionBounds(selectedLayers, liveLayers);
 
   if (!bounds) {
@@ -43,8 +51,9 @@ export const SelectionBox = memo(({
     <>
       <rect
         onContextMenu={handleRightClick}
-        className="fill-transparent stroke-blue-500 stroke-1 pointer-events-none"
+        className="fill-transparent stroke-blue-500 pointer-events-none"
         style={{
+          strokeWidth: 0.7,
           transform: `translate(${bounds.x}px, ${bounds.y}px)`,
         }}
         x={0}
@@ -54,12 +63,13 @@ export const SelectionBox = memo(({
       />
       {isShowingHandles && (
         <>
+        {!isTextLayer && (
           <rect
-          
-            className="fill-white stroke-1 stroke-blue-500"
+            className="fill-white stroke-blue-500"
             x={0}
             y={0}
             style={{
+              strokeWidth: 0.5,
               cursor: "nwse-resize",
               width: `${HANDLE_WIDTH}px`,
               height: `${HANDLE_WIDTH}px`,
@@ -75,31 +85,36 @@ export const SelectionBox = memo(({
               onResizeHandlePointerDown(Side.Top + Side.Left, bounds);
             }}
           />
+        )}
+          {!isTextLayer && (
+            <rect
+              className="fill-white stroke-1 stroke-blue-500"
+              x={0}
+              y={0}
+              style={{
+                cursor: "ns-resize",
+                width: `${HANDLE_WIDTH}px`,
+                height: `${HANDLE_WIDTH}px`,
+                transform: `
+        translate(
+          ${bounds.x + bounds.width / 2 - HANDLE_WIDTH / 2}px, 
+          ${bounds.y - HANDLE_WIDTH / 2}px
+        )
+      `
+              }}
+              onPointerDown={(e) => {
+                e.stopPropagation();
+                onResizeHandlePointerDown(Side.Top, bounds);
+              }}
+            />
+          )}
+          {!isTextLayer && (
           <rect
-            className="fill-white stroke-1 stroke-blue-500"
+            className="fill-white stroke-blue-500"
             x={0}
             y={0}
             style={{
-              cursor: "ns-resize",
-              width: `${HANDLE_WIDTH}px`,
-              height: `${HANDLE_WIDTH}px`,
-              transform: `
-                translate(
-                  ${bounds.x + bounds.width / 2 - HANDLE_WIDTH / 2}px, 
-                  ${bounds.y - HANDLE_WIDTH / 2}px
-                )
-              `
-            }}
-            onPointerDown={(e) => {
-              e.stopPropagation();
-              onResizeHandlePointerDown(Side.Top, bounds);
-            }}
-          />
-          <rect
-            className="fill-white stroke-1 stroke-blue-500"
-            x={0}
-            y={0}
-            style={{
+              strokeWidth: 0.5,
               cursor: "nesw-resize",
               width: `${HANDLE_WIDTH}px`,
               height: `${HANDLE_WIDTH}px`,
@@ -114,11 +129,13 @@ export const SelectionBox = memo(({
               onResizeHandlePointerDown(Side.Top + Side.Right, bounds);
             }}
           />
+          )}
           <rect
-            className="fill-white stroke-1 stroke-blue-500"
+            className="fill-white stroke-blue-500"
             x={0}
             y={0}
             style={{
+              strokeWidth: 0.5,
               cursor: "ew-resize",
               width: `${HANDLE_WIDTH}px`,
               height: `${HANDLE_WIDTH}px`,
@@ -133,11 +150,13 @@ export const SelectionBox = memo(({
               onResizeHandlePointerDown(Side.Right, bounds);
             }}
           />
+          {!isTextLayer && (
           <rect
-            className="fill-white stroke-1 stroke-blue-500"
+            className="fill-white stroke-blue-500"
             x={0}
             y={0}
             style={{
+              strokeWidth: 0.5,
               cursor: "nwse-resize",
               width: `${HANDLE_WIDTH}px`,
               height: `${HANDLE_WIDTH}px`,
@@ -152,30 +171,35 @@ export const SelectionBox = memo(({
               onResizeHandlePointerDown(Side.Bottom + Side.Right, bounds);
             }}
           />
+          )}
+          {!isTextLayer && (
+            <rect
+              className="fill-white stroke-1 stroke-blue-500"
+              x={0}
+              y={0}
+              style={{
+                cursor: "ns-resize",
+                width: `${HANDLE_WIDTH}px`,
+                height: `${HANDLE_WIDTH}px`,
+                transform: `
+        translate(
+          ${bounds.x + bounds.width / 2 - HANDLE_WIDTH / 2}px,
+          ${bounds.y - HANDLE_WIDTH / 2 + bounds.height}px
+        )`
+              }}
+              onPointerDown={(e) => {
+                e.stopPropagation();
+                onResizeHandlePointerDown(Side.Bottom, bounds);
+              }}
+            />
+          )}
+          {!isTextLayer && (
           <rect
-            className="fill-white stroke-1 stroke-blue-500"
+            className="fill-white stroke-blue-500"
             x={0}
             y={0}
             style={{
-              cursor: "ns-resize",
-              width: `${HANDLE_WIDTH}px`,
-              height: `${HANDLE_WIDTH}px`,
-              transform: `
-                translate(
-                  ${bounds.x + bounds.width / 2 - HANDLE_WIDTH / 2}px,
-                  ${bounds.y - HANDLE_WIDTH / 2 + bounds.height}px
-                )`
-            }}
-            onPointerDown={(e) => {
-              e.stopPropagation();
-              onResizeHandlePointerDown(Side.Bottom, bounds);
-            }}
-          />
-          <rect
-            className="fill-white stroke-1 stroke-blue-500"
-            x={0}
-            y={0}
-            style={{
+              strokeWidth: 0.5,
               cursor: "nesw-resize",
               width: `${HANDLE_WIDTH}px`,
               height: `${HANDLE_WIDTH}px`,
@@ -190,11 +214,13 @@ export const SelectionBox = memo(({
               onResizeHandlePointerDown(Side.Bottom + Side.Left, bounds);
             }}
           />
+          )}
           <rect
-            className="fill-white stroke-1 stroke-blue-500"
+            className="fill-white stroke-blue-500"
             x={0}
             y={0}
             style={{
+              strokeWidth: 0.5,
               cursor: "ew-resize",
               width: `${HANDLE_WIDTH}px`,
               height: `${HANDLE_WIDTH}px`,
