@@ -245,7 +245,7 @@ export function getSvgPathFromStroke(stroke: number[][]) {
 
 export const NAME = "Sketchlie";
 
-export const exportToPdf = async (selectedLayers: string[]) => {
+export const exportToPdf = async (selectedLayers: any) => {
   toast.info("Coming soon!", {
     position: "top-center",
     closeButton: true
