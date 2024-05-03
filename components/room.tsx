@@ -77,7 +77,7 @@ export const Room = React.memo(({ children, roomId, fallback, userInfo, board }:
   }, [socket, User]);
 
   useEffect(() => {
-    const newSocket = io('http://localhost:3001', {
+    const newSocket = io('https://sketchlie-server-little-resonance-2329.fly.dev', {
       query: { roomId }
     });
     setSocket(newSocket);
