@@ -48,23 +48,23 @@ const porEquipo: { title: string; href: string }[] = [
 const porCasoDeUso: { title: string; href: string }[] = [
     {
         title: "Pizarra Online",
-        href: "/pizarra-online",
+        href: "/pizarra-online/",
     },
     {
         title: "Mapa Conceptual",
-        href: "/mapa-conceptual",
+        href: "/mapa-conceptual/",
     },
     {
         title: "Diagrama de Flujo",
-        href: "/diagrama-de-flujo",
+        href: "/diagrama-de-flujo/",
     },
     {
         title: "Wireframe",
-        href: "/wireframe",
+        href: "/wireframe/",
     },
     {
         title: "Mapas mentales",
-        href: "/mapa-mental-online",
+        href: "/mapa-mental-online/",
     },
     {
         title: "Mapa de procesos",
@@ -72,34 +72,34 @@ const porCasoDeUso: { title: string; href: string }[] = [
     },
     {
         title: "Diagramas",
-        href: "/diagrama",
+        href: "/diagrama/",
     },
     {
         title: "Lluvia de ideas ",
-        href: "/lluvia-de-ideas",
+        href: "/lluvia-de-ideas/",
     },
     {
         title: "Customer Journey Map ",
-        href: "/customer-journey-map",
+        href: "/customer-journey-map/",
     }
 ]
 
 const blog: { title: string; href: string }[] = [
     {
         title: "Canvas Online",
-        href: "/blog/canvas-online"
+        href: "/blog/canvas-online/"
     },
     {
         title: "Diagrama",
-        href: "/blog/diagrama"
+        href: "/blog/diagrama/"
     },
     {
         title: "Diagrama de Flujo",
-        href: "/blog/diagrama-de-flujo"
+        href: "/blog/diagrama-de-flujo/"
     },
     {
         title: "Mapa Conceptual",
-        href: "/blog/mapa-conceptual"
+        href: "/blog/mapa-conceptual/"
     },
     {
         title: "Mapas de Procesos",
@@ -111,7 +111,7 @@ const blog: { title: string; href: string }[] = [
     },
     {
         title: "Pizarra Online",
-        href: "/blog/pizarra-online"
+        href: "/blog/pizarra-online/"
     },
     {
         title: "Wireframe",
@@ -122,19 +122,19 @@ const blog: { title: string; href: string }[] = [
 const queEs: { title: string; href: string }[] = [
     {
         title: "Lluvia de Ideas",
-        href: "/lluvia-de-ideas/que-es-lluvia-de-ideas"
+        href: "/lluvia-de-ideas/que-es-lluvia-de-ideas/"
     },
     {
         title: "Diagrama de Flujo",
-        href: "/diagrama-de-flujo/que-es-diagrama-de-flujo"
+        href: "/diagrama-de-flujo/que-es-diagrama-de-flujo/"
     },
     {
         title: "Diagrama",
-        href: "/diagrama/que-es-diagrama"
+        href: "/diagrama/que-es-diagrama/"
     },
     {
         title: "Mapa Conceptual",
-        href: "/mapa-conceptual/que-es-mapa-conceptual"
+        href: "/mapa-conceptual/que-es-mapa-conceptual/"
     },
     {
         title: "Mapa de Procesos",
@@ -142,15 +142,15 @@ const queEs: { title: string; href: string }[] = [
     },
     {
         title: "Mapa Mental",
-        href: "/mapa-mental-online/que-es-mapa-mental"
+        href: "/mapa-mental-online/que-es-mapa-mental/"
     },
     {
         title: "Pizarra Online",
-        href: "/pizarra-online/que-es-pizarra-online"
+        href: "/pizarra-online/que-es-pizarra-online/"
     },
     {
         title: "Wireframe",
-        href: "/wireframe/que-es-wireframe"
+        href: "/wireframe/que-es-wireframe/"
     },
     {
         title: "Customer J. Map",
@@ -171,7 +171,7 @@ export const BotNavbar = () => {
                     <p className="mx-[10%]">
                         Sé parte de la comunidad que impulsa la innovación y la colaboración con Sketchlie. Regístrate ahora con tu correo electrónico laboral y comienza a transformar tus ideas en realidad.
                     </p>
-                    <Link href={"/dashboard"}>
+                    <Link href={"/dashboard/"}>
                         <Button variant="auth" className="text-lg p-6 mt-10">
                             {user ? "Ir al Tablero" : "Regístrate gratis"}
                         </Button>
@@ -260,11 +260,11 @@ export const BotNavbar = () => {
                 <div className="flex flex-col w-full border-b">
                     <Link
                         className="py-[9.5px] text-lg hover:underline ml-5"
-                        href="/blog"
+                        href="/blog/"
                     >
                         <Button
                             className='w-full justify-start gap-1 text-lg font-semibold'
-                            variant={pathname === "/blog" ? 'secondary' : 'ghostDark'}
+                            variant={pathname === "/blog/" ? 'secondary' : 'ghostDark'}
                         >
                             Blog
                         </Button>
@@ -273,11 +273,11 @@ export const BotNavbar = () => {
                 <div className="flex flex-col w-full border-b">
                     <Link
                         className="py-[9.5px] text-lg hover:underline ml-5"
-                        href="/pricing"
+                        href="/pricing/"
                     >
                         <Button
                             className='w-full justify-start gap-1 text-lg font-semibold'
-                            variant={pathname === "/pricing" ? 'secondary' : 'ghostDark'}
+                            variant={pathname === "/pricing/" ? 'secondary' : 'ghostDark'}
                         >
                             Precios  🚧
                         </Button>
@@ -286,7 +286,7 @@ export const BotNavbar = () => {
             </Accordion>
             <div className="lg:text-lg text-lg mt-10 px-4 flex justify-center flex-col pb-10">
                 <Link
-                    href="/dashboard"
+                    href="/dashboard/"
                     className="flex justify-center"
                 >
                     <Image

@@ -31,7 +31,7 @@ const LandingPage = () => {
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                <Link href="/blog">Blog</Link>
+                <Link href="/blog/">Blog</Link>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
@@ -52,7 +52,7 @@ const LandingPage = () => {
            />
            <div className="flex flex-col-reverse lg:flex-row justify-between mt-20">
                 <div className="lg:max-w-[70%] text-xl">
-                    <p className="mb-10">Los wireframes son la columna vertebral de cualquier proyecto de diseño. Son esquemas visuales que representan la estructura y funcionalidad básica de una página web o aplicación. En Sketchlie, entendemos la importancia de crear <Link className="text-custom-blue hover:underline" href="/wireframe">wireframes</Link> sólidos y eficientes para dar vida a tus ideas de forma colaborativa y efectiva.</p>
+                    <p className="mb-10">Los wireframes son la columna vertebral de cualquier proyecto de diseño. Son esquemas visuales que representan la estructura y funcionalidad básica de una página web o aplicación. En Sketchlie, entendemos la importancia de crear <Link className="text-custom-blue hover:underline" href="/wireframe/">wireframes</Link> sólidos y eficientes para dar vida a tus ideas de forma colaborativa y efectiva.</p>
                     <div id="1" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">1. ¿Qué son los Wireframes?</h2>
                     <p className="mb-10">Los wireframes son como los planos de una casa antes de construirla. Son representaciones visuales de la disposición de los elementos en una interfaz, sin preocuparse por los detalles visuales o estilos de diseño. Estos esquemas proporcionan una guía clara sobre la distribución de contenido, funciones y navegación de una aplicación o sitio web.</p>
@@ -136,9 +136,9 @@ const LandingPage = () => {
                 </div>
            </div>
            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-5 md:my-20 my-5">
-                <BlogLinks blogTitle="Mapa Conceptual Online" blogImage="/placeholders/mapa-conceptual-online.png" blogHref="/mapa-conceptual" blogDescription="Descubre cómo desatar tu creatividad y potenciar la colaboración en tiempo real con Sketchlie."/>
+                <BlogLinks blogTitle="Mapa Conceptual Online" blogImage="/placeholders/mapa-conceptual-online.png" blogHref="/mapa-conceptual/" blogDescription="Descubre cómo desatar tu creatividad y potenciar la colaboración en tiempo real con Sketchlie."/>
                 <BlogLinks blogTitle="Mapa de Procesos" blogImage="/placeholders/mapa-de-procesos.png" blogHref="/mapas-de-procesos" blogDescription="El mapa de procesos ayuda a los equipos a mapear y implementar mejoras. Registrate hoy con una 3 espacios de trabajo gratuitos para empezar a utilizar la mejor herramienta de mapa de procesos."/>
-                <BlogLinks blogTitle="Mapas Mentales" blogImage="/placeholders/mapa-mental.png" blogHref="/mapa-mental-online" blogDescription="Explora nuestras herramientas para simplificar la creación de mapas mentales. Organiza tus ideas de manera jerárquica y potencia tu creatividad con nuestro intuitivo creador de mapas mentales."/>
+                <BlogLinks blogTitle="Mapas Mentales" blogImage="/placeholders/mapa-mental.png" blogHref="/mapa-mental-online/" blogDescription="Explora nuestras herramientas para simplificar la creación de mapas mentales. Organiza tus ideas de manera jerárquica y potencia tu creatividad con nuestro intuitivo creador de mapas mentales."/>
             </div>
         </div>    
      );

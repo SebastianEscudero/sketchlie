@@ -30,7 +30,7 @@ const LandingPage = () => {
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
-                            <Link href="/diagrama-de-flujo">Diagrama de Flujo</Link>
+                            <Link href="/diagrama-de-flujo/">Diagrama de Flujo</Link>
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
@@ -57,7 +57,7 @@ const LandingPage = () => {
                     <div id="1" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">¿Qué es un Diagrama de Flujo?</h2>
                     <p className="mb-10">Un diagrama de flujo es una representación visual de un proceso o algoritmo. En esencia, es una secuencia de pasos ordenados que se presentan mediante símbolos gráficos para ilustrar la secuencia de decisiones que se toman para resolver un problema o ejecutar una tarea específica. Estos diagramas son una herramienta poderosa en diversos campos, desde la ingeniería y la programación hasta la gestión de proyectos y la educación.</p>
-                    <p className="mb-10">Los diagramas de flujo son utilizados para describir de manera clara y concisa la secuencia de acciones necesarias para completar una tarea o alcanzar un objetivo específico. Al presentar visualmente el flujo de trabajo, estos <Link className="text-custom-blue hover:underline" href="/diagrama">diagramas</Link> facilitan la comprensión y la comunicación entre individuos o equipos.</p>
+                    <p className="mb-10">Los diagramas de flujo son utilizados para describir de manera clara y concisa la secuencia de acciones necesarias para completar una tarea o alcanzar un objetivo específico. Al presentar visualmente el flujo de trabajo, estos <Link className="text-custom-blue hover:underline" href="/diagrama/">diagramas</Link> facilitan la comprensión y la comunicación entre individuos o equipos.</p>
                     <p className="mb-10">En <Link className="text-custom-blue hover:underline" href="/">Sketchlie</Link>, entendemos la importancia de los diagramas de flujo en la colaboración y la resolución de problemas. Puedes crear y compartir tus propios diagramas de flujo en nuestra plataforma, colaborando con tu equipo en tiempo real y aprovechando las herramientas intuitivas de dibujo y anotación.</p>
                     <div id="2" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">Cómo se utilizan los Diagramas de Flujo</h2>
@@ -75,7 +75,7 @@ const LandingPage = () => {
                     </ul>
                     <p className="mb-10">En Sketchlie, puedes utilizar los diagramas de flujo para cualquier fin que se adapte a tus necesidades. Desde planificar el desarrollo de un nuevo producto hasta optimizar los procesos de tu empresa, nuestra plataforma te brinda las herramientas necesarias para crear diagramas de flujo de manera colaborativa y eficiente.</p>
                     <h2 className="text-4xl md:text-5xl mb-10">¿Cuál es el objetivo principal de los Diagramas de Flujo?</h2>
-                    <p className="mb-10">El principal objetivo de un <Link className="text-custom-blue hover:underline" href="/diagrama-de-flujo">diagrama de flujo</Link> es representar de manera visual y clara el flujo de un proceso, sistema o algoritmo. Al hacerlo, se facilita la comprensión de la secuencia de pasos necesarios para completar una tarea o alcanzar un objetivo específico.</p>
+                    <p className="mb-10">El principal objetivo de un <Link className="text-custom-blue hover:underline" href="/diagrama-de-flujo/">diagrama de flujo</Link> es representar de manera visual y clara el flujo de un proceso, sistema o algoritmo. Al hacerlo, se facilita la comprensión de la secuencia de pasos necesarios para completar una tarea o alcanzar un objetivo específico.</p>
                     <p className="mb-10">Además de proporcionar una representación visual del flujo de trabajo, los diagramas de flujo también tienen como objetivo identificar posibles áreas de mejora, optimizar procesos y facilitar la comunicación entre individuos o equipos involucrados en un proyecto.</p>
                     <p className="mb-10">En resumen, el objetivo principal de un diagrama de flujo es mejorar la comprensión, la eficiencia y la colaboración en torno a un proceso o tarea determinada.</p>
                     <div id="3" className="h-[80px] mt-[-80px]"></div>
@@ -89,7 +89,7 @@ const LandingPage = () => {
                             <strong>Seleccionar símbolos:</strong> Elige los símbolos y las formas que mejor representen cada paso del proceso. Los símbolos comunes incluyen rectángulos para acciones, rombos para decisiones y flechas para el flujo direccional.
                         </li>
                         <li className="mb-10 ml-5">
-                            <strong>Dibujar el diagrama:</strong> Utiliza una herramienta de dibujo, ya sea en papel o en un software especializado como la <Link className="text-custom-blue hover:underline" href="/pizarra-online">pizarra online</Link> de Sketchlie, para crear el diagrama de flujo. Asegúrate de conectar los símbolos de manera lógica y clara.
+                            <strong>Dibujar el diagrama:</strong> Utiliza una herramienta de dibujo, ya sea en papel o en un software especializado como la <Link className="text-custom-blue hover:underline" href="/pizarra-online/">pizarra online</Link> de Sketchlie, para crear el diagrama de flujo. Asegúrate de conectar los símbolos de manera lógica y clara.
                         </li>
                         <li className="mb-10 ml-5">
                             <strong>Revisar y refinar:</strong> Una vez que hayas completado el diagrama, revísalo para asegurarte de que sea preciso y comprensible. Realiza los ajustes necesarios para mejorar la claridad y la coherencia del diagrama.
@@ -108,13 +108,13 @@ const LandingPage = () => {
                             <strong>Diagrama de Flujo de Decisión:</strong> En este tipo de diagrama, se utilizan símbolos de decisión (rombos) para representar puntos de decisión en el proceso. Dependiendo de la condición, el flujo se dirige hacia diferentes caminos.
                         </li>
                         <li className="mb-10 ml-5">
-                            <strong>Diagrama de Flujo Funcional:</strong> Este tipo de <Link className="text-custom-blue hover:underline" href="/diagrama">diagramas</Link> se centra en las funciones o actividades realizadas en un proceso, mostrando cómo se relacionan entre sí. Es útil para comprender la estructura y la interacción de las funciones dentro de un sistema.
+                            <strong>Diagrama de Flujo Funcional:</strong> Este tipo de <Link className="text-custom-blue hover:underline" href="/diagrama/">diagramas</Link> se centra en las funciones o actividades realizadas en un proceso, mostrando cómo se relacionan entre sí. Es útil para comprender la estructura y la interacción de las funciones dentro de un sistema.
                         </li>
                         <li className="mb-10 ml-5">
                             <strong>Diagrama de Flujo de Datos:</strong> En este tipo de diagrama, se representa el flujo de datos a través de un sistema, mostrando cómo se transforma y se procesa la información. Es útil para modelar sistemas de información y bases de datos.
                         </li>
                     </ul>
-                    <p className="mb-10">Cada tipo de técnica de <Link className="text-custom-blue hover:underline" href="/diagrama-de-flujo">diagrama de flujo</Link> tiene sus propias ventajas y se adapta mejor a ciertos tipos de procesos o sistemas. En Sketchlie, puedes elegir entre una variedad de plantillas prediseñadas que se ajusten a tus necesidades específicas, ya sea que estés creando un diagrama de flujo secuencial simple o un diagrama de flujo más complejo con múltiples decisiones y funciones.</p>
+                    <p className="mb-10">Cada tipo de técnica de <Link className="text-custom-blue hover:underline" href="/diagrama-de-flujo/">diagrama de flujo</Link> tiene sus propias ventajas y se adapta mejor a ciertos tipos de procesos o sistemas. En Sketchlie, puedes elegir entre una variedad de plantillas prediseñadas que se ajusten a tus necesidades específicas, ya sea que estés creando un diagrama de flujo secuencial simple o un diagrama de flujo más complejo con múltiples decisiones y funciones.</p>
                     <div id="5" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">Tipos de Diagramas de Flujo</h2>
                     <p className="mb-10">Además de las técnicas de diagramación, existen diferentes tipos de diagramas de flujo que se utilizan para representar diversos procesos y sistemas. Algunos de los tipos más comunes incluyen:</p>
@@ -179,7 +179,7 @@ const LandingPage = () => {
                     <p className="mb-10">En Sketchlie, reconocemos los beneficios de crear diagramas de flujo y nos comprometemos a proporcionar a nuestros usuarios las herramientas necesarias para aprovechar al máximo esta poderosa herramienta de colaboración y comunicación.</p>
                     <div id="9" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10"> Consejos para Crear un Diagrama de Flujo Eficaz</h2>
-                    <p className="mb-10">Crear un <Link className="text-custom-blue hover:underline" href="/diagrama-de-flujo">diagrama de flujo</Link> efectivo requiere atención al detalle y un enfoque estructurado. Aquí hay algunos consejos para ayudarte a crear diagramas de flujo que sean claros, concisos y fáciles de entender:</p>
+                    <p className="mb-10">Crear un <Link className="text-custom-blue hover:underline" href="/diagrama-de-flujo/">diagrama de flujo</Link> efectivo requiere atención al detalle y un enfoque estructurado. Aquí hay algunos consejos para ayudarte a crear diagramas de flujo que sean claros, concisos y fáciles de entender:</p>
                     <ul style={{ listStyleType: 'disc' }}>
                         <li className="mb-10 ml-5">
                             <strong>Simplifica el Proceso:</strong> Identifica los pasos clave y elimina cualquier información o detalle innecesario para mantener el diagrama limpio y fácil de seguir.
@@ -188,7 +188,7 @@ const LandingPage = () => {
                             <strong>Utiliza Símbolos Estándar:</strong> Utiliza símbolos estándar y convenciones reconocidas para representar acciones, decisiones y flujos de datos, lo que facilita la comprensión del diagrama.
                         </li>
                         <li className="mb-10 ml-5">
-                            <strong>Mantén la Consistencia:</strong> Mantén una estructura y un estilo consistentes en todo el <Link className="text-custom-blue hover:underline" href="/diagrama">diagramas</Link>, utilizando tamaños y colores de fuente coherentes para mejorar la legibilidad.
+                            <strong>Mantén la Consistencia:</strong> Mantén una estructura y un estilo consistentes en todo el <Link className="text-custom-blue hover:underline" href="/diagrama/">diagramas</Link>, utilizando tamaños y colores de fuente coherentes para mejorar la legibilidad.
                         </li>
                         <li className="mb-10 ml-5">
                             <strong>Etiqueta Claramente:</strong> Asegúrate de etiquetar cada símbolo y conexión de manera clara y descriptiva, utilizando texto conciso pero informativo.
@@ -206,7 +206,7 @@ const LandingPage = () => {
                             <strong>Proceso de Compra en Línea:</strong> Un diagrama de flujo que ilustra el flujo de trabajo en el proceso de compra en línea, desde la selección de productos hasta el pago y la confirmación del pedido.
                         </li>
                         <li className="mb-10 ml-5">
-                            <strong>Proceso de Resolución de Problemas:</strong> Un <Link className="text-custom-blue hover:underline" href="/diagrama-de-flujo">diagrama de flujo</Link> que describe los pasos a seguir para resolver un problema específico, desde la identificación del problema hasta la implementación de una solución.
+                            <strong>Proceso de Resolución de Problemas:</strong> Un <Link className="text-custom-blue hover:underline" href="/diagrama-de-flujo/">diagrama de flujo</Link> que describe los pasos a seguir para resolver un problema específico, desde la identificación del problema hasta la implementación de una solución.
                         </li>
                     </ul>
                     <p className="mb-10">Estos ejemplos demuestran la versatilidad y la utilidad de los diagramas de flujo en una variedad de situaciones y contextos. En <Link className="text-custom-blue hover:underline" href="/">Sketchlie</Link>, puedes crear tus propios diagramas de flujo basados en estos ejemplos o adaptarlos para satisfacer tus necesidades específicas.</p>
@@ -271,9 +271,9 @@ const LandingPage = () => {
                 </div>
             </div>
             <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-5 md:my-20 my-5">
-                <BlogLinks blogTitle="Diagramas de flujo" blogImage="/placeholders/mapa-conceptual.png" blogHref="/diagrama-de-flujo" blogDescription="Crea diagramas de flujo rápidamente y simplifica tus rutinas con el creador de diagramas de flujo de  con las herramientas de Sketchlie." />
-                <BlogLinks blogTitle="Pizarra Online" blogImage="/placeholders/improve-performance.png" blogHref="/pizarra-online" blogDescription="Sketchlie es una pizarra online rápida, gratuita y fácil de usar pensada para  ayudarte a colaborar con cualquier persona desde cualquier lugar." />
-                <BlogLinks blogTitle="Wireframes" blogImage="/placeholders/wireframe.png" blogHref="/wireframe" blogDescription="Empieza a visualizar tus ideas en minutos con nuestro intuitivo creador de wireframes. Crea esquemas de lo que necesites, desde páginas de inicio hasta formularios y menús, con nuestro creador de wireframes. " />
+                <BlogLinks blogTitle="Diagramas de flujo" blogImage="/placeholders/mapa-conceptual.png" blogHref="/diagrama-de-flujo/" blogDescription="Crea diagramas de flujo rápidamente y simplifica tus rutinas con el creador de diagramas de flujo de  con las herramientas de Sketchlie." />
+                <BlogLinks blogTitle="Pizarra Online" blogImage="/placeholders/improve-performance.png" blogHref="/pizarra-online/" blogDescription="Sketchlie es una pizarra online rápida, gratuita y fácil de usar pensada para  ayudarte a colaborar con cualquier persona desde cualquier lugar." />
+                <BlogLinks blogTitle="Wireframes" blogImage="/placeholders/wireframe.png" blogHref="/wireframe/" blogDescription="Empieza a visualizar tus ideas en minutos con nuestro intuitivo creador de wireframes. Crea esquemas de lo que necesites, desde páginas de inicio hasta formularios y menús, con nuestro creador de wireframes. " />
             </div>
         </div>
     );

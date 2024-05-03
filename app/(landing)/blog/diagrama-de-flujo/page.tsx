@@ -29,7 +29,7 @@ const LandingPage = () => {
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                <Link href="/blog">Blog</Link>
+                <Link href="/blog/">Blog</Link>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
@@ -70,7 +70,7 @@ const LandingPage = () => {
                     </p>
 
                     <p className="mb-10">
-                        Descubre cómo los diagramas de flujo en línea de Sketchlie pueden potenciar la colaboración en tus proyectos. ¡Explora nuestras <Link className="text-custom-blue hover:underline" href="/pizarra-online">herramientas de colaboración</Link> y desata tu creatividad!
+                        Descubre cómo los diagramas de flujo en línea de Sketchlie pueden potenciar la colaboración en tus proyectos. ¡Explora nuestras <Link className="text-custom-blue hover:underline" href="/pizarra-online/">herramientas de colaboración</Link> y desata tu creatividad!
                     </p>
 
                     <ul style={{ listStyleType: 'disc' }}>
@@ -91,10 +91,10 @@ const LandingPage = () => {
 
                     <ul style={{ listStyleType: 'disc' }}>
                         <li className="mb-10 ml-5">
-                            <strong><Link className="text-custom-blue hover:underline" href="/pizarra-online">Sketchlie:</Link></strong> Nuestra plataforma de pizarra en línea no solo permite la creación de diagramas de flujo, sino también la colaboración en tiempo real y la integración con otras herramientas de productividad.
+                            <strong><Link className="text-custom-blue hover:underline" href="/pizarra-online/">Sketchlie:</Link></strong> Nuestra plataforma de pizarra en línea no solo permite la creación de diagramas de flujo, sino también la colaboración en tiempo real y la integración con otras herramientas de productividad.
                         </li>
                         <li className="mb-10 ml-5">
-                            <strong><Link className="text-custom-blue hover:underline" href="/wireframe">Wireframes Online:</Link></strong> Ideal para diseñadores y desarrolladores, esta herramienta ofrece la posibilidad de crear diagramas de flujo junto con prototipos de interfaz de usuario de forma colaborativa.
+                            <strong><Link className="text-custom-blue hover:underline" href="/wireframe/">Wireframes Online:</Link></strong> Ideal para diseñadores y desarrolladores, esta herramienta ofrece la posibilidad de crear diagramas de flujo junto con prototipos de interfaz de usuario de forma colaborativa.
                         </li>
                     </ul>
 
@@ -165,7 +165,7 @@ const LandingPage = () => {
                     </p>
 
                     <p className="mb-10">
-                        Descubre cómo puedes aprovechar al máximo los diagramas de flujo en línea de <Link className="text-custom-blue hover:underline" href="/pizarra-online">Sketchlie</Link> para potenciar la colaboración en tus proyectos. ¡Visita nuestra plataforma hoy mismo y comienza a diagramar tus ideas de manera colaborativa!
+                        Descubre cómo puedes aprovechar al máximo los diagramas de flujo en línea de <Link className="text-custom-blue hover:underline" href="/pizarra-online/">Sketchlie</Link> para potenciar la colaboración en tus proyectos. ¡Visita nuestra plataforma hoy mismo y comienza a diagramar tus ideas de manera colaborativa!
                     </p>
 
                 </div>
@@ -193,9 +193,9 @@ const LandingPage = () => {
                 </div>
            </div>
            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-5 md:my-20 my-5">
-                <BlogLinks blogTitle="Diagramas de flujo" blogImage="/placeholders/mapa-conceptual.png" blogHref="/diagrama-de-flujo" blogDescription="Crea diagramas de flujo rápidamente y simplifica tus rutinas con el creador de diagramas de flujo de  con las herramientas de Sketchlie."/>
-                <BlogLinks blogTitle="Pizarra Online" blogImage="/placeholders/improve-performance.png" blogHref="/pizarra-online" blogDescription="Sketchlie es una pizarra online rápida, gratuita y fácil de usar pensada para  ayudarte a colaborar con cualquier persona desde cualquier lugar."/>
-                <BlogLinks blogTitle="Wireframes" blogImage="/placeholders/wireframe.png" blogHref="/wireframe" blogDescription="Empieza a visualizar tus ideas en minutos con nuestro intuitivo creador de wireframes. Crea esquemas de lo que necesites, desde páginas de inicio hasta formularios y menús, con nuestro creador de wireframes. "/>
+                <BlogLinks blogTitle="Diagramas de flujo" blogImage="/placeholders/mapa-conceptual.png" blogHref="/diagrama-de-flujo/" blogDescription="Crea diagramas de flujo rápidamente y simplifica tus rutinas con el creador de diagramas de flujo de  con las herramientas de Sketchlie."/>
+                <BlogLinks blogTitle="Pizarra Online" blogImage="/placeholders/improve-performance.png" blogHref="/pizarra-online/" blogDescription="Sketchlie es una pizarra online rápida, gratuita y fácil de usar pensada para  ayudarte a colaborar con cualquier persona desde cualquier lugar."/>
+                <BlogLinks blogTitle="Wireframes" blogImage="/placeholders/wireframe.png" blogHref="/wireframe/" blogDescription="Empieza a visualizar tus ideas en minutos con nuestro intuitivo creador de wireframes. Crea esquemas de lo que necesites, desde páginas de inicio hasta formularios y menús, con nuestro creador de wireframes. "/>
             </div>
         </div>    
      );

@@ -30,7 +30,7 @@ const LandingPage = () => {
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                <Link href="/blog">Blog</Link>
+                <Link href="/blog/">Blog</Link>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
@@ -89,28 +89,28 @@ const LandingPage = () => {
                     <h2 className="text-4xl md:text-5xl mb-10">4. El Rol de la Pizarra Virtual en la Era Digital</h2>
                     <p className="mb-10">En un entorno empresarial y educativo cada vez más digitalizado, la pizarra virtual online se ha convertido en una herramienta indispensable para la comunicación y la colaboración efectivas. Su capacidad para facilitar la creación y el intercambio de ideas en tiempo real la posiciona como una herramienta esencial para abordar los desafíos de la colaboración en un mundo globalizado.</p>
                     <p className="mb-10">En Sketchlie, estamos comprometidos a seguir innovando y mejorando nuestra pizarra virtual para satisfacer las necesidades cambiantes de nuestros usuarios. Creemos que la colaboración no tiene límites y estamos orgullosos de ofrecer una plataforma que refleja esa creencia.</p>
-                    <p className="mb-10">Para obtener más información sobre cómo nuestra pizarra virtual online puede transformar la forma en que trabajas, visita <Link className="text-custom-blue hover:underline" href="/pizarra-online">Sketchlie</Link>.</p>
+                    <p className="mb-10">Para obtener más información sobre cómo nuestra pizarra virtual online puede transformar la forma en que trabajas, visita <Link className="text-custom-blue hover:underline" href="/pizarra-online/">Sketchlie</Link>.</p>
                     <div id="5" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">5. Explora Más Recursos</h2>
                     <p className="mb-10">¿Interesado en conocer otras herramientas de colaboración disponibles en Sketchlie? Echa un vistazo a nuestros recursos:</p>
                     <ul style={{ listStyleType: 'disc' }}>
                     <li className="mb-10 ml-5">
-                            <strong><Link className="text-custom-blue hover:underline" href="/mapa-conceptual">Mapa Conceptual</Link>:</strong> Crea mapas conceptuales para visualizar relaciones entre ideas.
+                            <strong><Link className="text-custom-blue hover:underline" href="/mapa-conceptual/">Mapa Conceptual</Link>:</strong> Crea mapas conceptuales para visualizar relaciones entre ideas.
                     </li>
                     <li className="mb-10 ml-5">
-                        <strong><Link className="text-custom-blue hover:underline" href="/diagrama-de-flujo">Diagrama de Flujo</Link>:</strong> Diseña procesos y flujos de trabajo de manera visual y estructurada.
+                        <strong><Link className="text-custom-blue hover:underline" href="/diagrama-de-flujo/">Diagrama de Flujo</Link>:</strong> Diseña procesos y flujos de trabajo de manera visual y estructurada.
                     </li>
                     <li className="mb-10 ml-5">
-                        <strong><Link className="text-custom-blue hover:underline" href="/wireframe">Wireframe</Link>:</strong> Crea prototipos de páginas web y aplicaciones con facilidad.
+                        <strong><Link className="text-custom-blue hover:underline" href="/wireframe/">Wireframe</Link>:</strong> Crea prototipos de páginas web y aplicaciones con facilidad.
                     </li>
                     <li className="mb-10 ml-5">
-                        <strong><Link className="text-custom-blue hover:underline" href="/mapa-mental-online">Mapa Mental</Link>:</strong> Organiza ideas de forma jerárquica y visual.
+                        <strong><Link className="text-custom-blue hover:underline" href="/mapa-mental-online/">Mapa Mental</Link>:</strong> Organiza ideas de forma jerárquica y visual.
                     </li>
                     <li className="mb-10 ml-5">
                         <strong><Link className="text-custom-blue hover:underline" href="/mapas-de-procesos">Mapas de Procesos</Link>:</strong> Visualiza y optimiza procesos empresariales de manera eficiente.
                     </li>
                     </ul>
-                    <p className="mb-10">Visita nuestro <Link className="text-custom-blue hover:underline" href="/blog">blog</Link> para obtener consejos, tutoriales y casos de estudio sobre cómo aprovechar al máximo nuestras herramientas de colaboración.</p>
+                    <p className="mb-10">Visita nuestro <Link className="text-custom-blue hover:underline" href="/blog/">blog</Link> para obtener consejos, tutoriales y casos de estudio sobre cómo aprovechar al máximo nuestras herramientas de colaboración.</p>
                     <div id="6" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">6. Conclusión</h2>
                     <p className="mb-10">La pizarra virtual online ha revolucionado la forma en que colaboramos y compartimos ideas en la era digital. En Sketchlie, estamos comprometidos a proporcionar una plataforma que permita a individuos y equipos trabajar juntos de manera más eficiente y creativa, sin importar la distancia.</p>
@@ -144,8 +144,8 @@ const LandingPage = () => {
            </div>
            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-5 md:my-20 my-5">
                 <BlogLinks blogTitle="Wireframes Online: La Herramienta Esencial para Visualizar tus Ideas" blogImage="/placeholders/wireframe.png" blogHref="/blog/wireframes-online" blogDescription="Descubre cómo los wireframes online en Sketchlie pueden ayudarte a visualizar tus ideas." isNew={true}/>
-                <BlogLinks blogTitle="Mapa Conceptual y su Importancia en el Mundo Online" blogImage="/placeholders/mapa-conceptual.png" blogHref="/blog/mapa-conceptual" blogDescription="En el mundo digital, las herramientas para la creación de mapas conceptuales han cobrado una relevancia sin precedente..." isNew={true}/>
-                <BlogLinks blogTitle="Pizarra Online" blogImage="/placeholders/improve-performance.png" blogHref="/pizarra-online" blogDescription="Sketchlie es una pizarra online rápida, gratuita y fácil de usar pensada para  ayudarte a colaborar con cualquier persona desde cualquier lugar."/>
+                <BlogLinks blogTitle="Mapa Conceptual y su Importancia en el Mundo Online" blogImage="/placeholders/mapa-conceptual.png" blogHref="/blog/mapa-conceptual/" blogDescription="En el mundo digital, las herramientas para la creación de mapas conceptuales han cobrado una relevancia sin precedente..." isNew={true}/>
+                <BlogLinks blogTitle="Pizarra Online" blogImage="/placeholders/improve-performance.png" blogHref="/pizarra-online/" blogDescription="Sketchlie es una pizarra online rápida, gratuita y fácil de usar pensada para  ayudarte a colaborar con cualquier persona desde cualquier lugar."/>
             </div>
         </div>    
      );

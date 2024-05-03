@@ -13,23 +13,23 @@ import { SheetClose } from "./ui/sheet";
 const porCasoDeUso: { title: string; href: string }[] = [
     {
         title: "Pizarra Online",
-        href: "/pizarra-online",
+        href: "/pizarra-online/",
     },
     {
         title: "Mapa Conceptual",
-        href: "/mapa-conceptual",
+        href: "/mapa-conceptual/",
     },
     {
         title: "Diagrama de Flujo",
-        href: "/diagrama-de-flujo",
+        href: "/diagrama-de-flujo/",
     },
     {
         title: "Wireframe",
-        href: "/wireframe",
+        href: "/wireframe/",
     },
     {
         title: "Mapas mentales",
-        href: "/mapa-mental-online",
+        href: "/mapa-mental-online/",
     },
     {
         title: "Mapa de procesos",
@@ -37,15 +37,15 @@ const porCasoDeUso: { title: string; href: string }[] = [
     },
     {
         title: "Diagramas",
-        href: "/diagrama",
+        href: "/diagrama/",
     },
     {
         title: "Lluvia de ideas ",
-        href: "/lluvia-de-ideas",
+        href: "/lluvia-de-ideas/",
     },
     {
         title: "Customer Journey Map ",
-        href: "/customer-journey-map",
+        href: "/customer-journey-map/",
     },
 ]
 
@@ -162,11 +162,11 @@ const Sidebar = ({
                             <SheetClose asChild>
                                 <Link
                                     className="my-2 text-lg hover:underline px-5"
-                                    href="/blog"
+                                    href="/blog/"
                                 >
                                     <Button
                                         className='w-full justify-start gap-1 text-lg font-semibold'
-                                        variant={pathname === "/blog" ? 'auth' : 'ghost'}
+                                        variant={pathname === "/blog/" ? 'auth' : 'ghost'}
                                     >
                                         Blog
                                     </Button>
@@ -177,11 +177,11 @@ const Sidebar = ({
                             <SheetClose asChild>
                                 <Link
                                     className="my-2 text-lg hover:underline px-5"
-                                    href="/pricing"
+                                    href="/pricing/"
                                 >
                                     <Button
                                         className='w-full justify-start gap-1 text-lg font-semibold'
-                                        variant={pathname === "/pricing" ? 'auth' : 'ghost'}
+                                        variant={pathname === "/pricing/" ? 'auth' : 'ghost'}
                                     >
                                         Precios  🚧
                                     </Button>

@@ -30,7 +30,7 @@ const LandingPage = () => {
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
-                            <Link href="/diagrama">Diagrama</Link>
+                            <Link href="/diagrama/">Diagrama</Link>
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
@@ -62,10 +62,10 @@ const LandingPage = () => {
 
                     <ul style={{ listStyleType: 'disc' }}>
                         <li className="mb-10 ml-5">
-                            <strong>Diagrama de flujo:</strong> Un diagrama que muestra la secuencia de pasos de un proceso o sistema. Puedes aprender más sobre cómo crearlos en nuestra página de <Link className="text-custom-blue hover:underline" href="/diagrama-de-flujo">diagrama de flujo</Link>.
+                            <strong>Diagrama de flujo:</strong> Un diagrama que muestra la secuencia de pasos de un proceso o sistema. Puedes aprender más sobre cómo crearlos en nuestra página de <Link className="text-custom-blue hover:underline" href="/diagrama-de-flujo/">diagrama de flujo</Link>.
                         </li>
                         <li className="mb-10 ml-5">
-                            <strong>Mapa conceptual:</strong> Una representación visual de ideas y conceptos, mostrando las relaciones entre ellos. Visita nuestra sección de <Link className="text-custom-blue hover:underline" href="/mapa-conceptual">mapas conceptuales</Link> para obtener más información.
+                            <strong>Mapa conceptual:</strong> Una representación visual de ideas y conceptos, mostrando las relaciones entre ellos. Visita nuestra sección de <Link className="text-custom-blue hover:underline" href="/mapa-conceptual/">mapas conceptuales</Link> para obtener más información.
                         </li>
                     </ul>
 
@@ -74,7 +74,7 @@ const LandingPage = () => {
 
                     <p className="mb-10">Crear un diagrama en Sketchlie es fácil y rápido. Simplemente selecciona la herramienta de diagramación que necesites y comienza a dibujar. Puedes arrastrar y soltar formas, añadir texto y conectar elementos para representar tus ideas de manera clara.</p>
 
-                    <p className="mb-10">Para obtener más detalles sobre cómo comenzar, echa un vistazo a nuestra guía sobre <Link className="text-custom-blue hover:underline" href="/diagrama">diagramas</Link> en nuestro blog.</p>
+                    <p className="mb-10">Para obtener más detalles sobre cómo comenzar, echa un vistazo a nuestra guía sobre <Link className="text-custom-blue hover:underline" href="/diagrama/">diagramas</Link> en nuestro blog.</p>
 
                     <div id="3" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">3. ¿Cuál es la utilidad de los diagramas?</h2>
@@ -83,7 +83,7 @@ const LandingPage = () => {
 
                     <blockquote className="border-l-4 border-gray-300 italic pl-4 mb-10">Los diagramas son una excelente manera de organizar ideas, planificar proyectos y comunicar procesos de manera visual y comprensible.</blockquote>
 
-                    <p className="mb-10">Para descubrir más sobre cómo aprovechar al máximo los diagramas, visita nuestra página de <Link className="text-custom-blue hover:underline" href="/diagrama">diagramas</Link>.</p>
+                    <p className="mb-10">Para descubrir más sobre cómo aprovechar al máximo los diagramas, visita nuestra página de <Link className="text-custom-blue hover:underline" href="/diagrama/">diagramas</Link>.</p>
 
                     <div id="4" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">4. ¿Cuáles son los tipos de diagramas más comunes?</h2>
@@ -99,14 +99,14 @@ const LandingPage = () => {
                         </li>
                     </ul>
 
-                    <p className="mb-10">Para explorar más sobre estos tipos de diagramas, visita nuestras páginas de <Link className="text-custom-blue hover:underline" href="/diagrama-de-flujo">diagrama de flujo</Link> y <Link className="text-custom-blue hover:underline" href="/mapa-mental-online">mapa mental</Link>.</p>
+                    <p className="mb-10">Para explorar más sobre estos tipos de diagramas, visita nuestras páginas de <Link className="text-custom-blue hover:underline" href="/diagrama-de-flujo/">diagrama de flujo</Link> y <Link className="text-custom-blue hover:underline" href="/mapa-mental-online/">mapa mental</Link>.</p>
 
                     <div id="5" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">5. ¿Cómo usar un diagrama online?</h2>
 
                     <p className="mb-10">Usar un diagrama online en Sketchlie es muy intuitivo. Simplemente accede a nuestra plataforma y selecciona la herramienta de diagramación que necesites. Desde allí, puedes comenzar a dibujar, agregar elementos y colaborar en tiempo real con tu equipo.</p>
 
-                    <p className="mb-10">Para obtener más consejos sobre cómo utilizar nuestros diagramas online, consulta nuestro artículo sobre <Link className="text-custom-blue hover:underline" href="/pizarra-online">pizarras online</Link>.</p>
+                    <p className="mb-10">Para obtener más consejos sobre cómo utilizar nuestros diagramas online, consulta nuestro artículo sobre <Link className="text-custom-blue hover:underline" href="/pizarra-online/">pizarras online</Link>.</p>
 
                     <p className="mb-10">Esperamos que esta guía te haya sido útil para comprender mejor el mundo de los diagramas. Si tienes más preguntas, ¡no dudes en contactarnos!</p>
                     <div id="6" className="h-[80px] mt-[-80px]"></div>
@@ -114,14 +114,14 @@ const LandingPage = () => {
 
                     <p className="mb-10">La colaboración en la creación de diagramas es una característica clave de Sketchlie. Con nuestra plataforma, puedes invitar a otros usuarios a colaborar en tiempo real en tus diagramas. Esto significa que múltiples personas pueden editar y trabajar en un diagrama simultáneamente, lo que facilita la colaboración y el trabajo en equipo.</p>
 
-                    <p className="mb-10">Para obtener más información sobre cómo colaborar en la creación de diagramas, visita nuestra página de <Link className="text-custom-blue hover:underline" href="/pizarra-online">pizarra online</Link>.</p>
+                    <p className="mb-10">Para obtener más información sobre cómo colaborar en la creación de diagramas, visita nuestra página de <Link className="text-custom-blue hover:underline" href="/pizarra-online/">pizarra online</Link>.</p>
 
                     <div id="7" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">7. ¿Cómo compartir y exportar diagramas?</h2>
 
                     <p className="mb-10">Compartir y exportar tus diagramas en Sketchlie es fácil. Puedes compartir tus diagramas con otras personas simplemente enviándoles el enlace único del proyecto. Además, también puedes exportar tus diagramas en varios formatos, como imagen o PDF, para compartirlos fuera de la plataforma.</p>
 
-                    <p className="mb-10">Para obtener instrucciones detalladas sobre cómo compartir y exportar diagramas, visita nuestra sección de <Link className="text-custom-blue hover:underline" href="/pizarra-online">pizarra online</Link>.</p>
+                    <p className="mb-10">Para obtener instrucciones detalladas sobre cómo compartir y exportar diagramas, visita nuestra sección de <Link className="text-custom-blue hover:underline" href="/pizarra-online/">pizarra online</Link>.</p>
 
                     <p className="mb-10">En resumen, los diagramas son una herramienta invaluable para visualizar información y comunicar ideas de manera efectiva. En Sketchlie, ofrecemos una variedad de herramientas para ayudarte a crear, colaborar y compartir diagramas de manera sencilla y eficiente. ¡Explora nuestras opciones y comienza a diagramar hoy mismo!</p>
                     <div id="8" className="h-[80px] mt-[-80px]"></div>
@@ -129,21 +129,21 @@ const LandingPage = () => {
 
                     <p className="mb-10">Los diagramas son herramientas fundamentales en proyectos de trabajo, ya que ayudan a visualizar procesos, identificar problemas y comunicar ideas de manera clara. En Sketchlie, puedes integrar fácilmente tus diagramas en tus proyectos de trabajo y colaborar con tu equipo en tiempo real.</p>
 
-                    <p className="mb-10">Para descubrir cómo utilizar diagramas en proyectos de trabajo de manera efectiva, visita nuestra página de <Link className="text-custom-blue hover:underline" href="/diagrama">diagramas</Link>.</p>
+                    <p className="mb-10">Para descubrir cómo utilizar diagramas en proyectos de trabajo de manera efectiva, visita nuestra página de <Link className="text-custom-blue hover:underline" href="/diagrama/">diagramas</Link>.</p>
 
                     <div id="9" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">9. ¿Qué beneficios ofrecen los diagramas en la educación?</h2>
 
                     <p className="mb-10">Los diagramas son herramientas valiosas en el ámbito educativo, ya que ayudan a los estudiantes a visualizar conceptos, organizar información y comprender procesos de manera más efectiva. En Sketchlie, ofrecemos herramientas específicas para educadores y estudiantes para facilitar el uso de diagramas en el aula.</p>
 
-                    <p className="mb-10">Para conocer más sobre los beneficios de los diagramas en la educación, visita nuestra página de <Link className="text-custom-blue hover:underline" href="/mapa-mental-online">mapas mentales online</Link>.</p>
+                    <p className="mb-10">Para conocer más sobre los beneficios de los diagramas en la educación, visita nuestra página de <Link className="text-custom-blue hover:underline" href="/mapa-mental-online/">mapas mentales online</Link>.</p>
 
                     <div id="10" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">10. ¿Cómo pueden los diagramas mejorar la productividad?</h2>
 
                     <p className="mb-10">Los diagramas pueden mejorar significativamente la productividad al proporcionar una manera clara y visual de organizar información, identificar áreas de mejora y comunicar ideas de manera efectiva. En Sketchlie, ofrecemos herramientas intuitivas para ayudarte a utilizar los diagramas para aumentar la productividad en tu trabajo diario.</p>
 
-                    <p className="mb-10">Para descubrir más sobre cómo los diagramas pueden mejorar tu productividad, visita nuestra página de <Link className="text-custom-blue hover:underline" href="/diagrama">diagramas</Link>.</p>
+                    <p className="mb-10">Para descubrir más sobre cómo los diagramas pueden mejorar tu productividad, visita nuestra página de <Link className="text-custom-blue hover:underline" href="/diagrama/">diagramas</Link>.</p>
 
                     <p className="mb-10">Esperamos que estas respuestas hayan sido útiles y te hayan brindado una mejor comprensión sobre el mundo de los diagramas. Recuerda que en Sketchlie estamos aquí para ayudarte en cada paso del camino. ¡Empieza a crear tus propios diagramas hoy mismo!</p>
 
@@ -188,9 +188,9 @@ const LandingPage = () => {
                 </div>
             </div>
             <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-5 md:my-20 my-5">
-                <BlogLinks blogTitle="Mapa Conceptual Online" blogImage="/placeholders/mapa-conceptual-online.png" blogHref="/mapa-conceptual" blogDescription="Descubre cómo desatar tu creatividad y potenciar la colaboración en tiempo real con Sketchlie."/>
+                <BlogLinks blogTitle="Mapa Conceptual Online" blogImage="/placeholders/mapa-conceptual-online.png" blogHref="/mapa-conceptual/" blogDescription="Descubre cómo desatar tu creatividad y potenciar la colaboración en tiempo real con Sketchlie."/>
                 <BlogLinks blogTitle="Mapa de Procesos" blogImage="/placeholders/mapa-de-procesos.png" blogHref="/mapas-de-procesos" blogDescription="El mapa de procesos ayuda a los equipos a mapear y implementar mejoras. Registrate hoy con una 3 espacios de trabajo gratuitos para empezar a utilizar la mejor herramienta de mapa de procesos."/>
-                <BlogLinks blogTitle="Mapas Mentales" blogImage="/placeholders/mapa-mental.png" blogHref="/mapa-mental-online" blogDescription="Explora nuestras herramientas para simplificar la creación de mapas mentales. Organiza tus ideas de manera jerárquica y potencia tu creatividad con nuestro intuitivo creador de mapas mentales."/>
+                <BlogLinks blogTitle="Mapas Mentales" blogImage="/placeholders/mapa-mental.png" blogHref="/mapa-mental-online/" blogDescription="Explora nuestras herramientas para simplificar la creación de mapas mentales. Organiza tus ideas de manera jerárquica y potencia tu creatividad con nuestro intuitivo creador de mapas mentales."/>
             </div>
         </div>
     );

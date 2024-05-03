@@ -16,7 +16,7 @@ const BlogPage = () => {
     const blogLinksData = [
         {
             blogImage: "/placeholders/mapa-conceptual-online.png",
-            blogHref: "/blog/mapa-conceptual",
+            blogHref: "/blog/mapa-conceptual/",
             blogDescription: "Que son los mapas conceptuales y cual es su Importancia en el Mundo Online...",
             blogTitle: "Mapa Conceptual y su Importancia en el Mundo Online",
             isNew: true
@@ -24,80 +24,80 @@ const BlogPage = () => {
         {
             blogTitle: "Mapas Mentales Online: Herramientas y Ventajas",
             blogImage: "/placeholders/mapa-mental.png",
-            blogHref: "/blog/mapa-mental",
+            blogHref: "/blog/mapa-mental/",
             blogDescription: "Descubre cómo los mapas mentales online pueden potenciar tu creatividad y productividad. Conoce las herramientas disponibles y las ventajas que ofrecen en Sketchlie...",
             isNew: true
         },
         {
             blogTitle: "Diagrama de Flujo: Herramienta Esencial para la Colaboración Online",
             blogImage: "/placeholders/diagrama-de-flujo.png",
-            blogHref: "/blog/diagrama-de-flujo",
+            blogHref: "/blog/diagrama-de-flujo/",
             blogDescription: "Descubre cómo los diagramas de flujo en línea pueden potenciar la colaboración y la creatividad. Explora las ventajas de usar Sketchlie...",
             isNew: true
         },
         {
             blogTitle: "Mapa de Procesos: La Herramienta Esencial para la Eficiencia Empresarial",
             blogImage: "/placeholders/mapa-de-procesos.png",
-            blogHref: "/blog/mapa-de-procesos",
+            blogHref: "/blog/mapa-de-procesos/",
             blogDescription: "Descubre cómo los mapas de procesos pueden ayudarte a visualizar y optimizar tus procesos empresariales de manera colaborativa y eficiente en Sketchlie...",
             isNew: true
         },
         {
             blogTitle: "Desata tu Creatividad con la Pizarra Virtual Online de Sketchlie",
             blogImage: "/placeholders/pizarra-online.png",
-            blogHref: "/blog/pizarra-online",
+            blogHref: "/blog/pizarra-online/",
             blogDescription: "En un mundo cada vez más digitalizado, la necesidad de herramientas de colaboración efectivas se ha vuelto fundamental para empresas...",
             isNew: true
         },
         {
             blogTitle: "Wireframes Online: La Herramienta Esencial para Visualizar tus Ideas",
             blogImage: "/placeholders/wireframe.png",
-            blogHref: "/blog/wireframes-online",
+            blogHref: "/blog/wireframes-online/",
             blogDescription: "Descubre cómo los wireframes online en Sketchlie pueden ayudarte a visualizar tus ideas.",
             isNew: true
         },
         {
             blogTitle: "Diseñar Online con Sketchlie: La Herramienta Perfecta para Colaborar",
             blogImage: "/placeholders/improve-performance.png",
-            blogHref: "/blog/canvas-online",
+            blogHref: "/blog/canvas-online/",
             blogDescription: "En el mundo digital actual, la colaboración es clave. Los equipos necesitan herramientas que les permitan trabajar juntos de manera eficiente, sin importar la distancia física que los separe...",
             isNew: true
         },
         {
             blogTitle: "Tutorial de la Pizarra Online",
             blogImage: "/placeholders/pizarra-online.png",
-            blogHref: "/blog/pizarra-online-tutorial",
+            blogHref: "/blog/pizarra-online-tutorial/",
             blogDescription: "La Pizarra Online de Sketchlie cuenta con una amplia gama de funcionalidades diseñadas para potenciar tu creatividad y aumentar tu productividad. En este tutorial, te guiaremos a través de las herramientas...",
             isNew: true
         },
         {
             blogTitle: "Mapa de Procesos",
             blogImage: "/placeholders/mapa-de-procesos.png",
-            blogHref: "/mapas-de-procesos",
+            blogHref: "/mapas-de-procesos/",
             blogDescription: "El mapa de procesos ayuda a los equipos a mapear y implementar mejoras. Registrate hoy con una 3 espacios de trabajo gratuitos para empezar a utilizar la mejor herramienta de mapa de procesos."
         },
         {
             blogTitle: "Wireframes",
             blogImage: "/placeholders/wireframe.png",
-            blogHref: "/wireframe",
+            blogHref: "/wireframe/",
             blogDescription: "Empieza a visualizar tus ideas en minutos con nuestro intuitivo creador de wireframes. Crea esquemas de lo que necesites, desde páginas de inicio hasta formularios y menús, con nuestro creador de wireframes."
         },
         {
             blogTitle: "Mapa Mental",
             blogImage: "/placeholders/mapa-mental.png",
-            blogHref: "/mapa-mental-online",
+            blogHref: "/mapa-mental-online/",
             blogDescription: "Crea mapas mentales en línea con Sketchlie. Nuestra herramienta de mapas mentales te permite capturar tus ideas y organizar la información de manera visual."
         },
         {
             blogTitle: "Diagrama de Flujo",
             blogImage: "/placeholders/diagrama-de-flujo.png",
-            blogHref: "/diagrama-de-flujo",
+            blogHref: "/diagrama-de-flujo/",
             blogDescription: "Crea diagramas de flujo en línea con Sketchlie. Nuestra herramienta de diagramas de flujo te permite capturar tus ideas y organizar la información de manera visual."
         },
         {
             blogTitle: "Pizarra Online", 
             blogImage: "/placeholders/pizarra-online.png",
-            blogHref: "/pizarra-online",
+            blogHref: "/pizarra-online/",
             blogDescription: "Crea pizarras en línea con Sketchlie. Nuestra herramienta de pizarras te permite capturar tus ideas y organizar la información de manera visual."
         }
     ];
@@ -108,7 +108,7 @@ const BlogPage = () => {
                 <HeaderBlog
                     blogTitle= "Tutorial de la Pizarra Online"
                     blogImage= "/placeholders/pizarra-online.png"
-                    blogHref= "/blog/pizarra-online-tutorial"
+                    blogHref= "/blog/pizarra-online-tutorial/"
                     blogDescription= "La Pizarra Online de Sketchlie cuenta con una amplia gama de funcionalidades en este tutorial, te guiaremos a través de las herramientas..."
                     isNew = {true}
                 />

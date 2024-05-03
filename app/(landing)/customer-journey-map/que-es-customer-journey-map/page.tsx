@@ -30,7 +30,7 @@ const LandingPage = () => {
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
-                            <Link href="/diagrama">Customer journey map</Link>
+                            <Link href="/diagrama/">Customer journey map</Link>
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
@@ -56,7 +56,7 @@ const LandingPage = () => {
                     <div id="1" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">1. ¿Qué es un customer journey map?</h2>
 
-                    <p className="mb-10">Un <Link className="text-custom-blue hover:underline" href="/customer-journey-map">customer journey map</Link> es una representación visual de la experiencia que tiene un cliente al interactuar con una marca o producto a lo largo de su ciclo de vida. Es una herramienta crucial para comprender las necesidades, emociones y puntos de dolor de los clientes en cada etapa del proceso.</p>
+                    <p className="mb-10">Un <Link className="text-custom-blue hover:underline" href="/customer-journey-map/">customer journey map</Link> es una representación visual de la experiencia que tiene un cliente al interactuar con una marca o producto a lo largo de su ciclo de vida. Es una herramienta crucial para comprender las necesidades, emociones y puntos de dolor de los clientes en cada etapa del proceso.</p>
 
                     <p className="mb-10">En <Link className="text-custom-blue hover:underline" href="/">Sketchlie</Link>, entendemos la importancia de crear un customer journey map claro y detallado para optimizar la experiencia del usuario.</p>
 
@@ -65,7 +65,7 @@ const LandingPage = () => {
 
                     <p className="mb-10">Para crear un customer journey map online efectivo, primero necesitas recopilar datos sobre las interacciones de los clientes con tu marca. Luego, identifica las distintas etapas del journey del cliente, como la conciencia, la consideración, la compra y la fidelización.</p>
 
-                    <p className="mb-10">Utilizando herramientas como <Link className="text-custom-blue hover:underline" href="/blog/mapa-de-procesos">mapa de procesos</Link>, <Link className="text-custom-blue hover:underline" href="/blog/diagrama-de-flujo">diagramas de flujo</Link> y <Link className="text-custom-blue hover:underline" href="/blog/mapa-mental">mapas mentales</Link>, puedes visualizar el viaje completo del cliente y encontrar oportunidades de mejora.</p>
+                    <p className="mb-10">Utilizando herramientas como <Link className="text-custom-blue hover:underline" href="/blog/mapa-de-procesos">mapa de procesos</Link>, <Link className="text-custom-blue hover:underline" href="/blog/diagrama-de-flujo/">diagramas de flujo</Link> y <Link className="text-custom-blue hover:underline" href="/blog/mapa-mental">mapas mentales</Link>, puedes visualizar el viaje completo del cliente y encontrar oportunidades de mejora.</p>
 
                     <div id="3" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">3. ¿Cuáles son los beneficios de usar un customer journey map?</h2>
@@ -82,7 +82,7 @@ const LandingPage = () => {
                         </li>
                     </ul>
 
-                    <p className="mb-10">En <Link className="text-custom-blue hover:underline" href="/blog/mapa-conceptual">Sketchlie</Link>, estamos comprometidos a ayudarte a crear customer journey maps efectivos para impulsar el éxito de tu negocio.</p>
+                    <p className="mb-10">En <Link className="text-custom-blue hover:underline" href="/blog/mapa-conceptual/">Sketchlie</Link>, estamos comprometidos a ayudarte a crear customer journey maps efectivos para impulsar el éxito de tu negocio.</p>
                     <div id="4" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">4. ¿Cómo se utiliza un customer journey map?</h2>
 
@@ -100,7 +100,7 @@ const LandingPage = () => {
                         </li>
                     </ol>
 
-                    <p className="mb-10">En <Link className="text-custom-blue hover:underline" href="/blog/pizarra-online">Sketchlie</Link>, ofrecemos una plataforma de pizarra online donde puedes colaborar en tiempo real para crear y ajustar tu <Link className="text-custom-blue hover:underline" href="/customer-journey-map">customer journey map online</Link> con facilidad.</p>
+                    <p className="mb-10">En <Link className="text-custom-blue hover:underline" href="/blog/pizarra-online/">Sketchlie</Link>, ofrecemos una plataforma de pizarra online donde puedes colaborar en tiempo real para crear y ajustar tu <Link className="text-custom-blue hover:underline" href="/customer-journey-map/">customer journey map online</Link> con facilidad.</p>
 
                     <div id="5" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">5. ¿Cuál es el impacto de un customer journey map en la fidelización del cliente?</h2>
@@ -111,7 +111,7 @@ const LandingPage = () => {
 
                     <p className="mb-10">Cuando los clientes tienen una experiencia positiva y sin problemas en cada etapa de su journey, es más probable que vuelvan a comprar y que recomienden tu marca a otros. Por lo tanto, invertir en la creación y optimización de un customer journey map puede tener un impacto directo en la fidelización del cliente y, en última instancia, en el éxito de tu negocio.</p>
 
-                    <p className="mb-10">En <Link className="text-custom-blue hover:underline" href="/blog">Sketchlie</Link>, estamos comprometidos a ayudarte a construir relaciones sólidas con tus clientes a través de un customer journey map bien diseñado y ejecutado.</p>
+                    <p className="mb-10">En <Link className="text-custom-blue hover:underline" href="/blog/">Sketchlie</Link>, estamos comprometidos a ayudarte a construir relaciones sólidas con tus clientes a través de un customer journey map bien diseñado y ejecutado.</p>
                     <div id="6" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">6. ¿Cómo puede Sketchlie ayudarte con tu customer journey map?</h2>
 
@@ -119,7 +119,7 @@ const LandingPage = () => {
 
                     <ul style={{ listStyleType: 'disc' }}>
                         <li className="mb-10 ml-5">
-                            <strong>Colaborar en tiempo real:</strong> Invita a tu equipo a colaborar en la creación y edición del <Link className="text-custom-blue hover:underline" href="/customer-journey-map">customer journey map online</Link> en tiempo real, desde cualquier lugar del mundo.
+                            <strong>Colaborar en tiempo real:</strong> Invita a tu equipo a colaborar en la creación y edición del <Link className="text-custom-blue hover:underline" href="/customer-journey-map/">customer journey map online</Link> en tiempo real, desde cualquier lugar del mundo.
                         </li>
                         <li className="mb-10 ml-5">
                             <strong>Crear mapas visuales:</strong> Utiliza nuestras herramientas de dibujo y objetos para crear mapas de viaje del cliente visualmente atractivos y fáciles de entender.
@@ -174,7 +174,7 @@ const LandingPage = () => {
                     <div id="9" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">Conclusión</h2>
 
-                    <p className="mb-10">El <Link className="text-custom-blue hover:underline" href="/customer-journey-map">customer journey map</Link> es una herramienta esencial para entender y optimizar la experiencia del cliente en todas las etapas de su interacción con tu marca. Desde la conciencia hasta la lealtad, cada punto de contacto ofrece oportunidades para mejorar y fortalecer las relaciones con los clientes.</p>
+                    <p className="mb-10">El <Link className="text-custom-blue hover:underline" href="/customer-journey-map/">customer journey map</Link> es una herramienta esencial para entender y optimizar la experiencia del cliente en todas las etapas de su interacción con tu marca. Desde la conciencia hasta la lealtad, cada punto de contacto ofrece oportunidades para mejorar y fortalecer las relaciones con los clientes.</p>
 
                     <p className="mb-10">En <Link className="text-custom-blue hover:underline" href="/">Sketchlie</Link>, estamos comprometidos a proporcionarte las herramientas y recursos necesarios para crear customer journey maps efectivos y mejorar la experiencia del cliente en tu negocio.</p>
 
@@ -217,9 +217,9 @@ const LandingPage = () => {
                 </div>
             </div>
             <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-5 md:my-20 my-5">
-                <BlogLinks blogTitle="Mapa Conceptual Online" blogImage="/placeholders/mapa-conceptual-online.png" blogHref="/mapa-conceptual" blogDescription="Descubre cómo desatar tu creatividad y potenciar la colaboración en tiempo real con Sketchlie." />
+                <BlogLinks blogTitle="Mapa Conceptual Online" blogImage="/placeholders/mapa-conceptual-online.png" blogHref="/mapa-conceptual/" blogDescription="Descubre cómo desatar tu creatividad y potenciar la colaboración en tiempo real con Sketchlie." />
                 <BlogLinks blogTitle="Mapa de Procesos" blogImage="/placeholders/mapa-de-procesos.png" blogHref="/mapas-de-procesos" blogDescription="El mapa de procesos ayuda a los equipos a mapear y implementar mejoras. Registrate hoy con una 3 espacios de trabajo gratuitos para empezar a utilizar la mejor herramienta de mapa de procesos." />
-                <BlogLinks blogTitle="Mapas Mentales" blogImage="/placeholders/mapa-mental.png" blogHref="/mapa-mental-online" blogDescription="Explora nuestras herramientas para simplificar la creación de mapas mentales. Organiza tus ideas de manera jerárquica y potencia tu creatividad con nuestro intuitivo creador de mapas mentales." />
+                <BlogLinks blogTitle="Mapas Mentales" blogImage="/placeholders/mapa-mental.png" blogHref="/mapa-mental-online/" blogDescription="Explora nuestras herramientas para simplificar la creación de mapas mentales. Organiza tus ideas de manera jerárquica y potencia tu creatividad con nuestro intuitivo creador de mapas mentales." />
             </div>
         </div>
     );

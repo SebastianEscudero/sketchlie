@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     description: "Descubre cómo la Pizarra Online puede mejorar la colaboración y la creatividad de tu equipo. Aprende sobre las técnicas, beneficios y tipos de pizarras online con Sketchlie.",
     keywords: ["Pizarra Online", "colaboración online", "Pizarra Virtual"],
     alternates: {
-        canonical: "https://www.sketchlie.com/pizarra-online/que-es-pizarra-online/",
+        canonical: "https://www.sketchlie.com/pizarra-online/que-es-pizarra-online//",
     }
 };
 
@@ -30,7 +30,7 @@ const LandingPage = () => {
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
-                            <Link href="/pizarra-online">Pizarra Online</Link>
+                            <Link href="/pizarra-online/">Pizarra Online</Link>
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
@@ -68,7 +68,7 @@ const LandingPage = () => {
                             <strong>Accede a la plataforma:</strong> Para empezar, visita <Link className="text-custom-blue hover:underline" href="/">Sketchlie</Link> y crea una cuenta o inicia sesión si ya tienes una.
                         </li>
                         <li className="mb-10 ml-5">
-                            <strong>Crea una nueva pizarra:</strong> Una vez dentro, selecciona la opción para crear una nueva <Link className="text-custom-blue hover:underline" href="/pizarra-online">pizarra online</Link> y elige las opciones de personalización según tus necesidades.
+                            <strong>Crea una nueva pizarra:</strong> Una vez dentro, selecciona la opción para crear una nueva <Link className="text-custom-blue hover:underline" href="/pizarra-online/">pizarra online</Link> y elige las opciones de personalización según tus necesidades.
                         </li>
                         <li className="mb-10 ml-5">
                             <strong>Invita a colaboradores:</strong> Comparte el enlace de la pizarra con tus compañeros de equipo para que puedan unirse y colaborar contigo en tiempo real.
@@ -95,7 +95,7 @@ const LandingPage = () => {
                     <p className="mb-10">Para aprovechar al máximo una pizarra online, considera seguir estos consejos prácticos:</p>
                     <ul style={{ listStyleType: 'disc' }}>
                         <li className="mb-10 ml-5">
-                            <strong>Planifica y estructura:</strong> Antes de empezar a trabajar en la <Link className="text-custom-blue hover:underline" href="/pizarra-online">pizarra online</Link>, dedica tiempo a planificar y estructurar tus ideas. Esto te ayudará a aprovechar al máximo el espacio disponible y a mantener un enfoque claro en tus objetivos.
+                            <strong>Planifica y estructura:</strong> Antes de empezar a trabajar en la <Link className="text-custom-blue hover:underline" href="/pizarra-online/">pizarra online</Link>, dedica tiempo a planificar y estructurar tus ideas. Esto te ayudará a aprovechar al máximo el espacio disponible y a mantener un enfoque claro en tus objetivos.
                         </li>
                         <li className="mb-10 ml-5">
                             <strong>Utiliza herramientas de colaboración:</strong> Explora las diferentes herramientas de colaboración disponibles en la plataforma, como la posibilidad de añadir comentarios, etiquetas y menciones, para facilitar la comunicación entre los miembros del equipo.
@@ -176,9 +176,9 @@ const LandingPage = () => {
                 </div>
             </div>
             <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-5 md:my-20 my-5">
-                <BlogLinks blogTitle="Diagramas de flujo" blogImage="/placeholders/mapa-conceptual.png" blogHref="/diagrama-de-flujo" blogDescription="Crea diagramas de flujo rápidamente y simplifica tus rutinas con el creador de diagramas de flujo de  con las herramientas de Sketchlie." />
-                <BlogLinks blogTitle="Pizarra Online" blogImage="/placeholders/improve-performance.png" blogHref="/pizarra-online" blogDescription="Sketchlie es una pizarra online rápida, gratuita y fácil de usar pensada para  ayudarte a colaborar con cualquier persona desde cualquier lugar." />
-                <BlogLinks blogTitle="Wireframes" blogImage="/placeholders/wireframe.png" blogHref="/wireframe" blogDescription="Empieza a visualizar tus ideas en minutos con nuestro intuitivo creador de wireframes. Crea esquemas de lo que necesites, desde páginas de inicio hasta formularios y menús, con nuestro creador de wireframes. " />
+                <BlogLinks blogTitle="Diagramas de flujo" blogImage="/placeholders/mapa-conceptual.png" blogHref="/diagrama-de-flujo/" blogDescription="Crea diagramas de flujo rápidamente y simplifica tus rutinas con el creador de diagramas de flujo de  con las herramientas de Sketchlie." />
+                <BlogLinks blogTitle="Pizarra Online" blogImage="/placeholders/improve-performance.png" blogHref="/pizarra-online/" blogDescription="Sketchlie es una pizarra online rápida, gratuita y fácil de usar pensada para  ayudarte a colaborar con cualquier persona desde cualquier lugar." />
+                <BlogLinks blogTitle="Wireframes" blogImage="/placeholders/wireframe.png" blogHref="/wireframe/" blogDescription="Empieza a visualizar tus ideas en minutos con nuestro intuitivo creador de wireframes. Crea esquemas de lo que necesites, desde páginas de inicio hasta formularios y menús, con nuestro creador de wireframes. " />
             </div>
         </div>
     );

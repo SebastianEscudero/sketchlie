@@ -30,7 +30,7 @@ const LandingPage = () => {
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
-                            <Link href="/mapa-conceptual">Mapa Conceptual</Link>
+                            <Link href="/mapa-conceptual/">Mapa Conceptual</Link>
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
@@ -64,7 +64,7 @@ const LandingPage = () => {
                     <div id="2" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">Herramientas para la Creación de Mapas Conceptuales Online</h2>
 
-                    <p className="mb-10">Crear mapas conceptuales online es una excelente manera de aprovechar las ventajas de la tecnología para la colaboración y la organización de ideas. En <Link className="text-custom-blue hover:underline" href="/mapa-conceptual">Sketchlie</Link>, ofrecemos una variedad de herramientas y funciones para facilitar este proceso:</p>
+                    <p className="mb-10">Crear mapas conceptuales online es una excelente manera de aprovechar las ventajas de la tecnología para la colaboración y la organización de ideas. En <Link className="text-custom-blue hover:underline" href="/mapa-conceptual/">Sketchlie</Link>, ofrecemos una variedad de herramientas y funciones para facilitar este proceso:</p>
 
                     <ul style={{ listStyleType: 'disc' }}>
                         <li className="mb-10 ml-5">
@@ -80,7 +80,7 @@ const LandingPage = () => {
 
                     <p className="mb-10">Además de estas herramientas, en Sketchlie también brindamos opciones de exportación e integración con otras aplicaciones, para maximizar la versatilidad y la compatibilidad de tus proyectos.</p>
 
-                    <p className="mb-10">¿Interesado en conocer más sobre otras herramientas de colaboración online? Descubre cómo puedes utilizar <Link className="text-custom-blue hover:underline" href="/pizarra-online">pizarras online</Link>, <Link className="text-custom-blue hover:underline" href="/mapa-mental-online">mapas mentales</Link>, y más en tu trabajo diario.</p>
+                    <p className="mb-10">¿Interesado en conocer más sobre otras herramientas de colaboración online? Descubre cómo puedes utilizar <Link className="text-custom-blue hover:underline" href="/pizarra-online/">pizarras online</Link>, <Link className="text-custom-blue hover:underline" href="/mapa-mental-online/">mapas mentales</Link>, y más en tu trabajo diario.</p>
                     <div id="3" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">¿Cuál es el objetivo principal de los Mapas Conceptuales?</h2>
 
@@ -113,7 +113,7 @@ const LandingPage = () => {
 
                     <p className="mb-10">Siguiendo estos pasos, podrás crear mapas conceptuales efectivos que te ayudarán a organizar tus ideas y comunicarlas de manera visual y estructurada.</p>
 
-                    <p className="mb-10">Para obtener más consejos sobre cómo mejorar tus habilidades de organización y colaboración, consulta nuestros <Link className="text-custom-blue hover:underline" href="/lluvia-de-ideas">consejos para actividades de lluvia de ideas</Link> y otras técnicas de trabajo en equipo.</p>
+                    <p className="mb-10">Para obtener más consejos sobre cómo mejorar tus habilidades de organización y colaboración, consulta nuestros <Link className="text-custom-blue hover:underline" href="/lluvia-de-ideas/">consejos para actividades de lluvia de ideas</Link> y otras técnicas de trabajo en equipo.</p>
 
                     <div id="5" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">Tipos de Técnicas de Mapas Conceptuales</h2>
@@ -270,9 +270,9 @@ const LandingPage = () => {
                 </div>
             </div>
             <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-5 md:my-20 my-5">
-                <BlogLinks blogTitle="Diagramas de flujo" blogImage="/placeholders/mapa-conceptual.png" blogHref="/diagrama-de-flujo" blogDescription="Crea diagramas de flujo rápidamente y simplifica tus rutinas con el creador de diagramas de flujo de  con las herramientas de Sketchlie." />
-                <BlogLinks blogTitle="Pizarra Online" blogImage="/placeholders/improve-performance.png" blogHref="/pizarra-online" blogDescription="Sketchlie es una pizarra online rápida, gratuita y fácil de usar pensada para  ayudarte a colaborar con cualquier persona desde cualquier lugar." />
-                <BlogLinks blogTitle="Wireframes" blogImage="/placeholders/wireframe.png" blogHref="/wireframe" blogDescription="Empieza a visualizar tus ideas en minutos con nuestro intuitivo creador de wireframes. Crea esquemas de lo que necesites, desde páginas de inicio hasta formularios y menús, con nuestro creador de wireframes. " />
+                <BlogLinks blogTitle="Diagramas de flujo" blogImage="/placeholders/mapa-conceptual.png" blogHref="/diagrama-de-flujo/" blogDescription="Crea diagramas de flujo rápidamente y simplifica tus rutinas con el creador de diagramas de flujo de  con las herramientas de Sketchlie." />
+                <BlogLinks blogTitle="Pizarra Online" blogImage="/placeholders/improve-performance.png" blogHref="/pizarra-online/" blogDescription="Sketchlie es una pizarra online rápida, gratuita y fácil de usar pensada para  ayudarte a colaborar con cualquier persona desde cualquier lugar." />
+                <BlogLinks blogTitle="Wireframes" blogImage="/placeholders/wireframe.png" blogHref="/wireframe/" blogDescription="Empieza a visualizar tus ideas en minutos con nuestro intuitivo creador de wireframes. Crea esquemas de lo que necesites, desde páginas de inicio hasta formularios y menús, con nuestro creador de wireframes. " />
             </div>
         </div>
     );

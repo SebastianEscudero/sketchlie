@@ -30,7 +30,7 @@ const LandingPage = () => {
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
-                            <Link href="/mapa-mental-online">Mapa Mental</Link>
+                            <Link href="/mapa-mental-online/">Mapa Mental</Link>
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
@@ -56,7 +56,7 @@ const LandingPage = () => {
                     <div id="1" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">1. ¿Qué es un mapa mental online?</h2>
 
-                    <p className="mb-10">Un mapa mental online es una herramienta digital que permite organizar y visualizar información de manera gráfica y colaborativa. En <Link className="text-custom-blue hover:underline" href="/mapa-mental-online">Sketchlie</Link>, ofrecemos una plataforma donde puedes crear mapas mentales en tiempo real, facilitando la colaboración entre equipos dispersos geográficamente.</p>
+                    <p className="mb-10">Un mapa mental online es una herramienta digital que permite organizar y visualizar información de manera gráfica y colaborativa. En <Link className="text-custom-blue hover:underline" href="/mapa-mental-online/">Sketchlie</Link>, ofrecemos una plataforma donde puedes crear mapas mentales en tiempo real, facilitando la colaboración entre equipos dispersos geográficamente.</p>
 
                     <p className="mb-10">Con nuestra herramienta de mapa mental online, puedes agregar ideas, conectarlas con líneas y organizarlas de manera jerárquica. Esto facilita la generación de ideas, la planificación de proyectos y la resolución de problemas de forma eficiente y creativa.</p>
 
@@ -65,7 +65,7 @@ const LandingPage = () => {
 
                     <ul style={{ listStyleType: 'disc' }}>
                         <li className="mb-10 ml-5">
-                            <strong>Colaboración en tiempo real:</strong> Con <Link className="text-custom-blue hover:underline" href="/mapa-mental-online">nuestro mapa mental online</Link>, varios usuarios pueden trabajar simultáneamente en el mismo documento, lo que facilita la colaboración remota.
+                            <strong>Colaboración en tiempo real:</strong> Con <Link className="text-custom-blue hover:underline" href="/mapa-mental-online/">nuestro mapa mental online</Link>, varios usuarios pueden trabajar simultáneamente en el mismo documento, lo que facilita la colaboración remota.
                         </li>
                         <li className="mb-10 ml-5">
                             <strong>Organización visual:</strong> Los mapas mentales permiten organizar ideas de manera visual, lo que facilita la comprensión y el recuerdo de la información.
@@ -158,7 +158,7 @@ const LandingPage = () => {
                         </li>
                     </ul>
 
-                    <p className="mb-10">En <Link className="text-custom-blue hover:underline" href="/mapa-mental-online">Sketchlie</Link>, nos enfocamos en proporcionar una plataforma que combine todas estas características para ofrecer la mejor experiencia de mapa mental online a nuestros usuarios.</p>
+                    <p className="mb-10">En <Link className="text-custom-blue hover:underline" href="/mapa-mental-online/">Sketchlie</Link>, nos enfocamos en proporcionar una plataforma que combine todas estas características para ofrecer la mejor experiencia de mapa mental online a nuestros usuarios.</p>
 
                     <div id="7" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">7. ¿Puedo utilizar un mapa mental online para la educación?</h2>
@@ -177,11 +177,11 @@ const LandingPage = () => {
                         </li>
                     </ol>
 
-                    <p className="mb-10">En <Link className="text-custom-blue hover:underline" href="/mapa-mental-online">Sketchlie</Link>, estamos comprometidos en proporcionar una herramienta que sea útil tanto para profesores como para estudiantes, facilitando el proceso de aprendizaje y la colaboración en el aula.</p>
+                    <p className="mb-10">En <Link className="text-custom-blue hover:underline" href="/mapa-mental-online/">Sketchlie</Link>, estamos comprometidos en proporcionar una herramienta que sea útil tanto para profesores como para estudiantes, facilitando el proceso de aprendizaje y la colaboración en el aula.</p>
                     <div id="8" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">8. ¿Cómo puedo compartir un mapa mental online con otros?</h2>
 
-                    <p className="mb-10">Compartir un mapa mental online con otros es fácil con <Link className="text-custom-blue hover:underline" href="/mapa-mental-online">Sketchlie</Link>. Sigue estos pasos:</p>
+                    <p className="mb-10">Compartir un mapa mental online con otros es fácil con <Link className="text-custom-blue hover:underline" href="/mapa-mental-online/">Sketchlie</Link>. Sigue estos pasos:</p>
 
                     <ol style={{ listStyleType: 'decimal' }}>
                         <li className="mb-10 ml-5">
@@ -200,7 +200,7 @@ const LandingPage = () => {
                     <div id="9" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">9. ¿Cómo puedo exportar un mapa mental online?</h2>
 
-                    <p className="mb-10">Exportar un mapa mental online en <Link className="text-custom-blue hover:underline" href="/mapa-mental-online">Sketchlie</Link> es rápido y sencillo. Aquí te mostramos cómo hacerlo:</p>
+                    <p className="mb-10">Exportar un mapa mental online en <Link className="text-custom-blue hover:underline" href="/mapa-mental-online/">Sketchlie</Link> es rápido y sencillo. Aquí te mostramos cómo hacerlo:</p>
 
                     <ol style={{ listStyleType: 'decimal' }}>
                         <li className="mb-10 ml-5">
@@ -237,7 +237,7 @@ const LandingPage = () => {
                     <div id="11" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">¡Comienza a utilizar un mapa mental online hoy!</h2>
 
-                    <p className="mb-10">Ya sea que estés buscando organizar tus ideas, planificar proyectos o estimular tu creatividad, un mapa mental online puede ser la herramienta perfecta para ti. En <Link className="text-custom-blue hover:underline" href="/mapa-mental-online">Sketchlie</Link>, estamos aquí para ayudarte a empezar.</p>
+                    <p className="mb-10">Ya sea que estés buscando organizar tus ideas, planificar proyectos o estimular tu creatividad, un mapa mental online puede ser la herramienta perfecta para ti. En <Link className="text-custom-blue hover:underline" href="/mapa-mental-online/">Sketchlie</Link>, estamos aquí para ayudarte a empezar.</p>
 
                     <p className="mb-10">Regístrate ahora y descubre cómo nuestra plataforma puede transformar la forma en que colaboras y visualizas tus ideas. ¡Da vida a tus pensamientos con un mapa mental online hoy mismo!</p>
 
@@ -287,9 +287,9 @@ const LandingPage = () => {
                 </div>
             </div>
             <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-5 md:my-20 my-5">
-                <BlogLinks blogTitle="Mapa Conceptual Online" blogImage="/placeholders/mapa-conceptual-online.png" blogHref="/mapa-conceptual" blogDescription="Descubre cómo desatar tu creatividad y potenciar la colaboración en tiempo real con Sketchlie." />
+                <BlogLinks blogTitle="Mapa Conceptual Online" blogImage="/placeholders/mapa-conceptual-online.png" blogHref="/mapa-conceptual/" blogDescription="Descubre cómo desatar tu creatividad y potenciar la colaboración en tiempo real con Sketchlie." />
                 <BlogLinks blogTitle="Mapa de Procesos" blogImage="/placeholders/mapa-de-procesos.png" blogHref="/mapas-de-procesos" blogDescription="El mapa de procesos ayuda a los equipos a mapear y implementar mejoras. Registrate hoy con una 3 espacios de trabajo gratuitos para empezar a utilizar la mejor herramienta de mapa de procesos." />
-                <BlogLinks blogTitle="Mapas Mentales" blogImage="/placeholders/mapa-mental.png" blogHref="/mapa-mental-online" blogDescription="Explora nuestras herramientas para simplificar la creación de mapas mentales. Organiza tus ideas de manera jerárquica y potencia tu creatividad con nuestro intuitivo creador de mapas mentales." />
+                <BlogLinks blogTitle="Mapas Mentales" blogImage="/placeholders/mapa-mental.png" blogHref="/mapa-mental-online/" blogDescription="Explora nuestras herramientas para simplificar la creación de mapas mentales. Organiza tus ideas de manera jerárquica y potencia tu creatividad con nuestro intuitivo creador de mapas mentales." />
             </div>
         </div>
     );

@@ -30,7 +30,7 @@ const LandingPage = () => {
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                <Link href="/blog">Blog</Link>
+                <Link href="/blog/">Blog</Link>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
@@ -62,17 +62,17 @@ const LandingPage = () => {
                     <p className="mb-10">En el mundo digital, las herramientas para la creación de mapas conceptuales han cobrado una relevancia sin precedentes. <Link className="text-custom-blue hover:underline" href="/">Sketchlie</Link> te ofrece una plataforma versátil y fácil de usar para dar vida a tus ideas de manera colaborativa y eficiente. Algunas de nuestras herramientas más destacadas incluyen:</p>
                     <ul style={{ listStyleType: 'disc' }}>
                         <li className="mb-10 ml-5">
-                            <Link className="text-custom-blue hover:underline" href="/pizarra-online">
+                            <Link className="text-custom-blue hover:underline" href="/pizarra-online/">
                                 Pizarra Online
                             </Link>: Ideal para lluvias de ideas y sesiones de trabajo en equipo, nuestra pizarra online te permite plasmar tus conceptos de forma libre y flexible.
                         </li>
                         <li className="mb-10 ml-5">
-                            <Link className="text-custom-blue hover:underline" href="/mapa-conceptual">
+                            <Link className="text-custom-blue hover:underline" href="/mapa-conceptual/">
                                 Mapa Conceptual
                             </Link>: Nuestra herramienta de creación de mapas conceptuales te permite organizar tus ideas de manera jerárquica, visualizando las relaciones entre conceptos de forma clara y concisa.
                         </li>
                         <li className="mb-10 ml-5">
-                            <Link className="text-custom-blue hover:underline" href="/mapa-mental-online">
+                            <Link className="text-custom-blue hover:underline" href="/mapa-mental-online/">
                                 Mapa Mental Online
                             </Link>: Perfecto para estructurar ideas de forma no lineal, el mapa mental es una herramienta dinámica que estimula la creatividad y la asociación de ideas.
                         </li>
@@ -100,8 +100,8 @@ const LandingPage = () => {
                     <h2 className="text-4xl md:text-5xl mb-10">4. El Rol del Mapa Conceptual en la Era Digital</h2>
                     <p className="mb-10">En un mundo dominado por la información, el mapa conceptual se erige como una brújula invaluable. Al proporcionar una estructura visual para la comprensión y organización de ideas, estas herramientas no solo facilitan el proceso de aprendizaje, sino que también potencian la creatividad y la innovación.</p>
                     <p className="mb-10">En <Link className="text-custom-blue hover:underline" href="/">Sketchlie</Link>, nos enorgullece ofrecer una gama de herramientas diseñadas para inspirar y empoderar a nuestros usuarios. Desde la creación de mapas conceptuales hasta la elaboración de diagramas de flujo y wireframes, estamos comprometidos a proporcionar las herramientas necesarias para llevar tus ideas al siguiente nivel.</p>
-                    <p className="mb-10">Como parte de nuestra misión de fomentar el aprendizaje y la creatividad, también ofrecemos una variedad de recursos educativos en nuestro <Link className="text-custom-blue hover:underline" href="/blog">blog</Link>, donde puedes encontrar consejos, tutoriales y casos de estudio para sacar el máximo provecho de nuestras herramientas.</p>
-                    <p className="mb-10">En resumen, en el mundo online de hoy, el mapa conceptual es más que una simple herramienta: es un faro de claridad en un mar de información. Con nuestro <Link className="text-custom-blue hover:underline" href="/blog">blog</Link>, puedes navegar este mar con confianza, sabiendo que tienes las herramientas necesarias para dar forma a tus ideas y alcanzar tus objetivos.</p>
+                    <p className="mb-10">Como parte de nuestra misión de fomentar el aprendizaje y la creatividad, también ofrecemos una variedad de recursos educativos en nuestro <Link className="text-custom-blue hover:underline" href="/blog/">blog</Link>, donde puedes encontrar consejos, tutoriales y casos de estudio para sacar el máximo provecho de nuestras herramientas.</p>
+                    <p className="mb-10">En resumen, en el mundo online de hoy, el mapa conceptual es más que una simple herramienta: es un faro de claridad en un mar de información. Con nuestro <Link className="text-custom-blue hover:underline" href="/blog/">blog</Link>, puedes navegar este mar con confianza, sabiendo que tienes las herramientas necesarias para dar forma a tus ideas y alcanzar tus objetivos.</p>
                 </div>
                 <div className="lg:w-[30%] xl:ml-10 lg:ml-5 border border-black rounded-lg p-10 bg-[#FFF] lg:sticky lg:z-30 lg:top-24 lg:h-[50%] lg:mb-0 mb-10">
                     <h3 className="text-2xl mb-3">
@@ -124,9 +124,9 @@ const LandingPage = () => {
                 </div>
            </div>
            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-5 md:my-20 my-5">
-                <BlogLinks blogTitle="Diagramas de flujo" blogImage="/placeholders/mapa-conceptual.png" blogHref="/diagrama-de-flujo" blogDescription="Crea diagramas de flujo rápidamente y simplifica tus rutinas con el creador de diagramas de flujo de  con las herramientas de Sketchlie."/>
-                <BlogLinks blogTitle="Pizarra Online" blogImage="/placeholders/improve-performance.png" blogHref="/pizarra-online" blogDescription="Sketchlie es una pizarra online rápida, gratuita y fácil de usar pensada para  ayudarte a colaborar con cualquier persona desde cualquier lugar."/>
-                <BlogLinks blogTitle="Wireframes" blogImage="/placeholders/wireframe.png" blogHref="/wireframe" blogDescription="Empieza a visualizar tus ideas en minutos con nuestro intuitivo creador de wireframes. Crea esquemas de lo que necesites, desde páginas de inicio hasta formularios y menús, con nuestro creador de wireframes. "/>
+                <BlogLinks blogTitle="Diagramas de flujo" blogImage="/placeholders/mapa-conceptual.png" blogHref="/diagrama-de-flujo/" blogDescription="Crea diagramas de flujo rápidamente y simplifica tus rutinas con el creador de diagramas de flujo de  con las herramientas de Sketchlie."/>
+                <BlogLinks blogTitle="Pizarra Online" blogImage="/placeholders/improve-performance.png" blogHref="/pizarra-online/" blogDescription="Sketchlie es una pizarra online rápida, gratuita y fácil de usar pensada para  ayudarte a colaborar con cualquier persona desde cualquier lugar."/>
+                <BlogLinks blogTitle="Wireframes" blogImage="/placeholders/wireframe.png" blogHref="/wireframe/" blogDescription="Empieza a visualizar tus ideas en minutos con nuestro intuitivo creador de wireframes. Crea esquemas de lo que necesites, desde páginas de inicio hasta formularios y menús, con nuestro creador de wireframes. "/>
             </div>
         </div>    
      );

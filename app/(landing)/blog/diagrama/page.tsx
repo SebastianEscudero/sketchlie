@@ -30,7 +30,7 @@ const LandingPage = () => {
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                <Link href="/blog">Blog</Link>
+                <Link href="/blog/">Blog</Link>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
@@ -51,19 +51,19 @@ const LandingPage = () => {
            />
            <div className="flex flex-col-reverse lg:flex-row justify-between mt-20">
                 <div className="lg:max-w-[70%] text-xl">
-                    <p className="mb-10">¿Quieres desatar tu creatividad y potenciar la colaboración en línea? ¡No busques más! En Sketchlie, entendemos la importancia de las herramientas visuales para la comunicación efectiva. Una de esas herramientas indispensables es el <Link className="text-custom-blue hover:underline" href="/diagrama">diagrama</Link>. Permítenos llevarte a un viaje donde exploraremos cómo el diagrama en línea puede transformar tu proceso de trabajo colaborativo.</p>
+                    <p className="mb-10">¿Quieres desatar tu creatividad y potenciar la colaboración en línea? ¡No busques más! En Sketchlie, entendemos la importancia de las herramientas visuales para la comunicación efectiva. Una de esas herramientas indispensables es el <Link className="text-custom-blue hover:underline" href="/diagrama/">diagrama</Link>. Permítenos llevarte a un viaje donde exploraremos cómo el diagrama en línea puede transformar tu proceso de trabajo colaborativo.</p>
 
                     <div id="1" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">1. ¿Qué es un Diagrama?</h2>
 
-                    <p className="mb-10">Un <Link className="text-custom-blue hover:underline" href="/diagrama">diagrama</Link> es una representación visual de información, datos o procesos. Puede variar desde simples gráficos hasta diagramas más complejos que representan relaciones entre varios elementos. Los diagramas son poderosas herramientas para organizar ideas, comunicar conceptos y facilitar la comprensión.</p>
+                    <p className="mb-10">Un <Link className="text-custom-blue hover:underline" href="/diagrama/">diagrama</Link> es una representación visual de información, datos o procesos. Puede variar desde simples gráficos hasta diagramas más complejos que representan relaciones entre varios elementos. Los diagramas son poderosas herramientas para organizar ideas, comunicar conceptos y facilitar la comprensión.</p>
 
                     <p className="mb-10">Los diagramas pueden adoptar diversas formas, desde diagramas de flujo que muestran la secuencia de pasos en un proceso, hasta diagramas de Venn que comparan conjuntos de datos.</p>
 
                     <div id="2" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">2. Herramientas para la Creación de Diagramas Online</h2>
 
-                    <p className="mb-10">En la era digital, contar con herramientas de diagramación en línea es esencial para la colaboración efectiva. <Link className="text-custom-blue hover:underline" href="/pizarra-online">Sketchlie</Link>, ofrecemos una plataforma intuitiva que permite a equipos colaborar en tiempo real en la creación de diagramas, mapas mentales, wireframes y más.</p>
+                    <p className="mb-10">En la era digital, contar con herramientas de diagramación en línea es esencial para la colaboración efectiva. <Link className="text-custom-blue hover:underline" href="/pizarra-online/">Sketchlie</Link>, ofrecemos una plataforma intuitiva que permite a equipos colaborar en tiempo real en la creación de diagramas, mapas mentales, wireframes y más.</p>
 
                     <p className="mb-10">Con Sketchlie, puedes crear diagramas fácilmente arrastrando y soltando elementos, agregando enlaces y notas, y colaborando con otros usuarios en tiempo real.</p>
 
@@ -102,7 +102,7 @@ const LandingPage = () => {
 
                     <blockquote className="text-gray-600 italic border-l-4 border-gray-400 pl-4 mb-8">La capacidad de visualizar ideas es fundamental para la innovación. Los diagramas permiten a los equipos explorar nuevas posibilidades y encontrar soluciones creativas a los desafíos empresariales.</blockquote>
 
-                    <p className="mb-10">Cuando se trata de fomentar la innovación, los diagramas desempeñan un papel crucial al proporcionar un lienzo visual para la generación de ideas. Al integrar la colaboración en línea con herramientas de diagramación como las ofrecidas por <Link className="text-custom-blue hover:underline" href="/diagrama">Sketchlie</Link>, las empresas pueden impulsar la creatividad y la innovación en todos los niveles.</p>
+                    <p className="mb-10">Cuando se trata de fomentar la innovación, los diagramas desempeñan un papel crucial al proporcionar un lienzo visual para la generación de ideas. Al integrar la colaboración en línea con herramientas de diagramación como las ofrecidas por <Link className="text-custom-blue hover:underline" href="/diagrama/">Sketchlie</Link>, las empresas pueden impulsar la creatividad y la innovación en todos los niveles.</p>
 
                     <p className="mb-10">¿Estás listo para llevar tu colaboración en línea al siguiente nivel? ¡Únete a la comunidad de Sketchlie y descubre cómo el diagrama online puede transformar tu proceso de trabajo!</p>
                 </div>
@@ -133,9 +133,9 @@ const LandingPage = () => {
                 </div>
            </div>
            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-5 md:my-20 my-5">
-                <BlogLinks blogTitle="Diagramas de flujo" blogImage="/placeholders/mapa-conceptual.png" blogHref="/diagrama-de-flujo" blogDescription="Crea diagramas de flujo rápidamente y simplifica tus rutinas con el creador de diagramas de flujo de  con las herramientas de Sketchlie."/>
-                <BlogLinks blogTitle="Pizarra Online" blogImage="/placeholders/improve-performance.png" blogHref="/pizarra-online" blogDescription="Sketchlie es una pizarra online rápida, gratuita y fácil de usar pensada para  ayudarte a colaborar con cualquier persona desde cualquier lugar."/>
-                <BlogLinks blogTitle="Wireframes" blogImage="/placeholders/wireframe.png" blogHref="/wireframe" blogDescription="Empieza a visualizar tus ideas en minutos con nuestro intuitivo creador de wireframes. Crea esquemas de lo que necesites, desde páginas de inicio hasta formularios y menús, con nuestro creador de wireframes. "/>
+                <BlogLinks blogTitle="Diagramas de flujo" blogImage="/placeholders/mapa-conceptual.png" blogHref="/diagrama-de-flujo/" blogDescription="Crea diagramas de flujo rápidamente y simplifica tus rutinas con el creador de diagramas de flujo de  con las herramientas de Sketchlie."/>
+                <BlogLinks blogTitle="Pizarra Online" blogImage="/placeholders/improve-performance.png" blogHref="/pizarra-online/" blogDescription="Sketchlie es una pizarra online rápida, gratuita y fácil de usar pensada para  ayudarte a colaborar con cualquier persona desde cualquier lugar."/>
+                <BlogLinks blogTitle="Wireframes" blogImage="/placeholders/wireframe.png" blogHref="/wireframe/" blogDescription="Empieza a visualizar tus ideas en minutos con nuestro intuitivo creador de wireframes. Crea esquemas de lo que necesites, desde páginas de inicio hasta formularios y menús, con nuestro creador de wireframes. "/>
             </div>
         </div>    
      );

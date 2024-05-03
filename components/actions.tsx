@@ -56,7 +56,7 @@ export const Actions = ({
   const onDelete = () => {
     mutate({ id, userId: user.id })
       .then(() => toast.success("Board deleted"))
-      .then (() => router.push("/dashboard"))
+      .then (() => router.push("/dashboard/"))
       .catch(() => toast.error("Failed to delete board"));
   };
 

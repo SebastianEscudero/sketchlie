@@ -30,7 +30,7 @@ const LandingPage = () => {
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                <Link href="/blog">Blog</Link>
+                <Link href="/blog/">Blog</Link>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
@@ -70,10 +70,10 @@ const LandingPage = () => {
 
                     <ul style={{ listStyleType: 'disc' }}>
                     <li className="mb-10 ml-5">
-                            <strong><Link className="text-custom-blue hover:underline" href="/pizarra-online">Sketchlie</Link>:</strong> Una plataforma de pizarra online que permite crear y colaborar en la elaboración de mapas mentales de forma intuitiva y visual.
+                            <strong><Link className="text-custom-blue hover:underline" href="/pizarra-online/">Sketchlie</Link>:</strong> Una plataforma de pizarra online que permite crear y colaborar en la elaboración de mapas mentales de forma intuitiva y visual.
                     </li>
                     <li className="mb-10 ml-5">
-                        <strong><Link className="text-custom-blue hover:underline" href="/mapa-mental-online">Mapa Mental Online</Link>:</strong> Esta herramienta ofrece una amplia gama de funciones para crear mapas mentales personalizados y compartirlos con otros usuarios en tiempo real.
+                        <strong><Link className="text-custom-blue hover:underline" href="/mapa-mental-online/">Mapa Mental Online</Link>:</strong> Esta herramienta ofrece una amplia gama de funciones para crear mapas mentales personalizados y compartirlos con otros usuarios en tiempo real.
                     </li>
                     </ul>
 
@@ -99,7 +99,7 @@ const LandingPage = () => {
 
                     <p className="mb-10">En un mundo cada vez más digitalizado y orientado hacia la colaboración en línea, el uso de mapas mentales online se ha convertido en una herramienta esencial para potenciar la productividad y la creatividad en diversos ámbitos. Ya sea en el ámbito educativo, empresarial o personal, los mapas mentales ofrecen una forma visual y efectiva de organizar ideas, planificar proyectos y resolver problemas de manera colaborativa y dinámica.</p>
 
-                    <p className="mb-10">Descubre más sobre cómo potenciar tu creatividad y productividad con herramientas de mapas mentales online en <Link className="text-custom-blue hover:underline" href="/pizarra-online">Sketchlie</Link>.</p>
+                    <p className="mb-10">Descubre más sobre cómo potenciar tu creatividad y productividad con herramientas de mapas mentales online en <Link className="text-custom-blue hover:underline" href="/pizarra-online/">Sketchlie</Link>.</p>
 
                     <div id="5" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">5. Aplicaciones Prácticas de los Mapas Mentales Online</h2>
@@ -126,11 +126,11 @@ const LandingPage = () => {
                     <div id="6" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">6. Conclusiones</h2>
 
-                    <p className="mb-10">Los mapas mentales online son una herramienta valiosa para potenciar la creatividad, organizar ideas y colaborar de manera efectiva en la era digital. Con la variedad de herramientas disponibles en línea, como <Link className="text-custom-blue hover:underline" href="/mapa-mental-online">Mapa Mental Online</Link> y <Link className="text-custom-blue hover:underline" href="/pizarra-online">Sketchlie</Link>, es posible aprovechar al máximo el potencial de los mapas mentales en cualquier contexto.</p>
+                    <p className="mb-10">Los mapas mentales online son una herramienta valiosa para potenciar la creatividad, organizar ideas y colaborar de manera efectiva en la era digital. Con la variedad de herramientas disponibles en línea, como <Link className="text-custom-blue hover:underline" href="/mapa-mental-online/">Mapa Mental Online</Link> y <Link className="text-custom-blue hover:underline" href="/pizarra-online/">Sketchlie</Link>, es posible aprovechar al máximo el potencial de los mapas mentales en cualquier contexto.</p>
 
                     <p className="mb-10">Ya sea para planificar proyectos, estudiar para exámenes o generar ideas innovadoras, los mapas mentales ofrecen una forma intuitiva y visual de organizar información y estimular la creatividad. Descubre cómo puedes incorporar los mapas mentales online en tu rutina diaria y desata todo tu potencial creativo con Sketchlie.</p>
 
-                    <p className="mb-10">Para obtener más consejos sobre creatividad y herramientas de colaboración en línea, visita nuestro <Link className="text-custom-blue hover:underline" href="/blog">blog</Link>.</p>
+                    <p className="mb-10">Para obtener más consejos sobre creatividad y herramientas de colaboración en línea, visita nuestro <Link className="text-custom-blue hover:underline" href="/blog/">blog</Link>.</p>
                 </div>
                 <div className="lg:w-[30%] xl:ml-10 lg:ml-5 border border-black rounded-lg p-10 bg-[#FFF] lg:sticky lg:z-30 lg:top-24 lg:h-[50%] lg:mb-0 mb-10">
                     <h3 className="text-2xl mb-3">
@@ -160,8 +160,8 @@ const LandingPage = () => {
            </div>
            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-5 md:my-20 my-5">
                 <BlogLinks blogTitle="Wireframes Online: La Herramienta Esencial para Visualizar tus Ideas" blogImage="/placeholders/wireframe.png" blogHref="/blog/wireframes-online" blogDescription="Descubre cómo los wireframes online en Sketchlie pueden ayudarte a visualizar tus ideas." isNew={true}/>
-                <BlogLinks blogTitle="Mapa Conceptual y su Importancia en el Mundo Online" blogImage="/placeholders/mapa-conceptual.png" blogHref="/blog/mapa-conceptual" blogDescription="En el mundo digital, las herramientas para la creación de mapas conceptuales han cobrado una relevancia sin precedente..." isNew={true}/>
-                <BlogLinks blogTitle="Pizarra Online" blogImage="/placeholders/improve-performance.png" blogHref="/pizarra-online" blogDescription="Sketchlie es una pizarra online rápida, gratuita y fácil de usar pensada para  ayudarte a colaborar con cualquier persona desde cualquier lugar."/>
+                <BlogLinks blogTitle="Mapa Conceptual y su Importancia en el Mundo Online" blogImage="/placeholders/mapa-conceptual.png" blogHref="/blog/mapa-conceptual/" blogDescription="En el mundo digital, las herramientas para la creación de mapas conceptuales han cobrado una relevancia sin precedente..." isNew={true}/>
+                <BlogLinks blogTitle="Pizarra Online" blogImage="/placeholders/improve-performance.png" blogHref="/pizarra-online/" blogDescription="Sketchlie es una pizarra online rápida, gratuita y fácil de usar pensada para  ayudarte a colaborar con cualquier persona desde cualquier lugar."/>
             </div>
         </div>    
      );

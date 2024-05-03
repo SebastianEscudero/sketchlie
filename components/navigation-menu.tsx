@@ -49,23 +49,23 @@ const porEquipo: { title: string; href: string }[] = [
 const porCasoDeUso: { title: string; href: string }[] = [
     {
         title: "Pizarra Online",
-        href: "/pizarra-online",
+        href: "/pizarra-online/",
     },
     {
         title: "Mapa Conceptual",
-        href: "/mapa-conceptual",
+        href: "/mapa-conceptual/",
     },
     {
         title: "Diagrama de Flujo",
-        href: "/diagrama-de-flujo",
+        href: "/diagrama-de-flujo/",
     },
     {
         title: "Wireframe",
-        href: "/wireframe",
+        href: "/wireframe/",
     },
     {
         title: "Mapas mentales",
-        href: "/mapa-mental-online",
+        href: "/mapa-mental-online/",
     },
     {
         title: "Mapa de procesos",
@@ -73,15 +73,15 @@ const porCasoDeUso: { title: string; href: string }[] = [
     },
     {
         title: "Diagramas",
-        href: "/diagrama",
+        href: "/diagrama/",
     },
     {
         title: "Lluvia de ideas ",
-        href: "/lluvia-de-ideas",
+        href: "/lluvia-de-ideas/",
     },
     {
         title: "Customer Journey Map ",
-        href: "/customer-journey-map",
+        href: "/customer-journey-map/",
     },
 ]
 
@@ -151,21 +151,21 @@ export function NavigationMenuLanding() {
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                     <NavigationMenuLink
-                        href={"/blog"}
+                        href={"/blog/"}
                     >
                         <Button
                             className='justify-start my-[3px] text-[16px] mr-2'
-                            variant={pathname === "/blog" ? 'auth' : 'ghost'}
+                            variant={pathname === "/blog/" ? 'auth' : 'ghost'}
                         >
                             Blog
                         </Button>
                     </NavigationMenuLink>
                     <NavigationMenuLink
-                        href={"/pricing"}
+                        href={"/pricing/"}
                     >
                         <Button
                             className='justify-start my-[3px] text-[16px]'
-                            variant={pathname === "/pricing" ? 'auth' : 'ghost'}
+                            variant={pathname === "/pricing/" ? 'auth' : 'ghost'}
                         >
                             Precios
                         </Button>

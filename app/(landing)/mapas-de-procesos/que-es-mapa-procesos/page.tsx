@@ -64,7 +64,7 @@ const LandingPage = () => {
                     <div id="2" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">¿Cómo se crea un mapa de procesos?</h2>
 
-                    <p className="mb-10">Crear un <strong>mapa de procesos</strong> efectivo requiere comprensión y colaboración. En nuestro <Link className="text-custom-blue hover:underline" href="/pizarra-online">pizarra online</Link>, puedes reunir a tu equipo en tiempo real para diseñar y refinar el mapa.</p>
+                    <p className="mb-10">Crear un <strong>mapa de procesos</strong> efectivo requiere comprensión y colaboración. En nuestro <Link className="text-custom-blue hover:underline" href="/pizarra-online/">pizarra online</Link>, puedes reunir a tu equipo en tiempo real para diseñar y refinar el mapa.</p>
 
                     <ul style={{ listStyleType: 'disc' }}>
                         <li className="mb-10 ml-5">
@@ -181,7 +181,7 @@ const LandingPage = () => {
                             <strong>Reúne a tu equipo:</strong> Invita a los miembros relevantes de tu equipo a colaborar en la creación del mapa de procesos.
                         </li>
                         <li className="mb-10 ml-5">
-                            <strong>Crea el mapa:</strong> Utiliza las herramientas de <Link className="text-custom-blue hover:underline" href="/pizarra-online">pizarra online</Link> de Sketchlie para visualizar y documentar cada paso del proceso.
+                            <strong>Crea el mapa:</strong> Utiliza las herramientas de <Link className="text-custom-blue hover:underline" href="/pizarra-online/">pizarra online</Link> de Sketchlie para visualizar y documentar cada paso del proceso.
                         </li>
                         <li className="mb-10 ml-5">
                             <strong>Refina y optimiza:</strong> Una vez que hayas creado el mapa, revisa y analiza cada paso para identificar áreas de mejora y optimización.
@@ -249,9 +249,9 @@ const LandingPage = () => {
                 </div>
             </div>
             <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-5 md:my-20 my-5">
-                <BlogLinks blogTitle="Diagramas de flujo" blogImage="/placeholders/mapa-conceptual.png" blogHref="/diagrama-de-flujo" blogDescription="Crea diagramas de flujo rápidamente y simplifica tus rutinas con el creador de diagramas de flujo de  con las herramientas de Sketchlie." />
-                <BlogLinks blogTitle="Pizarra Online" blogImage="/placeholders/improve-performance.png" blogHref="/pizarra-online" blogDescription="Sketchlie es una pizarra online rápida, gratuita y fácil de usar pensada para  ayudarte a colaborar con cualquier persona desde cualquier lugar." />
-                <BlogLinks blogTitle="Wireframes" blogImage="/placeholders/wireframe.png" blogHref="/wireframe" blogDescription="Empieza a visualizar tus ideas en minutos con nuestro intuitivo creador de wireframes. Crea esquemas de lo que necesites, desde páginas de inicio hasta formularios y menús, con nuestro creador de wireframes. " />
+                <BlogLinks blogTitle="Diagramas de flujo" blogImage="/placeholders/mapa-conceptual.png" blogHref="/diagrama-de-flujo/" blogDescription="Crea diagramas de flujo rápidamente y simplifica tus rutinas con el creador de diagramas de flujo de  con las herramientas de Sketchlie." />
+                <BlogLinks blogTitle="Pizarra Online" blogImage="/placeholders/improve-performance.png" blogHref="/pizarra-online/" blogDescription="Sketchlie es una pizarra online rápida, gratuita y fácil de usar pensada para  ayudarte a colaborar con cualquier persona desde cualquier lugar." />
+                <BlogLinks blogTitle="Wireframes" blogImage="/placeholders/wireframe.png" blogHref="/wireframe/" blogDescription="Empieza a visualizar tus ideas en minutos con nuestro intuitivo creador de wireframes. Crea esquemas de lo que necesites, desde páginas de inicio hasta formularios y menús, con nuestro creador de wireframes. " />
             </div>
         </div>
     );

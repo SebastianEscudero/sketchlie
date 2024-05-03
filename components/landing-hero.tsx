@@ -36,7 +36,7 @@ export const LandingHero = () => {
                     </h1>
                     <p className="max-w-[800px] text-center text-sm text-gray-600 sm:text-lg">Haz una lluvia de ideas, colabora y da vida a tus ideas en nuestro espacio de colaboración en tiempo real. Únete a nosotros y convierte tus ideas en realidad.</p>
                     <div className="flex gap-4">
-                        <Link href="/dashboard">
+                        <Link href="/dashboard/">
                             <Button variant="auth" className="p-4 md:p-5 md:text-lg">
                                 {user ? "Ir al Tablero" : "Regístrate gratis"}
                             </Button>
