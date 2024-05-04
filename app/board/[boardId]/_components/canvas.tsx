@@ -596,7 +596,7 @@ export const Canvas = ({
         mode: CanvasMode.None,
       });
     } else if (canvasState.mode === CanvasMode.Pencil) {
-      document.body.style.cursor = "url(/custom-cursors/pencil.svg) 8 8, auto";
+      document.body.style.cursor = "url(/custom-cursors/pencil.svg) 2 18, auto";
       insertPath();
     } else if (canvasState.mode === CanvasMode.Inserting && canvasState.layerType === LayerType.Image) {
       setSelectedImage("");
@@ -926,10 +926,10 @@ export const Canvas = ({
       if (canvasState.layerType === LayerType.Text) {
         document.body.style.cursor = 'url(/custom-cursors/text-cursor.svg) 8 8, auto';
       } else {
-        document.body.style.cursor = 'url(/custom-cursors/inserting.svg) 8 8, auto';
+        document.body.style.cursor = 'url(/custom-cursors/inserting.svg) 12 12, auto';
       }
     } else if (canvasState.mode === CanvasMode.Pencil) {
-      document.body.style.cursor = 'url(/custom-cursors/pencil.svg) 8 8, auto';
+      document.body.style.cursor = 'url(/custom-cursors/pencil.svg) 2 18, auto';
     } else if (canvasState.mode === CanvasMode.Moving) {
       document.body.style.cursor = 'url(/custom-cursors/hand.svg) 8 8, auto';
     } else {
