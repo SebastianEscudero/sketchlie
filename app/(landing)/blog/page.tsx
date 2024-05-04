@@ -15,6 +15,13 @@ export const metadata: Metadata = {
 const BlogPage = () => {
     const blogLinksData = [
         {
+            blogImage: "/placeholders/what-is-new-may-2024.png",
+            blogHref: "/blog/what-is-new-may-2024/",
+            blogDescription: "Sketchlie ha lanzado recientemente algunas emocionantes actualizaciones, plantillas, iconos, herramientas de diseño y más.",
+            blogTitle: "Actualización Mayo 2024: Mejoras y Plantillas",
+            isNew: true
+        },
+        {
             blogImage: "/placeholders/mapa-conceptual-online.png",
             blogHref: "/blog/mapa-conceptual/",
             blogDescription: "Que son los mapas conceptuales y cual es su Importancia en el Mundo Online...",
