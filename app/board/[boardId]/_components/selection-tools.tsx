@@ -6,8 +6,8 @@ import { Hint } from "@/components/hint";
 import { Camera, Color, LayerType, UpdateLayerMutation  } from "@/types/canvas";
 import { Button } from "@/components/ui/button";
 import { useSelectionBounds } from "@/hooks/use-selection-bounds";
-import { ColorPicker } from "./color-picker";
-import { FontSizePicker } from "./font-size-picker"
+import { ColorPicker } from "../selection-tools/color-picker";
+import { FontSizePicker } from "../selection-tools/font-size-picker"
 import { Socket } from "socket.io-client";
 import { useApiMutation } from "@/hooks/use-api-mutation";
 import { api } from "@/convex/_generated/api";
@@ -137,24 +137,30 @@ export const SelectionTools = memo(({
   
     setLiveLayers((prevLayers: any) => {
       const newLayers = { ...prevLayers };
+      const updatedIds: any = [];
+      const updatedLayers: any = [];
   
       selectedLayers.forEach((id) => {
         const layer = newLayers[id];
         if (layer) {
           newLayers[id].fill = fill;
+          updatedIds.push(id);
+          updatedLayers.push(newLayers[id]);
         }
-        if (socket) {
-          socket.emit('layer-update', id, newLayers[id]);
-        }
-        
+      });
+  
+      if (updatedIds.length > 0) {
         updateLayer({ 
           boardId: boardId,
-          layerId: id,
-          layerUpdates: { fill }
+          layerId: updatedIds,
+          layerUpdates: updatedLayers.map(() => ({ fill }))
         });
-
-      });
-
+      }
+  
+      if (socket) {
+        socket.emit('layer-update', updatedIds, updatedLayers);
+      }
+  
       return newLayers;
     });
   }, [selectedLayers, setLastUsedColor, setLiveLayers, socket, updateLayer, boardId]);
@@ -165,21 +171,20 @@ export const SelectionTools = memo(({
   
     selectedLayers.forEach((id) => {
       delete newLiveLayers[id];
+    });
   
-      if (socket) {
-        socket.emit('layer-delete', id);
-      }
+    if (socket) {
+      socket.emit('layer-delete', selectedLayers);
+    }
   
-      deleteLayer({ 
-        boardId: boardId,
-        layerId: id 
-      });
+    deleteLayer({ 
+      boardId: boardId,
+      layerId: selectedLayers 
     });
   
     setLiveLayers(newLiveLayers);
     setLiveLayerIds(newLiveLayerIds);
-  
-  }, [selectedLayers, liveLayers, setLiveLayers, liveLayerIds, setLiveLayerIds, socket, deleteLayer, boardId]);
+  }, [liveLayers, liveLayerIds, selectedLayers, socket, deleteLayer, boardId]);
 
   if (!selectionBounds) {
     return null;

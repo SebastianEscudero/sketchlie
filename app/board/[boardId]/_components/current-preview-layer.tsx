@@ -1,9 +1,9 @@
 import { LayerType, PreviewLayer } from "@/types/canvas";
 import { memo } from "react";
-import { Rectangle } from "./rectangle";
-import { Ellipse } from "./ellipse";
-import { Note } from "./note";
-import { Text } from "./text";
+import { Rectangle } from "../canvas-objects/rectangle";
+import { Ellipse } from "../canvas-objects/ellipse";
+import { Note } from "../canvas-objects/note";
+import { Text } from "../canvas-objects/text";
 
 interface PreviewLayerProps {
     layer: PreviewLayer;

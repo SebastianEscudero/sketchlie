@@ -2,7 +2,7 @@ import { memo } from "react";
 import { Cursor } from "./cursor";
 import { User } from '@/types/canvas';
 import { colorToCss } from "@/lib/utils";
-import { Path } from "./path";
+import { Path } from "../canvas-objects/path";
 
 interface CursorsProps {
     otherUsers: User[];

@@ -3,12 +3,12 @@
 import { memo } from "react";
 import { colorToCss } from "@/lib/utils";
 import { LayerType, UpdateLayerMutation } from "@/types/canvas";
-import { Path } from "./path";
-import { Note } from "./note";
-import { Text } from "./text";
-import { Ellipse } from "./ellipse";
-import { Rectangle } from "./rectangle";
-import { InsertImage } from "./image";
+import { Path } from "../canvas-objects/path";
+import { Note } from "../canvas-objects/note";
+import { Text } from "../canvas-objects/text";
+import { Ellipse } from "../canvas-objects/ellipse";
+import { Rectangle } from "../canvas-objects/rectangle";
+import { InsertImage } from "../canvas-objects/image";
 
 interface LayerPreviewProps {
   id: string;

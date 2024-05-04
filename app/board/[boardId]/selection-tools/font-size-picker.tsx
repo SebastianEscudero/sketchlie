@@ -26,34 +26,40 @@ export const FontSizePicker = ({
 
     const handleFontSizeChange = (fontSize: number) => {
         const newLayers = { ...liveLayers };
+        const updatedIds: any = [];
+        const updatedLayers: any = [];
+      
         selectedLayers.map((layerId: string) => {
-            const originalFontSize = newLayers[layerId].textFontSize;
-            const scaleFactor = fontSize / originalFontSize;
-
-            newLayers[layerId].textFontSize = fontSize;
-            newLayers[layerId].width *= scaleFactor;
-            newLayers[layerId].height *= scaleFactor;
-        })
+          const originalFontSize = newLayers[layerId].textFontSize;
+          const scaleFactor = fontSize / originalFontSize;
+      
+          newLayers[layerId].textFontSize = fontSize;
+          newLayers[layerId].width *= scaleFactor;
+          newLayers[layerId].height *= scaleFactor;
+      
+          updatedIds.push(layerId);
+          updatedLayers.push({
+            textFontSize: fontSize,
+            width: newLayers[layerId].width,
+            height: newLayers[layerId].height,
+          });
+        });
+      
+        if (updatedIds.length > 0) {
+          updateLayer({
+            boardId: boardId,
+            layerId: updatedIds,
+            layerUpdates: updatedLayers
+          });
+        }
+      
+        if (socket) {
+          socket.emit('layer-update', updatedIds, updatedLayers);
+        }
+      
         setLiveLayers(newLayers);
         setInputFontSize(fontSize);
-
-        selectedLayers.map((layerId: string) => {
-
-            if (socket) {
-                socket.emit('layer-update', layerId, newLayers[layerId])
-            }
-
-            updateLayer({
-                boardId: boardId,
-                layerId,
-                layerUpdates: {
-                    textFontSize: fontSize,
-                    width: newLayers[layerId].width,
-                    height: newLayers[layerId].height,
-                }
-            });
-        });
-    };
+      };
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setInputFontSize(parseInt(event.target.value));

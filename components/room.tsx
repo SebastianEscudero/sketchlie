@@ -77,28 +77,48 @@ export const Room = React.memo(({ children, roomId, fallback, userInfo, board }:
   }, [socket, User]);
 
   useEffect(() => {
-    const newSocket = io('https://sketchlie-server-little-resonance-2329.fly.dev', {
+    const newSocket = io('http://localhost:3001', {
       query: { roomId }
     });
     setSocket(newSocket);
 
-    newSocket.on('layer-update', (layerId, layer) => {
-      setLiveLayers(layers => ({ ...layers, [layerId]: layer }));
-      setLiveLayerIds(layerIds => {
-        if (!layerIds.includes(layerId)) {
-          return [...layerIds, layerId];
-        }
-        return layerIds;
+    newSocket.on('layer-update', (layerIds, layers) => {
+      // Ensure layerIds and layers are arrays
+      layerIds = Array.isArray(layerIds) ? layerIds : [layerIds];
+      layers = Array.isArray(layers) ? layers : [layers];
+    
+      setLiveLayers(prevLayers => {
+        let newLayers = { ...prevLayers };
+        layerIds.forEach((layerId: string, index: any) => {
+          newLayers[layerId] = { ...newLayers[layerId], ...layers[index] };
+        });
+        return newLayers;
+      });
+    
+      setLiveLayerIds(prevLayerIds => {
+        let newLayerIds = [...prevLayerIds];
+        layerIds.forEach((layerId: string) => {
+          if (!newLayerIds.includes(layerId)) {
+            newLayerIds.push(layerId);
+          }
+        });
+        return newLayerIds;
       });
     });
 
     newSocket.on('layer-delete', (layerId) => {
+      // Ensure layerId is an array
+      layerId = Array.isArray(layerId) ? layerId : [layerId];
+    
       setLiveLayers(layers => {
         const newLayers = { ...layers };
-        delete newLayers[layerId];
+        layerId.forEach((id: string) => {
+          delete newLayers[id];
+        });
         return newLayers;
       });
-      setLiveLayerIds(layerIds => layerIds.filter(id => id !== layerId));
+    
+      setLiveLayerIds(layerIds => layerIds.filter(id => !layerId.includes(id)));
     });
 
     newSocket.on('layer-send', (newLayerIds) => {
