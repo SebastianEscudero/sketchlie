@@ -74,6 +74,12 @@ export const Text = ({
     }, [textRef, onRefChange]);
 
     useEffect(() => {
+        if (textRef.current) {
+            textRef.current.focus();
+        }
+    }, [textRef]);
+
+    useEffect(() => {
         const newHeight = textRef.current?.scrollHeight || height;
         layer.height = newHeight;
         textRef.current.style.height = 'auto';

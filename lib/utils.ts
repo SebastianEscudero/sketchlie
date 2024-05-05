@@ -123,7 +123,6 @@ export function resizeBounds(
   if (layer && layer?.height/layer?.width === result.height/result.width && textareaRef && textareaRef.current && layer.type === LayerType.Text) {
     const newFontSize = result.height/layer.height * layer.textFontSize
     result.textFontSize = newFontSize
-    console.log(result.textFontSize)
     return result
   }
 

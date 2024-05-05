@@ -131,7 +131,7 @@ export const Canvas = ({
     };
 
     setMyPresence(newPresence);
-    
+
     if (socket) {
       socket.emit('presence', myPresence, User.userId);
       socket.emit('layer-update', layerId, layer);
@@ -142,7 +142,6 @@ export const Canvas = ({
       layerId: layerId,
       layer: layer
     })
-
     setCanvasState({ mode: CanvasMode.None });
   }, [lastUsedColor, liveLayers, liveLayerIds, myPresence, socket, org, proModal, User.userId, setLiveLayers, setLiveLayerIds, boardId, addLayer]);
 
@@ -157,7 +156,7 @@ export const Canvas = ({
       return;
     }
 
-  const layerId = nanoid().replace(/_/g, '');
+    const layerId = nanoid().replace(/_/g, '');
 
     if (selectedImage === "") {
       return;
@@ -191,7 +190,7 @@ export const Canvas = ({
       socket.emit('presence', myPresence, User.userId);
       socket.emit('layer-update', layerId, layer);
     }
-    
+
     addLayer({
       boardId: boardId,
       layerId: layerId,
@@ -205,18 +204,18 @@ export const Canvas = ({
     if (canvasState.mode !== CanvasMode.Translating) {
       return;
     }
-  
+
     const offset = {
       x: (point.x - canvasState.current.x),
       y: (point.y - canvasState.current.y)
     };
-  
+
     const newLayers = { ...liveLayers };
     const updatedLayers: any = [];
-  
+
     selectedLayersRef.current.forEach(id => {
       const layer = newLayers[id];
-  
+
       if (layer) {
         const newLayer = { ...layer };
         newLayer.x += offset.x;
@@ -225,11 +224,11 @@ export const Canvas = ({
         updatedLayers.push(newLayer);
       }
     });
-  
+
     if (socket) {
       socket.emit('layer-update', selectedLayersRef.current, updatedLayers);
     }
-  
+
     setLiveLayers(newLayers);
     setCanvasState({ mode: CanvasMode.Translating, current: point });
   }, [canvasState, selectedLayersRef.current, setCanvasState, setLiveLayers, socket, liveLayers]);
@@ -630,7 +629,7 @@ export const Canvas = ({
     } else if (canvasState.mode === CanvasMode.Translating) {
       let layerIds: any = [];
       let layerUpdates: any = [];
-      
+
       selectedLayersRef.current.forEach(id => {
         const newLayer = liveLayers[id];
         if (newLayer) {
@@ -638,7 +637,7 @@ export const Canvas = ({
           layerUpdates.push(newLayer);
         }
       });
-      
+
       if (layerIds.length > 0) {
         updateLayer({
           boardId: boardId,
@@ -652,7 +651,7 @@ export const Canvas = ({
     } else if (canvasState.mode === CanvasMode.Resizing) {
       let layerIds: any = [];
       let layerUpdates: any = [];
-      
+
       selectedLayersRef.current.forEach(id => {
         const newLayer = liveLayers[id];
         if (newLayer) {
@@ -660,7 +659,7 @@ export const Canvas = ({
           layerUpdates.push(newLayer);
         }
       });
-      
+
       if (layerIds.length > 0) {
         updateLayer({
           boardId: boardId,
@@ -800,35 +799,35 @@ export const Canvas = ({
     const offsetY = mousePosition.y - centerY;
 
     const newSelection = [] as string[];
-  const newLiveLayers = { ...liveLayers };
-  const newLiveLayerIds = [...liveLayerIds];
-  const newIds: any = [];
-  const clonedLayers: any = [];
-  copiedLayers.forEach((layer) => {
-    const newId = nanoid().replace(/_/g, '');
-    newSelection.push(newId);
-    newLiveLayerIds.push(newId);
-    const clonedLayer = { ...layer };
-    clonedLayer.x = clonedLayer.x + offsetX;
-    clonedLayer.y = clonedLayer.y + offsetY;
-    newLiveLayers[newId] = clonedLayer;
+    const newLiveLayers = { ...liveLayers };
+    const newLiveLayerIds = [...liveLayerIds];
+    const newIds: any = [];
+    const clonedLayers: any = [];
+    copiedLayers.forEach((layer) => {
+      const newId = nanoid().replace(/_/g, '');
+      newSelection.push(newId);
+      newLiveLayerIds.push(newId);
+      const clonedLayer = { ...layer };
+      clonedLayer.x = clonedLayer.x + offsetX;
+      clonedLayer.y = clonedLayer.y + offsetY;
+      newLiveLayers[newId] = clonedLayer;
 
-    newIds.push(newId);
-    clonedLayers.push(clonedLayer);
-  });
+      newIds.push(newId);
+      clonedLayers.push(clonedLayer);
+    });
 
-  addLayer({
-    boardId: boardId,
-    layerId: newIds,
-    layer: clonedLayers
-  })
+    addLayer({
+      boardId: boardId,
+      layerId: newIds,
+      layer: clonedLayers
+    })
 
-  if (socket) {
-    socket.emit('layer-update', newIds, clonedLayers);
-  }
+    if (socket) {
+      socket.emit('layer-update', newIds, clonedLayers);
+    }
 
-  setLiveLayers(newLiveLayers);
-  setLiveLayerIds(newLiveLayerIds);
+    setLiveLayers(newLiveLayers);
+    setLiveLayerIds(newLiveLayerIds);
 
 
 
@@ -864,6 +863,7 @@ export const Canvas = ({
           }
           if (e.ctrlKey || e.metaKey) {
             if (copiedLayers.size > 0) {
+              e.preventDefault();
               pasteCopiedLayers(mousePositionRef.current);
             }
           }
@@ -882,16 +882,16 @@ export const Canvas = ({
             selectedLayersRef.current.forEach(id => {
               delete newLayers[id];
             });
-        
-            deleteLayer({ 
+
+            deleteLayer({
               boardId: board._id,
-              layerId: selectedLayersRef.current 
+              layerId: selectedLayersRef.current
             });
-        
+
             if (socket) {
               socket.emit('layer-delete', selectedLayersRef.current);
             }
-        
+
             setLiveLayers(newLayers);
             setLiveLayerIds(liveLayerIds.filter(id => !selectedLayersRef.current.includes(id)));
             selectedLayersRef.current = ([]);
@@ -954,7 +954,7 @@ export const Canvas = ({
         setCanvasState={setCanvasState}
         org={org}
       />
-      {canvasState.mode !== CanvasMode.Translating && canvasState.mode !== CanvasMode.SelectionNet &&(
+      {canvasState.mode !== CanvasMode.Translating && canvasState.mode !== CanvasMode.SelectionNet && (
         <SelectionTools
           lastUsedColor={lastUsedColor}
           setLiveLayerIds={setLiveLayerIds}
