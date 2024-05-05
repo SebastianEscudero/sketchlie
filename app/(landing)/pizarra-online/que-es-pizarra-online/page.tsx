@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     description: "Descubre cómo la Pizarra Online puede mejorar la colaboración y la creatividad de tu equipo. Aprende sobre las técnicas, beneficios y tipos de pizarras online con Sketchlie.",
     keywords: ["Pizarra Online", "colaboración online", "Pizarra Virtual"],
     alternates: {
-        canonical: "https://www.sketchlie.com/pizarra-online/que-es-pizarra-online//",
+        canonical: "https://www.sketchlie.com/pizarra-online/que-es-pizarra-online/",
     }
 };
 
