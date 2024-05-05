@@ -10,8 +10,8 @@ export const AuthNavbar = () => {
     const user = useCurrentUser();
     const pathname = usePathname();
 
-    const linkPath = pathname === "/auth/login" ? "/auth/register" : "/auth/login";
-    const buttonText = pathname === "/auth/login" ? "Sign Up" : "Login";
+    const linkPath = pathname === "/auth/login/" ? "/auth/register/" : "/auth/login/";
+    const buttonText = pathname === "/auth/login/" ? "Sign Up" : "Login";
 
     return (
         <nav className="py-3 bg-[#FFFFFF] border-b border-zinc-600 sticky top-0 z-50 xl:px-[10%] lg:px-[7%] md:px-[5%] px-[3%]">

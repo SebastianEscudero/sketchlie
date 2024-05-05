@@ -7,7 +7,7 @@ import Link from "next/link";
 export const DashboardButton = () => {
     const user = useCurrentUser();
     return (
-        <Link href="/auth/register">
+        <Link href="/auth/register/">
             <Button variant="auth" className="md:text-lg p-4 md:p-6">
                 {user ? "Ir al Tablero" : "Regístrate gratis"}
             </Button>

@@ -67,7 +67,7 @@ export const LoginForm = () => {
     <CardWrapper
       headerLabel="Sign in to Sketchlie"
       backButtonLabel="Don't have an account?"
-      backButtonHref="/auth/register"
+      backButtonHref="/auth/register/"
       showSocial
     >
       <Form {...form}>
@@ -114,7 +114,7 @@ export const LoginForm = () => {
                       asChild
                       className="px-0"
                     >
-                      <Link href="/auth/reset">
+                      <Link href="/auth/reset/">
                         Forgot password?
                       </Link>
                     </Button>

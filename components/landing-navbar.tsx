@@ -28,7 +28,7 @@ export const LandingNavbar = () => {
                     <NavigationMenuLanding />
                 </div>
                 <div className="hidden sm:flex items-center gap-x-2">
-                    <Link href="/auth/register">
+                    <Link href="/auth/register/">
                         <Button variant="auth" className="rounded-lg">
                             Regístrate gratis
                         </Button>

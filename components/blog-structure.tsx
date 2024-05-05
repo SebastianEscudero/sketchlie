@@ -64,7 +64,7 @@ export const BlogStructure = ({
                     {description}
                 </p>
                 <div>
-                    <Link href={"/dashboard/"}>
+                    <Link href={"/auth/register/"}>
                         <Button variant="auth" className="md:text-lg p-4 md:p-6">
                             {user ? "Ir a Tablero" : cta}
                         </Button>
