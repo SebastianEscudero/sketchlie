@@ -103,7 +103,7 @@ const blog: { title: string; href: string }[] = [
     },
     {
         title: "Mapas de Procesos",
-        href: "/blog/mapa-de-procesos"
+        href: "/blog/mapa-de-procesos/"
     },
     {
         title: "Mapa Mental",
