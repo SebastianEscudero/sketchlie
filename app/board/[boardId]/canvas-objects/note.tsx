@@ -1,9 +1,9 @@
 import { Kalam } from "next/font/google";
 import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
 
-import { NoteLayer, UpdateLayerMutation } from "@/types/canvas";
+import { LayerType, NoteLayer, UpdateLayerMutation } from "@/types/canvas";
 import { cn, colorToCss, getContrastingTextColor } from "@/lib/utils";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRoom } from "@/components/room";
 import { throttle } from "lodash";
 
@@ -61,12 +61,16 @@ export const Note = ({
   const isTransparent = fillColor === 'rgba(0,0,0,0)';
 
   useEffect(() => {
-    setValue(liveLayers[id]?.value);
+    if (liveLayers[id].type === LayerType.Note) {
+      const noteLayer = liveLayers[id] as NoteLayer;
+      setValue(noteLayer.value);
+    }
   }, [id, liveLayers]);
   
   const updateValue = (newValue: string) => {
-    if (liveLayers[id]) {
-      liveLayers[id].value = newValue;
+    if (liveLayers[id].type === LayerType.Note) {
+      const noteLayer = liveLayers[id] as NoteLayer;
+      noteLayer.value = newValue;
       setValue(newValue);
       throttledUpdateLayer(updateLayer, socket, board._id, id, liveLayers[id]);
     }
