@@ -575,7 +575,8 @@ export const Canvas = ({
             canvasState.mode === CanvasMode.Inserting &&
             startPanPoint &&
             canvasState.layerType !== LayerType.Path &&
-            canvasState.layerType !== LayerType.Image
+            canvasState.layerType !== LayerType.Image &&
+            (startPanPoint.x !== 0 || startPanPoint.y !== 0)
         ) {
             const point = pointerEventToCanvasPoint(e, camera, zoom);
             const widthArrow = point.x - startPanPoint.x;
