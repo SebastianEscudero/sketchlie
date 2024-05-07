@@ -61,14 +61,14 @@ export const Note = ({
   const isTransparent = fillColor === 'rgba(0,0,0,0)';
 
   useEffect(() => {
-    if (liveLayers[id].type === LayerType.Note) {
+    if (liveLayers[id] && liveLayers[id].type === LayerType.Note) {
       const noteLayer = liveLayers[id] as NoteLayer;
       setValue(noteLayer.value);
     }
   }, [id, liveLayers]);
   
   const updateValue = (newValue: string) => {
-    if (liveLayers[id].type === LayerType.Note) {
+    if (liveLayers[id] && liveLayers[id].type === LayerType.Note) {
       const noteLayer = liveLayers[id] as NoteLayer;
       noteLayer.value = newValue;
       setValue(newValue);
