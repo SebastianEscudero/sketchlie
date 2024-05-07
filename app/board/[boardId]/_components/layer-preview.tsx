@@ -30,7 +30,7 @@ export const LayerPreview = memo(({
   updateLayer,
   onRefChange,
 }: LayerPreviewProps) => {
-
+  
   const layer = liveLayers[id];
 
   if (!layer) {

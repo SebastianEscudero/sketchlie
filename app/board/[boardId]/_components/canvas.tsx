@@ -1,6 +1,6 @@
 "use client";
 
-import { nanoid } from "nanoid";
+import { customAlphabet } from "nanoid";
 import { useCallback, useMemo, useState, useEffect, useRef } from "react";
 
 import {
@@ -44,6 +44,9 @@ import { useApiMutation } from "@/hooks/use-api-mutation";
 import { CurrentPreviewLayer } from "./current-preview-layer";
 import { useRoom } from "@/components/room";
 
+const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+const nanoid = customAlphabet(alphabet, 21);
+
 interface CanvasProps {
     boardId: any;
 };
@@ -85,7 +88,7 @@ export const Canvas = ({
             return;
         }
 
-        const layerId = nanoid().replace(/_/g, '');
+        const layerId = nanoid();
 
         let layer;
         let fillColor = { r: 0, g: 0, b: 0, a: 0 }
@@ -166,7 +169,7 @@ export const Canvas = ({
             return;
         }
 
-        const layerId = nanoid().replace(/_/g, '');
+        const layerId = nanoid();
 
         if (selectedImage === "") {
             return;
@@ -356,7 +359,7 @@ export const Canvas = ({
             return;
         }
 
-        const id = nanoid().replace(/_/g, '');
+        const id = nanoid();
         liveLayers[id] = penPointsToPathLayer(pencilDraft, { r: 0, g: 0, b: 0, a: 0 });
 
         liveLayerIds.push(id);
@@ -501,11 +504,9 @@ export const Canvas = ({
 
             if (canvasState.mode === CanvasMode.Inserting) {
                 const point = pointerEventToCanvasPoint(e, camera, zoom);
-                if (e.button === 0 && canvasState.mode === CanvasMode.Inserting) {
-                    setStartPanPoint(point);
-                    setIsPanning(false);
-                    return;
-                }
+                setStartPanPoint(point);
+                setIsPanning(false);
+                return;
             }
 
             if (canvasState.mode === CanvasMode.Pencil) {
@@ -725,7 +726,7 @@ export const Canvas = ({
             selectedImage,
             setSelectedImage,
             insertImage,
-            selectedLayersRef.current,
+            selectedLayersRef,
             liveLayers,
             updateLayer,
             boardId,
@@ -749,9 +750,6 @@ export const Canvas = ({
     }, [setMyPresence, myPresence, socket, User.userId]);
 
     const onLayerPointerDown = useCallback((e: React.PointerEvent, layerId: string) => {
-        console.log(canvasState.mode, 'canvasState.mode');
-        console.log(CanvasMode)
-        console.log('hi')
         if (
             canvasState.mode === CanvasMode.Pencil ||
             canvasState.mode === CanvasMode.Inserting
@@ -777,7 +775,7 @@ export const Canvas = ({
 
         selectedLayersRef.current = [layerId];
 
-    }, [selectedLayersRef]);
+    }, [selectedLayersRef, canvasState]);
 
     const layerIdsToColorSelection = useMemo(() => {
         const layerIdsToColorSelection: Record<string, string> = {};
@@ -807,7 +805,6 @@ export const Canvas = ({
         }
         setCopiedLayers(copied);
     }, [liveLayers, selectedLayersRef]);
-
 
     const pasteCopiedLayers = useCallback((mousePosition: any) => {
 
@@ -841,7 +838,7 @@ export const Canvas = ({
         const newIds: any = [];
         const clonedLayers: any = [];
         copiedLayers.forEach((layer) => {
-            const newId = nanoid().replace(/_/g, '');
+            const newId = nanoid();
             newSelection.push(newId);
             newLiveLayerIds.push(newId);
             const clonedLayer = JSON.parse(JSON.stringify(layer));
