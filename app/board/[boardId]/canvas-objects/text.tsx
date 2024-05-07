@@ -46,7 +46,6 @@ export const Text = ({
     onRefChange,
 }: TextProps) => {
     const { x, y, width, height, fill, value, textFontSize } = layer;
-
     const { liveLayers, board, socket } = useRoom();
     const textRef = useRef<any>(null);
     const fillColor = colorToCss(layer.fill);
@@ -81,11 +80,12 @@ export const Text = ({
     }, [textRef]);
 
     useEffect(() => {
+        const layers = { ...liveLayers };
         const newHeight = textRef.current?.scrollHeight || height;
-        layer.height = newHeight;
+        layers[id].height = newHeight;
         textRef.current.style.height = 'auto';
         textRef.current.style.height = `${textRef.current.scrollHeight}px`;
-    }, [width, value, height, id, layer]);
+    }, [width, value, id, height, liveLayers]);
     
     if (!fill) {
         return null;
