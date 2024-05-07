@@ -66,8 +66,13 @@ export const FontSizePicker = ({
     };
 
     const handleInputBlur = (event: React.FocusEvent<HTMLInputElement>) => {
-        const fontSize = parseInt(event.target.value);
+        let fontSize = parseInt(event.target.value);
         if (!isNaN(fontSize)) {
+            if (fontSize > 144) {
+                fontSize = 144;
+            } else if (fontSize < 10) {
+                fontSize = 10
+            }
             handleFontSizeChange(fontSize);
         }
     };

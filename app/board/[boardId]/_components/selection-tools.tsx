@@ -49,7 +49,6 @@ export const SelectionTools = memo(({
   const [initialPosition, setInitialPosition] = useState<{x: number, y: number} | null>(null);
   const selectionBounds = useSelectionBounds(selectedLayers, liveLayers);
 
-
   useEffect(() => {
     if (selectionBounds) {
       let x, y;
@@ -66,7 +65,7 @@ export const SelectionTools = memo(({
       }
       setInitialPosition({x, y});
     }
-  }, [selectedLayers, isArrowLayer, selectionBounds, zoom, camera.x, camera.y, liveLayers]);
+  }, [selectedLayers, zoom, camera]);
 
   const moveToFront = useCallback(() => {
     const indices: number[] = [];

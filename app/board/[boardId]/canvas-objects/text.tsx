@@ -46,6 +46,7 @@ export const Text = ({
     onRefChange,
 }: TextProps) => {
     const { x, y, width, height, fill, value, textFontSize } = layer;
+
     const { liveLayers, board, socket } = useRoom();
     const textRef = useRef<any>(null);
     const fillColor = colorToCss(layer.fill);
