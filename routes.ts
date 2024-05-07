@@ -5,7 +5,7 @@
  */
 export const publicRoutes = [
     "/",
-    "/api/webhook"
+    "/api/webhook/"
   ];
   
   /**
@@ -14,11 +14,11 @@ export const publicRoutes = [
    * @type {string[]}
    */
   export const authRoutes = [
-    "/auth/login",
-    "/auth/register",
-    "/auth/error",
-    "/auth/reset",
-    "/auth/new-password"
+    "/auth/login/",
+    "/auth/register/",
+    "/auth/error/",
+    "/auth/reset/",
+    "/auth/new-password/"
   ];
   
   /**

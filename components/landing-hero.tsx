@@ -4,12 +4,8 @@ import Image from 'next/image';
 import { Button } from './ui/button';
 import Link from 'next/link';
 import TypewriterComponent from 'typewriter-effect';
-import { useCurrentUser } from '@/hooks/use-current-user';
 
 export const LandingHero = () => {
-    
-    const user = useCurrentUser();
-
     return (
         <div className="relative flex h-screen w-full overflow-hidden" style={{ backgroundImage: "url(/dot-grid.png)", backgroundSize: 'cover' }}>
             <Image src="/hero-bg.png" alt="hero bg" className="absolute left-0 top-16 z-10 hidden h-full w-full object-cover sm:flex" width={4000} height={4000}/>
@@ -38,7 +34,7 @@ export const LandingHero = () => {
                     <div className="flex gap-4">
                         <Link href="/auth/register/">
                             <Button variant="auth" className="p-4 md:p-5 md:text-lg">
-                                {user ? "Ir al Tablero" : "Regístrate gratis"}
+                                Regístrate gratis
                             </Button>
                         </Link>
                         <a href="#about">
