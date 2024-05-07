@@ -15,7 +15,6 @@ import { api } from "@/convex/_generated/api";
 interface SelectionToolsProps {
   boardId: string;
   camera: Camera;
-  setLastUsedColor: (color: Color) => void;
   zoom: number;
   selectedLayers: string[];
   liveLayers: any;
@@ -24,13 +23,11 @@ interface SelectionToolsProps {
   setLiveLayerIds: (ids: string[]) => void;
   socket: Socket | null;
   updateLayer: UpdateLayerMutation;
-  lastUsedColor: Color;
 };
 
 export const SelectionTools = memo(({
   boardId,
   camera,
-  setLastUsedColor,
   zoom,
   selectedLayers,
   setLiveLayers,
@@ -39,13 +36,13 @@ export const SelectionTools = memo(({
   liveLayerIds,
   socket,
   updateLayer,
-  lastUsedColor
 }: SelectionToolsProps) => {
   const { mutate: updateLayerIds } = useApiMutation(api.board.updateLayerIds);
   const { mutate: deleteLayer } = useApiMutation(api.board.deleteLayer);
 
   let isTextLayer = selectedLayers.every(layer => liveLayers[layer]?.type === LayerType.Text);
   let isArrowLayer = selectedLayers.every(layer => liveLayers[layer]?.type === LayerType.Arrow);
+  const layers = selectedLayers.map(id => liveLayers[id]);
   const [initialPosition, setInitialPosition] = useState<{x: number, y: number} | null>(null);
   const selectionBounds = useSelectionBounds(selectedLayers, liveLayers);
 
@@ -143,9 +140,7 @@ export const SelectionTools = memo(({
 
   }, [selectedLayers, setLiveLayerIds, liveLayerIds, updateLayerIds, boardId, socket]);
   
-  const setFill = useCallback((fill: Color) => {
-    setLastUsedColor(fill);
-  
+  const setFill = useCallback((fill: Color) => {  
     setLiveLayers((prevLayers: any) => {
       const newLayers = { ...prevLayers };
       const updatedIds: any = [];
@@ -174,7 +169,7 @@ export const SelectionTools = memo(({
   
       return newLayers;
     });
-  }, [selectedLayers, setLastUsedColor, setLiveLayers, socket, updateLayer, boardId]);
+  }, [selectedLayers, setLiveLayers, socket, updateLayer, boardId]);
 
   const deleteLayers = useCallback(() => {  
     let newLiveLayers = { ...liveLayers };
@@ -224,7 +219,7 @@ export const SelectionTools = memo(({
         />
       )}
       <ColorPicker
-        lastUsedColor={lastUsedColor}
+        layers={layers}
         onChange={setFill}
       />
       <Hint label="Bring to front">

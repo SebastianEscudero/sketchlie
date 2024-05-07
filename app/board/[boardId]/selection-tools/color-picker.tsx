@@ -6,19 +6,25 @@ import { useState } from 'react';
 
 interface ColorPickerProps {
   onChange: (color: Color) => void;
-  lastUsedColor: Color;
+  layers: any;
 };
 
 
 export const ColorPicker = ({
   onChange,
-  lastUsedColor
+  layers
 }: ColorPickerProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  let colorButtonColor
+  if (layers.length === 1) {
+    colorButtonColor = layers[0].fill;
+  } else {
+    colorButtonColor = { r: 0, g: 0, b: 0, a: 0 };
+  }
 
   return (
     <div className="relative text-left border-r px-1 border-neutral-200">
-      <ColorButton color={lastUsedColor} onClick={() => setIsOpen(!isOpen)}/>
+      <ColorButton color={colorButtonColor} onClick={() => setIsOpen(!isOpen)}/>
       {isOpen && (
         <div
           className="origin-top-right absolute right-0 mt-2 w-[200px] rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
