@@ -18,7 +18,6 @@ import {
     Camera,
     CanvasMode,
     CanvasState,
-    Color,
     Layers,
     LayerType,
     Point,
@@ -849,6 +848,8 @@ export const Canvas = ({
                 clonedLayer.center.y += offsetY;
             }
             newLiveLayers[newId] = clonedLayer;
+            newIds.push(newId);
+            clonedLayers.push(clonedLayer);
         });
 
         addLayer({

@@ -175,6 +175,11 @@ export const SelectionTools = memo(({
     let newLiveLayers = { ...liveLayers };
     let newLiveLayerIds = liveLayerIds.filter(id => !selectedLayers.includes(id));
   
+    deleteLayer({ 
+      boardId: boardId,
+      layerId: selectedLayers 
+    });
+
     selectedLayers.forEach((id) => {
       delete newLiveLayers[id];
     });
@@ -182,12 +187,7 @@ export const SelectionTools = memo(({
     if (socket) {
       socket.emit('layer-delete', selectedLayers);
     }
-  
-    deleteLayer({ 
-      boardId: boardId,
-      layerId: selectedLayers 
-    });
-  
+
     setLiveLayers(newLiveLayers);
     setLiveLayerIds(newLiveLayerIds);
   }, [liveLayers, liveLayerIds, selectedLayers, socket, deleteLayer, boardId]);
