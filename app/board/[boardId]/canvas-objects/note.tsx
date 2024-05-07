@@ -93,20 +93,21 @@ export const Note = ({
         outline: `${selectionColor || (isTransparent ? "#000" : "transparent")} 1px solid`,
         backgroundColor: fillColor,
       }}
-      className="shadow-md drop-shadow-xl"
+      className="shadow-md drop-shadow-xl flex items-center justify-center"
     >
       <ContentEditable
-        html={value || "&nbsp;"}
+        html={value || ""}
         onChange={handleContentChange}
         onPaste={handlePaste}
         className={cn(
-          "h-full w-full flex items-center justify-center text-center outline-none p-3",
+          "h-full w-full flex items-center justify-center text-center outline-none",
           font.className
         )}
         style={{
           fontSize: textFontSize,
           color: fill ? getContrastingTextColor(fill) : "#000",
           textWrap: "wrap",
+          lineHeight: value ? 'normal' : `${height}px`,
         }}
         spellCheck={false}
       />
