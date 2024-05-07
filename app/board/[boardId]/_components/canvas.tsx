@@ -611,20 +611,7 @@ export const Canvas = ({
             }
         }
     },
-        [
-            continueDrawing,
-            camera,
-            canvasState,
-            resizeSelectedLayer,
-            translateSelectedLayers,
-            startMultiSelection,
-            updateSelectionNet,
-            isPanning,
-            rightClickPanning,
-            setCamera,
-            User.userId,
-            zoom
-        ]);
+        [continueDrawing, camera, canvasState, resizeSelectedLayer, translateSelectedLayers, startMultiSelection, updateSelectionNet, isPanning, rightClickPanning, setCamera, User.userId, zoom, myPresence, startPanPoint]);
 
     const onPointerUp = useCallback((e: React.PointerEvent) => {
         setIsRightClickPanning(false);
@@ -761,9 +748,10 @@ export const Canvas = ({
         }
     }, [setMyPresence, myPresence, socket, User.userId]);
 
-
     const onLayerPointerDown = useCallback((e: React.PointerEvent, layerId: string) => {
-
+        console.log(canvasState.mode, 'canvasState.mode');
+        console.log(CanvasMode)
+        console.log('hi')
         if (
             canvasState.mode === CanvasMode.Pencil ||
             canvasState.mode === CanvasMode.Inserting
@@ -853,7 +841,7 @@ export const Canvas = ({
         const newIds: any = [];
         const clonedLayers: any = [];
         copiedLayers.forEach((layer) => {
-            const newId = nanoid();
+            const newId = nanoid().replace(/_/g, '');
             newSelection.push(newId);
             newLiveLayerIds.push(newId);
             const clonedLayer = JSON.parse(JSON.stringify(layer));
