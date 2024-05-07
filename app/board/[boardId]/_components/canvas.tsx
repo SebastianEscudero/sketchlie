@@ -110,6 +110,16 @@ export const Canvas = ({
                 fill: fillColor,
                 textFontSize: 12,
             };
+        } else if (layerType === LayerType.Note) {
+            layer = {
+                type: layerType,
+                x: position.x,
+                y: position.y,
+                height: height,
+                width: width,
+                fill: fillColor,
+                textFontSize: 12,
+            };
         } else if (layerType === LayerType.Arrow) {
             layer = {
                 type: layerType,
@@ -134,6 +144,9 @@ export const Canvas = ({
         const newLayers = { ...liveLayers, [layerId]: layer };
         const newLayerIds = [...liveLayerIds, layerId];
 
+        if (layer.type !== LayerType.Text) {
+            selectedLayersRef.current = [layerId];
+        }
         setLiveLayerIds(newLayerIds);
         setLiveLayers(newLayers as Layers);
 
@@ -182,7 +195,6 @@ export const Canvas = ({
             width: 100,
             src: selectedImage,
             fill: null,
-            value: "",
         };
 
         const newLayers = { ...liveLayers, [layerId]: layer };
@@ -420,6 +432,9 @@ export const Canvas = ({
         }
 
         if (layer) {
+            if (layer.type === LayerType.Note) {
+                bounds.textFontSize = layer.textFontSize;
+            }
             Object.assign(layer, bounds);
             liveLayers[selectedLayersRef.current[0]] = layer;
             setLiveLayers({ ...liveLayers });
@@ -596,7 +611,7 @@ export const Canvas = ({
                     setCurrentPreviewLayer({ x, y, width, height: 20, type: LayerType.Rectangle, fill: { r: 0, g: 0, b: 0, a: 0 } });
                     break;
                 case LayerType.Note:
-                    setCurrentPreviewLayer({ x, y, width, height, type: LayerType.Note, fill: { r: 255, g: 249, b: 177, a: 1 } });
+                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.Note, fill: { r: 255, g: 249, b: 177, a: 1 } });
                     break;
                 case LayerType.Arrow:
                     setCurrentPreviewLayer({

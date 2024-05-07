@@ -1,3 +1,4 @@
+import { LayerType } from '@/types/canvas';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useState } from 'react';
 import { Socket } from 'socket.io-client';
@@ -34,8 +35,11 @@ export const FontSizePicker = ({
           const scaleFactor = fontSize / originalFontSize;
       
           newLayers[layerId].textFontSize = fontSize;
-          newLayers[layerId].width *= scaleFactor;
-          newLayers[layerId].height *= scaleFactor;
+          if (newLayers[layerId].type === LayerType.Text) {
+            newLayers[layerId].width *= scaleFactor;
+            newLayers[layerId].height *= scaleFactor;
+          }
+        
       
           updatedIds.push(layerId);
           updatedLayers.push({

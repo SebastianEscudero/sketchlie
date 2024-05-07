@@ -65,7 +65,6 @@ export type ImageLayer = {
   width: number;
   height: number;
   src: string;
-  fill: Color;
 };
 
 export type TextLayer = {
@@ -87,6 +86,7 @@ export type NoteLayer = {
   width: number;
   fill: Color;
   value?: string;
+  textFontSize: number;
 };
 
 

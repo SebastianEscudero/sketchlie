@@ -12,19 +12,6 @@ const font = Kalam({
   weight: ["400"],
 });
 
-const calculateFontSize = (width: number, height: number) => {
-  const maxFontSize = 96;
-  const scaleFactor = 0.15;
-  const fontSizeBasedOnHeight = height * scaleFactor;
-  const fontSizeBasedOnWidth = width * scaleFactor;
-
-  return Math.min(
-    fontSizeBasedOnHeight, 
-    fontSizeBasedOnWidth, 
-    maxFontSize
-  );
-}
-
 interface NoteProps {
   id: string;
   layer: NoteLayer;
@@ -54,7 +41,7 @@ export const Note = ({
   selectionColor,
   updateLayer,
 }: NoteProps) => {
-  const { x, y, width, height, fill, value: initialValue } = layer;
+  const { x, y, width, height, fill, value: initialValue, textFontSize } = layer;
   const [value, setValue] = useState(initialValue);
   const { liveLayers, socket, board } = useRoom();
   const fillColor = colorToCss(fill);
@@ -109,15 +96,15 @@ export const Note = ({
       className="shadow-md drop-shadow-xl"
     >
       <ContentEditable
-        html={value || "Text"}
+        html={value || "&nbsp;"}
         onChange={handleContentChange}
         onPaste={handlePaste}
         className={cn(
-          "h-full w-full flex items-center justify-center text-center outline-none",
+          "h-full w-full flex items-center justify-center text-center outline-none p-3",
           font.className
         )}
         style={{
-          fontSize: calculateFontSize(width, height),
+          fontSize: textFontSize,
           color: fill ? getContrastingTextColor(fill) : "#000",
           textWrap: "wrap",
         }}

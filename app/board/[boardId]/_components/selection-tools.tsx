@@ -40,7 +40,10 @@ export const SelectionTools = memo(({
   const { mutate: updateLayerIds } = useApiMutation(api.board.updateLayerIds);
   const { mutate: deleteLayer } = useApiMutation(api.board.deleteLayer);
 
-  let isTextLayer = selectedLayers.every(layer => liveLayers[layer]?.type === LayerType.Text);
+  let isTextOrNoteLayer = selectedLayers.every(layer => 
+    liveLayers[layer]?.type === LayerType.Text || liveLayers[layer]?.type === LayerType.Note
+  );
+  let isImageLayer = selectedLayers.every(layer => liveLayers[layer]?.type === LayerType.Image);
   let isArrowLayer = selectedLayers.every(layer => liveLayers[layer]?.type === LayerType.Arrow);
   const layers = selectedLayers.map(id => liveLayers[id]);
   const [initialPosition, setInitialPosition] = useState<{x: number, y: number} | null>(null);
@@ -208,7 +211,7 @@ export const SelectionTools = memo(({
           : undefined
       }}
     >
-      {isTextLayer && (
+      {isTextOrNoteLayer && (
         <FontSizePicker
           selectedLayers={selectedLayers}
           setLiveLayers={setLiveLayers}
@@ -218,10 +221,12 @@ export const SelectionTools = memo(({
           socket={socket}
         />
       )}
-      <ColorPicker
-        layers={layers}
-        onChange={setFill}
-      />
+      {!isImageLayer && (
+        <ColorPicker
+          layers={layers}
+          onChange={setFill}
+        />
+      )}
       <Hint label="Bring to front">
         <Button
           onClick={moveToFront}
