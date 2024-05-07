@@ -8,11 +8,13 @@ import {
   connectionIdToColor,
   findIntersectingLayersWithRectangle,
   penPointsToPathLayer,
+  resizeArrowBounds,
   pointerEventToCanvasPoint,
   resizeBounds,
 } from "@/lib/utils";
 
 import {
+  ArrowHandle,
   Camera,
   CanvasMode,
   CanvasState,
@@ -83,7 +85,7 @@ export const Canvas = ({
 
   useDisableScrollBounce();
 
-  const insertLayer = useCallback((layerType: LayerType, position: Point, width: number, height: number) => {
+  const insertLayer = useCallback((layerType: LayerType, position: Point, width: number, height: number, center?: Point) => {
     if (org && liveLayerIds.length >= getMaxCapas(org)) {
       proModal.onOpen();
       return;
@@ -91,7 +93,7 @@ export const Canvas = ({
 
     const layerId = nanoid().replace(/_/g, '');
 
-    let layer
+    let layer;
 
     if (layerType === LayerType.Text) {
 
@@ -107,6 +109,16 @@ export const Canvas = ({
         width: width,
         fill: lastUsedColor,
         textFontSize: 12,
+      };
+    } else if (layerType === LayerType.Arrow) {
+      layer = {
+        type: layerType,
+        x: position.x,
+        y: position.y,
+        center: center,
+        height: height,
+        width: width,
+        fill: lastUsedColor,
       };
     } else {
       layer = {
@@ -220,8 +232,12 @@ export const Canvas = ({
         const newLayer = { ...layer };
         newLayer.x += offset.x;
         newLayer.y += offset.y;
-        newLayers[id] = newLayer;
+        if (layer.type === LayerType.Arrow && 'center' in newLayer && newLayer.center) {
+          newLayer.center.x += offset.x;
+          newLayer.center.y += offset.y
+        }
         updatedLayers.push(newLayer);
+        newLayers[id] = newLayer;
       }
     });
 
@@ -372,30 +388,35 @@ export const Canvas = ({
   }, [lastUsedColor, pencilDraft, liveLayers, setLiveLayers, setLiveLayerIds, myPresence, org, proModal, liveLayerIds, socket, boardId, addLayer]);
 
   const resizeSelectedLayer = useCallback((point: Point) => {
-    if (canvasState.mode !== CanvasMode.Resizing) {
-      return;
-    }
-
-
     const layer = liveLayers[selectedLayersRef.current[0]];
     let bounds
 
-    if (layer.type === LayerType.Text) {
-      bounds = resizeBounds(
-        layer?.type,
+    if (canvasState.mode === CanvasMode.Resizing) {
+      if (layer.type === LayerType.Text) {
+        bounds = resizeBounds(
+          layer?.type,
+          canvasState.initialBounds,
+          canvasState.corner,
+          point,
+          textRef,
+          layer,
+        );
+      } else {
+        bounds = resizeBounds(
+          layer?.type,
+          canvasState.initialBounds,
+          canvasState.corner,
+          point,
+        );
+      }
+    } else if (canvasState.mode === CanvasMode.ArrowResizeHandler) {
+      bounds = resizeArrowBounds(
         canvasState.initialBounds,
-        canvasState.corner,
         point,
-        textRef,
-        layer,
+        canvasState.handle,
       );
     } else {
-      bounds = resizeBounds(
-        layer?.type,
-        canvasState.initialBounds,
-        canvasState.corner,
-        point,
-      );
+      return;
     }
 
     if (layer) {
@@ -422,6 +443,17 @@ export const Canvas = ({
     });
   }, []);
 
+  const onArrowResizeHandlePointerDown = useCallback((
+    handle: ArrowHandle,
+    initialBounds: XYWH,
+) => {
+    setCanvasState({
+        mode: CanvasMode.ArrowResizeHandler,
+        initialBounds,
+        handle,
+    });
+}, []);
+
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
       if (e.ctrlKey) {
@@ -443,9 +475,9 @@ export const Canvas = ({
 
     let newZoom = zoom;
     if (e.deltaY < 0) {
-      newZoom = Math.min(zoom * 1.1, 3);
+      newZoom = Math.min(zoom * 1.1, 3.5);
     } else {
-      newZoom = Math.max(zoom / 1.1, 0.5);
+      newZoom = Math.max(zoom / 1.1, 0.3);
     }
 
     const zoomFactor = newZoom / zoom;
@@ -534,6 +566,8 @@ export const Canvas = ({
       translateSelectedLayers(current);
     } else if (canvasState.mode === CanvasMode.Resizing) {
       resizeSelectedLayer(current);
+    } else if (canvasState.mode === CanvasMode.ArrowResizeHandler) {
+      resizeSelectedLayer(current);
     } else if (canvasState.mode === CanvasMode.Pencil) {
       continueDrawing(current, e);
     } else if (
@@ -544,6 +578,8 @@ export const Canvas = ({
       canvasState.layerType !== LayerType.Image
     ) {
       const point = pointerEventToCanvasPoint(e, camera, zoom);
+      const widthArrow = point.x - startPanPoint.x;
+      const heightArrow = point.y - startPanPoint.y;
       const x = Math.min(point.x, startPanPoint.x);
       const y = Math.min(point.y, startPanPoint.y);
       const width = Math.abs(point.x - startPanPoint.x);
@@ -563,6 +599,16 @@ export const Canvas = ({
         case LayerType.Note:
           setCurrentPreviewLayer({ x, y, width, height, type: LayerType.Note, fill: { r: 0, g: 0, b: 0, a: 0 } });
           break;
+        case LayerType.Arrow:
+          setCurrentPreviewLayer({ 
+              x: startPanPoint.x, 
+              y: startPanPoint.y, 
+              center: { x: startPanPoint.x + widthArrow / 2, y: startPanPoint.y + heightArrow / 2 },
+              width: widthArrow, 
+              height: heightArrow, 
+              type: LayerType.Arrow, 
+              fill: lastUsedColor 
+          });
       }
     }
   },
@@ -603,23 +649,28 @@ export const Canvas = ({
     } else if (canvasState.mode === CanvasMode.Inserting && canvasState.layerType !== LayerType.Image) {
       const layerType = canvasState.layerType;
       if (isPanning && currentPreviewLayer) {
-        insertLayer(layerType, { x: currentPreviewLayer.x, y: currentPreviewLayer.y }, currentPreviewLayer.width, currentPreviewLayer.height);
-        setCurrentPreviewLayer(null);
-      } else {
+        if (layerType === LayerType.Arrow && currentPreviewLayer.type === LayerType.Arrow) {
+          insertLayer(layerType, { x: currentPreviewLayer.x, y: currentPreviewLayer.y }, currentPreviewLayer.width, currentPreviewLayer.height, currentPreviewLayer.center)
+          setCurrentPreviewLayer(null);
+        } else {
+          insertLayer(layerType, { x: currentPreviewLayer.x, y: currentPreviewLayer.y }, currentPreviewLayer.width, currentPreviewLayer.height);
+          setCurrentPreviewLayer(null);
+        }
+      } else if (layerType !== LayerType.Arrow) {
         let width
         let height
         if (layerType === LayerType.Text) {
-          width = 130;
-          height = 37;
-          point.x = point.x - width / 2
-          point.y = point.y - height / 2
-          insertLayer(layerType, point, width, height)
+            width = 130;
+            height = 37;
+            point.x = point.x - width / 2
+            point.y = point.y - height / 2
+            insertLayer(layerType, point, width, height)
         } else {
-          width = 80;
-          height = 80;
-          point.x = point.x - width / 2
-          point.y = point.y - height / 2
-          insertLayer(layerType, point, width, height);
+            width = 80;
+            height = 80;
+            point.x = point.x - width / 2
+            point.y = point.y - height / 2
+            insertLayer(layerType, point, width, height);
         }
         setIsPanning(false);
       }
@@ -648,7 +699,7 @@ export const Canvas = ({
       setCanvasState({
         mode: CanvasMode.None,
       });
-    } else if (canvasState.mode === CanvasMode.Resizing) {
+    } else if (canvasState.mode === CanvasMode.Resizing || canvasState.mode === CanvasMode.ArrowResizeHandler) {
       let layerIds: any = [];
       let layerUpdates: any = [];
 
@@ -761,15 +812,14 @@ export const Canvas = ({
   const copySelectedLayers = useCallback(() => {
     const copied = new Map();
     for (const id of selectedLayersRef.current) {
-      const layer = liveLayers[id];
-      if (layer) {
-        // Deep copy the layer object
-        const copiedLayer = JSON.parse(JSON.stringify(layer));
-        copied.set(id, copiedLayer);
-      }
+        const layer = liveLayers[id];
+        if (layer) {
+            const copiedLayer = JSON.parse(JSON.stringify(layer));
+            copied.set(id, copiedLayer);
+        }
     }
     setCopiedLayers(copied);
-  }, [selectedLayersRef.current, liveLayers]);
+}, [liveLayers, selectedLayersRef]);
 
 
   const pasteCopiedLayers = useCallback((mousePosition: any) => {
@@ -804,17 +854,18 @@ export const Canvas = ({
     const newIds: any = [];
     const clonedLayers: any = [];
     copiedLayers.forEach((layer) => {
-      const newId = nanoid().replace(/_/g, '');
+      const newId = nanoid();
       newSelection.push(newId);
       newLiveLayerIds.push(newId);
-      const clonedLayer = { ...layer };
+      const clonedLayer = JSON.parse(JSON.stringify(layer));
       clonedLayer.x = clonedLayer.x + offsetX;
       clonedLayer.y = clonedLayer.y + offsetY;
+      if (clonedLayer.type === LayerType.Arrow) {
+          clonedLayer.center.x += offsetX;
+          clonedLayer.center.y += offsetY;
+      }
       newLiveLayers[newId] = clonedLayer;
-
-      newIds.push(newId);
-      clonedLayers.push(clonedLayer);
-    });
+  });
 
     addLayer({
       boardId: boardId,
@@ -954,7 +1005,7 @@ export const Canvas = ({
         setCanvasState={setCanvasState}
         org={org}
       />
-      {canvasState.mode !== CanvasMode.Translating && canvasState.mode !== CanvasMode.SelectionNet && (
+      {canvasState.mode !== CanvasMode.Translating && canvasState.mode !== CanvasMode.SelectionNet && canvasState.mode !== CanvasMode.ArrowResizeHandler && (
         <SelectionTools
           lastUsedColor={lastUsedColor}
           setLiveLayerIds={setLiveLayerIds}
@@ -1003,9 +1054,11 @@ export const Canvas = ({
             />
           )}
           <SelectionBox
+            zoom={zoom}
             liveLayers={liveLayers}
             selectedLayers={selectedLayersRef.current}
             onResizeHandlePointerDown={onResizeHandlePointerDown}
+            onArrowResizeHandlePointerDown={onArrowResizeHandlePointerDown}
           />
           {canvasState.mode === CanvasMode.SelectionNet && canvasState.current != null && (
             <rect

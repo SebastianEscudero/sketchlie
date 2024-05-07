@@ -36,7 +36,7 @@ export const Rectangle = ({
       height={height}
       strokeWidth={1}
       fill={fillColor}
-      stroke={selectionColor || (isTransparent ? "#000" : "transparent")}
+      stroke={selectionColor || (isTransparent ? "#000" : fillColor)}
     />
   );
 };

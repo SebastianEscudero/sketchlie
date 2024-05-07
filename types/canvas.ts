@@ -17,6 +17,17 @@ export enum LayerType {
   Text,
   Note,
   Image,
+  Arrow,
+};
+
+export type ArrowLayer = {
+  type: LayerType.Arrow;
+  x: number;
+  y: number;
+  center?: Point;
+  height: number;
+  width: number;
+  fill: Color;
 };
 
 export type RectangleLayer = {
@@ -102,6 +113,12 @@ export enum Side {
   Right = 8,
 };
 
+export enum ArrowHandle {
+  start,
+  center,
+  end
+};
+
 export type CanvasState =
   | {
     mode: CanvasMode.None;
@@ -117,7 +134,7 @@ export type CanvasState =
   }
   | {
     mode: CanvasMode.Inserting,
-    layerType: LayerType.Ellipse | LayerType.Rectangle | LayerType.Text | LayerType.Note | LayerType.Image | LayerType.Path;
+    layerType: LayerType.Ellipse | LayerType.Rectangle | LayerType.Text | LayerType.Note | LayerType.Image | LayerType.Path | LayerType.Arrow;
   }
   | {
     mode: CanvasMode.Pencil,
@@ -125,6 +142,11 @@ export type CanvasState =
   | {
     mode: CanvasMode.Pressing,
     origin: Point;
+  }
+  | {
+    mode: CanvasMode.ArrowResizeHandler,
+    initialBounds: XYWH;
+    handle: ArrowHandle;
   }
   | {
     mode: CanvasMode.Resizing,
@@ -142,11 +164,12 @@ export enum CanvasMode {
   Translating,
   Inserting,
   Resizing,
+  ArrowResizeHandler,
   Pencil,
   Moving
 };
 
-export type Layer = RectangleLayer | EllipseLayer | PathLayer | TextLayer | NoteLayer | ImageLayer;
+export type Layer = RectangleLayer | EllipseLayer | PathLayer | TextLayer | NoteLayer | ImageLayer | ArrowLayer;
 
 export interface Layers {
   [key: string]: Layer;
@@ -174,4 +197,4 @@ export type UpdateLayerMutation = (args: {
   layerUpdates: Record<string, unknown>;
 }) => Promise<any>;
 
-export type PreviewLayer = RectangleLayer | EllipseLayer | TextLayer | NoteLayer;
+export type PreviewLayer = RectangleLayer | EllipseLayer | TextLayer | NoteLayer | ArrowLayer;

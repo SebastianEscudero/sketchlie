@@ -3,6 +3,7 @@ import { twMerge } from "tailwind-merge";
 // import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 
 import { 
+  ArrowHandle,
   Camera, 
   Color, 
   Layer, 
@@ -134,6 +135,42 @@ export function resizeBounds(
   return result;
 };
 
+export function resizeArrowBounds(
+  bounds: any, 
+  point: Point,
+  handle: ArrowHandle,
+): any {
+
+  const result = {
+    x: bounds.x,
+    y: bounds.y,
+    width: bounds.width,
+    height: bounds.height,
+    center: bounds.center,
+  };
+
+  if (handle === ArrowHandle.start) {
+    const endPoint = { x: bounds.x + bounds.width, y: bounds.y + bounds.height };
+    result.x = point.x;
+    result.y = point.y;
+    result.width = endPoint.x - point.x;
+    result.height = endPoint.y - point.y;
+  } else if (handle === ArrowHandle.end) {
+    result.width = point.x - bounds.x;
+    result.height = point.y - bounds.y;
+  } else if (handle === ArrowHandle.center) {
+    result.center.x += point.x - result.center.x;
+    result.center.y += point.y - result.center.y;
+  }
+
+  if (handle === ArrowHandle.start || handle === ArrowHandle.end) {
+    result.center.x = result.x + result.width / 2;
+    result.center.y = result.y + result.height / 2;
+  }
+
+  return result;
+}
+
 export function findIntersectingLayersWithRectangle(
   layerIds: readonly string[],
   layers: { [key: string]: Layer },
@@ -156,15 +193,34 @@ export function findIntersectingLayersWithRectangle(
       continue;
     }
 
-    const { x, y, height, width } = layer;
+    if (layer.type === LayerType.Arrow && layer.center) {
+      const { x, y, width, height, center } = layer;
+      const length = Math.sqrt(width * width + height * height);
+      const angle = Math.atan2(center.y - y, center.x - x);
+      const end = {
+        x: x + length * Math.cos(angle),
+        y: y + length * Math.sin(angle),
+      };
 
-    if (
-      rect.x + rect.width > x &&
-      rect.x < x + width && 
-      rect.y + rect.height > y &&
-      rect.y < y + height
-    ) {
-      ids.push(layerId);
+      if (
+        rect.x + rect.width > Math.min(x, end.x) &&
+        rect.x < Math.max(x, end.x) && 
+        rect.y + rect.height > Math.min(y, end.y) &&
+        rect.y < Math.max(y, end.y)
+      ) {
+        ids.push(layerId);
+      }
+    } else {
+      const { x, y, height, width } = layer;
+
+      if (
+        rect.x + rect.width > x &&
+        rect.x < x + width && 
+        rect.y + rect.height > y &&
+        rect.y < y + height
+      ) {
+        ids.push(layerId);
+      }
     }
   }
 

@@ -3,6 +3,7 @@ import {
     Hand, 
     Image, 
     MousePointer2, 
+    MoveUpRight, 
     Pencil, 
     Square, 
     StickyNote, 
@@ -106,6 +107,18 @@ import { Dispatch, SetStateAction } from "react";
             isActive={
               canvasState.mode === CanvasMode.Inserting &&
               canvasState.layerType === LayerType.Ellipse
+            }
+          />
+          <ToolButton
+            label="Arrow"
+            icon={MoveUpRight}
+            onClick={() => setCanvasState({
+              mode: CanvasMode.Inserting,
+              layerType: LayerType.Arrow,
+            })}
+            isActive={
+              canvasState.mode === CanvasMode.Inserting &&
+              canvasState.layerType === LayerType.Arrow
             }
           />
           <ImageButton 

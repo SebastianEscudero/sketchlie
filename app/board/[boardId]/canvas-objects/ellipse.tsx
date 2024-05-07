@@ -37,7 +37,7 @@ export const Ellipse = ({
       rx={layer.width / 2}
       ry={layer.height / 2}
       fill={fillColor}
-      stroke={selectionColor || (isTransparent ? "#000" : "transparent")}
+      stroke={selectionColor || (isTransparent ? "#000" : fillColor)}
       strokeWidth="1"
     />
   );

@@ -9,6 +9,7 @@ import { Text } from "../canvas-objects/text";
 import { Ellipse } from "../canvas-objects/ellipse";
 import { Rectangle } from "../canvas-objects/rectangle";
 import { InsertImage } from "../canvas-objects/image";
+import { Arrow } from "../canvas-objects/arrow";
 
 interface LayerPreviewProps {
   id: string;
@@ -93,6 +94,15 @@ export const LayerPreview = memo(({
         return (
           <InsertImage
             isUploading={false}
+            id={id}
+            layer={layer}
+            onPointerDown={onLayerPointerDown}
+            selectionColor={selectionColor}
+          />
+        );
+      case LayerType.Arrow:
+        return (
+          <Arrow
             id={id}
             layer={layer}
             onPointerDown={onLayerPointerDown}

@@ -4,6 +4,7 @@ import { Rectangle } from "../canvas-objects/rectangle";
 import { Ellipse } from "../canvas-objects/ellipse";
 import { Note } from "../canvas-objects/note";
 import { Text } from "../canvas-objects/text";
+import { Arrow } from "../canvas-objects/arrow";
 
 interface PreviewLayerProps {
     layer: PreviewLayer;
@@ -13,6 +14,7 @@ interface PreviewLayerProps {
 export const CurrentPreviewLayer = memo(({
     layer,
 }: PreviewLayerProps) => {
+
     switch (layer.type) {
         case LayerType.Rectangle:
             return (
@@ -42,6 +44,13 @@ export const CurrentPreviewLayer = memo(({
                     layer={layer}
                 />
             );
+        case LayerType.Arrow:
+            return (
+                <Arrow
+                    id="ArrowPreview"
+                    layer={layer}
+                />
+            )
     }
 });
 
