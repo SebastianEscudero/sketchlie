@@ -43,6 +43,7 @@ import { api } from "@/convex/_generated/api";
 import { useApiMutation } from "@/hooks/use-api-mutation";
 import { CurrentPreviewLayer } from "./current-preview-layer";
 import { useRoom } from "@/components/room";
+import { BottomCanvasLinks } from "./bottom-canvas-links";
 
 const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 const nanoid = customAlphabet(alphabet, 21);
@@ -56,6 +57,7 @@ export const Canvas = ({
 }: CanvasProps) => {
     const mousePositionRef = useRef({ x: 0, y: 0 });
     const { liveLayers, liveLayerIds, User, otherUsers, setLiveLayers, setLiveLayerIds, org, socket, board } = useRoom();
+    // const [initialPinchDistance, setInitialPinchDistance] = useState<number | null>(null);
     const selectedLayersRef = useRef<string[]>([]);
     const [zoom, setZoom] = useState(1);
     const [copiedLayers, setCopiedLayers] = useState<Map<string, any>>(new Map());
@@ -508,6 +510,38 @@ export const Canvas = ({
         setCamera({ x: newX, y: newY });
     }, [zoom, camera]);
 
+    // const onTouchMove = useCallback((e: React.TouchEvent) => {
+    //     if (e.touches.length !== 2) return;
+    
+    //     const touch1 = e.touches[0];
+    //     const touch2 = e.touches[1];
+    
+    //     const distance = Math.hypot(
+    //         touch1.clientX - touch2.clientX,
+    //         touch1.clientY - touch2.clientY
+    //     );
+    
+    //     if (initialPinchDistance === null) {
+    //         setInitialPinchDistance(distance);
+    //         return;
+    //     }
+    
+    //     let newZoom = zoom;
+    //     if (distance > initialPinchDistance) {
+    //         newZoom = Math.min(zoom * 1.1, 3.5);
+    //     } else {
+    //         newZoom = Math.max(zoom / 1.1, 0.3);
+    //     }
+    
+    //     const zoomFactor = newZoom / zoom;
+    //     const newX = (touch1.clientX + touch2.clientX) / 2 - ((touch1.clientX + touch2.clientX) / 2 - camera.x) * zoomFactor;
+    //     const newY = (touch1.clientY + touch2.clientY) / 2 - ((touch1.clientY + touch2.clientY) / 2 - camera.y) * zoomFactor;
+    
+    //     setZoom(newZoom);
+    //     setCamera({ x: newX, y: newY });
+    //     setInitialPinchDistance(distance);
+    // }, [zoom, camera, initialPinchDistance]);
+
     const onPointerDown = useCallback((
         e: React.PointerEvent,
     ) => {
@@ -564,7 +598,7 @@ export const Canvas = ({
         }
 
         const current = pointerEventToCanvasPoint(e, camera, zoom);
-
+        
         const newPresence: Presence = {
             ...myPresence,
             cursor: { x: current.x, y: current.y },
@@ -1004,6 +1038,7 @@ export const Canvas = ({
                 otherUsers={otherUsers}
                 User={User}
             />
+            <BottomCanvasLinks />
             <Toolbar
                 isUploading={isUploading}
                 setIsUploading={setIsUploading}
@@ -1030,6 +1065,7 @@ export const Canvas = ({
                 id="canvas"
                 className="h-[100vh] w-[100vw]"
                 onWheel={onWheel}
+                // onTouchMove={onTouchMove}
                 onPointerMove={onPointerMove}
                 onPointerLeave={onPointerLeave}
                 onPointerDown={onPointerDown}
