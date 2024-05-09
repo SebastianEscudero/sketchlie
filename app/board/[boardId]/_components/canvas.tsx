@@ -43,7 +43,6 @@ import { api } from "@/convex/_generated/api";
 import { useApiMutation } from "@/hooks/use-api-mutation";
 import { CurrentPreviewLayer } from "./current-preview-layer";
 import { useRoom } from "@/components/room";
-import { BottomCanvasLinks } from "./bottom-canvas-links";
 
 const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 const nanoid = customAlphabet(alphabet, 21);
@@ -1038,7 +1037,6 @@ export const Canvas = ({
                 otherUsers={otherUsers}
                 User={User}
             />
-            <BottomCanvasLinks />
             <Toolbar
                 isUploading={isUploading}
                 setIsUploading={setIsUploading}
