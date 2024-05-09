@@ -15,8 +15,8 @@ export const Ellipse = ({
   selectionColor,
 }: EllipseProps) => {
 
+  const outlineColor = layer.outlineFill ? colorToCss(layer.outlineFill) : null;
   const fillColor = colorToCss(layer.fill);
-  const isTransparent = fillColor === 'rgba(0,0,0,0)';
 
   if (!layer.fill) {
     return null;
@@ -37,8 +37,8 @@ export const Ellipse = ({
       rx={layer.width / 2}
       ry={layer.height / 2}
       fill={fillColor}
-      stroke={selectionColor || (isTransparent ? "#000" : fillColor)}
-      strokeWidth="1"
+      stroke={selectionColor || outlineColor || undefined}
+      strokeWidth="2"
     />
   );
 };

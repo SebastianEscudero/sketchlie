@@ -41,11 +41,10 @@ export const Note = ({
   selectionColor,
   updateLayer,
 }: NoteProps) => {
-  const { x, y, width, height, fill, value: initialValue, textFontSize } = layer;
+  const { x, y, width, height, fill, outlineFill, value: initialValue, textFontSize } = layer;
   const [value, setValue] = useState(initialValue);
   const { liveLayers, socket, board } = useRoom();
   const fillColor = colorToCss(fill);
-  const isTransparent = fillColor === 'rgba(0,0,0,0)';
 
   useEffect(() => {
     if (liveLayers[id] && liveLayers[id].type === LayerType.Note) {
@@ -90,7 +89,7 @@ export const Note = ({
       height={height}
       onPointerDown={onPointerDown ? (e) => onPointerDown(e, id) : undefined}
       style={{
-        outline: `${selectionColor || (isTransparent ? "#000" : "transparent")} 1px solid`,
+        outline: `${selectionColor || colorToCss(outlineFill || fill)} solid 2px`,
         backgroundColor: fillColor,
       }}
       className="shadow-md drop-shadow-xl flex items-center justify-center"

@@ -14,14 +14,14 @@ export const Rectangle = ({
   onPointerDown,
   selectionColor,
 }: RectangleProps) => {
-  const { x, y, width, height, fill } = layer;
+  const { x, y, width, height, fill, outlineFill} = layer;
 
   if (!fill) {
     return null;
   }
 
   const fillColor = colorToCss(fill);
-  const isTransparent = fillColor === 'rgba(0,0,0,0)';
+  const outlineColor = outlineFill ? colorToCss(outlineFill) : null;
 
   return (
     <rect
@@ -34,9 +34,9 @@ export const Rectangle = ({
       y={0}
       width={width}
       height={height}
-      strokeWidth={1}
+      strokeWidth={2}
       fill={fillColor}
-      stroke={selectionColor || (isTransparent ? "#000" : fillColor)}
+      stroke={selectionColor || outlineColor || undefined}
     />
   );
 };

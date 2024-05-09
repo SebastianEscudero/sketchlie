@@ -4,27 +4,27 @@ import { Color } from "@/types/canvas";
 import { colorToCss } from "@/lib/utils";
 import { useState } from 'react';
 
-interface ColorPickerProps {
+interface OutlineColorPickerProps {
   onChange: (color: Color) => void;
   layers: any;
 };
 
 
-export const ColorPicker = ({
+export const OutlineColorPicker = ({
   onChange,
   layers
-}: ColorPickerProps) => {
+}: OutlineColorPickerProps) => {
   const [isOpen, setIsOpen] = useState(false);
   let colorButtonColor
   if (layers.length === 1) {
-    colorButtonColor = layers[0].fill;
+    colorButtonColor = layers[0].outlineFill;
   } else {
     colorButtonColor = { r: 0, g: 0, b: 0, a: 0 };
   }
 
   return (
     <div className="relative text-left border-r px-1 border-neutral-200">
-      <ColorButton color={colorButtonColor} onClick={() => setIsOpen(!isOpen)}/>
+      <OutlineColorButton color={colorButtonColor} onClick={() => setIsOpen(!isOpen)}/>
       {isOpen && (
         <div
           className="origin-top-right absolute right-0 mt-2 w-[210px] rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
@@ -75,3 +75,27 @@ const ColorButton = ({
     </button>
   )
 }
+
+const OutlineColorButton = ({
+    onClick,
+    color,
+  }: ColorButtonProps) => {
+    return (
+      <button
+        className="w-8 h-8 my-1 items-center flex justify-center transition mx-2 border border-neutral-300 rounded-lg"
+        onClick={() => onClick(color)}
+        style={{ background: colorToCss(color) }}
+      >
+        <div
+          className="h-6 w-6 rounded-md border border-neutral-300 relative z-50"
+          style={{ background: 'white' }}
+        >
+          {color.r === 0 && color.g === 0 && color.b === 0 && color.a === 0 && (
+            <svg className="absolute top-0 left-0 w-full h-full" viewBox="0 0 1 1">
+              <line x1="0" y1="0" x2="1" y2="1" stroke="#d4d4d4" strokeWidth="0.05" />
+            </svg>
+          )}
+        </div>
+      </button>
+    )
+  }

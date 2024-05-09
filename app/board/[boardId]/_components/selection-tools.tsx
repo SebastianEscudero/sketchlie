@@ -11,6 +11,8 @@ import { FontSizePicker } from "../selection-tools/font-size-picker"
 import { Socket } from "socket.io-client";
 import { useApiMutation } from "@/hooks/use-api-mutation";
 import { api } from "@/convex/_generated/api";
+import { OutlineColorPicker } from "../selection-tools/outline-color-picker";
+import { ArrowHeadSelection } from "../selection-tools/arrow-head-selection";
 
 interface SelectionToolsProps {
   boardId: string;
@@ -43,7 +45,11 @@ export const SelectionTools = memo(({
   let isTextOrNoteLayer = selectedLayers.every(layer => 
     liveLayers[layer]?.type === LayerType.Text || liveLayers[layer]?.type === LayerType.Note
   );
-  let isImageLayer = selectedLayers.every(layer => liveLayers[layer]?.type === LayerType.Image);
+
+  let isImageLayer = selectedLayers.some(layer => liveLayers[layer]?.type === LayerType.Image);
+  let isRectangleOrEllipseOrNoteLayer = selectedLayers.every(layer =>
+    liveLayers[layer]?.type === LayerType.Rectangle || liveLayers[layer]?.type === LayerType.Ellipse || liveLayers[layer]?.type === LayerType.Note
+  );
   let isArrowLayer = selectedLayers.every(layer => liveLayers[layer]?.type === LayerType.Arrow);
   const layers = selectedLayers.map(id => liveLayers[id]);
   const [initialPosition, setInitialPosition] = useState<{x: number, y: number} | null>(null);
@@ -174,6 +180,37 @@ export const SelectionTools = memo(({
     });
   }, [selectedLayers, setLiveLayers, socket, updateLayer, boardId]);
 
+  const setOutlineFill = useCallback((outlineFill: Color) => {  
+    setLiveLayers((prevLayers: any) => {
+      const newLayers = { ...prevLayers };
+      const updatedIds: any = [];
+      const updatedLayers: any = [];
+  
+      selectedLayers.forEach((id) => {
+        const layer = newLayers[id];
+        if (layer) {
+          newLayers[id].outlineFill = outlineFill;
+          updatedIds.push(id);
+          updatedLayers.push(newLayers[id]);
+        }
+      });
+  
+      if (updatedIds.length > 0) {
+        updateLayer({ 
+          boardId: boardId,
+          layerId: updatedIds,
+          layerUpdates: updatedLayers.map(() => ({ outlineFill }))
+        });
+      }
+  
+      if (socket) {
+        socket.emit('layer-update', updatedIds, updatedLayers);
+      }
+  
+      return newLayers;
+    });
+  }, [selectedLayers, setLiveLayers, socket, updateLayer, boardId]);
+
   const deleteLayers = useCallback(() => {  
     let newLiveLayers = { ...liveLayers };
     let newLiveLayerIds = liveLayerIds.filter(id => !selectedLayers.includes(id));
@@ -211,6 +248,16 @@ export const SelectionTools = memo(({
           : undefined
       }}
     >
+      {isArrowLayer && (
+        <ArrowHeadSelection 
+          selectedLayers={selectedLayers}
+          setLiveLayers={setLiveLayers}
+          liveLayers={liveLayers}
+          updateLayer={updateLayer}
+          boardId={boardId}
+          socket={socket}
+        />
+      )}
       {isTextOrNoteLayer && (
         <FontSizePicker
           selectedLayers={selectedLayers}
@@ -219,6 +266,12 @@ export const SelectionTools = memo(({
           updateLayer={updateLayer}
           boardId={boardId}
           socket={socket}
+        />
+      )}
+      {isRectangleOrEllipseOrNoteLayer && (
+        <OutlineColorPicker
+          layers={layers}
+          onChange={setOutlineFill}
         />
       )}
       {!isImageLayer && (

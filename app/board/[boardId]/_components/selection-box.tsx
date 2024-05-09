@@ -106,7 +106,7 @@ export const SelectionBox = memo(({
   }
 
   const handleSize = HANDLE_SIZE / zoom;
-  const strokeWidth = STROKE_WIDTH / zoom / 1.5;
+  const strokeWidth = STROKE_WIDTH / zoom;
   return (
     <>
       <rect

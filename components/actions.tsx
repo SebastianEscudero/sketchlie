@@ -99,7 +99,7 @@ export const Actions = ({
             Delete
           </Button>
         </ConfirmModal>
-        <Button
+        {/* <Button
           variant="ghost"
           className="p-3 cursor-pointer text-sm w-full justify-start"
           onClick={() => exportToPdf(title)}
@@ -112,7 +112,7 @@ export const Actions = ({
           >
             SOON
           </Badge>
-        </Button>          
+        </Button>           */}
       </DropdownMenuContent>
     </DropdownMenu>
   );

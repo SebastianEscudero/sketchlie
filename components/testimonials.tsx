@@ -22,7 +22,7 @@ const testimonials = [
     },
     {
         name: "Fernando Garcia",
-        avatar: "f",
+        avatar: "F",
         title: "Student",
         description: `"Sketchlie is a game-changer for me. It helps me understand complex concepts and solve problems in a fun and interactive way."`
     },

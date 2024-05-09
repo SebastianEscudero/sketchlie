@@ -28,6 +28,8 @@ export type ArrowLayer = {
   height: number;
   width: number;
   fill: Color;
+  startArrowHead: ArrowHead;
+  endArrowHead: ArrowHead;
 };
 
 export type RectangleLayer = {
@@ -37,6 +39,7 @@ export type RectangleLayer = {
   height: number;
   width: number;
   fill: Color;
+  outlineFill: Color | null;
 };
 
 export type EllipseLayer = {
@@ -46,6 +49,7 @@ export type EllipseLayer = {
   height: number;
   width: number;
   fill: Color;
+  outlineFill: Color | null;
 };
 
 export type PathLayer = {
@@ -74,6 +78,7 @@ export type TextLayer = {
   height: number;
   width: number;
   fill: Color;
+  outlineFill: Color | null;
   value?: string;
   textFontSize: number
 };
@@ -85,6 +90,7 @@ export type NoteLayer = {
   height: number;
   width: number;
   fill: Color;
+  outlineFill: Color | null;
   value?: string;
   textFontSize: number;
 };
@@ -192,5 +198,10 @@ export type UpdateLayerMutation = (args: {
   layerId: string;
   layerUpdates: Record<string, unknown>;
 }) => Promise<any>;
+
+export enum ArrowHead {
+  None = "None",
+  Triangle = "Triangle",
+}
 
 export type PreviewLayer = RectangleLayer | EllipseLayer | TextLayer | NoteLayer | ArrowLayer;

@@ -15,6 +15,7 @@ import {
 
 import {
     ArrowHandle,
+    ArrowHead,
     Camera,
     CanvasMode,
     CanvasState,
@@ -118,6 +119,7 @@ export const Canvas = ({
                 height: height,
                 width: width,
                 fill: fillColor,
+                outlineFill: { r: 0, g: 0, b: 0, a: 0 },
                 textFontSize: 12,
             };
         } else if (layerType === LayerType.Arrow) {
@@ -129,6 +131,8 @@ export const Canvas = ({
                 height: height,
                 width: width,
                 fill: fillColor,
+                startArrowHead: ArrowHead.None,
+                endArrowHead: ArrowHead.Triangle,
             };
         } else {
             layer = {
@@ -138,6 +142,7 @@ export const Canvas = ({
                 height: height,
                 width: width,
                 fill: fillColor,
+                outlineFill: { r: 1, g: 1, b: 1, a: 1 },
             };
         }
 
@@ -602,16 +607,16 @@ export const Canvas = ({
 
             switch (canvasState.layerType) {
                 case LayerType.Rectangle:
-                    setCurrentPreviewLayer({ x, y, width, height, type: LayerType.Rectangle, fill: { r: 0, g: 0, b: 0, a: 0 } });
+                    setCurrentPreviewLayer({ x, y, width, height, type: LayerType.Rectangle, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
                     break;
                 case LayerType.Ellipse:
-                    setCurrentPreviewLayer({ x, y, width, height, type: LayerType.Ellipse, fill: { r: 0, g: 0, b: 0, a: 0 } });
+                    setCurrentPreviewLayer({ x, y, width, height, type: LayerType.Ellipse, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
                     break;
                 case LayerType.Text:
-                    setCurrentPreviewLayer({ x, y, width, height: 20, type: LayerType.Rectangle, fill: { r: 0, g: 0, b: 0, a: 0 } });
+                    setCurrentPreviewLayer({ x, y, width, height: 20, type: LayerType.Rectangle, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: null });
                     break;
                 case LayerType.Note:
-                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.Note, fill: { r: 255, g: 249, b: 177, a: 1 } });
+                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.Note, fill: { r: 255, g: 249, b: 177, a: 1 }, outlineFill: { r: 0, g: 0, b: 0, a: 0 } });
                     break;
                 case LayerType.Arrow:
                     setCurrentPreviewLayer({
@@ -621,7 +626,9 @@ export const Canvas = ({
                         width: widthArrow,
                         height: heightArrow,
                         type: LayerType.Arrow,
-                        fill: { r: 0, g: 0, b: 0, a: 0 }
+                        fill: { r: 0, g: 0, b: 0, a: 0 },
+                        startArrowHead: ArrowHead.None,
+                        endArrowHead: ArrowHead.Triangle
                     });
             }
         }
