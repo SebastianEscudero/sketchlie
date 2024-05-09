@@ -1061,7 +1061,7 @@ export const Canvas = ({
             )}
             <svg
                 id="canvas"
-                className="h-[100vh] w-[100vw]"
+                className="h-[100dvh] w-[100vw]"
                 onWheel={onWheel}
                 // onTouchMove={onTouchMove}
                 onPointerMove={onPointerMove}
