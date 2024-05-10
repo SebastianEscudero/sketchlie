@@ -96,7 +96,7 @@ const LandingPage = () => {
 
                     <p className="mb-10">La utilización de wireframes en el proceso de diseño ofrece numerosos beneficios. En primer lugar, los wireframes permiten establecer la estructura y la navegación del sitio de manera clara y concisa, lo que facilita la comprensión del proyecto por parte de todo el equipo.</p>
 
-                    <p className="mb-10">Además, los <Link className="text-custom-blue hover:underline" href="/blog/wireframes-online">wireframes </Link> ayudan a identificar posibles problemas de usabilidad y diseño antes de comenzar con el desarrollo, lo que ahorra tiempo y recursos en etapas posteriores del proyecto. En Sketchlie, ofrecemos una amplia gama de herramientas y plantillas para crear wireframes que se adapten a tus necesidades específicas.</p>
+                    <p className="mb-10">Además, los <Link className="text-custom-blue hover:underline" href="/blog/wireframes-online/">wireframes </Link> ayudan a identificar posibles problemas de usabilidad y diseño antes de comenzar con el desarrollo, lo que ahorra tiempo y recursos en etapas posteriores del proyecto. En Sketchlie, ofrecemos una amplia gama de herramientas y plantillas para crear wireframes que se adapten a tus necesidades específicas.</p>
                     <div id="7" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">¿Puedo utilizar wireframes en dispositivos móviles?</h2>
 
@@ -112,7 +112,7 @@ const LandingPage = () => {
 
                     <p className="mb-10">Nuestra herramienta de <Link className="text-custom-blue hover:underline" href="/">pizarra online</Link> ofrece una variedad de elementos y herramientas para ayudarte a diseñar wireframes de forma rápida y sencilla. Puedes arrastrar y soltar elementos, ajustar tamaños y alinear objetos para crear la estructura perfecta para tu proyecto.</p>
 
-                    <p className="mb-10">Para obtener más información sobre cómo utilizar wireframes en Sketchlie, consulta nuestra sección de ayuda o visita nuestro <Link className="text-custom-blue hover:underline" href="/blog/wireframes-online">blog</Link> para obtener consejos y tutoriales útiles.</p>
+                    <p className="mb-10">Para obtener más información sobre cómo utilizar wireframes en Sketchlie, consulta nuestra sección de ayuda o visita nuestro <Link className="text-custom-blue hover:underline" href="/blog/wireframes-online/">blog</Link> para obtener consejos y tutoriales útiles.</p>
 
                     <div id="9" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">Como hacer un Wireframe</h2>
@@ -131,7 +131,7 @@ const LandingPage = () => {
 
 
                     <p className="mb-10">Sí, en Sketchlie ofrecemos la posibilidad de exportar tus wireframes a otros formatos para facilitar la colaboración y el intercambio de archivos. Puedes exportar tus diseños en formatos como PNG, JPEG, PDF y SVG.</p>
-                    <p className="mb-10">Para obtener más información sobre cómo exportar tus <Link className="text-custom-blue hover:underline" href="/blog/wireframes-online">wireframes</Link> de Sketchlie, consulta nuestra sección de ayuda o ponte en contacto con nuestro equipo de soporte.</p>
+                    <p className="mb-10">Para obtener más información sobre cómo exportar tus <Link className="text-custom-blue hover:underline" href="/blog/wireframes-online/">wireframes</Link> de Sketchlie, consulta nuestra sección de ayuda o ponte en contacto con nuestro equipo de soporte.</p>
                     <div id="10" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10"> ¿Cómo puedo obtener ayuda adicional con mis wireframes en Sketchlie?</h2>
 

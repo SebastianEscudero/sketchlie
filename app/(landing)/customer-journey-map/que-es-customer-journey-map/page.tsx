@@ -65,7 +65,7 @@ const LandingPage = () => {
 
                     <p className="mb-10">Para crear un customer journey map online efectivo, primero necesitas recopilar datos sobre las interacciones de los clientes con tu marca. Luego, identifica las distintas etapas del journey del cliente, como la conciencia, la consideración, la compra y la fidelización.</p>
 
-                    <p className="mb-10">Utilizando herramientas como <Link className="text-custom-blue hover:underline" href="/blog/mapa-de-procesos/">mapa de procesos</Link>, <Link className="text-custom-blue hover:underline" href="/blog/diagrama-de-flujo/">diagramas de flujo</Link> y <Link className="text-custom-blue hover:underline" href="/blog/mapa-mental">mapas mentales</Link>, puedes visualizar el viaje completo del cliente y encontrar oportunidades de mejora.</p>
+                    <p className="mb-10">Utilizando herramientas como <Link className="text-custom-blue hover:underline" href="/blog/mapa-de-procesos/">mapa de procesos</Link>, <Link className="text-custom-blue hover:underline" href="/blog/diagrama-de-flujo/">diagramas de flujo</Link> y <Link className="text-custom-blue hover:underline" href="/blog/mapa-mental/">mapas mentales</Link>, puedes visualizar el viaje completo del cliente y encontrar oportunidades de mejora.</p>
 
                     <div id="3" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">3. ¿Cuáles son los beneficios de usar un customer journey map?</h2>

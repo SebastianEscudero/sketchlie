@@ -107,7 +107,7 @@ const blog: { title: string; href: string }[] = [
     },
     {
         title: "Mapa Mental",
-        href: "/blog/mapa-mental"
+        href: "/blog/mapa-mental/"
     },
     {
         title: "Pizarra Online",
@@ -115,7 +115,7 @@ const blog: { title: string; href: string }[] = [
     },
     {
         title: "Wireframe",
-        href: "/blog/wireframes-online"
+        href: "/blog/wireframes-online/"
     }
 ]
 
@@ -154,7 +154,7 @@ const queEs: { title: string; href: string }[] = [
     },
     {
         title: "Customer J. Map",
-        href: "/customer-journey-map/que-es-customer-journey-map",
+        href: "/customer-journey-map/que-es-customer-journey-map/",
     }
 ]
 

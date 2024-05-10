@@ -122,9 +122,9 @@ const LandingPage = () => {
             <HowToCreate steps={steps} title="Cómo hacer customer journey map online"/>
             <FaqSection accordionData={faqData} sectionTitle="los customer journey maps"/>
             <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5 md:my-10 my-5">
-                <VerMas title="¿Qué es un customer journey map?" href="/customer-journey-map/que-es-customer-journey-map"/>
-                <VerMas title="¿Cómo se crea un customer journey map?" href="/customer-journey-map/que-es-customer-journey-map"/>
-                <VerMas title="¿Cómo se utiliza un customer journey map?" href="/customer-journey-map/que-es-customer-journey-map"/>
+                <VerMas title="¿Qué es un customer journey map?" href="/customer-journey-map/que-es-customer-journey-map/"/>
+                <VerMas title="¿Cómo se crea un customer journey map?" href="/customer-journey-map/que-es-customer-journey-map/"/>
+                <VerMas title="¿Cómo se utiliza un customer journey map?" href="/customer-journey-map/que-es-customer-journey-map/"/>
             </div>
         </div>
 
