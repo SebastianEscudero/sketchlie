@@ -57,7 +57,7 @@ export const BlogStructure = ({
                         }}
                     />
                 </div>
-                <p className="text-lg text-zinc-800 mx-auto">
+                <p className="text-lg text-zinc-600 mx-auto">
                     {description}
                 </p>
                 <div>
