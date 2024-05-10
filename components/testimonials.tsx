@@ -63,14 +63,14 @@ export const Testimonials = () => {
                     <CardHeader>
                     <CardTitle className="flex gap-x-2">
                         <div className="flex items-center justify-center w-9 h-9 bg-custom-blue rounded-full">
-                            <p className="text-white font-bold text-sm text-md">{item.avatar}</p>
+                            <p className="text-white text-sm text-md">{item.avatar}</p>
                         </div>
                         <div>
                             <p className="text-sm">{item.name}</p>
                             <p className="text-[#535151] text-sm">{item.title}</p>
                         </div>
                     </CardTitle>
-                    <CardContent className="px-0 text-lg font-semibold">
+                    <CardContent className="px-0 text-lg">
                         <div className="flex justify-start mb-2">
                                 <Star fill="#EAB308" className="w-4 h-4"/>
                                 <Star fill="#EAB308" className="w-4 h-4"/>

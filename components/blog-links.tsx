@@ -46,7 +46,7 @@ export const BlogLinks = ({
                     <Link
                         href={blogHref}
                     >
-                        <Button variant="blog">
+                        <Button variant="auth">
                             Leer más
                         </Button>
                     </Link>

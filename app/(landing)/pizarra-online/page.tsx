@@ -54,7 +54,7 @@ const LandingPage = () => {
             <BlogStructure
                 title="La pizarra online para colaborar."
                 description="Sketchlie es una pizarra online rápida, gratuita y fácil de usar pensada para  ayudarte a colaborar con cualquier persona desde cualquier lugar."
-                cta="Ir a pizarra online"
+                cta="Crear tablero gratis"
                 alt="Pizarra online Image"
             />
             <LogoSlider />

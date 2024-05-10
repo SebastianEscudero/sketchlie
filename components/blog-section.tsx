@@ -29,24 +29,24 @@ export const BlogSection = ({
     );
 
     return (
-        <div className={`flex flex-col xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] md:flex-row items-center my-14 md:space-x-20 xl:space-x-30 text-[#1c1c1e] ${!img && 'text-center'} ${side === 'left' && 'flex-col-reverse'}`}>
+        <div className={`font-roobert flex flex-col xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] md:flex-row items-center my-14 md:space-x-20 xl:space-x-30 text-[#1c1c1e] ${!img && 'text-center'} ${side === 'left' && 'flex-col-reverse'}`}>
             {side === 'left' && imageElement}
             <div className="flex-1">
                 <h2 className={cn("mb-10 leading-snug space-y-5", {
-                    'text-3xl sm:text-4xl lg:text-5xl': text && img,
-                    'text-3xl sm:text-4xl lg:text-5xl lg:mx-[20%] mx-[2%]': !img 
+                    'text-3xl lg:text-4xl sm:text-left text-center': text && img,
+                    'text-4xl lg:text-4xl lg:mx-[20%] mx-[2%]': !img 
                 })} style={{ lineHeight: "1.2" }}>
                     {title}
                 </h2>
                 {text && (
-                    <p className={cn("sm:text-lg lg:text-xl text-[#1c1c1e] md:mb-0 mb-5", {
-                        'lg:mx-[20%] mx-[2%]': !img
+                    <p className={cn("text-lg lg:text-xl text-[#1c1c1e] md:mb-0 mb-5 text-justify", {
+                        'lg:mx-[20%] mx-[2%] text-justify': !img
                     })}>
                         {text}
                     </p>
                 )}
                 {text2 && (
-                    <p className={cn("mt-5 sm:text-lg lg:text-xl text-[#1c1c1e] md:mb-0 mb-5", {
+                    <p className={cn("mt-5 text-lg lg:text-xl text-[#1c1c1e] md:mb-0 mb-5 text-justify", {
                         'lg:mx-[20%] mx-[2%]': !img
                     })}>
                         {text2}
