@@ -56,6 +56,7 @@ const LandingPage = () => {
                 description="Sketchlie es una pizarra online rápida, gratuita y fácil de usar pensada para  ayudarte a colaborar con cualquier persona desde cualquier lugar."
                 cta="Crear tablero gratis"
                 alt="Pizarra online Image"
+                img="/placeholders/pizarra-online.png"
             />
             <LogoSlider />
             <LandingVideo />
@@ -89,7 +90,7 @@ const LandingPage = () => {
             <BlogSection
                 title="La pizarra online única de Sketchlie." 
                 text="Invita a colegas a tu pizarra online para sesiones de lluvia de ideas, toma de notas y seguimiento de proyectos. Comparte tu pantalla, realiza videoconferencias y aprovecha el modo de presentación para reuniones estimulantes. La rapidez y versatilidad de Sketchlie permiten que múltiples usuarios trabajen simultáneamente sin esfuerzo, convirtiendo cada sesión en una experiencia colaborativa inigualable."
-                img="/placeholders/pizarra-online.png"
+                img="/placeholders/mapa-conceptual-online.png"
                 side="right"
             />
             <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5 md:my-20 my-5">
