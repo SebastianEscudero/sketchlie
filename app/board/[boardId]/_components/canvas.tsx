@@ -881,6 +881,7 @@ export const Canvas = ({
     };
 
     const onDrop = (event: React.DragEvent) => {
+        console.log('drop')
         event.preventDefault();
         setIsDraggingOverCanvas(false);
         let x = (Math.round(event.clientX) - camera.x) / zoom
@@ -888,11 +889,15 @@ export const Canvas = ({
         const files = event.dataTransfer.files;
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
-            if (!file.type.startsWith('image/')) continue;  // Skip if not an image
+            if (!file.type.startsWith('image/')) {
+                toast.error('File type not accepted. Please upload an image file.');
+                continue;  // Skip if not an image
+            }
     
             // Check file size
             const fileSizeInMB = file.size / 1024 / 1024;
             if (fileSizeInMB > maxFileSize) {
+                console.log('hi')
                 toast.error(`File size has to be lower than ${maxFileSize}MB. Please try again.`);
                 return;
             }
