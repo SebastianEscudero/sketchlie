@@ -35,7 +35,7 @@ export const BlogStructure = ({
     );
     
     return (
-        <div className={`text-[#1c1c1e] pt-20 flex flex-col md:flex-row md:space-x-10 xl:space-x-20 font-roobert ${img ? "xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] items-center md:text-left text-center" : "lg:mx-[25%] md:mx-[15%] mx-[5%] text-center space-y-5"}`}>
+        <div className={`text-[#1c1c1e] pt-32 flex flex-col md:flex-row md:space-x-10 xl:space-x-20 font-roobert ${img ? "xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] items-center md:text-left text-center" : "lg:mx-[25%] md:mx-[15%] mx-[5%] text-center space-y-5"}`}>
             <div className={cn(`space-y-5 flex-1`, {
                 'text-4xl md:text-5xl lg:text-6xl md:mb-0 mb-5': img,
                 'text-4xl sm:text-5xl md:text-6xl lg:text-7xl': !img,

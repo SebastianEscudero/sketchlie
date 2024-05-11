@@ -1,6 +1,5 @@
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { S3Client, PutObjectCommand, HeadObjectCommand } from "@aws-sdk/client-s3";
 import { NextResponse } from "next/server";
-import { v4 as uuidv4 } from 'uuid';
 
 export const POST = async (req: any) => {
     const bucketName = process.env.AWS_BUCKET_NAME;
@@ -22,17 +21,38 @@ export const POST = async (req: any) => {
 
     const formData = await req.formData();
     const file = formData.get('file');
-    const buffer = Buffer.from(await file.arrayBuffer());
-    const uniqueFileName = `${uuidv4()}_${file.name}`;
+    const userId = formData.get('userId');
 
-    const params = {
+    if (!userId) {
+        return new NextResponse("No user id provided", {status: 400})
+    }
+
+    const uniqueFileName = `${userId}_${file.name}`;
+
+    // Check if file already exists
+    const headParams = {
+        Bucket: bucketName,
+        Key: uniqueFileName,
+    };
+    try {
+        await s3.send(new HeadObjectCommand(headParams));
+        // If the file exists, return the existing URL
+        const url = `https://${bucketName}.s3.${bucketRegion}.amazonaws.com/${encodeURIComponent(uniqueFileName)}`;
+        return new NextResponse(url, {status: 200});
+    } catch (error) {
+        // If the file doesn't exist, continue to upload
+    }
+
+    const buffer = Buffer.from(await file.arrayBuffer());
+
+    const putParams = {
         Bucket: bucketName,
         Key: uniqueFileName,
         Body: buffer,
         ContentType: file.type,
-      };
+    };
 
-    const command = new PutObjectCommand(params)
+    const command = new PutObjectCommand(putParams)
 
     await s3.send(command)
 

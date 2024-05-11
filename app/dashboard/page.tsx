@@ -10,6 +10,7 @@ import { OrgSidebar } from "./_components/org-sidebar";
 import { Sidebar } from "./_components/sidebar";
 import { Loading } from "@/components/auth/loading";
 import { useProModal } from "@/hooks/use-pro-modal";
+import Templates from "./_components/templates";
 
 const DashboardPage = () => {
   const searchParams = useSearchParams();
@@ -58,6 +59,11 @@ const DashboardPage = () => {
               activeOrganization={activeOrganization}
               activeOrg={activeOrg}
             />
+            {activeOrg && (
+              <Templates 
+                org={activeOrg}
+              />
+            )}
             <div className="flex-1 h-[calc(100%-80px)] p-6">
               {!activeOrg ? (
                 <EmptyOrg setActiveOrganization={setActiveOrganization} />

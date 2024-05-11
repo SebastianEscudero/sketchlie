@@ -71,7 +71,7 @@ export const SettingsModal = () => {
   return (
     <div>
       <Dialog open={settingsDialog.isOpen} onOpenChange={settingsDialog.onClose}>
-        <DialogContent className="w-full max-w-[768px]">
+        <DialogContent className="w-full max-w-[90%] sm:max-w-[65%] lg:max-w-[50%]">
           <DialogHeader>
             <DialogTitle className="text-2xl font-semibold">Settings</DialogTitle>
           </DialogHeader>

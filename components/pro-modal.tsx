@@ -27,20 +27,14 @@ export const ProModal = () => {
     return (
         <div>
             <Dialog open={proModal.isOpen} onOpenChange={proModal.onClose}>
-                <DialogContent className="max-w-[1080px] w-full overflow-y-auto h-full xl:max-h-[700px] lg:max-h-[700px] max-h-[650px] my-3">
+                <DialogContent className="max-w-[90%] lg:max-w-[65%] xl:max-w-[55%] 2xl:max-w-[50%] w-full overflow-y-auto max-h-[80%] pt-10">
                     <DialogHeader>
-                        <DialogTitle className="flex justify-center items-center flex-col text-sm md:text-base">
-                            <div className="flex items-center gap-x-2 font-bold text-2xl">
-                                Sketchlie
-                                <Zap className="w-6 h-6 text-custom-blue fill-custom-blue" />
-                            </div>
-                        </DialogTitle>
-                        <div className="flex justify-center text-lg md:text-xl items-center flex-wrap">
+                        <div className="flex justify-center text-xl md:text-2xl items-center flex-wrap text-center">
                             <p>Choose organization to upgrade:</p>
                             <DropdownMenu>
                                 <DropdownMenuTrigger>
                                     <div
-                                        className="text-xl md:text-2xl flex flex-row items-center ml-3 text-custom-blue hover:bg-accent rounded-md"
+                                        className="text-xl md:text-2xl flex flex-row items-center ml-3 text-custom-blue"
                                     >
                                         {selectedOrganization.name || "Select organization"}
                                         <ChevronsDown className="ml-2" />
@@ -58,7 +52,7 @@ export const ProModal = () => {
                                                     variant="selectOrg"
                                                     className="p-0 w-full flex justify-start">
                                                     <div className="ml-2 text-left w-[180px] text-sm md:text-base">
-                                                        <p className="text-[12px] md:text-[14px] truncate">
+                                                        <p className="text-sm truncate">
                                                             {organization.name}
                                                         </p>
                                                         <p className="truncate text-[10px] md:text-[12px] text-zinc-400">{organization.subscriptionPlan} - {organization.users.length} members </p>
@@ -70,7 +64,7 @@ export const ProModal = () => {
                                 </DropdownMenuContent>
                             </DropdownMenu>
                         </div>
-                        <DialogDescription className="gap-4 text-zinc-900 font-medium flex flex-col md:flex-row max-h-[700px] pt-4 text-sm md:text-base">
+                        <DialogDescription className="gap-4 text-zinc-900 font-medium flex flex-col md:flex-row max-h-[700px] pt-4 text-sm md:text-base ">
                             {paidPlans.map((subscriptionPlan) => (
                                 <Card
                                     key={subscriptionPlan.label}

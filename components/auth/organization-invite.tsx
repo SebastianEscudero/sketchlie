@@ -60,7 +60,7 @@ export const OrganizationInvite = ({
     return (
         <div className="p-4">
             <DialogHeader>
-                <DialogTitle className="text-2xl max-w-[400px] truncate">Invite to {activeOrg.name}</DialogTitle>
+                <DialogTitle className="text-2xl w-[90%] truncate">Invite to {activeOrg.name}</DialogTitle>
                 <p className="text-gray-600 text-sm py-2">Email addresses</p>
                 <Form {...form}>
                     <form
@@ -77,6 +77,7 @@ export const OrganizationInvite = ({
                                         <FormItem>
                                             <FormControl>
                                                 <Input
+                                                    className="w-[90%]"
                                                     {...field}
                                                     disabled={isPending}
                                                     placeholder="name@example.com"

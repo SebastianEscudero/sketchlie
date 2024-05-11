@@ -38,11 +38,12 @@ import { SelectionBox } from "./selection-box";
 import { SelectionTools } from "./selection-tools";
 import { CursorsPresence } from "./cursors-presence";
 import { useProModal } from "@/hooks/use-pro-modal";
-import { getMaxCapas } from "@/lib/planLimits";
+import { getMaxCapas, getMaxImageSize } from "@/lib/planLimits";
 import { api } from "@/convex/_generated/api";
 import { useApiMutation } from "@/hooks/use-api-mutation";
 import { CurrentPreviewLayer } from "./current-preview-layer";
 import { useRoom } from "@/components/room";
+import { toast } from "sonner";
 
 const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 const nanoid = customAlphabet(alphabet, 21);
@@ -56,6 +57,8 @@ export const Canvas = ({
 }: CanvasProps) => {
     const mousePositionRef = useRef({ x: 0, y: 0 });
     const { liveLayers, liveLayerIds, User, otherUsers, setLiveLayers, setLiveLayerIds, org, socket, board } = useRoom();
+    const maxFileSize = org && getMaxImageSize(org) || 0;
+    const [isDraggingOverCanvas, setIsDraggingOverCanvas] = useState(false);
     // const [initialPinchDistance, setInitialPinchDistance] = useState<number | null>(null);
     const selectedLayersRef = useRef<string[]>([]);
     const [zoom, setZoom] = useState(1);
@@ -227,6 +230,7 @@ export const Canvas = ({
             layer: layer
         })
 
+        selectedLayersRef.current = [layerId];
         setCanvasState({ mode: CanvasMode.None });
     }, [liveLayers, liveLayerIds, myPresence, socket, org, proModal, User.userId, setLiveLayers, setLiveLayerIds, boardId, addLayer]);
 
@@ -666,7 +670,22 @@ export const Canvas = ({
             }
         }
     },
-        [continueDrawing, camera, canvasState, resizeSelectedLayer, translateSelectedLayers, startMultiSelection, updateSelectionNet, isPanning, rightClickPanning, setCamera, User.userId, zoom, myPresence, startPanPoint]);
+        [continueDrawing,
+        camera, 
+        canvasState, 
+        resizeSelectedLayer, 
+        translateSelectedLayers, 
+        startMultiSelection, 
+        updateSelectionNet, 
+        isPanning, 
+        rightClickPanning, 
+        setCamera,
+        User.userId, 
+        zoom, 
+        myPresence,     
+        startPanPoint, 
+        socket
+    ]);
 
     const onPointerUp = useCallback((e: React.PointerEvent) => {
         setIsRightClickPanning(false);
@@ -689,6 +708,7 @@ export const Canvas = ({
             insertImage(LayerType.Image, point, selectedImage);
         } else if (canvasState.mode === CanvasMode.Inserting && canvasState.layerType !== LayerType.Image) {
             const layerType = canvasState.layerType;
+            setIsPanning(false);
             if (isPanning && currentPreviewLayer) {
                 if (layerType === LayerType.Arrow && currentPreviewLayer.type === LayerType.Arrow) {
                     insertLayer(layerType, { x: currentPreviewLayer.x, y: currentPreviewLayer.y }, currentPreviewLayer.width, currentPreviewLayer.height, currentPreviewLayer.center)
@@ -713,7 +733,6 @@ export const Canvas = ({
                     point.y = point.y - height / 2
                     insertLayer(layerType, point, width, height);
                 }
-                setIsPanning(false);
             }
         } else if (canvasState.mode === CanvasMode.Moving) {
             document.body.style.cursor = 'url(/custom-cursors/hand.svg) 8 8, auto';
@@ -804,9 +823,12 @@ export const Canvas = ({
     }, [setMyPresence, myPresence, socket, User.userId]);
 
     const onLayerPointerDown = useCallback((e: React.PointerEvent, layerId: string) => {
+
         if (
             canvasState.mode === CanvasMode.Pencil ||
-            canvasState.mode === CanvasMode.Inserting
+            canvasState.mode === CanvasMode.Inserting ||
+            canvasState.mode === CanvasMode.Moving ||
+            e.button !== 0
         ) {
             return;
         }
@@ -847,6 +869,61 @@ export const Canvas = ({
 
         return layerIdsToColorSelection;
     }, [otherUsers]);
+
+    const onDragOver = (event: React.DragEvent) => {
+        event.preventDefault();
+        setIsDraggingOverCanvas(true);
+    };
+    
+    const onDragLeave = (event: React.DragEvent) => {
+        event.preventDefault();
+        setIsDraggingOverCanvas(false);
+    };
+
+    const onDrop = (event: React.DragEvent) => {
+        event.preventDefault();
+        setIsDraggingOverCanvas(false);
+        let x = (Math.round(event.clientX) - camera.x) / zoom
+        let y = (Math.round(event.clientY) - camera.y) / zoom
+        const files = event.dataTransfer.files;
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            if (!file.type.startsWith('image/')) continue;  // Skip if not an image
+    
+            // Check file size
+            const fileSizeInMB = file.size / 1024 / 1024;
+            if (fileSizeInMB > maxFileSize) {
+                toast.error(`File size has to be lower than ${maxFileSize}MB. Please try again.`);
+                return;
+            }
+    
+            const toastId = toast.loading("Image is being processed, please wait...");
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('userId', User.userId);
+            
+            fetch('/api/aws-s3-images', {
+                method: 'POST',
+                body: formData
+            })
+            .then(async (res: Response) => {
+                if (!res.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const url = await res.text();
+    
+                // Insert the image into the canvas
+                insertImage(LayerType.Image, { x: x, y: y }, url);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            })
+            .finally(() => {
+                toast.dismiss(toastId);
+                toast.success("Image uploaded successfully, you can now add it to the board.")
+            });
+        }
+    };
 
     const copySelectedLayers = useCallback(() => {
         const copied = new Map();
@@ -1030,7 +1107,8 @@ export const Canvas = ({
 
     return (
         <main
-            className="h-full w-full relative bg-neutral-100 touch-none overscroll-none" style={{ backgroundImage: "url(/dot-grid.png)", backgroundSize: 'cover' }}
+            className={`h-full w-full relative bg-neutral-100 touch-none overscroll-none ${isDraggingOverCanvas ? 'bg-neutral-300 border-2 border-dashed border-custom-blue' : ''}`}
+            style={{ backgroundImage: "url(/dot-grid.png)", backgroundSize: 'cover' }}
         >
             <Info boardId={boardId} />
             <Participants
@@ -1063,6 +1141,9 @@ export const Canvas = ({
                 id="canvas"
                 className="h-[100dvh] w-[100vw]"
                 onWheel={onWheel}
+                onDragOver={onDragOver}
+                onDrop={onDrop}
+                onDragLeave={onDragLeave}
                 // onTouchMove={onTouchMove}
                 onPointerMove={onPointerMove}
                 onPointerLeave={onPointerLeave}

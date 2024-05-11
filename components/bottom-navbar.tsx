@@ -159,7 +159,6 @@ const queEs: { title: string; href: string }[] = [
 ]
 
 export const BotNavbar = () => {
-    const user = useCurrentUser();
     const pathname = usePathname();
     return (
         <footer className="bg-[#1C1C1E] text-white">
@@ -173,7 +172,7 @@ export const BotNavbar = () => {
                     </p>
                     <Link href={"/dashboard/"}>
                         <Button variant="auth" className="text-lg p-6 mt-10">
-                            {user ? "Ir al Tablero" : "Regístrate gratis"}
+                            Regístrate gratis
                         </Button>
                     </Link>
                 </div>

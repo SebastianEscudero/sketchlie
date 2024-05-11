@@ -6,6 +6,7 @@ import { LucideIcon } from "lucide-react";
 import { toast } from "sonner"
 import { useRef, Dispatch, SetStateAction } from "react";
 import { getMaxImageSize } from "@/lib/planLimits";
+import { useCurrentUser } from "@/hooks/use-current-user";
 
 interface ImageButtonProps {
     isUploading: boolean;
@@ -29,8 +30,14 @@ export const ImageButton = ({
     onImageSelect,
     org
 }: ImageButtonProps) => {
+    
+    const user = useCurrentUser();
     const inputFileRef = useRef<HTMLInputElement>(null);
     const maxFileSize = org && getMaxImageSize(org) || 0;
+
+    if (!user) {
+        return null;
+    }
 
     const handleButtonClick = () => {
         inputFileRef.current?.click();
@@ -56,7 +63,8 @@ export const ImageButton = ({
         const toastId = toast.loading("Image is being processed, please wait...");
         const formData = new FormData();
         formData.append('file', e.target.files?.[0]);
-        
+        formData.append('userId', user.id);
+
         fetch('/api/aws-s3-images', {
             method: 'POST',
             body: formData
@@ -72,6 +80,7 @@ export const ImageButton = ({
             console.error('Error:', error);
         })
         .finally(() => {
+            e.target.value = '';
             toast.dismiss(toastId);
             setIsUploading(false);
             toast.success("Image uploaded successfully, you can now add it to the board.")

@@ -41,8 +41,8 @@ export const create = mutation({
       authorId: userId,
       authorName: userName!,
       imageUrl: randomImage,
-      layerIds: [],
-      layers: {},
+      layerIds: args.layerIds || [],
+      layers: args.layers || {},
     });
 
     return board;
