@@ -92,3 +92,7 @@ html {
     margin: 0;
   }
 }
+
+.active:active {
+  cursor: pointer !important;
+}

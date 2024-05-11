@@ -15,6 +15,10 @@ const config = {
       padding: "2rem",
     },
     extend: {
+      cursor: {
+        hand: 'url(/custom-cursors/hand.svg) 8 8, auto',
+        grab: 'url(/custom-cursors/grab.svg) 8 8, auto',
+      },
       backgroundImage: theme => ({
         'hero-background': "url(/hero-bg.png)",
         'blur-background': "url(/placeholders/landingcta.jpg)",

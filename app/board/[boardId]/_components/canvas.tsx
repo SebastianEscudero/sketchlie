@@ -1105,6 +1105,8 @@ export const Canvas = ({
             document.body.style.cursor = 'url(/custom-cursors/pencil.svg) 2 18, auto';
         } else if (canvasState.mode === CanvasMode.Moving) {
             document.body.style.cursor = 'url(/custom-cursors/hand.svg) 8 8, auto';
+        } else if (canvasState.mode ===  CanvasMode.ArrowResizeHandler) {
+            document.body.style.cursor = 'url(/custom-cursors/grab.svg) 8 8, auto';
         } else {
             document.body.style.cursor = 'default';
         }

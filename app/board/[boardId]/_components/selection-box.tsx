@@ -69,7 +69,7 @@ export const SelectionBox = memo(({
     return (
       <>
         <circle
-          className="fill-white stroke-blue-500"
+          className="fill-white stroke-blue-500 hover:cursor-hand active:cursor-grab"
           cx={arrowLayer.x}
           cy={arrowLayer.y}
           r={handleRadius}
@@ -80,7 +80,7 @@ export const SelectionBox = memo(({
           }}
         />
         <circle
-          className="fill-blue-500 stroke-white"
+          className="fill-blue-500 stroke-white hover:cursor-hand active:cursor-grab"
           cx={arrowLayer?.center?.x}
           cy={arrowLayer?.center?.y}
           r={handleRadius}
@@ -91,7 +91,7 @@ export const SelectionBox = memo(({
           }}
         />
         <circle
-          className="fill-white stroke-blue-500"
+          className="fill-white stroke-blue-500 hover:cursor-hand active:cursor-grab"
           cx={arrowLayer.x + arrowLayer.width}
           cy={arrowLayer.y + arrowLayer.height}
           r={handleRadius}
