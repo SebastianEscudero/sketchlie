@@ -138,6 +138,7 @@ export const OrganizationSettings = ({
             <div className="sm:w-1/3 w-full space-y-4 sm:pr-4 sm:pb-0 pb-4 sm:border-r sm:border-b-0 border-b">
                 <div className="flex mb-3 items-center pb-0">
                     <Image
+                        sizes="48px"
                         alt={activeOrg.name}
                         src={`https://img.clerk.com/preview.png?size=144&seed=seed&initials=${Initial}&isSquare=true&bgType=marble&bgColor=${Color}&fgType=initials&fgColor=${LetterColor}&type=organization&w=48&q=75`}
                         className="rounded-md"
@@ -193,9 +194,7 @@ export const OrganizationSettings = ({
                                 </div>
                                 <DropdownMenu>
                                     <DropdownMenuTrigger className="ml-auto">
-                                        <Button variant="ghost">
-                                            <Ellipsis className="text-zinc-500 w-4 h-4" />
-                                        </Button>
+                                        <Ellipsis className="text-zinc-500 w-4 h-4" />
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent align="start" className="rounded-xl shadow-xl">
                                         <DropdownMenuItem className="py-2 px-3">

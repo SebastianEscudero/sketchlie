@@ -80,6 +80,7 @@ export const OrganizationSwitcher = ({
                         <div className="aspect-square relative w-[33px] flex-shrink-0">
                             <Image
                                 fill
+                                sizes="48px"
                                 alt={activeOrg.name}
                                 src={`https://img.clerk.com/preview.png?size=144&seed=seed&initials=${Initial}&isSquare=true&bgType=marble&bgColor=${Color}&fgType=initials&fgColor=${LetterColor}&type=organization&w=48&q=75`}
                                 className="rounded-md"

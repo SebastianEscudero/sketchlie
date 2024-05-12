@@ -42,6 +42,7 @@ interface ItemProps {
             <Hint label={name} side="right" align="start" sideOffset={18}>
                 <Image
                     fill 
+                    sizes="48px"
                     alt={name}
                     src={`https://img.clerk.com/preview.png?size=144&seed=seed&initials=${Initial}&isSquare=true&bgType=marble&bgColor=${Color}&fgType=initials&fgColor=${LetterColor}&type=organization&w=48&q=75`}
                     onClick={onClick}
