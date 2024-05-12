@@ -12,7 +12,6 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { templates } from "../templates/templates";
 import { ShowAllTemplates } from "./show-all-templates";
 import { cn } from "@/lib/utils";
-import { Skeleton } from "@/components/ui/skeleton";
 
 interface TemplateProps {
     org: any

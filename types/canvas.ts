@@ -60,6 +60,7 @@ export type PathLayer = {
   width: number;
   fill: Color;
   points: number[][];
+  strokeSize?: number;
 };
 
 export type ImageLayer = {

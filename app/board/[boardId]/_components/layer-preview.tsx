@@ -48,6 +48,7 @@ export const LayerPreview = memo(({
           y={layer.y}
           fill={layer.fill ? colorToCss(layer.fill) : "#000"}
           stroke={selectionColor}
+          strokeSize={layer.strokeSize}
         />
       )
     case LayerType.Note:

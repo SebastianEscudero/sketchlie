@@ -3,7 +3,7 @@
 import { memo, useCallback, useEffect, useState } from "react";
 import { BringToFront, SendToBack, Trash2 } from "lucide-react";
 import { Hint } from "@/components/hint";
-import { Camera, Color, LayerType, UpdateLayerMutation  } from "@/types/canvas";
+import { Camera, Color, LayerType, UpdateLayerMutation } from "@/types/canvas";
 import { Button } from "@/components/ui/button";
 import { useSelectionBounds } from "@/hooks/use-selection-bounds";
 import { ColorPicker } from "../selection-tools/color-picker";
@@ -13,6 +13,7 @@ import { useApiMutation } from "@/hooks/use-api-mutation";
 import { api } from "@/convex/_generated/api";
 import { OutlineColorPicker } from "../selection-tools/outline-color-picker";
 import { ArrowHeadSelection } from "../selection-tools/arrow-head-selection";
+import { PathStokeSizeSelection } from "../selection-tools/path-stroke-size-selection";
 
 interface SelectionToolsProps {
   boardId: string;
@@ -42,17 +43,19 @@ export const SelectionTools = memo(({
   const { mutate: updateLayerIds } = useApiMutation(api.board.updateLayerIds);
   const { mutate: deleteLayer } = useApiMutation(api.board.deleteLayer);
 
-  let isTextOrNoteLayer = selectedLayers.every(layer => 
+  const isTextOrNoteLayer = selectedLayers.every(layer =>
     liveLayers[layer]?.type === LayerType.Text || liveLayers[layer]?.type === LayerType.Note
   );
 
-  let isImageLayer = selectedLayers.some(layer => liveLayers[layer]?.type === LayerType.Image);
-  let isRectangleOrEllipseOrNoteLayer = selectedLayers.every(layer =>
+  const isImageLayer = selectedLayers.some(layer => liveLayers[layer]?.type === LayerType.Image);
+  const isRectangleOrEllipseOrNoteLayer = selectedLayers.every(layer =>
     liveLayers[layer]?.type === LayerType.Rectangle || liveLayers[layer]?.type === LayerType.Ellipse || liveLayers[layer]?.type === LayerType.Note
   );
-  let isArrowLayer = selectedLayers.every(layer => liveLayers[layer]?.type === LayerType.Arrow);
+  const isArrowLayer = selectedLayers.every(layer => liveLayers[layer]?.type === LayerType.Arrow);
+  const isPathLayer = selectedLayers.every(layer => liveLayers[layer]?.type === LayerType.Path);
+
   const layers = selectedLayers.map(id => liveLayers[id]);
-  const [initialPosition, setInitialPosition] = useState<{x: number, y: number} | null>(null);
+  const [initialPosition, setInitialPosition] = useState<{ x: number, y: number } | null>(null);
   const selectionBounds = useSelectionBounds(selectedLayers, liveLayers);
 
   useEffect(() => {
@@ -69,17 +72,17 @@ export const SelectionTools = memo(({
         x = (selectionBounds.width / 2 + selectionBounds.x) * zoom + camera.x;
         y = (selectionBounds.y) * zoom + camera.y;
       }
-      setInitialPosition({x, y});
+      setInitialPosition({ x, y });
     }
   }, [selectedLayers, zoom, camera]);
 
   const moveToFront = useCallback(() => {
     const indices: number[] = [];
-  
+
     if (!liveLayerIds) {
       return;
     }
-  
+
     let arr = [...liveLayerIds];
 
     for (let i = 0; i < arr.length; i++) {
@@ -87,20 +90,20 @@ export const SelectionTools = memo(({
         indices.push(i);
       }
     }
-  
+
     const move = (arr: any[], fromIndex: number, toIndex: number) => {
       var element = arr[fromIndex];
       arr.splice(fromIndex, 1);
       arr.splice(toIndex, 0, element);
     }
-  
+
     for (let i = 0; i < indices.length; i++) {
       move(arr, indices[i], arr.length - indices.length + i);
     }
-    
+
     setLiveLayerIds(arr);
-    
-    updateLayerIds({ 
+
+    updateLayerIds({
       boardId: boardId,
       layerIds: arr
     });
@@ -110,35 +113,35 @@ export const SelectionTools = memo(({
     }
 
   }, [selectedLayers, setLiveLayerIds, liveLayerIds, updateLayerIds, boardId, socket]);
-  
+
   const moveToBack = useCallback(() => {
     const indices: number[] = [];
-  
+
     if (!liveLayerIds) {
       return;
     }
-  
+
     let arr = [...liveLayerIds];
-  
+
     for (let i = 0; i < arr.length; i++) {
       if (selectedLayers.includes(arr[i])) {
         indices.push(i);
       }
     }
-  
+
     const move = (arr: any[], fromIndex: number, toIndex: number) => {
       var element = arr[fromIndex];
       arr.splice(fromIndex, 1);
       arr.splice(toIndex, 0, element);
     }
-  
+
     for (let i = 0; i < indices.length; i++) {
       move(arr, indices[i], i);
     }
-    
+
     setLiveLayerIds(arr);
 
-    updateLayerIds({ 
+    updateLayerIds({
       boardId: boardId,
       layerIds: arr
     });
@@ -148,13 +151,13 @@ export const SelectionTools = memo(({
     }
 
   }, [selectedLayers, setLiveLayerIds, liveLayerIds, updateLayerIds, boardId, socket]);
-  
-  const setFill = useCallback((fill: Color) => {  
+
+  const setFill = useCallback((fill: Color) => {
     setLiveLayers((prevLayers: any) => {
       const newLayers = { ...prevLayers };
       const updatedIds: any = [];
       const updatedLayers: any = [];
-  
+
       selectedLayers.forEach((id) => {
         const layer = newLayers[id];
         if (layer) {
@@ -163,29 +166,29 @@ export const SelectionTools = memo(({
           updatedLayers.push(newLayers[id]);
         }
       });
-  
+
       if (updatedIds.length > 0) {
-        updateLayer({ 
+        updateLayer({
           boardId: boardId,
           layerId: updatedIds,
           layerUpdates: updatedLayers.map(() => ({ fill }))
         });
       }
-  
+
       if (socket) {
         socket.emit('layer-update', updatedIds, updatedLayers);
       }
-  
+
       return newLayers;
     });
   }, [selectedLayers, setLiveLayers, socket, updateLayer, boardId]);
 
-  const setOutlineFill = useCallback((outlineFill: Color) => {  
+  const setOutlineFill = useCallback((outlineFill: Color) => {
     setLiveLayers((prevLayers: any) => {
       const newLayers = { ...prevLayers };
       const updatedIds: any = [];
       const updatedLayers: any = [];
-  
+
       selectedLayers.forEach((id) => {
         const layer = newLayers[id];
         if (layer) {
@@ -194,36 +197,36 @@ export const SelectionTools = memo(({
           updatedLayers.push(newLayers[id]);
         }
       });
-  
+
       if (updatedIds.length > 0) {
-        updateLayer({ 
+        updateLayer({
           boardId: boardId,
           layerId: updatedIds,
           layerUpdates: updatedLayers.map(() => ({ outlineFill }))
         });
       }
-  
+
       if (socket) {
         socket.emit('layer-update', updatedIds, updatedLayers);
       }
-  
+
       return newLayers;
     });
   }, [selectedLayers, setLiveLayers, socket, updateLayer, boardId]);
 
-  const deleteLayers = useCallback(() => {  
+  const deleteLayers = useCallback(() => {
     let newLiveLayers = { ...liveLayers };
     let newLiveLayerIds = liveLayerIds.filter(id => !selectedLayers.includes(id));
-  
-    deleteLayer({ 
+
+    deleteLayer({
       boardId: boardId,
-      layerId: selectedLayers 
+      layerId: selectedLayers
     });
 
     selectedLayers.forEach((id) => {
       delete newLiveLayers[id];
     });
-  
+
     if (socket) {
       socket.emit('layer-delete', selectedLayers);
     }
@@ -242,14 +245,24 @@ export const SelectionTools = memo(({
       style={{
         transform: initialPosition
           ? `translate(
-              calc(${initialPosition.x}px - 50%),
-              calc(${initialPosition.y - 30}px - 100%)
-            )`
+          calc(${initialPosition.x}px - 50%),
+          ${initialPosition.y < 130 ? `calc(${initialPosition.y + selectionBounds.height * zoom + 30}px)` : `calc(${initialPosition.y - 30}px - 100%)`}
+        )`
           : undefined
       }}
     >
+      {isPathLayer && (
+        <PathStokeSizeSelection
+          selectedLayers={selectedLayers}
+          setLiveLayers={setLiveLayers}
+          liveLayers={liveLayers}
+          updateLayer={updateLayer}
+          boardId={boardId}
+          socket={socket}
+        />
+      )}
       {isArrowLayer && (
-        <ArrowHeadSelection 
+        <ArrowHeadSelection
           selectedLayers={selectedLayers}
           setLiveLayers={setLiveLayers}
           liveLayers={liveLayers}
