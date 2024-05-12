@@ -61,7 +61,7 @@ const TemplateInSlider = ({
             <p className="my-5 text-center text-xl font-roobert font-semibold">{name}</p>
             <Image
                 src={image}
-                alt={name}
+                alt={`Plantilla de ${name}`}
                 width={300}
                 height={300}
                 className="rounded-xl w-auto h-auto"
