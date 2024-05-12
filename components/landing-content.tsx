@@ -6,6 +6,7 @@ import { BlogTestimonials } from "./blog-testimonials";
 import { PlatformYouCanTrust } from "./platform-you-can-trust";
 import { BlogLinks } from "./blog-links";
 import { LandingVideo } from "./landing-video";
+import { TemplatesSlider } from "./templates-slider";
 
 export const LandingContent = () => {
     return (
@@ -35,9 +36,10 @@ export const LandingContent = () => {
                 img="/placeholders/mapa-mental.png"
                 side="right"
             />
+            <TemplatesSlider />
             <div className="my-20">
                 <PlatformYouCanTrust />
-            </div>
+            </div>  
             <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5">
                 <BlogLinks blogTitle="Mapa Conceptual y su Importancia en el Mundo Online" blogImage="/placeholders/mapa-conceptual-online.png" blogHref="/blog/mapa-conceptual/" blogDescription="Explora las herramientas versátiles de Sketchlie para crear mapas conceptuales online de forma colaborativa y eficiente..." isNew={true} />
                 <BlogLinks blogTitle="Desata tu Creatividad con la Pizarra Virtual Online de Sketchlie" blogImage="/placeholders/pizarra-online.png" blogHref="/blog/pizarra-online/" blogDescription="En un mundo cada vez más digitalizado, la necesidad de herramientas de colaboración efectivas se ha vuelto fundamental para empresas..." isNew={true} />

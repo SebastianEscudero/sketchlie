@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 const LandingPage = () => {
     return ( 
         <div className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[3%]">
-           <div className="mt-20">
+           <div className="mt-[3%]">
            <Breadcrumb>
             <BreadcrumbList>
                 <BreadcrumbItem>
@@ -38,7 +38,7 @@ const LandingPage = () => {
             </BreadcrumbList>
             </Breadcrumb>
            </div>
-         <h1 className="xl:text-6xl lg:text-5xl md:text-4xl text-3xl mt-20 lg:pr-20" style={{lineHeight: "1.2"}}>
+         <h1 className="xl:text-6xl lg:text-5xl md:text-4xl text-3xl mt-[3%] lg:pr-20" style={{lineHeight: "1.2"}}>
             Diagrama de Flujo: Herramienta Esencial para la Colaboración Online
          </h1>
            <Image
@@ -46,9 +46,9 @@ const LandingPage = () => {
                 alt="Mapa conceptual"
                 width={1920}
                 height={1080}
-                className="rounded-2xl border border-black mt-20" 
+                className="rounded-2xl border border-black mt-[3%]" 
            />
-           <div className="flex flex-col-reverse lg:flex-row justify-between mt-20">
+           <div className="flex flex-col-reverse lg:flex-row justify-between mt-[3%]">
                 <div className="lg:max-w-[70%] text-xl">
                     <p className="mb-10">
                         Los diagramas de flujo son una herramienta crucial en diversos campos, desde la ingeniería hasta la programación y la gestión de proyectos. En el mundo digital, donde la colaboración remota se ha vuelto cada vez más común, contar con herramientas efectivas para la visualización y comunicación de procesos es fundamental. En Sketchlie, comprendemos la importancia de la colaboración eficiente, por eso ofrecemos una plataforma de pizarra en línea que incluye funcionalidades avanzadas para la creación de diagramas de flujo de manera colaborativa.

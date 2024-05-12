@@ -8,6 +8,15 @@ import { BlogLinks } from "@/components/blog-links";
 import { PlatformYouCanTrust } from "@/components/platform-you-can-trust";
 import { LandingVideo } from "@/components/landing-video";
 import { VerMas } from "@/components/ver-mas";
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
+import Link from "next/link";
+import { TemplatesSlider } from "@/components/templates-slider";
 
 export const metadata: Metadata = {
     title: "Creador de Diagramas de Flujo | Sketchlie",
@@ -75,9 +84,20 @@ const LandingPage = () => {
             text: "Una vez que hayas creado tu diagrama de flujo, revísalo cuidadosamente para asegurarte de que represente con precisión el proceso o sistema que deseas representar. Realiza ajustes según sea necesario para mejorar la claridad y la precisión de tu diagrama de flujo."
         }
     ]
-    
-    return ( 
+
+    return (
         <div>
+            <Breadcrumb className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
+                <BreadcrumbList>
+                    <BreadcrumbItem>
+                        <Link href="/">Home</Link>
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                        <BreadcrumbPage>Diagrama de flujo</BreadcrumbPage>
+                    </BreadcrumbItem>
+                </BreadcrumbList>
+            </Breadcrumb>
             <BlogStructure
                 title="Creador de diagramas de flujo online"
                 description="Crea diagramas de flujo rápidamente y simplifica tus rutinas con el creador de diagramas de flujo de Sketchlie. Visualiza los pasos del proceso que estés creando, desde alinear a los equipos hasta pasar a la acción con toda la información."
@@ -88,20 +108,20 @@ const LandingPage = () => {
             <LogoSlider />
             <LandingVideo />
             <div className="mb:my-28 my-14">
-                <BlogSection 
-                    title="Crea diagramas de flujo versátiles." 
+                <BlogSection
+                    title="Crea diagramas de flujo versátiles."
                     text="
                     Utiliza nuestras herramientas de diseño para simplificar datos complicados. Explora nuestra variedad de íconos y colores, y agrega enlaces o incrusta elementos en tu diagrama de flujo."
                 />
             </div>
-            <BlogSection 
-                title="Diseña tu diagrama de flujo como un profesional" 
+            <BlogSection
+                title="Diseña tu diagrama de flujo como un profesional"
                 text="Empieza en minutos con nuestro intuitivo creador de diagramas de flujo. Crea diagramas de lo que necesites, desde sistemas y procesos hasta datos y programas, con nuestro creador de diagramas de flujo. Visualiza sistemas complejos en un solo lugar."
                 img="/placeholders/mapa-mental.png"
                 side="right"
             />
             <BlogSection
-                title="Trabaja desde cualquier lugar" 
+                title="Trabaja desde cualquier lugar"
                 text="Tu flujograma guardado en la nube hace que puedas acceder desde cualquier lugar, en cualquier momento. Nuestro creador de diagramas de flujo es compatible con todos los dispositivos. Comienza trabajando en Sketchlie y desarrolla el proyecto con tu equipo para mejorar la claridad y dar resultados mucho más rápido."
                 img="/placeholders/improve-performance.png"
                 side="right"
@@ -113,29 +133,25 @@ const LandingPage = () => {
                 side="right"
             />
             <BlogSection
-                title="Potencia tus diagramas de flujo" 
+                title="Potencia tus diagramas de flujo"
                 text="Explora cómo Sketchlie puede llevar la colaboración a un nivel completamente nuevo. Desde sesiones de lluvia de ideas hasta reuniones de seguimiento de proyectos, esta herramienta versátil y fácil de usar está diseñada para potenciar la creatividad y la productividad de tu equipo. Únete a la revolución de la colaboración online. ¡Regístrate hoy mismo!"
                 img="/placeholders/pizarra-online.png"
                 side="right"
             />
+            <TemplatesSlider />
             <div className="my-20">
-                <PlatformYouCanTrust/>
+                <PlatformYouCanTrust />
             </div>
-            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5 md:my-20 my-5">
-                <BlogLinks blogTitle="Mapa Conceptual Online" blogImage="/placeholders/mapa-conceptual.png" blogHref="/mapa-conceptual/" blogDescription="Descubre cómo desatar tu creatividad y potenciar la colaboración en tiempo real con Sketchlie."/>
-                <BlogLinks blogTitle="Mapa de Procesos" blogImage="/placeholders/mapa-de-procesos.png" blogHref="/mapas-de-procesos" blogDescription="El mapa de procesos ayuda a los equipos a mapear y implementar mejoras. Registrate hoy con una 3 espacios de trabajo gratuitos para empezar a utilizar la mejor herramienta de mapa de procesos."/>
-                <BlogLinks blogTitle="Wireframes" blogImage="/placeholders/wireframe.png" blogHref="/wireframe/" blogDescription="Empieza a visualizar tus ideas en minutos con nuestro intuitivo creador de wireframes. Crea esquemas de lo que necesites, desde páginas de inicio hasta formularios y menús, con nuestro creador de wireframes. "/>
-            </div>
-            <HowToCreate steps={steps} title="Cómo hacer un diagrama de flujo"/>
+            <HowToCreate steps={steps} title="Cómo hacer un diagrama de flujo" />
             <FaqSection accordionData={faqData} sectionTitle="diagramas de flujo" />
             <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5 md:my-10 my-5">
-                <VerMas title="Cómo hacer un Diagrama de Flujo" href="/diagrama-de-flujo/que-es-diagrama-de-flujo/"/>
-                <VerMas title="Tipos de Diagramas de Flujo" href="/diagrama-de-flujo/que-es-diagrama-de-flujo/"/>
-                <VerMas title="Beneficios de Crear Diagramas de Flujo" href="/diagrama-de-flujo/que-es-diagrama-de-flujo/"/>
+                <VerMas title="Cómo hacer un Diagrama de Flujo" href="/diagrama-de-flujo/que-es-diagrama-de-flujo/" />
+                <VerMas title="Tipos de Diagramas de Flujo" href="/diagrama-de-flujo/que-es-diagrama-de-flujo/" />
+                <VerMas title="Beneficios de Crear Diagramas de Flujo" href="/diagrama-de-flujo/que-es-diagrama-de-flujo/" />
             </div>
         </div>
 
-     );
+    );
 }
- 
+
 export default LandingPage;

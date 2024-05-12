@@ -8,6 +8,15 @@ import { BlogLinks } from "@/components/blog-links";
 import { PlatformYouCanTrust } from "@/components/platform-you-can-trust";
 import { LandingVideo } from "@/components/landing-video";
 import { VerMas } from "@/components/ver-mas";
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
+import Link from "next/link";
+import { TemplatesSlider } from "@/components/templates-slider";
 
 export const metadata: Metadata = {
     title: "La herramienta para crear Mapas Mentales | Sketchlie",
@@ -65,9 +74,20 @@ const LandingPage = () => {
             text: "Agrega colores, imágenes y notas adicionales para hacer el mapa mental más visualmente atractivo y comprensible. Usa colores para resaltar diferentes categorías o niveles de información. Incorpora imágenes relevantes que refuercen los conceptos. Además, añade notas para proporcionar detalles adicionales o explicaciones breves."
         }
     ]
-    
-    return ( 
+
+    return (
         <div>
+            <Breadcrumb className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
+                <BreadcrumbList>
+                    <BreadcrumbItem>
+                        <Link href="/">Home</Link>
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                        <BreadcrumbPage>Mapa mental</BreadcrumbPage>
+                    </BreadcrumbItem>
+                </BreadcrumbList>
+            </Breadcrumb>
             <BlogStructure
                 title="Crea Mapas Mentales Online de Forma Creativa"
                 description="Libera tu imaginación y organiza tus ideas de manera visual con nuestra herramienta para crear mapas mentales en línea. Descubre cómo el diseño de mapas mentales puede potenciar tu creatividad y mejorar tu productividad en proyectos personales y profesionales."
@@ -78,52 +98,52 @@ const LandingPage = () => {
             <LogoSlider />
             <LandingVideo />
             <div className="mb:my-28 my-14">
-                <BlogSection 
-                    title="Visualiza y Organiza tus Ideas con Mapas Mentales" 
+                <BlogSection
+                    title="Visualiza y Organiza tus Ideas con Mapas Mentales"
                     text="Explora nuestras herramientas de diseño para simplificar la creación de mapas mentales. Crea conexiones entre tus ideas, organízalas de manera jerárquica y potencia tu creatividad con nuestro intuitivo creador de mapas mentales."
                 />
             </div>
-            <BlogSection 
-                title="Explora la creatividad con mapas mentales" 
+            <BlogSection
+                title="Explora la creatividad con mapas mentales"
                 text="Libera tu creatividad y potencia tu pensamiento visual con mapas mentales. Esta técnica te permite representar tus ideas de manera no lineal, fomentando la conexión de conceptos de forma intuitiva y original. Descubre nuevas formas de expresión y resolución de problemas a través de la creación de mapas mentales creativos y estimulantes."
                 img="/placeholders/wireframe.png"
                 side="right"
             />
             <BlogSection
-                title="Mapas mentales: el secreto para potenciar tu creatividad" 
+                title="Mapas mentales: el secreto para potenciar tu creatividad"
                 text="Desbloquea todo tu potencial creativo con el uso de mapas mentales. Desde la generación de ideas hasta la planificación de proyectos, los mapas mentales ofrecen una plataforma versátil para explorar y desarrollar nuevas ideas. Libera tu imaginación y encuentra soluciones innovadoras a través de esta técnica de visualización única."
                 img="/placeholders/improve-performance.png"
                 side="right"
             />
             <BlogSection
                 title="Haz tus mapas mentales más fáciles y efectivos"
-                text="Optimiza tu proceso de estudio y organización con mapas mentales simples y efectivos. Simplifica información compleja, identifica relaciones clave y mejora tu comprensión global de los temas. Convierte tus notas y apuntes en mapas mentales claros y concisos, facilitando la revisión y el recuerdo de la información cuando más lo necesitas."
+                text={
+                    <>
+                        Optimiza tu proceso de estudio y organización con nuestra <Link href="/plantillas/mapa-mental/" className="text-custom-blue hover:underline">plantilla de mapa mental</Link>. Simplifica información compleja, identifica relaciones clave y mejora tu comprensión global de los temas. Convierte tus notas y apuntes en mapas mentales claros y concisos, facilitando la revisión y el recuerdo de la información cuando más lo necesitas.
+                    </>
+                }
                 img="/placeholders/diagrama-de-flujo.png"
                 side="right"
             />
             <BlogSection
-                title="Simplifica tu vida con mapas mentales intuitivos" 
+                title="Simplifica tu vida con mapas mentales intuitivos"
                 text="Haz que la organización y la planificación sean más simples y eficientes con mapas mentales intuitivos. Desde la gestión de tareas hasta la toma de decisiones, los mapas mentales te ayudan a estructurar la información de manera clara y accesible. Optimiza tu productividad y reduce el estrés utilizando esta herramienta práctica en tu vida diaria."
                 img="/placeholders/pizarra-online.png"
                 side="right"
             />
+            <TemplatesSlider />
             <div className="my-20">
-                <PlatformYouCanTrust/>
+                <PlatformYouCanTrust />
             </div>
-            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5 md:my-20 my-5">
-                <BlogLinks blogTitle="Mapa Conceptual Online" blogImage="/placeholders/mapa-mental.png" blogHref="/mapa-conceptual/" blogDescription="Descubre cómo desatar tu creatividad y potenciar la colaboración en tiempo real con Sketchlie."/>
-                <BlogLinks blogTitle="Mapa de Procesos" blogImage="/placeholders/mapa-de-procesos.png" blogHref="/mapas-de-procesos" blogDescription="El mapa de procesos ayuda a los equipos a mapear y implementar mejoras. Registrate hoy con una 3 espacios de trabajo gratuitos para empezar a utilizar la mejor herramienta de mapa de procesos."/>
-                <BlogLinks blogTitle="Wireframes" blogImage="/placeholders/wireframe.png" blogHref="/wireframe/" blogDescription="Empieza a visualizar tus ideas en minutos con nuestro intuitivo creador de wireframes. Crea esquemas de lo que necesites, desde páginas de inicio hasta formularios y menús, con nuestro creador de wireframes. "/>
-            </div>
-            <HowToCreate steps={steps} title="¿Cómo se crea un mapa mental?"/>
+            <HowToCreate steps={steps} title="¿Cómo se crea un mapa mental?" />
             <FaqSection accordionData={faqData} sectionTitle="mapas mentales" />
             <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5 md:my-10 my-5">
-                <VerMas title="¿Cómo hacer un mapa mental?" href="/mapa-mental-online/que-es-mapa-mental/"/>
-                <VerMas title="Que es un mapa mental online?" href="/mapa-mental-online/que-es-mapa-mental/"/>
-                <VerMas title="¿Puedo utilizar un mapa mental online para la educación?" href="/mapa-mental-online/que-es-mapa-mental/"/>
+                <VerMas title="¿Cómo hacer un mapa mental?" href="/mapa-mental-online/que-es-mapa-mental/" />
+                <VerMas title="Que es un mapa mental online?" href="/mapa-mental-online/que-es-mapa-mental/" />
+                <VerMas title="¿Puedo utilizar un mapa mental online para la educación?" href="/mapa-mental-online/que-es-mapa-mental/" />
             </div>
         </div>
-     );
+    );
 }
- 
+
 export default LandingPage;

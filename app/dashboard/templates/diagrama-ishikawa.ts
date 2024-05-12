@@ -1,6 +1,7 @@
 export const PlantillaDiagramaIshikawa = {
   name: 'Diagrama Ishikawa',
   image: '/templates/diagrama-ishikawa.png',
+  href: "/plantillas/diagrama-ishikawa/",
   layers: {
     "38iHAuj6WAaUwnLv7paua": {
       fill: { a: 1, b: 69, g: 244, r: 255 },

@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 const LandingPage = () => {
     return (
         <div className="xl:mx-[5%] lg:mx-[4%] md:mx-[3%] mx-[3%]">
-            <div className="mt-20">
+            <div className="mt-[3%]">
                 <Breadcrumb>
                     <BreadcrumbList>
                         <BreadcrumbItem>
@@ -52,7 +52,7 @@ const LandingPage = () => {
                     className="rounded-2xl border border-black md:max-w-[60%] md:mt-0 mt-10"
                 />
             </div>
-            <div className="flex flex-col-reverse lg:flex-row justify-between mt-20">
+            <div className="flex flex-col-reverse lg:flex-row justify-between mt-[3%]">
                 <div className="lg:max-w-[70%] text-xl">
                     <div id="1" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">¿Qué es un mapa de procesos?</h2>

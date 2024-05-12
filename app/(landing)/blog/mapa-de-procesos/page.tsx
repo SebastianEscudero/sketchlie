@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 const LandingPage = () => {
     return ( 
         <div className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[3%]">
-           <div className="mt-20">
+           <div className="mt-[3%]">
            <Breadcrumb>
             <BreadcrumbList>
                 <BreadcrumbItem>
@@ -40,7 +40,7 @@ const LandingPage = () => {
             </BreadcrumbList>
             </Breadcrumb>
            </div>
-         <h1 className="xl:text-6xl lg:text-5xl md:text-4xl text-3xl mt-20 lg:pr-20" style={{lineHeight: "1.2"}}>
+         <h1 className="xl:text-6xl lg:text-5xl md:text-4xl text-3xl mt-[3%] lg:pr-20" style={{lineHeight: "1.2"}}>
             Mapa de Procesos: La Herramienta Esencial para la Eficiencia Empresarial
          </h1>
            <Image
@@ -48,9 +48,9 @@ const LandingPage = () => {
                 alt="Mapa conceptual"
                 width={1920}
                 height={1080}
-                className="rounded-2xl border border-black mt-20" 
+                className="rounded-2xl border border-black mt-[3%]" 
            />
-           <div className="flex flex-col-reverse lg:flex-row justify-between mt-20">
+           <div className="flex flex-col-reverse lg:flex-row justify-between mt-[3%]">
                 <div className="lg:max-w-[70%] text-xl">
                     <p className="mb-10">En el mundo empresarial actual, la eficiencia y la organización son clave para el éxito. Uno de los recursos más poderosos para lograr este objetivo es el <strong><Link className="text-custom-blue hover:underline" href="/mapas-de-procesos">mapa de procesos</Link></strong>. Este instrumento no solo proporciona una visión clara de cómo funcionan los diferentes aspectos de una empresa, sino que también identifica áreas de mejora y optimización. En este artículo, exploraremos a fondo qué es un mapa de procesos, sus beneficios y cómo puede impulsar la eficiencia en cualquier organización.</p>
 

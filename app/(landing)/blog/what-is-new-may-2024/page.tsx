@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 const LandingPage = () => {
     return ( 
         <div className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[3%]">
-           <div className="mt-20">
+           <div className="mt-[3%]">
            <Breadcrumb>
             <BreadcrumbList>
                 <BreadcrumbItem>
@@ -40,7 +40,7 @@ const LandingPage = () => {
             </BreadcrumbList>
             </Breadcrumb>
            </div>
-         <h1 className="xl:text-6xl lg:text-5xl md:text-4xl text-3xl mt-20 lg:pr-20" style={{lineHeight: "1.2"}}>
+         <h1 className="xl:text-6xl lg:text-5xl md:text-4xl text-3xl mt-[3%] lg:pr-20" style={{lineHeight: "1.2"}}>
             Actualización Mayo 2024: Mejoras y Plantillas
          </h1>
            <Image
@@ -48,9 +48,9 @@ const LandingPage = () => {
                 alt="Icons Templates and Tools"
                 width={1920}
                 height={1080}
-                className="rounded-2xl border border-black mt-20" 
+                className="rounded-2xl border border-black mt-[3%]" 
            />
-           <div className="flex flex-col-reverse lg:flex-row justify-between mt-20">
+           <div className="flex flex-col-reverse lg:flex-row justify-between mt-[3%]">
                 <div className="lg:max-w-[70%] text-xl">
                     <p className="mb-10">¡Bienvenido al mundo de Sketchlie, donde la creatividad se encuentra con la funcionalidad! <Link className="text-custom-blue hover:underline" href="/">Sketchlie</Link> ha lanzado recientemente algunas emocionantes actualizaciones que seguramente revolucionarán la forma en que dibujas, generas ideas y colaboras en línea. Desde opciones de personalización mejoradas hasta una gran cantidad de nuevas plantillas, profundicemos en los detalles de estas emocionantes características nuevas.</p>
                     <div id="1" className="h-[80px] mt-[-80px]"></div>

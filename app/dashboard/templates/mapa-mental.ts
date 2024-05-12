@@ -1,6 +1,7 @@
 export const PlantillaMapaMental = {
   name: 'Mapa Mental',
   image: '/templates/mapa-mental.png',
+  href: "/plantillas/mapa-mental/",
   layers: {
     "2HBYp3cBKUdohvSZvsINT": {
       center: {

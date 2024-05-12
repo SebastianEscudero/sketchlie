@@ -8,6 +8,15 @@ import { BlogLinks } from "@/components/blog-links";
 import { PlatformYouCanTrust } from "@/components/platform-you-can-trust";
 import { LandingVideo } from "@/components/landing-video";
 import { VerMas } from "@/components/ver-mas";
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
+import Link from "next/link";
+import { TemplatesSlider } from "@/components/templates-slider";
 
 export const metadata: Metadata = {
     title: "Crea Wireframes online gratis | Sketchlie",
@@ -60,9 +69,20 @@ const LandingPage = () => {
             text: "Mejora la claridad del wireframe mediante la anotación de elementos clave para una mejor comprensión. Las anotaciones ayudan a transmitir funcionalidades y características específicas a los interesados, facilitando la comunicación y retroalimentación efectivas."
         }
     ]
-    
-    return ( 
-            <div>
+
+    return (
+        <div>
+                        <Breadcrumb className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
+                <BreadcrumbList>
+                    <BreadcrumbItem>
+                        <Link href="/">Home</Link>
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                        <BreadcrumbPage>Wireframes</BreadcrumbPage>
+                    </BreadcrumbItem>
+                </BreadcrumbList>
+            </Breadcrumb>
             <BlogStructure
                 title="Herramienta para crear Wireframes Online"
                 description="Diseña tus proyectos web de manera efectiva y eficiente con nuestro creador de wireframes en línea. Visualiza la estructura y el diseño de tu sitio web antes de empezar a codificar, asegurando una experiencia de usuario óptima desde el principio."
@@ -73,20 +93,24 @@ const LandingPage = () => {
             <LogoSlider />
             <LandingVideo />
             <div className="mb:my-28 my-14">
-                <BlogSection 
-                    title="Construye tus ideas con wireframes versátiles." 
+                <BlogSection
+                    title="Construye tus ideas con wireframes versátiles."
                     text="
                     Utiliza nuestras herramientas de diseño para simplificar la creación de tus proyectos web. Explora una amplia variedad de elementos y disposiciones, y agrega interacciones para simular la experiencia del usuario final."
                 />
             </div>
-            <BlogSection 
-                title="Diseña tu sitio web como un profesional" 
-                text="Empieza a visualizar tus ideas en minutos con nuestro intuitivo creador de wireframes. Crea esquemas de lo que necesites, desde páginas de inicio hasta formularios y menús, con nuestro creador de wireframes. Visualiza la estructura de tu sitio web de manera clara y concisa."
+            <BlogSection
+                title="Diseña tu sitio web como un profesional"
+                text={
+                    <>
+                        Empieza a visualizar tus ideas en minutos con nuestra <Link href="/plantillas/low-fidelity-wireframe/" className="text-custom-blue hover:underline">plantillas de wireframes</Link>. Crea esquemas de lo que necesites, desde páginas de inicio hasta formularios y menús de navegación. Con nuestra herramienta de diseño intuitiva, puedes personalizar cada detalle para que se ajuste a tus necesidades y objetivos.
+                    </>
+                }
                 img="/placeholders/mapa-mental.png"
                 side="right"
             />
             <BlogSection
-                title="Descubre la Eficacia de los Wireframes en tu Proyecto de Diseño" 
+                title="Descubre la Eficacia de los Wireframes en tu Proyecto de Diseño"
                 text="Los wireframes son la columna vertebral de cualquier proyecto de diseño. Estos esquemas visuales simplificados son como los cimientos de una casa, proporcionando una estructura sólida sobre la cual construir tu proyecto digital."
                 img="/placeholders/improve-performance.png"
                 side="right"
@@ -98,29 +122,25 @@ const LandingPage = () => {
                 side="right"
             />
             <BlogSection
-                title="Wireframes: El Secreto para una Colaboración Efectiva en Diseño" 
+                title="Wireframes: El Secreto para una Colaboración Efectiva en Diseño"
                 text="Los wireframes no solo son para diseñadores. Son herramientas de comunicación efectivas que pueden ayudar a alinear a todo tu equipo, desde diseñadores hasta desarrolladores y clientes. Con wireframes claros y precisos, puedes garantizar que todos estén en la misma página y trabajen hacia un objetivo común."
                 img="/placeholders/pizarra-online.png"
                 side="right"
             />
+            <TemplatesSlider />
             <div className="my-20">
-                <PlatformYouCanTrust/>
+                <PlatformYouCanTrust />
             </div>
-            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5 md:my-20 my-5">
-                <BlogLinks blogTitle="Mapa Conceptual Online" blogImage="/placeholders/mapa-conceptual-online.png" blogHref="/mapa-conceptual/" blogDescription="Descubre cómo desatar tu creatividad y potenciar la colaboración en tiempo real con Sketchlie."/>
-                <BlogLinks blogTitle="Mapa de Procesos" blogImage="/placeholders/mapa-de-procesos.png" blogHref="/mapas-de-procesos" blogDescription="El mapa de procesos ayuda a los equipos a mapear y implementar mejoras. Registrate hoy con una 3 espacios de trabajo gratuitos para empezar a utilizar la mejor herramienta de mapa de procesos."/>
-                <BlogLinks blogTitle="Mapas Mentales" blogImage="/placeholders/mapa-mental.png" blogHref="/mapa-mental-online/" blogDescription="Explora nuestras herramientas para simplificar la creación de mapas mentales. Organiza tus ideas de manera jerárquica y potencia tu creatividad con nuestro intuitivo creador de mapas mentales."/>
-            </div>
-            <HowToCreate steps={steps} title="Cómo hacer un wireframe"/>
+            <HowToCreate steps={steps} title="Cómo hacer un wireframe" />
             <FaqSection accordionData={faqData} sectionTitle="los wireframes" />
             <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5 md:my-10 my-5">
-                <VerMas title="¿Qué es un wireframe?" href="/wireframe/que-es-wireframe/"/>
-                <VerMas title="Cómo hacer un Wireframe" href="/wireframe/que-es-wireframe/"/>
-                <VerMas title="¿Cuáles son los beneficios de utilizar wireframes en Sketchlie?" href="/wireframe/que-es-wireframe/"/>
+                <VerMas title="¿Qué es un wireframe?" href="/wireframe/que-es-wireframe/" />
+                <VerMas title="Cómo hacer un Wireframe" href="/wireframe/que-es-wireframe/" />
+                <VerMas title="¿Cuáles son los beneficios de utilizar wireframes en Sketchlie?" href="/wireframe/que-es-wireframe/" />
             </div>
         </div>
 
-     );
+    );
 }
- 
+
 export default LandingPage;

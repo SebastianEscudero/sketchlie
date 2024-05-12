@@ -1,7 +1,14 @@
 import { BlogLinks } from "@/components/blog-links"
 import { HeaderBlog } from "@/components/header-blog"
 import { Metadata } from "next";
-
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
+import Link from "next/link";
 
 export const metadata: Metadata = {
     title: "Colabora, Diseña, Crea, Enseña | Sketchlie Blog",
@@ -102,7 +109,7 @@ const BlogPage = () => {
             blogDescription: "Crea diagramas de flujo en línea con Sketchlie. Nuestra herramienta de diagramas de flujo te permite capturar tus ideas y organizar la información de manera visual."
         },
         {
-            blogTitle: "Pizarra Online", 
+            blogTitle: "Pizarra Online",
             blogImage: "/placeholders/pizarra-online.png",
             blogHref: "/pizarra-online/",
             blogDescription: "Crea pizarras en línea con Sketchlie. Nuestra herramienta de pizarras te permite capturar tus ideas y organizar la información de manera visual."
@@ -111,13 +118,24 @@ const BlogPage = () => {
 
     return (
         <div>
-            <div className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mb-10 mt-20">
+            <Breadcrumb className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
+                <BreadcrumbList>
+                    <BreadcrumbItem>
+                        <Link href="/">Home</Link>
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                        <BreadcrumbPage>Blog</BreadcrumbPage>
+                    </BreadcrumbItem>
+                </BreadcrumbList>
+            </Breadcrumb>
+            <div className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mb-10 mt-[3%]">
                 <HeaderBlog
-                    blogTitle= "Tutorial de la Pizarra Online"
-                    blogImage= "/placeholders/pizarra-online.png"
-                    blogHref= "/blog/pizarra-online-tutorial/"
-                    blogDescription= "La Pizarra Online de Sketchlie cuenta con una amplia gama de funcionalidades en este tutorial, te guiaremos a través de las herramientas..."
-                    isNew = {true}
+                    blogTitle="Tutorial de la Pizarra Online"
+                    blogImage="/placeholders/pizarra-online.png"
+                    blogHref="/blog/pizarra-online-tutorial/"
+                    blogDescription="La Pizarra Online de Sketchlie cuenta con una amplia gama de funcionalidades en este tutorial, te guiaremos a través de las herramientas..."
+                    isNew={true}
                 />
             </div>
             <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5">

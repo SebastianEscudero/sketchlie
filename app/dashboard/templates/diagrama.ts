@@ -1,6 +1,7 @@
 export const PlantillaDiagrama = {
     name: 'Diagrama',
     image: '/templates/diagrama.png',
+    href: "/plantillas/diagrama/",
     layers: {
         "6tZHbMi2m71HXICvj26hk": {
             fill: { a: 1, b: 255, g: 255, r: 255 },

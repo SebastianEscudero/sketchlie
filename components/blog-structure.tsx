@@ -26,7 +26,7 @@ export const BlogStructure = ({
             <Image
                 src={img}
                 alt={alt}
-                className="w-full"
+                className="w-full rounded-sm"
                 width={1920}
                 height={1080}
                 
@@ -57,7 +57,7 @@ export const BlogStructure = ({
                         }}
                     />
                 </div>
-                <p className="text-lg text-zinc-600 mx-auto">
+                <p className="text-lg text-zinc-600 md:mr-[25%] mx-auto">
                     {description}
                 </p>
                 <div>

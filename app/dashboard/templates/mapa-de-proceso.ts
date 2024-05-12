@@ -1,6 +1,7 @@
 export const PlantillaMapaDeProceso = {
     name: 'Mapa de Proceso',
     image: '/templates/mapa-de-proceso.png',
+    href: "/plantillas/mapa-de-proceso/",
     layers: {
         "19NbGCGRPe0HM0XAX7inw": {
             fill: null,

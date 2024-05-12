@@ -8,6 +8,15 @@ import { PlatformYouCanTrust } from "@/components/platform-you-can-trust";
 import { LandingVideo } from "@/components/landing-video";
 import { HowToCreate } from "@/components/how-to-create";
 import { VerMas } from "@/components/ver-mas";
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
+import Link from "next/link";
+import { TemplatesSlider } from "@/components/templates-slider";
 
 export const metadata: Metadata = {
     title: "Herramienta para crear diagramas online | Sketchlie",
@@ -42,9 +51,9 @@ const LandingPage = () => {
             text: "Antes de finalizar tu diagrama, tómate el tiempo para revisarlo y refinarlo según sea necesario. Asegúrate de que todos los datos sean precisos y de que el diseño sea coherente. Solicita comentarios a tus colegas o colaboradores para obtener una perspectiva externa y realiza los ajustes necesarios para mejorar la calidad del diagrama."
         }
     ];
-    
-    
-    
+
+
+
 
     const faqData = [
         {
@@ -83,10 +92,21 @@ const LandingPage = () => {
             content: "Sí, puedes crear diagramas 100% gratuitos con Sketchlie. Además, puedes compartir tus diagramas con otros usuarios para colaborar en tiempo real sin costo adicional."
         }
     ];
-    
-    
-    return ( 
+
+
+    return (
         <div>
+            <Breadcrumb className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
+                <BreadcrumbList>
+                    <BreadcrumbItem>
+                        <Link href="/">Home</Link>
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                        <BreadcrumbPage>Diagrama</BreadcrumbPage>
+                    </BreadcrumbItem>
+                </BreadcrumbList>
+            </Breadcrumb>
             <BlogStructure
                 title="Crea diagramas online en minutos, no horas"
                 description="Los diagramas son recursos esenciales que facilitan la organización y visualización de información de forma efectiva. Se componen de nodos que representan conceptos o ideas, conectados por enlaces que ilustran las relaciones entre ellos."
@@ -96,50 +116,46 @@ const LandingPage = () => {
             />
             <LogoSlider />
             <LandingVideo />
-            <BlogSection 
-                    title="Creador de diagramas online"
-                    text="Descubre la forma perfecta para transformar conceptos complejos en un diagrama online digerible para ti, tus alumnos o tu equipo. Haz un diagrama de cualquier tema o de tu investigación para cualquier ocasión, ya sea sobre un nuevo producto de tu empresa o para presentar una lección abrumadora en clase. Estructura un diagrama online creativo a partir de la pizarra online de Sketchlie y aprovecha todas las herramientas y elementos de diseño y cautiva a tu publico."
-                    img="/placeholders/wireframe.png"
-                    side="right"
-                />
-            <BlogSection 
-                title="Diagramas online para todos" 
+            <BlogSection
+                title="Creador de diagramas online"
+                text="Descubre la forma perfecta para transformar conceptos complejos en un diagrama online digerible para ti, tus alumnos o tu equipo. Haz un diagrama de cualquier tema o de tu investigación para cualquier ocasión, ya sea sobre un nuevo producto de tu empresa o para presentar una lección abrumadora en clase. Estructura un diagrama online creativo a partir de la pizarra online de Sketchlie y aprovecha todas las herramientas y elementos de diseño y cautiva a tu publico."
+                img="/placeholders/wireframe.png"
+                side="right"
+            />
+            <BlogSection
+                title="Diagramas online para todos"
                 text="Sketchlie simplifica el proceso de creación de diagramas al ofrecer una amplia variedad de figuras estándar y herramientas avanzadas. Su editor intuitivo permite diseñar diagramas profesionales y efectivos en poco tiempo."
                 text2="Una vez finalizado el trabajo, es posible presentarlo fácilmente utilizando el modo de presentación integrado en la plataforma. Además, las características avanzadas como formatos condicionales y vinculación de datos facilitan la captura de información de manera clara, incluso en diagramas complejos."
                 img="/placeholders/mapa-mental.png"
                 side="right"
             />
             <BlogSection
-                title="Haz diagramas complejos con facilidad" 
+                title="Haz diagramas complejos con facilidad"
                 text="En Sketchlie, colaborar se vuelve simple, permitiendo compartir y trabajar en tiempo real con otros usuarios sin complicaciones. Al estar basado en la nube, ofrece una experiencia fluida y sin obstáculos, lo que facilita la colaboración entre equipos distribuidos geográficamente."
                 text2="Con nosotros, es posible crear, compartir y colaborar en diagramas de manera eficiente y efectiva, mejorando significativamente el flujo de trabajo en la creación de diagramas online."
                 img="/placeholders/improve-performance.png"
                 side="right"
             />
             <BlogSection
-                title="Anota las ideas y ponlas en práctica" 
+                title="Anota las ideas y ponlas en práctica"
                 text="Lleva la colaboración a un nivel completamente nuevo. Desde sesiones de lluvia de ideas hasta reuniones de seguimiento de proyectos, esta herramienta versátil y fácil de usar está diseñada para potenciar la creatividad y la productividad de tu equipo. Únete a la revolución de la colaboración online con Sketchlie. Haz clic para crear diagramas en línea y compartirlos con tu equipo en tiempo real."
                 img="/placeholders/pizarra-online.png"
                 side="right"
             />
+            <TemplatesSlider />
             <div className="my-20">
-                <PlatformYouCanTrust/>
+                <PlatformYouCanTrust />
             </div>
-            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5 md:my-20 my-5">
-                <BlogLinks blogTitle="Diagramas de flujo" blogImage="/placeholders/mapa-conceptual.png" blogHref="/diagrama-de-flujo/" blogDescription="Crea diagramas de flujo rápidamente y simplifica tus rutinas con el creador de diagramas de flujo de  con las herramientas de Sketchlie."/>
-                <BlogLinks blogTitle="Pizarra Online" blogImage="/placeholders/improve-performance.png" blogHref="/pizarra-online/" blogDescription="Sketchlie es una pizarra online rápida, gratuita y fácil de usar pensada para  ayudarte a colaborar con cualquier persona desde cualquier lugar."/>
-                <BlogLinks blogTitle="Wireframes" blogImage="/placeholders/wireframe.png" blogHref="/wireframe/" blogDescription="Empieza a visualizar tus ideas en minutos con nuestro intuitivo creador de wireframes. Crea esquemas de lo que necesites, desde páginas de inicio hasta formularios y menús, con nuestro creador de wireframes. "/>
-            </div>
-            <HowToCreate steps={steps} title="Cómo hacer un diagrama online"/>
-            <FaqSection accordionData={faqData} sectionTitle="los diagramas"/>
+            <HowToCreate steps={steps} title="Cómo hacer un diagrama online" />
+            <FaqSection accordionData={faqData} sectionTitle="los diagramas" />
             <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5 md:my-10 my-5">
-                <VerMas title="¿Cuál es la utilidad de los diagramas?" href="/diagrama/que-es-diagrama/"/>
-                <VerMas title="¿Cómo usar un diagrama online?" href="/diagrama/que-es-diagrama/"/>
-                <VerMas title="¿Cómo utilizar diagramas en proyectos de trabajo?" href="/diagrama/que-es-diagrama/"/>
+                <VerMas title="¿Cuál es la utilidad de los diagramas?" href="/diagrama/que-es-diagrama/" />
+                <VerMas title="¿Cómo usar un diagrama online?" href="/diagrama/que-es-diagrama/" />
+                <VerMas title="¿Cómo utilizar diagramas en proyectos de trabajo?" href="/diagrama/que-es-diagrama/" />
             </div>
         </div>
 
-     );
+    );
 }
- 
+
 export default LandingPage;

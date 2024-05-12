@@ -1,6 +1,7 @@
 export const PlantillaLluviaDeIdeas = {
   name: 'Lluvia de Ideas',
   image: '/templates/lluvia-de-ideas.png',
+  href: "/plantillas/lluvia-de-ideas/",
   layers: {
     "94Q0omcqnYFQ6xInSE4u6": {
       fill: { a: 1, b: 177, g: 249, r: 255 },

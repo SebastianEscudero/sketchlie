@@ -8,6 +8,15 @@ import { PlatformYouCanTrust } from "@/components/platform-you-can-trust";
 import { LandingVideo } from "@/components/landing-video";
 import { HowToCreate } from "@/components/how-to-create";
 import { VerMas } from "@/components/ver-mas";
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
+import Link from "next/link";
+import { TemplatesSlider } from "@/components/templates-slider";
 
 export const metadata: Metadata = {
     title: "Realiza una lluvia de ideas online | Sketchlie",
@@ -42,10 +51,10 @@ const LandingPage = () => {
             text: "Una vez que se han generado suficientes ideas, revisa y evalúa cada una para identificar las más prometedoras o relevantes para el objetivo establecido. Luego, desarrolla un plan de acción basado en estas ideas seleccionadas, asignando responsabilidades y estableciendo plazos."
         }
     ];
-    
-    
-    
-    
+
+
+
+
 
     const faqData = [
         {
@@ -84,11 +93,22 @@ const LandingPage = () => {
             content: "Después de una lluvia de ideas, el siguiente paso es evaluar las ideas generadas, desarrollar un plan de acción basado en las ideas seleccionadas y asignar responsabilidades para su implementación. Es importante llevar a cabo un seguimiento de las acciones acordadas para garantizar su ejecución."
         }
     ];
-    
-    
-    
-    return ( 
+
+
+
+    return (
         <div>
+            <Breadcrumb className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
+                <BreadcrumbList>
+                    <BreadcrumbItem>
+                        <Link href="/">Home</Link>
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                        <BreadcrumbPage>Lluvia de ideas</BreadcrumbPage>
+                    </BreadcrumbItem>
+                </BreadcrumbList>
+            </Breadcrumb>
             <BlogStructure
                 title="Realiza una lluvia de ideas efectiva"
                 description="Una sesión de lluvia de ideas es un proceso grupal para generar ideas sobre un tema. Se sigue un proceso estructurado que incluye la identificación del problema, la generación de ideas y la selección de las más prometedoras para su desarrollo. Esto fomenta la creatividad y la innovación en diferentes contextos."
@@ -98,21 +118,25 @@ const LandingPage = () => {
             />
             <LogoSlider />
             <LandingVideo />
-            <BlogSection 
-                    title="El mejor lugar para lluvias de ideas"
-                    text="Descubre cómo transformar conceptos complejos en ideas claras y creativas con una sesión de lluvia de ideas online. Utiliza la plataforma de Sketchlie para estructurar y capturar todas las ideas de tu equipo, ya sea para desarrollar un nuevo producto o para enriquecer una lección en clase. Aprovecha las herramientas de diseño disponibles para generar ideas innovadoras y cautivar a tu audiencia con soluciones únicas."
-                    img="/placeholders/wireframe.png"
-                    side="right"
-                />
-            <BlogSection 
-                title="Organiza una sesión de lluvia de ideas efectiva" 
+            <BlogSection
+                title="El mejor lugar para lluvias de ideas"
+                text={
+                    <>
+                        Descubre cómo transformar conceptos complejos en ideas claras y creativas con una sesión de lluvia de ideas online. Utiliza la plataforma de Sketchlie para estructurar y capturar todas las ideas de tu equipo, ya sea para desarrollar un nuevo producto o para enriquecer una lección en clase. Aprovecha las herramientas de diseño disponibles como nuestra <Link href="/plantillas/lluvia-de-ideas/" className="text-custom-blue hover:underline">plantilla de lluvia de ideas</Link> para generar ideas innovadoras y cautivar a tu audiencia con soluciones únicas.
+                    </>
+                }
+                img="/placeholders/wireframe.png"
+                side="right"
+            />
+            <BlogSection
+                title="Organiza una sesión de lluvia de ideas efectiva"
                 text="Preparar una sesión de lluvia de ideas efectiva es clave para inspirar la creatividad y el pensamiento innovador en tu equipo. Con Sketchlie, simplifica este proceso al ofrecer una amplia gama de herramientas y funciones que facilitan la generación y captura de ideas."
                 text2="Una vez finalizada la sesión, comparte fácilmente tus ideas utilizando el modo de presentación integrado en la plataforma. Además, características avanzadas como formatos condicionales y vinculación de datos garantizan una representación clara y organizada de las ideas."
                 img="/placeholders/mapa-mental.png"
                 side="right"
             />
             <BlogSection
-                title="Convierte lluvias de ideas en soluciones innovadoras" 
+                title="Convierte lluvias de ideas en soluciones innovadoras"
                 text="En Sketchlie, colaborar se vuelve simple, permitiendo compartir y trabajar en tiempo real con otros usuarios sin complicaciones. Al estar basado en la nube, ofrece una experiencia fluida y sin obstáculos, lo que facilita la colaboración entre equipos distribuidos geográficamente."
                 text2="Con nosotros, es posible crear, compartir y colaborar en lluvias de ideas de manera eficiente y efectiva, mejorando significativamente el flujo de trabajo en la creación de soluciones."
                 img="/placeholders/improve-performance.png"
@@ -124,24 +148,20 @@ const LandingPage = () => {
                 img="/placeholders/pizarra-online.png"
                 side="right"
             />
+            <TemplatesSlider />
             <div className="my-20">
-                <PlatformYouCanTrust/>
+                <PlatformYouCanTrust />
             </div>
-            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5 md:my-20 my-5">
-                <BlogLinks blogTitle="Diagramas de flujo" blogImage="/placeholders/mapa-conceptual.png" blogHref="/diagrama-de-flujo/" blogDescription="Crea diagramas de flujo rápidamente y simplifica tus rutinas con el creador de diagramas de flujo de  con las herramientas de Sketchlie."/>
-                <BlogLinks blogTitle="Pizarra Online" blogImage="/placeholders/improve-performance.png" blogHref="/pizarra-online/" blogDescription="Sketchlie es una pizarra online rápida, gratuita y fácil de usar pensada para  ayudarte a colaborar con cualquier persona desde cualquier lugar."/>
-                <BlogLinks blogTitle="Wireframes" blogImage="/placeholders/wireframe.png" blogHref="/wireframe/" blogDescription="Empieza a visualizar tus ideas en minutos con nuestro intuitivo creador de wireframes. Crea esquemas de lo que necesites, desde páginas de inicio hasta formularios y menús, con nuestro creador de wireframes. "/>
-            </div>
-            <HowToCreate steps={steps} title="Cómo hacer una lluvia de ideas"/>
-            <FaqSection accordionData={faqData} sectionTitle="las lluvias de ideas"/>
+            <HowToCreate steps={steps} title="Cómo hacer una lluvia de ideas" />
+            <FaqSection accordionData={faqData} sectionTitle="las lluvias de ideas" />
             <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5 md:my-10 my-5">
-                <VerMas title="¿Qué es una lluvia de ideas?" href="/lluvia-de-ideas/que-es-lluvia-de-ideas/"/>
-                <VerMas title="Consejos y Trucos para una Lluvia de Ideas Exitosa" href="/lluvia-de-ideas/que-es-lluvia-de-ideas/"/>
-                <VerMas title="Tipos de Lluvia de Ideas" href="/lluvia-de-ideas/que-es-lluvia-de-ideas/"/>
+                <VerMas title="¿Qué es una lluvia de ideas?" href="/lluvia-de-ideas/que-es-lluvia-de-ideas/" />
+                <VerMas title="Consejos y Trucos para una Lluvia de Ideas Exitosa" href="/lluvia-de-ideas/que-es-lluvia-de-ideas/" />
+                <VerMas title="Tipos de Lluvia de Ideas" href="/lluvia-de-ideas/que-es-lluvia-de-ideas/" />
             </div>
         </div>
 
-     );
+    );
 }
- 
+
 export default LandingPage;

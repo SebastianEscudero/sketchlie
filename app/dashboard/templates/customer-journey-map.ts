@@ -1,6 +1,7 @@
 export const PlantillaCustomerJourneyMap = {
     name: 'Customer Journey Map',
     image: '/templates/customer-journey-map.png',
+    href: "/plantillas/customer-journey-map/",
     layers: {
         "0rgrSXBYcv1aTdknBhz3Y": {
           fill: { a: 0, b: 0, g: 0, r: 0 },

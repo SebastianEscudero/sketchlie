@@ -158,6 +158,21 @@ const queEs: { title: string; href: string }[] = [
     }
 ]
 
+const Recursos = [
+    {
+        title: "Plantillas",
+        href: "/plantillas/",
+    },
+    {
+        title: "Blog",
+        href: "/blog/",
+    },
+    {
+        title: "Tutorial de Sketchlie",
+        href: "/blog/pizarra-online-tutorial/",
+    }
+]
+
 export const BotNavbar = () => {
     const pathname = usePathname();
     return (
@@ -192,9 +207,9 @@ export const BotNavbar = () => {
                     ))}
                 </nav>
                 <nav className="flex flex-col">
-                    <h6 className="font-bold mb-2">Blogs</h6>
-                    {blog.map((component, index) => (
-                        <Link key={index} href={component.href}><Button variant={pathname === component.href ? 'secondary' : 'ghostDark'} className="my-1 text-lg">{component.title}</Button></Link>
+                    <h6 className="font-bold mb-2">Recursos</h6>
+                    {Recursos.map((recurso, index) => (
+                        <Link key={index} href={recurso.href}><Button variant={pathname === recurso.href ? 'secondary' : 'ghostDark'} className="my-1 text-lg">{recurso.title}</Button></Link>
                     ))}
                 </nav>
                 <nav className="flex flex-col">
@@ -256,19 +271,24 @@ export const BotNavbar = () => {
                         ))}
                     </AccordionContent>
                 </AccordionItem>
-                <div className="flex flex-col w-full border-b">
-                    <Link
-                        className="py-[9.5px] text-lg hover:underline ml-5"
-                        href="/blog/"
-                    >
-                        <Button
-                            className='w-full justify-start gap-1 text-lg font-semibold'
-                            variant={pathname === "/blog/" ? 'secondary' : 'ghostDark'}
-                        >
-                            Blog
-                        </Button>
-                    </Link>
-                </div>
+                <AccordionItem value="item-4" className="px-4">
+                    <AccordionTrigger className="font-semibold">Recursos</AccordionTrigger>
+                    <AccordionContent className="flex flex-col w-full gap-1">
+                        {Recursos.map((recurso) => (
+                                <Link
+                                    key={recurso.title}
+                                    href={recurso.href}
+                                >
+                                    <Button
+                                        className='w-full justify-start my-[2px] text-[16px]'
+                                        variant={pathname === recurso.href ? 'secondary' : 'ghostDark'}
+                                    >
+                                        {recurso.title}
+                                    </Button>
+                                </Link>
+                        ))}
+                    </AccordionContent>
+                </AccordionItem>
                 <div className="flex flex-col w-full border-b">
                     <Link
                         className="py-[9.5px] text-lg hover:underline ml-5"

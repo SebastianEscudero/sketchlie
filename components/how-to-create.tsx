@@ -7,7 +7,7 @@ import {
 
 interface StepItem {
     trigger: string;
-    text: string;
+    text?: string | React.ReactNode;
   }
 
 interface BlogSectionProps {
@@ -21,7 +21,7 @@ export const HowToCreate = ({
 }: BlogSectionProps) => {
     return (
         <div className={`bg-[#fff] rounded-lg border border-black xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] text-[#1c1c1e] p-4`}>
-            <h2 className="text-3xl lg:text-4xl xl:text-5xl text-center my-8">
+            <h2 className="px-8 text-3xl lg:text-4xl xl:text-5xl text-left mt-8 mb-3">
                 {title}
             </h2>
             <Accordion type="single" collapsible className="bg-white p-5 rounded-lg">

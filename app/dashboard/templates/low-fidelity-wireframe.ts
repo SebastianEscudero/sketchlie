@@ -1,6 +1,7 @@
 export const PlantillaLowFidelityWireframe = {
     name: 'Low-fidelity Wireframe',
     image: '/templates/lowfidelity-wireframe.png',
+    href: "/plantillas/low-fidelity-wireframe/",
     layers: {
         "5TqLGFHb0ssl1anI5blMB": {
             fill: { a: 1, b: 255, g: 255, r: 255 },

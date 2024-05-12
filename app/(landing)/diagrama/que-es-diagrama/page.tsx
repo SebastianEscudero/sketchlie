@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 const LandingPage = () => {
     return (
         <div className="xl:mx-[5%] lg:mx-[4%] md:mx-[3%] mx-[3%]">
-            <div className="mt-20">
+            <div className="mt-[3%]">
                 <Breadcrumb>
                     <BreadcrumbList>
                         <BreadcrumbItem>
@@ -51,7 +51,7 @@ const LandingPage = () => {
                     className="rounded-2xl border border-black md:max-w-[60%] md:mt-0 mt-10"
                 />
             </div>
-            <div className="flex flex-col-reverse lg:flex-row justify-between mt-20">
+            <div className="flex flex-col-reverse lg:flex-row justify-between mt-[3%]">
                 <div className="lg:max-w-[70%] text-xl">
                     <p className="mb-10">Si estás buscando respuestas sobre diagramas, estás en el lugar correcto. En Sketchlie, entendemos la importancia de la visualización de datos y conceptos, por eso ofrecemos una variedad de herramientas para ayudarte a crear diagramas de manera rápida y sencilla.</p>
 

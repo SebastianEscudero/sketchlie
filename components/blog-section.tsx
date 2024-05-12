@@ -1,10 +1,11 @@
 import Image from "next/image";
 import { cn } from '@/lib/utils';
+import React from "react";
 
 interface BlogSectionProps {
     title: string;
-    text?: string;
-    text2?: string;
+    text?: string | React.ReactNode;
+    text2?: string | React.ReactNode;
     img?: string;
     side?: 'left' | 'right';
 }

@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 const LandingPage = () => {
     return ( 
         <div className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[3%]">
-           <div className="mt-20">
+           <div className="mt-[3%]">
            <Breadcrumb>
             <BreadcrumbList>
                 <BreadcrumbItem>
@@ -39,7 +39,7 @@ const LandingPage = () => {
             </BreadcrumbList>
             </Breadcrumb>
            </div>
-         <h1 className="xl:text-6xl lg:text-5xl md:text-4xl text-3xl mt-20 lg:pr-20" style={{lineHeight: "1.2"}}>
+         <h1 className="xl:text-6xl lg:text-5xl md:text-4xl text-3xl mt-[3%] lg:pr-20" style={{lineHeight: "1.2"}}>
              Mapa Conceptual y su Importancia en el Mundo Online
          </h1>
            <Image
@@ -47,9 +47,9 @@ const LandingPage = () => {
                 alt="Mapa conceptual"
                 width={1920}
                 height={1080}
-                className="rounded-2xl border border-black mt-20" 
+                className="rounded-2xl border border-black mt-[3%]" 
            />
-           <div className="flex flex-col-reverse lg:flex-row justify-between mt-20">
+           <div className="flex flex-col-reverse lg:flex-row justify-between mt-[3%]">
                 <div className="lg:max-w-[70%] text-xl">
                     <p className="mb-10">En el vasto universo de la educación y la organización de ideas, el mapa conceptual emerge como una herramienta fundamental. En el contexto digital de hoy en día, donde la información fluye a velocidades vertiginosas, la capacidad de estructurar y visualizar conceptos es más crucial que nunca.</p>
                     <p className="mb-10">En <Link className="text-custom-blue hover:underline" href="/">Sketchlie</Link>, comprendemos la importancia de estas herramientas, por eso te ofrecemos una variedad de recursos para potenciar tu creatividad y productividad.</p>

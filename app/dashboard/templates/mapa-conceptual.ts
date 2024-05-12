@@ -1,6 +1,7 @@
 export const PlantillaMapaConceptual = {
     name: 'Mapa Conceptual',
     image: '/templates/mapa-conceptual.png',
+    href: "/plantillas/mapa-conceptual/",
     layers: {
         "3yfVHpAOoplfOLvrsTMUu": {
           center: { x: 1144, y: 205 },
