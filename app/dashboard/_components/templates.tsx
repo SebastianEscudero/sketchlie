@@ -33,30 +33,6 @@ export const Templates = ({
     const proModal = useProModal();
     const { mutate, pending } = useApiMutation(api.board.create);
 
-    if (data === undefined) {
-        return (
-            <div className="p-6">
-                <h2 className="text-3xl font-semibold">Choose a Template</h2>
-                <div className="flex mt-8 border rounded-md p-4 h-[170px] overflow-hidden">
-                    <div className="flex flex-wrap gap-x-5 gap-y-20">
-                        <Templates.Skeleton />
-                        <Templates.Skeleton />
-                        <Templates.Skeleton />
-                        <Templates.Skeleton />
-                        <Templates.Skeleton />
-                        <Templates.Skeleton />
-                        <Templates.Skeleton />
-                        <Templates.Skeleton />
-                        <Templates.Skeleton />
-                        <Templates.Skeleton />
-                        <Templates.Skeleton />
-                        <Templates.Skeleton />
-                    </div>
-                </div>
-            </div>
-        );
-    }
-
     if (!user) {
         return null;
     }
@@ -128,13 +104,5 @@ export const Templates = ({
         </div>
     )
 }
-
-Templates.Skeleton = function TemplateSkeleton() {
-    return (
-        <div className="text-left flex flex-col hover:cursor-pointer flex-1 min-w-[110px] min-h-[85.5px] max-w-[130px] max-h-[101.1px] rounded-lg overflow-hidden">
-            <Skeleton className="h-full w-full" />
-        </div>
-    );
-};
 
 export default Templates;
