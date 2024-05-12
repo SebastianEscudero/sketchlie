@@ -98,7 +98,7 @@ const LandingPage = () => {
                     </ul>
                     <div id="4" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">¿Cómo puedo empezar a usar diagramas en línea para colaborar con mi equipo?</h2>
-                    <p className="mb-10">En sketchlie tenemos variadas plantillas de diagramas estan incluyen: plantilla de <Link href="/plantillas//digrama-ishikawa/" className="text-custom-blue hover:underline">diagrama de ishikawa</Link>, plantilla de <Link href="/plantillas/diagrama-de-flujo/" className="text-custom-blue hover:underline">diagrama de flujo</Link>. Elige la que necesites, invita a tu equipos y empieza a colaborar en línea de la manera más fácil posible.</p>
+                    <p className="mb-10">En sketchlie tenemos variadas plantillas de diagramas estan incluyen: plantilla de <Link href="/plantillas//diagrama-ishikawa/" className="text-custom-blue hover:underline">diagrama de ishikawa</Link>, plantilla de <Link href="/plantillas/diagrama-de-flujo/" className="text-custom-blue hover:underline">diagrama de flujo</Link>. Elige la que necesites, invita a tu equipos y empieza a colaborar en línea de la manera más fácil posible.</p>
                     <p className="mb-10">Para empezar a utilizar diagramas en línea con tu equipo, sigue estos sencillos pasos:</p>
 
                     <ul style={{ listStyleType: 'disc' }}>
