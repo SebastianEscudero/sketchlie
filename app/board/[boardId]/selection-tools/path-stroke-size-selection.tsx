@@ -19,7 +19,7 @@ export const PathStokeSizeSelection = ({
     socket,
 }: PathStokeSizeSelectionProps) => {
 
-    const strokeSize = selectedLayers[0].strokeSize;
+    const strokeSize = liveLayers[selectedLayers[0]].strokeSize;
 
     const handleStrokeSizeChange = (newStrokeSize: number[]) => {
         const newLayers = { ...liveLayers };
