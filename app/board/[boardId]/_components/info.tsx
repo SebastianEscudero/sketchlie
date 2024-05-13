@@ -1,9 +1,6 @@
 "use client"
 
 import { Button } from "@/components/ui/button";
-import { api } from "@/convex/_generated/api";
-import { Id } from "@/convex/_generated/dataModel";
-import { useQuery } from "convex/react";
 import Image from "next/image";
 import Link from "next/link";
 import { Hint } from "@/components/hint";
@@ -13,7 +10,7 @@ import { Actions } from "@/components/actions";
 import { useProModal } from "@/hooks/use-pro-modal";
 
 interface InfoProps {
-    boardId: string;
+    board: any;
 }
 
 const TabSeparator = () => {
@@ -26,16 +23,13 @@ const TabSeparator = () => {
 
 
 export const Info = ({
-    boardId,
+    board,
 }: InfoProps) => {
 
     const { onOpen } = useRenameModal();
     const proModal = useProModal();
-    const data = useQuery(api.board.get, {
-        id: boardId as Id<"boards">
-    });
 
-    if (!data) return <InfoSkeleton />;
+    if (!board) return <InfoSkeleton />;
 
     return(
         <div className="absolute top-2 left-2 bg-white rounded-md px-1.5 h-12 flex items-center shadow-md">
@@ -56,14 +50,14 @@ export const Info = ({
             </Hint>
             <TabSeparator />
                 <Hint label="Edit title" side="bottom" sideOffset={10}>
-                    <Button variant="board" className="text-base px-2 sm:max-w-[200px] md:max-w-[400px] max-w-[80px] overflow-hidden relative" onClick={() => onOpen(data._id, data.title)}>
+                    <Button variant="board" className="text-base px-2 sm:max-w-[200px] md:max-w-[400px] max-w-[80px] overflow-hidden relative" onClick={() => onOpen(board._id, board.title)}>
                         <div className="w-full text-left truncate">
-                            {data.title}
+                            {board.title}
                         </div>
                     </Button>
                 </Hint>
             <TabSeparator />
-            <Actions id={data._id} title={data.title} side="bottom" sideOffset={10}>
+            <Actions id={board._id} title={board.title} side="bottom" sideOffset={10}>
                 <div>
                     <Hint label="Main menu" side="bottom" sideOffset={10}>
                         <Button size="icon" variant="board">

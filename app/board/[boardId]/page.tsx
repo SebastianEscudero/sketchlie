@@ -3,13 +3,14 @@
 import { Canvas } from "./_components/canvas";
 import { Room } from "@/components/room";
 import { Loading } from "./_components/loading";
-import { useEffect } from "react";
 import { toast } from "sonner";
 import { Mouse } from "lucide-react";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { Id } from "@/convex/_generated/dataModel";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { useState, useEffect } from "react";
+import { useConvex } from "convex/react";
 
 interface BoardIdPageProps {
   params: {
@@ -22,9 +23,30 @@ const BoardIdPage = ({
 }: BoardIdPageProps) => {
   
   const user = useCurrentUser();
-  const board = useQuery(api.board.get, {
-    id: params.boardId as Id<"boards">
-  });
+  const [board, setBoard] = useState<{
+    _id: Id<"boards">;
+    _creationTime: number;
+    layers?: any;
+    title: string;
+    orgId: string;
+    authorId: string;
+    authorName: string;
+    imageUrl: string;
+    layerIds: string[];
+  } | null>(null);
+  
+  const convex = useConvex();
+
+  useEffect(() => {
+    const fetchBoard = async () => {
+      const fetchedBoard = await convex.query(api.board.get, {
+        id: params.boardId as Id<"boards">
+      });
+      setBoard(fetchedBoard);
+    };
+
+    fetchBoard();
+  }, [params.boardId]);
 
   useEffect(() => {
     toast("Heads up!", {

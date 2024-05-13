@@ -99,6 +99,7 @@ export const FontSizePicker = ({
             <div className='flex flex-row items center justify-center'>
                 <div onClick={() => setIsOpen(!isOpen)}>
                     <input
+                        id="font-size-menu"
                         type="number"
                         value={Math.round(inputFontSize)}
                         onChange={handleInputChange}

@@ -11,7 +11,6 @@ import {
     resizeArrowBounds,
     pointerEventToCanvasPoint,
     resizeBounds,
-    getLayerIdAtPointer,
 } from "@/lib/utils";
 
 import {
@@ -1151,7 +1150,7 @@ export const Canvas = ({
             className={`h-full w-full relative bg-neutral-100 touch-none overscroll-none ${isDraggingOverCanvas ? 'bg-neutral-300 border-2 border-dashed border-custom-blue' : ''}`}
             style={{ backgroundImage: "url(/dot-grid.png)", backgroundSize: 'cover' }}
         >
-            <Info boardId={boardId} />
+            <Info board={board} />
             <Participants
                 otherUsers={otherUsers}
                 User={User}
