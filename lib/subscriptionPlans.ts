@@ -39,6 +39,7 @@ export const subscriptionPlans = [
             "Soporte": "Avanzado",
             "Teams": "Ilimitados",
         },
-        recommended: true
+        extraFeatures: "Proteccón de datos con inicio de sesión único",
+        recommended: true,
     },
 ]
