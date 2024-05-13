@@ -171,6 +171,24 @@ export function resizeArrowBounds(
   return result;
 }
 
+
+export function getLayerIdAtPointer(current: Point, layers: { [key: string]: Layer }): string | null {
+  for (const layerId in layers) {
+    const layer = layers[layerId];
+
+    if (
+      current.x >= layer.x &&
+      current.x <= layer.x + layer.width &&
+      current.y >= layer.y &&
+      current.y <= layer.y + layer.height
+    ) {
+      return layerId;
+    }
+  }
+
+  return null;
+}
+
 export function findIntersectingLayersWithRectangle(
   layerIds: readonly string[],
   layers: { [key: string]: Layer },
@@ -240,6 +258,7 @@ export function getContrastingTextColor(color: Color) {
 export function penPointsToPathLayer(
   points: number[][],
   color: Color,
+  pathStrokeSize: number,
 ): PathLayer {
   if (points.length < 2) {
     throw new Error("Cannot transform points with less than 2 points");
@@ -277,6 +296,7 @@ export function penPointsToPathLayer(
     width: right - left,
     height: bottom - top,
     fill: color,
+    strokeSize: pathStrokeSize,
     points: points
       .map(([x, y, pressure]) => [x - left, y - top, pressure]),
   };

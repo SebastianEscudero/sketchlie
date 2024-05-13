@@ -143,6 +143,9 @@ export type CanvasState =
     mode: CanvasMode.Pencil,
   }
   | {
+    mode: CanvasMode.Eraser,
+  }
+  | {
     mode: CanvasMode.Pressing,
     origin: Point;
   }
@@ -169,6 +172,7 @@ export enum CanvasMode {
   Resizing,
   ArrowResizeHandler,
   Pencil,
+  Eraser,
   Moving
 };
 
@@ -182,7 +186,8 @@ export type Presence = {
   cursor?: { x: number, y: number } | null,
   selection?: string[];
   pencilDraft?: [x: number, y: number, pressure: number][] | null;
-  penColor?: Color;
+  pathStrokeColor?: Color;
+  pathStrokeSize?: number;
 };
 
 export type User = {

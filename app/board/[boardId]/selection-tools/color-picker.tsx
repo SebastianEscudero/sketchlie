@@ -53,7 +53,7 @@ interface ColorButtonProps {
   color: Color;
 };
 
-const ColorButton = ({
+export const ColorButton = ({
   onClick,
   color,
 }: ColorButtonProps) => {

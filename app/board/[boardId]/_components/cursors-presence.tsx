@@ -38,7 +38,8 @@ const Drafts = ({
                             x={0}
                             y={0}
                             points={otherUser.presence.pencilDraft}
-                            fill={otherUser.presence.penColor ? colorToCss(otherUser.presence.penColor) : "#000"}
+                            strokeSize={otherUser.presence.pathStrokeSize}
+                            fill={colorToCss(otherUser.presence.pathStrokeColor || { r: 1, g: 1, b: 1, a: 1 })}
                         />
                     );
                 }

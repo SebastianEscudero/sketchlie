@@ -1,7 +1,7 @@
 "use client";
 
 import { customAlphabet } from "nanoid";
-import { useCallback, useMemo, useState, useEffect, useRef } from "react";
+import React, { useCallback, useMemo, useState, useEffect, useRef } from "react";
 
 import {
     colorToCss,
@@ -11,6 +11,7 @@ import {
     resizeArrowBounds,
     pointerEventToCanvasPoint,
     resizeBounds,
+    getLayerIdAtPointer,
 } from "@/lib/utils";
 
 import {
@@ -76,6 +77,8 @@ export const Canvas = ({
     const [isUploading, setIsUploading] = useState(false);
     const [currentPreviewLayer, setCurrentPreviewLayer] = useState<PreviewLayer | null>(null);
     const [myPresence, setMyPresence] = useState<Presence | null>(null);
+    const [pathColor, setPathColor] = useState({ r: 1, g: 1, b: 1, a: 1 });
+    const [pathStrokeSize, setPathStrokeSize] = useState(4);
     const updateLayerMutation = useRef(useApiMutation(api.board.updateLayer).mutate);
     const addLayerMutation = useRef(useApiMutation(api.board.addLayer).mutate);
     const deleteLayerMutation = useRef(useApiMutation(api.board.deleteLayer).mutate);
@@ -359,6 +362,8 @@ export const Canvas = ({
                     pencilDraft[0][1] === point.y
                     ? pencilDraft
                     : [...pencilDraft, [point.x, point.y, e.pressure]],
+            pathStrokeSize: pathStrokeSize,
+            pathStrokeColor: pathColor,
         };
 
         setMyPresence(newPresence);
@@ -381,7 +386,7 @@ export const Canvas = ({
         }
 
         const id = nanoid();
-        liveLayers[id] = penPointsToPathLayer(pencilDraft, { r: 0, g: 0, b: 0, a: 0 });
+        liveLayers[id] = penPointsToPathLayer(pencilDraft, pathColor, pathStrokeSize);
 
         liveLayerIds.push(id);
 
@@ -551,6 +556,10 @@ export const Canvas = ({
         const point = pointerEventToCanvasPoint(e, camera, zoom);
 
         if (e.button === 0) {
+            if (canvasState.mode === CanvasMode.Eraser) {
+                return;
+            }
+
             if (canvasState.mode === CanvasMode.Moving) {
                 setIsPanning(true);
                 setStartPanPoint({ x: e.clientX, y: e.clientY });
@@ -650,7 +659,7 @@ export const Canvas = ({
                     setCurrentPreviewLayer({ x, y, width, height, type: LayerType.Ellipse, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
                     break;
                 case LayerType.Text:
-                    setCurrentPreviewLayer({ x, y, width, height: 20, type: LayerType.Rectangle, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: null });
+                    setCurrentPreviewLayer({ x, y, width, height: 20, type: LayerType.Rectangle, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 39, g: 142, b: 237, a: 1 } });
                     break;
                 case LayerType.Note:
                     setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.Note, fill: { r: 255, g: 249, b: 177, a: 1 }, outlineFill: { r: 0, g: 0, b: 0, a: 0 } });
@@ -701,8 +710,11 @@ export const Canvas = ({
                 mode: CanvasMode.None,
             });
         } else if (canvasState.mode === CanvasMode.Pencil) {
-            document.body.style.cursor = "url(/custom-cursors/pencil.svg) 2 18, auto";
+            document.body.style.cursor = 'url(/custom-cursors/pencil.svg) 8 8, auto';
             insertPath();
+        } else if (canvasState.mode === CanvasMode.Eraser) {
+            document.body.style.cursor = 'url(/custom-cursors/eraser.svg) 8 8, auto';
+            return;
         } else if (canvasState.mode === CanvasMode.Inserting && canvasState.layerType === LayerType.Image) {
             setSelectedImage("");
             insertImage(LayerType.Image, point, selectedImage);
@@ -822,12 +834,32 @@ export const Canvas = ({
         }
     }, [setMyPresence, myPresence, socket, User.userId]);
 
+    const onPathErase = useCallback((e: React.PointerEvent, layerId: string) => {
+        if (canvasState.mode === CanvasMode.Eraser && e.buttons === 1) {
+            const newLiveLayers = { ...liveLayers };
+            delete newLiveLayers[layerId];
+
+            deleteLayer({
+                boardId: boardId,
+                layerId: layerId
+            })
+
+            if (socket) {
+                socket.emit('layer-delete', layerId);
+            }
+
+            setLiveLayers(newLiveLayers);
+            setLiveLayerIds(liveLayerIds.filter(id => id !== layerId));
+        }
+    }, [canvasState.mode, liveLayers, liveLayerIds, setLiveLayers, boardId, deleteLayer, socket]);
+
     const onLayerPointerDown = useCallback((e: React.PointerEvent, layerId: string) => {
 
         if (
             canvasState.mode === CanvasMode.Pencil ||
             canvasState.mode === CanvasMode.Inserting ||
             canvasState.mode === CanvasMode.Moving ||
+            canvasState.mode === CanvasMode.Eraser ||
             e.button !== 0
         ) {
             return;
@@ -1103,6 +1135,8 @@ export const Canvas = ({
             }
         } else if (canvasState.mode === CanvasMode.Pencil) {
             document.body.style.cursor = 'url(/custom-cursors/pencil.svg) 2 18, auto';
+        } else if (canvasState.mode === CanvasMode.Eraser) {
+            document.body.style.cursor = 'url(/custom-cursors/eraser.svg) 8 8, auto';
         } else if (canvasState.mode === CanvasMode.Moving) {
             document.body.style.cursor = 'url(/custom-cursors/hand.svg) 8 8, auto';
         } else if (canvasState.mode ===  CanvasMode.ArrowResizeHandler) {
@@ -1123,6 +1157,9 @@ export const Canvas = ({
                 User={User}
             />
             <Toolbar
+                pathStrokeSize={pathStrokeSize}
+                setPathColor={setPathColor}
+                setPathStrokeSize={setPathStrokeSize}
                 isUploading={isUploading}
                 setIsUploading={setIsUploading}
                 onImageSelect={setSelectedImage}
@@ -1166,6 +1203,7 @@ export const Canvas = ({
                     {liveLayerIds.map((layerId: any) => (
                         <LayerPreview
                             selectionColor={layerIdsToColorSelection[layerId]}
+                            onPathErase={onPathErase}
                             onLayerPointerDown={onLayerPointerDown}
                             liveLayers={liveLayers}
                             setLiveLayers={setLiveLayers}
@@ -1204,9 +1242,10 @@ export const Canvas = ({
                     {pencilDraft != null && pencilDraft.length > 0 && (
                         <Path
                             points={pencilDraft}
-                            fill={colorToCss({r: 0 ,g: 0, b: 0, a: 0,})}
+                            fill={colorToCss(pathColor)}
                             x={0}
                             y={0}
+                            strokeSize={pathStrokeSize}
                         />
                     )}
                 </g>

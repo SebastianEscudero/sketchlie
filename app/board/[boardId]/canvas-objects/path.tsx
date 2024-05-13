@@ -8,6 +8,7 @@ interface PathProps {
   points: number[][];
   fill: string;
   onPointerDown?: (e: React.PointerEvent) => void;
+  onPathErase?: (e: React.PointerEvent) => void;
   stroke?: string;
   strokeSize?: number | undefined;
 };
@@ -18,6 +19,7 @@ export const Path = ({
   points,
   fill,
   onPointerDown,
+  onPathErase,
   stroke,
   strokeSize,
 }: PathProps) => {
@@ -26,13 +28,13 @@ export const Path = ({
 
   return (
     <path
+      onPointerMove={onPathErase}
       onPointerDown={onPointerDown}
       d={getSvgPathFromStroke(
         getStroke(points, {
-          size: strokeSize || 2,
-          thinning: 0.5,
-          smoothing: 0.5,
-          streamline: 0.5,
+          size: strokeSize || 4,
+          smoothing: 0.4,
+          streamline: 0.4,
         })
       )}
       style={{

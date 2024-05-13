@@ -56,9 +56,9 @@ export const PathStokeSizeSelection = ({
             <Slider
                 defaultValue={[strokeSize || 2]}
                 min={1}
-                max={6}
+                max={8}
                 step={1}
-                className='w-20 '
+                className='w-20 cursor-pointer'
                 onValueChange={handleStrokeSizeChange}
             />
             </div>

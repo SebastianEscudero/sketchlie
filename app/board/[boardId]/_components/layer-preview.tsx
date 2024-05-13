@@ -14,6 +14,7 @@ import { Arrow } from "../canvas-objects/arrow";
 interface LayerPreviewProps {
   id: string;
   onLayerPointerDown: (e: React.PointerEvent, layerId: string) => void;
+  onPathErase: (e: React.PointerEvent, layerId: string) => void;
   selectionColor?: string;
   liveLayers: any;
   setLiveLayers: (layers: any) => void;
@@ -23,6 +24,7 @@ interface LayerPreviewProps {
 
 export const LayerPreview = memo(({
   id,
+  onPathErase,
   onLayerPointerDown,
   selectionColor,
   liveLayers,
@@ -43,6 +45,7 @@ export const LayerPreview = memo(({
         <Path
           key={id}
           points={layer.points}
+          onPathErase={(e) => onPathErase(e, id)}
           onPointerDown={(e) => onLayerPointerDown(e, id)}
           x={layer.x}
           y={layer.y}
