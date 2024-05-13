@@ -1,7 +1,7 @@
 "use client";
 
 import { toast } from "sonner";
-import { Link2, Pencil, Trash2, ArrowUpFromLine } from "lucide-react";
+import { Link2, Pencil, Trash2 } from "lucide-react";
 import { DropdownMenuContentProps } from "@radix-ui/react-dropdown-menu";
 
 import { ConfirmModal } from "@/components/confirm-modal";
@@ -16,8 +16,6 @@ import { useApiMutation } from "@/hooks/use-api-mutation";
 import { Button } from "@/components/ui/button";
 import { useRenameModal } from "@/store/use-rename-modal";
 import { useRouter } from "next/navigation";
-import { exportToPdf } from "@/lib/utils";
-import { Badge } from "./ui/badge";
 import { useCurrentUser } from "@/hooks/use-current-user";
 
 interface ActionsProps {

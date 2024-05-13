@@ -54,6 +54,8 @@ export const RenameModal = () => {
     })
       .then(() => {
         toast.success("Board renamed");
+        localStorage.setItem('boardTitle', initialValues.title);
+        window.dispatchEvent(new CustomEvent('boardTitleChanged'));
         onClose();
       })
       .catch(() => toast.error("Failed to rename board"));

@@ -7,7 +7,6 @@ import { toast } from "sonner";
 import { Mouse } from "lucide-react";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { Id } from "@/convex/_generated/dataModel";
-import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useState, useEffect } from "react";
 import { useConvex } from "convex/react";
@@ -21,8 +20,9 @@ interface BoardIdPageProps {
 const BoardIdPage = ({
   params,
 }: BoardIdPageProps) => {
-  
+
   const user = useCurrentUser();
+  const [title, setTitle] = useState(localStorage.getItem('boardTitle'));
   const [board, setBoard] = useState<{
     _id: Id<"boards">;
     _creationTime: number;
@@ -34,7 +34,7 @@ const BoardIdPage = ({
     imageUrl: string;
     layerIds: string[];
   } | null>(null);
-  
+
   const convex = useConvex();
 
   useEffect(() => {
@@ -44,15 +44,22 @@ const BoardIdPage = ({
       });
       setBoard(fetchedBoard);
     };
-
     fetchBoard();
-  }, [params.boardId]);
+
+    const handleTitleChange = () => {
+      fetchBoard();
+    };
+    window.addEventListener('boardTitleChanged', handleTitleChange);
+    return () => {
+      window.removeEventListener('boardTitleChanged', handleTitleChange);
+    };
+  }, [params]);
 
   useEffect(() => {
     toast("Heads up!", {
       description: (
         <p className="flex flex-row">
-          <Mouse size={16} className="mr-2"/> Right click and drag to move around the canvas!
+          <Mouse size={16} className="mr-2" /> Right click and drag to move around the canvas!
         </p>
       ),
       position: "top-center",
@@ -66,7 +73,7 @@ const BoardIdPage = ({
 
   return (
     <Room roomId={params.boardId} board={board} userInfo={user} fallback={<Loading />}>
-      <Canvas boardId={params.boardId}/>
+      <Canvas boardId={params.boardId} />
     </Room>
   );
 };
