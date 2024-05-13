@@ -27,7 +27,7 @@ export const ProModal = () => {
     return (
         <div>
             <Dialog open={proModal.isOpen} onOpenChange={proModal.onClose}>
-                <DialogContent className="max-w-[90%] lg:max-w-[65%] xl:max-w-[55%] 2xl:max-w-[50%] w-full overflow-y-auto max-h-[80%] pt-10">
+                <DialogContent className="max-w-[90%] lg:max-w-[65%] xl:max-w-[55%] 2xl:max-w-[50%] w-full overflow-y-auto max-h-[90%] pt-10">
                     <DialogHeader>
                         <div className="flex justify-center text-xl md:text-2xl items-center flex-wrap text-center">
                             <p>Choose organization to upgrade:</p>
@@ -97,12 +97,6 @@ export const ProModal = () => {
                                                 <span className="text-black-5 font-bold">{value}</span>
                                             </div>
                                         ))}
-                                        {subscriptionPlan.extraFeatures && (
-                                            <div className="flex items-center gap-x-2">
-                                                <Check className="w-4 h-4 text-blue-500 flex-shrink-0" />
-                                                <span className="text-black-5 font-bold">{subscriptionPlan.extraFeatures}</span>
-                                            </div>
-                                        )}
                                     </div>
                                     <SubscriptionButton
                                         plan={subscriptionPlan}
