@@ -25,13 +25,11 @@ export const NewBoardButton = ({
     disabled,
 }: NewBoardButtonProps) => {
 
-    const orgId = org.id;
-
     const maxAmountOfBoards = getMaxBoards(org);
 
     const user = useCurrentUser();
     const data = useQuery(api.boards.get, { 
-        orgId: orgId,
+        orgId: org.id,
       });
 
 
@@ -46,7 +44,7 @@ export const NewBoardButton = ({
 
     const onClick = () => {
         mutate({
-            orgId: orgId,
+            orgId: org.id,
             title,
             userId: user.id,
             userName: user.name,
