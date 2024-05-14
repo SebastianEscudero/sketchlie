@@ -22,7 +22,6 @@ const BoardIdPage = ({
 }: BoardIdPageProps) => {
 
   const user = useCurrentUser();
-  const [title, setTitle] = useState(localStorage.getItem('boardTitle'));
   const [board, setBoard] = useState<{
     _id: Id<"boards">;
     _creationTime: number;
@@ -55,17 +54,17 @@ const BoardIdPage = ({
     };
   }, [params]);
 
-  useEffect(() => {
-    toast("Heads up!", {
-      description: (
-        <p className="flex flex-row">
-          <Mouse size={16} className="mr-2" /> Right click and drag to move around the canvas!
-        </p>
-      ),
-      position: "top-center",
-      closeButton: true
-    });
-  }, [])
+  // useEffect(() => {
+  //   toast("Heads up!", {
+  //     description: (
+  //       <p className="flex flex-row">
+  //         <Mouse size={16} className="mr-2" /> Right click and drag to move around the canvas!
+  //       </p>
+  //     ),
+  //     position: "top-center",
+  //     closeButton: true
+  //   });
+  // }, [])
 
   if (!user || !board) {
     return <Loading />;

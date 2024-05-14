@@ -59,7 +59,6 @@ export const Canvas = ({
     const { liveLayers, liveLayerIds, User, otherUsers, setLiveLayers, setLiveLayerIds, org, socket, board } = useRoom();
     const maxFileSize = org && getMaxImageSize(org) || 0;
     const [isDraggingOverCanvas, setIsDraggingOverCanvas] = useState(false);
-    // const [initialPinchDistance, setInitialPinchDistance] = useState<number | null>(null);
     const selectedLayersRef = useRef<string[]>([]);
     const [zoom, setZoom] = useState(1);
     const [copiedLayers, setCopiedLayers] = useState<Map<string, any>>(new Map());
@@ -78,6 +77,8 @@ export const Canvas = ({
     const [myPresence, setMyPresence] = useState<Presence | null>(null);
     const [pathColor, setPathColor] = useState({ r: 1, g: 1, b: 1, a: 1 });
     const [pathStrokeSize, setPathStrokeSize] = useState(4);
+    const [pinchStartDist, setPinchStartDist] = useState<number | null>(null);
+    const [activeTouches, setActiveTouches] = useState(0);
     const updateLayerMutation = useRef(useApiMutation(api.board.updateLayer).mutate);
     const addLayerMutation = useRef(useApiMutation(api.board.addLayer).mutate);
     const deleteLayerMutation = useRef(useApiMutation(api.board.deleteLayer).mutate);
@@ -497,57 +498,36 @@ export const Canvas = ({
         };
     }, []);
 
-    const onWheel = useCallback((e: React.WheelEvent) => {
+    const onWheel = useCallback((e: any) => {
         const svgRect = e.currentTarget.getBoundingClientRect();
         const x = e.clientX - svgRect.left;
         const y = e.clientY - svgRect.top;
-
-        let newZoom = zoom;
-        if (e.deltaY < 0) {
-            newZoom = Math.min(zoom * 1.1, 3.5);
+    
+        if (e.ctrlKey) {
+            // Zooming
+            let newZoom = zoom;
+            if (e.deltaY < 0) {
+                newZoom = Math.min(zoom * 1.1, 3.5);
+            } else {
+                newZoom = Math.max(zoom / 1.1, 0.3);
+            }
+    
+            const zoomFactor = newZoom / zoom;
+            const newX = x - (x - camera.x) * zoomFactor;
+            const newY = y - (y - camera.y) * zoomFactor;
+    
+            setZoom(newZoom);
+            setCamera({ x: newX, y: newY });
         } else {
-            newZoom = Math.max(zoom / 1.1, 0.3);
+            // Panning
+            const newCameraPosition = {
+                x: camera.x - e.deltaX,
+                y: camera.y - e.deltaY,
+            };
+    
+            setCamera(newCameraPosition);
         }
-
-        const zoomFactor = newZoom / zoom;
-        const newX = x - (x - camera.x) * zoomFactor;
-        const newY = y - (y - camera.y) * zoomFactor;
-
-        setZoom(newZoom);
-        setCamera({ x: newX, y: newY });
     }, [zoom, camera]);
-
-    // const onTouchMove = useCallback((e: React.TouchEvent) => {
-    //     if (e.touches.length !== 2) return;
-    
-    //     const touch1 = e.touches[0];
-    //     const touch2 = e.touches[1];
-    
-    //     const distance = Math.hypot(
-    //         touch1.clientX - touch2.clientX,
-    //         touch1.clientY - touch2.clientY
-    //     );
-    
-    //     if (initialPinchDistance === null) {
-    //         setInitialPinchDistance(distance);
-    //         return;
-    //     }
-    
-    //     let newZoom = zoom;
-    //     if (distance > initialPinchDistance) {
-    //         newZoom = Math.min(zoom * 1.1, 3.5);
-    //     } else {
-    //         newZoom = Math.max(zoom / 1.1, 0.3);
-    //     }
-    
-    //     const zoomFactor = newZoom / zoom;
-    //     const newX = (touch1.clientX + touch2.clientX) / 2 - ((touch1.clientX + touch2.clientX) / 2 - camera.x) * zoomFactor;
-    //     const newY = (touch1.clientY + touch2.clientY) / 2 - ((touch1.clientY + touch2.clientY) / 2 - camera.y) * zoomFactor;
-    
-    //     setZoom(newZoom);
-    //     setCamera({ x: newX, y: newY });
-    //     setInitialPinchDistance(distance);
-    // }, [zoom, camera, initialPinchDistance]);
 
     const onPointerDown = useCallback((
         e: React.PointerEvent,
@@ -590,6 +570,10 @@ export const Canvas = ({
     const onPointerMove = useCallback((e: React.PointerEvent) => {
         e.preventDefault();
 
+        if (activeTouches > 1) {
+            return;
+        }
+
         if (rightClickPanning) {
             const newCameraPosition = {
                 x: camera.x + e.clientX - startPanPoint.x,
@@ -609,7 +593,7 @@ export const Canvas = ({
         }
 
         const current = pointerEventToCanvasPoint(e, camera, zoom);
-        
+
         const newPresence: Presence = {
             ...myPresence,
             cursor: { x: current.x, y: current.y },
@@ -679,21 +663,22 @@ export const Canvas = ({
         }
     },
         [continueDrawing,
-        camera, 
-        canvasState, 
-        resizeSelectedLayer, 
-        translateSelectedLayers, 
-        startMultiSelection, 
-        updateSelectionNet, 
-        isPanning, 
-        rightClickPanning, 
-        setCamera,
-        User.userId, 
-        zoom, 
-        myPresence,     
-        startPanPoint, 
-        socket
-    ]);
+            camera,
+            canvasState,
+            resizeSelectedLayer,
+            translateSelectedLayers,
+            startMultiSelection,
+            updateSelectionNet,
+            isPanning,
+            rightClickPanning,
+            setCamera,
+            User.userId,
+            zoom,
+            myPresence,
+            startPanPoint,
+            socket,
+            activeTouches
+        ]);
 
     const onPointerUp = useCallback((e: React.PointerEvent) => {
         setIsRightClickPanning(false);
@@ -865,8 +850,8 @@ export const Canvas = ({
         }
 
         e.stopPropagation();
-
-        setCanvasState({ mode: CanvasMode.Translating, current: mousePositionRef.current });
+        const point = pointerEventToCanvasPoint(e, camera, zoom);
+        setCanvasState({ mode: CanvasMode.Translating, current: point });
 
         if (selectedLayersRef.current.includes(layerId)) {
             return;
@@ -875,7 +860,7 @@ export const Canvas = ({
         const newPresence: Presence = {
             ...myPresence,
             selection: [layerId],
-            cursor: mousePositionRef.current
+            cursor: point
         };
 
         setMyPresence(newPresence);
@@ -905,14 +890,13 @@ export const Canvas = ({
         event.preventDefault();
         setIsDraggingOverCanvas(true);
     };
-    
+
     const onDragLeave = (event: React.DragEvent) => {
         event.preventDefault();
         setIsDraggingOverCanvas(false);
     };
 
     const onDrop = (event: React.DragEvent) => {
-        console.log('drop')
         event.preventDefault();
         setIsDraggingOverCanvas(false);
         let x = (Math.round(event.clientX) - camera.x) / zoom
@@ -924,43 +908,110 @@ export const Canvas = ({
                 toast.error('File type not accepted. Please upload an image file.');
                 continue;  // Skip if not an image
             }
-    
+
             // Check file size
             const fileSizeInMB = file.size / 1024 / 1024;
             if (fileSizeInMB > maxFileSize) {
-                console.log('hi')
                 toast.error(`File size has to be lower than ${maxFileSize}MB. Please try again.`);
                 return;
             }
-    
+
             const toastId = toast.loading("Image is being processed, please wait...");
             const formData = new FormData();
             formData.append('file', file);
             formData.append('userId', User.userId);
-            
+
             fetch('/api/aws-s3-images', {
                 method: 'POST',
                 body: formData
             })
-            .then(async (res: Response) => {
-                if (!res.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const url = await res.text();
-    
-                // Insert the image into the canvas
-                insertImage(LayerType.Image, { x: x, y: y }, url);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            })
-            .finally(() => {
-                toast.dismiss(toastId);
-                toast.success("Image uploaded successfully, you can now add it to the board.")
-            });
+                .then(async (res: Response) => {
+                    if (!res.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    const url = await res.text();
+
+                    // Insert the image into the canvas
+                    insertImage(LayerType.Image, { x: x, y: y }, url);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                })
+                .finally(() => {
+                    toast.dismiss(toastId);
+                    toast.success("Image uploaded successfully, you can now add it to the board.")
+                });
         }
     };
 
+    const onTouchDown = useCallback((e: React.TouchEvent) => {
+        e.preventDefault();
+        setActiveTouches(e.touches.length);
+    }, []);
+    
+    const onTouchUp = useCallback((e: React.TouchEvent) => {
+        setActiveTouches(e.changedTouches.length);
+    }, []);
+
+    const onTouchMove = useCallback((e: React.TouchEvent) => {
+        e.preventDefault();
+        setActiveTouches(e.touches.length);
+    
+        if (e.touches.length < 2) {
+            setPinchStartDist(null);
+            return;
+        }
+    
+        const touch1 = e.touches[0];
+        const touch2 = e.touches[1];
+    
+        const dist = Math.hypot(
+            touch1.clientX - touch2.clientX,
+            touch1.clientY - touch2.clientY
+        );
+    
+        const svgRect = e.currentTarget.getBoundingClientRect();
+        const x = ((touch1.clientX + touch2.clientX) / 2) - svgRect.left;
+        const y = ((touch1.clientY + touch2.clientY) / 2) - svgRect.top;
+    
+        if (pinchStartDist === null) {
+            setPinchStartDist(dist);
+            setStartPanPoint({ x, y });
+            return;
+        }
+    
+        const distChange = Math.abs(dist - pinchStartDist);
+    
+        if (distChange > 10 && !startPanPoint) { // Zooming
+            let newZoom = zoom;
+            if (dist > pinchStartDist) {
+                newZoom = Math.min(zoom * 1.1, 3.5);
+            } else {
+                newZoom = Math.max(zoom / 1.1, 0.3);
+            }
+    
+            const zoomFactor = newZoom / zoom;
+            const newX = x - (x - camera.x) * zoomFactor;
+            const newY = y - (y - camera.y) * zoomFactor;
+    
+            setZoom(newZoom);
+            setCamera({ x: newX, y: newY });
+        } else if (startPanPoint) { // Panning
+            const dx = x - startPanPoint.x;
+            const dy = y - startPanPoint.y;
+    
+            const newCameraPosition = {
+                x: camera.x + dx,
+                y: camera.y + dy,
+            };
+    
+            setCamera(newCameraPosition);
+        }
+    
+        setPinchStartDist(dist);
+        setStartPanPoint({ x, y });
+    }, [zoom, pinchStartDist, camera, startPanPoint]);
+    
     const copySelectedLayers = useCallback(() => {
         const copied = new Map();
         for (const id of selectedLayersRef.current) {
@@ -991,11 +1042,9 @@ export const Canvas = ({
             maxY = Math.max(maxY, layer.y + layer.height);
         });
 
-        // Calculate the center of the copied layers
         const centerX = (minX + maxX) / 2;
         const centerY = (minY + maxY) / 2;
 
-        // Calculate the offset from the mouse position
         const offsetX = mousePosition.x - centerX;
         const offsetY = mousePosition.y - centerY;
 
@@ -1138,7 +1187,7 @@ export const Canvas = ({
             document.body.style.cursor = 'url(/custom-cursors/eraser.svg) 8 8, auto';
         } else if (canvasState.mode === CanvasMode.Moving) {
             document.body.style.cursor = 'url(/custom-cursors/hand.svg) 8 8, auto';
-        } else if (canvasState.mode ===  CanvasMode.ArrowResizeHandler) {
+        } else if (canvasState.mode === CanvasMode.ArrowResizeHandler) {
             document.body.style.cursor = 'url(/custom-cursors/grab.svg) 8 8, auto';
         } else {
             document.body.style.cursor = 'default';
@@ -1147,9 +1196,15 @@ export const Canvas = ({
 
     return (
         <main
-            className={`h-full w-full relative bg-neutral-100 touch-none overscroll-none ${isDraggingOverCanvas ? 'bg-neutral-300 border-2 border-dashed border-custom-blue' : ''}`}
-            style={{ backgroundImage: "url(/dot-grid.png)", backgroundSize: 'cover' }}
+            className={`fixed h-full w-full bg-neutral-100 touch-none overscroll-none ${isDraggingOverCanvas ? 'bg-neutral-300 border-2 border-dashed border-custom-blue' : ''}`}
+            style={{
+                backgroundImage: "url(/dot-grid.png)",
+                backgroundSize: 'cover',
+                WebkitOverflowScrolling: 'touch',
+                WebkitUserSelect: 'none',
+            }}
         >
+            <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
             <Info board={board} />
             <Participants
                 otherUsers={otherUsers}
@@ -1187,7 +1242,9 @@ export const Canvas = ({
                 onDragOver={onDragOver}
                 onDrop={onDrop}
                 onDragLeave={onDragLeave}
-                // onTouchMove={onTouchMove}
+                onTouchStart={onTouchDown}
+                onTouchMove={onTouchMove}
+                onTouchEnd={onTouchUp}
                 onPointerMove={onPointerMove}
                 onPointerLeave={onPointerLeave}
                 onPointerDown={onPointerDown}
@@ -1217,13 +1274,15 @@ export const Canvas = ({
                             layer={currentPreviewLayer}
                         />
                     )}
-                    <SelectionBox
-                        zoom={zoom}
-                        liveLayers={liveLayers}
-                        selectedLayers={selectedLayersRef.current}
-                        onResizeHandlePointerDown={onResizeHandlePointerDown}
-                        onArrowResizeHandlePointerDown={onArrowResizeHandlePointerDown}
-                    />
+                    {(canvasState.mode === CanvasMode.SelectionNet || canvasState.mode === CanvasMode.None) && (
+                        <SelectionBox
+                            zoom={zoom}
+                            liveLayers={liveLayers}
+                            selectedLayers={selectedLayersRef.current}
+                            onResizeHandlePointerDown={onResizeHandlePointerDown}
+                            onArrowResizeHandlePointerDown={onArrowResizeHandlePointerDown}
+                        />
+                    )}
                     {canvasState.mode === CanvasMode.SelectionNet && canvasState.current != null && (
                         <rect
                             style={{

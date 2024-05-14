@@ -77,7 +77,7 @@ export const Text = ({
         if (textRef.current) {
             textRef.current.focus();
         }
-    }, [textRef]);
+    }, []);
 
     useEffect(() => {
         const layers = { ...liveLayers };

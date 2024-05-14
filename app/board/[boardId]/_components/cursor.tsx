@@ -30,11 +30,12 @@ export const Cursor = memo(({
 
     const { x, y } = cursor;
 
+    console.log(x, y);
+
     return (
         <foreignObject
-            style={{
-                transform: `translateX(${x}px) translateY(${y}px)`
-            }}
+            x={x}
+            y={y}
             height={50}
             width={name.length * 10 + 24}
             className="relative drop-shadow-md"
@@ -47,7 +48,7 @@ export const Cursor = memo(({
                 }}
             />
             <div
-                className="absolute left-5 px-1.5 py-0.5 rounded-md text-xs text-white font-semibold"
+                className="rounded-md px-2 py-[1px] ml-4 mb-2 truncate text-xs text-white font-semibold inline-block"
                 style={{ backgroundColor: connectionIdToColor(connectionId) }}
             >
                 {name}

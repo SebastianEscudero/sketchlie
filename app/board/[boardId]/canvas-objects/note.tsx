@@ -3,7 +3,7 @@ import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
 
 import { LayerType, NoteLayer, UpdateLayerMutation } from "@/types/canvas";
 import { cn, colorToCss, getContrastingTextColor } from "@/lib/utils";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRoom } from "@/components/room";
 import { throttle } from "lodash";
 
@@ -32,7 +32,7 @@ const throttledUpdateLayer = throttle((updateLayer, socket, boardId, layerId, la
   if (socket) {
     socket.emit('layer-update', layerId, layerUpdates);
   }
-}, 1000); 
+}, 1000);
 
 export const Note = ({
   layer,
@@ -41,6 +41,7 @@ export const Note = ({
   selectionColor,
   updateLayer,
 }: NoteProps) => {
+  const noteRef = useRef<any>(null);
   const { x, y, width, height, fill, outlineFill, value: initialValue, textFontSize } = layer;
   const [value, setValue] = useState(initialValue);
   const { liveLayers, socket, board } = useRoom();
@@ -52,7 +53,7 @@ export const Note = ({
       setValue(noteLayer.value);
     }
   }, [id, liveLayers]);
-  
+
   const updateValue = (newValue: string) => {
     if (liveLayers[id] && liveLayers[id].type === LayerType.Note) {
       const noteLayer = liveLayers[id] as NoteLayer;
@@ -77,6 +78,12 @@ export const Note = ({
     }
   };
 
+  useEffect(() => {
+    if (noteRef.current) {
+      noteRef.current.focus();
+    }
+  }, []);
+
   if (!fill) {
     return null;
   }
@@ -89,12 +96,13 @@ export const Note = ({
       height={height}
       onPointerDown={onPointerDown ? (e) => onPointerDown(e, id) : undefined}
       style={{
-        outline: `${selectionColor || colorToCss(outlineFill || fill)} solid 2px`,
+        borderColor: `${selectionColor || colorToCss(outlineFill || fill)}`,
         backgroundColor: fillColor,
       }}
-      className="shadow-md drop-shadow-xl flex items-center justify-center"
+      className="shadow-md drop-shadow-xl flex items-center justify-center border-[1.5px] border-spacing-3"
     >
       <ContentEditable
+        innerRef={noteRef}
         html={value || ""}
         onChange={handleContentChange}
         onPaste={handlePaste}
@@ -107,6 +115,7 @@ export const Note = ({
           color: fill ? getContrastingTextColor(fill) : "#000",
           textWrap: "wrap",
           lineHeight: value ? 'normal' : `${height}px`,
+          WebkitUserSelect: 'auto'
         }}
         spellCheck={false}
       />

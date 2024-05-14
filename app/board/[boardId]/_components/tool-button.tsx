@@ -21,8 +21,8 @@ export const ToolButton = ({
 }: ToolButtonProps) => {
     return (
         <Hint label={label} side="right" sideOffset={14}>
-            <Button disabled={isDisabled} onClick={onClick} size="icon" variant={isActive ? "boardActive" : "board"}>
-                <Icon />
+            <Button disabled={isDisabled} onClick={onClick} className="h-10 w-10 p-2" variant={isActive ? "boardActive" : "board"}>
+                <Icon className="h-5 w-5" />
             </Button>
         </Hint>
     )
