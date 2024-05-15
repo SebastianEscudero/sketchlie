@@ -963,7 +963,6 @@ export const Canvas = ({
     }, []);
 
     const onTouchMove = useCallback((e: React.TouchEvent) => {
-        e.preventDefault();
         setActiveTouches(e.touches.length);
     
         if (e.touches.length < 2) {
