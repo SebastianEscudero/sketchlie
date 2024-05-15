@@ -60,7 +60,6 @@ export const Canvas = ({
     const maxFileSize = org && getMaxImageSize(org) || 0;
     const [isDraggingOverCanvas, setIsDraggingOverCanvas] = useState(false);
     const selectedLayersRef = useRef<string[]>([]);
-    const [zoom, setZoom] = useState(1);
     const [copiedLayers, setCopiedLayers] = useState<Map<string, any>>(new Map());
     const [pencilDraft, setPencilDraft] = useState<[number, number, number][]>([]);
     const [textRef, setTextRef] = useState<any>(null);
@@ -68,6 +67,10 @@ export const Canvas = ({
         mode: CanvasMode.None,
     });
     const [camera, setCamera] = useState<Camera>({ x: 0, y: 0 });
+    const [zoom, setZoom] = useState(1);
+    const zoomRef = useRef(zoom); // for on layer pointer down
+    const cameraRef = useRef(camera); // for on layer pointer down
+    const canvasStateRef = useRef(canvasState); // for on layer pointer down
     const [isPanning, setIsPanning] = useState(false);
     const [rightClickPanning, setIsRightClickPanning] = useState(false);
     const [startPanPoint, setStartPanPoint] = useState({ x: 0, y: 0 });
@@ -498,12 +501,14 @@ export const Canvas = ({
         };
     }, []);
 
-    const onWheel = useCallback((e: any) => {
+    const onWheel = useCallback((e: React.WheelEvent) => {
         const svgRect = e.currentTarget.getBoundingClientRect();
         const x = e.clientX - svgRect.left;
         const y = e.clientY - svgRect.top;
-    
-        if (e.ctrlKey) {
+        
+        const isMouseWheel = Math.abs(e.deltaY) % 100 === 0 && e.deltaX === 0;
+
+        if (isMouseWheel || e.ctrlKey) {
             // Zooming
             let newZoom = zoom;
             if (e.deltaY < 0) {
@@ -532,6 +537,11 @@ export const Canvas = ({
     const onPointerDown = useCallback((
         e: React.PointerEvent,
     ) => {
+
+        if (activeTouches > 1) {
+            return;
+        }
+
         const point = pointerEventToCanvasPoint(e, camera, zoom);
 
         if (e.button === 0) {
@@ -564,7 +574,7 @@ export const Canvas = ({
             setStartPanPoint({ x: e.clientX, y: e.clientY });
             document.body.style.cursor = 'url(/custom-cursors/grab.svg) 8 8, auto';
         }
-    }, [camera, canvasState.mode, setCanvasState, startDrawing, setIsPanning, setIsRightClickPanning, zoom]);
+    }, [camera, canvasState.mode, setCanvasState, startDrawing, setIsPanning, setIsRightClickPanning, zoom, activeTouches]);
 
 
     const onPointerMove = useCallback((e: React.PointerEvent) => {
@@ -840,17 +850,17 @@ export const Canvas = ({
     const onLayerPointerDown = useCallback((e: React.PointerEvent, layerId: string) => {
 
         if (
-            canvasState.mode === CanvasMode.Pencil ||
-            canvasState.mode === CanvasMode.Inserting ||
-            canvasState.mode === CanvasMode.Moving ||
-            canvasState.mode === CanvasMode.Eraser ||
+            canvasStateRef.current.mode === CanvasMode.Pencil ||
+            canvasStateRef.current.mode === CanvasMode.Inserting ||
+            canvasStateRef.current.mode === CanvasMode.Moving ||
+            canvasStateRef.current.mode === CanvasMode.Eraser ||
             e.button !== 0
         ) {
             return;
         }
 
         e.stopPropagation();
-        const point = pointerEventToCanvasPoint(e, camera, zoom);
+        const point = pointerEventToCanvasPoint(e, cameraRef.current, zoomRef.current);
         setCanvasState({ mode: CanvasMode.Translating, current: point });
 
         if (selectedLayersRef.current.includes(layerId)) {
@@ -867,7 +877,7 @@ export const Canvas = ({
 
         selectedLayersRef.current = [layerId];
 
-    }, [selectedLayersRef, canvasState]);
+    }, [selectedLayersRef]);
 
     const layerIdsToColorSelection = useMemo(() => {
         const layerIdsToColorSelection: Record<string, string> = {};
@@ -1193,6 +1203,12 @@ export const Canvas = ({
             document.body.style.cursor = 'default';
         }
     }, [canvasState.mode, canvasState]);
+
+    useEffect(() => { // for on layer pointer down to update refts
+        canvasStateRef.current = canvasState;
+        zoomRef.current = zoom;
+        cameraRef.current = camera;
+    }, [canvasState, zoom, camera]);
 
     return (
         <main

@@ -31,7 +31,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function pointerEventToCanvasPoint(
-  e: React.PointerEvent,
+  e: any,
   camera: Camera,
   zoom: number,
 ) {
