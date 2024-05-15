@@ -98,7 +98,6 @@ export const Note = ({
       style={{
         borderColor: `${selectionColor || colorToCss(outlineFill || fill)}`,
         backgroundColor: fillColor,
-        boxShadow: '0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -1px rgba(0, 0, 0, 0.06)',
       }}
       className="shadow-md flex items-center justify-center border-[1.5px] border-spacing-3"
     >
