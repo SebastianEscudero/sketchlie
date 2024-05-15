@@ -31,7 +31,7 @@ export const ConfirmModal = ({ children, disabled, header, onConfirm, descriptio
             <AlertDialogTrigger asChild>
                 {children}
             </AlertDialogTrigger>
-            <AlertDialogContent className="max-w-[90%] rounded-xl">
+            <AlertDialogContent className="max-w-[80%] sm:max-w-[60%] lg:max-w-[40%] xl:max-w-[30%] rounded-xl">
                 <AlertDialogHeader>
                     <AlertDialogTitle>{header}</AlertDialogTitle>
                     <AlertDialogDescription>{description}</AlertDialogDescription>
