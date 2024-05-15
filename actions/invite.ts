@@ -52,7 +52,7 @@ export const invite = async (
       if (existingInvitation && existingInvitation.status === 'PENDING') {
         pendingEmails.push(email);
       } else {
-        // await sendOrganizationInvite(email, activeOrg.name, user);
+        await sendOrganizationInvite(email, activeOrg.name, user);
         const newInvitation = await db.organizationInvitation.create({
           data: {
             email: email,
