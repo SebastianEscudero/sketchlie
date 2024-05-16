@@ -1,6 +1,5 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-// import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 
 import { 
   ArrowHandle,
@@ -13,7 +12,7 @@ import {
   Side, 
   XYWH
 } from "@/types/canvas";
-import { toast } from "sonner";
+import html2canvas from 'html2canvas';
 
 const COLORS = [
   "#DC2626", // Red
@@ -320,20 +319,14 @@ export function getSvgPathFromStroke(stroke: number[][]) {
 
 export const NAME = "Sketchlie";
 
-export const exportToPdf = async (selectedLayers: any) => {
-  toast.info("Coming soon!", {
-    position: "top-center",
-    closeButton: true
-  });
-  // const liveLayers: Layers = JSON.parse(localStorage.getItem("layers") || '{}');
-  // let layersList: Layer[] = [];
-
-  // if (!selectedLayers.length || !liveLayers) {
-  //   toast.info("Selecciona los objetos para exportar", {
-  //     position: "top-center",
-  //     closeButton: true
-  //   });
-  //   return;
-  // }
-
-}
+export const exportToPNG = async () => {
+  const screenShot = document.getElementById("canvas") as HTMLElement;
+  html2canvas(screenShot, { useCORS: true }).then((canvas: any) => {
+    const base64image = canvas.toDataURL("image/png");
+    var anchor = document.createElement("a");
+    anchor.setAttribute("href", base64image);
+    anchor.setAttribute("download", "test.png");
+    anchor.click();
+    anchor.remove();
+  })
+};

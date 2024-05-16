@@ -505,7 +505,7 @@ export const Canvas = ({
         const svgRect = e.currentTarget.getBoundingClientRect();
         const x = e.clientX - svgRect.left;
         const y = e.clientY - svgRect.top;
-        
+
         const isMouseWheel = Math.abs(e.deltaY) % 100 === 0 && e.deltaX === 0;
 
         if (isMouseWheel || e.ctrlKey) {
@@ -516,11 +516,11 @@ export const Canvas = ({
             } else {
                 newZoom = Math.max(zoom / 1.1, 0.3);
             }
-    
+
             const zoomFactor = newZoom / zoom;
             const newX = x - (x - camera.x) * zoomFactor;
             const newY = y - (y - camera.y) * zoomFactor;
-    
+
             setZoom(newZoom);
             setCamera({ x: newX, y: newY });
         } else {
@@ -529,7 +529,7 @@ export const Canvas = ({
                 x: camera.x - e.deltaX,
                 y: camera.y - e.deltaY,
             };
-    
+
             setCamera(newCameraPosition);
         }
     }, [zoom, camera]);
@@ -957,39 +957,39 @@ export const Canvas = ({
     const onTouchDown = useCallback((e: React.TouchEvent) => {
         setActiveTouches(e.touches.length);
     }, []);
-    
+
     const onTouchUp = useCallback((e: React.TouchEvent) => {
         setActiveTouches(e.changedTouches.length);
     }, []);
 
     const onTouchMove = useCallback((e: React.TouchEvent) => {
         setActiveTouches(e.touches.length);
-    
+
         if (e.touches.length < 2) {
             setPinchStartDist(null);
             return;
         }
-    
+
         const touch1 = e.touches[0];
         const touch2 = e.touches[1];
-    
+
         const dist = Math.hypot(
             touch1.clientX - touch2.clientX,
             touch1.clientY - touch2.clientY
         );
-    
+
         const svgRect = e.currentTarget.getBoundingClientRect();
         const x = ((touch1.clientX + touch2.clientX) / 2) - svgRect.left;
         const y = ((touch1.clientY + touch2.clientY) / 2) - svgRect.top;
-    
+
         if (pinchStartDist === null) {
             setPinchStartDist(dist);
             setStartPanPoint({ x, y });
             return;
         }
-    
+
         const distChange = Math.abs(dist - pinchStartDist);
-    
+
         if (distChange > 10) { // Zooming
             let newZoom = zoom;
             if (dist > pinchStartDist) {
@@ -997,29 +997,29 @@ export const Canvas = ({
             } else {
                 newZoom = Math.max(zoom / 1.1, 0.3);
             }
-    
+
             const zoomFactor = newZoom / zoom;
             const newX = x - (x - camera.x) * zoomFactor;
             const newY = y - (y - camera.y) * zoomFactor;
-    
+
             setZoom(newZoom);
             setCamera({ x: newX, y: newY });
         } else if (startPanPoint) { // Panning
             const dx = x - startPanPoint.x;
             const dy = y - startPanPoint.y;
-    
+
             const newCameraPosition = {
                 x: camera.x + dx,
                 y: camera.y + dy,
             };
-    
+
             setCamera(newCameraPosition);
         }
-    
+
         setPinchStartDist(dist);
         setStartPanPoint({ x, y });
     }, [zoom, pinchStartDist, camera, startPanPoint]);
-    
+
     const copySelectedLayers = useCallback(() => {
         const copied = new Map();
         for (const id of selectedLayersRef.current) {
@@ -1249,79 +1249,80 @@ export const Canvas = ({
                     boardId={boardId}
                 />
             )}
-            <svg
-                id="canvas"
-                className="h-[100vh] w-[100vw]"
-                onWheel={onWheel}
-                onDragOver={onDragOver}
-                onDrop={onDrop}
-                onDragLeave={onDragLeave}
-                onTouchStart={onTouchDown}
-                onTouchMove={onTouchMove}
-                onTouchEnd={onTouchUp}
-                onPointerMove={onPointerMove}
-                onPointerLeave={onPointerLeave}
-                onPointerDown={onPointerDown}
-                onPointerUp={onPointerUp}
-            >
-                <g
-                    style={{
-                        transform: `translate(${camera.x}px, ${camera.y}px) scale(${zoom})`,
-                        transformOrigin: 'top left',
-                    }}
+            <div id="canvas"
+                className="h-[100vh] w-[100vw]">
+                <svg
+                    className="h-[100vh] w-[100vw]"
+                    onWheel={onWheel}
+                    onDragOver={onDragOver}
+                    onDrop={onDrop}
+                    onDragLeave={onDragLeave}
+                    onTouchStart={onTouchDown}
+                    onTouchMove={onTouchMove}
+                    onTouchEnd={onTouchUp}
+                    onPointerMove={onPointerMove}
+                    onPointerLeave={onPointerLeave}
+                    onPointerDown={onPointerDown}
+                    onPointerUp={onPointerUp}
                 >
-                    {liveLayerIds.map((layerId: any) => (
-                        <LayerPreview
-                            selectionColor={layerIdsToColorSelection[layerId]}
-                            onPathErase={onPathErase}
-                            onLayerPointerDown={onLayerPointerDown}
-                            liveLayers={liveLayers}
-                            setLiveLayers={setLiveLayers}
-                            updateLayer={updateLayer}
-                            key={layerId}
-                            id={layerId}
-                            onRefChange={setTextRef}
-                        />
-                    ))}
-                    {currentPreviewLayer && (
-                        <CurrentPreviewLayer
-                            layer={currentPreviewLayer}
-                        />
-                    )}
-                    {(canvasState.mode === CanvasMode.SelectionNet || canvasState.mode === CanvasMode.None) && (
-                        <SelectionBox
-                            zoom={zoom}
-                            liveLayers={liveLayers}
-                            selectedLayers={selectedLayersRef.current}
-                            onResizeHandlePointerDown={onResizeHandlePointerDown}
-                            onArrowResizeHandlePointerDown={onArrowResizeHandlePointerDown}
-                        />
-                    )}
-                    {canvasState.mode === CanvasMode.SelectionNet && canvasState.current != null && (
-                        <rect
-                            style={{
-                                fill: 'rgba(59, 130, 246, 0.3)',
-                                stroke: '#3B82F6',
-                                strokeWidth: 0.5
-                            }}
-                            x={Math.min(canvasState.origin.x, canvasState.current.x)}
-                            y={Math.min(canvasState.origin.y, canvasState.current.y)}
-                            width={Math.abs(canvasState.origin.x - canvasState.current.x)}
-                            height={Math.abs(canvasState.origin.y - canvasState.current.y)}
-                        />
-                    )}
-                    {otherUsers && <CursorsPresence otherUsers={otherUsers} />}
-                    {pencilDraft != null && pencilDraft.length > 0 && (
-                        <Path
+                    <g
+                        style={{
+                            transform: `translate(${camera.x}px, ${camera.y}px) scale(${zoom})`,
+                            transformOrigin: 'top left',
+                        }}
+                    >
+                        {liveLayerIds.map((layerId: any) => (
+                            <LayerPreview
+                                selectionColor={layerIdsToColorSelection[layerId]}
+                                onPathErase={onPathErase}
+                                onLayerPointerDown={onLayerPointerDown}
+                                liveLayers={liveLayers}
+                                setLiveLayers={setLiveLayers}
+                                updateLayer={updateLayer}
+                                key={layerId}
+                                id={layerId}
+                                onRefChange={setTextRef}
+                            />
+                        ))}
+                        {currentPreviewLayer && (
+                            <CurrentPreviewLayer
+                                layer={currentPreviewLayer}
+                            />
+                        )}
+                        {(canvasState.mode === CanvasMode.SelectionNet || canvasState.mode === CanvasMode.None) && (
+                            <SelectionBox
+                                zoom={zoom}
+                                liveLayers={liveLayers}
+                                selectedLayers={selectedLayersRef.current}
+                                onResizeHandlePointerDown={onResizeHandlePointerDown}
+                                onArrowResizeHandlePointerDown={onArrowResizeHandlePointerDown}
+                            />
+                        )}
+                        {canvasState.mode === CanvasMode.SelectionNet && canvasState.current != null && (
+                            <rect
+                                style={{
+                                    fill: 'rgba(59, 130, 246, 0.3)',
+                                    stroke: '#3B82F6',
+                                    strokeWidth: 0.5
+                                }}
+                                x={Math.min(canvasState.origin.x, canvasState.current.x)}
+                                y={Math.min(canvasState.origin.y, canvasState.current.y)}
+                                width={Math.abs(canvasState.origin.x - canvasState.current.x)}
+                                height={Math.abs(canvasState.origin.y - canvasState.current.y)}
+                            />
+                        )}
+                        {otherUsers && <CursorsPresence otherUsers={otherUsers} />}
+                        {pencilDraft != null && pencilDraft.length > 0 && pencilDraft[0].length > 0 && !pencilDraft.some(array => array.some(isNaN)) && (<Path
                             points={pencilDraft}
                             fill={colorToCss(pathColor)}
                             x={0}
                             y={0}
                             strokeSize={pathStrokeSize}
                         />
-                    )}
-                </g>
-            </svg>
+                        )}
+                    </g>
+                </svg>
+            </div>
         </main>
     );
 };

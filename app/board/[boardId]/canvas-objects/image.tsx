@@ -15,20 +15,20 @@ export const InsertImage = ({
   onPointerDown,
 }: ImageProps) => {
   const { x, y, width, height, src } = layer;
-    if (!isUploading ) {
-      return (
-        <image 
+  if (!isUploading) {
+    return (
+      <image
         id={id}
-        href = {src} 
+        href={src}
         x={x}
         y={y}
         width={width}
         height={height}
         onPointerDown={(e) => onPointerDown(e, id)}
       />
-      );
-    } else {
-      return null;
-    }
-  };
+    );
+  } else {
+    return null;
+  }
+};
 

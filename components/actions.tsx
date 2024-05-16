@@ -1,7 +1,7 @@
 "use client";
 
 import { toast } from "sonner";
-import { Link2, Pencil, Trash2 } from "lucide-react";
+import { ArrowUpFromLine, Link2, Pencil, Trash2 } from "lucide-react";
 import { DropdownMenuContentProps } from "@radix-ui/react-dropdown-menu";
 
 import { ConfirmModal } from "@/components/confirm-modal";
@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { useRenameModal } from "@/store/use-rename-modal";
 import { useRouter } from "next/navigation";
 import { useCurrentUser } from "@/hooks/use-current-user";
+import { exportToPNG } from "@/lib/utils";
 
 interface ActionsProps {
   children: React.ReactNode;
@@ -24,6 +25,7 @@ interface ActionsProps {
   sideOffset?: DropdownMenuContentProps["sideOffset"];
   id: string;
   title: string;
+  showExport?: boolean;
 };
 
 export const Actions = ({
@@ -32,6 +34,7 @@ export const Actions = ({
   sideOffset,
   id,
   title,
+  showExport = false,
 }: ActionsProps) => {
   const { onOpen } = useRenameModal();
   const { mutate, pending } = useApiMutation(api.board.remove);
@@ -54,7 +57,7 @@ export const Actions = ({
   const onDelete = () => {
     mutate({ id, userId: user.id })
       .then(() => toast.success("Board deleted"))
-      .then (() => router.push("/dashboard/"))
+      .then(() => router.push("/dashboard/"))
       .catch(() => toast.error("Failed to delete board"));
   };
 
@@ -97,20 +100,16 @@ export const Actions = ({
             Delete
           </Button>
         </ConfirmModal>
-        {/* <Button
-          variant="ghost"
-          className="p-3 cursor-pointer text-sm w-full justify-start"
-          onClick={() => exportToPdf(title)}
-        >
-          <ArrowUpFromLine className="h-4 w-4 mr-2" />
-            Export to PDF
-          <Badge
-            variant="inProgress"
-            className="ml-2"
+        {showExport && (
+          <Button
+            variant="ghost"
+            className="p-3 cursor-pointer text-sm w-full justify-start"
+            onClick={() => exportToPNG()}
           >
-            SOON
-          </Badge>
-        </Button>           */}
+            <ArrowUpFromLine className="h-4 w-4 mr-2" />
+            Export to PNG
+          </Button>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );

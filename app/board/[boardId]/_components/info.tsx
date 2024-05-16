@@ -57,7 +57,7 @@ export const Info = ({
                     </Button>
                 </Hint>
             <TabSeparator />
-            <Actions id={board._id} title={board.title} side="bottom" sideOffset={10}>
+            <Actions id={board._id} title={board.title} side="bottom" sideOffset={10} showExport={true}>
                 <div>
                     <Hint label="Main menu" side="bottom" sideOffset={10}>
                         <Button size="icon" variant="board">
