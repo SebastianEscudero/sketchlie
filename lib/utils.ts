@@ -319,7 +319,7 @@ export function getSvgPathFromStroke(stroke: number[][]) {
 
 export const NAME = "Sketchlie";
 
-export const exportToPNG = async () => {
+export const exportToPNG = async (title: string) => {
   const screenShot = document.getElementById("canvas") as HTMLElement;
   
   // Save the current background color and image
@@ -336,28 +336,16 @@ export const exportToPNG = async () => {
   img.src = "/dot-grid.png";
   await new Promise((resolve) => img.onload = resolve);
 
-  // Delay to ensure the entire canvas is captured
-  setTimeout(() => {
-    // Redundant chaining to ensure iOS captures the whole data
-    toPng(screenShot, { quality: 1 })
-    .then(() => {
-      toPng(screenShot, { quality: 1 })
-      .then(() => {
-        toPng(screenShot, { quality: 1 })
-        .then((dataUrl) => {
-          const link = document.createElement('a');
-          link.download = 'tablero.png';
-          link.href = dataUrl;
-          link.click();
+  // Now that the image is loaded, take the screenshot
+  toPng(screenShot, { quality: 1 }).then((dataUrl) => {
+    var anchor = document.createElement("a");
+    anchor.setAttribute("href", dataUrl);
+    anchor.setAttribute("download", `${title}.png`);
+    anchor.click();
+    anchor.remove();
 
-          // Restore the original background color and image
-          screenShot.style.backgroundColor = originalBackgroundColor;
-          screenShot.style.backgroundImage = originalBackgroundImage;
-        })
-      })
-    })
-    .catch((error) => {
-      console.error('oops, something went wrong!', error);
-    });
-  }, 200);
+    // Restore the original background color and image
+    screenShot.style.backgroundColor = originalBackgroundColor;
+    screenShot.style.backgroundImage = originalBackgroundImage;
+  })
 };
