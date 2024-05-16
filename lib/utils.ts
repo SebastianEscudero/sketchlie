@@ -319,7 +319,7 @@ export function getSvgPathFromStroke(stroke: number[][]) {
 
 export const NAME = "Sketchlie";
 
-export const exportToPNG = async () => {
+export const exportToPNG = async (title: string) => {
   const screenShot = document.getElementById("canvas") as HTMLElement;
   
   // Save the current background color and image
@@ -340,7 +340,7 @@ export const exportToPNG = async () => {
   toPng(screenShot, { quality: 1 }).then((dataUrl) => {
     var anchor = document.createElement("a");
     anchor.setAttribute("href", dataUrl);
-    anchor.setAttribute("download", "tablero.png");
+    anchor.setAttribute("download", `${title}.png`);
     anchor.click();
     anchor.remove();
 

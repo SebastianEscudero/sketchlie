@@ -104,7 +104,7 @@ export const Actions = ({
           <Button
             variant="ghost"
             className="p-3 cursor-pointer text-sm w-full justify-start"
-            onClick={() => exportToPNG()}
+            onClick={() => exportToPNG(title)}
           >
             <ArrowUpFromLine className="h-4 w-4 mr-2" />
             Export to PNG
