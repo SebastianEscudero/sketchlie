@@ -3,16 +3,6 @@ export const PlantillaMapaDeProceso = {
     image: '/templates/mapa-de-proceso.png',
     href: "/plantillas/mapa-de-proceso/",
     layers: {
-        "19NbGCGRPe0HM0XAX7inw": {
-            fill: null,
-            height: 64.39891993791144,
-            src: "https://sketchlie.s3.us-east-2.amazonaws.com/a3379d57-c82f-436a-b4ba-e475fa094860_cog.svg",
-            textFontSize: 0,
-            type: 5,
-            width: 64.39891993791144,
-            x: 395.984636230886,
-            y: 405.8854821086678,
-        },
         "2N3bPqAdpXhGXGGRrsvIB": {
             center: { x: 607.9828484036543, y: 393.55191645640286 },
             endArrowHead: "Triangle",
@@ -23,16 +13,6 @@ export const PlantillaMapaDeProceso = {
             width: -0.6063662927966789,
             x: 608.2860315500526,
             y: 359.0158152906201,
-        },
-        "3ciXZ5JwZbykg2tWwXGSJ": {
-            fill: null,
-            height: 65.18610198335136,
-            src: "https://sketchlie.s3.us-east-2.amazonaws.com/318245ca-3adb-4d50-ab71-34787f60becd_user.svg",
-            textFontSize: 0,
-            type: 5,
-            width: 65.18610198335136,
-            x: 395.3296169318267,
-            y: 284.43159067662486,
         },
         "45IUwIyeoDXDWeLUEEci9": {
             center: {
@@ -77,6 +57,16 @@ export const PlantillaMapaDeProceso = {
             width: 89.63614034285713,
             x: 391.10326662446374,
             y: 353.2359724920806,
+        },
+        CywM8ei1IP8z6OFKG4G4K: {
+            fill: null,
+            height: 53,
+            src: "https://sketchlie.s3.us-east-2.amazonaws.com/clufwcban0000qncizownxztp_cog.svg",
+            textFontSize: 0,
+            type: 5,
+            width: 53,
+            x: 402,
+            y: 414,
         },
         Fqt5DORDvKAkmREQaCxNQ: {
             fill: { a: 1, b: 35, g: 82, r: 243 },
@@ -161,16 +151,6 @@ export const PlantillaMapaDeProceso = {
             x: 1047.1886047257522,
             y: 323.77125506715913,
         },
-        WXSjOnMNe9kRc6w43qQ6q: {
-            fill: null,
-            height: 62.768567534420015,
-            src: "https://sketchlie.s3.us-east-2.amazonaws.com/90bedbfd-bb0b-424d-8c52-7114043f1c2d_briefcase-business.svg",
-            textFontSize: 0,
-            type: 5,
-            width: 62.768567534420015,
-            x: 398.2980020897425,
-            y: 534.5171157350909,
-        },
         WkXFuBxD523OWNM0KsA5S: {
             fill: { a: 1, b: 255, g: 255, r: 255 },
             height: 369.2610661025775,
@@ -180,6 +160,16 @@ export const PlantillaMapaDeProceso = {
             width: 1161,
             x: 349.35610776355696,
             y: 263.92719502340435,
+        },
+        Z5G9kA7axVWN9Qnce3uoU: {
+            fill: null,
+            height: 48,
+            src: "https://sketchlie.s3.us-east-2.amazonaws.com/clufwcban0000qncizownxztp_briefcase-business.svg",
+            textFontSize: 0,
+            type: 5,
+            width: 48,
+            x: 406,
+            y: 542,
         },
         i98AqYX6euCkCn7VT0ZvZ: {
             fill: { a: 1, b: 42, g: 142, r: 252 },
@@ -253,6 +243,16 @@ export const PlantillaMapaDeProceso = {
             x: 665.9217886471317,
             y: 463.9766766688592,
         },
+        z0yshsBtrCUg8sC0N1pFY: {
+            fill: null,
+            height: 60,
+            src: "https://sketchlie.s3.us-east-2.amazonaws.com/clufwcban0000qncizownxztp_user.svg",
+            textFontSize: 0,
+            type: 5,
+            width: 60,
+            x: 398,
+            y: 290,
+        },
         zmOIXNcqkukZTO5jlX621: {
             fill: { a: 1, b: 178, g: 75, r: 65 },
             height: 59,
@@ -268,11 +268,8 @@ export const PlantillaMapaDeProceso = {
         "7ly8wyEeUufySFMqWuh8v",
         "M1UsA4YT986jvCcI39I7R",
         "iSFv1Wa3X81GDXEIYKBPZ",
-        "3ciXZ5JwZbykg2tWwXGSJ",
         "84sNbVYWhk6THqujnYbDS",
-        "19NbGCGRPe0HM0XAX7inw",
         "OJctozIcFsuZ2JeEkUzRN",
-        "WXSjOnMNe9kRc6w43qQ6q",
         "ooPq36ZNtrXDrz6RAidlp",
         "II9hsM6c8qp6LiC5Mhz3E",
         "2N3bPqAdpXhGXGGRrsvIB",
@@ -289,5 +286,8 @@ export const PlantillaMapaDeProceso = {
         "45IUwIyeoDXDWeLUEEci9",
         "QwLHU2qiRgPhVYT9RigRr",
         "OhW8IdC6d7ckSmc0ZGVhT",
+        "z0yshsBtrCUg8sC0N1pFY",
+        "CywM8ei1IP8z6OFKG4G4K",
+        "Z5G9kA7axVWN9Qnce3uoU",
     ]
 };
