@@ -338,8 +338,20 @@ export const exportToPNG = async () => {
 
   // Now that the image is loaded, take the screenshot
   toPng(screenShot, { quality: 1 }).then((dataUrl) => {
+    // Convert data URL to blob
+    const byteString = atob(dataUrl.split(',')[1]);
+    const mimeString = dataUrl.split(',')[0].split(':')[1].split(';')[0];
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+    for (let i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+    const blob = new Blob([ab], {type: mimeString});
+
+    // Create object URL and download
+    const url = URL.createObjectURL(blob);
     var anchor = document.createElement("a");
-    anchor.setAttribute("href", dataUrl);
+    anchor.setAttribute("href", url);
     anchor.setAttribute("download", "tablero.png");
     anchor.click();
     anchor.remove();
