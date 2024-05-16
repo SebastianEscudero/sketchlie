@@ -1249,80 +1249,79 @@ export const Canvas = ({
                     boardId={boardId}
                 />
             )}
-            <div id="canvas"
-                className="h-[100vh] w-[100vw]">
-                <svg
-                    className="h-[100vh] w-[100vw]"
-                    onWheel={onWheel}
-                    onDragOver={onDragOver}
-                    onDrop={onDrop}
-                    onDragLeave={onDragLeave}
-                    onTouchStart={onTouchDown}
-                    onTouchMove={onTouchMove}
-                    onTouchEnd={onTouchUp}
-                    onPointerMove={onPointerMove}
-                    onPointerLeave={onPointerLeave}
-                    onPointerDown={onPointerDown}
-                    onPointerUp={onPointerUp}
+            <svg
+                id="canvas"
+                className="h-[100vh] w-[100vw]"
+                onWheel={onWheel}
+                onDragOver={onDragOver}
+                onDrop={onDrop}
+                onDragLeave={onDragLeave}
+                onTouchStart={onTouchDown}
+                onTouchMove={onTouchMove}
+                onTouchEnd={onTouchUp}
+                onPointerMove={onPointerMove}
+                onPointerLeave={onPointerLeave}
+                onPointerDown={onPointerDown}
+                onPointerUp={onPointerUp}
+            >
+                <g
+                    style={{
+                        transform: `translate(${camera.x}px, ${camera.y}px) scale(${zoom})`,
+                        transformOrigin: 'top left',
+                    }}
                 >
-                    <g
-                        style={{
-                            transform: `translate(${camera.x}px, ${camera.y}px) scale(${zoom})`,
-                            transformOrigin: 'top left',
-                        }}
-                    >
-                        {liveLayerIds.map((layerId: any) => (
-                            <LayerPreview
-                                selectionColor={layerIdsToColorSelection[layerId]}
-                                onPathErase={onPathErase}
-                                onLayerPointerDown={onLayerPointerDown}
-                                liveLayers={liveLayers}
-                                setLiveLayers={setLiveLayers}
-                                updateLayer={updateLayer}
-                                key={layerId}
-                                id={layerId}
-                                onRefChange={setTextRef}
-                            />
-                        ))}
-                        {currentPreviewLayer && (
-                            <CurrentPreviewLayer
-                                layer={currentPreviewLayer}
-                            />
-                        )}
-                        {(canvasState.mode === CanvasMode.SelectionNet || canvasState.mode === CanvasMode.None) && (
-                            <SelectionBox
-                                zoom={zoom}
-                                liveLayers={liveLayers}
-                                selectedLayers={selectedLayersRef.current}
-                                onResizeHandlePointerDown={onResizeHandlePointerDown}
-                                onArrowResizeHandlePointerDown={onArrowResizeHandlePointerDown}
-                            />
-                        )}
-                        {canvasState.mode === CanvasMode.SelectionNet && canvasState.current != null && (
-                            <rect
-                                style={{
-                                    fill: 'rgba(59, 130, 246, 0.3)',
-                                    stroke: '#3B82F6',
-                                    strokeWidth: 0.5
-                                }}
-                                x={Math.min(canvasState.origin.x, canvasState.current.x)}
-                                y={Math.min(canvasState.origin.y, canvasState.current.y)}
-                                width={Math.abs(canvasState.origin.x - canvasState.current.x)}
-                                height={Math.abs(canvasState.origin.y - canvasState.current.y)}
-                            />
-                        )}
-                        {otherUsers && <CursorsPresence otherUsers={otherUsers} />}
-                        {pencilDraft != null && pencilDraft.length > 0 && pencilDraft[0].length > 0 && !pencilDraft.some(array => array.some(isNaN)) && (<Path
+                    {liveLayerIds.map((layerId: any) => (
+                        <LayerPreview
+                            selectionColor={layerIdsToColorSelection[layerId]}
+                            onPathErase={onPathErase}
+                            onLayerPointerDown={onLayerPointerDown}
+                            liveLayers={liveLayers}
+                            setLiveLayers={setLiveLayers}
+                            updateLayer={updateLayer}
+                            key={layerId}
+                            id={layerId}
+                            onRefChange={setTextRef}
+                        />
+                    ))}
+                    {currentPreviewLayer && (
+                        <CurrentPreviewLayer
+                            layer={currentPreviewLayer}
+                        />
+                    )}
+                    {(canvasState.mode === CanvasMode.SelectionNet || canvasState.mode === CanvasMode.None) && (
+                        <SelectionBox
+                            zoom={zoom}
+                            liveLayers={liveLayers}
+                            selectedLayers={selectedLayersRef.current}
+                            onResizeHandlePointerDown={onResizeHandlePointerDown}
+                            onArrowResizeHandlePointerDown={onArrowResizeHandlePointerDown}
+                        />
+                    )}
+                    {canvasState.mode === CanvasMode.SelectionNet && canvasState.current != null && (
+                        <rect
+                            style={{
+                                fill: 'rgba(59, 130, 246, 0.3)',
+                                stroke: '#3B82F6',
+                                strokeWidth: 0.5
+                            }}
+                            x={Math.min(canvasState.origin.x, canvasState.current.x)}
+                            y={Math.min(canvasState.origin.y, canvasState.current.y)}
+                            width={Math.abs(canvasState.origin.x - canvasState.current.x)}
+                            height={Math.abs(canvasState.origin.y - canvasState.current.y)}
+                        />
+                    )}
+                    {otherUsers && <CursorsPresence otherUsers={otherUsers} />}
+                    {pencilDraft != null && pencilDraft.length > 0 && pencilDraft[0].length > 0 && !pencilDraft.some(array => array.some(isNaN)) && (
+                        <Path
                             points={pencilDraft}
                             fill={colorToCss(pathColor)}
                             x={0}
                             y={0}
                             strokeSize={pathStrokeSize}
                         />
-                        )}
-                    </g>
-                </svg>
-            </div>
+                    )}
+                </g>
+            </svg>
         </main>
     );
 };

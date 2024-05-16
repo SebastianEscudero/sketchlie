@@ -30,8 +30,6 @@ export const Cursor = memo(({
 
     const { x, y } = cursor;
 
-    console.log(x, y);
-
     return (
         <foreignObject
             x={x}
