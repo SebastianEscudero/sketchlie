@@ -12,7 +12,7 @@ import {
   Side, 
   XYWH
 } from "@/types/canvas";
-import html2canvas from 'html2canvas';
+import { toPng } from 'html-to-image';
 
 const COLORS = [
   "#DC2626", // Red
@@ -318,8 +318,6 @@ export function getSvgPathFromStroke(stroke: number[][]) {
 };
 
 export const NAME = "Sketchlie";
-
-import { toPng } from 'html-to-image';
 
 export const exportToPNG = async () => {
   const screenShot = document.getElementById("canvas") as HTMLElement;

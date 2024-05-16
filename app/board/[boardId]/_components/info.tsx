@@ -15,7 +15,7 @@ interface InfoProps {
 
 const TabSeparator = () => {
     return(
-        <div className="text-neutral-300 sm:px-1.5">
+        <div className="text-neutral-300 px-1.5">
             |
         </div>
     )
@@ -48,9 +48,11 @@ export const Info = ({
                     </Link>
                 </Button>
             </Hint>
-            <TabSeparator />
+            <div className="text-neutral-300 px-1.5 xs:flex hidden">
+                |
+            </div>
                 <Hint label="Edit title" side="bottom" sideOffset={10}>
-                    <Button variant="board" className="text-base px-2 sm:max-w-[200px] md:max-w-[400px] max-w-[80px] overflow-hidden relative" onClick={() => onOpen(board._id, board.title)}>
+                    <Button variant="board" className="text-base px-2 sm:max-w-[200px] md:max-w-[400px] max-w-[80px] overflow-hidden relative xs:flex hidden" onClick={() => onOpen(board._id, board.title)}>
                         <div className="w-full text-left truncate">
                             {board.title}
                         </div>
