@@ -18,7 +18,6 @@ export const InsertImage = ({
   if (!isUploading) {
     return (
       <image
-        crossOrigin="anonymous"
         id={id}
         href={src}
         x={x}

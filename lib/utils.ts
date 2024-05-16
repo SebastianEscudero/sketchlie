@@ -13,6 +13,7 @@ import {
   XYWH
 } from "@/types/canvas";
 import { toPng } from 'html-to-image';
+import { toast } from "sonner";
 
 const COLORS = [
   "#DC2626", // Red
@@ -320,6 +321,15 @@ export function getSvgPathFromStroke(stroke: number[][]) {
 export const NAME = "Sketchlie";
 
 export const exportToPNG = async (title: string) => {
+
+  const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
+  if (isSafari) {
+    // Display an error message and exit the function
+    toast.error("Export to PNG is not available in Safari.");
+    return;
+  }
+
   const screenShot = document.getElementById("canvas") as HTMLElement;
   
   // Save the current background color and image
