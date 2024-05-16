@@ -336,16 +336,28 @@ export const exportToPNG = async () => {
   img.src = "/dot-grid.png";
   await new Promise((resolve) => img.onload = resolve);
 
-  // Now that the image is loaded, take the screenshot
-  toPng(screenShot, { quality: 1 }).then((dataUrl) => {
-    var anchor = document.createElement("a");
-    anchor.setAttribute("href", dataUrl);
-    anchor.setAttribute("download", "tablero.png");
-    anchor.click();
-    anchor.remove();
+  // Delay to ensure the entire canvas is captured
+  setTimeout(() => {
+    // Redundant chaining to ensure iOS captures the whole data
+    toPng(screenShot, { quality: 1 })
+    .then(() => {
+      toPng(screenShot, { quality: 1 })
+      .then(() => {
+        toPng(screenShot, { quality: 1 })
+        .then((dataUrl) => {
+          const link = document.createElement('a');
+          link.download = 'tablero.png';
+          link.href = dataUrl;
+          link.click();
 
-    // Restore the original background color and image
-    screenShot.style.backgroundColor = originalBackgroundColor;
-    screenShot.style.backgroundImage = originalBackgroundImage;
-  })
+          // Restore the original background color and image
+          screenShot.style.backgroundColor = originalBackgroundColor;
+          screenShot.style.backgroundImage = originalBackgroundImage;
+        })
+      })
+    })
+    .catch((error) => {
+      console.error('oops, something went wrong!', error);
+    });
+  }, 200);
 };
