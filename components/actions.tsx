@@ -1,7 +1,7 @@
 "use client";
 
 import { toast } from "sonner";
-import { ArrowUpFromLine, Link2, Pencil, Trash2 } from "lucide-react";
+import { ArrowUpFromLine, ChevronRight, Link2, Pencil, Trash2 } from "lucide-react";
 import { DropdownMenuContentProps } from "@radix-ui/react-dropdown-menu";
 
 import { ConfirmModal } from "@/components/confirm-modal";
@@ -17,7 +17,8 @@ import { Button } from "@/components/ui/button";
 import { useRenameModal } from "@/store/use-rename-modal";
 import { useRouter } from "next/navigation";
 import { useCurrentUser } from "@/hooks/use-current-user";
-import { exportToPNG } from "@/lib/utils";
+import { exportToSVG, exportToPNG } from "@/lib/utils";
+import { Badge } from "./ui/badge";
 
 interface ActionsProps {
   children: React.ReactNode;
@@ -94,21 +95,38 @@ export const Actions = ({
         >
           <Button
             variant="ghost"
-            className="p-3 cursor-pointer text-sm w-full justify-start"
+            className="p-3 cursor-pointer w-full justify-start"
           >
             <Trash2 className="h-4 w-4 mr-2" />
             Delete
           </Button>
         </ConfirmModal>
         {showExport && (
-          <Button
-            variant="ghost"
-            className="p-3 cursor-pointer text-sm w-full justify-start"
-            onClick={() => exportToPNG(title)}
-          >
-            <ArrowUpFromLine className="h-4 w-4 mr-2" />
-            Export to PNG
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <DropdownMenuItem className="p-3 cursor-pointer flex justify-between">
+                <div className="flex flex-row items-center">
+                  <ArrowUpFromLine className="h-4 w-4 mr-2" />
+                  Export 
+                </div>
+                <ChevronRight className="h-4 w-4" />
+              </DropdownMenuItem>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent side="right" sideOffset={8}>
+              <DropdownMenuItem
+                onClick={() => exportToPNG(title)}
+                className="p-3 cursor-pointer"
+              >
+                to PNG
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => toast.info("Cooming soon")}
+                className="p-3 cursor-pointer"
+              >
+                to SVG <Badge className="ml-2" variant="inProgress">SOON</Badge>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         )}
       </DropdownMenuContent>
     </DropdownMenu>
