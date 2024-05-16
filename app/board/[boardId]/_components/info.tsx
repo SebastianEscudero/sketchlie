@@ -71,6 +71,7 @@ export const Info = ({
             <TabSeparator />
             <Hint label="Upgrade" side="bottom" sideOffset={10}>
                 <Button variant="board"
+                    size="icon"
                     onClick={proModal.onOpen}
                 >
                     <Zap className="h-5 w-5 fill-custom-blue text-custom-blue"/>
