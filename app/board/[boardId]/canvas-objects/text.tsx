@@ -46,7 +46,7 @@ export const Text = ({
     onRefChange,
 }: TextProps) => {
     const { x, y, width, height, fill, value, textFontSize } = layer;
-    const { liveLayers, board, socket } = useRoom();
+    const { liveLayers, board, socket, expired } = useRoom();
     const textRef = useRef<any>(null);
     const fillColor = colorToCss(layer.fill);
     const isTransparent = fillColor === 'rgba(0,0,0,0)';
@@ -63,7 +63,9 @@ export const Text = ({
             const layers = { ...liveLayers };
             layers[id] = newLayer;
             setLiveLayers(layers);
-            throttledUpdateLayer(updateLayer, socket, board._id, id, liveLayers[id]);
+            if (expired !== true) {
+                throttledUpdateLayer(updateLayer, socket, board._id, id, liveLayers[id]);
+            }
         }
     };
 

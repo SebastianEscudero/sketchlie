@@ -56,7 +56,7 @@ export const Canvas = ({
     boardId,
 }: CanvasProps) => {
     const mousePositionRef = useRef({ x: 0, y: 0 });
-    const { liveLayers, liveLayerIds, User, otherUsers, setLiveLayers, setLiveLayerIds, org, socket, board } = useRoom();
+    const { liveLayers, liveLayerIds, User, otherUsers, setLiveLayers, setLiveLayerIds, org, socket, board, expired } = useRoom();
     const maxFileSize = org && getMaxImageSize(org) || 0;
     const [isDraggingOverCanvas, setIsDraggingOverCanvas] = useState(false);
     const selectedLayersRef = useRef<string[]>([]);
@@ -172,7 +172,7 @@ export const Canvas = ({
 
         setMyPresence(newPresence);
 
-        if (socket) {
+        if (socket && expired !== true) {
             socket.emit('presence', myPresence, User.userId);
             socket.emit('layer-update', layerId, layer);
         }
@@ -225,7 +225,7 @@ export const Canvas = ({
 
         setMyPresence(newPresence);
 
-        if (socket) {
+        if (socket && expired !== true) {
             socket.emit('presence', myPresence, User.userId);
             socket.emit('layer-update', layerId, layer);
         }
@@ -269,7 +269,7 @@ export const Canvas = ({
             }
         });
 
-        if (socket) {
+        if (socket && expired !== true) {
             socket.emit('layer-update', selectedLayersRef.current, updatedLayers);
         }
 
@@ -410,7 +410,7 @@ export const Canvas = ({
             layer: liveLayers[id]
         })
 
-        if (socket) {
+        if (socket && expired !== true) {
             socket.emit('layer-update', id, liveLayers[id]);
         }
 
@@ -457,7 +457,7 @@ export const Canvas = ({
             liveLayers[selectedLayersRef.current[0]] = layer;
             setLiveLayers({ ...liveLayers });
 
-            if (socket) {
+            if (socket && expired !== true) {
                 socket.emit('layer-update', selectedLayersRef.current[0], layer);
             }
 
@@ -544,7 +544,7 @@ export const Canvas = ({
 
         const point = pointerEventToCanvasPoint(e, camera, zoom);
 
-        if (e.button === 0) {
+        if (e.button === 0 && expired !== true) {
             if (canvasState.mode === CanvasMode.Eraser) {
                 return;
             }
@@ -611,7 +611,7 @@ export const Canvas = ({
 
         setMyPresence(newPresence);
 
-        if (socket) {
+        if (socket && expired !== true) {
             socket.emit('presence', myPresence, User.userId);
         }
 
@@ -823,7 +823,7 @@ export const Canvas = ({
 
         setMyPresence(newPresence);
 
-        if (socket) {
+        if (socket && expired !== true) {
             socket.emit('presence', null, User.userId);
         }
     }, [setMyPresence, myPresence, socket, User.userId]);
@@ -838,7 +838,7 @@ export const Canvas = ({
                 layerId: layerId
             })
 
-            if (socket) {
+            if (socket && expired !== true) {
                 socket.emit('layer-delete', layerId);
             }
 
@@ -854,7 +854,8 @@ export const Canvas = ({
             canvasStateRef.current.mode === CanvasMode.Inserting ||
             canvasStateRef.current.mode === CanvasMode.Moving ||
             canvasStateRef.current.mode === CanvasMode.Eraser ||
-            e.button !== 0
+            e.button !== 0 ||
+            expired === true
         ) {
             return;
         }
@@ -1083,7 +1084,7 @@ export const Canvas = ({
             layer: clonedLayers
         })
 
-        if (socket) {
+        if (socket && expired !== true) {
             socket.emit('layer-update', newIds, clonedLayers);
         }
 
@@ -1149,7 +1150,7 @@ export const Canvas = ({
                             layerId: selectedLayersRef.current
                         });
 
-                        if (socket) {
+                        if (socket && expired !== true) {
                             socket.emit('layer-delete', selectedLayersRef.current);
                         }
 
@@ -1224,18 +1225,20 @@ export const Canvas = ({
                 otherUsers={otherUsers}
                 User={User}
             />
-            <Toolbar
-                pathStrokeSize={pathStrokeSize}
-                setPathColor={setPathColor}
-                setPathStrokeSize={setPathStrokeSize}
-                isUploading={isUploading}
-                setIsUploading={setIsUploading}
-                onImageSelect={setSelectedImage}
-                canvasState={canvasState}
-                setCanvasState={setCanvasState}
-                org={org}
-            />
-            {canvasState.mode === CanvasMode.None && (
+            {expired !== true && (
+                <Toolbar
+                    pathStrokeSize={pathStrokeSize}
+                    setPathColor={setPathColor}
+                    setPathStrokeSize={setPathStrokeSize}
+                    isUploading={isUploading}
+                    setIsUploading={setIsUploading}
+                    onImageSelect={setSelectedImage}
+                    canvasState={canvasState}
+                    setCanvasState={setCanvasState}
+                    org={org}
+                />
+            )}
+            {canvasState.mode === CanvasMode.None && expired !== true &&(
                 <SelectionTools
                     setLiveLayerIds={setLiveLayerIds}
                     setLiveLayers={setLiveLayers}
