@@ -255,14 +255,17 @@ export const Canvas = ({
 
         selectedLayersRef.current.forEach(id => {
             const layer = newLayers[id];
-
+        
             if (layer) {
                 const newLayer = { ...layer };
                 newLayer.x += offset.x;
                 newLayer.y += offset.y;
-                if (layer.type === LayerType.Arrow && 'center' in newLayer && newLayer.center) {
-                    newLayer.center.x += offset.x;
-                    newLayer.center.y += offset.y
+                if (newLayer.type === LayerType.Arrow && newLayer.center) {
+                    const newCenter = { 
+                        x: newLayer.center.x + offset.x, 
+                        y: newLayer.center.y + offset.y 
+                      };
+                    newLayer.center = newCenter;
                 }
                 updatedLayers.push(newLayer);
                 newLayers[id] = newLayer;
