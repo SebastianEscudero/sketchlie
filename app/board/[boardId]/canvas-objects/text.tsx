@@ -46,7 +46,7 @@ export const Text = ({
     onRefChange,
 }: TextProps) => {
     const { x, y, width, height, fill, value, textFontSize } = layer;
-    const { liveLayers, board, socket, expired } = useRoom();
+    const { liveLayers, board, socket } = useRoom();
     const textRef = useRef<any>(null);
     const fillColor = colorToCss(layer.fill);
     const isTransparent = fillColor === 'rgba(0,0,0,0)';
@@ -58,14 +58,13 @@ export const Text = ({
 
     const handleContentChange = (newValue: string) => {
         const newLayer = updateValue(newValue);
+        textRef.current.style.height = `${textFontSize*1.5}px`;
         newLayer.height = textRef.current.scrollHeight;
         if (setLiveLayers) {
             const layers = { ...liveLayers };
             layers[id] = newLayer;
             setLiveLayers(layers);
-            if (expired !== true) {
-                throttledUpdateLayer(updateLayer, socket, board._id, id, liveLayers[id]);
-            }
+            throttledUpdateLayer(updateLayer, socket, board._id, id, liveLayers[id]);
         }
     };
 
@@ -81,13 +80,10 @@ export const Text = ({
         }
     }, []);
 
-    useEffect(() => {
-        const layers = { ...liveLayers };
-        const newHeight = textRef.current?.scrollHeight || height;
-        layers[id].height = newHeight;
-        textRef.current.style.height = 'auto';
+    useEffect(() => {        
+        textRef.current.style.height = `${textFontSize*1.5}px`;
         textRef.current.style.height = `${textRef.current.scrollHeight}px`;
-    }, [width, value, id, height, liveLayers]);
+    }, [width, value, id, height, layer, textFontSize]);
     
     if (!fill) {
         return null;
@@ -114,7 +110,7 @@ export const Text = ({
                 spellCheck={false}
                 placeholder='Type something...'
                 className={cn(
-                    "outline-none w-full h-full text-center flex",
+                    "outline-none w-full h-full text-left flex px-0.5",
                     font.className
                 )}
                 style={{
@@ -122,16 +118,12 @@ export const Text = ({
                     wordWrap: 'break-word',
                     overflowWrap: 'break-word',
                     wordBreak: 'break-all',
-                    display: 'flex',
                     backgroundColor: 'transparent',
-                    textAlign: 'left',
                     resize: "none",
                     overflowY: "hidden",
                     overflowX: "hidden",
                     userSelect: "none",
                     fontSize: textFontSize,
-                    padding: 0.5,
-                    margin: 0,
                 }}
             />
         </foreignObject>

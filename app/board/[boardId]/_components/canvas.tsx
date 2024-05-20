@@ -108,8 +108,8 @@ export const Canvas = ({
 
         if (layerType === LayerType.Text) {
 
-            if (width < 130) {
-                width = 130;
+            if (width < 95) {
+                width = 95;
             }
 
             layer = {
@@ -652,7 +652,7 @@ export const Canvas = ({
                     setCurrentPreviewLayer({ x, y, width, height, type: LayerType.Ellipse, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
                     break;
                 case LayerType.Text:
-                    setCurrentPreviewLayer({ x, y, width, height: 20, type: LayerType.Rectangle, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 39, g: 142, b: 237, a: 1 } });
+                    setCurrentPreviewLayer({ x, y, width, height: 18, type: LayerType.Rectangle, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 39, g: 142, b: 237, a: 1 } });
                     break;
                 case LayerType.Note:
                     setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.Note, fill: { r: 255, g: 249, b: 177, a: 1 }, outlineFill: { r: 0, g: 0, b: 0, a: 0 } });
@@ -727,8 +727,8 @@ export const Canvas = ({
                 let width
                 let height
                 if (layerType === LayerType.Text) {
-                    width = 130;
-                    height = 37;
+                    width = 95;
+                    height = 18;
                     point.x = point.x - width / 2
                     point.y = point.y - height / 2
                     insertLayer(layerType, point, width, height)
@@ -1291,7 +1291,7 @@ export const Canvas = ({
                             layer={currentPreviewLayer}
                         />
                     )}
-                    {(canvasState.mode === CanvasMode.SelectionNet || canvasState.mode === CanvasMode.None) && (
+                    {(canvasState.mode === CanvasMode.SelectionNet || canvasState.mode === CanvasMode.None || CanvasMode.Resizing) && (
                         <SelectionBox
                             zoom={zoom}
                             liveLayers={liveLayers}
