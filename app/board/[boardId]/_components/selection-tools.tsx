@@ -230,16 +230,12 @@ export const SelectionTools = memo(({
         layersToDelete[id] = liveLayers[id];
     });
 
-    const command = new DeleteLayerCommand(selectedLayers, layersToDelete, liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, deleteLayer, addLayer, boardId);
+    const command = new DeleteLayerCommand(selectedLayers, layersToDelete, liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, deleteLayer, addLayer, boardId, socket);
     performAction(command);
 
     selectedLayers.forEach((id) => {
       delete newLiveLayers[id];
     });
-
-    if (socket) {
-      socket.emit('layer-delete', selectedLayers);
-    }
 
     setLiveLayers(newLiveLayers);
     setLiveLayerIds(newLiveLayerIds);
