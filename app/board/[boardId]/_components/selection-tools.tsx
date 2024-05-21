@@ -26,6 +26,9 @@ interface SelectionToolsProps {
   setLiveLayerIds: (ids: string[]) => void;
   socket: Socket | null;
   updateLayer: UpdateLayerMutation;
+  DeleteLayerCommand: any;
+  performAction: any;
+  addLayer: any;
 };
 
 export const SelectionTools = memo(({
@@ -39,6 +42,9 @@ export const SelectionTools = memo(({
   liveLayerIds,
   socket,
   updateLayer,
+  DeleteLayerCommand,
+  performAction,
+  addLayer,
 }: SelectionToolsProps) => {
   const { mutate: updateLayerIds } = useApiMutation(api.board.updateLayerIds);
   const { mutate: deleteLayer } = useApiMutation(api.board.deleteLayer);
@@ -218,10 +224,14 @@ export const SelectionTools = memo(({
     let newLiveLayers = { ...liveLayers };
     let newLiveLayerIds = liveLayerIds.filter(id => !selectedLayers.includes(id));
 
-    deleteLayer({
-      boardId: boardId,
-      layerId: selectedLayers
+    // Create an object mapping layer IDs to layer objects
+    const layersToDelete: { [key: string]: any } = {};
+    selectedLayers.forEach(id => {
+        layersToDelete[id] = liveLayers[id];
     });
+
+    const command = new DeleteLayerCommand(selectedLayers, layersToDelete, liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, deleteLayer, addLayer, boardId);
+    performAction(command);
 
     selectedLayers.forEach((id) => {
       delete newLiveLayers[id];
@@ -233,7 +243,7 @@ export const SelectionTools = memo(({
 
     setLiveLayers(newLiveLayers);
     setLiveLayerIds(newLiveLayerIds);
-  }, [liveLayers, liveLayerIds, selectedLayers, socket, deleteLayer, boardId]);
+  }, [liveLayers, liveLayerIds, selectedLayers, socket, deleteLayer, boardId, setLiveLayers, setLiveLayerIds, performAction, addLayer, DeleteLayerCommand]);
 
   if (!selectionBounds) {
     return null;

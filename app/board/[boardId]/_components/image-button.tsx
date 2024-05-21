@@ -87,8 +87,13 @@ export const ImageButton = ({
         });
     };
 
+    let side: "right" | "top" | "bottom" | "left" | undefined = "right";
+    if (window.innerHeight < 545) {
+        side = "top";
+    }
+
     return (
-        <Hint label={label} side="right" sideOffset={14}>
+        <Hint label={label} side={side} sideOffset={14}>
             <Button disabled={isDisabled} onClick={handleButtonClick} size="icon" variant={isActive ? "boardActive" : "board"}>
                 <Icon />
                 <input
