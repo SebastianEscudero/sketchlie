@@ -285,6 +285,11 @@ export const Canvas = ({
         let layer;
         let fillColor = { r: 0, g: 0, b: 0, a: 0 }
         if (layerType === LayerType.Note) {
+            if (width < 20 && height < 20) {
+                width = 80
+                height = 80
+            }
+
             fillColor = { r: 255, g: 249, b: 177, a: 1 }
         }
 
@@ -328,6 +333,11 @@ export const Canvas = ({
                 endArrowHead: ArrowHead.Triangle,
             };
         } else {
+            if (width < 20 && height < 20) {
+                width = 80
+                height = 80
+            }
+
             layer = {
                 type: layerType,
                 x: position.x,
