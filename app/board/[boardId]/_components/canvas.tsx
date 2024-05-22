@@ -628,17 +628,19 @@ export const Canvas = ({
         }
 
         if (layer) {
-            if (layer.type === LayerType.Note) {
-                bounds.textFontSize = layer.textFontSize;
+            const newLayer = { ...layer }; // Create a new object instead of modifying the existing one
+            if (newLayer.type === LayerType.Note) {
+                bounds.textFontSize = newLayer.textFontSize;
+            } else if (newLayer.type === LayerType.Arrow) {
+                newLayer.center = bounds.center;
             }
-            Object.assign(layer, bounds);
-            liveLayers[selectedLayersRef.current[0]] = layer;
+            Object.assign(newLayer, bounds);
+            liveLayers[selectedLayersRef.current[0]] = newLayer;
             setLiveLayers({ ...liveLayers });
-
+    
             if (socket && expired !== true) {
-                socket.emit('layer-update', selectedLayersRef.current[0], layer);
+                socket.emit('layer-update', selectedLayersRef.current[0], newLayer);
             }
-
         }
 
     }, [canvasState, liveLayers, selectedLayersRef, socket, textRef]);
@@ -949,6 +951,9 @@ export const Canvas = ({
                     layerUpdates.push(newLayer);
                 }
             });
+
+            console.log(initialLayers)
+            console.log(liveLayers)
 
             if (layerIds.length > 0) {
                 const command = new TranslateLayersCommand(layerIds, initialLayers, liveLayers, setLiveLayers, updateLayer, boardId, socket);
@@ -1264,9 +1269,10 @@ export const Canvas = ({
 
     }, [copiedLayers, myPresence, setLiveLayers, setLiveLayerIds, setMyPresence, org, proModal, liveLayerIds, socket, liveLayers, addLayer, boardId]);
 
-    useEffect(() => { // this is for the undo redo
+    useEffect(() => {
         const onPointerDown = (e: PointerEvent) => {
-            setInitialLayers({ ...liveLayers });
+            const deepCopy = JSON.parse(JSON.stringify(liveLayers));
+            setInitialLayers(deepCopy);
         }
     
         document.addEventListener('pointerdown', onPointerDown);
@@ -1274,7 +1280,7 @@ export const Canvas = ({
         return () => {
             document.removeEventListener('pointerdown', onPointerDown);
         }
-    }, [liveLayers])
+    }, [liveLayers]);
 
     useEffect(() => {
         const onMouseMove = (e: any) => {
