@@ -1002,20 +1002,21 @@ export const Canvas = ({
 
     const onPathErase = useCallback((e: React.PointerEvent, layerId: string) => {
         if (canvasState.mode === CanvasMode.Eraser && e.buttons === 1) {
-            const newLiveLayers = { ...liveLayers };
-            delete newLiveLayers[layerId];
-
-            deleteLayer({
-                boardId: boardId,
-                layerId: layerId
-            })
-
-            if (socket && expired !== true) {
-                socket.emit('layer-delete', layerId);
+            if (canvasState.mode === CanvasMode.Eraser && e.buttons === 1) {
+                const command = new DeleteLayerCommand(
+                    [layerId],
+                    liveLayers,
+                    { ...liveLayers },
+                    [...liveLayerIds],
+                    setLiveLayers,
+                    setLiveLayerIds,
+                    deleteLayer, 
+                    addLayer, 
+                    board._id, 
+                    socket
+                );
+                performAction(command);
             }
-
-            setLiveLayers(newLiveLayers);
-            setLiveLayerIds(liveLayerIds.filter(id => id !== layerId));
         }
     }, [canvasState.mode, liveLayers, liveLayerIds, setLiveLayers, boardId, deleteLayer, socket]);
 
@@ -1476,6 +1477,7 @@ export const Canvas = ({
                             key={layerId}
                             id={layerId}
                             onRefChange={setTextRef}
+                            zoomRef={zoomRef}
                         />
                     ))}
                     {currentPreviewLayer && (
