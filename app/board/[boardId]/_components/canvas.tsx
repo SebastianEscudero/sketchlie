@@ -365,18 +365,18 @@ export const Canvas = ({
         position: Point,
         selectedImage: string,
     ) => {
-
+    
         if (org && liveLayerIds.length >= getMaxCapas(org)) {
             proModal.onOpen();
             return;
         }
-
+    
         const layerId = nanoid();
-
+    
         if (selectedImage === "") {
             return;
         }
-
+    
         const layer = {
             type: layerType,
             x: position.x,
@@ -386,31 +386,17 @@ export const Canvas = ({
             src: selectedImage,
             fill: null,
         };
-
-        const newLayers = { ...liveLayers, [layerId]: layer };
-        const newLayerIds = [...liveLayerIds, layerId];
-
-        setLiveLayerIds(newLayerIds);
-        setLiveLayers(newLayers as Layers);
-
+    
+        const command = new InsertLayerCommand([layerId], [layer], liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, deleteLayer, addLayer, boardId, socket);
+        performAction(command);
+    
         const newPresence: Presence = {
             ...myPresence,
             selection: [layerId]
         };
-
+    
         setMyPresence(newPresence);
-
-        if (socket && expired !== true) {
-            socket.emit('presence', myPresence, User.userId);
-            socket.emit('layer-update', layerId, layer);
-        }
-
-        addLayer({
-            boardId: boardId,
-            layerId: layerId,
-            layer: layer
-        })
-
+    
         selectedLayersRef.current = [layerId];
         setCanvasState({ mode: CanvasMode.None });
     }, [liveLayers, liveLayerIds, myPresence, socket, org, proModal, User.userId, setLiveLayers, setLiveLayerIds, boardId, addLayer]);
@@ -551,13 +537,14 @@ export const Canvas = ({
 
     }, [canvasState.mode, pencilDraft, myPresence, setMyPresence]);
 
+
     const insertPath = useCallback(() => {
 
         if (org && liveLayerIds.length >= getMaxCapas(org)) {
             proModal.onOpen();
             return;
         }
-
+    
         if (
             pencilDraft == null ||
             pencilDraft.length < 2
@@ -565,33 +552,35 @@ export const Canvas = ({
             setPencilDraft([]);
             return;
         }
-
+    
         const id = nanoid();
         liveLayers[id] = penPointsToPathLayer(pencilDraft, pathColor, pathStrokeSize);
-
-        liveLayerIds.push(id);
-
+        
+        // Create a new InsertLayerCommand
+        const command = new InsertLayerCommand(
+            [id], 
+            [liveLayers[id]], 
+            { ...liveLayers }, 
+            [...liveLayerIds], 
+            setLiveLayers, 
+            setLiveLayerIds, 
+            deleteLayer, 
+            addLayer, 
+            boardId, 
+            socket
+        );
+    
+        // Add the command to the command stack    
         setPencilDraft([]);
-        setLiveLayers({ ...liveLayers });
-        setLiveLayerIds([...liveLayerIds]);
-
+        performAction(command);
+    
         const newPresence: Presence = {
             ...myPresence,
             pencilDraft: null,
         };
-
+    
         setMyPresence(newPresence);
-
-        addLayer({
-            boardId: boardId,
-            layerId: id,
-            layer: liveLayers[id]
-        })
-
-        if (socket && expired !== true) {
-            socket.emit('layer-update', id, liveLayers[id]);
-        }
-
+    
         setCanvasState({ mode: CanvasMode.Pencil });
     }, [pencilDraft, liveLayers, setLiveLayers, setLiveLayerIds, myPresence, org, proModal, liveLayerIds, socket, boardId, addLayer]);
 
@@ -951,9 +940,6 @@ export const Canvas = ({
                     layerUpdates.push(newLayer);
                 }
             });
-
-            console.log(initialLayers)
-            console.log(liveLayers)
 
             if (layerIds.length > 0) {
                 const command = new TranslateLayersCommand(layerIds, initialLayers, liveLayers, setLiveLayers, updateLayer, boardId, socket);
