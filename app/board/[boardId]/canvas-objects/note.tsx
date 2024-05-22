@@ -44,7 +44,7 @@ export const Note = ({
   const noteRef = useRef<any>(null);
   const { x, y, width, height, fill, outlineFill, value: initialValue, textFontSize } = layer;
   const [value, setValue] = useState(initialValue);
-  const { liveLayers, socket, board } = useRoom();
+  const { liveLayers, socket, board, expired } = useRoom();
   const fillColor = colorToCss(fill);
 
   useEffect(() => {
@@ -59,7 +59,9 @@ export const Note = ({
       const noteLayer = liveLayers[id] as NoteLayer;
       noteLayer.value = newValue;
       setValue(newValue);
-      throttledUpdateLayer(updateLayer, socket, board._id, id, liveLayers[id]);
+      if (expired !== true) {
+        throttledUpdateLayer(updateLayer, socket, board._id, id, liveLayers[id]);
+      }
     }
   };
 

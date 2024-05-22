@@ -37,8 +37,9 @@ const DashboardPage = () => {
   const user = useCurrentUser();
 
   if (!user) return <Loading />;
-  
+
   const activeOrg = user?.organizations.find(org => org.id === activeOrganization);
+
   return (
     <main className="h-full">
       <div className="hidden sm:flex">

@@ -17,7 +17,7 @@ export const ShowAllTemplates = ({
                 <h1 className="text-2xl font-bold text-center">Elige una plantilla</h1>
                 <p className="text-center text-gray-600">Empieza con una plantilla para acelerar tu flujo de trabajo</p>
             </div>
-            <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 mt-10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-10">
                 {templates.map((template, index) => (
                     <div key={index} className="rounded-lg flex flex-col">
                         <button

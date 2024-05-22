@@ -127,15 +127,15 @@ export const PlantillaDiagramaIshikawa = {
       x: 492.5,
       y: 331,
     },
-    bCgphNfCYbi74j8kA6ylR: {
+    aho5ZSzBXiiInslXm8Xeu: {
       fill: { a: 0, b: 0, g: 0, r: 0 },
-      height: 83,
+      height: 82,
       textFontSize: 18,
       type: 3,
-      value: "Problema: Escribe tu problema",
-      width: 78.76330560972872,
-      x: 1337.9061924597834,
-      y: 428.1526138385083,
+      value: "Problema: Disminución de ventas",
+      width: 95.5,
+      x: 1330.5,
+      y: 427,
     },
     bpBNbQIn6Sa4qxnCIPGjp: {
       center: { x: 1402.9009501721848, y: 412.0325060112539 },
@@ -328,6 +328,6 @@ export const PlantillaDiagramaIshikawa = {
     "4uo17QvMLi2DVCptKs5c0",
     "bpBNbQIn6Sa4qxnCIPGjp",
     "yW4GgdH3DHBquOD4AqFv6",
-    "bCgphNfCYbi74j8kA6ylR",
+    "aho5ZSzBXiiInslXm8Xeu",
   ]
 };

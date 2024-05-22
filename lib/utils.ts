@@ -120,11 +120,11 @@ export function resizeBounds(
     }
   }
 
-  // if (layer && layer?.height/layer?.width === result.height/result.width && textareaRef && textareaRef.current && layer.type === LayerType.Text) {
-  //   const newFontSize = Math.min(result.width/layer.width, result.height/layer.height ) * layer.textFontSize
-  //   result.textFontSize = newFontSize
-  //   return result
-  // }
+  if (layer && Math.abs((layer?.height / layer?.width) - (result.height / result.width)) < 0.01 && textareaRef && textareaRef.current && layer.type === LayerType.Text) {
+    const newFontSize = result.width / layer.width * layer.textFontSize
+    result.textFontSize = newFontSize
+    return result
+  }
 
   if (!isCorner && textareaRef && textareaRef.current) {
     result.height = textareaRef.current.scrollHeight;

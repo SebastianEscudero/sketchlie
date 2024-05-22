@@ -5,6 +5,7 @@ import io, { Socket } from "socket.io-client";
 interface RoomContextValue {
   roomId: string;
   socket: Socket | null;
+  expired: boolean;
 }
 
 interface LayerContextValue {
@@ -21,7 +22,7 @@ interface LayerContextValue {
 }
 
 const LayerContext = createContext<LayerContextValue | undefined>(undefined);
-const RoomContext = createContext<RoomContextValue>({ roomId: "", socket: null });
+const RoomContext = createContext<RoomContextValue>({ roomId: "", socket: null, expired: false});
 
 interface RoomProps {
   children: ReactNode;
@@ -35,6 +36,13 @@ export const Room = React.memo(({ children, roomId, fallback, userInfo, board }:
 
   const orgId = board?.orgId;
   const org = userInfo.organizations.find((org: any) => org.id === orgId);
+
+  let expired = false
+  if (org.subscription) {
+    const now = new Date().getTime();
+    const expiration = new Date(org.subscription.mercadoPagoCurrentPeriodEnd).getTime();
+    expired = now > expiration;
+  }
 
   const [socket, setSocket] = useState<Socket | null>(null);
   const [liveLayers, setLiveLayers] = useState<Layers>({});
@@ -131,7 +139,7 @@ export const Room = React.memo(({ children, roomId, fallback, userInfo, board }:
   }, [roomId]);
 
   return (
-    <RoomContext.Provider value={{ roomId, socket }}>
+    <RoomContext.Provider value={{ roomId, socket, expired }}>
       <LayerContext.Provider value={{ liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, User, setUser, otherUsers, setOtherUsers, org, board }}>
         <Suspense fallback={fallback}>
           {children}

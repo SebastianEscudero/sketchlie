@@ -58,6 +58,7 @@ export const Text = ({
 
     const handleContentChange = (newValue: string) => {
         const newLayer = updateValue(newValue);
+        textRef.current.style.height = `${textFontSize*1.5}px`;
         newLayer.height = textRef.current.scrollHeight;
         if (setLiveLayers) {
             const layers = { ...liveLayers };
@@ -79,13 +80,10 @@ export const Text = ({
         }
     }, []);
 
-    useEffect(() => {
-        const layers = { ...liveLayers };
-        const newHeight = textRef.current?.scrollHeight || height;
-        layers[id].height = newHeight;
-        textRef.current.style.height = 'auto';
+    useEffect(() => {        
+        textRef.current.style.height = `${textFontSize*1.5}px`;
         textRef.current.style.height = `${textRef.current.scrollHeight}px`;
-    }, [width, value, id, height, liveLayers]);
+    }, [width, value, id, height, layer, textFontSize]);
     
     if (!fill) {
         return null;
@@ -112,7 +110,7 @@ export const Text = ({
                 spellCheck={false}
                 placeholder='Type something...'
                 className={cn(
-                    "outline-none w-full h-full text-center flex",
+                    "outline-none w-full h-full text-left flex px-0.5",
                     font.className
                 )}
                 style={{
@@ -120,16 +118,12 @@ export const Text = ({
                     wordWrap: 'break-word',
                     overflowWrap: 'break-word',
                     wordBreak: 'break-all',
-                    display: 'flex',
                     backgroundColor: 'transparent',
-                    textAlign: 'left',
                     resize: "none",
                     overflowY: "hidden",
                     overflowX: "hidden",
                     userSelect: "none",
                     fontSize: textFontSize,
-                    padding: 0.5,
-                    margin: 0,
                 }}
             />
         </foreignObject>
