@@ -2,8 +2,9 @@
 
 import { memo, useMemo } from "react";
 
-import { ArrowHandle, ArrowLayer, Layers, LayerType, Side, XYWH } from "@/types/canvas";
+import { ArrowHandle, ArrowLayer, CanvasMode, Layers, LayerType, Side, XYWH } from "@/types/canvas";
 import { useSelectionBounds } from "@/hooks/use-selection-bounds";
+import { pointerEventToCanvasPoint } from "@/lib/utils";
 
 interface SelectionBoxProps {
   zoom: number;
@@ -11,6 +12,8 @@ interface SelectionBoxProps {
   onArrowResizeHandlePointerDown: (handle: ArrowHandle, initialBounds: XYWH) => void;
   selectedLayers: string[];
   liveLayers: Layers;
+  setCanvasState: (state: any) => void;
+  camera: any;
 };
 
 const HANDLE_SIZE = 6;
@@ -21,7 +24,9 @@ export const SelectionBox = memo(({
   onResizeHandlePointerDown,
   onArrowResizeHandlePointerDown,
   selectedLayers,
-  liveLayers
+  liveLayers,
+  setCanvasState,
+  camera,
 }: SelectionBoxProps) => {
 
   const handleRightClick = (event: React.MouseEvent) => {
@@ -111,7 +116,7 @@ export const SelectionBox = memo(({
     <>
       <rect
         onContextMenu={handleRightClick}
-        className="fill-transparent stroke-blue-500 pointer-events-none"
+        className="fill-transparent stroke-blue-500"
         style={{
           strokeWidth: strokeWidth,
           transform: `translate(${bounds.x}px, ${bounds.y}px)`,
@@ -120,6 +125,14 @@ export const SelectionBox = memo(({
         y={0}
         width={bounds.width}
         height={bounds.height}
+        onPointerDown={(e) => {
+          e.stopPropagation();
+          const position = pointerEventToCanvasPoint(e, camera, zoom)
+          setCanvasState({
+            mode: CanvasMode.Translating,
+            current: position
+          })
+        }}
       />
       {isShowingHandles && (
         <>

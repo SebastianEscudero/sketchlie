@@ -1295,6 +1295,8 @@ export const Canvas = ({
                             selectedLayers={selectedLayersRef.current}
                             onResizeHandlePointerDown={onResizeHandlePointerDown}
                             onArrowResizeHandlePointerDown={onArrowResizeHandlePointerDown}
+                            setCanvasState={setCanvasState}
+                            camera={camera}
                         />
                     )}
                     {canvasState.mode === CanvasMode.SelectionNet && canvasState.current != null && (
