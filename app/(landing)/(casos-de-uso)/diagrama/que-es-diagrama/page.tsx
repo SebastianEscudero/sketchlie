@@ -53,7 +53,7 @@ const LandingPage = () => {
             </div>
             <div className="flex flex-col-reverse lg:flex-row justify-between mt-[3%]">
                 <div className="lg:max-w-[70%] text-xl">
-                    <p className="mb-10">Si estás buscando respuestas sobre diagramas, estás en el lugar correcto. En Sketchlie, entendemos la importancia de la visualización de datos y conceptos, por eso ofrecemos una variedad de herramientas para ayudarte a crear diagramas de manera rápida y sencilla.</p>
+                    <p className="mb-10">Si estás buscando respuestas sobre <Link className="text-custom-blue hover:underline" href="/diagrama/">diagramas</Link>, estás en el lugar correcto. En Sketchlie, entendemos la importancia de la visualización de datos y conceptos, por eso ofrecemos una variedad de herramientas para ayudarte a crear diagramas de manera rápida y sencilla.</p>
 
                     <div id="1" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">1. ¿Qué es un diagrama?</h2>
