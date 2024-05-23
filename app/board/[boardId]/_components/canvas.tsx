@@ -204,6 +204,16 @@ class TranslateLayersCommand implements Command {
     }
 }
 
+const preventDefault = (e: any) => {
+    if (e.scale !== 1) {
+        e.preventDefault();
+    }
+};
+
+if (typeof window !== 'undefined') {
+    window.addEventListener('wheel', preventDefault, { passive: false });
+}
+
 const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 const nanoid = customAlphabet(alphabet, 21);
 
@@ -664,20 +674,6 @@ export const Canvas = ({
             initialBounds,
             handle,
         });
-    }, []);
-
-    useEffect(() => {
-        const handleWheel = (e: WheelEvent) => {
-            if (e.ctrlKey) {
-                e.preventDefault();
-            }
-        };
-
-        window.addEventListener('wheel', handleWheel, { passive: false });
-
-        return () => {
-            window.removeEventListener('wheel', handleWheel);
-        };
     }, []);
 
     const onWheel = useCallback((e: React.WheelEvent) => {
@@ -1394,6 +1390,29 @@ export const Canvas = ({
         zoomRef.current = zoom;
         cameraRef.current = camera;
     }, [canvasState, zoom, camera]);
+
+    useEffect(() => {
+        return () => {
+            document.removeEventListener('gesturestart', preventDefault);
+            document.removeEventListener('gesturechange', preventDefault);
+            document.removeEventListener('gestureend', preventDefault);
+            window.removeEventListener('wheel', preventDefault);
+        };
+    }, []);
+
+    useEffect(() => {
+        const preventDefault = (e: any) => {
+            if (e.scale !== 1) {
+                e.preventDefault();
+            }
+        };
+
+        window.addEventListener('wheel', preventDefault, { passive: false });
+
+        return () => {
+            window.removeEventListener('wheel', preventDefault);
+        };
+    }, []);
 
     return (
         <main

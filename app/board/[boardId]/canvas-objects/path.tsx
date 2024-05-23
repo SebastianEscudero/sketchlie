@@ -41,7 +41,7 @@ export const Path = ({
             )}
             style={{
                 transform: `translate(${x}px, ${y}px)`,
-                pointerEvents: "stroke"
+                pointerEvents: "all"
             }}
             x={0}
             y={0}
