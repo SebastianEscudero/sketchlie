@@ -13,9 +13,9 @@ import { BlogLinks } from "@/components/blog-links";
 export const metadata: Metadata = {
     title: "Diseño UX: Qué es, cómo hacerlo y beneficios | Sketchlie",
     description: "Descubre qué es el diseño UX, cómo hacerlo, ejemplos y herramientas para mejorar la experiencia del usuario en tu sitio web o aplicación.",
-    keywords: ["Customer journey map", "Customer journey maps", "Customer journey map online", "Customer journey map gratis", "Customer journey map online gratis"],
+    keywords: ["diseño ux", "diseño ui", "experiencia de usuario", "diseño de interfaz de usuario", "diseño de experiencia de usuario", "diseño de interfaces", "diseño de aplicaciones", "diseño de sitios web", "herramientas de diseño", "prototipado", "investigación de usuario", "mapas de calor", "pruebas de usabilidad", "diseño colaborativo", "sketchlie"],
     alternates: {
-        canonical: "https://www.sketchlie.com/diseno/que-es-diseno",
+        canonical: "https://www.sketchlie.com/diseno/que-es-diseno/",
     }
 };
 
