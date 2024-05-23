@@ -59,8 +59,8 @@ const porEquipo: { title: string; href: string }[] = [
         href: "/equipos-de-ingenieria",
     },
     {
-        title: "Diseño 🚧",
-        href: "/diseno",
+        title: "Diseño",
+        href: "/diseno/",
     },
     {
         title: "Equipos de IT 🚧",

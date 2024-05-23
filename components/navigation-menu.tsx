@@ -25,8 +25,8 @@ const porEquipo: { title: string; href: string }[] = [
         href: "/equipos-de-ingenieria",
     },
     {
-        title: "Diseño 🚧",
-        href: "/diseno",
+        title: "Diseño",
+        href: "/diseno/",
     },
     {
         title: "Equipos de IT 🚧",
@@ -133,7 +133,7 @@ export function NavigationMenuLanding() {
                     <NavigationMenuItem>
                         <NavigationMenuTrigger>Soluciones</NavigationMenuTrigger>
                         <NavigationMenuContent>
-                            <div className="grid w-[400px] p-6 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                            <div className="grid w-[400px] p-6 md:w-[500px] md:grid-cols-2 lg:w-[600px] gap-x-2">
                                 <div>
                                     <p className="px-3 text-base mb-2 text-neutral-600 font-semibold">Equipos</p>
                                     {porEquipo.map((component) => (
