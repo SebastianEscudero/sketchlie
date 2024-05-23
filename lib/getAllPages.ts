@@ -15,6 +15,8 @@ export function getAllRoutes() {
       } else if (stat.isFile() && path.extname(file) === '.tsx') {
         let route = `${prefix}/${file.replace(/\.tsx?$/, '')}/`;
         route = route.replace('/page', ''); // strip "/page" from the route
+        route = route.replace('/(casos-de-uso)', '')
+        route = route.replace('/(equipos)', '')
         routes.push(route);
       }
     }
