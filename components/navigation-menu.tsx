@@ -200,7 +200,7 @@ export function NavigationMenuLanding() {
                 href="/pricing/"
             >
                 <Button
-                    className='justify-start my-[3px] text-base'
+                    className='justify-start my-[3px] text-base hidden lg:flex'
                     variant={pathname === "/pricing/" ? 'auth' : 'ghost'}
                 >
                     Precios
