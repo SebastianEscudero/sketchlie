@@ -51,6 +51,13 @@ export const Text = ({
     const fillColor = colorToCss(layer.fill);
     const isTransparent = fillColor === 'rgba(0,0,0,0)';
 
+    const handlePointerDown = (e: React.PointerEvent) => {
+        if (onRefChange) {
+            onRefChange(textRef);
+            textRef.current.focus();
+        }
+    };
+
     const updateValue = (newValue: string) => {
         layer.value = newValue;
         return layer;
@@ -98,12 +105,18 @@ export const Text = ({
             style={{
                 outline: selectionColor ? `1px solid ${selectionColor}` : "none",
             }}
-            onPointerDown={onPointerDown ? (e) => onPointerDown(e, id) : undefined}
+            onPointerDown={(e) => {
+                handlePointerDown(e);
+                if (onPointerDown) {
+                    onPointerDown(e, id);
+                }
+            }}
         >
             <textarea
                 ref={textRef}
                 value={value || ""}
                 onChange={e => handleContentChange(e.target.value)}
+                onPointerDown={handlePointerDown}
                 autoComplete="off"
                 autoCapitalize="off"
                 autoCorrect="off"
