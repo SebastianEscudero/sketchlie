@@ -11,7 +11,7 @@ import Link from "next/link";
 import { BlogLinks } from "@/components/blog-links";
 
 export const metadata: Metadata = {
-    title: "¿Qué es una diagrama? Tipos y técnicas | Sketchlie",
+    title: "¿Qué es un diagrama? Tipos y técnicas | Sketchlie",
     description: "Descubre cómo el diagrama online puede mejorar la colaboración y la creatividad de tu equipo. Aprende sobre las técnicas, beneficios y tipos de diagramas con Sketchlie.",
     keywords: ["diagrama", "colaboración online", "diagrama online"],
     alternates: {
@@ -41,7 +41,7 @@ const LandingPage = () => {
             </div>
             <div className="md:flex mt-10 items-center justify-between">
                 <h1 className="lg:text-6xl md:text-5xl text-4xl md:px-5" style={{ lineHeight: "1.2" }}>
-                    Diagramas
+                    ¿Qué es un diagrama?
                 </h1>
                 <Image
                     src="/placeholders/diagrama-de-flujo.png"
