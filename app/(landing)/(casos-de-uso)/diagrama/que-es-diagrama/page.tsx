@@ -12,7 +12,7 @@ import { BlogLinks } from "@/components/blog-links";
 
 export const metadata: Metadata = {
     title: "¿Qué es un diagrama? Tipos y técnicas | Sketchlie",
-    description: "Descubre cómo el diagrama online puede mejorar la colaboración y la creatividad de tu equipo. Aprende sobre las técnicas, beneficios y tipos de diagramas con Sketchlie.",
+    description: "Descubre cómo los diagramas pueden mejorar la colaboración y la creatividad de tu equipo. Aprende sobre las técnicas, beneficios y tipos de diagramas con Sketchlie.",
     keywords: ["diagrama", "colaboración online", "diagrama online"],
     alternates: {
         canonical: "https://www.sketchlie.com/diagrama/que-es-diagrama/",
@@ -49,6 +49,7 @@ const LandingPage = () => {
                     width={1920}
                     height={1080}
                     className="rounded-2xl border border-black md:max-w-[60%] md:mt-0 mt-10"
+                    loading="eager"
                 />
             </div>
             <div className="flex flex-col-reverse lg:flex-row justify-between mt-[3%]">
