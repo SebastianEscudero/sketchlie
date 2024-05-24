@@ -11,7 +11,7 @@ import Link from "next/link";
 import { BlogLinks } from "@/components/blog-links";
 
 export const metadata: Metadata = {
-    title: "¿Qué es una diagrama? Tipos y técnicas | Sketchlie",
+    title: "¿Qué es un diagrama? Tipos y técnicas | Sketchlie",
     description: "Descubre cómo el diagrama online puede mejorar la colaboración y la creatividad de tu equipo. Aprende sobre las técnicas, beneficios y tipos de diagramas con Sketchlie.",
     keywords: ["diagrama", "colaboración online", "diagrama online"],
     alternates: {
@@ -41,7 +41,7 @@ const LandingPage = () => {
             </div>
             <div className="md:flex mt-10 items-center justify-between">
                 <h1 className="lg:text-6xl md:text-5xl text-4xl md:px-5" style={{ lineHeight: "1.2" }}>
-                    Diagramas
+                    ¿Qué es un diagrama?
                 </h1>
                 <Image
                     src="/placeholders/diagrama-de-flujo.png"
@@ -53,7 +53,7 @@ const LandingPage = () => {
             </div>
             <div className="flex flex-col-reverse lg:flex-row justify-between mt-[3%]">
                 <div className="lg:max-w-[70%] text-xl">
-                    <p className="mb-10">Si estás buscando respuestas sobre diagramas, estás en el lugar correcto. En Sketchlie, entendemos la importancia de la visualización de datos y conceptos, por eso ofrecemos una variedad de herramientas para ayudarte a crear diagramas de manera rápida y sencilla.</p>
+                    <p className="mb-10">Si estás buscando respuestas sobre <Link className="text-custom-blue hover:underline" href="/diagrama/">diagramas</Link>, estás en el lugar correcto. En Sketchlie, entendemos la importancia de la visualización de datos y conceptos, por eso ofrecemos una variedad de herramientas para ayudarte a crear diagramas de manera rápida y sencilla.</p>
 
                     <div id="1" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">1. ¿Qué es un diagrama?</h2>

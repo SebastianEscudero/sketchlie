@@ -120,7 +120,8 @@ export function resizeBounds(
     }
   }
 
-  if (layer && Math.abs((layer?.height / layer?.width) - (result.height / result.width)) < 0.01 && textareaRef && textareaRef.current && layer.type === LayerType.Text) {
+  if (layer && Math.abs((layer?.height / layer?.width) - (result.height / result.width)) < 0.0001 && layer.height !== result.height && layer.width !== result.width
+  && textareaRef && textareaRef.current && layer.type === LayerType.Text) {
     const newFontSize = result.width / layer.width * layer.textFontSize
     result.textFontSize = newFontSize
     return result
