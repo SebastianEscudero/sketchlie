@@ -1462,6 +1462,11 @@ export const Canvas = ({
                     DeleteLayerCommand={DeleteLayerCommand}
                     performAction={performAction}
                     addLayer={addLayer}
+                    org={org}
+                    proModal={proModal}
+                    InsertLayerCommand={InsertLayerCommand}
+                    myPresence={myPresence}
+                    setMyPresence={setMyPresence}
                 />
             )}
             <svg

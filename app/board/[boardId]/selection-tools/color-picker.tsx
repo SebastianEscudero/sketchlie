@@ -23,7 +23,7 @@ export const ColorPicker = ({
   }
 
   return (
-    <div className="relative text-left border-r px-1 border-neutral-200">
+    <div className="relative text-left border-r pr-1.5 border-neutral-200">
       <ColorButton color={colorButtonColor} onClick={() => setIsOpen(!isOpen)}/>
       {isOpen && (
         <div

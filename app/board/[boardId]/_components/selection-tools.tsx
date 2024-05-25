@@ -1,9 +1,9 @@
 "use client";
 
 import { memo, useCallback, useEffect, useState } from "react";
-import { BringToFront, SendToBack, Trash2 } from "lucide-react";
+import { BringToFront, Copy, SendToBack, Trash2 } from "lucide-react";
 import { Hint } from "@/components/hint";
-import { Camera, Color, LayerType, UpdateLayerMutation } from "@/types/canvas";
+import { Camera, Color, LayerType, Presence, UpdateLayerMutation } from "@/types/canvas";
 import { Button } from "@/components/ui/button";
 import { useSelectionBounds } from "@/hooks/use-selection-bounds";
 import { ColorPicker } from "../selection-tools/color-picker";
@@ -14,6 +14,8 @@ import { api } from "@/convex/_generated/api";
 import { OutlineColorPicker } from "../selection-tools/outline-color-picker";
 import { ArrowHeadSelection } from "../selection-tools/arrow-head-selection";
 import { PathStokeSizeSelection } from "../selection-tools/path-stroke-size-selection";
+import { customAlphabet } from "nanoid";
+import { getMaxCapas } from "@/lib/planLimits";
 
 interface SelectionToolsProps {
   boardId: string;
@@ -29,6 +31,11 @@ interface SelectionToolsProps {
   DeleteLayerCommand: any;
   performAction: any;
   addLayer: any;
+  org: any;
+  proModal: any;
+  InsertLayerCommand: any;
+  myPresence: Presence | null;
+  setMyPresence: (presence: Presence) => void;
 };
 
 export const SelectionTools = memo(({
@@ -45,7 +52,15 @@ export const SelectionTools = memo(({
   DeleteLayerCommand,
   performAction,
   addLayer,
+  org,
+  proModal,
+  InsertLayerCommand,
+  myPresence,
+  setMyPresence
 }: SelectionToolsProps) => {
+  const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+  const nanoid = customAlphabet(alphabet, 21);
+
   const { mutate: updateLayerIds } = useApiMutation(api.board.updateLayerIds);
   const { mutate: deleteLayer } = useApiMutation(api.board.deleteLayer);
 
@@ -220,6 +235,63 @@ export const SelectionTools = memo(({
     });
   }, [selectedLayers, setLiveLayers, socket, updateLayer, boardId]);
 
+  const duplicateLayers = useCallback(() => {
+    if (org && liveLayerIds.length >= getMaxCapas(org)) {
+      proModal.onOpen();
+      return;
+    }
+  
+    let minX = Infinity;
+    let minY = Infinity;
+    let maxX = -Infinity;
+    let maxY = -Infinity;
+    selectedLayers.forEach((id) => {
+      const layer = liveLayers[id];
+      minX = Math.min(minX, layer.x);
+      minY = Math.min(minY, layer.y);
+      maxX = Math.max(maxX, layer.x + layer.width);
+      maxY = Math.max(maxY, layer.y + layer.height);
+    });
+  
+    const offsetX = 20; // Offset by 10 units for visibility
+    const offsetY = 20; // Offset by 10 units for visibility
+  
+    const newSelection = [] as string[];
+    const newLiveLayers = { ...liveLayers };
+    const newLiveLayerIds = [...liveLayerIds];
+    const newIds: any = [];
+    const clonedLayers: any = [];
+    selectedLayers.forEach((id) => {
+      const layer = liveLayers[id];
+      const newId = nanoid();
+      newSelection.push(newId);
+      newLiveLayerIds.push(newId);
+      const clonedLayer = JSON.parse(JSON.stringify(layer));
+      clonedLayer.x = clonedLayer.x + offsetX;
+      clonedLayer.y = clonedLayer.y + offsetY;
+      if (clonedLayer.type === LayerType.Arrow) {
+        clonedLayer.center.x += offsetX;
+        clonedLayer.center.y += offsetY;
+      }
+      newLiveLayers[newId] = clonedLayer;
+      newIds.push(newId);
+      clonedLayers.push(clonedLayer);
+    });
+  
+    const command = new InsertLayerCommand(newIds, clonedLayers, liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, deleteLayer, addLayer, boardId, socket);
+    performAction(command);
+    setLiveLayers(newLiveLayers);
+    setLiveLayerIds(newLiveLayerIds);
+  
+    const newPresence: Presence = {
+      ...myPresence,
+      selection: newSelection
+    };
+  
+    setMyPresence(newPresence);
+  
+  }, [selectedLayers, myPresence, setLiveLayers, setLiveLayerIds, setMyPresence, org, proModal, liveLayerIds, socket, liveLayers, addLayer, boardId]);
+
   const deleteLayers = useCallback(() => {
     let newLiveLayers = { ...liveLayers };
     let newLiveLayerIds = liveLayerIds.filter(id => !selectedLayers.includes(id));
@@ -251,7 +323,7 @@ export const SelectionTools = memo(({
       style={{
         transform: initialPosition
           ? `translate(
-          calc(${initialPosition.x < 240 ? 240 : initialPosition.x + 190 > window.innerWidth ? window.innerWidth - 180 : initialPosition.x}px - 50%),
+          calc(${initialPosition.x < 265 ? 265 : initialPosition.x + 205 > window.innerWidth ? window.innerWidth - 205 : initialPosition.x}px - 50%),
           ${initialPosition.y < 130
             ? `calc(${initialPosition.y + selectionBounds.height * zoom + 30}px)`
             : `calc(${initialPosition.y - 30}px - 100%)`
@@ -302,6 +374,15 @@ export const SelectionTools = memo(({
           onChange={setFill}
         />
       )}
+      <Hint label="Duplicate">
+        <Button
+          onClick={duplicateLayers}
+          variant="board"
+          size="icon"
+        >
+          <Copy />
+        </Button>
+      </Hint>
       <Hint label="Bring to front">
         <Button
           onClick={moveToFront}
