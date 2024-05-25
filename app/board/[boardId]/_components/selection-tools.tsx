@@ -253,8 +253,7 @@ export const SelectionTools = memo(({
       maxY = Math.max(maxY, layer.y + layer.height);
     });
   
-    const offsetX = 20; // Offset by 10 units for visibility
-    const offsetY = 20; // Offset by 10 units for visibility
+    const offsetX = maxX - minX + 10; // Offset by 10 units for visibility
   
     const newSelection = [] as string[];
     const newLiveLayers = { ...liveLayers };
@@ -268,10 +267,8 @@ export const SelectionTools = memo(({
       newLiveLayerIds.push(newId);
       const clonedLayer = JSON.parse(JSON.stringify(layer));
       clonedLayer.x = clonedLayer.x + offsetX;
-      clonedLayer.y = clonedLayer.y + offsetY;
       if (clonedLayer.type === LayerType.Arrow) {
         clonedLayer.center.x += offsetX;
-        clonedLayer.center.y += offsetY;
       }
       newLiveLayers[newId] = clonedLayer;
       newIds.push(newId);
