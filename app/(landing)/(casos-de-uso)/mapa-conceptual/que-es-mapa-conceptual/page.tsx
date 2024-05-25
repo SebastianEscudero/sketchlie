@@ -40,9 +40,8 @@ const LandingPage = () => {
                 </Breadcrumb>
             </div>
             <div className="md:flex mt-10 items-center justify-between">
-                <h1 className="lg:text-6xl md:text-5xl text-4xl md:px-5" style={{ lineHeight: "1.2" }}>
-
-                    Mapa conceptual online
+                <h1 className="lg:text-6xl md:text-5xl text-4xl md:px-5 md:text-left text-center" style={{ lineHeight: "1.2" }}>
+                    Mapa conceptual
                 </h1>
                 <Image
                     src="/placeholders/mapa-conceptual.png"
