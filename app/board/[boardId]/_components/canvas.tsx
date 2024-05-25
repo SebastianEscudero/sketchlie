@@ -1509,7 +1509,7 @@ export const Canvas = ({
                             layer={currentPreviewLayer}
                         />
                     )}
-                    {(canvasState.mode === CanvasMode.SelectionNet || canvasState.mode === CanvasMode.None || CanvasMode.Resizing) && (
+                    {(canvasState.mode === CanvasMode.SelectionNet || canvasState.mode === CanvasMode.None || CanvasMode.Resizing) && activeTouches < 2 && (
                         <SelectionBox
                             zoom={zoom}
                             liveLayers={liveLayers}
