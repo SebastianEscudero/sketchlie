@@ -1418,8 +1418,13 @@ export const Canvas = ({
         <main
             className={`fixed h-full w-full bg-neutral-100 touch-none overscroll-none ${isDraggingOverCanvas ? 'bg-neutral-300 border-2 border-dashed border-custom-blue' : ''}`}
             style={{
-                backgroundImage: "url(/dot-grid.png)",
-                backgroundSize: 'cover',
+                background: `
+                  linear-gradient(0deg, rgba(0,0,0,0.05) 1px, transparent 1px),
+                  linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px),
+                  #f4f4f4
+                `,
+                backgroundSize: `${65 * zoom}px ${65 * zoom}px`, // Adjust the size based on the zoom level
+                backgroundPosition: `${camera.x}px ${camera.y}px`, 
                 WebkitOverflowScrolling: 'touch',
                 WebkitUserSelect: 'none',
             }}
@@ -1509,7 +1514,7 @@ export const Canvas = ({
                             layer={currentPreviewLayer}
                         />
                     )}
-                    {(canvasState.mode === CanvasMode.SelectionNet || canvasState.mode === CanvasMode.None || CanvasMode.Resizing) && activeTouches < 2 && (
+                    {(canvasState.mode === CanvasMode.SelectionNet || canvasState.mode === CanvasMode.None || CanvasMode.Resizing) && (
                         <SelectionBox
                             zoom={zoom}
                             liveLayers={liveLayers}

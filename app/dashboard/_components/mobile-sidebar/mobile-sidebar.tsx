@@ -21,14 +21,12 @@ export const MobileSidebar = ({
                 </Button>
             </SheetTrigger>
             <SheetContent side="left" className="h-full flex p-3 flex-col text-white w-[70px] bg-blue-950 border-r border-[#172554]">
-                    {activeOrganization !== null && activeOrganization !== "null" && (
-                        <SheetClose>
-                                <List
-                                    activeOrganization={activeOrganization}
-                                    setActiveOrganization={setActiveOrganization}
-                                />
-                        </SheetClose>
-                    )}
+                    <SheetClose>
+                            <List
+                                activeOrganization={activeOrganization}
+                                setActiveOrganization={setActiveOrganization}
+                            />
+                    </SheetClose>
                 <NewOrgButton
                     activeOrganization={activeOrganization}
                     setActiveOrganization={setActiveOrganization}

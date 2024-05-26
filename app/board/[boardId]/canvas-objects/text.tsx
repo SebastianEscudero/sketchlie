@@ -13,7 +13,7 @@ const font = Kalam({
 interface TextProps {
     id: string;
     layer: TextLayer;
-    onPointerDown?: (e: React.PointerEvent, id: string) => void;
+    onPointerDown?: (e: any, id: string) => void;
     selectionColor?: string;
     setLiveLayers?: (layers: any) => void;
     liveLayers?: any;
@@ -52,6 +52,11 @@ export const Text = ({
     const isTransparent = fillColor === 'rgba(0,0,0,0)';
 
     const handlePointerDown = (e: React.PointerEvent) => {
+        if (e.pointerId > 1) return;
+        if (onPointerDown) {
+            onPointerDown(e, id);
+        }
+
         if (onRefChange) {
             onRefChange(textRef);
             textRef.current.focus();
@@ -105,10 +110,15 @@ export const Text = ({
             style={{
                 outline: selectionColor ? `1px solid ${selectionColor}` : "none",
             }}
+            onPointerMove={(e) => {
+                if (e.buttons === 1) {
+                    handlePointerDown(e);
+                }
+            }}
             onPointerDown={(e) => {
-                handlePointerDown(e);
-                if (onPointerDown) {
-                    onPointerDown(e, id);
+                if (e.pointerId > 1) return; 
+                if (e.buttons === 1) {
+                    handlePointerDown(e);
                 }
             }}
         >
@@ -116,7 +126,6 @@ export const Text = ({
                 ref={textRef}
                 value={value || ""}
                 onChange={e => handleContentChange(e.target.value)}
-                onPointerDown={handlePointerDown}
                 autoComplete="off"
                 autoCapitalize="off"
                 autoCorrect="off"

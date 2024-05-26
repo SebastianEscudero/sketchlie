@@ -3,7 +3,7 @@ import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
 
 import { LayerType, NoteLayer, UpdateLayerMutation } from "@/types/canvas";
 import { cn, colorToCss, getContrastingTextColor } from "@/lib/utils";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useRoom } from "@/components/room";
 import { throttle } from "lodash";
 
@@ -15,7 +15,7 @@ const font = Kalam({
 interface NoteProps {
   id: string;
   layer: NoteLayer;
-  onPointerDown?: (e: React.PointerEvent, id: string) => void;
+  onPointerDown?: (e: any, id: string) => void;
   selectionColor?: string;
   updateLayer?: UpdateLayerMutation;
 };
@@ -65,6 +65,19 @@ export const Note = ({
     }
   };
 
+  const handleOnTouchDown = (e: React.TouchEvent) => {
+    if (e.touches.length > 1) {
+      return;
+    }
+    if (onPointerDown) {
+      onPointerDown(e, id);
+    }
+    if (noteRef.current) {
+      noteRef.current.click();
+      noteRef.current.focus();
+    }
+  }
+
   const handleContentChange = (e: ContentEditableEvent) => {
     updateValue(e.target.value);
   };
@@ -96,7 +109,11 @@ export const Note = ({
       y={y}
       width={width}
       height={height}
-      onPointerDown={onPointerDown ? (e) => onPointerDown(e, id) : undefined}
+      onPointerDown={(e) => {
+        if (e.pointerId > 1) return; 
+        if (onPointerDown) onPointerDown(e, id);
+      }}
+      onTouchStart={handleOnTouchDown}
       style={{
         borderColor: `${selectionColor || colorToCss(outlineFill || fill)}`,
         backgroundColor: fillColor,
