@@ -18,6 +18,7 @@ interface NoteProps {
   onPointerDown?: (e: any, id: string) => void;
   selectionColor?: string;
   updateLayer?: UpdateLayerMutation;
+  expired?: boolean;
 };
 
 const throttledUpdateLayer = throttle((updateLayer, socket, boardId, layerId, layerUpdates) => {
@@ -137,6 +138,7 @@ export const Note = ({
           WebkitUserSelect: 'auto'
         }}
         spellCheck={false}
+        disabled={expired}
       />
     </foreignObject>
   );

@@ -1514,7 +1514,7 @@ export const Canvas = ({
                             layer={currentPreviewLayer}
                         />
                     )}
-                    {(canvasState.mode === CanvasMode.SelectionNet || canvasState.mode === CanvasMode.None || CanvasMode.Resizing) && (
+                    {(canvasState.mode === CanvasMode.SelectionNet || canvasState.mode === CanvasMode.None || CanvasMode.Resizing) && expired !== true && (
                         <SelectionBox
                             zoom={zoom}
                             liveLayers={liveLayers}

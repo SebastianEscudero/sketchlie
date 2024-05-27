@@ -46,7 +46,7 @@ export const Text = ({
     onRefChange,
 }: TextProps) => {
     const { x, y, width, height, fill, value, textFontSize } = layer;
-    const { liveLayers, board, socket } = useRoom();
+    const { liveLayers, board, socket, expired } = useRoom();
     const textRef = useRef<any>(null);
     const fillColor = colorToCss(layer.fill);
     const isTransparent = fillColor === 'rgba(0,0,0,0)';
@@ -130,6 +130,7 @@ export const Text = ({
                 autoCapitalize="off"
                 autoCorrect="off"
                 spellCheck={false}
+                disabled={expired}
                 placeholder='Type something...'
                 className={cn(
                     "outline-none w-full h-full text-left flex px-0.5",
