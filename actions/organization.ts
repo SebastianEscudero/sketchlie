@@ -20,6 +20,7 @@ export const organization = async (values: z.infer<typeof OrganizationSchema>, u
             users: {
                 create: {
                     userId,
+                    role: 'Admin'
                 }
             }
         }
