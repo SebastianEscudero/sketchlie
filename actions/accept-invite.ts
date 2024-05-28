@@ -34,6 +34,7 @@ export const acceptInvite = async (
     data: {
       userId: dbUser.id,
       organizationId: organizationId,
+      role: 'Member'
     },
   });
 
