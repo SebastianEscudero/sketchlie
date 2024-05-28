@@ -79,6 +79,7 @@ export const {
               name: user?.name,
               email: user?.email,
               image: user?.image,
+              role: org.organization.users.find((u) => u.userId === userId)?.role,
             };
           }))
         })));

@@ -68,5 +68,8 @@ export const OrganizationSchema = z.object({
 });
 
 export const OrganizationInviteSchema = z.object({
-  emails: z.array(z.string().email().optional()),
+  members: z.array(z.object({
+    email: z.string().email().optional(),
+    role: z.enum(["Admin", "Member", "Guest"]).optional()
+  }))
 });

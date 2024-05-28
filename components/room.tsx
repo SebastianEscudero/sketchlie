@@ -36,12 +36,17 @@ export const Room = React.memo(({ children, roomId, fallback, userInfo, board }:
 
   const orgId = board?.orgId;
   const org = userInfo.organizations.find((org: any) => org.id === orgId);
+  const role = org.users.find((user: any) => user.id === userInfo.id).role
 
   let expired = false
   if (org.subscription) {
     const now = new Date().getTime();
     const expiration = new Date(org.subscription.mercadoPagoCurrentPeriodEnd).getTime();
     expired = now > expiration;
+  }
+
+  if (role === 'Guest') {
+    expired = true;
   }
 
   const [socket, setSocket] = useState<Socket | null>(null);

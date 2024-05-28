@@ -32,9 +32,9 @@ model Organization {
 model OrganizationUser {
   userId         String
   organizationId String
+  role           Role?
   organization   Organization @relation(fields: [organizationId], references: [id])
   user           User         @relation(fields: [userId], references: [id])
-  role           Role
 
   @@id([userId, organizationId])
 }
@@ -81,6 +81,7 @@ model OrganizationInvitation {
   organizationId String
   createdAt      DateTime     @default(now())
   status         String       @default("PENDING")
+  role           Role?
   user           User         @relation(fields: [email], references: [email])
   organization   Organization @relation(fields: [organizationId], references: [id])
 

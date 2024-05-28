@@ -43,6 +43,8 @@ import { api } from "@/convex/_generated/api";
 import { useApiMutation } from "@/hooks/use-api-mutation";
 import { useQuery } from "convex/react";
 import { useProModal } from "@/hooks/use-pro-modal";
+import { editUserRole } from "@/actions/edit-role";
+import { toast } from "sonner";
 
 interface OrganizationSettingsProps {
     activeOrganization: string | null;
@@ -57,6 +59,7 @@ export const OrganizationSettings = ({
 }: OrganizationSettingsProps) => {
     const user = useCurrentUser();
     const activeOrg = user?.organizations.find(org => org.id === activeOrganization);
+    const usersRole = activeOrg?.users.find((u: any) => u.id === user?.id)?.role;
     const Initial = activeOrg?.name.charAt(0).toUpperCase();
 
     let Color, LetterColor;
@@ -92,20 +95,22 @@ export const OrganizationSettings = ({
         }
     });
 
-    const data = useQuery(api.boards.get, { 
+    const data = useQuery(api.boards.get, {
         orgId: activeOrg.id,
         userId: user?.id,
     });
 
     const onDelete = () => deleteOrganization(activeOrg.id)
-    .then(() => {
-        {data?.map((board) => (
-            mutate({ id: board._id, userId: user?.id })
-        ))}
-        setActiveOrganization("null");
-        localStorage.setItem("activeOrganization", "null");
-        update();
-    })
+        .then(() => {
+            {
+                data?.map((board) => (
+                    mutate({ id: board._id, userId: user?.id })
+                ))
+            }
+            setActiveOrganization("null");
+            localStorage.setItem("activeOrganization", "null");
+            update();
+        })
 
     const onSubmit = (values: z.infer<typeof OrganizationSchema>) => {
         organizationSettings(values, activeOrg)
@@ -164,9 +169,11 @@ export const OrganizationSettings = ({
                     >
                         <Settings className="w-4 h-4 mr-2" />Settings
                     </Button>
-                    <InviteButton 
-                        activeOrganization={activeOrganization}
-                    />
+                    {usersRole !== 'Guest' && (
+                        <InviteButton
+                            activeOrganization={activeOrganization}
+                        />
+                    )}
                 </div>
             </div>
             <div className="sm:w-2/3 w-full sm:pl-4">
@@ -174,91 +181,139 @@ export const OrganizationSettings = ({
                     {selectedSection}
                 </h3>
                 {selectedSection === 'Members' ? (
-                    <ul className="pt-4 overflow-y-auto max-h-[380px]">
-                        {activeOrg.users.map((orgUser: any) => (
-                            <li key={orgUser.id} className="flex pb-3">
-                                <Avatar>
-                                    <AvatarImage src={orgUser.image || ""} />
-                                    <AvatarFallback className="bg-custom-blue">
-                                        <User className="text-white" />
-                                    </AvatarFallback>
-                                </Avatar>
-                                <div className="ml-2">
-                                    <p className="truncate text-[14px]">
-                                        {orgUser.name}
-                                        {orgUser.id === user?.id && (
-                                            <span className="bg-[#D8E0FC] px-[4px] py-[2px] rounded-sm text-[12px] text-custom-blue ml-1">You</span>
-                                        )}
-                                    </p>
-                                    <p className="truncate text-[12px] text-zinc-400">{orgUser.email}</p>
-                                </div>
-                                <DropdownMenu>
-                                    <DropdownMenuTrigger className="ml-auto">
-                                        <Ellipsis className="text-zinc-500 w-4 h-4" />
-                                    </DropdownMenuTrigger>
-                                    <DropdownMenuContent align="start" className="rounded-xl shadow-xl">
-                                        <DropdownMenuItem className="py-2 px-3">
-                                            <p className="text-destructive" onClick={() => leaveOrganization(activeOrg.id, orgUser.id)
-                                                .then((result) => {
-                                                    if (result.isOrgDeleted) {
-                                                        setActiveOrganization("null");
-                                                        localStorage.setItem("activeOrganization", "null");
+                    <ul className="pt-4 overflow-y-auto max-h-[330px] sm:max-h-[380px]">
+                        {activeOrg.users
+                            .sort((a: any, b: any) => (a.id === user?.id ? -1 : b.id === user?.id ? 1 : 0))
+                            .map((orgUser: any) => (
+                                <li key={orgUser.id} className="flex pb-3">
+                                    <Avatar>
+                                        <AvatarImage src={orgUser.image || ""} />
+                                        <AvatarFallback className="bg-custom-blue">
+                                            <User className="text-white" />
+                                        </AvatarFallback>
+                                    </Avatar>
+                                    <div className="ml-2">
+                                        <p className="truncate xs:w-auto w-[160px] text-sm">
+                                            {orgUser.name}
+                                            {orgUser.id === user?.id && (
+                                                <span className="bg-[#D8E0FC] px-[4px] py-[2px] rounded-sm text-[12px] text-custom-blue ml-1">You</span>
+                                            )}
+                                        </p>
+                                        <p className="truncate text-[12px] xs:w-auto w-[160px] text-zinc-400">{orgUser.email}</p>
+                                    </div>
+                                    <DropdownMenu>
+                                        <DropdownMenuTrigger className={`ml-auto mr-2 text-zinc-600 text-sm border rounded-md p-2 ${usersRole !== 'Admin' ? 'pointer-events-none' : ''}`}>
+                                            {orgUser.role}
+                                        </DropdownMenuTrigger>
+                                        {usersRole === 'Admin' && orgUser.id !== user?.id && (
+                                            <DropdownMenuContent>
+                                                <DropdownMenuItem onClick={async () => {
+                                                    const result = await editUserRole(activeOrg.id, orgUser.id, 'Admin');
+                                                    if (result.success) {
+                                                        toast.success(result.success);
+                                                    } else {
+                                                        toast.error(result.error);
                                                     }
                                                     update();
-                                                })
-                                            }>
-                                                {orgUser.id === user?.id ? "Leave Organization" : "Remove member"}
-                                            </p>
-                                        </DropdownMenuItem>
-                                    </DropdownMenuContent>
-                                </DropdownMenu>
-                            </li>
-                        ))}
+                                                }}>
+                                                    Admin
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem onClick={async () => {
+                                                    const result = await editUserRole(activeOrg.id, orgUser.id, 'Member');
+                                                    if (result.success) {
+                                                        toast.success(result.success);
+                                                    } else {
+                                                        toast.error(result.error);
+                                                    }
+                                                    update();
+                                                }}>
+                                                    Member
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem onClick={async () => {
+                                                    const result = await editUserRole(activeOrg.id, orgUser.id, 'Guest');
+                                                    if (result.success) {
+                                                        toast.success(result.success);
+                                                    } else {
+                                                        toast.error(result.error);
+                                                    }
+                                                    update();
+                                                }}>
+                                                    Guest
+                                                </DropdownMenuItem>
+                                            </DropdownMenuContent>
+                                        )}
+                                    </DropdownMenu>
+                                    <DropdownMenu>
+                                        <DropdownMenuTrigger className="pr-4">
+                                            <Ellipsis className="text-zinc-500 w-4 h-4" />
+                                        </DropdownMenuTrigger>
+                                        <DropdownMenuContent align="end" className="rounded-xl shadow-xl">
+                                            <DropdownMenuItem className="py-2 px-3">
+                                                <p className="text-destructive" onClick={() => leaveOrganization(activeOrg.id, orgUser.id)
+                                                    .then((result) => {
+                                                        if (result.isOrgDeleted) {
+                                                            setActiveOrganization("null");
+                                                            localStorage.setItem("activeOrganization", "null");
+                                                        }
+                                                        update();
+                                                    })
+                                                }>
+                                                    {orgUser.id === user?.id ? "Leave Organization" : "Remove member"}
+                                                </p>
+                                            </DropdownMenuItem>
+                                        </DropdownMenuContent>
+                                    </DropdownMenu>
+                                </li>
+                            ))}
                     </ul>
                 ) : selectedSection === "Settings" ? (
                     <div>
-                        <Form {...form}>
-                            <form
-                                onSubmit={form.handleSubmit(onSubmit)}
-                            >
-                                <FormField
-                                    control={form.control}
-                                    name="name"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Organization Name</FormLabel>
-                                            <div className="flex flex-row space-x-4">
-                                                <FormControl className="max-w-[300px]">
-                                                    <Input
-                                                        {...field}
-                                                        placeholder="Sebastian's Team"
-                                                    />
-                                                </FormControl>
-                                                <Button
-                                                    type="submit"
-                                                    variant="auth"
-                                                >
-                                                    Save Changes
-                                                </Button>
-                                            </div>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <div className="mt-4">
-                                    <FormError message={error}/>
-                                    <FormSuccess message={success} />
-                                </div>
-                            </form>
-                        </Form>
+                        {usersRole === 'Admin' && (
+                            <Form {...form}>
+                                <form
+                                    onSubmit={form.handleSubmit(onSubmit)}
+                                >
+                                    <FormField
+                                        control={form.control}
+                                        name="name"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Organization Name</FormLabel>
+                                                <div className="flex flex-row space-x-4">
+                                                    <FormControl className="max-w-[300px]">
+                                                        <Input
+                                                            {...field}
+                                                            placeholder="Sebastian's Team"
+                                                        />
+                                                    </FormControl>
+                                                    <Button
+                                                        type="submit"
+                                                        variant="auth"
+                                                    >
+                                                        Save Changes
+                                                    </Button>
+                                                </div>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <div className="mt-4">
+                                        <FormError message={error} />
+                                        <FormSuccess message={success} />
+                                    </div>
+                                </form>
+                            </Form>
+                        )}
                         <div className="mt-4">
                             <p className="mt-4 pb-1 border-b">
                                 Danger
                             </p>
                             <div className="flex md:flex-row flex-col justify-center">
-                                <Button variant="destructive" className="mt-4 w-full md:mr-2" onClick={() => setSelectedSection("Delete organization")}>
-                                    <X className="h-4 w-4 mr-2" /> Delete Organization
-                                </Button>
+                                {usersRole === 'Admin' && (
+                                    <Button variant="destructive" className="mt-4 w-full md:mr-2" onClick={() => setSelectedSection("Delete organization")}>
+                                        <X className="h-4 w-4 mr-2" /> Delete Organization
+                                    </Button>
+                                )}
                                 <Button
                                     className="mt-4 bg-white border border-destructive text-destructive shadow-sm hover:bg-destructive/90 hover:text-white w-full md:ml-2"
                                     onClick={() => leaveOrganization(activeOrg.id, user.id)
@@ -275,20 +330,22 @@ export const OrganizationSettings = ({
                                 </Button>
                             </div>
                         </div>
-                        <div className="mt-4">
-                            <p className="mt-4 pb-1 border-b">
-                                Subscription
-                            </p>
-                            <div className="flex md:flex-row flex-col justify-center">
-                                <Button
-                                    onClick={onClick}
-                                    variant={activeOrg.subscriptionPlan !== "Gratis" ? "auth" : "premium"} className="mt-4 w-full"
-                                >
-                                    {activeOrg.subscriptionPlan !== "Gratis" ? "Pausar Subscripcion" : "Upgrade"}
-                                    {activeOrg.subscriptionPlan === "Gratis" && <Zap className="w-4 h-4 ml-2 fill-white" />}
-                                </Button>
+                        {usersRole === 'Admin' && (
+                            <div className="mt-4">
+                                <p className="mt-4 pb-1 border-b">
+                                    Subscription
+                                </p>
+                                <div className="flex md:flex-row flex-col justify-center">
+                                    <Button
+                                        onClick={onClick}
+                                        variant={activeOrg.subscriptionPlan !== "Gratis" ? "auth" : "premium"} className="mt-4 w-full"
+                                    >
+                                        {activeOrg.subscriptionPlan !== "Gratis" ? "Pausar Subscripcion" : "Upgrade"}
+                                        {activeOrg.subscriptionPlan === "Gratis" && <Zap className="w-4 h-4 ml-2 fill-white" />}
+                                    </Button>
+                                </div>
                             </div>
-                        </div>
+                        )}
                     </div>
                 ) : (
                     <div className="space-y-2">

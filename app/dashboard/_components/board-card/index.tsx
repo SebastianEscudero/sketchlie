@@ -14,6 +14,7 @@ import { useApiMutation } from "@/hooks/use-api-mutation";
 import { Footer } from "./footer";
 import { Overlay } from "./overlay";
 import { useCurrentUser } from "@/hooks/use-current-user";
+import { useState } from "react";
 
 interface BoardCardProps {
   id: string;
@@ -36,6 +37,8 @@ export const BoardCard = ({
   orgId,
   isFavorite,
 }: BoardCardProps) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const userId = useCurrentUser()?.id;
 
   const authorLabel = userId === authorId ? "You" : authorName;
@@ -57,7 +60,7 @@ export const BoardCard = ({
       onUnfavorite({ id, userId: userId })
         .catch(() => toast.error("Failed to unfavorite"))
     } else {
-      onFavorite({ id, orgId, userId: userId})
+      onFavorite({ id, orgId, userId: userId })
         .catch(() => toast.error("Failed to favorite"))
     }
 
@@ -67,9 +70,16 @@ export const BoardCard = ({
 
   };
 
+  const handleClick = () => {
+    setIsLoading(true);
+  };
+
   return (
     <Link href={`/board/${id}`}>
-      <div className="group aspect-[100/127] border rounded-lg flex flex-col justify-between overflow-hidden">
+      <div
+        className={`group aspect-[100/127] border rounded-lg flex flex-col justify-between overflow-hidden ${isLoading ? 'opacity-80 transition-opacity cursor-not-allowed' : ''}`}
+        onClick={handleClick}
+      >
         <div className="relative flex-1 bg-amber-50">
           <Image
             src={imageUrl}

@@ -8,7 +8,7 @@ import { db } from "@/lib/db";
 import { update } from "@/auth";
 
 export const invite = async (
-  validEmails: z.infer<typeof OrganizationInviteSchema>,
+  validMembers: z.infer<typeof OrganizationInviteSchema>,
   activeOrg: any,
 ) => {
   const user = await currentUser();
@@ -19,10 +19,10 @@ export const invite = async (
 
   const pendingEmails = [];
 
-  for (const email of validEmails.emails) {
-    if (email) {
+  for (const member of validMembers.members) {
+    if (member.email) {
       const isRegistered = await db.user.findUnique({
-        where: { email: email },
+        where: { email: member.email },
       });
 
       if (!isRegistered) {
@@ -43,26 +43,27 @@ export const invite = async (
       const existingInvitation = await db.organizationInvitation.findUnique({
         where: {
           email_organizationId: {
-            email: email,
+            email: member.email,
             organizationId: activeOrg.id,
           },
         },
       });
 
       if (existingInvitation && existingInvitation.status === 'PENDING') {
-        pendingEmails.push(email);
+        pendingEmails.push(member.email);
       } else {
-        await sendOrganizationInvite(email, activeOrg.name, user);
+        await sendOrganizationInvite(member.email, activeOrg.name, user);
         const newInvitation = await db.organizationInvitation.create({
           data: {
-            email: email,
+            email: member.email,
             organizationId: activeOrg.id,
             status: 'PENDING',
+            role: member.role,
           },
         });
 
         await db.user.update({
-          where: { email: email },
+          where: { email: member.email },
           data: {
             invitations: {
               connect: { id: newInvitation.id },
