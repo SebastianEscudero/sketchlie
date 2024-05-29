@@ -20,6 +20,7 @@ const DashboardPage = () => {
   const proModal = useProModal();
 
   useEffect(() => {
+    document.body.style.cursor = 'default';
     setActiveOrganization(localStorage.getItem("activeOrganization"));
   }, []);
 
