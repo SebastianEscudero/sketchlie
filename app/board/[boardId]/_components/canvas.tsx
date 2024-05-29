@@ -879,7 +879,7 @@ export const Canvas = ({
                 mode: CanvasMode.None,
             });
         } else if (canvasState.mode === CanvasMode.Pencil) {
-            document.body.style.cursor = 'url(/custom-cursors/pencil.svg) 8 8, auto';
+            document.body.style.cursor = 'url(/custom-cursors/pencil.svg) 2 18, auto';
             insertPath();
         } else if (canvasState.mode === CanvasMode.Eraser) {
             document.body.style.cursor = 'url(/custom-cursors/eraser.svg) 8 8, auto';
