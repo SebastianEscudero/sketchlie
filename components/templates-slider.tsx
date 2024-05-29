@@ -21,7 +21,7 @@ export const TemplatesSlider = () => {
 
     return (
         <div>
-            <h2 className="text-4xl font-roobert xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[2%]">Explora nuestras plantillas</h2>
+            <h2 className="text-4xl font-roobert xl:mx-[10%] lg:mx-[7%] mx-[5%]">Explora nuestras plantillas</h2>
             <div className="relative">
                 <Button className="px-2 absolute top-1/2 left-[8%] z-10 transform -translate-y-1/2  border border-black" variant="business" onClick={() => scroll(-600)}>
                     <ChevronLeft size={24} />

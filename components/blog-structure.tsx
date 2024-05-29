@@ -36,10 +36,10 @@ export const BlogStructure = ({
     );
     
     return (
-        <div className={`text-[#1c1c1e] pt-20 md:pt-24 lg:pt-28 xl:pt-32 flex flex-col md:flex-row md:space-x-10 xl:space-x-18 font-roobert ${img ? "xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] items-center md:text-left text-center" : "lg:mx-[25%] md:mx-[15%] mx-[5%] text-center space-y-5"}`}>
+        <div className={`text-[#1c1c1e] pt-20 md:pt-20 lg:pt-16 xl:pt-24 flex flex-col sm:mx-[20%] md:flex-row md:space-x-10 xl:space-x-18 font-roobert ${img ? "xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] items-center md:text-left text-center" : "lg:mx-[25%] md:mx-[15%] mx-[5%] text-center space-y-5"}`}>
             <div className={cn(`space-y-5 flex-1`, {
-                'text-4xl md:text-5xl lg:text-6xl md:mb-0 mb-5': img,
-                'text-4xl sm:text-5xl md:text-6xl lg:text-7xl': !img,
+                'text-3xl md:text-4xl lg:text-5xl xl:text-6xl md:mb-0 mb-5': img,
+                'text-3xl md:text-4xl lg:text-5xl xl:text-6xl': !img,
             })}>
                 <h1>
                     {title}

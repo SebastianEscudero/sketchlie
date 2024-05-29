@@ -34,8 +34,8 @@ export const BlogSection = ({
             {side === 'left' && imageElement}
             <div className="flex-1">
                 <h2 className={cn("mb-10 leading-snug space-y-5", {
-                    'text-3xl lg:text-4xl sm:text-left text-center': text && img,
-                    'text-4xl lg:text-4xl lg:mx-[20%] mx-[2%]': !img 
+                    'text-3xl lg:text-4xl text-left': text && img,
+                    'text-3xl lg:text-4xl lg:mx-[20%] mx-[2%]': !img 
                 })} style={{ lineHeight: "1.2" }}>
                     {title}
                 </h2>
