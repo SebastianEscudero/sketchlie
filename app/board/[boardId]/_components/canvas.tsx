@@ -116,28 +116,32 @@ class DeleteLayerCommand implements Command {
         private boardId: string,
         private socket: Socket | null) { }
 
-    execute() {
-        const remainingLayers = { ...this.prevLayers };
-        const remainingLayerIds = [...this.prevLayerIds];
-
-        this.layerIds.forEach(id => {
-            delete remainingLayers[id];
-            const index = remainingLayerIds.indexOf(id);
-            if (index > -1) {
-                remainingLayerIds.splice(index, 1);
+        execute() {
+            const remainingLayers = { ...this.prevLayers };
+            const remainingLayerIds = [...this.prevLayerIds];
+        
+            this.layerIds.forEach(id => {
+                if (!remainingLayers[id]) {
+                    // Layer doesn't exist, skip deletion
+                    return;
+                }
+                delete remainingLayers[id];
+                const index = remainingLayerIds.indexOf(id);
+                if (index > -1) {
+                    remainingLayerIds.splice(index, 1);
+                }
+            });
+        
+            // Call the deleteLayer API mutation to delete all the layers in the database
+            this.deleteLayer({ boardId: this.boardId, layerId: this.layerIds });
+        
+            if (this.socket) {
+                this.socket.emit('layer-delete', this.layerIds);
             }
-        });
-
-        // Call the deleteLayer API mutation to delete all the layers in the database
-        this.deleteLayer({ boardId: this.boardId, layerId: this.layerIds });
-
-        if (this.socket) {
-            this.socket.emit('layer-delete', this.layerIds);
+        
+            this.setLiveLayers(remainingLayers);
+            this.setLiveLayerIds(remainingLayerIds);
         }
-
-        this.setLiveLayers(remainingLayers);
-        this.setLiveLayerIds(remainingLayerIds);
-    }
 
     undo() {
         const newLayers = { ...this.prevLayers };
@@ -527,7 +531,7 @@ export const Canvas = ({
 
     const continueDrawing = useCallback((point: Point, e: React.PointerEvent) => {
         if (
-            canvasState.mode !== CanvasMode.Pencil ||
+            (canvasState.mode !== CanvasMode.Pencil && canvasState.mode !== CanvasMode.Laser) ||
             e.buttons !== 1 ||
             pencilDraft == null
         ) {
@@ -725,6 +729,11 @@ export const Canvas = ({
                 return;
             }
 
+            if (canvasState.mode === CanvasMode.Laser) {
+                startDrawing(point, e.pressure);
+                return;
+            }
+
             if (canvasState.mode === CanvasMode.Moving) {
                 setIsPanning(true);
                 setStartPanPoint({ x: e.clientX, y: e.clientY });
@@ -750,7 +759,7 @@ export const Canvas = ({
             setStartPanPoint({ x: e.clientX, y: e.clientY });
             document.body.style.cursor = 'url(/custom-cursors/grab.svg) 8 8, auto';
         }
-    }, [camera, canvasState.mode, setCanvasState, startDrawing, setIsPanning, setIsRightClickPanning, zoom, activeTouches]);
+    }, [camera, canvasState.mode, setCanvasState, startDrawing, setIsPanning, setIsRightClickPanning, zoom, activeTouches, expired]);
 
 
     const onPointerMove = useCallback((e: React.PointerEvent) => {
@@ -801,7 +810,9 @@ export const Canvas = ({
             resizeSelectedLayer(current);
         } else if (canvasState.mode === CanvasMode.ArrowResizeHandler) {
             resizeSelectedLayer(current);
-        } else if (canvasState.mode === CanvasMode.Pencil) {
+        } else if (canvasState.mode === CanvasMode.Pencil && e.buttons === 1) {
+            continueDrawing(current, e);
+        } else if (canvasState.mode === CanvasMode.Laser && e.buttons === 1) {
             continueDrawing(current, e);
         } else if (
             e.buttons === 1 &&
@@ -863,7 +874,8 @@ export const Canvas = ({
             myPresence,
             startPanPoint,
             socket,
-            activeTouches
+            activeTouches,
+            expired
         ]);
 
     const onPointerUp = useCallback((e: React.PointerEvent) => {
@@ -890,6 +902,9 @@ export const Canvas = ({
         } else if (canvasState.mode === CanvasMode.Pencil) {
             document.body.style.cursor = 'url(/custom-cursors/pencil.svg) 2 18, auto';
             insertPath();
+        } else if (canvasState.mode === CanvasMode.Laser) {
+            document.body.style.cursor = 'url(/custom-cursors/laser.svg) 4 18, auto';
+            setPencilDraft([]);
         } else if (canvasState.mode === CanvasMode.Eraser) {
             document.body.style.cursor = 'url(/custom-cursors/eraser.svg) 8 8, auto';
             return;
@@ -1022,7 +1037,7 @@ export const Canvas = ({
             isPanning,
             initialLayers,
             history,
-            layerRef
+            layerRef,
         ]);
 
     const onPointerLeave = useCallback(() => {
@@ -1065,6 +1080,7 @@ export const Canvas = ({
             canvasStateRef.current.mode === CanvasMode.Inserting ||
             canvasStateRef.current.mode === CanvasMode.Moving ||
             canvasStateRef.current.mode === CanvasMode.Eraser ||
+            canvasStateRef.current.mode === CanvasMode.Laser ||
             e.button !== 0 ||
             expired === true
         ) {
@@ -1416,6 +1432,8 @@ export const Canvas = ({
             }
         } else if (canvasState.mode === CanvasMode.Pencil) {
             document.body.style.cursor = 'url(/custom-cursors/pencil.svg) 2 18, auto';
+        } else if (canvasState.mode === CanvasMode.Laser) {
+            document.body.style.cursor = 'url(/custom-cursors/laser.svg) 4 18, auto';
         } else if (canvasState.mode === CanvasMode.Eraser) {
             document.body.style.cursor = 'url(/custom-cursors/eraser.svg) 8 8, auto';
         } else if (canvasState.mode === CanvasMode.Moving) {
@@ -1584,10 +1602,11 @@ export const Canvas = ({
                     {pencilDraft != null && pencilDraft.length > 0 && pencilDraft[0].length > 0 && !pencilDraft.some(array => array.some(isNaN)) && (
                         <Path
                             points={pencilDraft}
-                            fill={colorToCss(pathColor)}
+                            fill={canvasState.mode === CanvasMode.Laser ? '#F35223' : colorToCss(pathColor)}
                             x={0}
                             y={0}
-                            strokeSize={pathStrokeSize}
+                            strokeSize={canvasState.mode === CanvasMode.Laser ? 5 / zoom : pathStrokeSize}
+                            isLaser={canvasState.mode === CanvasMode.Laser}
                         />
                     )}
                 </g>

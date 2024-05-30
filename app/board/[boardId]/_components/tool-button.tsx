@@ -2,11 +2,11 @@
 
 import { Hint } from "@/components/hint";
 import { Button } from "@/components/ui/button";
-import { LucideIcon } from "lucide-react";
+import { ElementType } from "react";
 
 interface ToolButtonProps {
     label: string;
-    icon: LucideIcon;
+    icon: ElementType;
     onClick: () => void;
     isActive?: boolean;
     isDisabled?: boolean;

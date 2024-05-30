@@ -22,13 +22,14 @@ import { ImageButton } from "./image-button";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { ColorButton } from "../selection-tools/color-picker";
 import { Slider } from "@/components/ui/slider";
+import { LaserIcon } from "@/public/custom-cursors/laser";
 
 interface ToolbarProps {
   isUploading: boolean;
   setIsUploading: Dispatch<SetStateAction<boolean>>
   onImageSelect: (src: string) => void;
   canvasState: CanvasState;
-  setCanvasState: (newState: CanvasState) => void;
+  setCanvasState: (newState: any) => void;
   org: any;
   pathStrokeSize: number;
   setPathColor: any;
@@ -56,6 +57,8 @@ export const Toolbar = ({
 }: ToolbarProps) => {
   const [isPenMenuOpen, setIsPenMenuOpen] = useState(false);
   const [isShapesMenuOpen, setIsShapesMenuOpen] = useState(false);
+  const [isPenEraserSwitcherOpen, setIsPenEraserSwitcherOpen] = useState(false);
+  const [selectedTool, setSelectedTool] = useState(CanvasMode.None);
 
   const onPathColorChange = (color: any) => {
     setPathColor(color);
@@ -66,8 +69,9 @@ export const Toolbar = ({
   }
 
   useEffect(() => {
-    if (canvasState.mode !== CanvasMode.Pencil) {
+    if (canvasState.mode !== CanvasMode.Pencil && canvasState.mode !== CanvasMode.Eraser && canvasState.mode !== CanvasMode.Laser) {
       setIsPenMenuOpen(false);
+      setIsPenEraserSwitcherOpen(false);
     }
 
     if (canvasState.mode !== CanvasMode.Inserting || (canvasState.layerType === LayerType.Image || canvasState.layerType === LayerType.Text || canvasState.layerType === LayerType.Arrow || canvasState.layerType === LayerType.Note)) {
@@ -119,28 +123,37 @@ export const Toolbar = ({
           }
         />
         <ToolButton
-          label="Pen"
-          icon={Pencil}
-          onClick={() => {
-            setCanvasState({
-              mode: CanvasMode.Pencil,
-            });
-            setIsPenMenuOpen(!isPenMenuOpen);
-          }}
-          isActive={
-            canvasState.mode === CanvasMode.Pencil
+          label={
+            selectedTool === CanvasMode.Laser
+              ? "Laser"
+              : selectedTool === CanvasMode.Eraser
+                ? "Eraser"
+                : "Pencil"
           }
-        />
-        <ToolButton
-          label="Eraser"
-          icon={Eraser}
+          icon={
+            selectedTool === CanvasMode.Laser
+              ? LaserIcon
+              : selectedTool === CanvasMode.Eraser
+                ? Eraser
+                : Pencil
+          }
           onClick={() => {
-            setCanvasState({
-              mode: CanvasMode.Eraser,
-            });
+            if (selectedTool === CanvasMode.None) {
+              setSelectedTool(CanvasMode.Pencil);
+              setCanvasState({
+                mode: CanvasMode.Pencil,
+              });
+            } else {
+              setCanvasState({
+                mode: selectedTool,
+              });
+            }
+            setIsPenEraserSwitcherOpen(!isPenEraserSwitcherOpen);
           }}
           isActive={
-            canvasState.mode === CanvasMode.Eraser
+            canvasState.mode === CanvasMode.Pencil ||
+            canvasState.mode === CanvasMode.Eraser ||
+            canvasState.mode === CanvasMode.Laser
           }
         />
         <ToolButton
@@ -211,8 +224,8 @@ export const Toolbar = ({
         />
       </div>
 
-      {isPenMenuOpen && canvasState.mode === CanvasMode.Pencil &&
-        <div className="absolute h-600:left-[125%] left-10 h-600:top-16 h-600:bottom-auto bottom-16 p-2 bg-white rounded-lg shadow-sm w-[200px] space-y-4 flex flex-col items-center cursor-default">
+      {isPenMenuOpen && canvasState.mode === CanvasMode.Pencil && isPenEraserSwitcherOpen &&
+        <div className="absolute h-600:left-[235%] h-600:top-20 h-600:bottom-auto bottom-32 p-2 bg-white rounded-lg shadow-sm w-[206px] space-y-4 flex flex-col items-center cursor-default">
           <Slider
             defaultValue={[pathStrokeSize]}
             min={1}
@@ -239,7 +252,7 @@ export const Toolbar = ({
       }
 
       {isShapesMenuOpen && canvasState.mode === CanvasMode.Inserting && canvasState.layerType !== LayerType.Image && canvasState.layerType !== LayerType.Text && canvasState.layerType !== LayerType.Arrow && canvasState.layerType !== LayerType.Note &&
-        <div className="absolute h-600:left-[125%] left-6 h-600:bottom-auto h-600:top-14 bottom-16 p-2 bg-white rounded-lg shadow-sm space-y-1 flex flex-col items-center cursor-default">
+        <div className="absolute h-600:left-[115%] left-6 h-600:bottom-auto h-600:top-14 bottom-16 p-2 bg-white rounded-lg shadow-sm space-y-1 flex flex-col items-center cursor-default">
           <ToolButton
             label="Rectangle"
             icon={Square}
@@ -263,6 +276,44 @@ export const Toolbar = ({
               canvasState.mode === CanvasMode.Inserting &&
               canvasState.layerType === LayerType.Ellipse
             }
+          />
+        </div>
+      }
+      {isPenEraserSwitcherOpen && (canvasState.mode === CanvasMode.Pencil || canvasState.mode === CanvasMode.Eraser || canvasState.mode === CanvasMode.Laser) &&
+        <div className="absolute h-600:left-[115%] left-20 h-600:bottom-auto h-600:top-20 bottom-16 p-2 bg-white rounded-lg shadow-sm h-600:space-y-1 flex flex-row h-600:space-x-0 space-x-1 h-600:flex-col items-center cursor-default">
+          <ToolButton
+            label="Pen"
+            icon={Pencil}
+            onClick={() => {
+              setSelectedTool(CanvasMode.Pencil);
+              setCanvasState({
+                mode: CanvasMode.Pencil,
+              });
+              setIsPenMenuOpen(!isPenMenuOpen);
+            }}
+            isActive={selectedTool === CanvasMode.Pencil}
+          />
+          <ToolButton
+            label="Eraser"
+            icon={Eraser}
+            onClick={() => {
+              setSelectedTool(CanvasMode.Eraser);
+              setCanvasState({
+                mode: CanvasMode.Eraser,
+              });
+            }}
+            isActive={selectedTool === CanvasMode.Eraser}
+          />
+          <ToolButton
+            label="Laser"
+            icon={LaserIcon}
+            onClick={() => {
+              setSelectedTool(CanvasMode.Laser);
+              setCanvasState({
+                mode: CanvasMode.Laser,
+              });
+            }}
+            isActive={selectedTool === CanvasMode.Laser}
           />
         </div>
       }

@@ -143,6 +143,9 @@ export type CanvasState =
     mode: CanvasMode.Pencil,
   }
   | {
+    mode: CanvasMode.Laser,
+  }
+  | {
     mode: CanvasMode.Eraser,
   }
   | {
@@ -172,6 +175,7 @@ export enum CanvasMode {
   Resizing,
   ArrowResizeHandler,
   Pencil,
+  Laser,
   Eraser,
   Moving
 };

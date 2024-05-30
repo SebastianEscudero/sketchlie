@@ -12,6 +12,7 @@ interface PathProps {
     stroke?: string;
     strokeSize?: number | undefined;
     zoomRef?: React.RefObject<any>;
+    isLaser?: boolean;
 };
 
 export const Path = ({
@@ -24,13 +25,14 @@ export const Path = ({
     stroke,
     strokeSize,
     zoomRef,
+    isLaser
 }: PathProps) => {
 
     const isTransparent = fill === 'rgba(0,0,0,0)';
 
     return (
         <path
-            onPointerMove={onPathErase}
+            onPointerEnter={onPathErase}
             onPointerDown={onPointerDown}
             d={getSvgPathFromStroke(
                 getStroke(points, {
@@ -47,7 +49,8 @@ export const Path = ({
             y={0}
             fill={isTransparent ? '#000' : fill}
             stroke={stroke}
-            strokeWidth={strokeSize ?? 1 / (zoomRef?.current ?? 1)**2}
+            strokeWidth={strokeSize ?? 1 / (zoomRef?.current ?? 1)**(2)}
+            className={isLaser ? 'animate-fadeOut' : ''}
             />
     );
 };
