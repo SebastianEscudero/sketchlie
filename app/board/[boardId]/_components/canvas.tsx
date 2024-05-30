@@ -167,7 +167,7 @@ class TranslateLayersCommand implements Command {
     constructor(
         private layerIds: string[],
         private initialLayers: any,
-        private finalLayers: any,
+        public finalLayers: any,
         private setLiveLayers: (layers: any) => void,
         private updateLayer: (args: { boardId: string; layerId: any; layerUpdates: any; }) => void,
         private boardId: string,
@@ -930,12 +930,21 @@ export const Canvas = ({
             });
         
             if (layerIds.length > 0) {
-                const command = new TranslateLayersCommand(layerIds, initialLayers, liveLayers, setLiveLayers, updateLayer, boardId, socket);
-                performAction(command);
-            }
-            setCanvasState({
+                let lastState;
+                if (history.length > 0) {
+                  lastState = (history[history.length - 1] as TranslateLayersCommand).finalLayers;
+                }
+              
+                // Compare the initialLayers with the finalLayers of the last history state
+                if (!lastState || JSON.stringify(liveLayers) !== JSON.stringify(lastState)) {
+                  const command = new TranslateLayersCommand(layerIds, initialLayers, liveLayers, setLiveLayers, updateLayer, boardId, socket);
+                  performAction(command);
+                }
+              }
+              
+              setCanvasState({
                 mode: CanvasMode.None,
-            });
+              });
         } else if (canvasState.mode === CanvasMode.Resizing || canvasState.mode === CanvasMode.ArrowResizeHandler) {
             let layerIds: any = [];
             let layerUpdates: any = [];
@@ -980,7 +989,8 @@ export const Canvas = ({
             zoom,
             currentPreviewLayer,
             isPanning,
-            initialLayers
+            initialLayers,
+            history
         ]);
 
     const onPointerLeave = useCallback(() => {
@@ -1338,7 +1348,7 @@ export const Canvas = ({
                         performAction(command);
                         setLiveLayers(newLayers);
                         setLiveLayerIds(liveLayerIds.filter(id => !selectedLayersRef.current.includes(id)));
-                        selectedLayersRef.current = ([]);
+                        unselectLayers();
                     }
             }
         }
