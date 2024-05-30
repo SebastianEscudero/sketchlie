@@ -19,6 +19,7 @@ interface NoteProps {
   selectionColor?: string;
   updateLayer?: UpdateLayerMutation;
   expired?: boolean;
+  onRefChange?: (ref: React.RefObject<any>) => void;
 };
 
 const throttledUpdateLayer = throttle((updateLayer, socket, boardId, layerId, layerUpdates) => {
@@ -41,6 +42,7 @@ export const Note = ({
   id,
   selectionColor,
   updateLayer,
+  onRefChange
 }: NoteProps) => {
   const noteRef = useRef<any>(null);
   const { x, y, width, height, fill, outlineFill, value: initialValue, textFontSize } = layer;
@@ -66,16 +68,24 @@ export const Note = ({
     }
   };
 
+  const handlePointerDown = (e: React.PointerEvent) => {
+      e.preventDefault();
+      if (onPointerDown) onPointerDown(e, id);
+      if (onRefChange) {
+        onRefChange(noteRef);
+    }
+  };
+
   const handleOnTouchDown = (e: React.TouchEvent) => {
+    e.preventDefault();
     if (e.touches.length > 1) {
       return;
     }
     if (onPointerDown) {
       onPointerDown(e, id);
     }
-    if (noteRef.current) {
-      noteRef.current.click();
-      noteRef.current.focus();
+    if (onRefChange) {
+      onRefChange(noteRef);
     }
   }
 
@@ -96,9 +106,9 @@ export const Note = ({
 
   useEffect(() => {
     if (noteRef.current) {
-      noteRef.current.focus();
+        noteRef.current.focus();
     }
-  }, []);
+}, []);
 
   if (!fill) {
     return null;
@@ -110,11 +120,13 @@ export const Note = ({
       y={y}
       width={width}
       height={height}
-      onPointerDown={(e) => {
-        if (e.pointerId > 1) return; 
-        if (onPointerDown) onPointerDown(e, id);
-      }}
-      onTouchStart={handleOnTouchDown}
+      onPointerMove={(e) => {
+        if (e.buttons === 1) {
+            handlePointerDown(e);
+        }
+    }}
+      onPointerDown={(e) => handlePointerDown(e)}
+      onTouchStart={(e) => handleOnTouchDown(e)}
       style={{
         borderColor: `${selectionColor || colorToCss(outlineFill || fill)}`,
         backgroundColor: fillColor,

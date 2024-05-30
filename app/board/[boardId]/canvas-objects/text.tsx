@@ -52,14 +52,26 @@ export const Text = ({
     const isTransparent = fillColor === 'rgba(0,0,0,0)';
 
     const handlePointerDown = (e: React.PointerEvent) => {
-        if (e.pointerId > 1) return;
         if (onPointerDown) {
             onPointerDown(e, id);
         }
 
         if (onRefChange) {
             onRefChange(textRef);
-            textRef.current.focus();
+        }
+    };
+
+    const handleOnTouchDown = (e: React.TouchEvent) => {
+        e.preventDefault();
+        if (e.touches.length > 1) {
+          return;
+        }
+        if (onPointerDown) {
+            onPointerDown(e, id);
+        }
+
+        if (onRefChange) {
+            onRefChange(textRef);
         }
     };
 
@@ -115,12 +127,8 @@ export const Text = ({
                     handlePointerDown(e);
                 }
             }}
-            onPointerDown={(e) => {
-                if (e.pointerId > 1) return; 
-                if (e.buttons === 1) {
-                    handlePointerDown(e);
-                }
-            }}
+            onPointerDown={(e) => handlePointerDown(e)}
+            onTouchStart={(e) => handleOnTouchDown(e)}
         >
             <textarea
                 ref={textRef}

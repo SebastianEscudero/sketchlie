@@ -55,52 +55,52 @@ class InsertLayerCommand implements Command {
     constructor(private layerIds: any[],
         private layers: any[],
         private prevLayers: Layers,
-        private prevLayerIds: string[], 
+        private prevLayerIds: string[],
         private setLiveLayers: (layers: Layers) => void,
         private setLiveLayerIds: (layerIds: string[]) => void,
         private deleteLayer: (args: { boardId: string; layerId: any; }) => void,
-        private addLayer: (args: { boardId: string; layer: any; layerId: any;}) => void,
+        private addLayer: (args: { boardId: string; layer: any; layerId: any; }) => void,
         private boardId: string,
-        private socket: Socket | null) {}
+        private socket: Socket | null) { }
     execute() {
-      let newLayers = { ...this.prevLayers };
-      let newLayerIds = [...this.prevLayerIds];
+        let newLayers = { ...this.prevLayers };
+        let newLayerIds = [...this.prevLayerIds];
 
-      this.layerIds.forEach((layerId, index) => {
-        newLayers = { ...newLayers, [layerId]: this.layers[index] };
-        newLayerIds = [...newLayerIds, layerId];
-      });
+        this.layerIds.forEach((layerId, index) => {
+            newLayers = { ...newLayers, [layerId]: this.layers[index] };
+            newLayerIds = [...newLayerIds, layerId];
+        });
 
-      this.setLiveLayers(newLayers);
-      this.setLiveLayerIds(newLayerIds);
+        this.setLiveLayers(newLayers);
+        this.setLiveLayerIds(newLayerIds);
 
-      if (this.socket) {
-        this.socket.emit('layer-update', this.layerIds, this.layers);
-      }
+        if (this.socket) {
+            this.socket.emit('layer-update', this.layerIds, this.layers);
+        }
 
-      // Call the addLayer API mutation to add the layers in the database
-      this.addLayer({ boardId: this.boardId, layerId: this.layerIds, layer: this.layers });
+        // Call the addLayer API mutation to add the layers in the database
+        this.addLayer({ boardId: this.boardId, layerId: this.layerIds, layer: this.layers });
     }
-  
+
     undo() {
-      let remainingLayers = { ...this.prevLayers };
-      let remainingLayerIds = [...this.prevLayerIds];
+        let remainingLayers = { ...this.prevLayers };
+        let remainingLayerIds = [...this.prevLayerIds];
 
-      this.layerIds.forEach((layerId) => {
-        const { [layerId]: _, ...remaining } = remainingLayers;
-        remainingLayers = remaining;
-        remainingLayerIds = remainingLayerIds.filter(id => id !== layerId);
-      });
+        this.layerIds.forEach((layerId) => {
+            const { [layerId]: _, ...remaining } = remainingLayers;
+            remainingLayers = remaining;
+            remainingLayerIds = remainingLayerIds.filter(id => id !== layerId);
+        });
 
-      this.setLiveLayers(remainingLayers);
-      this.setLiveLayerIds(remainingLayerIds);
+        this.setLiveLayers(remainingLayers);
+        this.setLiveLayerIds(remainingLayerIds);
 
-      if (this.socket) {
-        this.socket.emit('layer-delete', this.layerIds);
-      }
+        if (this.socket) {
+            this.socket.emit('layer-delete', this.layerIds);
+        }
 
-      // Call the deleteLayer API mutation to delete the layers in the database
-      this.deleteLayer({ boardId: this.boardId, layerId: this.layerIds });
+        // Call the deleteLayer API mutation to delete the layers in the database
+        this.deleteLayer({ boardId: this.boardId, layerId: this.layerIds });
     }
 }
 
@@ -108,59 +108,59 @@ class DeleteLayerCommand implements Command {
     constructor(private layerIds: string[],
         private layers: any,
         private prevLayers: Layers,
-        private prevLayerIds: string[], 
+        private prevLayerIds: string[],
         private setLiveLayers: (layers: Layers) => void,
         private setLiveLayerIds: (layerIds: string[]) => void,
         private deleteLayer: (args: { boardId: string; layerId: any; }) => void,
-        private addLayer: (args: { boardId: string; layer: any; layerId: any;}) => void,
+        private addLayer: (args: { boardId: string; layer: any; layerId: any; }) => void,
         private boardId: string,
-        private socket: Socket | null) {}
-    
-        execute() {
-            const remainingLayers = { ...this.prevLayers };
-            const remainingLayerIds = [...this.prevLayerIds];
-        
-            this.layerIds.forEach(id => {
-                delete remainingLayers[id];
-                const index = remainingLayerIds.indexOf(id);
-                if (index > -1) {
-                    remainingLayerIds.splice(index, 1);
-                }
-            });
-        
-            // Call the deleteLayer API mutation to delete all the layers in the database
-            this.deleteLayer({ boardId: this.boardId, layerId: this.layerIds });
-        
-            if (this.socket) {
-                this.socket.emit('layer-delete', this.layerIds);
-            }
+        private socket: Socket | null) { }
 
-            this.setLiveLayers(remainingLayers);
-            this.setLiveLayerIds(remainingLayerIds);
-        }
-        
-        undo() {
-            const newLayers = { ...this.prevLayers };
-            const newLayerIds = [...this.prevLayerIds];
-        
-            const layersToAdd = this.layerIds.map(id => {
-                newLayers[id] = this.layers[id];
-                if (!newLayerIds.includes(id)) {
-                    newLayerIds.push(id);
-                }
-                return this.layers[id];
-            });
-        
-            // Call the addLayer API mutation to add all the layers back in the database
-            this.addLayer({ boardId: this.boardId, layerId: this.layerIds, layer: layersToAdd });
-        
-            if (this.socket) {
-                this.socket.emit('layer-update', this.layerIds, layersToAdd);
-            }
+    execute() {
+        const remainingLayers = { ...this.prevLayers };
+        const remainingLayerIds = [...this.prevLayerIds];
 
-            this.setLiveLayers(newLayers);
-            this.setLiveLayerIds(newLayerIds);
+        this.layerIds.forEach(id => {
+            delete remainingLayers[id];
+            const index = remainingLayerIds.indexOf(id);
+            if (index > -1) {
+                remainingLayerIds.splice(index, 1);
+            }
+        });
+
+        // Call the deleteLayer API mutation to delete all the layers in the database
+        this.deleteLayer({ boardId: this.boardId, layerId: this.layerIds });
+
+        if (this.socket) {
+            this.socket.emit('layer-delete', this.layerIds);
         }
+
+        this.setLiveLayers(remainingLayers);
+        this.setLiveLayerIds(remainingLayerIds);
+    }
+
+    undo() {
+        const newLayers = { ...this.prevLayers };
+        const newLayerIds = [...this.prevLayerIds];
+
+        const layersToAdd = this.layerIds.map(id => {
+            newLayers[id] = this.layers[id];
+            if (!newLayerIds.includes(id)) {
+                newLayerIds.push(id);
+            }
+            return this.layers[id];
+        });
+
+        // Call the addLayer API mutation to add all the layers back in the database
+        this.addLayer({ boardId: this.boardId, layerId: this.layerIds, layer: layersToAdd });
+
+        if (this.socket) {
+            this.socket.emit('layer-update', this.layerIds, layersToAdd);
+        }
+
+        this.setLiveLayers(newLayers);
+        this.setLiveLayerIds(newLayerIds);
+    }
 }
 
 class TranslateLayersCommand implements Command {
@@ -171,7 +171,7 @@ class TranslateLayersCommand implements Command {
         private setLiveLayers: (layers: any) => void,
         private updateLayer: (args: { boardId: string; layerId: any; layerUpdates: any; }) => void,
         private boardId: string,
-        private socket: Socket | null) {}
+        private socket: Socket | null) { }
 
     execute() {
         this.setLiveLayers({ ...this.finalLayers });
@@ -224,6 +224,7 @@ interface CanvasProps {
 export const Canvas = ({
     boardId,
 }: CanvasProps) => {
+    const [showingSelectionBox, setShowingSelectionBox] = useState(false);
     const [initialLayers, setInitialLayers] = useState<Layers>({}); // used for undo/redo
     const [history, setHistory] = useState<Command[]>([]);
     const [redoStack, setRedoStack] = useState<Command[]>([]);
@@ -234,7 +235,7 @@ export const Canvas = ({
     const selectedLayersRef = useRef<string[]>([]);
     const [copiedLayers, setCopiedLayers] = useState<Map<string, any>>(new Map());
     const [pencilDraft, setPencilDraft] = useState<[number, number, number][]>([]);
-    const [textRef, setTextRef] = useState<any>(null);
+    const [layerRef, setLayerRef] = useState<any>(null);
     const [canvasState, setCanvasState] = useState<CanvasState>({
         mode: CanvasMode.None,
     });
@@ -385,18 +386,18 @@ export const Canvas = ({
         position: Point,
         selectedImage: string,
     ) => {
-    
+
         if (org && liveLayerIds.length >= getMaxCapas(org)) {
             proModal.onOpen();
             return;
         }
-    
+
         const layerId = nanoid();
-    
+
         if (selectedImage === "") {
             return;
         }
-    
+
         const layer = {
             type: layerType,
             x: position.x,
@@ -406,17 +407,17 @@ export const Canvas = ({
             src: selectedImage,
             fill: null,
         };
-    
+
         const command = new InsertLayerCommand([layerId], [layer], liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, deleteLayer, addLayer, boardId, socket);
         performAction(command);
-    
+
         const newPresence: Presence = {
             ...myPresence,
             selection: [layerId]
         };
-    
+
         setMyPresence(newPresence);
-    
+
         selectedLayersRef.current = [layerId];
         setCanvasState({ mode: CanvasMode.None });
     }, [liveLayers, liveLayerIds, myPresence, socket, org, proModal, User.userId, setLiveLayers, setLiveLayerIds, boardId, addLayer]);
@@ -436,16 +437,16 @@ export const Canvas = ({
 
         selectedLayersRef.current.forEach(id => {
             const layer = newLayers[id];
-        
+
             if (layer) {
                 const newLayer = { ...layer };
                 newLayer.x += offset.x;
                 newLayer.y += offset.y;
                 if (newLayer.type === LayerType.Arrow && newLayer.center) {
-                    const newCenter = { 
-                        x: newLayer.center.x + offset.x, 
-                        y: newLayer.center.y + offset.y 
-                      };
+                    const newCenter = {
+                        x: newLayer.center.x + offset.x,
+                        y: newLayer.center.y + offset.y
+                    };
                     newLayer.center = newCenter;
                 }
                 updatedLayers.push(newLayer);
@@ -564,7 +565,7 @@ export const Canvas = ({
             proModal.onOpen();
             return;
         }
-    
+
         if (
             pencilDraft == null ||
             pencilDraft.length < 2
@@ -572,35 +573,35 @@ export const Canvas = ({
             setPencilDraft([]);
             return;
         }
-    
+
         const id = nanoid();
         liveLayers[id] = penPointsToPathLayer(pencilDraft, pathColor, pathStrokeSize);
-        
+
         // Create a new InsertLayerCommand
         const command = new InsertLayerCommand(
-            [id], 
-            [liveLayers[id]], 
-            { ...liveLayers }, 
-            [...liveLayerIds], 
-            setLiveLayers, 
-            setLiveLayerIds, 
-            deleteLayer, 
-            addLayer, 
-            boardId, 
+            [id],
+            [liveLayers[id]],
+            { ...liveLayers },
+            [...liveLayerIds],
+            setLiveLayers,
+            setLiveLayerIds,
+            deleteLayer,
+            addLayer,
+            boardId,
             socket
         );
-    
+
         // Add the command to the command stack    
         setPencilDraft([]);
         performAction(command);
-    
+
         const newPresence: Presence = {
             ...myPresence,
             pencilDraft: null,
         };
-    
+
         setMyPresence(newPresence);
-    
+
         setCanvasState({ mode: CanvasMode.Pencil });
     }, [pencilDraft, liveLayers, setLiveLayers, setLiveLayerIds, myPresence, org, proModal, liveLayerIds, socket, boardId, addLayer]);
 
@@ -615,7 +616,7 @@ export const Canvas = ({
                     canvasState.initialBounds,
                     canvasState.corner,
                     point,
-                    textRef,
+                    layerRef,
                     layer,
                 );
             } else {
@@ -646,13 +647,13 @@ export const Canvas = ({
             Object.assign(newLayer, bounds);
             liveLayers[selectedLayersRef.current[0]] = newLayer;
             setLiveLayers({ ...liveLayers });
-    
+
             if (socket && expired !== true) {
                 socket.emit('layer-update', selectedLayersRef.current[0], newLayer);
             }
         }
 
-    }, [canvasState, liveLayers, selectedLayersRef, socket, textRef]);
+    }, [canvasState, liveLayers, selectedLayersRef, socket, layerRef]);
 
     const onResizeHandlePointerDown = useCallback((
         corner: Side,
@@ -869,6 +870,14 @@ export const Canvas = ({
         setIsRightClickPanning(false);
         const point = pointerEventToCanvasPoint(e, camera, zoom);
 
+        if (canvasState.mode === CanvasMode.SelectionNet) {
+            setShowingSelectionBox(true);
+        }
+
+        if (canvasState.mode !== CanvasMode.Translating && canvasState.mode !== CanvasMode.SelectionNet) {
+            setShowingSelectionBox(false)
+        }
+
         if (
             canvasState.mode === CanvasMode.None ||
             canvasState.mode === CanvasMode.Pressing
@@ -919,8 +928,29 @@ export const Canvas = ({
             document.body.style.cursor = 'url(/custom-cursors/hand.svg) 8 8, auto';
             setIsPanning(false);
         } else if (canvasState.mode === CanvasMode.Translating) {
+            setShowingSelectionBox(true);
+            if (selectedLayersRef.current.length === 1 && showingSelectionBox) {
+                const layerType = liveLayers[selectedLayersRef.current[0]].type;
+                if (layerType === LayerType.Text || layerType === LayerType.Note) {
+                    const layer = layerRef.current;
+                    layer.focus();
+
+                    const range = document.createRange();
+                    range.selectNodeContents(layer);
+                    range.collapse(false);
+
+                    const selection = window.getSelection();
+                    selection?.removeAllRanges();
+                    selection?.addRange(range);
+                    if (layer.value || layer.value === "") {
+                        layer.selectionStart = layer.selectionEnd = layer.value.length;
+                    }
+                }
+            }
+
+
             let layerIds: any = [];
-            let layerUpdates: any = [];        
+            let layerUpdates: any = [];
             selectedLayersRef.current.forEach(id => {
                 const newLayer = liveLayers[id];
                 if (newLayer) {
@@ -928,24 +958,25 @@ export const Canvas = ({
                     layerUpdates.push(newLayer);
                 }
             });
-        
+
             if (layerIds.length > 0) {
                 let lastState;
                 if (history.length > 0) {
-                  lastState = (history[history.length - 1] as TranslateLayersCommand).finalLayers;
+                    lastState = (history[history.length - 1] as TranslateLayersCommand).finalLayers;
                 }
-              
+
                 // Compare the initialLayers with the finalLayers of the last history state
                 if (!lastState || JSON.stringify(liveLayers) !== JSON.stringify(lastState)) {
-                  const command = new TranslateLayersCommand(layerIds, initialLayers, liveLayers, setLiveLayers, updateLayer, boardId, socket);
-                  performAction(command);
+                    const command = new TranslateLayersCommand(layerIds, initialLayers, liveLayers, setLiveLayers, updateLayer, boardId, socket);
+                    performAction(command);
                 }
-              }
-              
-              setCanvasState({
+            }
+
+            setCanvasState({
                 mode: CanvasMode.None,
-              });
+            });
         } else if (canvasState.mode === CanvasMode.Resizing || canvasState.mode === CanvasMode.ArrowResizeHandler) {
+            setShowingSelectionBox(true);
             let layerIds: any = [];
             let layerUpdates: any = [];
             selectedLayersRef.current.forEach(id => {
@@ -990,7 +1021,8 @@ export const Canvas = ({
             currentPreviewLayer,
             isPanning,
             initialLayers,
-            history
+            history,
+            layerRef
         ]);
 
     const onPointerLeave = useCallback(() => {
@@ -1016,9 +1048,9 @@ export const Canvas = ({
                     [...liveLayerIds],
                     setLiveLayers,
                     setLiveLayerIds,
-                    deleteLayer, 
-                    addLayer, 
-                    board._id, 
+                    deleteLayer,
+                    addLayer,
+                    board._id,
                     socket
                 );
                 performAction(command);
@@ -1277,9 +1309,9 @@ export const Canvas = ({
             const deepCopy = JSON.parse(JSON.stringify(liveLayers));
             setInitialLayers(deepCopy);
         }
-    
+
         document.addEventListener('pointerdown', onPointerDown);
-    
+
         return () => {
             document.removeEventListener('pointerdown', onPointerDown);
         }
@@ -1342,7 +1374,7 @@ export const Canvas = ({
                             deletedLayers[id] = newLayers[id];
                             delete newLayers[id];
                         });
-                
+
                         // Create a new DeleteLayerCommand and add it to the history
                         const command = new DeleteLayerCommand(selectedLayersRef.current, deletedLayers, liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, deleteLayer, addLayer, board._id, socket);
                         performAction(command);
@@ -1434,7 +1466,7 @@ export const Canvas = ({
                   #f4f4f4
                 `,
                 backgroundSize: `${65 * zoom}px ${65 * zoom}px`, // Adjust the size based on the zoom level
-                backgroundPosition: `${camera.x}px ${camera.y}px`, 
+                backgroundPosition: `${camera.x}px ${camera.y}px`,
                 WebkitOverflowScrolling: 'touch',
                 WebkitUserSelect: 'none',
             }}
@@ -1462,7 +1494,7 @@ export const Canvas = ({
                     canRedo={redoStack.length > 0}
                 />
             )}
-            {canvasState.mode === CanvasMode.None && expired !== true &&(
+            {canvasState.mode === CanvasMode.None && expired !== true && (
                 <SelectionTools
                     setLiveLayerIds={setLiveLayerIds}
                     setLiveLayers={setLiveLayers}
@@ -1515,7 +1547,7 @@ export const Canvas = ({
                             updateLayer={updateLayer}
                             key={layerId}
                             id={layerId}
-                            onRefChange={setTextRef}
+                            onRefChange={setLayerRef}
                             zoomRef={zoomRef}
                         />
                     ))}
@@ -1524,7 +1556,7 @@ export const Canvas = ({
                             layer={currentPreviewLayer}
                         />
                     )}
-                    {(canvasState.mode === CanvasMode.SelectionNet || canvasState.mode === CanvasMode.None || CanvasMode.Resizing) && expired !== true && (
+                    {(canvasState.mode === CanvasMode.SelectionNet || canvasState.mode === CanvasMode.None || CanvasMode.Resizing) && expired !== true && activeTouches < 2 && (
                         <SelectionBox
                             zoom={zoom}
                             liveLayers={liveLayers}

@@ -65,6 +65,7 @@ export const LayerPreview = memo(({
           layer={layer}
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
+          onRefChange={onRefChange}
         />
       );
     case LayerType.Text:
