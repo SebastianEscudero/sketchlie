@@ -23,7 +23,12 @@ export const TemplatesSlider = () => {
         <div>
             <h2 className="text-4xl font-roobert xl:mx-[10%] lg:mx-[7%] mx-[5%]">Explora nuestras plantillas</h2>
             <div className="relative">
-                <Button className="px-2 absolute top-1/2 left-[8%] z-10 transform -translate-y-1/2  border border-black" variant="business" onClick={() => scroll(-600)}>
+                <Button
+                    className="px-2 absolute top-1/2 left-[8%] z-10 transform -translate-y-1/2  border border-black"
+                    variant="business"
+                    onClick={() => scroll(-600)}
+                    aria-label="Scroll left"
+                >
                     <ChevronLeft size={24} />
                 </Button>
                 <div ref={scrollContainerRef} className="no-scrollbar px-10 flex flex-row overflow-x-auto gap-5 md:mb-20 md:mt-8 my-5 items-center">
@@ -37,7 +42,12 @@ export const TemplatesSlider = () => {
                         />
                     ))}
                 </div>
-                <Button className="px-2 absolute top-1/2 right-[8%] transform -translate-y-1/2 border border-black" variant="business" onClick={() => scroll(600)}>
+                <Button
+                    className="px-2 absolute top-1/2 right-[8%] transform -translate-y-1/2 border border-black"
+                    variant="business"
+                    onClick={() => scroll(600)}
+                    aria-label="Scroll right"
+                >
                     <ChevronRight size={24} />
                 </Button>
             </div>

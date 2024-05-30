@@ -68,9 +68,6 @@ export const BlogStructure = ({
                         </Button>
                     </Link>
                 </div>
-                <p className="text-zinc-400 text-xs md:text-sm">
-                    No se requiere tarjeta de crédito
-                </p>
             </div>
             {img && imageElement}
         </div>

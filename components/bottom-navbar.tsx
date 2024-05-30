@@ -195,25 +195,25 @@ export const BotNavbar = () => {
             </div>
             <div className="lg:flex xl:mx-[15%] lg:mx-[5%] text-xl justify-between hidden GAP-">
                 <nav className="flex flex-col">
-                    <h6 className="font-bold mb-2">Soluciones</h6>
+                    <h3 className="font-bold mb-2">Soluciones</h3>
                     {porCasoDeUso.map((component, index) => (
                         <Link key={index} href={component.href}><Button variant={pathname === component.href ? 'secondary' : 'ghostDark'} className="my-1 text-lg">{component.title}</Button></Link>
                     ))}
                 </nav>
                 <nav className="flex flex-col">
-                    <h6 className="font-bold mb-2">Equipos</h6>
+                    <h3 className="font-bold mb-2">Equipos</h3>
                     {porEquipo.map((component, index) => (
                         <Link key={index} href={component.href}><Button variant={pathname === component.href ? 'secondary' : 'ghostDark'} className="my-1 text-lg">{component.title}</Button></Link>
                     ))}
                 </nav>
                 <nav className="flex flex-col">
-                    <h6 className="font-bold mb-2">Recursos</h6>
+                    <h3 className="font-bold mb-2">Recursos</h3>
                     {Recursos.map((recurso, index) => (
                         <Link key={index} href={recurso.href}><Button variant={pathname === recurso.href ? 'secondary' : 'ghostDark'} className="my-1 text-lg">{recurso.title}</Button></Link>
                     ))}
                 </nav>
                 <nav className="flex flex-col">
-                    <h6 className="font-bold mb-2">Contenido Informativo</h6>
+                    <h3 className="font-bold mb-2">Contenido Informativo</h3>
                     {queEs.map((component, index) => (
                         <Link key={index} href={component.href}><Button variant={pathname === component.href ? 'secondary' : 'ghostDark'} className="my-1 text-lg">¿Qué es un {component.title}</Button></Link>
                     ))}
