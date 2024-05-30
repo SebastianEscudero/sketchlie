@@ -52,6 +52,7 @@ export const Text = ({
     const isTransparent = fillColor === 'rgba(0,0,0,0)';
 
     const handlePointerDown = (e: React.PointerEvent) => {
+        e.preventDefault();
         if (onPointerDown) {
             onPointerDown(e, id);
         }
