@@ -2,6 +2,7 @@ import {
   Circle,
   Eraser,
   Hand,
+  Highlighter,
   Image,
   MousePointer2,
   MoveUpRight,
@@ -69,7 +70,7 @@ export const Toolbar = ({
   }
 
   useEffect(() => {
-    if (canvasState.mode !== CanvasMode.Pencil && canvasState.mode !== CanvasMode.Eraser && canvasState.mode !== CanvasMode.Laser) {
+    if (canvasState.mode !== CanvasMode.Pencil && canvasState.mode !== CanvasMode.Eraser && canvasState.mode !== CanvasMode.Laser && canvasState.mode !== CanvasMode.Highlighter) {
       setIsPenMenuOpen(false);
       setIsPenEraserSwitcherOpen(false);
     }
@@ -128,14 +129,18 @@ export const Toolbar = ({
               ? "Laser"
               : selectedTool === CanvasMode.Eraser
                 ? "Eraser"
-                : "Pencil"
+                : selectedTool === CanvasMode.Highlighter
+                  ? "Highlighter"
+                  : "Pencil"
           }
           icon={
             selectedTool === CanvasMode.Laser
               ? LaserIcon
               : selectedTool === CanvasMode.Eraser
                 ? Eraser
-                : Pencil
+                : selectedTool === CanvasMode.Highlighter
+                  ? Highlighter 
+                  : Pencil
           }
           onClick={() => {
             if (selectedTool === CanvasMode.None) {
@@ -153,7 +158,8 @@ export const Toolbar = ({
           isActive={
             canvasState.mode === CanvasMode.Pencil ||
             canvasState.mode === CanvasMode.Eraser ||
-            canvasState.mode === CanvasMode.Laser
+            canvasState.mode === CanvasMode.Laser ||
+            canvasState.mode === CanvasMode.Highlighter
           }
         />
         <ToolButton
@@ -224,7 +230,7 @@ export const Toolbar = ({
         />
       </div>
 
-      {isPenMenuOpen && canvasState.mode === CanvasMode.Pencil && isPenEraserSwitcherOpen &&
+      {isPenMenuOpen && (canvasState.mode === CanvasMode.Highlighter || canvasState.mode === CanvasMode.Pencil) && isPenEraserSwitcherOpen &&
         <div className="absolute h-600:left-[235%] h-600:top-20 h-600:bottom-auto bottom-32 p-2 bg-white rounded-lg shadow-sm w-[206px] space-y-4 flex flex-col items-center cursor-default">
           <Slider
             defaultValue={[pathStrokeSize]}
@@ -279,7 +285,7 @@ export const Toolbar = ({
           />
         </div>
       }
-      {isPenEraserSwitcherOpen && (canvasState.mode === CanvasMode.Pencil || canvasState.mode === CanvasMode.Eraser || canvasState.mode === CanvasMode.Laser) &&
+      {isPenEraserSwitcherOpen && (canvasState.mode === CanvasMode.Pencil || canvasState.mode === CanvasMode.Eraser || canvasState.mode === CanvasMode.Laser || canvasState.mode === CanvasMode.Highlighter) &&
         <div className="absolute h-600:left-[115%] left-20 h-600:bottom-auto h-600:top-20 bottom-16 p-2 bg-white rounded-lg shadow-sm h-600:space-y-1 flex flex-row h-600:space-x-0 space-x-1 h-600:flex-col items-center cursor-default">
           <ToolButton
             label="Pen"
@@ -303,6 +309,18 @@ export const Toolbar = ({
               });
             }}
             isActive={selectedTool === CanvasMode.Eraser}
+          />
+          <ToolButton
+            label="Highlighter"
+            icon={Highlighter}
+            onClick={() => {
+              setSelectedTool(CanvasMode.Highlighter);
+              setCanvasState({
+                mode: CanvasMode.Highlighter,
+              });
+              setIsPenMenuOpen(!isPenMenuOpen);
+            }}
+            isActive={selectedTool === CanvasMode.Highlighter}
           />
           <ToolButton
             label="Laser"

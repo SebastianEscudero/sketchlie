@@ -116,32 +116,32 @@ class DeleteLayerCommand implements Command {
         private boardId: string,
         private socket: Socket | null) { }
 
-        execute() {
-            const remainingLayers = { ...this.prevLayers };
-            const remainingLayerIds = [...this.prevLayerIds];
-        
-            this.layerIds.forEach(id => {
-                if (!remainingLayers[id]) {
-                    // Layer doesn't exist, skip deletion
-                    return;
-                }
-                delete remainingLayers[id];
-                const index = remainingLayerIds.indexOf(id);
-                if (index > -1) {
-                    remainingLayerIds.splice(index, 1);
-                }
-            });
-        
-            // Call the deleteLayer API mutation to delete all the layers in the database
-            this.deleteLayer({ boardId: this.boardId, layerId: this.layerIds });
-        
-            if (this.socket) {
-                this.socket.emit('layer-delete', this.layerIds);
+    execute() {
+        const remainingLayers = { ...this.prevLayers };
+        const remainingLayerIds = [...this.prevLayerIds];
+
+        this.layerIds.forEach(id => {
+            if (!remainingLayers[id]) {
+                // Layer doesn't exist, skip deletion
+                return;
             }
-        
-            this.setLiveLayers(remainingLayers);
-            this.setLiveLayerIds(remainingLayerIds);
+            delete remainingLayers[id];
+            const index = remainingLayerIds.indexOf(id);
+            if (index > -1) {
+                remainingLayerIds.splice(index, 1);
+            }
+        });
+
+        // Call the deleteLayer API mutation to delete all the layers in the database
+        this.deleteLayer({ boardId: this.boardId, layerId: this.layerIds });
+
+        if (this.socket) {
+            this.socket.emit('layer-delete', this.layerIds);
         }
+
+        this.setLiveLayers(remainingLayers);
+        this.setLiveLayerIds(remainingLayerIds);
+    }
 
     undo() {
         const newLayers = { ...this.prevLayers };
@@ -531,7 +531,7 @@ export const Canvas = ({
 
     const continueDrawing = useCallback((point: Point, e: React.PointerEvent) => {
         if (
-            (canvasState.mode !== CanvasMode.Pencil && canvasState.mode !== CanvasMode.Laser) ||
+            (canvasState.mode !== CanvasMode.Pencil && canvasState.mode !== CanvasMode.Laser && canvasState.mode !== CanvasMode.Highlighter) ||
             e.buttons !== 1 ||
             pencilDraft == null
         ) {
@@ -607,6 +607,52 @@ export const Canvas = ({
         setMyPresence(newPresence);
 
         setCanvasState({ mode: CanvasMode.Pencil });
+    }, [pencilDraft, liveLayers, setLiveLayers, setLiveLayerIds, myPresence, org, proModal, liveLayerIds, socket, boardId, addLayer]);
+
+    const insertHighlight = useCallback(() => {
+
+        if (org && liveLayerIds.length >= getMaxCapas(org)) {
+            proModal.onOpen();
+            return;
+        }
+
+        if (
+            pencilDraft == null ||
+            pencilDraft.length < 2
+        ) {
+            setPencilDraft([]);
+            return;
+        }
+
+        const id = nanoid();
+        liveLayers[id] = penPointsToPathLayer(pencilDraft, { ...pathColor, a: 0.5 }, 30 / zoom);
+
+        // Create a new InsertLayerCommand
+        const command = new InsertLayerCommand(
+            [id],
+            [liveLayers[id]],
+            { ...liveLayers },
+            [...liveLayerIds],
+            setLiveLayers,
+            setLiveLayerIds,
+            deleteLayer,
+            addLayer,
+            boardId,
+            socket
+        );
+
+        // Add the command to the command stack    
+        setPencilDraft([]);
+        performAction(command);
+
+        const newPresence: Presence = {
+            ...myPresence,
+            pencilDraft: null,
+        };
+
+        setMyPresence(newPresence);
+
+        setCanvasState({ mode: CanvasMode.Highlighter });
     }, [pencilDraft, liveLayers, setLiveLayers, setLiveLayerIds, myPresence, org, proModal, liveLayerIds, socket, boardId, addLayer]);
 
     const resizeSelectedLayer = useCallback((point: Point) => {
@@ -729,7 +775,7 @@ export const Canvas = ({
                 return;
             }
 
-            if (canvasState.mode === CanvasMode.Laser) {
+            if (canvasState.mode === CanvasMode.Laser || canvasState.mode === CanvasMode.Pencil || canvasState.mode === CanvasMode.Highlighter) {
                 startDrawing(point, e.pressure);
                 return;
             }
@@ -745,11 +791,6 @@ export const Canvas = ({
                 const point = pointerEventToCanvasPoint(e, camera, zoom);
                 setStartPanPoint(point);
                 setIsPanning(false);
-                return;
-            }
-
-            if (canvasState.mode === CanvasMode.Pencil) {
-                startDrawing(point, e.pressure);
                 return;
             }
 
@@ -810,9 +851,7 @@ export const Canvas = ({
             resizeSelectedLayer(current);
         } else if (canvasState.mode === CanvasMode.ArrowResizeHandler) {
             resizeSelectedLayer(current);
-        } else if (canvasState.mode === CanvasMode.Pencil && e.buttons === 1) {
-            continueDrawing(current, e);
-        } else if (canvasState.mode === CanvasMode.Laser && e.buttons === 1) {
+        } else if (canvasState.mode === CanvasMode.Pencil && e.buttons === 1 || canvasState.mode === CanvasMode.Laser && e.buttons === 1 || canvasState.mode === CanvasMode.Highlighter && e.buttons === 1) {
             continueDrawing(current, e);
         } else if (
             e.buttons === 1 &&
@@ -902,6 +941,9 @@ export const Canvas = ({
         } else if (canvasState.mode === CanvasMode.Pencil) {
             document.body.style.cursor = 'url(/custom-cursors/pencil.svg) 2 18, auto';
             insertPath();
+        } else if (canvasState.mode === CanvasMode.Highlighter) {
+            document.body.style.cursor = 'url(/custom-cursors/highlighter.svg) 2 18, auto';
+            insertHighlight();
         } else if (canvasState.mode === CanvasMode.Laser) {
             document.body.style.cursor = 'url(/custom-cursors/laser.svg) 4 18, auto';
             setPencilDraft([]);
@@ -1081,6 +1123,7 @@ export const Canvas = ({
             canvasStateRef.current.mode === CanvasMode.Moving ||
             canvasStateRef.current.mode === CanvasMode.Eraser ||
             canvasStateRef.current.mode === CanvasMode.Laser ||
+            canvasStateRef.current.mode === CanvasMode.Highlighter ||
             e.button !== 0 ||
             expired === true
         ) {
@@ -1432,6 +1475,8 @@ export const Canvas = ({
             }
         } else if (canvasState.mode === CanvasMode.Pencil) {
             document.body.style.cursor = 'url(/custom-cursors/pencil.svg) 2 18, auto';
+        } else if (canvasState.mode === CanvasMode.Highlighter) {
+            document.body.style.cursor = 'url(/custom-cursors/highlighter.svg) 2 18, auto';
         } else if (canvasState.mode === CanvasMode.Laser) {
             document.body.style.cursor = 'url(/custom-cursors/laser.svg) 4 18, auto';
         } else if (canvasState.mode === CanvasMode.Eraser) {
@@ -1599,16 +1644,30 @@ export const Canvas = ({
                         />
                     )}
                     {otherUsers && <CursorsPresence otherUsers={otherUsers} />}
-                    {pencilDraft != null && pencilDraft.length > 0 && pencilDraft[0].length > 0 && !pencilDraft.some(array => array.some(isNaN)) && (
-                        <Path
-                            points={pencilDraft}
-                            fill={canvasState.mode === CanvasMode.Laser ? '#F35223' : colorToCss(pathColor)}
-                            x={0}
-                            y={0}
-                            strokeSize={canvasState.mode === CanvasMode.Laser ? 5 / zoom : pathStrokeSize}
-                            isLaser={canvasState.mode === CanvasMode.Laser}
-                        />
-                    )}
+                    {
+                        pencilDraft != null && pencilDraft.length > 0 && pencilDraft[0].length > 0 && !pencilDraft.some(array => array.some(isNaN)) && (
+                            <Path
+                                points={pencilDraft}
+                                fill={
+                                    canvasState.mode === CanvasMode.Laser
+                                        ? '#F35223'
+                                        : canvasState.mode === CanvasMode.Highlighter
+                                            ? colorToCss({ ...pathColor, a: 0.5 }) // Semi-transparent yellow
+                                            : colorToCss(pathColor)
+                                }
+                                x={0}
+                                y={0}
+                                strokeSize={
+                                    canvasState.mode === CanvasMode.Laser
+                                        ? 5 / zoom
+                                        : canvasState.mode === CanvasMode.Highlighter
+                                            ? 30 / zoom // Increase stroke size for highlighter
+                                            : pathStrokeSize
+                                }
+                                isLaser={canvasState.mode === CanvasMode.Laser}
+                            />
+                        )
+                    }
                 </g>
             </svg>
         </main>
