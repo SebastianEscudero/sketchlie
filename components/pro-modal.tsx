@@ -1,9 +1,9 @@
 "use client";
 
 import { Card } from "@/components/card";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader } from "@/components/ui/dialog";
 import { useProModal } from "@/hooks/use-pro-modal";
-import { Check, ChevronsDown, Zap } from "lucide-react";
+import { Check, ChevronsDown } from "lucide-react";
 import { Badge } from "./ui/badge";
 import { SubscriptionButton } from "./subscription-button";
 import { useState } from "react";
@@ -17,7 +17,6 @@ const paidPlans = subscriptionPlans.filter(plan => plan.label !== "Gratis");
 export const ProModal = () => {
     const proModal = useProModal();
     const [selectedOrganization, setSelectedOrganization] = useState<any>(localStorage.getItem("activeOrganization") || "");
-    console.log(selectedOrganization)
     const user = useCurrentUser();
     const activeOrg = user?.organizations.find(org => org.id === selectedOrganization);
     const organizations = user?.organizations;
@@ -50,7 +49,9 @@ export const ProModal = () => {
                                                 key={organization.id}
                                             >
                                                 <Button
-                                                    onClick={() => setSelectedOrganization(organization)}
+                                                    onClick={() => {
+                                                        setSelectedOrganization(organization.id)
+                                                    }}
                                                     variant="selectOrg"
                                                     className="p-0 w-full flex justify-start">
                                                     <div className="ml-2 text-left w-[180px] text-sm md:text-base">
