@@ -28,8 +28,8 @@ export const subscriptionPlans = [
     },
     {
         label: "Business",
-        description: "Necesitas algo mas personalizado? Contacta con nosotros para obtener para tu empresa.",
-        characteristicsDescription: "Lleva tu colaboración y seguridad al siguiente nivel:",
+        description: "Lleva la colaboración y la seguridad al siguiente nivel.",
+        characteristicsDescription: "Obtén todas las características del plan Starter más:",
         price: 14990,
         features: {
             "Boards": "Ilimitados",

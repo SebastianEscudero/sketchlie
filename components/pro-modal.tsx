@@ -16,8 +16,10 @@ const paidPlans = subscriptionPlans.filter(plan => plan.label !== "Gratis");
 
 export const ProModal = () => {
     const proModal = useProModal();
-    const [selectedOrganization, setSelectedOrganization] = useState<any>("");
+    const [selectedOrganization, setSelectedOrganization] = useState<any>(localStorage.getItem("activeOrganization") || "");
+    console.log(selectedOrganization)
     const user = useCurrentUser();
+    const activeOrg = user?.organizations.find(org => org.id === selectedOrganization);
     const organizations = user?.organizations;
 
     if (!organizations) {
@@ -36,7 +38,7 @@ export const ProModal = () => {
                                     <div
                                         className="text-xl md:text-2xl flex flex-row items-center ml-3 text-custom-blue"
                                     >
-                                        {selectedOrganization.name || "Select organization"}
+                                        {activeOrg.name || "Select organization"}
                                         <ChevronsDown className="ml-2" />
                                     </div>
                                 </DropdownMenuTrigger>
