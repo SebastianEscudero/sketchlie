@@ -125,7 +125,7 @@ export const OrganizationSwitcher = ({
                                     <p className="ml-5">Manage organization</p>
                                 </DialogTrigger>
                             </div>
-                            <DialogContent className="min-h-[500px] w-full max-w-[90%] lg:max-w-[55%] xl:max-w-[50%]">
+                            <DialogContent className="min-h-[500px] w-full max-w-[90%] lg:max-w-[65%] xl:max-w-[50%]">
                                 <OrganizationSettings
                                     plan={plan}
                                     setActiveOrganization={setActiveOrganization}

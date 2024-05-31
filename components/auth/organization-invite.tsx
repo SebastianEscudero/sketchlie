@@ -44,8 +44,14 @@ export const OrganizationInvite = ({
     });
 
     const onSubmit = (values: z.infer<typeof OrganizationInviteSchema>) => {
-        const validMembers = values.members.filter(member => member.email && member.role);
+        const validMembers = values.members.map(member => {
+            if (member.email && !member.role) {
+                member.role = 'Member';
+            }
+            return member;
+        }).filter(member => member.email && member.role);
         startTransition(() => {
+            console.log(validMembers)
             invite({ members: validMembers }, activeOrg)
                 .then((data) => {
                     if (data.error) {

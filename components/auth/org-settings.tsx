@@ -193,13 +193,13 @@ export const OrganizationSettings = ({
                                         </AvatarFallback>
                                     </Avatar>
                                     <div className="ml-2">
-                                        <p className="truncate xs:w-auto w-[160px] text-sm">
+                                        <p className="truncate xs:w-auto w-[140px] text-sm">
                                             {orgUser.name}
                                             {orgUser.id === user?.id && (
                                                 <span className="bg-[#D8E0FC] px-[4px] py-[2px] rounded-sm text-[12px] text-custom-blue ml-1">You</span>
                                             )}
                                         </p>
-                                        <p className="truncate text-[12px] xs:w-auto w-[160px] text-zinc-400">{orgUser.email}</p>
+                                        <p className="truncate text-[12px] xs:w-auto w-[140px] text-zinc-400">{orgUser.email}</p>
                                     </div>
                                     <DropdownMenu>
                                         <DropdownMenuTrigger className={`ml-auto mr-2 text-zinc-600 text-sm border rounded-md p-2 ${usersRole !== 'Admin' ? 'pointer-events-none' : ''}`}>
