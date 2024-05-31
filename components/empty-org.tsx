@@ -37,6 +37,7 @@ export const EmptyOrg = ({
                         </Button>
                     </DialogTrigger>
                     <CreateOrganization 
+                        activeOrganization={null}
                         setActiveOrganization={setActiveOrganization}
                     />
                 </Dialog>

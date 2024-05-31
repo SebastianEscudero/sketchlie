@@ -3,7 +3,7 @@
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useTransition, useState, useEffect } from "react";
+import { useTransition, useState } from "react";
 import { useSession } from "next-auth/react";
 import { OrganizationSchema } from "@/schemas";
 import { DialogClose, DialogHeader, DialogTitle, DialogContent } from '@/components/ui/dialog';
