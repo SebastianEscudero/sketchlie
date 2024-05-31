@@ -985,27 +985,6 @@ export const Canvas = ({
             document.body.style.cursor = 'url(/custom-cursors/hand.svg) 8 8, auto';
             setIsPanning(false);
         } else if (canvasState.mode === CanvasMode.Translating) {
-            setShowingSelectionBox(true);
-            if (selectedLayersRef.current.length === 1 && showingSelectionBox) {
-                const layerType = liveLayers[selectedLayersRef.current[0]].type;
-                if (layerType === LayerType.Text || layerType === LayerType.Note) {
-                    const layer = layerRef.current;
-                    layer.focus();
-
-                    const range = document.createRange();
-                    range.selectNodeContents(layer);
-                    range.collapse(false);
-
-                    const selection = window.getSelection();
-                    selection?.removeAllRanges();
-                    selection?.addRange(range);
-                    if (layer.value || layer.value === "") {
-                        layer.selectionStart = layer.selectionEnd = layer.value.length;
-                    }
-                }
-            }
-
-
             let layerIds: any = [];
             let layerUpdates: any = [];
             selectedLayersRef.current.forEach(id => {
@@ -1028,6 +1007,29 @@ export const Canvas = ({
                     performAction(command);
                 }
             }
+
+            setShowingSelectionBox(true);
+            if (selectedLayersRef.current.length === 1 && showingSelectionBox) {
+                const layerType = liveLayers[selectedLayersRef.current[0]].type;
+                const initialLayer = JSON.stringify(initialLayers[selectedLayersRef.current[0]]);
+                const liveLayer = JSON.stringify(liveLayers[selectedLayersRef.current[0]]);
+                const changed = initialLayer !== liveLayer;
+                if (layerType === LayerType.Text || layerType === LayerType.Note && !changed) {
+                    const layer = layerRef.current;
+                    layer.focus();
+
+                    const range = document.createRange();
+                    range.selectNodeContents(layer);
+                    range.collapse(false);
+
+                    const selection = window.getSelection();
+                    selection?.removeAllRanges();
+                    selection?.addRange(range);
+                    if (layer.value || layer.value === "") {
+                        layer.selectionStart = layer.selectionEnd = layer.value.length;
+                    }
+                }
+            }   
 
             setCanvasState({
                 mode: CanvasMode.None,
