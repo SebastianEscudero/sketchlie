@@ -24,7 +24,7 @@ export const ColorPicker = ({
 
   return (
     <div className="relative text-left border-r pr-1.5 border-neutral-200">
-      <ColorButton color={colorButtonColor} onClick={() => setIsOpen(!isOpen)}/>
+      <ColorButton color={colorButtonColor} onClick={() => setIsOpen(!isOpen)} />
       {isOpen && (
         <div
           className="origin-top-right absolute right-0 mt-2 w-[210px] rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
@@ -52,19 +52,25 @@ export const ColorPicker = ({
 interface ColorButtonProps {
   onClick: (color: Color) => void;
   color: Color;
+  pathColor?: Color;
 };
 
 export const ColorButton = ({
   onClick,
   color,
+  pathColor
 }: ColorButtonProps) => {
+
+  const isSelected = color.r === pathColor?.r && color.g === pathColor?.g && color.b === pathColor?.b && color.a === pathColor?.a;
+  console.log(isSelected)
+
   return (
     <button
       className="w-8 h-8 my-1 items-center flex justify-center transition mx-2"
       onClick={() => onClick(color)}
     >
       <div
-        className="h-8 w-8 rounded-md border border-neutral-300 relative"
+        className={`h-8 w-8 rounded-md border relative ${isSelected ? 'border-2 border-black' : 'border-neutral-200'}`}
         style={{ background: colorToCss(color) }}
       >
         {color.r === 0 && color.g === 0 && color.b === 0 && color.a === 0 && (

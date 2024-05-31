@@ -228,6 +228,10 @@ interface CanvasProps {
 export const Canvas = ({
     boardId,
 }: CanvasProps) => {
+    const [isPenMenuOpen, setIsPenMenuOpen] = useState(false);
+    const [isShapesMenuOpen, setIsShapesMenuOpen] = useState(false);
+    const [isPenEraserSwitcherOpen, setIsPenEraserSwitcherOpen] = useState(false);
+    const [selectedTool, setSelectedTool] = useState(CanvasMode.None);
     const [showingSelectionBox, setShowingSelectionBox] = useState(false);
     const [initialLayers, setInitialLayers] = useState<Layers>({}); // used for undo/redo
     const [history, setHistory] = useState<Command[]>([]);
@@ -545,18 +549,25 @@ export const Canvas = ({
             : [...pencilDraft, [point.x, point.y, e.pressure]]);
 
 
-        const newPresence: Presence = {
-            ...myPresence,
-            cursor: point,
-            pencilDraft:
-                pencilDraft.length === 1 &&
+            const newPresence: Presence = {
+                ...myPresence,
+                cursor: point,
+                pencilDraft: pencilDraft.length === 1 &&
                     pencilDraft[0][0] === point.x &&
                     pencilDraft[0][1] === point.y
                     ? pencilDraft
                     : [...pencilDraft, [point.x, point.y, e.pressure]],
-            pathStrokeSize: pathStrokeSize,
-            pathStrokeColor: pathColor,
-        };
+                pathStrokeSize: canvasState.mode === CanvasMode.Laser
+                    ? 5 / zoom
+                    : canvasState.mode === CanvasMode.Highlighter
+                        ? 30 / zoom // Increase stroke size for highlighter
+                        : pathStrokeSize,
+                    pathStrokeColor: canvasState.mode === CanvasMode.Laser
+                        ? { r: 243, g: 82, b: 35, a: 1 } // F35223 in RGB
+                        : canvasState.mode === CanvasMode.Highlighter
+                            ? { ...pathColor, a: 0.5 } // Semi-transparent yellow
+                            : pathColor,
+            };
 
         setMyPresence(newPresence);
 
@@ -642,7 +653,6 @@ export const Canvas = ({
         );
 
         // Add the command to the command stack    
-        setPencilDraft([]);
         performAction(command);
 
         const newPresence: Presence = {
@@ -651,7 +661,7 @@ export const Canvas = ({
         };
 
         setMyPresence(newPresence);
-
+        setPencilDraft([]);
         setCanvasState({ mode: CanvasMode.Highlighter });
     }, [pencilDraft, liveLayers, setLiveLayers, setLiveLayerIds, myPresence, org, proModal, liveLayerIds, socket, boardId, addLayer]);
 
@@ -772,10 +782,14 @@ export const Canvas = ({
 
         if (e.button === 0 && expired !== true) {
             if (canvasState.mode === CanvasMode.Eraser) {
+                setIsPenEraserSwitcherOpen(false);
+                setIsPenMenuOpen(false);
                 return;
             }
 
             if (canvasState.mode === CanvasMode.Laser || canvasState.mode === CanvasMode.Pencil || canvasState.mode === CanvasMode.Highlighter) {
+                setIsPenEraserSwitcherOpen(false);
+                setIsPenMenuOpen(false);
                 startDrawing(point, e.pressure);
                 return;
             }
@@ -917,12 +931,15 @@ export const Canvas = ({
             expired
         ]);
 
-    const onPointerUp = useCallback((e: React.PointerEvent) => {
+    const onPointerUp = useCallback((e: React.PointerEvent) => {    
         setIsRightClickPanning(false);
         const point = pointerEventToCanvasPoint(e, camera, zoom);
-
         if (canvasState.mode === CanvasMode.SelectionNet) {
-            setShowingSelectionBox(true);
+            if (selectedLayersRef.current.length > 0) {
+                setShowingSelectionBox(true);
+            } else {
+                setShowingSelectionBox(false);
+            }
         }
 
         if (canvasState.mode !== CanvasMode.Translating && canvasState.mode !== CanvasMode.SelectionNet) {
@@ -947,6 +964,14 @@ export const Canvas = ({
         } else if (canvasState.mode === CanvasMode.Laser) {
             document.body.style.cursor = 'url(/custom-cursors/laser.svg) 4 18, auto';
             setPencilDraft([]);
+            const newPresence: Presence = {
+                ...myPresence,
+                pencilDraft: null,
+            };
+            setMyPresence(newPresence);
+            if (socket && expired !== true) {
+                socket.emit('presence', newPresence, User.userId);
+            }
         } else if (canvasState.mode === CanvasMode.Eraser) {
             document.body.style.cursor = 'url(/custom-cursors/eraser.svg) 8 8, auto';
             return;
@@ -1544,6 +1569,7 @@ export const Canvas = ({
             />
             {expired !== true && (
                 <Toolbar
+                    pathColor={pathColor}
                     pathStrokeSize={pathStrokeSize}
                     setPathColor={setPathColor}
                     setPathStrokeSize={setPathStrokeSize}
@@ -1557,7 +1583,14 @@ export const Canvas = ({
                     redo={redo}
                     canUndo={history.length > 0}
                     canRedo={redoStack.length > 0}
-                />
+                    isPenMenuOpen={isPenMenuOpen}
+                    setIsPenMenuOpen={setIsPenMenuOpen}
+                    isShapesMenuOpen={isShapesMenuOpen}
+                    setIsShapesMenuOpen={setIsShapesMenuOpen}
+                    isPenEraserSwitcherOpen={isPenEraserSwitcherOpen}
+                    setIsPenEraserSwitcherOpen={setIsPenEraserSwitcherOpen}
+                    selectedTool={selectedTool}
+                    setSelectedTool={setSelectedTool}                />
             )}
             {canvasState.mode === CanvasMode.None && expired !== true && (
                 <SelectionTools
@@ -1666,7 +1699,6 @@ export const Canvas = ({
                                             ? 30 / zoom // Increase stroke size for highlighter
                                             : pathStrokeSize
                                 }
-                                isLaser={canvasState.mode === CanvasMode.Laser}
                             />
                         )
                     }

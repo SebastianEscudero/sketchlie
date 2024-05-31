@@ -51,7 +51,6 @@ export const OrganizationInvite = ({
             return member;
         }).filter(member => member.email && member.role);
         startTransition(() => {
-            console.log(validMembers)
             invite({ members: validMembers }, activeOrg)
                 .then((data) => {
                     if (data.error) {
@@ -96,7 +95,7 @@ export const OrganizationInvite = ({
                                     )}
                                 />
                                 <DropdownMenu>
-                                    <DropdownMenuTrigger className="border rounded-md p-2 flex flex-row items-center text-sm font-semibold w-[100px] justify-between">
+                                    <DropdownMenuTrigger className="border rounded-md p-2 flex flex-row items-center text-sm font-semibold w-[100px] h-[40px] justify-between">
                                         {form.watch(`members.${index}.role`) || 'Member'}
                                         <ChevronDown className="w-4 h-4 ml-2" />
                                     </DropdownMenuTrigger>

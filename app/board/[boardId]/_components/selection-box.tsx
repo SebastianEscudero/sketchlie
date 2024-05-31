@@ -137,7 +137,7 @@ export const SelectionBox = memo(({
       {isShowingHandles && (
         <>
           <rect
-            className="fill-white stroke-blue-500"
+            className="fill-white stroke-blue-500 p-4"
             x={0}
             y={0}
             style={{

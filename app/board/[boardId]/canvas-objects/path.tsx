@@ -12,7 +12,6 @@ interface PathProps {
     stroke?: string;
     strokeSize?: number | undefined;
     zoomRef?: React.RefObject<any>;
-    isLaser?: boolean;
 };
 
 export const Path = ({
@@ -25,7 +24,6 @@ export const Path = ({
     stroke,
     strokeSize,
     zoomRef,
-    isLaser
 }: PathProps) => {
 
     const isTransparent = fill === 'rgba(0,0,0,0)';
@@ -50,7 +48,6 @@ export const Path = ({
             fill={isTransparent ? '#000' : fill}
             stroke={stroke}
             strokeWidth={strokeSize ?? 1 / (zoomRef?.current ?? 1)**(2)}
-            className={isLaser ? 'animate-fadeOut' : ''}
             />
     );
 };

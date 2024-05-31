@@ -4,8 +4,14 @@ import { connectionIdToColor } from "@/lib/utils";
 import { User } from "@/types/canvas";
 import { UserAvatar } from "./user-avatar";
 
-const MAX_SHOWN_USERS = 4;
-
+const MAX_SHOWN_USERS = typeof window !== 'undefined' 
+    ? window.innerWidth <= 376 
+        ? 1 
+        : window.innerWidth <= 768 
+            ? 2 
+            : 4
+    : 4;
+    
 interface ParticipantsProps {
     otherUsers: User[] | null;
     User: User
