@@ -28,15 +28,18 @@ export const NewBoardButton = ({
     const maxAmountOfBoards = getMaxBoards(org);
 
     const user = useCurrentUser();
-    const data = useQuery(api.boards.get, { 
+    const usersRole = org?.users?.find((u: any) => u.id === user?.id)?.role;
+
+
+    const data = useQuery(api.boards.get, {
         orgId: org.id,
-      });
+    });
 
 
     const proModal = useProModal();
     const router = useRouter();
     const [title, setTitle] = useState('New Board');
-    const { mutate, pending} = useApiMutation(api.board.create);
+    const { mutate, pending } = useApiMutation(api.board.create);
 
     if (!user) {
         return null;
@@ -74,10 +77,10 @@ export const NewBoardButton = ({
             setTitle={setTitle}
         >
             <button
-                disabled={pending || disabled}
+                disabled={pending || disabled || usersRole !== 'Admin'}
                 className={cn(
                     "col-span-1 aspect-[100/127] bg-blue-600 rounded-lg hover:bg-blue-800 flex flex-col items-center justify-center py-6",
-                    (pending || disabled) && "opacity-75 hover:bg-blue-600 cursor-not-allowed" 
+                    (pending || disabled || usersRole !== 'Admin') && "opacity-75 hover:bg-blue-600 cursor-not-allowed"
                 )}
             >
                 <div />
@@ -85,6 +88,10 @@ export const NewBoardButton = ({
                 <p className="text-sm text-white font-light">
                     New Board
                 </p>
+                {usersRole !== 'Admin' && 
+                <p className="text-xs text-white font-light mx-[20%] pt-2">
+                    Only <span className="font-bold">Admins</span> can create boards
+                </p>}
             </button>
         </ConfirmBoardModal>
     )
