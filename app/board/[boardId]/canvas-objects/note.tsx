@@ -125,13 +125,14 @@ export const Note = ({
             handlePointerDown(e);
         }
     }}
+      strokeWidth={2}
       onPointerDown={(e) => handlePointerDown(e)}
       onTouchStart={(e) => handleOnTouchDown(e)}
       style={{
         borderColor: `${selectionColor || colorToCss(outlineFill || fill)}`,
         backgroundColor: fillColor,
       }}
-      className="shadow-md flex items-center justify-center border-[1.5px] border-spacing-3"
+      className="shadow-md flex items-center justify-center border-[2px] border-spacing-3"
     >
       <ContentEditable
         innerRef={noteRef}
