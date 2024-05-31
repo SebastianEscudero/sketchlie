@@ -5,11 +5,13 @@ import { cn } from "@/lib/utils";
 interface ShowAllTemplatesProps {
     onClick: (templateName: string, templateLayerIds: any, templateLayers: any) => void;
     pending: boolean;
+    usersRole: any;
 }
 
 export const ShowAllTemplates = ({
     onClick,
     pending = false,
+    usersRole,
 }: ShowAllTemplatesProps) => {
     return (
         <div className="p-2 flex flex-col justify-center items-center">
@@ -21,6 +23,7 @@ export const ShowAllTemplates = ({
                 {templates.map((template, index) => (
                     <div key={index} className="rounded-lg flex flex-col">
                         <button
+                            disabled={usersRole !== 'Admin'}
                             onClick={() => onClick(template.name, template.layerIds, template.layers)}
                             className={cn(
                                 "flex flex-col hover:cursor-pointer",

@@ -11,6 +11,7 @@ import { useProModal } from "@/hooks/use-pro-modal";
 
 interface InfoProps {
     board: any;
+    org: any;
 }
 
 const TabSeparator = () => {
@@ -24,6 +25,7 @@ const TabSeparator = () => {
 
 export const Info = ({
     board,
+    org
 }: InfoProps) => {
 
     const { onOpen } = useRenameModal();
@@ -60,7 +62,7 @@ export const Info = ({
                     </Button>
                 </Hint>
             <TabSeparator />
-            <Actions id={board._id} title={board.title} side="bottom" sideOffset={10} showExport={true}>
+            <Actions id={board._id} title={board.title} side="bottom" sideOffset={10} org={org} showExport={true}>
                 <div>
                     <Hint label="Main menu" side="bottom" sideOffset={10}>
                         <Button size="icon" variant="board">

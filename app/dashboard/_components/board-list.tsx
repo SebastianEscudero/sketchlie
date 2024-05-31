@@ -62,6 +62,7 @@ export const BoardList = ({
         <NewBoardButton org = {org} />
         {data?.map((board) => (
           <BoardCard
+            org={org}
             key={board._id}
             id={board._id}
             title={board.title}

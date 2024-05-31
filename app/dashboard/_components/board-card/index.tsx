@@ -25,6 +25,7 @@ interface BoardCardProps {
   imageUrl: string;
   orgId: string;
   isFavorite: boolean;
+  org: any;
 };
 
 export const BoardCard = ({
@@ -36,11 +37,11 @@ export const BoardCard = ({
   imageUrl,
   orgId,
   isFavorite,
+  org
 }: BoardCardProps) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const userId = useCurrentUser()?.id;
-
   const authorLabel = userId === authorId ? "You" : authorName;
   const createdAtLabel = formatDistanceToNow(createdAt, {
     addSuffix: true,
@@ -89,6 +90,7 @@ export const BoardCard = ({
           />
           <Overlay />
           <Actions
+            org={org}
             id={id}
             title={title}
             side="right"

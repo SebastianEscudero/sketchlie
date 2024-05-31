@@ -27,6 +27,7 @@ interface ActionsProps {
   id: string;
   title: string;
   showExport?: boolean;
+  org: any;
 };
 
 export const Actions = ({
@@ -36,6 +37,7 @@ export const Actions = ({
   id,
   title,
   showExport = false,
+  org,
 }: ActionsProps) => {
   const { onOpen } = useRenameModal();
   const { mutate, pending } = useApiMutation(api.board.remove);
@@ -50,7 +52,7 @@ export const Actions = ({
 
   const router = useRouter();
   const user = useCurrentUser();
-
+  const usersRole = org.users.find((u: any) => u.id === user?.id)?.role;
   if (!user) {
     return null;
   }
@@ -81,11 +83,12 @@ export const Actions = ({
           Copy board link
         </DropdownMenuItem>
         <DropdownMenuItem
+          disabled={usersRole !== "Admin"}
           onClick={() => onOpen(id, title)}
           className="p-3 cursor-pointer"
         >
           <Pencil className="h-4 w-4 mr-2" />
-          Rename
+          {usersRole === "Admin" ? "Rename" : "Rename (Admin)"}
         </DropdownMenuItem>
         <ConfirmModal
           header="Delete board?"
@@ -94,11 +97,12 @@ export const Actions = ({
           onConfirm={onDelete}
         >
           <Button
+            disabled={usersRole !== "Admin"}
             variant="ghost"
-            className="p-3 cursor-pointer w-full justify-start"
+            className="p-3 cursor-pointer w-full justify-start font-normal text-red-500 hover:text-red-700"
           >
             <Trash2 className="h-4 w-4 mr-2" />
-            Delete
+            {usersRole === "Admin" ? "Delete" : "Delete (Admin)"}
           </Button>
         </ConfirmModal>
         {showExport && (

@@ -27,6 +27,7 @@ export const Templates = ({
         orgId: orgId,
     });
 
+    const usersRole = org.users.find((u: any) => u.id === user?.id)?.role;
     const maxAmountOfBoards = getMaxBoards(org);
     const router = useRouter();
     const proModal = useProModal();
@@ -61,12 +62,16 @@ export const Templates = ({
     return (
         <div className="p-6">
             <h2 className="text-3xl font-semibold">Choose a Template</h2>
+            {usersRole !== 'Admin' && (
+                <p className="text-gray-600">Only <span className="font-bold">Admins</span> can choose a template</p>
+            )}
             <div className="flex mt-8 border rounded-md p-4 h-[170px] overflow-hidden">
                 <div className="flex flex-wrap gap-x-5 gap-y-20">
                     {templates.map((template, index) => (
                         <div key={index} className="rounded-lg flex flex-col justify-between flex-1">
                             <button
                                 onClick={() => onClick(template.name, template.layerIds, template.layers)}
+                                disabled={pending || usersRole !== 'Admin'}
                                 className={cn(
                                     "text-left flex flex-col hover:cursor-pointer flex-1 min-w-[110px] min-h-[85.5px] max-w-[130px] max-h-[101.1px]",
                                     (pending) && "opacity-50 cursor-not-allowed"
@@ -94,6 +99,7 @@ export const Templates = ({
                     </div>
                     <DialogContent className="w-full max-w-[80%] max-h-[85%] xl:max-w-[50%] overflow-y-auto">
                         <ShowAllTemplates
+                            usersRole={usersRole}
                             pending={pending}
                             onClick={onClick}
                         />
