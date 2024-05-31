@@ -38,7 +38,7 @@ export const ProModal = () => {
                                     <div
                                         className="text-xl md:text-2xl flex flex-row items-center ml-3 text-custom-blue"
                                     >
-                                        {activeOrg.name || "Select organization"}
+                                        {activeOrg ? activeOrg.name : "Select organization"}
                                         <ChevronsDown className="ml-2" />
                                     </div>
                                 </DropdownMenuTrigger>
