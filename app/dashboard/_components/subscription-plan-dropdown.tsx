@@ -23,7 +23,7 @@ export const SubscriptionPlanDropdown = ({
 
     const proModal = useProModal();
     const onClick = () => {
-        proModal.onOpen();
+        proModal.onOpen(activeOrg.id);
     }
 
     let label = "";

@@ -28,6 +28,7 @@ export const Info = ({
 
     const { onOpen } = useRenameModal();
     const proModal = useProModal();
+    const orgId = board.orgId;
 
     if (!board) return <InfoSkeleton />;
 
@@ -72,7 +73,7 @@ export const Info = ({
             <Hint label="Upgrade" side="bottom" sideOffset={10}>
                 <Button variant="board"
                     size="icon"
-                    onClick={proModal.onOpen}
+                    onClick={() => proModal.onOpen(orgId)}
                 >
                     <Zap className="h-5 w-5 fill-custom-blue text-custom-blue"/>
                 </Button>

@@ -6,7 +6,7 @@ import { useProModal } from "@/hooks/use-pro-modal";
 import { Check, ChevronsDown } from "lucide-react";
 import { Badge } from "./ui/badge";
 import { SubscriptionButton } from "./subscription-button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
@@ -16,10 +16,15 @@ const paidPlans = subscriptionPlans.filter(plan => plan.label !== "Gratis");
 
 export const ProModal = () => {
     const proModal = useProModal();
-    const [selectedOrganization, setSelectedOrganization] = useState<any>(localStorage.getItem("activeOrganization") || "");
+    const liveOrg = proModal.activeOrganization;
+    const [selectedOrganization, setSelectedOrganization] = useState<any>(liveOrg || localStorage.getItem("activeOrganization") || "");
     const user = useCurrentUser();
     const activeOrg = user?.organizations.find(org => org.id === selectedOrganization);
     const organizations = user?.organizations;
+
+    useEffect(() => {
+        setSelectedOrganization(liveOrg);
+    }, [liveOrg]);
 
     if (!organizations) {
         return null;

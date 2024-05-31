@@ -25,7 +25,7 @@ export const Navbar = ({
     const usersRole = activeOrg?.users.find((u: any) => u.id === user?.id)?.role;
     const proModal = useProModal();
     const onClick = () => {
-        proModal.onOpen();
+        proModal.onOpen(activeOrganization);
     }
 
     let plan = null;

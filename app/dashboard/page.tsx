@@ -31,7 +31,7 @@ const DashboardPage = () => {
 
   useEffect(() => {
     if (searchParams.get("openProModal")) {
-        proModal.onOpen();
+        proModal.onOpen(activeOrganization);
     }
 }, []);
 

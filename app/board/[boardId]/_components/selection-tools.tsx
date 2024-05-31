@@ -237,7 +237,7 @@ export const SelectionTools = memo(({
 
   const duplicateLayers = useCallback(() => {
     if (org && liveLayerIds.length >= getMaxCapas(org)) {
-      proModal.onOpen();
+      proModal.onOpen(org._id);
       return;
     }
   

@@ -291,7 +291,7 @@ export const Canvas = ({
 
     const insertLayer = useCallback((layerType: LayerType, position: Point, width: number, height: number, center?: Point) => {
         if (org && liveLayerIds.length >= getMaxCapas(org)) {
-            proModal.onOpen();
+            proModal.onOpen(org._id);
             return;
         }
 
@@ -392,7 +392,7 @@ export const Canvas = ({
     ) => {
 
         if (org && liveLayerIds.length >= getMaxCapas(org)) {
-            proModal.onOpen();
+            proModal.onOpen(org._id);
             return;
         }
 
@@ -566,7 +566,7 @@ export const Canvas = ({
     const insertPath = useCallback(() => {
 
         if (org && liveLayerIds.length >= getMaxCapas(org)) {
-            proModal.onOpen();
+            proModal.onOpen(org._id);
             return;
         }
 
@@ -612,7 +612,7 @@ export const Canvas = ({
     const insertHighlight = useCallback(() => {
 
         if (org && liveLayerIds.length >= getMaxCapas(org)) {
-            proModal.onOpen();
+            proModal.onOpen(org._id);
             return;
         }
 
@@ -1307,7 +1307,7 @@ export const Canvas = ({
     const pasteCopiedLayers = useCallback((mousePosition: any) => {
 
         if (org && liveLayerIds.length >= getMaxCapas(org)) {
-            proModal.onOpen();
+            proModal.onOpen(org._id);
             return;
         }
 

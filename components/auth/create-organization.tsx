@@ -25,11 +25,13 @@ import { useProModal } from "@/hooks/use-pro-modal";
 import { getMaxOrganizations } from "@/lib/planLimits";
 
 interface CreateOrganizationProps {
+    activeOrganization: string | null;
     setActiveOrganization: (id: string) => void;
 };
 
 
 export const CreateOrganization = ({
+    activeOrganization,
     setActiveOrganization
 }: CreateOrganizationProps) => {
     const user = useCurrentUser();
@@ -55,7 +57,7 @@ export const CreateOrganization = ({
     const onSubmit = (values: z.infer<typeof OrganizationSchema>) => {
 
         if (user.organizations.length >= maxOrganizations) {
-            proModal.onOpen();
+            proModal.onOpen(activeOrganization);
         } else {
             setError("");
             setSuccess("");
@@ -70,6 +72,7 @@ export const CreateOrganization = ({
                             update({ event: "session" });
                             if (data.id) {
                                 setActiveOrganization(data.id);
+                                localStorage.setItem("activeOrganization", data.id)
                             }
                         }
                     });

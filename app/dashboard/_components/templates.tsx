@@ -54,7 +54,7 @@ export const Templates = ({
                     toast.error("Failed to create board");
                 });
         } else {
-            proModal.onOpen();
+            proModal.onOpen(orgId);
         }
     }
 

@@ -172,6 +172,7 @@ export const OrganizationSwitcher = ({
                                             acceptInvite(invitation.organization.id, invitation.id)
                                                 .then(() => {
                                                     setActiveOrganization(invitation.organization.id);
+                                                    localStorage.setItem("activeOrganization", invitation.organization.id);
                                                     update({ event: "session" });
                                                 });
                                         }}
@@ -190,7 +191,10 @@ export const OrganizationSwitcher = ({
                             const { color, letterColor } = getPlanColor(org.subscriptionPlan);
                             return (
                                 <DropdownMenuItem
-                                    onClick={() => setActiveOrganization(org.id)}
+                                    onClick={() => {
+                                        setActiveOrganization(org.id)
+                                        localStorage.setItem("activeOrganization", org.id)
+                                    }}
                                     key={org.id}
                                     className="py-1.5 px-5 flex items-center hover:bg-zinc-100 cursor-pointer"
                                 >
@@ -217,6 +221,7 @@ export const OrganizationSwitcher = ({
                             <p className="ml-5">Create organization</p>
                         </DialogTrigger>
                         <CreateOrganization
+                            activeOrganization={activeOrganization}
                             setActiveOrganization={setActiveOrganization}
                         />
                     </Dialog>

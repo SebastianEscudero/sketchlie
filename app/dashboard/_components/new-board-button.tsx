@@ -62,7 +62,7 @@ export const NewBoardButton = ({
         if (maxAmountOfBoards !== null && (data?.length ?? 0) < maxAmountOfBoards) {
             onClick();
         } else {
-            proModal.onOpen();
+            proModal.onOpen(org.id);
         }
     }
     return (

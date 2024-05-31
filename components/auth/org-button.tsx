@@ -11,6 +11,7 @@ interface NewOrgButtonProps {
 };
 
 export const NewOrgButton = ({
+    activeOrganization,
     setActiveOrganization
 }: NewOrgButtonProps) => {
 
@@ -24,6 +25,7 @@ export const NewOrgButton = ({
             </Hint>
         </DialogTrigger>
         <CreateOrganization 
+            activeOrganization={activeOrganization}
             setActiveOrganization={setActiveOrganization}
         />
     </Dialog>

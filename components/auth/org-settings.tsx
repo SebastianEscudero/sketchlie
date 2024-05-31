@@ -130,7 +130,7 @@ export const OrganizationSettings = ({
     const proModal = useProModal();
     const onClick = () => {
         if (activeOrg.subscriptionPlan === "Gratis") {
-            proModal.onOpen();
+            proModal.onOpen(activeOrg.id);
         } else {
             window.location.href = "https://www.mercadopago.cl/subscriptions#from-section=menu"
         }
