@@ -58,9 +58,9 @@ class InsertLayerCommand implements Command {
         private prevLayerIds: string[],
         private setLiveLayers: (layers: Layers) => void,
         private setLiveLayerIds: (layerIds: string[]) => void,
-        private deleteLayer: (args: { boardId: string; layerId: any; }) => void,
-        private addLayer: (args: { boardId: string; layer: any; layerId: any; }) => void,
-        private boardId: string,
+        private deleteLayer: (args: { board: any; layerId: any; }) => void,
+        private addLayer: (args: { board: any; layer: any; layerId: any; }) => void,
+        private board: any,
         private socket: Socket | null) { }
     execute() {
         let newLayers = { ...this.prevLayers };
@@ -79,7 +79,9 @@ class InsertLayerCommand implements Command {
         }
 
         // Call the addLayer API mutation to add the layers in the database
-        this.addLayer({ boardId: this.boardId, layerId: this.layerIds, layer: this.layers });
+        this.addLayer({ board: this.board, layerId: this.layerIds, layer: this.layers });
+        this.board.layers = newLayers;
+        this.board.layerIds = newLayerIds;
     }
 
     undo() {
@@ -100,7 +102,9 @@ class InsertLayerCommand implements Command {
         }
 
         // Call the deleteLayer API mutation to delete the layers in the database
-        this.deleteLayer({ boardId: this.boardId, layerId: this.layerIds });
+        this.deleteLayer({ board: this.board, layerId: this.layerIds });
+        this.board.layers = remainingLayers;
+        this.board.layerIds = remainingLayerIds;
     }
 }
 
@@ -111,9 +115,9 @@ class DeleteLayerCommand implements Command {
         private prevLayerIds: string[],
         private setLiveLayers: (layers: Layers) => void,
         private setLiveLayerIds: (layerIds: string[]) => void,
-        private deleteLayer: (args: { boardId: string; layerId: any; }) => void,
-        private addLayer: (args: { boardId: string; layer: any; layerId: any; }) => void,
-        private boardId: string,
+        private deleteLayer: (args: { board: any; layerId: any; }) => void,
+        private addLayer: (args: { board: any; layer: any; layerId: any; }) => void,
+        private board: any,
         private socket: Socket | null) { }
 
     execute() {
@@ -133,7 +137,9 @@ class DeleteLayerCommand implements Command {
         });
 
         // Call the deleteLayer API mutation to delete all the layers in the database
-        this.deleteLayer({ boardId: this.boardId, layerId: this.layerIds });
+        this.deleteLayer({ board: this.board, layerId: this.layerIds });
+        this.board.layers = remainingLayers;    
+        this.board.layerIds = remainingLayerIds;
 
         if (this.socket) {
             this.socket.emit('layer-delete', this.layerIds);
@@ -156,7 +162,9 @@ class DeleteLayerCommand implements Command {
         });
 
         // Call the addLayer API mutation to add all the layers back in the database
-        this.addLayer({ boardId: this.boardId, layerId: this.layerIds, layer: layersToAdd });
+        this.addLayer({ board: this.board, layerId: this.layerIds, layer: layersToAdd });
+        this.board.layers = newLayers;
+        this.board.layerIds = newLayerIds;
 
         if (this.socket) {
             this.socket.emit('layer-update', this.layerIds, layersToAdd);
@@ -173,8 +181,8 @@ class TranslateLayersCommand implements Command {
         private initialLayers: any,
         public finalLayers: any,
         private setLiveLayers: (layers: any) => void,
-        private updateLayer: (args: { boardId: string; layerId: any; layerUpdates: any; }) => void,
-        private boardId: string,
+        private updateLayer: (args: { board: any; layerId: any; layerUpdates: any; }) => void,
+        private board: any,
         private socket: Socket | null) { }
 
     execute() {
@@ -184,7 +192,9 @@ class TranslateLayersCommand implements Command {
         const layerUpdates = this.layerIds.map(layerId => this.finalLayers[layerId]);
 
         // Call the updateLayer API mutation to update the layers in the database
-        this.updateLayer({ boardId: this.boardId, layerId: this.layerIds, layerUpdates: layerUpdates });
+        this.updateLayer({ board: this.board, layerId: this.layerIds, layerUpdates: layerUpdates });
+        this.board.layers = this.finalLayers;
+
 
         // Emit socket message
         if (this.socket) {
@@ -199,7 +209,8 @@ class TranslateLayersCommand implements Command {
         const layerUpdates = this.layerIds.map(layerId => this.initialLayers[layerId]);
 
         // Call the updateLayer API mutation to revert the layers in the database
-        this.updateLayer({ boardId: this.boardId, layerId: this.layerIds, layerUpdates: layerUpdates });
+        this.updateLayer({ board: this.board, layerId: this.layerIds, layerUpdates: layerUpdates });
+        this.board.layers = this.initialLayers;
 
         // Emit socket message
         if (this.socket) {
@@ -266,9 +277,9 @@ export const Canvas = ({
     const updateLayerMutation = useRef(useApiMutation(api.board.updateLayer).mutate);
     const addLayerMutation = useRef(useApiMutation(api.board.addLayer).mutate);
     const deleteLayerMutation = useRef(useApiMutation(api.board.deleteLayer).mutate);
-    const addLayer = useCallback((args: { boardId: string; layer: any; layerId: string; }) => addLayerMutation.current(args), []);
-    const updateLayer = useCallback((args: { boardId: string; layerId: any; layerUpdates: any; }) => updateLayerMutation.current(args), []);
-    const deleteLayer = useCallback((args: { boardId: string; layerId: any; }) => deleteLayerMutation.current(args), []);
+    const addLayer = useCallback((args: { board: any; layer: any; layerId: string; }) => addLayerMutation.current(args), []);
+    const updateLayer = useCallback((args: { board: any; layerId: any; layerUpdates: any; }) => updateLayerMutation.current(args), []);
+    const deleteLayer = useCallback((args: { board: any; layerId: any; }) => deleteLayerMutation.current(args), []);
     const proModal = useProModal();
 
     useDisableScrollBounce();
@@ -371,7 +382,7 @@ export const Canvas = ({
         const newLayers = { ...liveLayers, [layerId]: layer };
         const newLayerIds = [...liveLayerIds, layerId];
 
-        const command = new InsertLayerCommand([layerId], [layer], liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, deleteLayer, addLayer, boardId, socket);
+        const command = new InsertLayerCommand([layerId], [layer], liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, deleteLayer, addLayer, board, socket);
         performAction(command);
 
         if (layer.type !== LayerType.Text) {
@@ -387,7 +398,7 @@ export const Canvas = ({
 
         setMyPresence(newPresence);
         setCanvasState({ mode: CanvasMode.None });
-    }, [liveLayers, liveLayerIds, myPresence, socket, org, proModal, User.userId, setLiveLayers, setLiveLayerIds, boardId, addLayer]);
+    }, [liveLayers, liveLayerIds, myPresence, socket, org, proModal, User.userId, setLiveLayers, setLiveLayerIds, board, addLayer]);
 
     const insertImage = useCallback((
         layerType: LayerType.Image,
@@ -416,7 +427,7 @@ export const Canvas = ({
             fill: null,
         };
 
-        const command = new InsertLayerCommand([layerId], [layer], liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, deleteLayer, addLayer, boardId, socket);
+        const command = new InsertLayerCommand([layerId], [layer], liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, deleteLayer, addLayer, board, socket);
         performAction(command);
 
         const newPresence: Presence = {
@@ -428,7 +439,7 @@ export const Canvas = ({
 
         selectedLayersRef.current = [layerId];
         setCanvasState({ mode: CanvasMode.None });
-    }, [liveLayers, liveLayerIds, myPresence, socket, org, proModal, User.userId, setLiveLayers, setLiveLayerIds, boardId, addLayer]);
+    }, [liveLayers, liveLayerIds, myPresence, socket, org, proModal, User.userId, setLiveLayers, setLiveLayerIds, board, addLayer]);
 
     const translateSelectedLayers = useCallback((point: Point) => {
         if (canvasState.mode !== CanvasMode.Translating) {
@@ -603,7 +614,7 @@ export const Canvas = ({
             setLiveLayerIds,
             deleteLayer,
             addLayer,
-            boardId,
+            board,
             socket
         );
 
@@ -619,7 +630,7 @@ export const Canvas = ({
         setMyPresence(newPresence);
 
         setCanvasState({ mode: CanvasMode.Pencil });
-    }, [pencilDraft, liveLayers, setLiveLayers, setLiveLayerIds, myPresence, org, proModal, liveLayerIds, socket, boardId, addLayer]);
+    }, [pencilDraft, liveLayers, setLiveLayers, setLiveLayerIds, myPresence, org, proModal, liveLayerIds, socket, board, addLayer]);
 
     const insertHighlight = useCallback(() => {
 
@@ -649,7 +660,7 @@ export const Canvas = ({
             setLiveLayerIds,
             deleteLayer,
             addLayer,
-            boardId,
+            board,
             socket
         );
 
@@ -664,7 +675,7 @@ export const Canvas = ({
         setMyPresence(newPresence);
         setPencilDraft([]);
         setCanvasState({ mode: CanvasMode.Highlighter });
-    }, [pencilDraft, liveLayers, setLiveLayers, setLiveLayerIds, myPresence, org, proModal, liveLayerIds, socket, boardId, addLayer]);
+    }, [pencilDraft, liveLayers, setLiveLayers, setLiveLayerIds, myPresence, org, proModal, liveLayerIds, socket, board, addLayer]);
 
     const resizeSelectedLayer = useCallback((point: Point) => {
         const layer = liveLayers[selectedLayersRef.current[0]];
@@ -1029,7 +1040,7 @@ export const Canvas = ({
 
                 // Compare the initialLayers with the finalLayers of the last history state
                 if (!lastState || JSON.stringify(liveLayers) !== JSON.stringify(lastState)) {
-                    const command = new TranslateLayersCommand(layerIds, initialLayers, liveLayers, setLiveLayers, updateLayer, boardId, socket);
+                    const command = new TranslateLayersCommand(layerIds, initialLayers, liveLayers, setLiveLayers, updateLayer, board, socket);
                     performAction(command);
                 }
             }
@@ -1073,7 +1084,7 @@ export const Canvas = ({
             });
 
             if (layerIds.length > 0) {
-                const command = new TranslateLayersCommand(layerIds, initialLayers, liveLayers, setLiveLayers, updateLayer, boardId, socket);
+                const command = new TranslateLayersCommand(layerIds, initialLayers, liveLayers, setLiveLayers, updateLayer, board, socket);
                 performAction(command);
             }
             setCanvasState({
@@ -1100,7 +1111,7 @@ export const Canvas = ({
             selectedLayersRef,
             liveLayers,
             updateLayer,
-            boardId,
+            board,
             camera,
             zoom,
             currentPreviewLayer,
@@ -1141,7 +1152,7 @@ export const Canvas = ({
                 performAction(command);
             }
         }
-    }, [canvasState.mode, liveLayers, liveLayerIds, setLiveLayers, boardId, deleteLayer, socket]);
+    }, [canvasState.mode, liveLayers, liveLayerIds, setLiveLayers, board, deleteLayer, socket]);
 
     const onLayerPointerDown = useCallback((e: React.PointerEvent, layerId: string) => {
 
@@ -1375,7 +1386,7 @@ export const Canvas = ({
             clonedLayers.push(clonedLayer);
         });
 
-        const command = new InsertLayerCommand(newIds, clonedLayers, liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, deleteLayer, addLayer, boardId, socket);
+        const command = new InsertLayerCommand(newIds, clonedLayers, liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, deleteLayer, addLayer, board, socket);
         performAction(command);
         setLiveLayers(newLiveLayers);
         setLiveLayerIds(newLiveLayerIds);
@@ -1389,7 +1400,7 @@ export const Canvas = ({
 
         setMyPresence(newPresence);
 
-    }, [copiedLayers, myPresence, setLiveLayers, setLiveLayerIds, setMyPresence, org, proModal, liveLayerIds, socket, liveLayers, addLayer, boardId]);
+    }, [copiedLayers, myPresence, setLiveLayers, setLiveLayerIds, setMyPresence, org, proModal, liveLayerIds, socket, liveLayers, addLayer, board]);
 
     useEffect(() => {
         const onPointerDown = (e: PointerEvent) => {
@@ -1463,7 +1474,7 @@ export const Canvas = ({
                         });
 
                         // Create a new DeleteLayerCommand and add it to the history
-                        const command = new DeleteLayerCommand(selectedLayersRef.current, deletedLayers, liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, deleteLayer, addLayer, board._id, socket);
+                        const command = new DeleteLayerCommand(selectedLayersRef.current, deletedLayers, liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, deleteLayer, addLayer, board, socket);
                         performAction(command);
                         setLiveLayers(newLayers);
                         setLiveLayerIds(liveLayerIds.filter(id => !selectedLayersRef.current.includes(id)));
@@ -1606,7 +1617,7 @@ export const Canvas = ({
                     camera={camera}
                     updateLayer={updateLayer}
                     socket={socket}
-                    boardId={boardId}
+                    board={board}
                     DeleteLayerCommand={DeleteLayerCommand}
                     performAction={performAction}
                     addLayer={addLayer}

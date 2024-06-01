@@ -9,7 +9,7 @@ interface ArrowHeadSelectionProps {
     setLiveLayers: (layers: any) => void;
     liveLayers: any;
     updateLayer: any;
-    boardId: string;
+    board: any;
     socket: Socket | null;
 };
 
@@ -18,7 +18,7 @@ export const ArrowHeadSelection = ({
     setLiveLayers,
     liveLayers,
     updateLayer,
-    boardId,
+    board,
     socket,
 }: ArrowHeadSelectionProps) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -48,7 +48,7 @@ export const ArrowHeadSelection = ({
 
         if (updatedIds.length > 0) {
             updateLayer({
-                boardId: boardId,
+                board: board,
                 layerId: updatedIds,
                 layerUpdates: updatedLayers
             });
@@ -80,7 +80,7 @@ export const ArrowHeadSelection = ({
 
         if (updatedIds.length > 0) {
             updateLayer({
-                boardId: boardId,
+                board: board,
                 layerId: updatedIds,
                 layerUpdates: updatedLayers
             });

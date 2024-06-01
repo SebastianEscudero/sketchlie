@@ -8,7 +8,7 @@ interface FontSizePickerProps {
     setLiveLayers: (layers: any) => void;
     liveLayers: any;
     updateLayer: any;
-    boardId: string;
+    board: any;
     socket: Socket | null;
 };
 
@@ -19,7 +19,7 @@ export const FontSizePicker = ({
     setLiveLayers,
     liveLayers,
     updateLayer,
-    boardId,
+    board,
     socket,
 }: FontSizePickerProps) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -51,7 +51,7 @@ export const FontSizePicker = ({
       
         if (updatedIds.length > 0) {
           updateLayer({
-            boardId: boardId,
+            board: board,
             layerId: updatedIds,
             layerUpdates: updatedLayers
           });

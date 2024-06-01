@@ -18,7 +18,7 @@ import { customAlphabet } from "nanoid";
 import { getMaxCapas } from "@/lib/planLimits";
 
 interface SelectionToolsProps {
-  boardId: string;
+  board: any;
   camera: Camera;
   zoom: number;
   selectedLayers: string[];
@@ -39,7 +39,7 @@ interface SelectionToolsProps {
 };
 
 export const SelectionTools = memo(({
-  boardId,
+  board,
   camera,
   zoom,
   selectedLayers,
@@ -60,7 +60,6 @@ export const SelectionTools = memo(({
 }: SelectionToolsProps) => {
   const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
   const nanoid = customAlphabet(alphabet, 21);
-
   const { mutate: updateLayerIds } = useApiMutation(api.board.updateLayerIds);
   const { mutate: deleteLayer } = useApiMutation(api.board.deleteLayer);
 
@@ -125,7 +124,7 @@ export const SelectionTools = memo(({
     setLiveLayerIds(arr);
 
     updateLayerIds({
-      boardId: boardId,
+      board: board,
       layerIds: arr
     });
 
@@ -133,7 +132,7 @@ export const SelectionTools = memo(({
       socket.emit('layer-send', arr);
     }
 
-  }, [selectedLayers, setLiveLayerIds, liveLayerIds, updateLayerIds, boardId, socket]);
+  }, [selectedLayers, setLiveLayerIds, liveLayerIds, updateLayerIds, board, socket]);
 
   const moveToBack = useCallback(() => {
     const indices: number[] = [];
@@ -163,7 +162,7 @@ export const SelectionTools = memo(({
     setLiveLayerIds(arr);
 
     updateLayerIds({
-      boardId: boardId,
+      board: board,
       layerIds: arr
     });
 
@@ -171,7 +170,7 @@ export const SelectionTools = memo(({
       socket.emit('layer-send', arr);
     }
 
-  }, [selectedLayers, setLiveLayerIds, liveLayerIds, updateLayerIds, boardId, socket]);
+  }, [selectedLayers, setLiveLayerIds, liveLayerIds, updateLayerIds, board, socket]);
 
   const setFill = useCallback((fill: Color) => {
     setLiveLayers((prevLayers: any) => {
@@ -190,7 +189,7 @@ export const SelectionTools = memo(({
 
       if (updatedIds.length > 0) {
         updateLayer({
-          boardId: boardId,
+          board: board,
           layerId: updatedIds,
           layerUpdates: updatedLayers.map(() => ({ fill }))
         });
@@ -202,7 +201,7 @@ export const SelectionTools = memo(({
 
       return newLayers;
     });
-  }, [selectedLayers, setLiveLayers, socket, updateLayer, boardId]);
+  }, [selectedLayers, setLiveLayers, socket, updateLayer, board]);
 
   const setOutlineFill = useCallback((outlineFill: Color) => {
     setLiveLayers((prevLayers: any) => {
@@ -221,7 +220,7 @@ export const SelectionTools = memo(({
 
       if (updatedIds.length > 0) {
         updateLayer({
-          boardId: boardId,
+          board: board,
           layerId: updatedIds,
           layerUpdates: updatedLayers.map(() => ({ outlineFill }))
         });
@@ -233,7 +232,7 @@ export const SelectionTools = memo(({
 
       return newLayers;
     });
-  }, [selectedLayers, setLiveLayers, socket, updateLayer, boardId]);
+  }, [selectedLayers, setLiveLayers, socket, updateLayer, board]);
 
   const duplicateLayers = useCallback(() => {
     if (org && liveLayerIds.length >= getMaxCapas(org)) {
@@ -275,7 +274,7 @@ export const SelectionTools = memo(({
       clonedLayers.push(clonedLayer);
     });
   
-    const command = new InsertLayerCommand(newIds, clonedLayers, liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, deleteLayer, addLayer, boardId, socket);
+    const command = new InsertLayerCommand(newIds, clonedLayers, liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, deleteLayer, addLayer, board, socket);
     performAction(command);
     setLiveLayers(newLiveLayers);
     setLiveLayerIds(newLiveLayerIds);
@@ -287,7 +286,7 @@ export const SelectionTools = memo(({
   
     setMyPresence(newPresence);
   
-  }, [selectedLayers, myPresence, setLiveLayers, setLiveLayerIds, setMyPresence, org, proModal, liveLayerIds, socket, liveLayers, addLayer, boardId]);
+  }, [selectedLayers, myPresence, setLiveLayers, setLiveLayerIds, setMyPresence, org, proModal, liveLayerIds, socket, liveLayers, addLayer, board]);
 
   const deleteLayers = useCallback(() => {
     let newLiveLayers = { ...liveLayers };
@@ -299,7 +298,7 @@ export const SelectionTools = memo(({
         layersToDelete[id] = liveLayers[id];
     });
 
-    const command = new DeleteLayerCommand(selectedLayers, layersToDelete, liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, deleteLayer, addLayer, boardId, socket);
+    const command = new DeleteLayerCommand(selectedLayers, layersToDelete, liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, deleteLayer, addLayer, board, socket);
     performAction(command);
 
     selectedLayers.forEach((id) => {
@@ -308,7 +307,7 @@ export const SelectionTools = memo(({
 
     setLiveLayers(newLiveLayers);
     setLiveLayerIds(newLiveLayerIds);
-  }, [liveLayers, liveLayerIds, selectedLayers, socket, deleteLayer, boardId, setLiveLayers, setLiveLayerIds, performAction, addLayer, DeleteLayerCommand]);
+  }, [liveLayers, liveLayerIds, selectedLayers, socket, deleteLayer, board, setLiveLayers, setLiveLayerIds, performAction, addLayer, DeleteLayerCommand]);
 
   if (!selectionBounds) {
     return null;
@@ -335,7 +334,7 @@ export const SelectionTools = memo(({
           setLiveLayers={setLiveLayers}
           liveLayers={liveLayers}
           updateLayer={updateLayer}
-          boardId={boardId}
+          board={board}
           socket={socket}
         />
       )}
@@ -345,7 +344,7 @@ export const SelectionTools = memo(({
           setLiveLayers={setLiveLayers}
           liveLayers={liveLayers}
           updateLayer={updateLayer}
-          boardId={boardId}
+          board={board}
           socket={socket}
         />
       )}
@@ -355,7 +354,7 @@ export const SelectionTools = memo(({
           setLiveLayers={setLiveLayers}
           liveLayers={liveLayers}
           updateLayer={updateLayer}
-          boardId={boardId}
+          board={board}
           socket={socket}
         />
       )}

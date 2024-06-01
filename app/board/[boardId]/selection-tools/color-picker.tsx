@@ -62,8 +62,6 @@ export const ColorButton = ({
 }: ColorButtonProps) => {
 
   const isSelected = color.r === pathColor?.r && color.g === pathColor?.g && color.b === pathColor?.b && color.a === pathColor?.a;
-  console.log(isSelected)
-
   return (
     <button
       className="w-8 h-8 my-1 items-center flex justify-center transition mx-2"

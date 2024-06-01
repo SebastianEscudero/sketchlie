@@ -6,7 +6,7 @@ interface PathStokeSizeSelectionProps {
     setLiveLayers: (layers: any) => void;
     liveLayers: any;
     updateLayer: any;
-    boardId: string;
+    board: any;
     socket: Socket | null;
 };
 
@@ -15,7 +15,7 @@ export const PathStokeSizeSelection = ({
     setLiveLayers,
     liveLayers,
     updateLayer,
-    boardId,
+    board,
     socket,
 }: PathStokeSizeSelectionProps) => {
 
@@ -37,7 +37,7 @@ export const PathStokeSizeSelection = ({
 
         if (updatedIds.length > 0) {
             updateLayer({
-                boardId: boardId,
+                board: board,
                 layerId: updatedIds,
                 layerUpdates: updatedLayers
             });

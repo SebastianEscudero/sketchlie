@@ -208,7 +208,7 @@ export type User = {
 };
 
 export type UpdateLayerMutation = (args: {
-  boardId: string;
+  board: any;
   layerId: string;
   layerUpdates: Record<string, unknown>;
 }) => Promise<any>;
