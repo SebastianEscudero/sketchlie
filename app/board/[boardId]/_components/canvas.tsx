@@ -577,6 +577,7 @@ export const Canvas = ({
     const insertPath = useCallback(() => {
 
         if (org && liveLayerIds.length >= getMaxCapas(org)) {
+            setPencilDraft([]);
             proModal.onOpen(org._id);
             return;
         }
@@ -1502,6 +1503,8 @@ export const Canvas = ({
             }
         } else if (canvasState.mode === CanvasMode.Pencil) {
             document.body.style.cursor = 'url(/custom-cursors/pencil.svg) 2 18, auto';
+        } else if (canvasState.mode === CanvasMode.Translating) {
+            document.body.style.cursor = 'url(/custom-cursors/inserting.svg) 8 8, auto';
         } else if (canvasState.mode === CanvasMode.Highlighter) {
             document.body.style.cursor = 'url(/custom-cursors/highlighter.svg) 2 18, auto';
         } else if (canvasState.mode === CanvasMode.Laser) {
