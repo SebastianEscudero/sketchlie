@@ -41,11 +41,13 @@ export function pointerEventToCanvasPoint(
 };
 
 export function connectionIdToColor(connectionId: string): string {
-  let sum = 0;
-  for(let i = 0; i < connectionId.length; i++) {
-      sum += connectionId.charCodeAt(i);
+  let hash = 0;
+  for (let i = 0; i < connectionId.length; i++) {
+      hash = (hash << 5) - hash + connectionId.charCodeAt(i);
+      hash |= 0; // Convert to 32bit integer
   }
-  return COLORS[sum % COLORS.length];
+  const index = Math.abs(hash) % COLORS.length;
+  return COLORS[index];
 };
 
 
