@@ -19,8 +19,6 @@ export const Cursor = memo(({
     zoom = 1
 }: CursorProps) => {
 
-    console.log(zoom)
-
     if (!otherUserPresence) {
         return null;
     }
@@ -59,8 +57,8 @@ export const Cursor = memo(({
                         lineHeight: `${12 / zoom}px`,
                         paddingLeft: `${8 / zoom}px`,
                         paddingRight: `${8 / zoom}px`,
-                        paddingTop: `${2 / zoom}px`,
-                        paddingBottom: `${2 / zoom}px`,
+                        paddingTop: `${4 / zoom}px`,
+                        paddingBottom: `${4 / zoom}px`,
                         borderRadius: `${4 / zoom}px`,
                         marginTop: `${20 / zoom}px`,
                         marginBottom: 0

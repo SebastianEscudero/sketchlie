@@ -1448,6 +1448,7 @@ export const Canvas = () => {
             switch (e.key.toLocaleLowerCase()) {
                 case "z": {
                     if (e.ctrlKey || e.metaKey) {
+                        e.preventDefault();
                         if (e.shiftKey && redoStack.length > 0) {
                             redo();
                             return;
