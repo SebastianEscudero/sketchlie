@@ -21,10 +21,10 @@ interface TextProps {
     onRefChange?: (ref: React.RefObject<any>) => void;
 };
 
-const throttledUpdateLayer = throttle((updateLayer, socket, boardId, layerId, layerUpdates) => {
+const throttledUpdateLayer = throttle((updateLayer, socket, board, layerId, layerUpdates) => {
     if (updateLayer) {
       updateLayer({
-        boardId,
+        board,
         layerId,
         layerUpdates
       });
@@ -33,7 +33,7 @@ const throttledUpdateLayer = throttle((updateLayer, socket, boardId, layerId, la
     if (socket) {
       socket.emit('layer-update', layerId, layerUpdates);
     }
-  }, 1000); 
+  }, 1500); 
 
 
 export const Text = ({
@@ -89,7 +89,7 @@ export const Text = ({
             const layers = { ...liveLayers };
             layers[id] = newLayer;
             setLiveLayers(layers);
-            throttledUpdateLayer(updateLayer, socket, board._id, id, liveLayers[id]);
+            throttledUpdateLayer(updateLayer, socket, board, id, liveLayers[id]);
         }
     };
 

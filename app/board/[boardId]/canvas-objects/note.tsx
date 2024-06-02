@@ -22,10 +22,10 @@ interface NoteProps {
   onRefChange?: (ref: React.RefObject<any>) => void;
 };
 
-const throttledUpdateLayer = throttle((updateLayer, socket, boardId, layerId, layerUpdates) => {
+const throttledUpdateLayer = throttle((updateLayer, socket, board, layerId, layerUpdates) => {
   if (updateLayer) {
     updateLayer({
-      boardId,
+      board,
       layerId,
       layerUpdates
     });
@@ -34,7 +34,7 @@ const throttledUpdateLayer = throttle((updateLayer, socket, boardId, layerId, la
   if (socket) {
     socket.emit('layer-update', layerId, layerUpdates);
   }
-}, 1000);
+}, 1500);
 
 export const Note = ({
   layer,
@@ -63,7 +63,28 @@ export const Note = ({
       noteLayer.value = newValue;
       setValue(newValue);
       if (expired !== true) {
-        throttledUpdateLayer(updateLayer, socket, board._id, id, liveLayers[id]);
+        throttledUpdateLayer(updateLayer, socket, board, id, liveLayers[id]);
+      }
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const selection = window.getSelection();
+      if (selection && selection.rangeCount > 0) {
+        const range = selection.getRangeAt(0);
+        range.deleteContents();
+        const br = document.createElement('br');
+        range.insertNode(br);
+        // Create another <br> element
+        const extraBr = document.createElement('br');
+        range.insertNode(extraBr);
+        // Move the cursor to the new line
+        range.setStartAfter(extraBr);
+        range.collapse(true);
+        const newEvent = new Event('input', { bubbles: true });
+        e.currentTarget.dispatchEvent(newEvent);
       }
     }
   };
@@ -136,6 +157,7 @@ export const Note = ({
     >
       <ContentEditable
         innerRef={noteRef}
+        onKeyDown={handleKeyDown}
         html={value || ""}
         onChange={handleContentChange}
         onPaste={handlePaste}

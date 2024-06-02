@@ -16,7 +16,7 @@ interface SelectionBoxProps {
   camera: any;
 };
 
-const HANDLE_SIZE = 6;
+const HANDLE_SIZE = 8;
 const STROKE_WIDTH = 2.5;
 
 export const SelectionBox = memo(({
