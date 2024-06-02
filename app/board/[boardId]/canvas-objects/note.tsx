@@ -126,11 +126,11 @@ export const Note = ({
   };
 
   useEffect(() => {
-    if (noteRef.current) {
-        noteRef.current.focus();
+    if (onRefChange) {
+      onRefChange(noteRef);
     }
-}, []);
-
+  }, [layer]);
+  
   if (!fill) {
     return null;
   }

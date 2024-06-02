@@ -390,6 +390,7 @@ export const Canvas = () => {
             selection: [layerId]
         };
 
+        setShowingSelectionBox(true);
         setMyPresence(newPresence);
         setCanvasState({ mode: CanvasMode.None });
     }, [liveLayers, liveLayerIds, myPresence, socket, org, proModal, User.userId, setLiveLayers, setLiveLayerIds, board, addLayer]);
