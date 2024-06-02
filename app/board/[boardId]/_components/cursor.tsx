@@ -9,13 +9,17 @@ interface CursorProps {
     connectionId: string;
     otherUserPresence: Presence | null;
     otherUserName?: string;
+    zoom?: number;
 };
 
 export const Cursor = memo(({
     connectionId,
     otherUserPresence,
-    otherUserName
+    otherUserName,
+    zoom = 1
 }: CursorProps) => {
+
+    console.log(zoom)
 
     if (!otherUserPresence) {
         return null;
@@ -34,22 +38,36 @@ export const Cursor = memo(({
         <foreignObject
             x={x}
             y={y}
-            height={50}
-            width={name.length * 10 + 24}
+            height={50 / zoom}
+            width={(name.length * 10 + 24) / zoom}
             className="relative drop-shadow-md"
         >
-            <MousePointer2
-                className="h-5 w-5"
-                style={{
-                    fill: connectionIdToColor(connectionId),
-                    color: connectionIdToColor(connectionId),
-                }}
-            />
-            <div
-                className="rounded-md px-2 py-[1px] ml-4 mb-2 truncate text-xs text-white font-semibold inline-block"
-                style={{ backgroundColor: connectionIdToColor(connectionId) }}
-            >
-                {name}
+            <div className="flex"> {/* Add this div */}
+                <MousePointer2
+                    style={{
+                        fill: connectionIdToColor(connectionId),
+                        color: connectionIdToColor(connectionId),
+                        height: `${20 / zoom}px`,
+                        width: `${20 / zoom}px`,
+                    }}
+                />
+                <div
+                    className="truncate text-white font-semibold inline-block"
+                    style={{ 
+                        backgroundColor: connectionIdToColor(connectionId) ,
+                        fontSize: `${12 / zoom}px`,
+                        lineHeight: `${12 / zoom}px`,
+                        paddingLeft: `${8 / zoom}px`,
+                        paddingRight: `${8 / zoom}px`,
+                        paddingTop: `${2 / zoom}px`,
+                        paddingBottom: `${2 / zoom}px`,
+                        borderRadius: `${4 / zoom}px`,
+                        marginTop: `${20 / zoom}px`,
+                        marginBottom: 0
+                    }}
+                >
+                    {name}
+                </div>
             </div>
         </foreignObject>
     )

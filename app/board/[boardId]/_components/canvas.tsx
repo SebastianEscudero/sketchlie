@@ -1710,7 +1710,7 @@ export const Canvas = () => {
                             height={Math.abs(canvasState.origin.y - canvasState.current.y)}
                         />
                     )}
-                    {otherUsers && <CursorsPresence otherUsers={otherUsers} />}
+                    {otherUsers && <CursorsPresence otherUsers={otherUsers} zoom={zoom} />}
                     {
                         pencilDraft != null && pencilDraft.length > 0 && pencilDraft[0].length > 0 && !pencilDraft.some(array => array.some(isNaN)) && (
                             <Path

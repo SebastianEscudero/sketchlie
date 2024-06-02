@@ -6,15 +6,18 @@ import { Path } from "../canvas-objects/path";
 
 interface CursorsProps {
     otherUsers: User[];
+    zoom?: number;
 }
 
 const Cursors = ({
-    otherUsers
+    otherUsers,
+    zoom
 }: CursorsProps) => {
     return (
         <>
             {otherUsers.map((otherUser) => (
                 <Cursor
+                    zoom={zoom}
                     otherUserName = {otherUser.information?.name}
                     key={otherUser.userId}
                     connectionId={otherUser.userId}
@@ -52,11 +55,12 @@ const Drafts = ({
 
 export const CursorsPresence = memo(({
     otherUsers,
+    zoom,
 }: CursorsProps) => {
     return (
         <>
             <Drafts otherUsers={otherUsers} />
-            <Cursors otherUsers={otherUsers} />
+            <Cursors otherUsers={otherUsers} zoom={zoom} />
         </>
     );
 });
