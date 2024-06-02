@@ -79,15 +79,8 @@ export const Room = React.memo(({ children, roomId, fallback, userInfo, board }:
 
     socket.emit('register', User.userId, User.information.name, User.information.picture);
 
-    window.onbeforeunload = () => {
-      socket.emit('user-disconnect', User.userId);
-    }
-
-    //todo correctly remove on ipads and mobile
-
     return () => {
       socket.off('users');
-      socket.emit('user-disconnect', User.userId); // Emit 'user-disconnect' event when cleaning up
     };
   }, [socket, User]);
 
