@@ -534,6 +534,10 @@ export const Canvas = ({
     }, []);
 
     const startDrawing = useCallback((point: Point, pressure: number) => {
+        if (activeTouches > 1) {
+            return;
+        }
+
         const pencilDraft: [number, number, number][] = [[point.x, point.y, pressure]];
         setPencilDraft(pencilDraft);
         const newPresence: Presence = {
@@ -542,7 +546,7 @@ export const Canvas = ({
         };
 
         setMyPresence(newPresence);
-    }, [myPresence, setMyPresence]);
+    }, [myPresence, setMyPresence, activeTouches]);
 
     const continueDrawing = useCallback((point: Point, e: React.PointerEvent) => {
         if (
@@ -826,6 +830,12 @@ export const Canvas = ({
             setStartPanPoint({ x: e.clientX, y: e.clientY });
             document.body.style.cursor = 'url(/custom-cursors/grab.svg) 8 8, auto';
         }
+
+        if (selectedLayersRef.current.length > 0) {
+            if (socket && expired !== true) {
+                socket.emit('layer-update', selectedLayersRef.current, liveLayers);
+            }
+        }
     }, [camera, canvasState.mode, setCanvasState, startDrawing, setIsPanning, setIsRightClickPanning, zoom, activeTouches, expired]);
 
 
@@ -1097,6 +1107,11 @@ export const Canvas = ({
             });
         }
 
+        if (selectedLayersRef.current.length === 0) {
+            if (socket && expired !== true) {
+                socket.emit('presence', null, User.userId);
+            }
+        }
     },
         [
             setCanvasState,
@@ -1130,7 +1145,7 @@ export const Canvas = ({
         setMyPresence(newPresence);
 
         if (socket && expired !== true) {
-            socket.emit('presence', null, User.userId);
+            socket.emit('presence', newPresence, User.userId);
         }
     }, [setMyPresence, myPresence, socket, User.userId]);
 
@@ -1186,6 +1201,11 @@ export const Canvas = ({
         setMyPresence(newPresence);
 
         selectedLayersRef.current = [layerId];
+
+        if (socket) {
+            socket.emit('presence', newPresence, User.userId);
+        }
+
     }, [selectedLayersRef]);
 
     const layerIdsToColorSelection = useMemo(() => {

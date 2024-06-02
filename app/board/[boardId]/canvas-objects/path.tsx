@@ -27,6 +27,10 @@ export const Path = ({
 }: PathProps) => {
 
     const isTransparent = fill === 'rgba(0,0,0,0)';
+    const isHalfTransparent = /rgba\(\d+,\s*\d+,\s*\d+,\s*0.5\)/.test(fill);
+
+    console.log(isHalfTransparent)
+    console.log(stroke)
 
     return (
         <path
@@ -45,8 +49,7 @@ export const Path = ({
             }}
             x={0}
             y={0}
-            fill={isTransparent ? '#000' : fill}
-            stroke={stroke}
+            fill={stroke ? `${stroke}80` : (isTransparent ? '#000' : fill)}
             strokeWidth={strokeSize ?? 1 / (zoomRef?.current ?? 1)**(2)}
             />
     );
