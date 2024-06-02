@@ -58,7 +58,7 @@ const BoardIdPage = ({
 
   return (
     <Room roomId={params.boardId} board={board} userInfo={user} fallback={<Loading />}>
-      <Canvas boardId={params.boardId} />
+      <Canvas/>
     </Room>
   );
 };

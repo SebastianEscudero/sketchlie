@@ -232,13 +232,7 @@ if (typeof window !== 'undefined') {
 const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 const nanoid = customAlphabet(alphabet, 21);
 
-interface CanvasProps {
-    boardId: any;
-};
-
-export const Canvas = ({
-    boardId,
-}: CanvasProps) => {
+export const Canvas = () => {
     const [isPenMenuOpen, setIsPenMenuOpen] = useState(false);
     const [isShapesMenuOpen, setIsShapesMenuOpen] = useState(false);
     const [isPenEraserSwitcherOpen, setIsPenEraserSwitcherOpen] = useState(false);
@@ -1001,6 +995,12 @@ export const Canvas = ({
             setSelectedImage("");
             insertImage(LayerType.Image, point, selectedImage);
         } else if (canvasState.mode === CanvasMode.Inserting && canvasState.layerType !== LayerType.Image) {
+
+            if (e.button === 2 || e.button === 1) {
+                document.body.style.cursor = 'url(/custom-cursors/inserting.svg) 12 12, auto';
+                return;
+            }
+
             const layerType = canvasState.layerType;
             setIsPanning(false);
             if (isPanning && currentPreviewLayer) {
@@ -1534,8 +1534,6 @@ export const Canvas = ({
             }
         } else if (canvasState.mode === CanvasMode.Pencil) {
             document.body.style.cursor = 'url(/custom-cursors/pencil.svg) 2 18, auto';
-        } else if (canvasState.mode === CanvasMode.Translating) {
-            document.body.style.cursor = 'url(/custom-cursors/inserting.svg) 8 8, auto';
         } else if (canvasState.mode === CanvasMode.Highlighter) {
             document.body.style.cursor = 'url(/custom-cursors/highlighter.svg) 2 18, auto';
         } else if (canvasState.mode === CanvasMode.Laser) {
