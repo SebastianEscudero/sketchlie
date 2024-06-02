@@ -1146,7 +1146,7 @@ export const Canvas = ({
                     setLiveLayerIds,
                     deleteLayer,
                     addLayer,
-                    board._id,
+                    board,
                     socket
                 );
                 performAction(command);

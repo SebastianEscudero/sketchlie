@@ -8,6 +8,7 @@ import { useRenameModal } from "@/store/use-rename-modal";
 import { Menu, Zap } from "lucide-react";
 import { Actions } from "@/components/actions";
 import { useProModal } from "@/hooks/use-pro-modal";
+import { useCurrentUser } from "@/hooks/use-current-user";
 
 interface InfoProps {
     board: any;
@@ -31,6 +32,8 @@ export const Info = ({
     const { onOpen } = useRenameModal();
     const proModal = useProModal();
     const orgId = board.orgId;
+    const user = useCurrentUser();
+    const usersRole = org.users.find((u: any) => u.id === user?.id)?.role;
 
     if (!board) return <InfoSkeleton />;
 
@@ -55,7 +58,7 @@ export const Info = ({
                 |
             </div>
                 <Hint label="Edit title" side="bottom" sideOffset={10}>
-                    <Button variant="board" className="text-base px-2 sm:max-w-[200px] md:max-w-[400px] max-w-[80px] overflow-hidden relative xs:flex hidden" onClick={() => onOpen(board._id, board.title)}>
+                    <Button disabled={usersRole !== 'Admin'} variant="board" className="text-base px-2 sm:max-w-[200px] md:max-w-[400px] max-w-[80px] overflow-hidden relative xs:flex hidden" onClick={() => onOpen(board._id, board.title)}>
                         <div className="w-full text-left truncate">
                             {board.title}
                         </div>
