@@ -13,7 +13,7 @@ export const LandingNavbar = () => {
                 <div className="flex items-center">
                     <MobileSidebar />
                     <Link href="/" className="flex items-center mr-2 ml-2">
-                        <div className="mr-4">
+                        <div className="mr-4 h-full w-full">
                             <Image
                                 height={65}
                                 width={65}

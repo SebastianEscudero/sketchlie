@@ -21,7 +21,7 @@ export const TemplatesSlider = () => {
 
     return (
         <div>
-            <h2 className="text-4xl font-roobert xl:mx-[10%] lg:mx-[7%] mx-[5%]">Explora nuestras plantillas</h2>
+            <h2 className="text-3xl lg:text-4xl font-roobert xl:mx-[10%] lg:mx-[7%] mx-[5%]">Explora nuestras plantillas</h2>
             <div className="relative">
                 <Button
                     className="px-2 absolute top-1/2 left-[8%] z-10 transform -translate-y-1/2  border border-black"
@@ -74,7 +74,7 @@ const TemplateInSlider = ({
                 alt={`Plantilla de ${name}`}
                 width={300}
                 height={300}
-                className="rounded-xl w-auto h-auto"
+                className="rounded-xl min-w-full h-48 w-[246px] md:h-56 md:w-[280px] lg:h-64 lg:w-[330px] xl:h-72 xl:w-[370px]"
             />
         </Link>
     )

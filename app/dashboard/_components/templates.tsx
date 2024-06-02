@@ -78,7 +78,7 @@ export const Templates = ({
                                 )}
                             >
                                 <Image
-                                    className="border rounded-md object-contain w-auto h-auto hover:border-custom-blue"
+                                    className="border rounded-md object-contain w-[130px] h-[101px] hover:border-custom-blue"
                                     src={`${template.image}`}
                                     alt={template.name}
                                     width={500}
