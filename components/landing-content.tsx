@@ -15,10 +15,12 @@ export const LandingContent = () => {
             <LandingVideo />
             <div id="about" className="md:my-14 lg:my-16 my-10">
                 <BlogSection
+                    alt="Landing"
                     title="El punto de encuentro entre la planificación y la ejecución."
                 />
             </div>
             <BlogSection
+                alt="Mapa de Proceso"
                 title="Tu próxima gran idea comienza aquí."
                 text="Te proporcionamos las herramientas necesarias para diseñar el futuro. Desde estrategias innovadoras hasta el desarrollo de productos y servicios, todo se simplifica cuando trabajas en un espacio sin límites como Sketchlie. Con nuestra plataforma, puedes transformar ideas abstractas en proyectos tangibles de manera fluida y eficiente. No esperes más para dar el primer paso hacia la realización de tus sueños."
                 img="/placeholders/mapa-de-procesos.png"
@@ -27,12 +29,14 @@ export const LandingContent = () => {
             <BlogSection
                 title="Desarrolla soluciones a medida para tus clientes."
                 text="Crea una cultura centrada en la satisfacción del cliente con un entorno colaborativo donde puedas generar, estructurar y compartir ideas con tu equipo, todo en un mismo lugar. En Sketchlie, no solo te proporcionamos las herramientas para desarrollar soluciones innovadoras, sino que también te brindamos el espacio y el apoyo necesario para convertirte en el héroe de tus clientes."
+                alt="Diagrama de Flujo"
                 img="/placeholders/diagrama-de-flujo.png"
                 side="right"
             />
             <BlogSection
                 title="Conecta toda tu empresa en un espacio seguro."
                 text="La seguridad es nuestra prioridad, puedes estar tranquilo sabiendo que tus datos están protegidos con las más altas medidas de seguridad empresarial. Nuestra plataforma utiliza tecnología de vanguardia respaldada por los estándares de seguridad más estrictos, lo que garantiza que tus ideas y proyectos estén protegidos en todo momento. Conéctate con confianza y haz realidad tus ambiciones empresariales con nosotros."
+                alt="Mapa mental"
                 img="/placeholders/mapa-mental.png"
                 side="right"
             />

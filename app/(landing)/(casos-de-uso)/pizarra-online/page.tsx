@@ -75,7 +75,7 @@ const LandingPage = () => {
                 title="La pizarra online para colaborar."
                 description="Sketchlie es una pizarra online rápida, gratuita y fácil de usar pensada para  ayudarte a colaborar con cualquier persona desde cualquier lugar."
                 cta="Crear tablero gratis"
-                alt="Pizarra online Image"
+                alt="Pizarra online"
                 img="/placeholders/pizarra-online.png"
             />
             <LogoSlider />
@@ -89,6 +89,7 @@ const LandingPage = () => {
             <BlogSection
                 title="La pizarra online para colaborar efectivamente"
                 text="En el contexto actual, donde la colaboración remota es esencial, contar con herramientas que faciliten el trabajo en equipo y fomenten la creatividad se ha vuelto fundamental. Nuestra pizarra online no solo permite a los equipos colaborar de manera efectiva, sino que también proporciona un entorno dinámico donde las ideas pueden fluir libremente y los proyectos pueden cobrar vida."
+                alt="Mapa mental"
                 img="/placeholders/mapa-mental.png"
                 side="right"
             />
@@ -96,6 +97,7 @@ const LandingPage = () => {
             <BlogSection
                 title="Colaboración en Tiempo Real"
                 text="Con Sketchlie, la colaboración en tiempo real es más que una posibilidad: es una realidad. Nuestra pizarra online permite a los usuarios trabajar juntos en proyectos de forma instantánea, lo que facilita la comunicación instantánea, la toma de decisiones ágil y la maximización de la eficiencia del equipo."
+                alt="Mapa de Proceso"
                 img="/placeholders/improve-performance.png"
                 side="right"
             />
@@ -103,6 +105,7 @@ const LandingPage = () => {
             <BlogSection
                 title="Planificación y Gestión de Proyectos"
                 text="Equipada con herramientas de planificación integradas, nuestra pizarra online simplifica la organización de tareas, la asignación de responsabilidades y el seguimiento del progreso del proyecto. Desde la creación de listas de tareas hasta la visualización de cronogramas, Sketchlie te ofrece todo lo que necesitas para gestionar tus proyectos de manera eficaz en un solo lugar."
+                alt="Diagrama de Flujo"
                 img="/placeholders/diagrama-de-flujo.png"
                 side="right"
             />
@@ -110,6 +113,7 @@ const LandingPage = () => {
             <BlogSection
                 title="La pizarra online única de Sketchlie."
                 text="Invita a colegas a tu pizarra online para sesiones de lluvia de ideas, toma de notas y seguimiento de proyectos. Comparte tu pantalla, realiza videoconferencias y aprovecha el modo de presentación para reuniones estimulantes. La rapidez y versatilidad de Sketchlie permiten que múltiples usuarios trabajen simultáneamente sin esfuerzo, convirtiendo cada sesión en una experiencia colaborativa inigualable."
+                alt="Mapa Conceptual"
                 img="/placeholders/mapa-conceptual-online.png"
                 side="right"
             />

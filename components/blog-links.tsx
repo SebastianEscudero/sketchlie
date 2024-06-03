@@ -23,11 +23,12 @@ export const BlogLinks = ({
             <Link
                 href={blogHref}
                 className="flex"
+                title={blogTitle}
             >
                 <Image 
                     className="rounded-md w-full"
                     src={blogImage}
-                    alt="Blog Image"
+                    alt={blogTitle}
                     width={1920}
                     height={1080}
                 />
@@ -45,6 +46,7 @@ export const BlogLinks = ({
                 <div className="mt-10">
                     <Link
                         href={blogHref}
+                        title={blogTitle}
                     >
                         <Button variant="auth">
                             Leer más

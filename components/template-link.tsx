@@ -17,11 +17,12 @@ export const TemplateLink = ({
             <Link
                 href={href}
                 className="flex"
+                title={name}
             >
                 <Image 
                     className="border border-black rounded-xl w-full"
                     src={image}
-                    alt="Blog Image"
+                    alt={name}
                     width={900}
                     height={700}
                 />

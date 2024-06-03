@@ -45,7 +45,7 @@ const LandingPage = () => {
                 </h1>
                 <Image
                     src="/placeholders/customer-journey-map.png"
-                    alt="Customer journey map Image"
+                    alt="Customer journey map"
                     width={1920}
                     height={1080}
                     className="rounded-2xl border border-black md:max-w-[60%] md:mt-0 mt-10"

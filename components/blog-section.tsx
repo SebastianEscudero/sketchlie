@@ -6,6 +6,7 @@ interface BlogSectionProps {
     title: string;
     text?: string | React.ReactNode;
     text2?: string | React.ReactNode;
+    alt?: string;
     img?: string;
     side?: 'left' | 'right';
 }
@@ -14,6 +15,7 @@ export const BlogSection = ({
     title,
     text,
     text2,
+    alt,
     img,
     side = 'right',
 }: BlogSectionProps) => {
@@ -21,10 +23,10 @@ export const BlogSection = ({
         <div className="flex-1 w-full border border-[#837D7C]">
             <Image
                 src={img}
-                alt="Logo"
+                alt={alt || 'Blog image'}
                 className="w-full"
-                width={1920}
-                height={1080}
+                width={1919}
+                height={1079}
             />
         </div>
     );

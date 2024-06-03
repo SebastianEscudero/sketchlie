@@ -100,7 +100,7 @@ const LandingPage = () => {
                 title="Creador de líneas de tiempo gratuito"
                 description="Crea una línea de tiempo con Sketchlie gratis, el mejor creador de líneas de tiempo. Explora nuestra plantilla de línea de tiempo para acelerar tu flujo de trabajo."
                 cta="Crear línea de tiempo"
-                alt="Linea de tiempo image"
+                alt="Linea de tiempo"
                 img="/placeholders/linea-de-tiempo.png"
             />
             <LogoSlider />
@@ -113,18 +113,21 @@ const LandingPage = () => {
                         Comienza seleccionando una <Link href="/plantillas/linea-de-tiempo" className="text-custom-blue" target="_blank">plantilla de línea de tiempo</Link> o creando una desde cero. Agrega eventos, fechas, descripciones y otros detalles para personalizar tu línea de tiempo
                     </>
                 }
+                alt="Mapa mental"
                 img="/placeholders/mapa-mental.png"
                 side="right"
             />
             <BlogSection
                 title="Visualiza tus eventos en orden cronológico"
                 text="En Sketchlie, damos vida a tus proyectos con líneas de tiempo dinámicas. Organiza tus tareas, fija plazos y presenta hitos de forma clara y atractiva. Ya sea para resumir reuniones, documentar procesos o presentar planes a clientes, nuestras líneas de tiempo son tu herramienta ideal."
+                alt="Mapa de Proceso"
                 img="/placeholders/improve-performance.png"
                 side="right"
             />
             <BlogSection
                 title="Crea una línea cronológica de manera sencilla."
                 text="Visualiza tu proyecto, evento o historia de manera clara y concisa con nuestro creador de líneas de tiempo. Crea un historial en minutos y personalízala con colores, fuentes y estilos para que se ajuste a tus necesidades. Comparte tu cronograma con otros para colaborar y comunicar de manera efectiva la secuencia de eventos."
+                alt="Diagrama de Flujo"
                 img="/placeholders/diagrama-de-flujo.png"
                 side="right"
             />

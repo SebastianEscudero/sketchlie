@@ -41,11 +41,12 @@ export const HeaderBlog = ({
             <Link
                 href={blogHref}
                 className="md:flex-grow md:max-w-[60%] bg-[#F5F5F5] flex items-center justify-center md:rounded-r-lg rounded-t-lg"
+                title={blogTitle}
             >
                 <Image 
                     className="rounded-lg w-full"
                     src={blogImage}
-                    alt="Blog Image"
+                    alt={blogTitle}
                     width={1920}
                     height={1080}
                 />

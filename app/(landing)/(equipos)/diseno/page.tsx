@@ -94,7 +94,7 @@ const LandingPage = () => {
                 title="La herramienta para diseñar experiencias de usuario (UX)"
                 description="Crea experiencias de usuario (UX) excepcionales con Sketchlie. Los diseñadores utilizan las herramientas de Sketchlie para bocetear ideas, crear prototipos y colaborar en tiempo real."
                 cta="Regístrate gratis"
-                alt="Diagrama Image"
+                alt="Diagrama"
                 img="/placeholders/customer-journey-map.png"
             />
             <LogoSlider />
@@ -106,6 +106,7 @@ const LandingPage = () => {
                         Analiza y mejora la experiencia del cliente con Customer Journey Maps. Estas herramientas visuales permiten a los equipos de diseño y marketing comprender mejor las necesidades y expectativas de los clientes en cada etapa de su interacción con la marca. Parte con nuestra <Link className="text-custom-blue hover:underline" href="/plantillas/customer-journey-map/">plantilla de customer journey map</Link> para acelerar el flujo de tu trabajo.
                     </>
                 }
+                alt="Wireframe"
                 img="/placeholders/wireframe.png"
                 side="right"
             />
@@ -117,6 +118,7 @@ const LandingPage = () => {
                     </>
                 }
                 text2="Intercambia comentarios, realiza ajustes y mejora la usabilidad de tus diseños con Sketchlie. Regístrate gratis y comienza a diseñar interfaces de usuario efectivas hoy mismo."
+                alt="Pizarra Online"
                 img="/placeholders/pizarra-online.png"
                 side="right"
             />

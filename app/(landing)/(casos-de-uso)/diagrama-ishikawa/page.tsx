@@ -120,18 +120,21 @@ const LandingPage = () => {
                         Puedes accelerar tu flujo de trabajo con nuestra <Link href="/plantillas/diagrama-ishikawa/" className="text-custom-blue hover:underline">plantilla de diagrama ishikawa</Link>. Puedes personalizar la plantilla con tus propios colores, fuentes y estilos para que se adapte a tus necesidades, encontrar soluciones pertinentes y escalables nunca había sido tan fácil.
                     </>
                 }
+                alt="Diagrama Ishikawa"
                 img="/templates/diagrama-ishikawa.png"
                 side="right"
             />
             <BlogSection
                 title="Colabora en tiempo real con tu equipo"
                 text="Sketchlie fue creado con el proposito de ser utilizado por equipos de todo el mundo. Nuestra plataforma en línea te permite colaborar con tu equipo en tiempo real, sin importar dónde se encuentren. Trabaja juntos en la creación de diagramas de espina de pescado, comparte ideas y comentarios, y toma decisiones informadas de manera rápida y eficiente."
+                alt="Mapa de Proceso"
                 img="/placeholders/improve-performance.png"
                 side="right"
             />
             <BlogSection
                 title="Crea un Diagrama de Flujo Online de Forma Intuitiva con Sketchlie"
                 text="Descubre cómo crear diagramas de flujo de manera intuitiva y colaborativa con Sketchlie. Nuestra plataforma en línea te ofrece herramientas poderosas para visualizar procesos, organizar información y colaborar con tu equipo en tiempo real. Simplifica la comunicación y la planificación de proyectos con nuestras funciones intuitivas y fáciles de usar. ¡Comienza a mapear tus flujos hoy mismo con Sketchlie!"
+                alt="Diagrama de Flujo"
                 img="/placeholders/diagrama-de-flujo.png"
                 side="right"
             />

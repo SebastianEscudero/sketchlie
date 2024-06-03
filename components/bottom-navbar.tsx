@@ -185,7 +185,7 @@ export const BotNavbar = () => {
                     <p className="mx-[10%]">
                         Sé parte de la comunidad que impulsa la innovación y la colaboración con Sketchlie. Regístrate ahora con tu correo electrónico laboral y comienza a transformar tus ideas en realidad.
                     </p>
-                    <Link href={"/dashboard/"}>
+                    <Link href={"/dashboard/"} title="Regístrate gratis">
                         <Button variant="auth" className="text-lg p-6 mt-10">
                             Regístrate gratis
                         </Button>
@@ -197,25 +197,25 @@ export const BotNavbar = () => {
                 <nav className="flex flex-col">
                     <h3 className="font-bold mb-2">Soluciones</h3>
                     {porCasoDeUso.map((component, index) => (
-                        <Link key={index} href={component.href}><Button variant={pathname === component.href ? 'secondary' : 'ghostDark'} className="my-1 text-lg">{component.title}</Button></Link>
+                        <Link key={index} title={component.title} href={component.href}><Button variant={pathname === component.href ? 'secondary' : 'ghostDark'} className="my-1 text-lg">{component.title}</Button></Link>
                     ))}
                 </nav>
                 <nav className="flex flex-col">
                     <h3 className="font-bold mb-2">Equipos</h3>
                     {porEquipo.map((component, index) => (
-                        <Link key={index} href={component.href}><Button variant={pathname === component.href ? 'secondary' : 'ghostDark'} className="my-1 text-lg">{component.title}</Button></Link>
+                        <Link key={index} title={component.title} href={component.href}><Button variant={pathname === component.href ? 'secondary' : 'ghostDark'} className="my-1 text-lg">{component.title}</Button></Link>
                     ))}
                 </nav>
                 <nav className="flex flex-col">
                     <h3 className="font-bold mb-2">Recursos</h3>
                     {Recursos.map((recurso, index) => (
-                        <Link key={index} href={recurso.href}><Button variant={pathname === recurso.href ? 'secondary' : 'ghostDark'} className="my-1 text-lg">{recurso.title}</Button></Link>
+                        <Link key={index} title={recurso.title} href={recurso.href}><Button variant={pathname === recurso.href ? 'secondary' : 'ghostDark'} className="my-1 text-lg">{recurso.title}</Button></Link>
                     ))}
                 </nav>
                 <nav className="flex flex-col">
                     <h3 className="font-bold mb-2">Contenido Informativo</h3>
                     {queEs.map((component, index) => (
-                        <Link key={index} href={component.href}><Button variant={pathname === component.href ? 'secondary' : 'ghostDark'} className="my-1 text-lg">¿Qué es un {component.title}</Button></Link>
+                        <Link key={index} title={component.title} href={component.href}><Button variant={pathname === component.href ? 'secondary' : 'ghostDark'} className="my-1 text-lg">¿Qué es un {component.title}</Button></Link>
                     ))}
                 </nav>
             </div>
@@ -242,6 +242,7 @@ export const BotNavbar = () => {
                             <Link
                                 key={component.title}
                                 href={component.href}
+                                title={component.title}
                             >
                                 <Button
                                     className='w-full justify-start my-[2px] text-[16px]'
@@ -260,6 +261,7 @@ export const BotNavbar = () => {
                                 <Link
                                     key={component.title}
                                     href={component.href}
+                                    title={component.title}
                                 >
                                     <Button
                                         className='w-full justify-start my-[2px] text-[16px]'
@@ -278,6 +280,7 @@ export const BotNavbar = () => {
                                 <Link
                                     key={recurso.title}
                                     href={recurso.href}
+                                    title={recurso.title}
                                 >
                                     <Button
                                         className='w-full justify-start my-[2px] text-[16px]'
@@ -293,12 +296,13 @@ export const BotNavbar = () => {
                     <Link
                         className="py-[9.5px] text-lg hover:underline ml-5"
                         href="/pricing/"
+                        title="Precios"
                     >
                         <Button
                             className='w-full justify-start gap-1 text-lg font-semibold'
                             variant={pathname === "/pricing/" ? 'secondary' : 'ghostDark'}
                         >
-                            Precios  🚧
+                            Precios
                         </Button>
                     </Link>
                 </div>
@@ -307,6 +311,7 @@ export const BotNavbar = () => {
                 <Link
                     href="/dashboard/"
                     className="flex justify-center"
+                    title="Sketchlie"
                 >
                     <Image
                         src="/logo.svg"
@@ -319,16 +324,16 @@ export const BotNavbar = () => {
                     </p>
                 </Link>
                 <div className="flex items-center flex-row justify-center space-x-4 mt-4">
-                    <Link href="https://www.facebook.com/people/Sketchlie/61558420300592/" target="_blank" aria-label="Sketchlie on Facebook">
+                    <Link href="https://www.facebook.com/people/Sketchlie/61558420300592/" target="_blank" aria-label="Sketchlie on Facebook" title="Sketchlie on Facebook">
                         <FaFacebook className="text-2xl ml-2" />
                     </Link>
-                    <Link href="https://twitter.com/sketchlieteam" target="_blank" aria-label="Sketchlie on Twitter">
+                    <Link href="https://twitter.com/sketchlieteam" target="_blank" aria-label="Sketchlie on Twitter" title="Sketchlie on Twitter">
                         <FaTwitter className="text-2xl ml-2" />
                     </Link>
-                    <Link href="https://www.linkedin.com/company/sketchlie" target="_blank" aria-label="Sketchlie on LinkedIn">
+                    <Link href="https://www.linkedin.com/company/sketchlie" target="_blank" aria-label="Sketchlie on LinkedIn" title="Sketchlie on LinkedIn">
                         <FaLinkedin className="text-2xl ml-2" />
                     </Link>
-                    <Link href="http://www.instagram.com/sketchlieux" target="_blank" aria-label="Sketchlie on Instagram">
+                    <Link href="http://www.instagram.com/sketchlieux" target="_blank" aria-label="Sketchlie on Instagram" title="Sketchlie on Instagram">
                         <FaInstagram className="text-2xl ml-2" />
                     </Link>
                 </div>

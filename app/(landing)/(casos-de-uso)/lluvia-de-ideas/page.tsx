@@ -113,7 +113,7 @@ const LandingPage = () => {
                 title="Realiza una lluvia de ideas efectiva"
                 description="Una sesión de lluvia de ideas es un proceso grupal para generar ideas sobre un tema. Se sigue un proceso estructurado que incluye la identificación del problema, la generación de ideas y la selección de las más prometedoras para su desarrollo. Esto fomenta la creatividad y la innovación en diferentes contextos."
                 cta="Empieza hoy gratis"
-                alt="Lluvia de Ideas Image"
+                alt="Lluvia de Ideas"
                 img="/placeholders/lluvia-de-ideas.png"
             />
             <LogoSlider />
@@ -125,6 +125,7 @@ const LandingPage = () => {
                         Descubre cómo transformar conceptos complejos en ideas claras y creativas con una sesión de lluvia de ideas online. Utiliza la plataforma de Sketchlie para estructurar y capturar todas las ideas de tu equipo, ya sea para desarrollar un nuevo producto o para enriquecer una lección en clase. Aprovecha las herramientas de diseño disponibles como nuestra <Link href="/plantillas/lluvia-de-ideas/" className="text-custom-blue hover:underline">plantilla de lluvia de ideas</Link> para generar ideas innovadoras y cautivar a tu audiencia con soluciones únicas.
                     </>
                 }
+                alt="Wireframe"
                 img="/placeholders/wireframe.png"
                 side="right"
             />
@@ -132,6 +133,7 @@ const LandingPage = () => {
                 title="Organiza una sesión de lluvia de ideas efectiva"
                 text="Preparar una sesión de lluvia de ideas efectiva es clave para inspirar la creatividad y el pensamiento innovador en tu equipo. Con Sketchlie, simplifica este proceso al ofrecer una amplia gama de herramientas y funciones que facilitan la generación y captura de ideas."
                 text2="Una vez finalizada la sesión, comparte fácilmente tus ideas utilizando el modo de presentación integrado en la plataforma. Además, características avanzadas como formatos condicionales y vinculación de datos garantizan una representación clara y organizada de las ideas."
+                alt="Mapa mental"
                 img="/placeholders/mapa-mental.png"
                 side="right"
             />
@@ -139,12 +141,14 @@ const LandingPage = () => {
                 title="Convierte lluvias de ideas en soluciones innovadoras"
                 text="En Sketchlie, colaborar se vuelve simple, permitiendo compartir y trabajar en tiempo real con otros usuarios sin complicaciones. Al estar basado en la nube, ofrece una experiencia fluida y sin obstáculos, lo que facilita la colaboración entre equipos distribuidos geográficamente."
                 text2="Con nosotros, es posible crear, compartir y colaborar en lluvias de ideas de manera eficiente y efectiva, mejorando significativamente el flujo de trabajo en la creación de soluciones."
+                alt="Mapa de Proceso"
                 img="/placeholders/improve-performance.png"
                 side="right"
             />
             <BlogSection
                 title="Captura y da forma a tus ideas"
                 text="Eleva la colaboración a un nivel superior, desde sesiones de lluvia de ideas hasta reuniones de seguimiento de proyectos, esta herramienta versátil y fácil de usar está diseñada para potenciar la creatividad y la productividad de tu equipo. Únete a la revolución de la colaboración online con Sketchlie y optimiza tus sesiones de lluvias de ideas."
+                alt="Pizarra Online"
                 img="/placeholders/pizarra-online.png"
                 side="right"
             />

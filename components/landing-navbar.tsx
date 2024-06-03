@@ -19,6 +19,7 @@ export const LandingNavbar = () => {
                                 width={65}
                                 alt="Logo"
                                 src="/logo.svg"    
+                                loading="lazy"
                             />
                         </div>
                         <p className="text-2xl font-bold text-[#38322C] font-roobert">

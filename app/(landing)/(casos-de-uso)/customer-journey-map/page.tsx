@@ -101,7 +101,7 @@ const LandingPage = () => {
                 title="Crea tu customer journey map online"
                 description="Un customer journey map o mapa de experiencia del cliente es una representación visual del proceso por el que pasa un cliente, desde que descubre su producto o servicio hasta que se convierte en cliente leal. Esto permite identificar oportunidades para mejorar la experiencia del cliente y optimizar los procesos empresariales."
                 cta="Crear CJA gratis"
-                alt="Customer journey map Image"
+                alt="Customer journey map"
                 img="/placeholders/customer-journey-map.png"
             />
             <LogoSlider />
@@ -114,24 +114,28 @@ const LandingPage = () => {
                     </>
                 }
                 text2="Al optimizar los procesos internos en función de estos mapas, las empresas pueden ofrecer una experiencia más satisfactoria, lo que puede conducir a una mayor lealtad del cliente, mayores conversiones y una ventaja competitiva en el mercado."
+                alt="Lluvia de Ideas"
                 img="/placeholders/lluvia-de-ideas.png"
                 side="right"
             />
             <BlogSection
                 title="Mejora tus procesos para tus clientes"
                 text="Los customer journey maps ofrecen una visión detallada del proceso de interacción del cliente con la empresa. Al identificar puntos críticos y oportunidades para mejorar, permiten ajustar los procesos internos para satisfacer mejor las necesidades del cliente."
+                alt="Mapa mental"
                 img="/placeholders/mapa-mental.png"
                 side="right"
             />
             <BlogSection
                 title="La eficiencia es la clave"
                 text="Estos mapas revelan dónde y cómo los clientes interactúan con la marca, facilitando una comprensión más profunda de sus expectativas. Ayudan a identificar puntos de fricción y áreas de mejora específicas, lo que permite implementar cambios centrados en el cliente. En última instancia, esto conduce a una experiencia del cliente más fluida y satisfactoria."
+                alt="Mapa de Proceso"
                 img="/placeholders/improve-performance.png"
                 side="right"
             />
             <BlogSection
                 title="Haz customer journey maps efectivo"
                 text="Crear customer journey maps con Sketchlie es simple y efectivo. Con esta plataforma, puedes visualizar fácilmente el proceso completo de interacción del cliente con tu empresa, desde el descubrimiento hasta la postventa. Sketchlie te permite identificar puntos críticos y oportunidades de mejora en la experiencia del cliente de manera clara y colaborativa. Además, puedes compartir y colaborar en tiempo real con tu equipo para implementar cambios específicos y centrados en el cliente."
+                alt="Pizarra Online"
                 img="/placeholders/pizarra-online.png"
                 side="right"
             />

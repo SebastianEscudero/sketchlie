@@ -27,9 +27,8 @@ export const BlogStructure = ({
                 src={img}
                 alt={alt}
                 className="w-full rounded-sm"
-                width={1920}
-                height={1080}
-                loading="eager"
+                width={1919}
+                height={1079}
                 priority
             />
         </div>
@@ -62,7 +61,7 @@ export const BlogStructure = ({
                     {description}
                 </p>
                 <div>
-                    <Link href={"/auth/register/"}>
+                    <Link href={"/auth/register/"} title={cta}>
                         <Button variant="auth" className="p-6 text-lg w-full md:w-auto">
                             {cta}
                         </Button>

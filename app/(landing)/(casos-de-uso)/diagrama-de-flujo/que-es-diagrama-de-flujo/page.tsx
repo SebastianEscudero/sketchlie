@@ -45,7 +45,7 @@ const LandingPage = () => {
                 </h1>
                 <Image
                     src="/placeholders/mapa-conceptual.png"
-                    alt="Diagrama de Flujo Image"
+                    alt="Diagrama de Flujo"
                     width={1920}
                     height={1080}
                     className="rounded-2xl border border-black md:max-w-[60%] md:mt-0 mt-10"

@@ -110,7 +110,7 @@ const LandingPage = () => {
                 title="Crea diagramas online en minutos, no horas"
                 description="Los diagramas son recursos esenciales que facilitan la organización y visualización de información de forma efectiva. Se componen de nodos que representan conceptos o ideas, conectados por enlaces que ilustran las relaciones entre ellos."
                 cta="Crear diagrama"
-                alt="Diagrama Image"
+                alt="Diagrama"
                 img="/placeholders/mapa-conceptual-online.png"
             />
             <LogoSlider />
@@ -118,6 +118,7 @@ const LandingPage = () => {
             <BlogSection
                 title="Creador de diagramas online"
                 text="Descubre la forma perfecta para transformar conceptos complejos en un diagrama online digerible para ti, tus alumnos o tu equipo. Haz un diagrama de cualquier tema o de tu investigación para cualquier ocasión, ya sea sobre un nuevo producto de tu empresa o para presentar una lección abrumadora en clase. Estructura un diagrama online creativo a partir de la pizarra online de Sketchlie y aprovecha todas las herramientas y elementos de diseño y cautiva a tu publico."
+                alt="Wireframe"
                 img="/placeholders/wireframe.png"
                 side="right"
             />
@@ -125,6 +126,7 @@ const LandingPage = () => {
                 title="Diagramas online para todos"
                 text="Sketchlie simplifica el proceso de creación de diagramas al ofrecer una amplia variedad de figuras estándar y herramientas avanzadas. Su editor intuitivo permite diseñar diagramas profesionales y efectivos en poco tiempo."
                 text2="Una vez finalizado el trabajo, es posible presentarlo fácilmente utilizando el modo de presentación integrado en la plataforma. Además, las características avanzadas como formatos condicionales y vinculación de datos facilitan la captura de información de manera clara, incluso en diagramas complejos."
+                alt="Mapa mental"
                 img="/placeholders/mapa-mental.png"
                 side="right"
             />
@@ -132,12 +134,14 @@ const LandingPage = () => {
                 title="Haz diagramas complejos con facilidad"
                 text="En Sketchlie, colaborar se vuelve simple, permitiendo compartir y trabajar en tiempo real con otros usuarios sin complicaciones. Al estar basado en la nube, ofrece una experiencia fluida y sin obstáculos, lo que facilita la colaboración entre equipos distribuidos geográficamente."
                 text2="Con nosotros, es posible crear, compartir y colaborar en diagramas de manera eficiente y efectiva, mejorando significativamente el flujo de trabajo en la creación de diagramas online."
+                alt="Mapa de Proceso"
                 img="/placeholders/improve-performance.png"
                 side="right"
             />
             <BlogSection
                 title="Anota las ideas y ponlas en práctica"
                 text="Lleva la colaboración a un nivel completamente nuevo. Desde sesiones de lluvia de ideas hasta reuniones de seguimiento de proyectos, esta herramienta versátil y fácil de usar está diseñada para potenciar la creatividad y la productividad de tu equipo. Únete a la revolución de la colaboración online con Sketchlie. Haz clic para crear diagramas en línea y compartirlos con tu equipo en tiempo real."
+                alt="Pizarra Online"
                 img="/placeholders/pizarra-online.png"
                 side="right"
             />

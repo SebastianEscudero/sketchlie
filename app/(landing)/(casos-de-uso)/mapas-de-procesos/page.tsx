@@ -95,7 +95,7 @@ const LandingPage = () => {
                 title="Optimiza tus flujos de trabajo con mapas de procesos"
                 description="Libera tu imaginación y organiza tus ideas de manera visual con nuestra herramienta para crear mapas mentales en línea. Descubre cómo el diseño de mapas mentales puede potenciar tu creatividad y mejorar tu productividad en proyectos personales y profesionales."
                 cta="Crear mapa de procesos"
-                alt="Mapa de Procesos Image"
+                alt="Mapa de Procesos"
                 img="/placeholders/mapa-de-procesos.png"
             />
             <LogoSlider />
@@ -113,24 +113,28 @@ const LandingPage = () => {
                         Con la <Link href="/plantillas/mapa-de-proceso/" className="text-custom-blue hover:underline">plantilla de mapa de proceso</Link> de Sketchlie, puedes crear mapas de procesos colaborativos que involucren a todo tu equipo. Esto fomenta la transparencia en tus operaciones y facilita la comunicación entre departamentos, lo que lleva a una mayor cohesión y eficacia en el cumplimiento de los objetivos.
                     </>
                 }
+                alt="Wireframe"
                 img="/placeholders/wireframe.png"
                 side="right"
             />
             <BlogSection
                 title="Reduce errores y minimiza riesgos"
                 text="Al visualizar tus procesos, puedes identificar fácilmente posibles puntos de error y tomar medidas preventivas para mitigar riesgos. La claridad proporcionada por los mapas de procesos ayuda a minimizar los errores y garantiza una ejecución más fluida y precisa de las tareas."
+                alt="Mapa de Proceso"
                 img="/placeholders/improve-performance.png"
                 side="right"
             />
             <BlogSection
                 title="Impulsa la innovación y la mejora continua"
                 text="Al comprender completamente tus procesos actuales, puedes identificar áreas para la innovación y la mejora continua. Los mapas de procesos te brindan una visión holística de tus operaciones, lo que te permite desarrollar nuevas ideas y estrategias para mantener la competitividad en un mercado en constante cambio."
+                alt="Diagrama de Flujo"
                 img="/placeholders/diagrama-de-flujo.png"
                 side="right"
             />
             <BlogSection
                 title="Maximiza la productividad del equipo"
                 text="Al simplificar y optimizar tus flujos de trabajo mediante mapas de procesos, puedes aumentar la productividad de tu equipo. Elimina la confusión y la redundancia, permitiendo que tus empleados se centren en tareas de mayor valor añadido y alcancen sus metas con mayor rapidez."
+                alt="Pizarra Online"
                 img="/placeholders/pizarra-online.png"
                 side="right"
             />
