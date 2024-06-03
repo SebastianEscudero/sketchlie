@@ -331,13 +331,6 @@ export const exportToPNG = async (title: string) => {
 
   // Set the background color and image
   screenShot.style.backgroundColor = '#F4F4F4';
-  screenShot.style.backgroundImage = "url(/dot-grid.png)";
-  screenShot.style.backgroundSize = 'cover';
-
-  // Create a new image and wait for it to load
-  const img = new Image();
-  img.src = "/dot-grid.png";
-  await new Promise((resolve) => img.onload = resolve);
 
   // Now that the image is loaded, take the screenshot
   toPng(screenShot, { quality: 1 }).then((dataUrl) => {

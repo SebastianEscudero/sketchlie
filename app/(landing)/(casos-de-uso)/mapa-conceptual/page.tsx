@@ -21,7 +21,7 @@ import { TemplatesSlider } from "@/components/templates-slider";
 export const metadata: Metadata = {
     title: "Crea tu mapa conceptual online gratis | Sketchlie",
     description: "Crea mapas conceptuales de forma gratuita con Sketchlie. Comienza ahora y colabora con tu equipo en el diseño de mapas conceptuales.",
-    keywords: ["mapa conceptual", "mapa conceptual online", "mapa conceptual gratis", "mapas conceptuales online"],
+    keywords: ["mapa conceptual", "mapa conceptual online", "mapa conceptual gratis", "mapas conceptuales online", "mapas conceptuales gratis", "mapa conceptual colaborativo", "mapa conceptual en línea", "mapa conceptual en tiempo real", "mapa conceptual herramienta", "mapa conceptual software", "mapa conceptual digital", "mapa conceptual interactivo", "mapa conceptual creativo", "mapa conceptual educativo", "mapa conceptual empresarial", "mapa conceptual de estudio", "mapa conceptual de investigación", "mapa conceptual de proyecto", "mapa conceptual de presentación", "mapa conceptual de planificación", "mapa conceptual de toma de decisiones", "mapa conceptual de comunicación", "mapa conceptual de creatividad", "mapa conceptual de colaboración", "mapa conceptual de organización", "mapa conceptual de representación visual", "mapa conceptual de estructura jerárquica", "mapa conceptual de relaciones", "mapa conceptual de categorización", "mapa conceptual de simplificación", "mapa conceptual de flexibilidad", "mapa conceptual de claridad", "mapa conceptual de comprensión", "mapa conceptual de comunicación efectiva", "mapa conceptual de estudio y repaso", "mapa conceptual de planificación de proyectos", "mapa conceptual de toma de decisiones informadas", "mapa conceptual de comunicación clara", "mapa conceptual de presentaciones", "mapa conceptual de informes", "mapa conceptual de reuniones", "mapa conceptual de creatividad y productividad", "mapa conceptual de colaboración en tiempo real", "mapa conceptual de organización y estructura", "mapa conceptual de representación visual y comprensible", "mapa conceptual de herramienta efectiva", "mapa conceptual de herramienta versátil", "mapa conceptual de herramienta poderosa", "mapa conceptual de herramienta online", "mapa conceptual de herramienta gratuita", "mapa conceptual de herramienta colaborativa", "mapa conceptual de herramienta creativa", "mapa conceptual de herramienta educativa", "mapa conceptual de herramienta empresarial", "mapa conceptual de herramienta de estudio", "mapa conceptual de herramienta de investigación", "mapa conceptual de herramienta de proyecto", "mapa conceptual de herramienta de presentación", "mapa conceptual de herramienta de planificación", "mapa conceptual de herramienta de toma de decisiones", "mapa conceptual"],
     alternates: {
         canonical: "https://www.sketchlie.com/mapa-conceptual/",
     }
@@ -106,8 +106,8 @@ const LandingPage = () => {
                 </BreadcrumbList>
             </Breadcrumb>
             <BlogStructure
-                title="Creador de Mapas Conceptuales Online"
-                description="Los mapas conceptuales son valiosas herramientas que permiten organizar y representar información de manera visual. Consisten en una estructura compuesta por nodos, que representan conceptos o ideas, y enlaces que muestran las relaciones entre estos conceptos."
+                title="Creador de Mapas Conceptuales"
+                description="Los mapas conceptuales son valiosas herramientas que permiten organizar y representar información de manera visual."
                 cta="Crear mapa conceptual"
                 alt="Mapa conceptual"
                 img="/placeholders/mapa-conceptual-online.png"

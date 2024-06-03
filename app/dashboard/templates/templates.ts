@@ -10,7 +10,6 @@ import { PlantillaMapaDeProceso } from "./mapa-de-proceso";
 import { PlantillaMapaMental } from "./mapa-mental";
 
 
-export const templates = [PlantillaMapaConceptual, PlantillaDiagramaDeFlujo, PlantillaCustomerJourneyMap,
-    PlantillaMapaMental, PlantillaLluviaDeIdeas, PlantillaLowFidelityWireframe, PlantillaMapaDeProceso,
-    PlantillaDiagrama, PlantillaLineaDeTiempo, PlantillaDiagramaIshikawa,
+export const templates = [PlantillaMapaConceptual, PlantillaDiagramaDeFlujo, PlantillaCustomerJourneyMap, PlantillaLluviaDeIdeas, PlantillaLowFidelityWireframe, PlantillaMapaDeProceso,
+    PlantillaDiagrama, PlantillaLineaDeTiempo, PlantillaMapaMental, PlantillaDiagramaIshikawa,
 ];

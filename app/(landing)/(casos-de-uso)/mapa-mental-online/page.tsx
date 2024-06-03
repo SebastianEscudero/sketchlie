@@ -89,7 +89,7 @@ const LandingPage = () => {
                 </BreadcrumbList>
             </Breadcrumb>
             <BlogStructure
-                title="Crea Mapas Mentales Online de Forma Creativa"
+                title="Herramienta para crear Mapas Mentales"
                 description="Libera tu imaginación y organiza tus ideas de manera visual con nuestra herramienta para crear mapas mentales en línea. Descubre cómo el diseño de mapas mentales puede potenciar tu creatividad y mejorar tu productividad en proyectos personales y profesionales."
                 cta="Crear mapa mental"
                 alt="Mapa mental"

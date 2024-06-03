@@ -107,7 +107,7 @@ const LandingPage = () => {
                 </BreadcrumbList>
             </Breadcrumb>
             <BlogStructure
-                title="Crea diagramas online en minutos, no horas"
+                title="Creador de diagramas online"
                 description="Los diagramas son recursos esenciales que facilitan la organización y visualización de información de forma efectiva. Se componen de nodos que representan conceptos o ideas, conectados por enlaces que ilustran las relaciones entre ellos."
                 cta="Crear diagrama"
                 alt="Diagrama"
@@ -116,7 +116,7 @@ const LandingPage = () => {
             <LogoSlider />
             <LandingVideo />
             <BlogSection
-                title="Creador de diagramas online"
+                title="Crea diagramas online en minutos, no horas"
                 text="Descubre la forma perfecta para transformar conceptos complejos en un diagrama online digerible para ti, tus alumnos o tu equipo. Haz un diagrama de cualquier tema o de tu investigación para cualquier ocasión, ya sea sobre un nuevo producto de tu empresa o para presentar una lección abrumadora en clase. Estructura un diagrama online creativo a partir de la pizarra online de Sketchlie y aprovecha todas las herramientas y elementos de diseño y cautiva a tu publico."
                 alt="Wireframe"
                 img="/placeholders/wireframe.png"
