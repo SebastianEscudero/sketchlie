@@ -11,7 +11,6 @@ import {
   Highlighter,
   Image,
   MessageSquare,
-  Minus,
   MousePointer2,
   MoveUpRight,
   Pencil,
@@ -138,10 +137,12 @@ export const Toolbar = ({
         <ToolButton
           icon={Shapes}
           onClick={() => {
-            setCanvasState({
-              mode: CanvasMode.Inserting,
-              layerType: LayerType.Rectangle
-            });
+            if (!isShapesMenuOpen) {
+              setCanvasState({
+                mode: CanvasMode.Inserting,
+                layerType: LayerType.Rectangle
+              });
+            }
             setIsShapesMenuOpen(!isShapesMenuOpen);
           }}
           isActive={
@@ -155,7 +156,7 @@ export const Toolbar = ({
               : selectedTool === CanvasMode.Eraser
                 ? Eraser
                 : selectedTool === CanvasMode.Highlighter
-                  ? Highlighter 
+                  ? Highlighter
                   : Pencil
           }
           onClick={() => {
@@ -251,18 +252,18 @@ export const Toolbar = ({
             onValueChange={handleStrokeSizeChange}
           />
           <div className="grid grid-cols-4 gap-[2px]" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-            <ColorButton color={{ r: 0, g: 0, b: 0, a: 0 }} onClick={onPathColorChange} pathColor={pathColor}/>
-            <ColorButton color={{ r: 255, g: 255, b: 255, a: 1 }} onClick={onPathColorChange} pathColor={pathColor}/>
-            <ColorButton color={{ r: 243, g: 82, b: 35, a: 1 }} onClick={onPathColorChange} pathColor={pathColor}/>
-            <ColorButton color={{ r: 255, g: 249, b: 177, a: 1 }} onClick={onPathColorChange} pathColor={pathColor}/>
-            <ColorButton color={{ r: 255, g: 244, b: 69, a: 1 }} onClick={onPathColorChange} pathColor={pathColor}/>
-            <ColorButton color={{ r: 68, g: 202, b: 99, a: 1 }} onClick={onPathColorChange} pathColor={pathColor}/>
-            <ColorButton color={{ r: 39, g: 142, b: 237, a: 1 }} onClick={onPathColorChange} pathColor={pathColor}/>
-            <ColorButton color={{ r: 155, g: 105, b: 245, a: 1 }} onClick={onPathColorChange} pathColor={pathColor}/>
-            <ColorButton color={{ r: 252, g: 142, b: 42, a: 1 }} onClick={onPathColorChange} pathColor={pathColor}/>
-            <ColorButton color={{ r: 1, g: 1, b: 1, a: 1 }} onClick={onPathColorChange} pathColor={pathColor}/>
-            <ColorButton color={{ r: 65, g: 75, b: 178, a: 1 }} onClick={onPathColorChange} pathColor={pathColor}/>
-            <ColorButton color={{ r: 128, g: 128, b: 128, a: 1 }} onClick={onPathColorChange} pathColor={pathColor}/>
+            <ColorButton color={{ r: 0, g: 0, b: 0, a: 0 }} onClick={onPathColorChange} pathColor={pathColor} />
+            <ColorButton color={{ r: 255, g: 255, b: 255, a: 1 }} onClick={onPathColorChange} pathColor={pathColor} />
+            <ColorButton color={{ r: 243, g: 82, b: 35, a: 1 }} onClick={onPathColorChange} pathColor={pathColor} />
+            <ColorButton color={{ r: 255, g: 249, b: 177, a: 1 }} onClick={onPathColorChange} pathColor={pathColor} />
+            <ColorButton color={{ r: 255, g: 244, b: 69, a: 1 }} onClick={onPathColorChange} pathColor={pathColor} />
+            <ColorButton color={{ r: 68, g: 202, b: 99, a: 1 }} onClick={onPathColorChange} pathColor={pathColor} />
+            <ColorButton color={{ r: 39, g: 142, b: 237, a: 1 }} onClick={onPathColorChange} pathColor={pathColor} />
+            <ColorButton color={{ r: 155, g: 105, b: 245, a: 1 }} onClick={onPathColorChange} pathColor={pathColor} />
+            <ColorButton color={{ r: 252, g: 142, b: 42, a: 1 }} onClick={onPathColorChange} pathColor={pathColor} />
+            <ColorButton color={{ r: 1, g: 1, b: 1, a: 1 }} onClick={onPathColorChange} pathColor={pathColor} />
+            <ColorButton color={{ r: 65, g: 75, b: 178, a: 1 }} onClick={onPathColorChange} pathColor={pathColor} />
+            <ColorButton color={{ r: 128, g: 128, b: 128, a: 1 }} onClick={onPathColorChange} pathColor={pathColor} />
           </div>
         </div>
       }
@@ -302,7 +303,7 @@ export const Toolbar = ({
               canvasState.layerType === LayerType.Rhombus
             }
           />
-           <ToolButton
+          <ToolButton
             icon={Triangle}
             onClick={() => setCanvasState({
               mode: CanvasMode.Inserting,
