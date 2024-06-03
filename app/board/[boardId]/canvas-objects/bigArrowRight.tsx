@@ -34,7 +34,7 @@ const throttledUpdateLayer = throttle((updateLayer, socket, board, layerId, laye
   if (socket) {
     socket.emit('layer-update', layerId, layerUpdates);
   }
-}, 1500);
+}, 1000);
 
 export const BigArrowRight = ({
   layer,

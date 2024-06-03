@@ -34,7 +34,7 @@ const throttledUpdateLayer = throttle((updateLayer, socket, board, layerId, laye
     if (socket) {
         socket.emit('layer-update', layerId, layerUpdates);
     }
-}, 1500);
+}, 1000);
 
 export const CommentBubble = ({
     layer,
@@ -166,15 +166,15 @@ export const CommentBubble = ({
                     onChange={handleContentChange}
                     onPaste={handlePaste}
                     className={cn(
-                        "h-full w-full flex justify-center text-center outline-none items-center mt-[-12px]",
-                        value ? "" : "items-start]",
+                        "h-full w-full flex justify-center text-center outline-none items-center pb-5",
+                        value ? "" : "items-start",
                         font.className
                       )}
                     style={{
                         fontSize: textFontSize,
                         color: fill ? getContrastingTextColor(fill) : "#000",
                         textWrap: "wrap",
-                        lineHeight: value ? 'normal' : `${height}px`,
+                        lineHeight: value ? 'normal' : `${height-20}px`,
                         WebkitUserSelect: 'auto'
                     }}
                     spellCheck={false}

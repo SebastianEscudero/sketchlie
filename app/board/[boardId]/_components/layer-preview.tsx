@@ -19,7 +19,7 @@ import { BigArrowRight } from "../canvas-objects/bigArrowRight";
 import { BigArrowUp } from "../canvas-objects/bigArrowUp";
 import { BigArrowDown } from "../canvas-objects/bigArrowDown";
 import { CommentBubble } from "../canvas-objects/commentBubble";
-import { Pentagon } from "../canvas-objects/pengaton";
+import { Pentagon } from "../canvas-objects/pentagon";
 
 interface LayerPreviewProps {
   id: string;
