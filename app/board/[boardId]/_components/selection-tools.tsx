@@ -63,13 +63,38 @@ export const SelectionTools = memo(({
   const { mutate: updateLayerIds } = useApiMutation(api.board.updateLayerIds);
   const { mutate: deleteLayer } = useApiMutation(api.board.deleteLayer);
 
-  const isTextOrNoteLayer = selectedLayers.every(layer =>
-    liveLayers[layer]?.type === LayerType.Text || liveLayers[layer]?.type === LayerType.Note
+  const hasText = selectedLayers.every(layer =>
+    liveLayers[layer]?.type === LayerType.Text ||
+    liveLayers[layer]?.type === LayerType.Note ||
+    liveLayers[layer]?.type === LayerType.Rectangle ||
+    liveLayers[layer]?.type === LayerType.Ellipse ||
+    liveLayers[layer]?.type === LayerType.Rhombus ||
+    liveLayers[layer]?.type === LayerType.Triangle ||
+    liveLayers[layer]?.type === LayerType.Star ||
+    liveLayers[layer]?.type === LayerType.Hexagon ||
+    liveLayers[layer]?.type === LayerType.BigArrowLeft ||
+    liveLayers[layer]?.type === LayerType.BigArrowRight ||
+    liveLayers[layer]?.type === LayerType.BigArrowUp ||
+    liveLayers[layer]?.type === LayerType.BigArrowDown ||
+    liveLayers[layer]?.type === LayerType.CommentBubble ||
+    liveLayers[layer]?.type === LayerType.Pentagon
   );
 
   const isImageLayer = selectedLayers.some(layer => liveLayers[layer]?.type === LayerType.Image);
-  const isRectangleOrEllipseOrNoteLayer = selectedLayers.every(layer =>
-    liveLayers[layer]?.type === LayerType.Rectangle || liveLayers[layer]?.type === LayerType.Ellipse || liveLayers[layer]?.type === LayerType.Note
+  const hasOutline = selectedLayers.every(layer =>
+    liveLayers[layer]?.type === LayerType.Note ||
+    liveLayers[layer]?.type === LayerType.Rectangle ||
+    liveLayers[layer]?.type === LayerType.Ellipse ||
+    liveLayers[layer]?.type === LayerType.Rhombus ||
+    liveLayers[layer]?.type === LayerType.Triangle ||
+    liveLayers[layer]?.type === LayerType.Star ||
+    liveLayers[layer]?.type === LayerType.Hexagon ||
+    liveLayers[layer]?.type === LayerType.BigArrowLeft ||
+    liveLayers[layer]?.type === LayerType.BigArrowRight ||
+    liveLayers[layer]?.type === LayerType.BigArrowUp ||
+    liveLayers[layer]?.type === LayerType.BigArrowDown ||
+    liveLayers[layer]?.type === LayerType.CommentBubble ||
+    liveLayers[layer]?.type === LayerType.Pentagon
   );
   const isArrowLayer = selectedLayers.every(layer => liveLayers[layer]?.type === LayerType.Arrow);
   const isPathLayer = selectedLayers.every(layer => liveLayers[layer]?.type === LayerType.Path);
@@ -348,7 +373,7 @@ export const SelectionTools = memo(({
           socket={socket}
         />
       )}
-      {isTextOrNoteLayer && (
+      {hasText && (
         <FontSizePicker
           selectedLayers={selectedLayers}
           setLiveLayers={setLiveLayers}
@@ -358,7 +383,7 @@ export const SelectionTools = memo(({
           socket={socket}
         />
       )}
-      {isRectangleOrEllipseOrNoteLayer && (
+      {hasOutline && (
         <OutlineColorPicker
           layers={layers}
           onChange={setOutlineFill}

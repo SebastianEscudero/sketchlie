@@ -361,7 +361,6 @@ export const Canvas = () => {
                 width = 80
                 height = 80
             }
-
             layer = {
                 type: layerType,
                 x: position.x,
@@ -370,7 +369,8 @@ export const Canvas = () => {
                 width: width,
                 fill: fillColor,
                 outlineFill: { r: 1, g: 1, b: 1, a: 1 },
-            };
+                textFontSize: 12,
+            }; 
         }
 
         const newLayers = { ...liveLayers, [layerId]: layer };
@@ -710,7 +710,20 @@ export const Canvas = () => {
 
         if (layer) {
             const newLayer = { ...layer }; // Create a new object instead of modifying the existing one
-            if (newLayer.type === LayerType.Note) {
+            if (newLayer.type === LayerType.Note 
+                || newLayer.type === LayerType.Rectangle 
+                || newLayer.type === LayerType.Ellipse
+                || newLayer.type === LayerType.Rhombus
+                || newLayer.type === LayerType.Triangle
+                || newLayer.type === LayerType.Star
+                || newLayer.type === LayerType.Hexagon
+                || newLayer.type === LayerType.BigArrowLeft
+                || newLayer.type === LayerType.BigArrowRight
+                || newLayer.type === LayerType.BigArrowUp
+                || newLayer.type === LayerType.BigArrowDown
+                || newLayer.type === LayerType.CommentBubble
+                || newLayer.type === LayerType.Pentagon
+            ) {
                 bounds.textFontSize = newLayer.textFontSize;
             } else if (newLayer.type === LayerType.Arrow) {
                 newLayer.center = bounds.center;
@@ -903,13 +916,43 @@ export const Canvas = () => {
 
             switch (canvasState.layerType) {
                 case LayerType.Rectangle:
-                    setCurrentPreviewLayer({ x, y, width, height, type: LayerType.Rectangle, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
+                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12,  type: LayerType.Rectangle, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
+                    break;
+                case LayerType.Triangle:
+                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12,  type: LayerType.Triangle, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
+                    break;
+                case LayerType.Star:
+                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12,  type: LayerType.Star, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
+                    break;
+                case LayerType.Hexagon:
+                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12,  type: LayerType.Hexagon, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
+                    break;
+                case LayerType.BigArrowLeft:
+                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12,  type: LayerType.BigArrowLeft, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
+                    break;
+                case LayerType.BigArrowRight:
+                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12,  type: LayerType.BigArrowRight, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
+                    break;
+                case LayerType.BigArrowUp:
+                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12,  type: LayerType.BigArrowUp, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
+                    break;
+                case LayerType.BigArrowDown:
+                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12,  type: LayerType.BigArrowDown, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
+                    break;
+                case LayerType.CommentBubble:
+                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12,  type: LayerType.CommentBubble, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
+                    break;
+                case LayerType.Pentagon:
+                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12,  type: LayerType.Pentagon, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
+                    break;
+                case LayerType.Rhombus:
+                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12,  type: LayerType.Rhombus, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
                     break;
                 case LayerType.Ellipse:
-                    setCurrentPreviewLayer({ x, y, width, height, type: LayerType.Ellipse, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
+                    setCurrentPreviewLayer({ x, y, width, height, type: LayerType.Ellipse, textFontSize: 12, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
                     break;
                 case LayerType.Text:
-                    setCurrentPreviewLayer({ x, y, width, height: 18, type: LayerType.Rectangle, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 39, g: 142, b: 237, a: 1 } });
+                    setCurrentPreviewLayer({ x, y, width, height: 18, textFontSize: 12, type: LayerType.Rectangle, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 39, g: 142, b: 237, a: 1 } });
                     break;
                 case LayerType.Note:
                     setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.Note, fill: { r: 255, g: 249, b: 177, a: 1 }, outlineFill: { r: 0, g: 0, b: 0, a: 0 } });
@@ -1062,7 +1105,21 @@ export const Canvas = () => {
                 const initialLayer = JSON.stringify(initialLayers[selectedLayersRef.current[0]]);
                 const liveLayer = JSON.stringify(liveLayers[selectedLayersRef.current[0]]);
                 const changed = initialLayer !== liveLayer;
-                if (layerType === LayerType.Text || layerType === LayerType.Note && !changed && layerRef.current) {
+                if (layerType === LayerType.Text 
+                    || layerType === LayerType.Note 
+                    || layerType === LayerType.Rectangle
+                    || layerType === LayerType.Ellipse 
+                    || layerType === LayerType.Rhombus
+                    || layerType === LayerType.Triangle
+                    || layerType === LayerType.Star
+                    || layerType === LayerType.Hexagon
+                    || layerType === LayerType.BigArrowLeft
+                    || layerType === LayerType.BigArrowRight
+                    || layerType === LayerType.BigArrowUp
+                    || layerType === LayerType.BigArrowDown
+                    || layerType === LayerType.CommentBubble
+                    || layerType === LayerType.Pentagon
+                    && !changed && layerRef.current) {
                     const layer = layerRef.current;
                     layer.focus();
 

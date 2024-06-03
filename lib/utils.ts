@@ -79,7 +79,7 @@ export function resizeBounds(
   const isCorner = corner === (Side.Top + Side.Left) || corner === (Side.Top + Side.Right) || corner === (Side.Bottom + Side.Left) || corner === (Side.Bottom + Side.Right);
   const aspectRatio = bounds.width / bounds.height;
 
-  if ((type === 3 || type === 5) && isCorner) {
+  if ((type === LayerType.Text || type === LayerType.Image) && isCorner) {
     let newWidth = (corner & Side.Left) === Side.Left ? Math.abs(bounds.x + bounds.width - point.x) : Math.abs(point.x - bounds.x);
     let newHeight = newWidth / aspectRatio;
 

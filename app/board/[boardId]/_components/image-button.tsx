@@ -11,7 +11,6 @@ import { useCurrentUser } from "@/hooks/use-current-user";
 interface ImageButtonProps {
     isUploading: boolean;
     onImageSelect: (src: string) => void;
-    label: string;
     icon: LucideIcon;
     onClick: () => void;
     isActive?: boolean;
@@ -22,7 +21,6 @@ interface ImageButtonProps {
 
 export const ImageButton = ({
     setIsUploading,
-    label,
     icon: Icon,
     onClick,
     isActive,
@@ -93,17 +91,15 @@ export const ImageButton = ({
     }
 
     return (
-        <Hint label={label} side={side} sideOffset={14}>
-            <Button disabled={isDisabled} onClick={handleButtonClick} size="icon" variant={isActive ? "boardActive" : "board"}>
-                <Icon />
-                <input
-                    type="file"
-                    onChange={handleUpload}
-                    ref={inputFileRef}
-                    accept="image/*"
-                    style={{ display: 'none' }}
-                />
-            </Button>
-        </Hint>
+        <Button disabled={isDisabled} onClick={handleButtonClick} size="icon" variant={isActive ? "boardActive" : "board"}>
+            <Icon />
+            <input
+                type="file"
+                onChange={handleUpload}
+                ref={inputFileRef}
+                accept="image/*"
+                style={{ display: 'none' }}
+            />
+        </Button>
     )
 }

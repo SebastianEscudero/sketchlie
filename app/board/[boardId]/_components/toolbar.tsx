@@ -1,16 +1,26 @@
 import {
+  ArrowBigDown,
+  ArrowBigLeft,
+  ArrowBigRight,
+  ArrowBigUp,
   Circle,
+  Diamond,
   Eraser,
   Hand,
+  Hexagon,
   Highlighter,
   Image,
+  MessageSquare,
   MousePointer2,
   MoveUpRight,
   Pencil,
+  Pentagon,
   Redo2,
   Shapes,
   Square,
+  Star,
   StickyNote,
+  Triangle,
   Type,
   Undo2,
 } from "lucide-react";
@@ -20,7 +30,7 @@ import { CanvasMode, CanvasState, Color, LayerType } from "@/types/canvas";
 import { ToolButton } from "./tool-button";
 
 import { ImageButton } from "./image-button";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import { ColorButton } from "../selection-tools/color-picker";
 import { Slider } from "@/components/ui/slider";
 import { LaserIcon } from "@/public/custom-cursors/laser";
@@ -99,7 +109,6 @@ export const Toolbar = ({
     <div className="absolute h-600:top-[50%] h-600:translate-y-[-50%] h-600:bottom-auto bottom-2 h-600:left-2 h-600:translate-x-0 left-[50%] translate-x-[-50%] flex h-600:flex-col flex-row h-600:gap-y-4 h-600:gap-x-0 gap-x-4">
       <div className="bg-white rounded-md shadow-md p-1.5 flex h-600:gap-y-1 h-600:gap-x-0 gap-x-1 h-600:flex-col flex-row items-center">
         <ToolButton
-          label="Select"
           icon={MousePointer2}
           onClick={() => setCanvasState({
             mode: CanvasMode.None
@@ -113,7 +122,6 @@ export const Toolbar = ({
           }
         />
         <ToolButton
-          label="Move"
           icon={Hand}
           onClick={() => setCanvasState({
             mode: CanvasMode.Moving
@@ -123,7 +131,6 @@ export const Toolbar = ({
           }
         />
         <ToolButton
-          label="Shapes"
           icon={Shapes}
           onClick={() => {
             setCanvasState({
@@ -137,15 +144,6 @@ export const Toolbar = ({
           }
         />
         <ToolButton
-          label={
-            selectedTool === CanvasMode.Laser
-              ? "Laser"
-              : selectedTool === CanvasMode.Eraser
-                ? "Eraser"
-                : selectedTool === CanvasMode.Highlighter
-                  ? "Highlighter"
-                  : "Pencil"
-          }
           icon={
             selectedTool === CanvasMode.Laser
               ? LaserIcon
@@ -176,7 +174,6 @@ export const Toolbar = ({
           }
         />
         <ToolButton
-          label="Arrow"
           icon={MoveUpRight}
           onClick={() => setCanvasState({
             mode: CanvasMode.Inserting,
@@ -188,7 +185,6 @@ export const Toolbar = ({
           }
         />
         <ToolButton
-          label="Sticky note"
           icon={StickyNote}
           onClick={() => setCanvasState({
             mode: CanvasMode.Inserting,
@@ -200,7 +196,6 @@ export const Toolbar = ({
           }
         />
         <ToolButton
-          label="Text"
           icon={Type}
           onClick={() => setCanvasState({
             mode: CanvasMode.Inserting,
@@ -216,7 +211,6 @@ export const Toolbar = ({
           isUploading={isUploading}
           setIsUploading={setIsUploading}
           onImageSelect={onImageSelect}
-          label="Image"
           icon={Image}
           onClick={() => setCanvasState({
             mode: CanvasMode.Inserting,
@@ -230,13 +224,11 @@ export const Toolbar = ({
       </div>
       <div className="bg-white rounded-md p-1.5 flex h-600:flex-col flex-row items-center shadow-md">
         <ToolButton
-          label="Undo"
           icon={Undo2}
           onClick={undo}
           isDisabled={!canUndo}
         />
         <ToolButton
-          label="Redo"
           icon={Redo2}
           onClick={redo}
           isDisabled={!canRedo}
@@ -271,9 +263,8 @@ export const Toolbar = ({
       }
 
       {isShapesMenuOpen && canvasState.mode === CanvasMode.Inserting && canvasState.layerType !== LayerType.Image && canvasState.layerType !== LayerType.Text && canvasState.layerType !== LayerType.Arrow && canvasState.layerType !== LayerType.Note &&
-        <div className="absolute h-600:left-[115%] left-6 h-600:bottom-auto h-600:top-14 bottom-16 p-2 bg-white rounded-lg shadow-sm space-y-1 flex flex-col items-center cursor-default">
+        <div className="absolute h-600:left-[115%] left-6 h-600:bottom-auto h-600:top-14 bottom-16 p-2 bg-white rounded-lg shadow-sm grid grid-cols-4 grid-rows-3 gap-2 h-[144px] w-[192px] items-center cursor-default">
           <ToolButton
-            label="Rectangle"
             icon={Square}
             onClick={() => setCanvasState({
               mode: CanvasMode.Inserting,
@@ -285,7 +276,6 @@ export const Toolbar = ({
             }
           />
           <ToolButton
-            label="Ellipse"
             icon={Circle}
             onClick={() => setCanvasState({
               mode: CanvasMode.Inserting,
@@ -296,12 +286,121 @@ export const Toolbar = ({
               canvasState.layerType === LayerType.Ellipse
             }
           />
+          <ToolButton
+            icon={Diamond}
+            onClick={() => setCanvasState({
+              mode: CanvasMode.Inserting,
+              layerType: LayerType.Rhombus,
+            })}
+            isActive={
+              canvasState.mode === CanvasMode.Inserting &&
+              canvasState.layerType === LayerType.Rhombus
+            }
+          />
+           <ToolButton
+            icon={Triangle}
+            onClick={() => setCanvasState({
+              mode: CanvasMode.Inserting,
+              layerType: LayerType.Triangle,
+            })}
+            isActive={
+              canvasState.mode === CanvasMode.Inserting &&
+              canvasState.layerType === LayerType.Triangle
+            }
+          />
+          <ToolButton
+            icon={Star}
+            onClick={() => setCanvasState({
+              mode: CanvasMode.Inserting,
+              layerType: LayerType.Star,
+            })}
+            isActive={
+              canvasState.mode === CanvasMode.Inserting &&
+              canvasState.layerType === LayerType.Star
+            }
+          />
+          <ToolButton
+            icon={Hexagon}
+            onClick={() => setCanvasState({
+              mode: CanvasMode.Inserting,
+              layerType: LayerType.Hexagon,
+            })}
+            isActive={
+              canvasState.mode === CanvasMode.Inserting &&
+              canvasState.layerType === LayerType.Hexagon
+            }
+          />
+          <ToolButton
+            icon={Pentagon}
+            onClick={() => setCanvasState({
+              mode: CanvasMode.Inserting,
+              layerType: LayerType.Pentagon,
+            })}
+            isActive={
+              canvasState.mode === CanvasMode.Inserting &&
+              canvasState.layerType === LayerType.Pentagon
+            }
+          />
+          <ToolButton
+            icon={MessageSquare}
+            onClick={() => setCanvasState({
+              mode: CanvasMode.Inserting,
+              layerType: LayerType.CommentBubble,
+            })}
+            isActive={
+              canvasState.mode === CanvasMode.Inserting &&
+              canvasState.layerType === LayerType.CommentBubble
+            }
+          />
+          <ToolButton
+            icon={ArrowBigLeft}
+            onClick={() => setCanvasState({
+              mode: CanvasMode.Inserting,
+              layerType: LayerType.BigArrowLeft,
+            })}
+            isActive={
+              canvasState.mode === CanvasMode.Inserting &&
+              canvasState.layerType === LayerType.BigArrowLeft
+            }
+          />
+          <ToolButton
+            icon={ArrowBigUp}
+            onClick={() => setCanvasState({
+              mode: CanvasMode.Inserting,
+              layerType: LayerType.BigArrowUp,
+            })}
+            isActive={
+              canvasState.mode === CanvasMode.Inserting &&
+              canvasState.layerType === LayerType.BigArrowUp
+            }
+          />
+          <ToolButton
+            icon={ArrowBigDown}
+            onClick={() => setCanvasState({
+              mode: CanvasMode.Inserting,
+              layerType: LayerType.BigArrowDown,
+            })}
+            isActive={
+              canvasState.mode === CanvasMode.Inserting &&
+              canvasState.layerType === LayerType.BigArrowDown
+            }
+          />
+          <ToolButton
+            icon={ArrowBigRight}
+            onClick={() => setCanvasState({
+              mode: CanvasMode.Inserting,
+              layerType: LayerType.BigArrowRight,
+            })}
+            isActive={
+              canvasState.mode === CanvasMode.Inserting &&
+              canvasState.layerType === LayerType.BigArrowRight
+            }
+          />
         </div>
       }
       {isPenEraserSwitcherOpen && (canvasState.mode === CanvasMode.Pencil || canvasState.mode === CanvasMode.Eraser || canvasState.mode === CanvasMode.Laser || canvasState.mode === CanvasMode.Highlighter) &&
         <div className="absolute h-600:left-[115%] left-20 h-600:bottom-auto h-600:top-20 bottom-16 p-2 bg-white rounded-lg shadow-sm h-600:space-y-1 flex flex-row h-600:space-x-0 space-x-1 h-600:flex-col items-center cursor-default">
           <ToolButton
-            label="Pen"
             icon={Pencil}
             onClick={() => {
               setSelectedTool(CanvasMode.Pencil);
@@ -313,7 +412,6 @@ export const Toolbar = ({
             isActive={selectedTool === CanvasMode.Pencil}
           />
           <ToolButton
-            label="Eraser"
             icon={Eraser}
             onClick={() => {
               setSelectedTool(CanvasMode.Eraser);
@@ -324,7 +422,6 @@ export const Toolbar = ({
             isActive={selectedTool === CanvasMode.Eraser}
           />
           <ToolButton
-            label="Highlighter"
             icon={Highlighter}
             onClick={() => {
               setSelectedTool(CanvasMode.Highlighter);
@@ -336,7 +433,6 @@ export const Toolbar = ({
             isActive={selectedTool === CanvasMode.Highlighter}
           />
           <ToolButton
-            label="Laser"
             icon={LaserIcon}
             onClick={() => {
               setSelectedTool(CanvasMode.Laser);
