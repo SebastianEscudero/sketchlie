@@ -21,7 +21,7 @@ export const LandingContent = () => {
             <BlogSection
                 title="Tu próxima gran idea comienza aquí."
                 text="Te proporcionamos las herramientas necesarias para diseñar el futuro. Desde estrategias innovadoras hasta el desarrollo de productos y servicios, todo se simplifica cuando trabajas en un espacio sin límites como Sketchlie. Con nuestra plataforma, puedes transformar ideas abstractas en proyectos tangibles de manera fluida y eficiente. No esperes más para dar el primer paso hacia la realización de tus sueños."
-                img="/placeholders/pizarra-online.png"
+                img="/placeholders/mapa-de-procesos.png"
                 side="right"
             />
             <BlogSection

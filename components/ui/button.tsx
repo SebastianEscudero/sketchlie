@@ -29,6 +29,8 @@ const buttonVariants = cva(
         gratis: "bg-accent text-accent-foreground hover:bg-accent/90",
         starter: "bg-yellow-500 text-black hover:bg-yellow-600",
         business: "bg-[#1C1C1E] text-white hover:text-accent-foreground hover:bg-accent/90",
+        icon: "hover:bg-custom-blue/90 hover:text-white",
+        iconActive: "bg-custom-blue/90 text-white",
       },
       size: {
         default: "h-10 px-4 py-2",

@@ -213,7 +213,7 @@ export function findIntersectingLayersWithRectangle(
       continue;
     }
 
-    if (layer.type === LayerType.Arrow && layer.center) {
+    if (layer.type === LayerType.Arrow && layer.center || layer.type === LayerType.Line && layer.center) {
       const { x, y, width, height, center } = layer;
       const length = Math.sqrt(width * width + height * height);
       const angle = Math.atan2(center.y - y, center.x - x);

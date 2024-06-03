@@ -91,7 +91,7 @@ export const ImageButton = ({
     }
 
     return (
-        <Button disabled={isDisabled} onClick={handleButtonClick} size="icon" variant={isActive ? "boardActive" : "board"}>
+        <Button disabled={isDisabled} onClick={handleButtonClick} size="icon" variant={isActive ? "iconActive" : "icon"}>
             <Icon />
             <input
                 type="file"

@@ -68,7 +68,7 @@ export const ColorButton = ({
       onClick={() => onClick(color)}
     >
       <div
-        className={`h-8 w-8 rounded-md border relative ${isSelected ? 'border-2 border-black' : 'border-neutral-200'}`}
+        className={`h-8 w-8 rounded-md border relative ${isSelected ? 'border-2 border-custom-blue' : 'border-neutral-200'}`}
         style={{ background: colorToCss(color) }}
       >
         {color.r === 0 && color.g === 0 && color.b === 0 && color.a === 0 && (

@@ -24,7 +24,7 @@ export const ToolButton = ({
     }
 
     return (
-        <Button disabled={isDisabled} onClick={onClick} className="h-10 w-10 p-2" variant={isActive ? "boardActive" : "board"}>
+        <Button disabled={isDisabled} onClick={onClick} className="h-10 w-10 p-2" variant={isActive ? "iconActive" : "icon"}>
             <Icon className="h-5 w-5" />
         </Button>
     )

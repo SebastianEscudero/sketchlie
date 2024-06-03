@@ -19,7 +19,7 @@ import { BigArrowRight } from "../canvas-objects/bigArrowRight";
 import { BigArrowUp } from "../canvas-objects/bigArrowUp";
 import { BigArrowDown } from "../canvas-objects/bigArrowDown";
 import { CommentBubble } from "../canvas-objects/commentBubble";
-import { Pentagon } from "../canvas-objects/pentagon";
+import { Line } from "../canvas-objects/line";
 
 interface LayerPreviewProps {
   id: string;
@@ -178,15 +178,13 @@ export const LayerPreview = memo(({
             onRefChange={onRefChange}
           />
       );
-      case LayerType.Pentagon:
+      case LayerType.Line:
         return (
-          <Pentagon
-            updateLayer={updateLayer}
+          <Line
             id={id}
             layer={layer}
             onPointerDown={onLayerPointerDown}
             selectionColor={selectionColor}
-            onRefChange={onRefChange}
           />
       );
     case LayerType.BigArrowLeft:

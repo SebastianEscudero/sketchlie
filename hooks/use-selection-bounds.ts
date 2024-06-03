@@ -18,7 +18,7 @@ export const boundingBox = (layers: Layer[]): any | null => {
     for (let i = 1; i < layers.length; i++) {
       const layer = layers[i];
 
-      if (layer.type === LayerType.Arrow && layer.center) {
+      if (layer.type === LayerType.Arrow && layer.center || layer.type === LayerType.Line && layer.center) {
         const { x, y, width, height, center } = layer;
         const length = Math.sqrt(width * width + height * height);
         const angle = Math.atan2(center.y - y, center.x - x);
@@ -60,7 +60,7 @@ export const boundingBox = (layers: Layer[]): any | null => {
     let y1 = layer.y;
     let y2 = layer.y + layer.height;
   
-    if (layer.type === LayerType.Arrow && layer.center) {
+    if (layer.type === LayerType.Arrow && layer.center || layer.type === LayerType.Line && layer.center) {
       const end = { x: layer.x + layer.width, y: layer.y + layer.height };
   
       x1 = Math.min(x1, layer.x, layer.center.x, end.x);

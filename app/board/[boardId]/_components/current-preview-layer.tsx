@@ -14,7 +14,7 @@ import { BigArrowRight } from "../canvas-objects/bigArrowRight";
 import { BigArrowUp } from "../canvas-objects/bigArrowUp";
 import { BigArrowDown } from "../canvas-objects/bigArrowDown";
 import { CommentBubble } from "../canvas-objects/commentBubble";
-import { Pentagon } from "../canvas-objects/pentagon";
+import { Line } from "../canvas-objects/line";
 
 interface PreviewLayerProps {
     layer: PreviewLayer;
@@ -103,9 +103,9 @@ export const CurrentPreviewLayer = memo(({
                     layer={layer}
                 />
             );
-        case LayerType.Pentagon:
+        case LayerType.Line:
             return (
-                <Pentagon
+                <Line
                     id="PentagonPreview"
                     layer={layer}
                 />

@@ -22,7 +22,7 @@ export enum LayerType {
   BigArrowLeft,
   BigArrowRight,
   CommentBubble,
-  Pentagon,
+  Line,
   Path,
   Text,
   Note,
@@ -174,16 +174,14 @@ export type CommentBubbleLayer = {
   value?: string;
 };
 
-export type PentagonLayer = {
-  type: LayerType.Pentagon;
+export type LineLayer = {
+  type: LayerType.Line;
   x: number;
   y: number;
+  center?: Point;
   height: number;
   width: number;
   fill: Color;
-  outlineFill: Color | null;
-  textFontSize: number;
-  value?: string;
 };
 
 export type PathLayer = {
@@ -272,7 +270,7 @@ export type CanvasState =
   | {
     mode: CanvasMode.Inserting,
     layerType: LayerType.Ellipse | LayerType.Rectangle | LayerType.Rhombus | LayerType.Triangle 
-    | LayerType.Star | LayerType.Hexagon | LayerType.BigArrowDown | LayerType.BigArrowUp  | LayerType.Pentagon
+    | LayerType.Star | LayerType.Hexagon | LayerType.BigArrowDown | LayerType.BigArrowUp  | LayerType.Line
     | LayerType.BigArrowLeft | LayerType.BigArrowRight | LayerType.Text | LayerType.Note 
     | LayerType.CommentBubble | LayerType.Image | LayerType.Path | LayerType.Arrow;
   }
@@ -323,7 +321,7 @@ export enum CanvasMode {
 
 export type Layer = RectangleLayer | EllipseLayer | RhombusLayer | TriangleLayer | StarLayer 
 | HexagonLayer | BigArrowDownLayer | BigArrowLeftLayer | BigArrowRightLayer | BigArrowUpLayer | PathLayer 
-| CommentBubbleLayer |TextLayer | NoteLayer | ImageLayer | ArrowLayer | PentagonLayer;
+| CommentBubbleLayer |TextLayer | NoteLayer | ImageLayer | ArrowLayer | LineLayer;
 
 export interface Layers {
   [key: string]: Layer;
@@ -358,5 +356,5 @@ export enum ArrowHead {
 }
 
 export type PreviewLayer = RectangleLayer | EllipseLayer | RhombusLayer | 
-TriangleLayer | StarLayer | HexagonLayer | BigArrowDownLayer | BigArrowLeftLayer | PentagonLayer
+TriangleLayer | StarLayer | HexagonLayer | BigArrowDownLayer | BigArrowLeftLayer | LineLayer
 | BigArrowRightLayer | BigArrowUpLayer | CommentBubbleLayer | TextLayer | NoteLayer | ArrowLayer;

@@ -356,6 +356,16 @@ export const Canvas = () => {
                 startArrowHead: ArrowHead.None,
                 endArrowHead: ArrowHead.Triangle,
             };
+        } else if (layerType === LayerType.Line) {
+            layer = {
+                type: layerType,
+                x: position.x,
+                y: position.y,
+                center: center,
+                height: height,
+                width: width,
+                fill: fillColor,
+            };
         } else {
             if (width < 20 && height < 20) {
                 width = 80
@@ -456,7 +466,7 @@ export const Canvas = () => {
                 const newLayer = { ...layer };
                 newLayer.x += offset.x;
                 newLayer.y += offset.y;
-                if (newLayer.type === LayerType.Arrow && newLayer.center) {
+                if (newLayer.type === LayerType.Arrow && newLayer.center || newLayer.type === LayerType.Line && newLayer.center) {
                     const newCenter = {
                         x: newLayer.center.x + offset.x,
                         y: newLayer.center.y + offset.y
@@ -722,10 +732,9 @@ export const Canvas = () => {
                 || newLayer.type === LayerType.BigArrowUp
                 || newLayer.type === LayerType.BigArrowDown
                 || newLayer.type === LayerType.CommentBubble
-                || newLayer.type === LayerType.Pentagon
             ) {
                 bounds.textFontSize = newLayer.textFontSize;
-            } else if (newLayer.type === LayerType.Arrow) {
+            } else if (newLayer.type === LayerType.Arrow || newLayer.type === LayerType.Line) {
                 newLayer.center = bounds.center;
             }
             Object.assign(newLayer, bounds);
@@ -942,9 +951,6 @@ export const Canvas = () => {
                 case LayerType.CommentBubble:
                     setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12,  type: LayerType.CommentBubble, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
                     break;
-                case LayerType.Pentagon:
-                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12,  type: LayerType.Pentagon, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
-                    break;
                 case LayerType.Rhombus:
                     setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12,  type: LayerType.Rhombus, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
                     break;
@@ -969,6 +975,18 @@ export const Canvas = () => {
                         startArrowHead: ArrowHead.None,
                         endArrowHead: ArrowHead.Triangle
                     });
+                    break;
+                case LayerType.Line:
+                    setCurrentPreviewLayer({
+                        x: startPanPoint.x,
+                        y: startPanPoint.y,
+                        center: { x: startPanPoint.x + widthArrow / 2, y: startPanPoint.y + heightArrow / 2 },
+                        width: widthArrow,
+                        height: heightArrow,
+                        type: LayerType.Line,
+                        fill: { r: 0, g: 0, b: 0, a: 0 },
+                    });
+                    break;
             }
         }
     },
@@ -1048,14 +1066,16 @@ export const Canvas = () => {
             const layerType = canvasState.layerType;
             setIsPanning(false);
             if (isPanning && currentPreviewLayer) {
-                if (layerType === LayerType.Arrow && currentPreviewLayer.type === LayerType.Arrow) {
+                if (layerType === LayerType.Arrow && currentPreviewLayer.type === LayerType.Arrow
+                    || layerType === LayerType.Line && currentPreviewLayer.type === LayerType.Line
+                ) {
                     insertLayer(layerType, { x: currentPreviewLayer.x, y: currentPreviewLayer.y }, currentPreviewLayer.width, currentPreviewLayer.height, currentPreviewLayer.center)
                     setCurrentPreviewLayer(null);
                 } else {
                     insertLayer(layerType, { x: currentPreviewLayer.x, y: currentPreviewLayer.y }, currentPreviewLayer.width, currentPreviewLayer.height);
                     setCurrentPreviewLayer(null);
                 }
-            } else if (layerType !== LayerType.Arrow) {
+            } else if (layerType !== LayerType.Arrow && layerType !== LayerType.Line) {
                 let width
                 let height
                 if (layerType === LayerType.Text) {
@@ -1118,7 +1138,6 @@ export const Canvas = () => {
                     || layerType === LayerType.BigArrowUp
                     || layerType === LayerType.BigArrowDown
                     || layerType === LayerType.CommentBubble
-                    || layerType === LayerType.Pentagon
                     && !changed && layerRef.current) {
                     const layer = layerRef.current;
                     layer.focus();
@@ -1455,7 +1474,7 @@ export const Canvas = () => {
             const clonedLayer = JSON.parse(JSON.stringify(layer));
             clonedLayer.x = clonedLayer.x + offsetX;
             clonedLayer.y = clonedLayer.y + offsetY;
-            if (clonedLayer.type === LayerType.Arrow) {
+            if (clonedLayer.type === LayerType.Arrow || clonedLayer.type === LayerType.Line) {
                 clonedLayer.center.x += offsetX;
                 clonedLayer.center.y += offsetY;
             }

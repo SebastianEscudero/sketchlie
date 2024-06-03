@@ -76,8 +76,7 @@ export const SelectionTools = memo(({
     liveLayers[layer]?.type === LayerType.BigArrowRight ||
     liveLayers[layer]?.type === LayerType.BigArrowUp ||
     liveLayers[layer]?.type === LayerType.BigArrowDown ||
-    liveLayers[layer]?.type === LayerType.CommentBubble ||
-    liveLayers[layer]?.type === LayerType.Pentagon
+    liveLayers[layer]?.type === LayerType.CommentBubble
   );
 
   const isImageLayer = selectedLayers.some(layer => liveLayers[layer]?.type === LayerType.Image);
@@ -93,10 +92,10 @@ export const SelectionTools = memo(({
     liveLayers[layer]?.type === LayerType.BigArrowRight ||
     liveLayers[layer]?.type === LayerType.BigArrowUp ||
     liveLayers[layer]?.type === LayerType.BigArrowDown ||
-    liveLayers[layer]?.type === LayerType.CommentBubble ||
-    liveLayers[layer]?.type === LayerType.Pentagon
+    liveLayers[layer]?.type === LayerType.CommentBubble
   );
   const isArrowLayer = selectedLayers.every(layer => liveLayers[layer]?.type === LayerType.Arrow);
+  const isLineLayer = selectedLayers.every(layer => liveLayers[layer]?.type === LayerType.Line);
   const isPathLayer = selectedLayers.every(layer => liveLayers[layer]?.type === LayerType.Path);
 
   const layers = selectedLayers.map(id => liveLayers[id]);
@@ -106,7 +105,7 @@ export const SelectionTools = memo(({
   useEffect(() => {
     if (selectionBounds) {
       let x, y;
-      if (isArrowLayer) {
+      if (isArrowLayer || isLineLayer) {
         const arrowLayer = liveLayers[selectedLayers[0]];
         const centerY = arrowLayer.center.y
         const startY = arrowLayer.y
@@ -291,7 +290,7 @@ export const SelectionTools = memo(({
       newLiveLayerIds.push(newId);
       const clonedLayer = JSON.parse(JSON.stringify(layer));
       clonedLayer.x = clonedLayer.x + offsetX;
-      if (clonedLayer.type === LayerType.Arrow) {
+      if (clonedLayer.type === LayerType.Arrow || clonedLayer.type === LayerType.Line) {
         clonedLayer.center.x += offsetX;
       }
       newLiveLayers[newId] = clonedLayer;

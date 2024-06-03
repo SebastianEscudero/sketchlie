@@ -11,10 +11,10 @@ import {
   Highlighter,
   Image,
   MessageSquare,
+  Minus,
   MousePointer2,
   MoveUpRight,
   Pencil,
-  Pentagon,
   Redo2,
   Shapes,
   Square,
@@ -34,6 +34,7 @@ import { Dispatch, SetStateAction, useEffect } from "react";
 import { ColorButton } from "../selection-tools/color-picker";
 import { Slider } from "@/components/ui/slider";
 import { LaserIcon } from "@/public/custom-cursors/laser";
+import { LineIcon } from "@/public/custom-cursors/line";
 
 interface ToolbarProps {
   isUploading: boolean;
@@ -98,10 +99,14 @@ export const Toolbar = ({
       setIsPenEraserSwitcherOpen(false);
     }
 
-    if (canvasState.mode !== CanvasMode.Inserting || (canvasState.layerType === LayerType.Image || canvasState.layerType === LayerType.Text || canvasState.layerType === LayerType.Arrow || canvasState.layerType === LayerType.Note)) {
+    if (canvasState.mode !== CanvasMode.Inserting) {
       setIsShapesMenuOpen(false);
+    } else {
+      if (canvasState.layerType === LayerType.Arrow || canvasState.layerType === LayerType.Note || canvasState.layerType === LayerType.Image || canvasState.layerType === LayerType.Text) {
+        setIsShapesMenuOpen(false);
+      }
     }
-  }, [canvasState.mode]);
+  }, [canvasState]);
 
 
 
@@ -331,14 +336,14 @@ export const Toolbar = ({
             }
           />
           <ToolButton
-            icon={Pentagon}
+            icon={LineIcon}
             onClick={() => setCanvasState({
               mode: CanvasMode.Inserting,
-              layerType: LayerType.Pentagon,
+              layerType: LayerType.Line,
             })}
             isActive={
               canvasState.mode === CanvasMode.Inserting &&
-              canvasState.layerType === LayerType.Pentagon
+              canvasState.layerType === LayerType.Line
             }
           />
           <ToolButton

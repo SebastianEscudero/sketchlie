@@ -166,7 +166,7 @@ export const CommentBubble = ({
                     onChange={handleContentChange}
                     onPaste={handlePaste}
                     className={cn(
-                        "h-full w-full flex justify-center text-center outline-none items-center pb-5",
+                        "h-full w-full flex justify-center text-center outline-none items-center pb-4",
                         value ? "" : "items-start",
                         font.className
                       )}

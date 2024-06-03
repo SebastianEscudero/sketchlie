@@ -121,7 +121,7 @@ export const Text = ({
             width={width}
             height={height}
             style={{
-                outline: selectionColor ? `1px solid ${selectionColor}` : "none",
+                outline: selectionColor ? `2px solid ${selectionColor}` : "none",
             }}
             onPointerMove={(e) => {
                 if (e.buttons === 1) {

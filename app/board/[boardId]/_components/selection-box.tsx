@@ -54,7 +54,7 @@ export const SelectionBox = memo(({
   const isArrowLayer = useMemo(() => {
     if (soleLayerId) {
       const soleLayer = liveLayers[soleLayerId];
-      return soleLayer && soleLayer.type === LayerType.Arrow;
+      return soleLayer && soleLayer.type === LayerType.Arrow || soleLayer && soleLayer.type === LayerType.Line;
     }
     return false;
   }, [soleLayerId, liveLayers]);
