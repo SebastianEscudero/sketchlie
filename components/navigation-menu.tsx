@@ -2,8 +2,6 @@
 
 import * as React from "react"
 import Link from "next/link"
-
-import { cn } from "@/lib/utils"
 import {
     NavigationMenu,
     NavigationMenuContent,
@@ -101,12 +99,10 @@ const Recursos = [
 ]
 
 export function NavigationMenuLanding() {
-
     const pathname = usePathname();
-
     return (
         <div className="gap-x-2 flex flex-row">
-            <NavigationMenu className="hidden lg:flex lg:flex-col">
+            <NavigationMenu className={`hidden lg:flex lg:flex-col`}>
                 <NavigationMenuList>
                     <NavigationMenuItem>
                         <NavigationMenuTrigger>¿Qué es Sketchlie</NavigationMenuTrigger>
@@ -137,9 +133,10 @@ export function NavigationMenuLanding() {
                                 <div>
                                     <p className="px-3 text-base mb-2 text-neutral-600 font-semibold">Equipos</p>
                                     {porEquipo.map((component) => (
-                                        <NavigationMenuLink
+                                        <Link
                                             key={component.title}
                                             href={component.href}
+                                            title={component.title}
                                         >
                                             <Button
                                                 className='w-full justify-start my-[3px] text-base'
@@ -147,15 +144,16 @@ export function NavigationMenuLanding() {
                                             >
                                                 {component.title}
                                             </Button>
-                                        </NavigationMenuLink>
+                                        </Link>
                                     ))}
                                 </div>
                                 <div>
                                     <p className="px-3 text-base mb-2 text-neutral-600 font-semibold">Casos de uso</p>
                                     {porCasoDeUso.map((component) => (
-                                        <NavigationMenuLink
+                                        <Link
                                             key={component.title}
                                             href={component.href}
+                                            title={component.title}
                                         >
                                             <Button
                                                 className='w-full justify-start my-[3px] text-base'
@@ -163,7 +161,7 @@ export function NavigationMenuLanding() {
                                             >
                                                 {component.title}
                                             </Button>
-                                        </NavigationMenuLink>
+                                        </Link>
                                     ))}
                                 </div>
                             </div>
@@ -179,9 +177,10 @@ export function NavigationMenuLanding() {
                             <div className="p-6 md:w-[500px] lg:w-[300px] flex flex-col">
                                 <p className="px-3 text-base mb-2 text-neutral-600 font-semibold">Recursos</p>
                                 {Recursos.map((recurso) => (
-                                    <NavigationMenuLink
+                                    <Link
                                         key={recurso.title}
                                         href={recurso.href}
+                                        title={recurso.title}
                                     >
                                         <Button
                                             className='justify-start my-[3px] text-base mr-2 w-full'
@@ -189,7 +188,7 @@ export function NavigationMenuLanding() {
                                         >
                                             {recurso.title}
                                         </Button>
-                                    </NavigationMenuLink>
+                                    </Link>
                                 ))}
                             </div>
                         </NavigationMenuContent>
@@ -198,6 +197,7 @@ export function NavigationMenuLanding() {
             </NavigationMenu>
             <Link
                 href="/pricing/"
+                title="Precios"
             >
                 <Button
                     className='justify-start my-[3px] text-base hidden lg:flex'
