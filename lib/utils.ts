@@ -262,6 +262,7 @@ export function penPointsToPathLayer(
   color: Color,
   pathStrokeSize: number,
 ): PathLayer {
+
   let left = Number.POSITIVE_INFINITY;
   let top = Number.POSITIVE_INFINITY;
   let right = Number.NEGATIVE_INFINITY;
@@ -314,10 +315,6 @@ function precise(A: number[]): string {
 
 export function getSvgPathFromPoints(points: number[][], closed = false): string {
   const len = points.length;
-
-  if (len < 2) {
-    return '';
-  }
 
   let d = `M${precise(points[0])}`;
 
