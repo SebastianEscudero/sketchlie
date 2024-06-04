@@ -603,8 +603,7 @@ export const Canvas = () => {
         }
 
         if (
-            pencilDraft == null ||
-            pencilDraft.length < 2
+            pencilDraft == null
         ) {
             setPencilDraft([]);
             return;
@@ -813,7 +812,7 @@ export const Canvas = () => {
 
         const point = pointerEventToCanvasPoint(e, camera, zoom);
 
-        if (e.button === 0 && expired !== true) {
+        if (e.button === 0 && expired !== true && !isPanning) {
             if (canvasState.mode === CanvasMode.Eraser) {
                 setIsPenEraserSwitcherOpen(false);
                 setIsPenMenuOpen(false);
@@ -853,7 +852,7 @@ export const Canvas = () => {
                 socket.emit('layer-update', selectedLayersRef.current, liveLayers);
             }
         }
-    }, [camera, canvasState.mode, setCanvasState, startDrawing, setIsPanning, setIsRightClickPanning, zoom, activeTouches, expired]);
+    }, [camera, canvasState.mode, setCanvasState, startDrawing, setIsPanning, setIsRightClickPanning, zoom, activeTouches, expired, isPanning]);
 
     const onPointerMove = useCallback((e: React.PointerEvent) => {
         e.preventDefault();
@@ -1226,7 +1225,7 @@ export const Canvas = () => {
     }, [setMyPresence, myPresence, socket, User.userId]);
 
     const onPathErase = useCallback((e: React.PointerEvent, layerId: string) => {
-        if (canvasState.mode === CanvasMode.Eraser && e.buttons === 1) {
+        if (canvasStateRef.current.mode === CanvasMode.Eraser && e.buttons === 1) {
             if (canvasState.mode === CanvasMode.Eraser && e.buttons === 1) {
                 const command = new DeleteLayerCommand(
                     [layerId],
@@ -1243,7 +1242,7 @@ export const Canvas = () => {
                 performAction(command);
             }
         }
-    }, [canvasState.mode, liveLayers, liveLayerIds, setLiveLayers, board, deleteLayer, socket]);
+    }, [liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds]);
 
     const onLayerPointerDown = useCallback((e: React.PointerEvent, layerId: string) => {
 

@@ -262,10 +262,6 @@ export function penPointsToPathLayer(
   color: Color,
   pathStrokeSize: number,
 ): PathLayer {
-  if (points.length < 2) {
-    throw new Error("Cannot transform points with less than 2 points");
-  }
-
   let left = Number.POSITIVE_INFINITY;
   let top = Number.POSITIVE_INFINITY;
   let right = Number.NEGATIVE_INFINITY;
