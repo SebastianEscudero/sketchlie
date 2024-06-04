@@ -1125,7 +1125,7 @@ export const Canvas = () => {
                 const initialLayer = JSON.stringify(initialLayers[selectedLayersRef.current[0]]);
                 const liveLayer = JSON.stringify(liveLayers[selectedLayersRef.current[0]]);
                 const changed = initialLayer !== liveLayer;
-                if (layerType === LayerType.Text 
+                if ((layerType === LayerType.Text 
                     || layerType === LayerType.Note 
                     || layerType === LayerType.Rectangle
                     || layerType === LayerType.Ellipse 
@@ -1137,7 +1137,7 @@ export const Canvas = () => {
                     || layerType === LayerType.BigArrowRight
                     || layerType === LayerType.BigArrowUp
                     || layerType === LayerType.BigArrowDown
-                    || layerType === LayerType.CommentBubble
+                    || layerType === LayerType.CommentBubble)
                     && !changed && layerRef.current) {
                     const layer = layerRef.current;
                     layer.focus();
