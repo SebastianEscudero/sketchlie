@@ -108,6 +108,7 @@ const Sidebar = ({
                             <AccordionContent className="flex flex-col w-full gap-1">
                                 <SheetClose asChild>
                                     <Link
+                                        title="Descripcion de Sketchlie"
                                         href="/descripcion"
                                     >
                                         <Button
@@ -126,6 +127,7 @@ const Sidebar = ({
                                 {porCasoDeUso.map((component) => (
                                     <SheetClose asChild key={component.title}>
                                         <Link
+                                            title={component.title}
                                             href={component.href}
                                         >
                                             <Button
@@ -145,6 +147,7 @@ const Sidebar = ({
                                 {porEquipo.map((component) => (
                                     <SheetClose asChild key={component.title}>
                                         <Link
+                                            title={component.title}
                                             href={component.href}
                                         >
                                             <Button
@@ -163,6 +166,7 @@ const Sidebar = ({
                                 <Link
                                     className="my-2 text-lg hover:underline px-5"
                                     href="/blog/"
+                                    title="Blog"
                                 >
                                     <Button
                                         className='w-full justify-start gap-1 text-lg font-semibold'
@@ -178,12 +182,13 @@ const Sidebar = ({
                                 <Link
                                     className="my-2 text-lg hover:underline px-5"
                                     href="/pricing/"
+                                    title="Precios"
                                 >
                                     <Button
                                         className='w-full justify-start gap-1 text-lg font-semibold'
                                         variant={pathname === "/pricing/" ? 'auth' : 'ghost'}
                                     >
-                                        Precios  🚧
+                                        Precios 
                                     </Button>
                                 </Link>
                             </SheetClose>
@@ -191,7 +196,7 @@ const Sidebar = ({
                     </Accordion>
                 </div>
             </div>
-            <Link href="/auth/login/" className="text-center">
+            <Link href="/auth/login/" className="text-center" title="Login">
                 <Button
                     variant="outline"
                     className="w-[90%]"
@@ -199,7 +204,7 @@ const Sidebar = ({
                     Login
                 </Button>
             </Link>
-            <Link href="/auth/register/" className="text-center">
+            <Link href="/auth/register/" className="text-center" title="Regístrate gratis">
                 <Button
                     variant="auth"
                     className="w-[90%]"
