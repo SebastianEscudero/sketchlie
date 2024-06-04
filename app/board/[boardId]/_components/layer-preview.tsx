@@ -156,17 +156,6 @@ export const LayerPreview = memo(({
           onRefChange={onRefChange}
         />
       );
-      case LayerType.Hexagon:
-        return (
-          <Hexagon
-            updateLayer={updateLayer}
-            id={id}
-            layer={layer}
-            onPointerDown={onLayerPointerDown}
-            selectionColor={selectionColor}
-            onRefChange={onRefChange}
-          />
-        );
       case LayerType.CommentBubble:
         return (
           <CommentBubble
