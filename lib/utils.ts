@@ -325,10 +325,6 @@ export const NAME = "Sketchlie";
 export const exportToPNG = async (title: string) => {
   const screenShot = document.getElementById("canvas") as HTMLElement;
   
-  // Save the current background color and image
-  const originalBackgroundColor = screenShot.style.backgroundColor;
-  const originalBackgroundImage = screenShot.style.backgroundImage;
-
   // Set the background color and image
   screenShot.style.backgroundColor = '#F4F4F4';
 
@@ -339,10 +335,6 @@ export const exportToPNG = async (title: string) => {
     anchor.setAttribute("download", `${title}.png`);
     anchor.click();
     anchor.remove();
-
-    // Restore the original background color and image
-    screenShot.style.backgroundColor = originalBackgroundColor;
-    screenShot.style.backgroundImage = originalBackgroundImage;
   })
 };
 
