@@ -75,7 +75,7 @@ const LandingPage = () => {
                         <Breadcrumb className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
                 <BreadcrumbList>
                     <BreadcrumbItem>
-                        <Link href="/">Home</Link>
+                        <Link href="/" title="Home">Home</Link>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>

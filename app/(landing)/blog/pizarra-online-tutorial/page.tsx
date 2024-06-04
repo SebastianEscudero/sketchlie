@@ -27,7 +27,7 @@ const LandingPage = () => {
                 <Breadcrumb>
                     <BreadcrumbList>
                         <BreadcrumbItem>
-                            <Link href="/">Home</Link>
+                            <Link href="/" title="Home">Home</Link>
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>

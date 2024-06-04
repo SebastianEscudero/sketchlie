@@ -26,11 +26,11 @@ const LandingPage = () => {
                 <Breadcrumb>
                     <BreadcrumbList>
                         <BreadcrumbItem>
-                            <Link href="/">Home</Link>
+                            <Link href="/" title="Home">Home</Link>
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
-                            <Link href="/mapa-mental-online/">Mapa Mental</Link>
+                            <Link href="/mapa-mental-online/" title="Mapa Mental">Mapa Mental</Link>
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>

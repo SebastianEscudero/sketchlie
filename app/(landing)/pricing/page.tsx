@@ -30,7 +30,7 @@ const PricingPage = () => {
             <Breadcrumb className="xl:mx-[15%] lg:mx-[5%] mx-[2%] mt-5">
                 <BreadcrumbList>
                     <BreadcrumbItem>
-                        <Link href="/">Home</Link>
+                        <Link href="/" title="Home">Home</Link>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
