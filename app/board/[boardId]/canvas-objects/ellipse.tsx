@@ -90,10 +90,10 @@ export const Ellipse = ({
   };
 
   const handlePointerDown = (e: React.PointerEvent) => {
-      e.preventDefault();
-      if (onPointerDown) onPointerDown(e, id);
-      if (onRefChange) {
-        onRefChange(ellipseRef);
+    e.preventDefault();
+    if (onPointerDown) onPointerDown(e, id);
+    if (onRefChange) {
+      onRefChange(ellipseRef);
     }
   };
 
@@ -130,52 +130,52 @@ export const Ellipse = ({
       onRefChange(ellipseRef);
     }
   }, [layer]);
-  
+
   if (!fill) {
     return null;
   }
 
   return (
-    <foreignObject
-      x={x}
-      y={y}
-      width={width}
-      height={height}
-      onPointerMove={(e) => {
-        if (e.buttons === 1) {
+    <g transform={`translate(${x}, ${y})`}>
+      <foreignObject
+        width={width}
+        height={height}
+        onPointerMove={(e) => {
+          if (e.buttons === 1) {
             handlePointerDown(e);
-        }
-    }}
-      strokeWidth={2}
-      onPointerDown={(e) => handlePointerDown(e)}
-      onTouchStart={(e) => handleOnTouchDown(e)}
-      style={{
-        borderColor: `${selectionColor || colorToCss(outlineFill || fill)}`,
-        backgroundColor: fillColor,
-        borderRadius: '50%', // Add this line to make the foreignObject an ellipse
-      }}
-      className="flex items-center justify-center border-[2px] border-spacing-3 rounded-sm"
-    >
-            <ContentEditable
-        innerRef={ellipseRef}
-        onKeyDown={handleKeyDown}
-        html={value || ""}
-        onChange={handleContentChange}
-        onPaste={handlePaste}
-        className={cn(
-          "h-full w-full flex items-center justify-center text-center outline-none",
-          font.className
-        )}
-        style={{
-          fontSize: textFontSize,
-          color: fill ? getContrastingTextColor(fill) : "#000",
-          textWrap: "wrap",
-          lineHeight: value ? 'normal' : `${height}px`,
-          WebkitUserSelect: 'auto'
+          }
         }}
-        spellCheck={false}
-        disabled={expired}
-      />
-    </foreignObject>
+        strokeWidth={2}
+        onPointerDown={(e) => handlePointerDown(e)}
+        onTouchStart={(e) => handleOnTouchDown(e)}
+        style={{
+          borderColor: `${selectionColor || colorToCss(outlineFill || fill)}`,
+          backgroundColor: fillColor,
+          borderRadius: '50%', // Add this line to make the foreignObject an ellipse
+        }}
+        className="flex items-center justify-center border-[2px] border-spacing-3 rounded-sm"
+      >
+        <ContentEditable
+          innerRef={ellipseRef}
+          onKeyDown={handleKeyDown}
+          html={value || ""}
+          onChange={handleContentChange}
+          onPaste={handlePaste}
+          className={cn(
+            "h-full w-full flex items-center justify-center text-center outline-none",
+            font.className
+          )}
+          style={{
+            fontSize: textFontSize,
+            color: fill ? getContrastingTextColor(fill) : "#000",
+            textWrap: "wrap",
+            lineHeight: value ? 'normal' : `${height}px`,
+            WebkitUserSelect: 'auto'
+          }}
+          spellCheck={false}
+          disabled={expired}
+        />
+      </foreignObject>
+    </g>
   );
 };

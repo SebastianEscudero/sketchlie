@@ -304,21 +304,40 @@ export function penPointsToPathLayer(
   };
 };
 
-export function getSvgPathFromStroke(stroke: number[][]) {
-  if (!stroke.length) return "";
+function toDomPrecision(v: number) {
+	return Math.round(v * 1e4) / 1e4
+}
 
-  const d = stroke.reduce(
-    (acc, [x0, y0], i, arr) => {
-      const [x1, y1] = arr[(i + 1) % arr.length];
-      acc.push(x0, y0, (x0 + x1) / 2, (y0 + y1) / 2);
-      return acc;
-    },
-    ["M", ...stroke[0], "Q"]
-  );
+function average(A: number[], B: number[]): string {
+  return `${toDomPrecision((A[0] + B[0]) / 2)},${toDomPrecision((A[1] + B[1]) / 2)} `;
+}
 
-  d.push("Z");
-  return d.join(" ");
-};
+function precise(A: number[]): string {
+  return `${toDomPrecision(A[0])},${toDomPrecision(A[1])} `;
+}
+
+export function getSvgPathFromPoints(points: number[][], closed = false): string {
+  const len = points.length;
+
+  if (len < 2) {
+    return '';
+  }
+
+  let d = `M${precise(points[0])}`;
+
+  for (let i = 0; i < len - 1; i++) {
+    const midPoint = average(points[i], points[i + 1]);
+    d += `Q${precise(points[i])} ${midPoint}`;
+  }
+
+  if (closed) {
+    d += `Q${precise(points[len - 1])} ${precise(points[0])}Z`;
+  } else {
+    d += `L${precise(points[len - 1])}`;
+  }
+
+  return d;
+}
 
 export const NAME = "Sketchlie";
 

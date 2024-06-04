@@ -153,8 +153,6 @@ export const BigArrowLeft = ({
         strokeWidth="2"
       />
       <foreignObject
-        x="0"
-        y="0"
         width={width}
         height={height}
         className="flex items-center justify-center"

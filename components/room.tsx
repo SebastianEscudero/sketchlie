@@ -100,6 +100,7 @@ export const Room = React.memo(({ children, roomId, fallback, userInfo, board }:
         layerIds.forEach((layerId: string, index: any) => {
           newLayers[layerId] = { ...newLayers[layerId], ...layers[index] };
         });
+        board.layers = newLayers;
         return newLayers;
       });
     
@@ -123,13 +124,19 @@ export const Room = React.memo(({ children, roomId, fallback, userInfo, board }:
         layerId.forEach((id: string) => {
           delete newLayers[id];
         });
+        board.layers = newLayers; 
         return newLayers;
       });
     
-      setLiveLayerIds(layerIds => layerIds.filter(id => !layerId.includes(id)));
+      setLiveLayerIds(layerIds => {
+        const newLayerIds = layerIds.filter(id => !layerId.includes(id));
+        board.layerIds = newLayerIds; // Update the board object
+        return newLayerIds;
+      });
     });
 
     newSocket.on('layer-send', (newLayerIds) => {
+      board.layerIds = newLayerIds;
       setLiveLayerIds(newLayerIds);
     });
 

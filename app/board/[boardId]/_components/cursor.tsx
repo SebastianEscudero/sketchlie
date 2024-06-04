@@ -33,41 +33,41 @@ export const Cursor = memo(({
     const { x, y } = cursor;
 
     return (
-        <foreignObject
-            x={x}
-            y={y}
-            height={50 / zoom}
-            width={(name.length * 10 + 24) / zoom}
-            className="relative drop-shadow-md"
-        >
-            <div className="flex"> {/* Add this div */}
-                <MousePointer2
-                    style={{
-                        fill: connectionIdToColor(connectionId),
-                        color: connectionIdToColor(connectionId),
-                        height: `${20 / zoom}px`,
-                        width: `${20 / zoom}px`,
-                    }}
-                />
-                <div
-                    className="truncate text-white font-semibold inline-block"
-                    style={{ 
-                        backgroundColor: connectionIdToColor(connectionId) ,
-                        fontSize: `${12 / zoom}px`,
-                        lineHeight: `${12 / zoom}px`,
-                        paddingLeft: `${8 / zoom}px`,
-                        paddingRight: `${8 / zoom}px`,
-                        paddingTop: `${4 / zoom}px`,
-                        paddingBottom: `${4 / zoom}px`,
-                        borderRadius: `${4 / zoom}px`,
-                        marginTop: `${20 / zoom}px`,
-                        marginBottom: 0
-                    }}
-                >
-                    {name}
+        <g transform={`translate(${x}, ${y})`}>
+            <foreignObject
+                height={50 / zoom}
+                width={(name.length * 10 + 24) / zoom}
+                className="relative drop-shadow-md"
+            >
+                <div className="flex">
+                    <MousePointer2
+                        style={{
+                            fill: connectionIdToColor(connectionId),
+                            color: connectionIdToColor(connectionId),
+                            height: `${20 / zoom}px`,
+                            width: `${20 / zoom}px`,
+                        }}
+                    />
+                    <div
+                        className="truncate text-white font-semibold inline-block"
+                        style={{ 
+                            backgroundColor: connectionIdToColor(connectionId) ,
+                            fontSize: `${12 / zoom}px`,
+                            lineHeight: `${12 / zoom}px`,
+                            paddingLeft: `${8 / zoom}px`,
+                            paddingRight: `${8 / zoom}px`,
+                            paddingTop: `${4 / zoom}px`,
+                            paddingBottom: `${4 / zoom}px`,
+                            borderRadius: `${4 / zoom}px`,
+                            marginTop: `${20 / zoom}px`,
+                            marginBottom: 0
+                        }}
+                    >
+                        {name}
+                    </div>
                 </div>
-            </div>
-        </foreignObject>
+            </foreignObject>
+        </g>
     )
 });
 
