@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     description: "El diagrama de Ishikawa, también conocido como diagrama de espina de pescado o diagrama de causa y efecto, es una herramienta visual utilizada para identificar y analizar las causas de un problema o situación. Descubre cómo hacer un diagrama de Ishikawa y ejemplos de su aplicación en Sketchlie.",
     keywords: ["diagrama ishikawa", "qué es diagrama ishikawa", "ejemplos diagrama ishikawa", "técnicas diagrama ishikawa", "diagrama de espina de pescado", "diagrama de causa y efecto", "herramientas diagrama ishikawa", "cómo hacer diagrama ishikawa", "aplicaciones diagrama ishikawa", "diagrama ishikawa Sketchlie"],
     alternates: {
-        canonical: "https://www.sketchlie.com/diagrama-ishikawa/que-es-diagrama-ishikawa",
+        canonical: "https://www.sketchlie.com/diagrama-ishikawa/que-es-diagrama-ishikawa/",
     }
 };
 
