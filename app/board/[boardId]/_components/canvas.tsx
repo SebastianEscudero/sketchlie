@@ -585,7 +585,7 @@ export const Canvas = () => {
                     pathStrokeColor: canvasState.mode === CanvasMode.Laser
                         ? { r: 243, g: 82, b: 35, a: 1 } // F35223 in RGB
                         : canvasState.mode === CanvasMode.Highlighter
-                            ? { ...pathColor, a: 0.5 } // Semi-transparent yellow
+                            ? { ...pathColor, a: 0.7 } // Semi-transparent yellow
                             : pathColor,
             };
 
@@ -656,7 +656,7 @@ export const Canvas = () => {
         }
 
         const id = nanoid();
-        liveLayers[id] = penPointsToPathLayer(pencilDraft, { ...pathColor, a: 0.5 }, 30 / zoom);
+        liveLayers[id] = penPointsToPathLayer(pencilDraft, { ...pathColor, a: 0.7 }, 30 / zoom);
 
         // Create a new InsertLayerCommand
         const command = new InsertLayerCommand(
@@ -1779,7 +1779,7 @@ export const Canvas = () => {
                                     canvasState.mode === CanvasMode.Laser
                                         ? '#F35223'
                                         : canvasState.mode === CanvasMode.Highlighter
-                                            ? colorToCss({ ...pathColor, a: 0.5 }) // Semi-transparent yellow
+                                            ? colorToCss({ ...pathColor, a: 0.7 }) // Semi-transparent yellow
                                             : colorToCss(pathColor)
                                 }
                                 x={0}

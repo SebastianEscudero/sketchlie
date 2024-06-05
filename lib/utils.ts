@@ -15,6 +15,20 @@ import {
 import { toJpeg, toPng } from 'html-to-image';
 
 const COLORS = [
+  "#1D1D1D", // Black
+  "#9FA8B2", // Gray
+  "#FFF000", // Dark Yellow
+  "#FFFF00", // Yellow
+  "#E185F4", // Pink
+  "#AE3EC9", // Purple
+  "#4465E9", // Blue
+  "#4BA1F1", // Light Blue
+  "#FFA500", // Orange
+  "#E16919", // Dark Orange
+  "#079368", // Green
+  "#4DB05E", // Light Green
+  "#F87777", // Salmon
+  "#E03131", // Red
   "#DC2626", // Red
   "#D97706", // Amber
   "#059669", // Teal
