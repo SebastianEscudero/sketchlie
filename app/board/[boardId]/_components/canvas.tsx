@@ -534,7 +534,6 @@ export const Canvas = () => {
         );
     
         if (ids.length > 0) {
-            console.log(ids);
             setLiveLayers(prevLiveLayers => {
                 let newLiveLayers;
                 for (const id of ids) {
@@ -1320,7 +1319,7 @@ export const Canvas = () => {
 
         if (otherUsers) {
             for (const user of otherUsers) {
-                const connectionId = user.userId;
+                const connectionId = user.connectionId;
                 const selection = user.presence?.selection || [];
 
                 for (const layerId of selection) {

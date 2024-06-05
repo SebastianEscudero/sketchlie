@@ -54,6 +54,7 @@ export const Room = React.memo(({ children, roomId, fallback, userInfo, board }:
   const [liveLayerIds, setLiveLayerIds] = useState<string[]>([]);
   const [User, setUser] = useState<User>({
     userId: userInfo.id,
+    connectionId: Math.floor(Math.random() * 1000000), // Add this line
     presence: null,
     information: {
       name: userInfo.name || "Teammate",
@@ -77,7 +78,7 @@ export const Room = React.memo(({ children, roomId, fallback, userInfo, board }:
       setOtherUsers(users.filter(user => user.userId !== User.userId));
     });
 
-    socket.emit('register', User.userId, User.information.name, User.information.picture);
+    socket.emit('register', User.userId, User.connectionId, User.information.name, User.information.picture);
 
     return () => {
       socket.off('users');

@@ -28,10 +28,10 @@ export const Participants = ({
         <div className="absolute h-12 top-2 right-2 bg-white rounded-md p-3 flex items-center shadow-md">
             <div className="flex gap-x-2">
                 {otherUsers && otherUsers.slice(0, MAX_SHOWN_USERS)
-                    .map(({ userId, information}) => {
+                    .map(({ userId, connectionId, information}) => {
                         return(
                             <UserAvatar
-                                borderColor={connectionIdToColor(userId)}
+                                borderColor={connectionIdToColor(connectionId)}
                                 key={userId}
                                 src={information?.picture}
                                 name={information?.name}
@@ -43,7 +43,7 @@ export const Participants = ({
 
                     {User && (
                         <UserAvatar
-                            borderColor={connectionIdToColor(User.userId)}
+                            borderColor={connectionIdToColor(User.connectionId)}
                             src={User.information?.picture}
                             name={`${User.information?.name} (You)`}
                             fallback={User.information?.name?.[0] || "T"}

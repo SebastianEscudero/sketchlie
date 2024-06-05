@@ -20,7 +20,7 @@ const Cursors = ({
                     zoom={zoom}
                     otherUserName = {otherUser.information?.name}
                     key={otherUser.userId}
-                    connectionId={otherUser.userId}
+                    connectionId={otherUser.connectionId}
                     otherUserPresence={otherUser.presence}
                 />
             ))}

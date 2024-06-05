@@ -6,7 +6,7 @@ import { connectionIdToColor } from "@/lib/utils";
 import { Presence } from "@/types/canvas";
 
 interface CursorProps {
-    connectionId: string;
+    connectionId: number;
     otherUserPresence: Presence | null;
     otherUserName?: string;
     zoom?: number;

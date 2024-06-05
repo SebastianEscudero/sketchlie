@@ -338,6 +338,7 @@ export type Presence = {
 
 export type User = {
   userId: string;
+  connectionId: number;
   presence: Presence | null;
   information: {
       name?: string;

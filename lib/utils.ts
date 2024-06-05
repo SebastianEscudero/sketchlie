@@ -23,6 +23,21 @@ const COLORS = [
   "#3AB624", // Emerald
   "#2E5ADA", // Dark Blue
   "#6D2AC2", // Purple
+  "#000000", // Black
+  "#FFFFFF", // White
+  "#1D1D1D", // Dark Gray
+  "#9FA8B2", // Light Gray
+  "#FFF000", // Yellow
+  "#E185F4", // Light Purple
+  "#AE3EC9", // Dark Purple
+  "#4465E9", // Blue
+  "#4BA1F1", // Light Blue
+  "#FFA500", // Orange
+  "#E16919", // Dark Orange
+  "#079368", // Dark Green
+  "#4DB05E", // Green
+  "#F87777", // Light Red
+  "#E03131", // Dark Red
 ];
 
 export function cn(...inputs: ClassValue[]) {
@@ -40,14 +55,8 @@ export function pointerEventToCanvasPoint(
   };
 };
 
-export function connectionIdToColor(connectionId: string): string {
-  let hash = 0;
-  for (let i = 0; i < connectionId.length; i++) {
-      hash = (hash << 5) - hash + connectionId.charCodeAt(i);
-      hash |= 0; // Convert to 32bit integer
-  }
-  const index = Math.abs(hash) % COLORS.length;
-  return COLORS[index];
+export function connectionIdToColor(connectionId: number): string {
+  return COLORS[connectionId % COLORS.length];
 };
 
 
@@ -197,7 +206,7 @@ export function findIntersectingLayersWithPoint(
   point: Point,
   zoom: number
 ) {
-  const tolerance = Math.max(2, 4/zoom);
+  const tolerance = Math.max(4, 4/zoom);
   // Create a small rectangle around the point
   const rect = {
     x: point.x - tolerance,
@@ -289,6 +298,23 @@ export function findIntersectingLayersWithRectangle(
         lineIntersectsLine(mid, end, { x: rect.x, y: rect.y + rect.height }, { x: rect.x, y: rect.y })
       ) {
         ids.push(layerId);
+      }
+
+     } else if (layer.type === LayerType.Path) {
+      for (const pathPoint of layer.points) {
+        const pointX = pathPoint[0] + layer.x;
+        const pointY = pathPoint[1] + layer.y;
+    
+        // Check if the point is inside the rectangle
+        if (
+          pointX >= rect.x &&
+          pointX <= rect.x + rect.width &&
+          pointY >= rect.y &&
+          pointY <= rect.y + rect.height
+        ) {
+          ids.push(layerId);
+          break;
+        }
       }
     } else {
       const { x, y, height, width } = layer;
