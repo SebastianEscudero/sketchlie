@@ -195,67 +195,19 @@ export function findIntersectingLayersWithPoint(
   layerIds: readonly string[],
   layers: { [key: string]: Layer },
   point: Point,
+  zoom: number
 ) {
-  const ids = [];
+  const tolerance = Math.max(2, 4/zoom);
+  // Create a small rectangle around the point
+  const rect = {
+    x: point.x - tolerance,
+    y: point.y - tolerance,
+    width: 2 * tolerance,
+    height: 2 * tolerance,
+  };
 
-  for (const layerId of layerIds) {
-    const layer = layers[layerId];
-
-    if (layer == null) {
-      continue;
-    }
-
-    if (layer.type === LayerType.Arrow && layer.center || layer.type === LayerType.Line && layer.center) {
-      const { x, y, center, width, height } = layer;
-      
-      const start = { x, y };
-      const mid = { x: center.x, y: center.y };
-      const end = { x: x + width, y: y + height };
-    
-      // Calculate the distance from the point to the first part of the arrow
-      let numerator = Math.abs((mid.y - start.y) * point.x - (mid.x - start.x) * point.y + mid.x * start.y - mid.y * start.x);
-      let denominator = Math.sqrt((mid.y - start.y) ** 2 + (mid.x - start.x) ** 2);
-      let distance = numerator / denominator;
-    
-      // If the distance is less than a small threshold and the point is within the bounding box of the line segment, consider the point to be on the line
-      if (distance < 2 && point.x >= Math.min(start.x, mid.x) && point.x <= Math.max(start.x, mid.x) && point.y >= Math.min(start.y, mid.y) && point.y <= Math.max(start.y, mid.y)) {
-        ids.push(layerId);
-        continue;
-      }
-    
-      // Calculate the distance from the point to the second part of the arrow
-      numerator = Math.abs((end.y - mid.y) * point.x - (end.x - mid.x) * point.y + end.x * mid.y - end.y * mid.x);
-      denominator = Math.sqrt((end.y - mid.y) ** 2 + (end.x - mid.x) ** 2);
-      distance = numerator / denominator;
-    
-      // If the distance is less than a small threshold and the point is within the bounding box of the line segment, consider the point to be on the line
-      if (distance < 2 && point.x >= Math.min(mid.x, end.x) && point.x <= Math.max(mid.x, end.x) && point.y >= Math.min(mid.y, end.y) && point.y <= Math.max(mid.y, end.y)) {
-        ids.push(layerId);
-      }
-    } else if (layer.type === LayerType.Path) {
-        for (const pathPoint of layer.points) {
-          const pointX = pathPoint[0] + layer.x;
-          const pointY = pathPoint[1] + layer.y;
-          const distance = Math.sqrt((pointX - point.x) ** 2 + (pointY - point.y) ** 2);
-          if (layer.strokeSize && distance < layer.strokeSize/2) {
-            ids.push(layerId);
-            break;
-          }
-        }
-    
-    } else {
-      const { x, y, height, width } = layer;
-
-      if (
-        point.x > x &&
-        point.x < x + width && 
-        point.y > y &&
-        point.y < y + height
-      ) {
-        ids.push(layerId);
-      }
-    }
-  }
+  // Use the same logic as before to find intersecting layers
+  const ids = findIntersectingLayersWithRectangle(layerIds, layers, { x: rect.x, y: rect.y }, { x: rect.x + rect.width, y: rect.y + rect.height });
 
   return ids;
 };

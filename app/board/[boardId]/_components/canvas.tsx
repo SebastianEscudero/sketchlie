@@ -530,9 +530,11 @@ export const Canvas = () => {
             liveLayerIds,
             liveLayers,
             current,
+            zoom
         );
     
         if (ids.length > 0) {
+            console.log(ids);
             setLiveLayers(prevLiveLayers => {
                 let newLiveLayers;
                 for (const id of ids) {
@@ -555,7 +557,7 @@ export const Canvas = () => {
             });
         }
     
-    }, [liveLayerIds, liveLayers, setLiveLayers]);
+    }, [liveLayerIds, liveLayers, setLiveLayers, zoom]);
 
     const startMultiSelection = useCallback((
         current: Point,
