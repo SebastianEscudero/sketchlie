@@ -111,7 +111,6 @@ class InsertLayerCommand implements Command {
 
 class DeleteLayerCommand implements Command {
     constructor(private layerIds: string[],
-        private layers: any,
         private prevLayers: Layers,
         private prevLayerIds: string[],
         private setLiveLayers: (layers: Layers) => void,
@@ -119,7 +118,7 @@ class DeleteLayerCommand implements Command {
         private deleteLayer: (args: { board: any; layerId: any; }) => void,
         private addLayer: (args: { board: any; layer: any; layerId: any; }) => void,
         private board: any,
-        private socket: Socket | null) { }
+        private socket: Socket | null) {}
 
     execute() {
         const remainingLayers = { ...this.prevLayers };
@@ -155,11 +154,11 @@ class DeleteLayerCommand implements Command {
         const newLayerIds = [...this.prevLayerIds];
 
         const layersToAdd = this.layerIds.map(id => {
-            newLayers[id] = this.layers[id];
+            newLayers[id] = this.prevLayers[id];
             if (!newLayerIds.includes(id)) {
                 newLayerIds.push(id);
             }
-            return this.layers[id];
+            return this.prevLayers[id];
         });
 
         // Call the addLayer API mutation to add all the layers back in the database
@@ -542,13 +541,11 @@ export const Canvas = () => {
                             newLiveLayers = { ...prevLiveLayers };
                         }
                         const layer = newLiveLayers[id];
-                        if ('fill' in layer && layer.fill) {
-                            newLiveLayers[id] = { ...layer, fill: { ...layer.fill, a: layer.fill.a/4 } };
-                        }
-    
-                        if ('outlineFill' in layer && layer.outlineFill) {
-                            newLiveLayers[id] = { ...layer, outlineFill: { ...layer.outlineFill, a: layer.outlineFill.a/4 } };
-                        }
+                        newLiveLayers[id] = { 
+                            ...layer, 
+                            ...('fill' in layer && layer.fill ? { fill: { ...layer.fill, a: layer.fill.a/4 } } : {}),
+                            ...('outlineFill' in layer && layer.outlineFill ? { outlineFill: { ...layer.outlineFill, a: layer.outlineFill.a/4 } } : {})
+                        };
                         layersToDeleteEraserRef.current.add(id);
                     }
                 }
@@ -1089,14 +1086,12 @@ export const Canvas = () => {
             document.body.style.cursor = 'url(/custom-cursors/eraser.svg) 8 8, auto';
             if (layersToDeleteEraserRef.current.size > 0) {
                 const newLayers = { ...liveLayers };
-                const deletedLayers: { [key: string]: any } = {};
                 Array.from(layersToDeleteEraserRef.current).forEach((id: any) => {
-                    deletedLayers[id] = newLayers[id];
                     delete newLayers[id];
                 });
         
                 // Create a new DeleteLayerCommand and add it to the history
-                const command = new DeleteLayerCommand(Array.from(layersToDeleteEraserRef.current), deletedLayers, liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, deleteLayer, addLayer, board, socket);
+                const command = new DeleteLayerCommand(Array.from(layersToDeleteEraserRef.current), initialLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, deleteLayer, addLayer, board, socket);
                 performAction(command);
             }
             layersToDeleteEraserRef.current = new Set();
@@ -1595,14 +1590,12 @@ export const Canvas = () => {
                     }
                     if (selectedLayersRef.current.length > 0) {
                         const newLayers = { ...liveLayers };
-                        const deletedLayers: { [key: string]: any } = {};
                         selectedLayersRef.current.forEach(id => {
-                            deletedLayers[id] = newLayers[id];
                             delete newLayers[id];
                         });
 
                         // Create a new DeleteLayerCommand and add it to the history
-                        const command = new DeleteLayerCommand(selectedLayersRef.current, deletedLayers, liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, deleteLayer, addLayer, board, socket);
+                        const command = new DeleteLayerCommand(selectedLayersRef.current, liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, deleteLayer, addLayer, board, socket);
                         performAction(command);
                         setLiveLayers(newLayers);
                         setLiveLayerIds(liveLayerIds.filter(id => !selectedLayersRef.current.includes(id)));

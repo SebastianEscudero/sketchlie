@@ -316,13 +316,7 @@ export const SelectionTools = memo(({
     let newLiveLayers = { ...liveLayers };
     let newLiveLayerIds = liveLayerIds.filter(id => !selectedLayers.includes(id));
 
-    // Create an object mapping layer IDs to layer objects
-    const layersToDelete: { [key: string]: any } = {};
-    selectedLayers.forEach(id => {
-        layersToDelete[id] = liveLayers[id];
-    });
-
-    const command = new DeleteLayerCommand(selectedLayers, layersToDelete, liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, deleteLayer, addLayer, board, socket);
+    const command = new DeleteLayerCommand(selectedLayers, liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, deleteLayer, addLayer, board, socket);
     performAction(command);
 
     selectedLayers.forEach((id) => {
