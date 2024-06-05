@@ -3,8 +3,7 @@ import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
 
 import { LayerType, BigArrowLeftLayer, UpdateLayerMutation } from "@/types/canvas";
 import { cn, colorToCss, getContrastingTextColor } from "@/lib/utils";
-import React, { useEffect, useRef, useState } from "react";
-import { useRoom } from "@/components/room";
+import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import { throttle } from "lodash";
 
 const font = Kalam({
@@ -19,6 +18,8 @@ interface BigArrowLeftProps {
   selectionColor?: string;
   updateLayer?: UpdateLayerMutation;
   expired?: boolean;
+  socket?: any;
+  board?: any;
   onRefChange?: (ref: React.RefObject<any>) => void;
 };
 
@@ -36,39 +37,38 @@ const throttledUpdateLayer = throttle((updateLayer, socket, board, layerId, laye
   }
 }, 1000);
 
-export const BigArrowLeft = ({
+export const BigArrowLeft = memo(({
   layer,
   onPointerDown,
   id,
   selectionColor,
   updateLayer,
-  onRefChange
+  onRefChange,
+  expired,
+  socket,
+  board,
 }: BigArrowLeftProps) => {
-  const bigArrowLeftRef = useRef<any>(null);
+  const BigArrowLeftRef = useRef<any>(null);
   const { x, y, width, height, fill, outlineFill, value: initialValue, textFontSize } = layer;
   const [value, setValue] = useState(initialValue);
-  const { liveLayers, socket, board, expired } = useRoom();
   const fillColor = colorToCss(fill);
 
   useEffect(() => {
-    if (liveLayers[id] && liveLayers[id].type === LayerType.BigArrowLeft) {
-      const bigArrowLeftLayer = liveLayers[id] as BigArrowLeftLayer;
-      setValue(bigArrowLeftLayer.value);
-    }
-  }, [id, liveLayers]);
+    setValue(layer.value);
+  }, [id, layer]);
 
-  const updateValue = (newValue: string) => {
-    if (liveLayers[id] && liveLayers[id].type === LayerType.BigArrowLeft) {
-      const bigArrowLeftLayer = liveLayers[id] as BigArrowLeftLayer;
-      bigArrowLeftLayer.value = newValue;
+  const updateValue = useCallback((newValue: string) => {
+    if (layer && layer.type === LayerType.BigArrowLeft) {
+      const BigArrowLeftLayer = layer as BigArrowLeftLayer;
+      BigArrowLeftLayer.value = newValue;
       setValue(newValue);
       if (expired !== true) {
-        throttledUpdateLayer(updateLayer, socket, board, id, liveLayers[id]);
+        throttledUpdateLayer(updateLayer, socket, board, id, layer);
       }
     }
-  };
+  }, [id, layer, expired, updateLayer, socket, board]);
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       const selection = window.getSelection();
@@ -87,17 +87,17 @@ export const BigArrowLeft = ({
         e.currentTarget.dispatchEvent(newEvent);
       }
     }
-  };
+  }, []);
 
-  const handlePointerDown = (e: React.PointerEvent) => {
+  const handlePointerDown = useCallback((e: React.PointerEvent) => {
     e.preventDefault();
     if (onPointerDown) onPointerDown(e, id);
     if (onRefChange) {
-      onRefChange(bigArrowLeftRef);
+      onRefChange(BigArrowLeftRef);
     }
-  };
+  }, [onPointerDown, id, onRefChange]);
 
-  const handleOnTouchDown = (e: React.TouchEvent) => {
+  const handleOnTouchDown = useCallback((e: React.TouchEvent) => {
     e.preventDefault();
     if (e.touches.length > 1) {
       return;
@@ -106,15 +106,15 @@ export const BigArrowLeft = ({
       onPointerDown(e, id);
     }
     if (onRefChange) {
-      onRefChange(bigArrowLeftRef);
+      onRefChange(BigArrowLeftRef);
     }
-  }
+  }, [onPointerDown, id, onRefChange, BigArrowLeftRef]);
 
-  const handleContentChange = (e: ContentEditableEvent) => {
+  const handleContentChange = useCallback((e: ContentEditableEvent) => {
     updateValue(e.target.value);
-  };
+  }, [updateValue]);
 
-  const handlePaste = async (e: React.ClipboardEvent) => {
+  const handlePaste = useCallback(async (e: React.ClipboardEvent) => {
     e.preventDefault();
     const text = await navigator.clipboard.readText();
     const selection = window.getSelection();
@@ -123,11 +123,11 @@ export const BigArrowLeft = ({
       range.deleteContents();
       range.insertNode(document.createTextNode(text));
     }
-  };
+  }, []);
 
   useEffect(() => {
     if (onRefChange) {
-      onRefChange(bigArrowLeftRef);
+      onRefChange(BigArrowLeftRef);
     }
   }, [layer]);
 
@@ -137,7 +137,7 @@ export const BigArrowLeft = ({
 
   return (
     <g
-      transform={`translate(${x}, ${y})`}
+      transform={`translate(${x}, ${y + height / 2})`}
       onPointerMove={(e) => {
         if (e.buttons === 1) {
           handlePointerDown(e);
@@ -147,18 +147,19 @@ export const BigArrowLeft = ({
       onTouchStart={(e) => handleOnTouchDown(e)}
     >
       <path
-        d={`M ${width / 2} ${height} L 0 ${height / 2} L ${width / 2} 0 L ${width / 2} ${height / 4} L ${width} ${height / 4} L ${width} ${height * 3 / 4} L ${width / 2} ${height * 3 / 4} Z`}
-        fill={fillColor}
+        d={`M ${width / 2} ${height - height / 2} L 0 ${height / 2 - height / 2} L ${width / 2} ${0 - height / 2} L ${width / 2} ${height / 4 - height / 2} L ${width} ${height / 4 - height / 2} L ${width} ${height * 3 / 4 - height / 2} L ${width / 2} ${height * 3 / 4 - height / 2} Z`} fill={fillColor}
         stroke={selectionColor || colorToCss(outlineFill || fill)}
         strokeWidth="2"
       />
       <foreignObject
+        x={0}
+        y={-height / 2}
         width={width}
         height={height}
         className="flex items-center justify-center"
       >
         <ContentEditable
-          innerRef={bigArrowLeftRef}
+          innerRef={BigArrowLeftRef}
           onKeyDown={handleKeyDown}
           html={value || ""}
           onChange={handleContentChange}
@@ -180,4 +181,6 @@ export const BigArrowLeft = ({
       </foreignObject>
     </g>
   );
-};
+});
+
+BigArrowLeft.displayName = 'BigArrowLeft';

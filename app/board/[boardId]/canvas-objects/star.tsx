@@ -3,8 +3,7 @@ import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
 
 import { LayerType, StarLayer, UpdateLayerMutation } from "@/types/canvas";
 import { cn, colorToCss, getContrastingTextColor } from "@/lib/utils";
-import React, { useEffect, useRef, useState } from "react";
-import { useRoom } from "@/components/room";
+import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import { throttle } from "lodash";
 
 const font = Kalam({
@@ -19,6 +18,8 @@ interface StarProps {
     selectionColor?: string;
     updateLayer?: UpdateLayerMutation;
     expired?: boolean;
+    socket?: any;
+    board?: any;
     onRefChange?: (ref: React.RefObject<any>) => void;
 };
 
@@ -36,39 +37,38 @@ const throttledUpdateLayer = throttle((updateLayer, socket, board, layerId, laye
     }
 }, 1000);
 
-export const Star = ({
+export const Star = memo(({
     layer,
     onPointerDown,
     id,
     selectionColor,
     updateLayer,
-    onRefChange
+    onRefChange,
+    expired,
+    socket,
+    board,
 }: StarProps) => {
-    const starRef = useRef<any>(null);
+    const StarRef = useRef<any>(null);
     const { x, y, width, height, fill, outlineFill, value: initialValue, textFontSize } = layer;
     const [value, setValue] = useState(initialValue);
-    const { liveLayers, socket, board, expired } = useRoom();
     const fillColor = colorToCss(fill);
 
     useEffect(() => {
-        if (liveLayers[id] && liveLayers[id].type === LayerType.Star) {
-            const starLayer = liveLayers[id] as StarLayer;
-            setValue(starLayer.value);
-        }
-    }, [id, liveLayers]);
+        setValue(layer.value);
+    }, [id, layer]);
 
-    const updateValue = (newValue: string) => {
-        if (liveLayers[id] && liveLayers[id].type === LayerType.Star) {
-            const starLayer = liveLayers[id] as StarLayer;
-            starLayer.value = newValue;
+    const updateValue = useCallback((newValue: string) => {
+        if (layer && layer.type === LayerType.Star) {
+            const StarLayer = layer as StarLayer;
+            StarLayer.value = newValue;
             setValue(newValue);
             if (expired !== true) {
-                throttledUpdateLayer(updateLayer, socket, board, id, liveLayers[id]);
+                throttledUpdateLayer(updateLayer, socket, board, id, layer);
             }
         }
-    };
+    }, [id, layer, expired, updateLayer, socket, board]);
 
-    const handleKeyDown = (e: React.KeyboardEvent) => {
+    const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
         if (e.key === 'Enter') {
             e.preventDefault();
             const selection = window.getSelection();
@@ -87,17 +87,17 @@ export const Star = ({
                 e.currentTarget.dispatchEvent(newEvent);
             }
         }
-    };
+    }, []);
 
-    const handlePointerDown = (e: React.PointerEvent) => {
+    const handlePointerDown = useCallback((e: React.PointerEvent) => {
         e.preventDefault();
         if (onPointerDown) onPointerDown(e, id);
         if (onRefChange) {
-            onRefChange(starRef);
+            onRefChange(StarRef);
         }
-    };
+    }, [onPointerDown, id, onRefChange]);
 
-    const handleOnTouchDown = (e: React.TouchEvent) => {
+    const handleOnTouchDown = useCallback((e: React.TouchEvent) => {
         e.preventDefault();
         if (e.touches.length > 1) {
             return;
@@ -106,15 +106,15 @@ export const Star = ({
             onPointerDown(e, id);
         }
         if (onRefChange) {
-            onRefChange(starRef);
+            onRefChange(StarRef);
         }
-    }
+    }, [onPointerDown, id, onRefChange, StarRef]);
 
-    const handleContentChange = (e: ContentEditableEvent) => {
+    const handleContentChange = useCallback((e: ContentEditableEvent) => {
         updateValue(e.target.value);
-    };
+    }, [updateValue]);
 
-    const handlePaste = async (e: React.ClipboardEvent) => {
+    const handlePaste = useCallback(async (e: React.ClipboardEvent) => {
         e.preventDefault();
         const text = await navigator.clipboard.readText();
         const selection = window.getSelection();
@@ -123,11 +123,11 @@ export const Star = ({
             range.deleteContents();
             range.insertNode(document.createTextNode(text));
         }
-    };
+    }, []);
 
     useEffect(() => {
         if (onRefChange) {
-            onRefChange(starRef);
+            onRefChange(StarRef);
         }
     }, [layer]);
 
@@ -137,30 +137,29 @@ export const Star = ({
 
     return (
         <g
-            transform={`translate(${x}, ${y})`}
+            transform={`translate(${x}, ${y + height / 2})`}
             onPointerMove={(e) => {
-                if (e.buttons === 1) {
-                    handlePointerDown(e);
-                }
+            if (e.buttons === 1) {
+                handlePointerDown(e);
+            }
             }}
             onPointerDown={(e) => handlePointerDown(e)}
             onTouchStart={(e) => handleOnTouchDown(e)}
         >
             <path
-                d={`M ${width * 0.5},0 L ${width * 0.67},${height * 0.35} L ${width},${height * 0.38} L ${width * 0.72},${height * 0.6} L ${width * 0.83},${height} L ${width * 0.5},${height * 0.77} L ${width * 0.17},${height} L ${width * 0.28},${height * 0.6} L 0,${height * 0.38} L ${width * 0.33},${height * 0.35} Z`}
-                fill={fillColor}
+d={`M ${width * 0.5},${0 - height/2} L ${width * 0.67},${height * 0.35 - height/2} L ${width},${height * 0.38 - height/2} L ${width * 0.72},${height * 0.6 - height/2} L ${width * 0.83},${height - height/2} L ${width * 0.5},${height * 0.77 - height/2} L ${width * 0.17},${height - height/2} L ${width * 0.28},${height * 0.6 - height/2} L 0,${height * 0.38 - height/2} L ${width * 0.33},${height * 0.35 - height/2} Z`}                fill={fillColor}
                 stroke={selectionColor || colorToCss(outlineFill || fill)}
                 strokeWidth="2"
             />
             <foreignObject
-                x="0"
-                y="0"
+                x={0}
+                y={-height / 2}
                 width={width}
                 height={height}
                 className="flex items-center justify-center"
             >
                 <ContentEditable
-                    innerRef={starRef}
+                    innerRef={StarRef}
                     onKeyDown={handleKeyDown}
                     html={value || ""}
                     onChange={handleContentChange}
@@ -182,4 +181,6 @@ export const Star = ({
             </foreignObject>
         </g>
     );
-};
+});
+
+Star.displayName = 'Star';

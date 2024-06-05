@@ -3,8 +3,7 @@ import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
 
 import { LayerType, TriangleLayer, UpdateLayerMutation } from "@/types/canvas";
 import { cn, colorToCss, getContrastingTextColor } from "@/lib/utils";
-import React, { useEffect, useRef, useState } from "react";
-import { useRoom } from "@/components/room";
+import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import { throttle } from "lodash";
 
 const font = Kalam({
@@ -19,6 +18,8 @@ interface TriangleProps {
   selectionColor?: string;
   updateLayer?: UpdateLayerMutation;
   expired?: boolean;
+  socket?: any;
+  board?: any;
   onRefChange?: (ref: React.RefObject<any>) => void;
 };
 
@@ -36,39 +37,38 @@ const throttledUpdateLayer = throttle((updateLayer, socket, board, layerId, laye
   }
 }, 1000);
 
-export const Triangle = ({
+export const Triangle = memo(({
   layer,
   onPointerDown,
   id,
   selectionColor,
   updateLayer,
-  onRefChange
+  onRefChange,
+  expired,
+  socket,
+  board,
 }: TriangleProps) => {
-  const triangleRef = useRef<any>(null);
+  const TriangleRef = useRef<any>(null);
   const { x, y, width, height, fill, outlineFill, value: initialValue, textFontSize } = layer;
   const [value, setValue] = useState(initialValue);
-  const { liveLayers, socket, board, expired } = useRoom();
   const fillColor = colorToCss(fill);
 
   useEffect(() => {
-    if (liveLayers[id] && liveLayers[id].type === LayerType.Triangle) {
-      const triangeLayer = liveLayers[id] as TriangleLayer;
-      setValue(triangeLayer.value);
-    }
-  }, [id, liveLayers]);
+    setValue(layer.value);
+  }, [id, layer]);
 
-  const updateValue = (newValue: string) => {
-    if (liveLayers[id] && liveLayers[id].type === LayerType.Triangle) {
-      const triangeLayer = liveLayers[id] as TriangleLayer;
-      triangeLayer.value = newValue;
+  const updateValue = useCallback((newValue: string) => {
+    if (layer && layer.type === LayerType.Triangle) {
+      const TriangleLayer = layer as TriangleLayer;
+      TriangleLayer.value = newValue;
       setValue(newValue);
       if (expired !== true) {
-        throttledUpdateLayer(updateLayer, socket, board, id, liveLayers[id]);
+        throttledUpdateLayer(updateLayer, socket, board, id, layer);
       }
     }
-  };
+  }, [id, layer, expired, updateLayer, socket, board]);
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       const selection = window.getSelection();
@@ -87,17 +87,17 @@ export const Triangle = ({
         e.currentTarget.dispatchEvent(newEvent);
       }
     }
-  };
+  }, []);
 
-  const handlePointerDown = (e: React.PointerEvent) => {
-      e.preventDefault();
-      if (onPointerDown) onPointerDown(e, id);
-      if (onRefChange) {
-        onRefChange(triangleRef);
+  const handlePointerDown = useCallback((e: React.PointerEvent) => {
+    e.preventDefault();
+    if (onPointerDown) onPointerDown(e, id);
+    if (onRefChange) {
+      onRefChange(TriangleRef);
     }
-  };
+  }, [onPointerDown, id, onRefChange]);
 
-  const handleOnTouchDown = (e: React.TouchEvent) => {
+  const handleOnTouchDown = useCallback((e: React.TouchEvent) => {
     e.preventDefault();
     if (e.touches.length > 1) {
       return;
@@ -106,15 +106,15 @@ export const Triangle = ({
       onPointerDown(e, id);
     }
     if (onRefChange) {
-      onRefChange(triangleRef);
+      onRefChange(TriangleRef);
     }
-  }
+  }, [onPointerDown, id, onRefChange, TriangleRef]);
 
-  const handleContentChange = (e: ContentEditableEvent) => {
+  const handleContentChange = useCallback((e: ContentEditableEvent) => {
     updateValue(e.target.value);
-  };
-
-  const handlePaste = async (e: React.ClipboardEvent) => {
+  }, [updateValue]);
+  
+  const handlePaste = useCallback(async (e: React.ClipboardEvent) => {
     e.preventDefault();
     const text = await navigator.clipboard.readText();
     const selection = window.getSelection();
@@ -123,21 +123,20 @@ export const Triangle = ({
       range.deleteContents();
       range.insertNode(document.createTextNode(text));
     }
-  };
+  }, []);
 
   useEffect(() => {
     if (onRefChange) {
-      onRefChange(triangleRef);
+      onRefChange(TriangleRef);
     }
   }, [layer]);
-  
+
   if (!fill) {
     return null;
   }
-
   return (
     <g
-      transform={`translate(${x}, ${y})`}
+      transform={`translate(${x}, ${y + height / 2})`}
       onPointerMove={(e) => {
         if (e.buttons === 1) {
             handlePointerDown(e);
@@ -147,20 +146,20 @@ export const Triangle = ({
       onTouchStart={(e) => handleOnTouchDown(e)}
     >
       <polygon
-        points={`${width/2},0 ${width},${height} 0,${height}`}
+        points={`${width/2},${-height/2} ${width},${height/2} 0,${height/2}`}
         fill={fillColor}
         stroke={selectionColor || colorToCss(outlineFill || fill)}
         strokeWidth="2"
       />
       <foreignObject
-        x="0"
-        y="0"
+        x={0}
+        y={-height / 2}
         width={width}
         height={height}
         className="flex items-center justify-center"
       >
            <ContentEditable
-          innerRef={triangleRef}
+          innerRef={TriangleRef}
           onKeyDown={handleKeyDown}
           html={value || ""}
           onChange={handleContentChange}
@@ -182,4 +181,6 @@ export const Triangle = ({
       </foreignObject>
     </g>
   );
-};
+});
+
+Triangle.displayName = "Triangle";

@@ -1,10 +1,9 @@
 import { Kalam } from "next/font/google";
 import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
 
-import { HexagonLayer, LayerType, UpdateLayerMutation } from "@/types/canvas";
+import { LayerType, HexagonLayer, UpdateLayerMutation } from "@/types/canvas";
 import { cn, colorToCss, getContrastingTextColor } from "@/lib/utils";
-import React, { useEffect, useRef, useState } from "react";
-import { useRoom } from "@/components/room";
+import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import { throttle } from "lodash";
 
 const font = Kalam({
@@ -19,6 +18,8 @@ interface HexagonProps {
     selectionColor?: string;
     updateLayer?: UpdateLayerMutation;
     expired?: boolean;
+    socket?: any;
+    board?: any;
     onRefChange?: (ref: React.RefObject<any>) => void;
 };
 
@@ -36,39 +37,38 @@ const throttledUpdateLayer = throttle((updateLayer, socket, board, layerId, laye
     }
 }, 1000);
 
-export const Hexagon = ({
+export const Hexagon = memo(({
     layer,
     onPointerDown,
     id,
     selectionColor,
     updateLayer,
-    onRefChange
+    onRefChange,
+    expired,
+    socket,
+    board,
 }: HexagonProps) => {
-    const hexagonRef = useRef<any>(null);
+    const HexagonRef = useRef<any>(null);
     const { x, y, width, height, fill, outlineFill, value: initialValue, textFontSize } = layer;
     const [value, setValue] = useState(initialValue);
-    const { liveLayers, socket, board, expired } = useRoom();
     const fillColor = colorToCss(fill);
 
     useEffect(() => {
-        if (liveLayers[id] && liveLayers[id].type === LayerType.Hexagon) {
-            const hexagonLayer = liveLayers[id] as HexagonLayer;
-            setValue(hexagonLayer.value);
-        }
-    }, [id, liveLayers]);
+        setValue(layer.value);
+    }, [id, layer]);
 
-    const updateValue = (newValue: string) => {
-        if (liveLayers[id] && liveLayers[id].type === LayerType.Hexagon) {
-            const hexagonLayer = liveLayers[id] as HexagonLayer;
-            hexagonLayer.value = newValue;
+    const updateValue = useCallback((newValue: string) => {
+        if (layer && layer.type === LayerType.Hexagon) {
+            const HexagonLayer = layer as HexagonLayer;
+            HexagonLayer.value = newValue;
             setValue(newValue);
             if (expired !== true) {
-                throttledUpdateLayer(updateLayer, socket, board, id, liveLayers[id]);
+                throttledUpdateLayer(updateLayer, socket, board, id, layer);
             }
         }
-    };
+    }, [id, layer, expired, updateLayer, socket, board]);
 
-    const handleKeyDown = (e: React.KeyboardEvent) => {
+    const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
         if (e.key === 'Enter') {
             e.preventDefault();
             const selection = window.getSelection();
@@ -87,17 +87,17 @@ export const Hexagon = ({
                 e.currentTarget.dispatchEvent(newEvent);
             }
         }
-    };
+    }, []);
 
-    const handlePointerDown = (e: React.PointerEvent) => {
+    const handlePointerDown = useCallback((e: React.PointerEvent) => {
         e.preventDefault();
         if (onPointerDown) onPointerDown(e, id);
         if (onRefChange) {
-            onRefChange(hexagonRef);
+            onRefChange(HexagonRef);
         }
-    };
+    }, [onPointerDown, id, onRefChange]);
 
-    const handleOnTouchDown = (e: React.TouchEvent) => {
+    const handleOnTouchDown = useCallback((e: React.TouchEvent) => {
         e.preventDefault();
         if (e.touches.length > 1) {
             return;
@@ -106,15 +106,15 @@ export const Hexagon = ({
             onPointerDown(e, id);
         }
         if (onRefChange) {
-            onRefChange(hexagonRef);
+            onRefChange(HexagonRef);
         }
-    }
+    }, [onPointerDown, id, onRefChange, HexagonRef]);
 
-    const handleContentChange = (e: ContentEditableEvent) => {
+    const handleContentChange = useCallback((e: ContentEditableEvent) => {
         updateValue(e.target.value);
-    };
+    }, [updateValue]);
 
-    const handlePaste = async (e: React.ClipboardEvent) => {
+    const handlePaste = useCallback(async (e: React.ClipboardEvent) => {
         e.preventDefault();
         const text = await navigator.clipboard.readText();
         const selection = window.getSelection();
@@ -123,11 +123,11 @@ export const Hexagon = ({
             range.deleteContents();
             range.insertNode(document.createTextNode(text));
         }
-    };
+    }, []);
 
     useEffect(() => {
         if (onRefChange) {
-            onRefChange(hexagonRef);
+            onRefChange(HexagonRef);
         }
     }, [layer]);
 
@@ -135,9 +135,10 @@ export const Hexagon = ({
         return null;
     }
 
+
     return (
         <g
-            transform={`translate(${x}, ${y})`}
+            transform={`translate(${x}, ${y + height / 2})`}
             onPointerMove={(e) => {
                 if (e.buttons === 1) {
                     handlePointerDown(e);
@@ -147,20 +148,19 @@ export const Hexagon = ({
             onTouchStart={(e) => handleOnTouchDown(e)}
         >
             <path
-                d={`M ${width * 0.5},0 L ${width}, ${height * 0.25} L ${width}, ${height * 0.75} L ${width * 0.5}, ${height} L 0, ${height * 0.75} L 0, ${height * 0.25} Z`}
-                fill={fillColor}
+                d={`M ${width * 0.5},${0 - height / 2} L ${width}, ${height * 0.25 - height / 2} L ${width}, ${height * 0.75 - height / 2} L ${width * 0.5}, ${height - height / 2} L 0, ${height * 0.75 - height / 2} L 0, ${height * 0.25 - height / 2} Z`} fill={fillColor}
                 stroke={selectionColor || colorToCss(outlineFill || fill)}
                 strokeWidth="2"
             />
             <foreignObject
-                x="0"
-                y="0"
+                x={0}
+                y={-height / 2}
                 width={width}
                 height={height}
                 className="flex items-center justify-center"
             >
                 <ContentEditable
-                    innerRef={hexagonRef}
+                    innerRef={HexagonRef}
                     onKeyDown={handleKeyDown}
                     html={value || ""}
                     onChange={handleContentChange}
@@ -182,4 +182,6 @@ export const Hexagon = ({
             </foreignObject>
         </g>
     );
-};
+});
+
+Hexagon.displayName = "Hexagon";

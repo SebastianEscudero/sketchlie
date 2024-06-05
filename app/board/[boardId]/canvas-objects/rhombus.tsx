@@ -3,7 +3,7 @@ import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
 
 import { LayerType, RhombusLayer, UpdateLayerMutation } from "@/types/canvas";
 import { cn, colorToCss, getContrastingTextColor } from "@/lib/utils";
-import React, { useEffect, useRef, useState } from "react";
+import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import { useRoom } from "@/components/room";
 import { throttle } from "lodash";
 
@@ -19,6 +19,8 @@ interface RhombusProps {
   selectionColor?: string;
   updateLayer?: UpdateLayerMutation;
   expired?: boolean;
+  socket?: any;
+  board?: any;
   onRefChange?: (ref: React.RefObject<any>) => void;
 };
 
@@ -36,39 +38,38 @@ const throttledUpdateLayer = throttle((updateLayer, socket, board, layerId, laye
   }
 }, 1000);
 
-export const Rhombus = ({
+export const Rhombus = memo(({
   layer,
   onPointerDown,
   id,
   selectionColor,
   updateLayer,
-  onRefChange
+  onRefChange,
+  expired,
+  socket,
+  board,
 }: RhombusProps) => {
-  const rhombusRef = useRef<any>(null);
+  const RhombusRef = useRef<any>(null);
   const { x, y, width, height, fill, outlineFill, value: initialValue, textFontSize } = layer;
   const [value, setValue] = useState(initialValue);
-  const { liveLayers, socket, board, expired } = useRoom();
   const fillColor = colorToCss(fill);
 
   useEffect(() => {
-    if (liveLayers[id] && liveLayers[id].type === LayerType.Rhombus) {
-      const rhombusLayer = liveLayers[id] as RhombusLayer;
-      setValue(rhombusLayer.value);
-    }
-  }, [id, liveLayers]);
+    setValue(layer.value);
+  }, [id, layer]);
 
-  const updateValue = (newValue: string) => {
-    if (liveLayers[id] && liveLayers[id].type === LayerType.Rhombus) {
-      const rhombusLayer = liveLayers[id] as RhombusLayer;
-      rhombusLayer.value = newValue;
+  const updateValue = useCallback((newValue: string) => {
+    if (layer && layer.type === LayerType.Rhombus) {
+      const RhombusLayer = layer as RhombusLayer;
+      RhombusLayer.value = newValue;
       setValue(newValue);
       if (expired !== true) {
-        throttledUpdateLayer(updateLayer, socket, board, id, liveLayers[id]);
+        throttledUpdateLayer(updateLayer, socket, board, id, layer);
       }
     }
-  };
+  }, [id, layer, expired, updateLayer, socket, board]);
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       const selection = window.getSelection();
@@ -87,17 +88,17 @@ export const Rhombus = ({
         e.currentTarget.dispatchEvent(newEvent);
       }
     }
-  };
+  }, []);
 
-  const handlePointerDown = (e: React.PointerEvent) => {
-      e.preventDefault();
-      if (onPointerDown) onPointerDown(e, id);
-      if (onRefChange) {
-        onRefChange(rhombusRef);
+  const handlePointerDown = useCallback((e: React.PointerEvent) => {
+    e.preventDefault();
+    if (onPointerDown) onPointerDown(e, id);
+    if (onRefChange) {
+      onRefChange(RhombusRef);
     }
-  };
+  }, [onPointerDown, id, onRefChange]);
 
-  const handleOnTouchDown = (e: React.TouchEvent) => {
+  const handleOnTouchDown = useCallback((e: React.TouchEvent) => {
     e.preventDefault();
     if (e.touches.length > 1) {
       return;
@@ -106,15 +107,15 @@ export const Rhombus = ({
       onPointerDown(e, id);
     }
     if (onRefChange) {
-      onRefChange(rhombusRef);
+      onRefChange(RhombusRef);
     }
-  }
+  }, [onPointerDown, id, onRefChange, RhombusRef]);
 
-  const handleContentChange = (e: ContentEditableEvent) => {
+  const handleContentChange = useCallback((e: ContentEditableEvent) => {
     updateValue(e.target.value);
-  };
+  }, [updateValue]);
 
-  const handlePaste = async (e: React.ClipboardEvent) => {
+  const handlePaste = useCallback(async (e: React.ClipboardEvent) => {
     e.preventDefault();
     const text = await navigator.clipboard.readText();
     const selection = window.getSelection();
@@ -123,44 +124,44 @@ export const Rhombus = ({
       range.deleteContents();
       range.insertNode(document.createTextNode(text));
     }
-  };
+  }, []);
 
   useEffect(() => {
     if (onRefChange) {
-      onRefChange(rhombusRef);
+      onRefChange(RhombusRef);
     }
   }, [layer]);
-  
+
   if (!fill) {
     return null;
   }
 
-return (
+  return (
     <g
-      transform={`translate(${x}, ${y})`}
+      transform={`translate(${x}, ${y + height / 2})`}
       onPointerMove={(e) => {
         if (e.buttons === 1) {
-            handlePointerDown(e);
+          handlePointerDown(e);
         }
       }}
       onPointerDown={(e) => handlePointerDown(e)}
       onTouchStart={(e) => handleOnTouchDown(e)}
     >
       <path
-        d={`M ${width/2} 0 L ${width} ${height/2} L ${width/2} ${height} L 0 ${height/2} Z`}
+        d={`M ${width / 2} ${-height / 2} L ${width} 0 L ${width / 2} ${height / 2} L 0 0 Z`}
         fill={fillColor}
         stroke={selectionColor || colorToCss(outlineFill || fill)}
         strokeWidth="2"
       />
       <foreignObject
-        x="0"
-        y="0"
+        x={0}
+        y={-height / 2}
         width={width}
         height={height}
         className="flex items-center justify-center"
       >
         <ContentEditable
-          innerRef={rhombusRef}
+          innerRef={RhombusRef}
           onKeyDown={handleKeyDown}
           html={value || ""}
           onChange={handleContentChange}
@@ -182,4 +183,6 @@ return (
       </foreignObject>
     </g>
   );
-};
+});
+
+Rhombus.displayName = 'Rhombus';

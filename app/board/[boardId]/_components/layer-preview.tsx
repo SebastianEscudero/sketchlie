@@ -2,7 +2,7 @@
 
 import { memo } from "react";
 import { colorToCss } from "@/lib/utils";
-import { LayerType, UpdateLayerMutation } from "@/types/canvas";
+import { Layer, LayerType, UpdateLayerMutation } from "@/types/canvas";
 import { Path } from "../canvas-objects/path";
 import { Note } from "../canvas-objects/note";
 import { Text } from "../canvas-objects/text";
@@ -24,28 +24,30 @@ import { Line } from "../canvas-objects/line";
 interface LayerPreviewProps {
   id: string;
   onLayerPointerDown: (e: React.PointerEvent, layerId: string) => void;
-  onPathErase: (e: React.PointerEvent, layerId: string) => void;
   selectionColor?: string;
-  liveLayers: any;
+  layer: Layer;
   setLiveLayers: (layers: any) => void;
   updateLayer: UpdateLayerMutation;
   onRefChange?: (ref: React.RefObject<any>) => void;
   zoomRef?: React.RefObject<any>;
+  socket: any;
+  board: any;
+  expired: boolean;
 };
 
 export const LayerPreview = memo(({
   id,
-  onPathErase,
   onLayerPointerDown,
   selectionColor,
-  liveLayers,
+  layer,
   setLiveLayers,
   updateLayer,
   onRefChange,
-  zoomRef
+  zoomRef,
+  socket,
+  board,
+  expired
 }: LayerPreviewProps) => {
-
-  const layer = liveLayers[id];
 
   if (!layer) {
     return null;
@@ -57,7 +59,6 @@ export const LayerPreview = memo(({
         <Path
           key={id}
           points={layer.points}
-          onPathErase={(e) => onPathErase(e, id)}
           onPointerDown={(e) => onLayerPointerDown(e, id)}
           x={layer.x}
           y={layer.y}
@@ -76,6 +77,9 @@ export const LayerPreview = memo(({
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
           onRefChange={onRefChange}
+          socket={socket}
+          board={board}
+          expired={expired}
         />
       );
     case LayerType.Text:
@@ -88,6 +92,9 @@ export const LayerPreview = memo(({
           layer={layer}
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
+          socket={socket}
+          board={board}
+          expired={expired}
         />
       );
     case LayerType.Ellipse:
@@ -99,6 +106,9 @@ export const LayerPreview = memo(({
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
           onRefChange={onRefChange}
+          socket={socket}
+          board={board}
+          expired={expired}
         />
       );
     case LayerType.Rectangle:
@@ -110,6 +120,9 @@ export const LayerPreview = memo(({
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
           onRefChange={onRefChange}
+          socket={socket}
+          board={board}
+          expired={expired}
         />
       );
     case LayerType.Rhombus:
@@ -121,6 +134,9 @@ export const LayerPreview = memo(({
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
           onRefChange={onRefChange}
+          socket={socket}
+          board={board}
+          expired={expired}
         />
       );
     case LayerType.Triangle:
@@ -132,6 +148,9 @@ export const LayerPreview = memo(({
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
           onRefChange={onRefChange}
+          socket={socket}
+          board={board}
+          expired={expired}
         />
       );
     case LayerType.Star:
@@ -143,6 +162,9 @@ export const LayerPreview = memo(({
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
           onRefChange={onRefChange}
+          socket={socket}
+          board={board}
+          expired={expired}
         />
       );
     case LayerType.Hexagon:
@@ -154,27 +176,33 @@ export const LayerPreview = memo(({
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
           onRefChange={onRefChange}
+          socket={socket}
+          board={board}
+          expired={expired}
         />
       );
-      case LayerType.CommentBubble:
-        return (
-          <CommentBubble
-            updateLayer={updateLayer}
-            id={id}
-            layer={layer}
-            onPointerDown={onLayerPointerDown}
-            selectionColor={selectionColor}
-            onRefChange={onRefChange}
-          />
+    case LayerType.CommentBubble:
+      return (
+        <CommentBubble
+          updateLayer={updateLayer}
+          id={id}
+          layer={layer}
+          onPointerDown={onLayerPointerDown}
+          selectionColor={selectionColor}
+          onRefChange={onRefChange}
+          socket={socket}
+          board={board}
+          expired={expired}
+        />
       );
-      case LayerType.Line:
-        return (
-          <Line
-            id={id}
-            layer={layer}
-            onPointerDown={onLayerPointerDown}
-            selectionColor={selectionColor}
-          />
+    case LayerType.Line:
+      return (
+        <Line
+          id={id}
+          layer={layer}
+          onPointerDown={onLayerPointerDown}
+          selectionColor={selectionColor}
+        />
       );
     case LayerType.BigArrowLeft:
       return (
@@ -185,6 +213,9 @@ export const LayerPreview = memo(({
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
           onRefChange={onRefChange}
+          socket={socket}
+          board={board}
+          expired={expired}
         />
       );
     case LayerType.BigArrowRight:
@@ -196,6 +227,9 @@ export const LayerPreview = memo(({
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
           onRefChange={onRefChange}
+          socket={socket}
+          board={board}
+          expired={expired}
         />
       );
     case LayerType.BigArrowUp:
@@ -207,19 +241,25 @@ export const LayerPreview = memo(({
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
           onRefChange={onRefChange}
+          socket={socket}
+          board={board}
+          expired={expired}
         />
       );
-      case LayerType.BigArrowDown:
-        return (
-          <BigArrowDown
-            updateLayer={updateLayer}
-            id={id}
-            layer={layer}
-            onPointerDown={onLayerPointerDown}
-            selectionColor={selectionColor}
-            onRefChange={onRefChange}
-          />
-        );
+    case LayerType.BigArrowDown:
+      return (
+        <BigArrowDown
+          updateLayer={updateLayer}
+          id={id}
+          layer={layer}
+          onPointerDown={onLayerPointerDown}
+          selectionColor={selectionColor}
+          onRefChange={onRefChange}
+          socket={socket}
+          board={board}
+          expired={expired}
+        />
+      );
     case LayerType.Image:
       return (
         <InsertImage

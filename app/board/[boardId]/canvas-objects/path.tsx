@@ -6,7 +6,6 @@ interface PathProps {
     points: number[][];
     fill: string;
     onPointerDown?: (e: React.PointerEvent) => void;
-    onPathErase?: (e: React.PointerEvent) => void;
     stroke?: string;
     strokeSize?: number | undefined;
     zoomRef?: React.RefObject<any>;
@@ -18,7 +17,6 @@ export const Path = ({
     points,
     fill,
     onPointerDown,
-    onPathErase,
     stroke,
     strokeSize,
     zoomRef,
@@ -27,9 +25,12 @@ export const Path = ({
     const isTransparent = fill === 'rgba(0,0,0,0)';
     const isHalfTransparent = /rgba\(\d+,\s*\d+,\s*\d+,\s*0.5\)/.test(fill);
 
+    if (!points || points.length === 0) {
+        return null;
+    }
+
     return (
         <path
-            onPointerEnter={onPathErase}
             onPointerDown={onPointerDown}
             d={getSvgPathFromPoints(points)}
             style={{

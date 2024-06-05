@@ -956,7 +956,7 @@ export const Canvas = () => {
                     setCurrentPreviewLayer({ x, y, width, height, type: LayerType.Ellipse, textFontSize: 12, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
                     break;
                 case LayerType.Text:
-                    setCurrentPreviewLayer({ x, y, width, height: 18, textFontSize: 12, type: LayerType.Rectangle, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 39, g: 142, b: 237, a: 1 } });
+                    setCurrentPreviewLayer({ x, y, width, height: 18, textFontSize: 12, type: LayerType.Rectangle, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 65, g: 75, b: 178, a: 1 } });
                     break;
                 case LayerType.Note:
                     setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.Note, fill: { r: 255, g: 249, b: 177, a: 1 }, outlineFill: { r: 0, g: 0, b: 0, a: 0 } });
@@ -1122,7 +1122,7 @@ export const Canvas = () => {
                 const layerType = liveLayers[selectedLayersRef.current[0]].type;
                 const initialLayer = JSON.stringify(initialLayers[selectedLayersRef.current[0]]);
                 const liveLayer = JSON.stringify(liveLayers[selectedLayersRef.current[0]]);
-                const changed = initialLayer !== liveLayer;
+                const changed = initialLayer === liveLayer;
                 if ((layerType === LayerType.Text 
                     || layerType === LayerType.Note 
                     || layerType === LayerType.Rectangle
@@ -1136,7 +1136,8 @@ export const Canvas = () => {
                     || layerType === LayerType.BigArrowUp
                     || layerType === LayerType.BigArrowDown
                     || layerType === LayerType.CommentBubble)
-                    && !changed && layerRef.current) {
+                    && changed && layerRef.current
+                ) {
                     const layer = layerRef.current;
                     layer.focus();
 
@@ -1223,26 +1224,6 @@ export const Canvas = () => {
             socket.emit('presence', newPresence, User.userId);
         }
     }, [setMyPresence, myPresence, socket, User.userId]);
-
-    const onPathErase = useCallback((e: React.PointerEvent, layerId: string) => {
-        if (canvasStateRef.current.mode === CanvasMode.Eraser && e.buttons === 1) {
-            if (canvasState.mode === CanvasMode.Eraser && e.buttons === 1) {
-                const command = new DeleteLayerCommand(
-                    [layerId],
-                    liveLayers,
-                    { ...liveLayers },
-                    [...liveLayerIds],
-                    setLiveLayers,
-                    setLiveLayerIds,
-                    deleteLayer,
-                    addLayer,
-                    board,
-                    socket
-                );
-                performAction(command);
-            }
-        }
-    }, [liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds]);
 
     const onLayerPointerDown = useCallback((e: React.PointerEvent, layerId: string) => {
 
@@ -1747,15 +1728,17 @@ export const Canvas = () => {
                     {liveLayerIds.map((layerId: any) => (
                         <LayerPreview
                             selectionColor={layerIdsToColorSelection[layerId]}
-                            onPathErase={onPathErase}
                             onLayerPointerDown={onLayerPointerDown}
-                            liveLayers={liveLayers}
+                            layer={liveLayers[layerId]}
                             setLiveLayers={setLiveLayers}
                             updateLayer={updateLayer}
                             key={layerId}
                             id={layerId}
                             onRefChange={setLayerRef}
                             zoomRef={zoomRef}
+                            socket={socket}
+                            board={board}
+                            expired={expired}
                         />
                     ))}
                     {currentPreviewLayer && (

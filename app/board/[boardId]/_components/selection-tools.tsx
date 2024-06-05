@@ -205,7 +205,7 @@ export const SelectionTools = memo(({
       selectedLayers.forEach((id) => {
         const layer = newLayers[id];
         if (layer) {
-          newLayers[id].fill = fill;
+          newLayers[id] = { ...layer, fill: fill };
           updatedIds.push(id);
           updatedLayers.push(newLayers[id]);
         }
@@ -236,7 +236,7 @@ export const SelectionTools = memo(({
       selectedLayers.forEach((id) => {
         const layer = newLayers[id];
         if (layer) {
-          newLayers[id].outlineFill = outlineFill;
+          newLayers[id] = { ...layer, outlineFill: outlineFill };
           updatedIds.push(id);
           updatedLayers.push(newLayers[id]);
         }

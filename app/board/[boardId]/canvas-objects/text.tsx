@@ -1,8 +1,7 @@
-import React, { useEffect, useRef } from 'react';
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { TextLayer, UpdateLayerMutation } from "@/types/canvas";
 import { cn, colorToCss } from "@/lib/utils";
 import { Kalam } from "next/font/google";
-import { useRoom } from '@/components/room';
 import { throttle } from 'lodash';
 
 const font = Kalam({
@@ -11,13 +10,15 @@ const font = Kalam({
 });
 
 interface TextProps {
+    setLiveLayers?: (layers: any) => void;
     id: string;
     layer: TextLayer;
     onPointerDown?: (e: any, id: string) => void;
     selectionColor?: string;
-    setLiveLayers?: (layers: any) => void;
-    liveLayers?: any;
     updateLayer?: UpdateLayerMutation;
+    expired?: boolean;
+    socket?: any;
+    board?: any;
     onRefChange?: (ref: React.RefObject<any>) => void;
 };
 
@@ -36,7 +37,7 @@ const throttledUpdateLayer = throttle((updateLayer, socket, board, layerId, laye
   }, 1000); 
 
 
-export const Text = ({
+  export const Text = memo(({
     layer,
     onPointerDown,
     id,
@@ -44,54 +45,43 @@ export const Text = ({
     setLiveLayers,
     updateLayer,
     onRefChange,
+    expired,
+    socket,
+    board,
 }: TextProps) => {
-    const { x, y, width, height, fill, value, textFontSize } = layer;
-    const { liveLayers, board, socket, expired } = useRoom();
+    const { x, y, width, height, fill, value: initialValue, textFontSize } = layer;
+    const [value, setValue] = useState(initialValue);
     const textRef = useRef<any>(null);
     const fillColor = colorToCss(layer.fill);
     const isTransparent = fillColor === 'rgba(0,0,0,0)';
 
-    const handlePointerDown = (e: React.PointerEvent) => {
+    const handlePointerDown = useCallback((e: React.PointerEvent) => {
         e.preventDefault();
-        if (onPointerDown) {
-            onPointerDown(e, id);
-        }
+        onPointerDown?.(e, id);
+        onRefChange?.(textRef);
+    }, [onPointerDown, id, onRefChange]);
 
-        if (onRefChange) {
-            onRefChange(textRef);
-        }
-    };
-
-    const handleOnTouchDown = (e: React.TouchEvent) => {
+    const handleOnTouchDown = useCallback((e: React.TouchEvent) => {
         e.preventDefault();
         if (e.touches.length > 1) {
           return;
         }
-        if (onPointerDown) {
-            onPointerDown(e, id);
-        }
+        onPointerDown?.(e, id);
+        onRefChange?.(textRef);
+    }, [onPointerDown, id, onRefChange]);
 
-        if (onRefChange) {
-            onRefChange(textRef);
-        }
-    };
-
-    const updateValue = (newValue: string) => {
-        layer.value = newValue;
-        return layer;
-    };
-
-    const handleContentChange = (newValue: string) => {
-        const newLayer = updateValue(newValue);
+    const handleContentChange = useCallback((newValue: string) => {
+        setValue(newValue);
+        const newLayer = { ...layer, value: newValue };
         textRef.current.style.height = `${textFontSize*1.5}px`;
         newLayer.height = textRef.current.scrollHeight;
         if (setLiveLayers) {
-            const layers = { ...liveLayers };
-            layers[id] = newLayer;
-            setLiveLayers(layers);
-            throttledUpdateLayer(updateLayer, socket, board, id, liveLayers[id]);
+            setLiveLayers((prevLayers: any) => {
+                return { ...prevLayers, [id]: { ...newLayer } };
+            });
+            throttledUpdateLayer(updateLayer, socket, board, id, newLayer); // Pass newLayer instead of layer
         }
-    };
+    }, [layer, textFontSize, setLiveLayers, updateLayer, socket, board, id]);
 
     useEffect(() => {
         if (onRefChange) {
@@ -114,50 +104,51 @@ export const Text = ({
         return null;
     }
 
-       return (
-        <foreignObject
-            x={x}
-            y={y}
-            width={width}
-            height={height}
-            style={{
-                outline: selectionColor ? `2px solid ${selectionColor}` : "none",
-            }}
-            onPointerMove={(e) => {
-                if (e.buttons === 1) {
-                    handlePointerDown(e);
-                }
-            }}
-            onPointerDown={(e) => handlePointerDown(e)}
-            onTouchStart={(e) => handleOnTouchDown(e)}
-        >
-            <textarea
-                ref={textRef}
-                value={value || ""}
-                onChange={e => handleContentChange(e.target.value)}
-                autoComplete="off"
-                autoCapitalize="off"
-                autoCorrect="off"
-                spellCheck={false}
-                disabled={expired}
-                placeholder='Type something...'
-                className={cn(
-                    "outline-none w-full h-full text-left flex px-0.5",
-                    font.className
-                )}
+    return (
+        <g transform={`translate(${x}, ${y})`}>
+            <foreignObject
+                width={width}
+                height={height}
                 style={{
-                    color: isTransparent ? "#000" : fillColor,
-                    wordWrap: 'break-word',
-                    overflowWrap: 'break-word',
-                    wordBreak: 'break-all',
-                    backgroundColor: 'transparent',
-                    resize: "none",
-                    overflowY: "hidden",
-                    overflowX: "hidden",
-                    userSelect: "none",
-                    fontSize: textFontSize,
+                    outline: selectionColor ? `2px solid ${selectionColor}` : "none",
                 }}
-            />
-        </foreignObject>
+                onPointerMove={(e) => {
+                    if (e.buttons === 1) {
+                        handlePointerDown(e);
+                    }
+                }}
+                onPointerDown={(e) => handlePointerDown(e)}
+                onTouchStart={(e) => handleOnTouchDown(e)}
+            >
+                <textarea
+                    ref={textRef}
+                    value={value || ""}
+                    onChange={e => handleContentChange(e.target.value)}
+                    autoComplete="off"
+                    autoCapitalize="off"
+                    autoCorrect="off"
+                    spellCheck={false}
+                    disabled={expired}
+                    placeholder='Type something...'
+                    className={cn(
+                        "outline-none w-full h-full text-left flex px-0.5 bg-transparent",
+                        font.className
+                    )}
+                    style={{
+                        color: isTransparent ? "#000" : fillColor,
+                        wordWrap: 'break-word',
+                        overflowWrap: 'break-word',
+                        wordBreak: 'break-all',
+                        resize: "none",
+                        overflowY: "hidden",
+                        overflowX: "hidden",
+                        userSelect: "none",
+                        fontSize: textFontSize,
+                    }}
+                />
+            </foreignObject>
+        </g>
     );
-};
+});
+
+Text.displayName = 'Text';

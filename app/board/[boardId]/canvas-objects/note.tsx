@@ -3,8 +3,7 @@ import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
 
 import { LayerType, NoteLayer, UpdateLayerMutation } from "@/types/canvas";
 import { cn, colorToCss, getContrastingTextColor } from "@/lib/utils";
-import React, { useEffect, useRef, useState } from "react";
-import { useRoom } from "@/components/room";
+import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import { throttle } from "lodash";
 
 const font = Kalam({
@@ -19,6 +18,8 @@ interface NoteProps {
   selectionColor?: string;
   updateLayer?: UpdateLayerMutation;
   expired?: boolean;
+  socket?: any;
+  board?: any;
   onRefChange?: (ref: React.RefObject<any>) => void;
 };
 
@@ -36,39 +37,38 @@ const throttledUpdateLayer = throttle((updateLayer, socket, board, layerId, laye
   }
 }, 1000);
 
-export const Note = ({
+export const Note = memo(({
   layer,
   onPointerDown,
   id,
   selectionColor,
   updateLayer,
-  onRefChange
+  onRefChange,
+  expired,
+  socket,
+  board,
 }: NoteProps) => {
-  const noteRef = useRef<any>(null);
+  const NoteRef = useRef<any>(null);
   const { x, y, width, height, fill, outlineFill, value: initialValue, textFontSize } = layer;
   const [value, setValue] = useState(initialValue);
-  const { liveLayers, socket, board, expired } = useRoom();
   const fillColor = colorToCss(fill);
 
   useEffect(() => {
-    if (liveLayers[id] && liveLayers[id].type === LayerType.Note) {
-      const noteLayer = liveLayers[id] as NoteLayer;
-      setValue(noteLayer.value);
-    }
-  }, [id, liveLayers]);
+    setValue(layer.value);
+  }, [id, layer]);
 
-  const updateValue = (newValue: string) => {
-    if (liveLayers[id] && liveLayers[id].type === LayerType.Note) {
-      const noteLayer = liveLayers[id] as NoteLayer;
-      noteLayer.value = newValue;
+  const updateValue = useCallback((newValue: string) => {
+    if (layer && layer.type === LayerType.Note) {
+      const NoteLayer = layer as NoteLayer;
+      NoteLayer.value = newValue;
       setValue(newValue);
       if (expired !== true) {
-        throttledUpdateLayer(updateLayer, socket, board, id, liveLayers[id]);
+        throttledUpdateLayer(updateLayer, socket, board, id, layer);
       }
     }
-  };
+  }, [id, layer, expired, updateLayer, socket, board]);
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       const selection = window.getSelection();
@@ -87,17 +87,17 @@ export const Note = ({
         e.currentTarget.dispatchEvent(newEvent);
       }
     }
-  };
+  }, []);
 
-  const handlePointerDown = (e: React.PointerEvent) => {
-      e.preventDefault();
-      if (onPointerDown) onPointerDown(e, id);
-      if (onRefChange) {
-        onRefChange(noteRef);
+  const handlePointerDown = useCallback((e: React.PointerEvent) => {
+    e.preventDefault();
+    if (onPointerDown) onPointerDown(e, id);
+    if (onRefChange) {
+      onRefChange(NoteRef);
     }
-  };
+  }, [onPointerDown, id, onRefChange]);
 
-  const handleOnTouchDown = (e: React.TouchEvent) => {
+  const handleOnTouchDown = useCallback((e: React.TouchEvent) => {
     e.preventDefault();
     if (e.touches.length > 1) {
       return;
@@ -106,15 +106,15 @@ export const Note = ({
       onPointerDown(e, id);
     }
     if (onRefChange) {
-      onRefChange(noteRef);
+      onRefChange(NoteRef);
     }
-  }
+  }, [onPointerDown, id, onRefChange, NoteRef]);
 
-  const handleContentChange = (e: ContentEditableEvent) => {
+  const handleContentChange = useCallback((e: ContentEditableEvent) => {
     updateValue(e.target.value);
-  };
-
-  const handlePaste = async (e: React.ClipboardEvent) => {
+  }, [updateValue]);
+  
+  const handlePaste = useCallback(async (e: React.ClipboardEvent) => {
     e.preventDefault();
     const text = await navigator.clipboard.readText();
     const selection = window.getSelection();
@@ -123,58 +123,68 @@ export const Note = ({
       range.deleteContents();
       range.insertNode(document.createTextNode(text));
     }
-  };
+  }, []);
 
   useEffect(() => {
     if (onRefChange) {
-      onRefChange(noteRef);
+      onRefChange(NoteRef);
     }
   }, [layer]);
-  
+
   if (!fill) {
     return null;
   }
 
   return (
-    <foreignObject
-      x={x}
-      y={y}
-      width={width}
-      height={height}
+    <g
+      transform={`translate(${x + width / 2}, ${y + height / 2})`}
       onPointerMove={(e) => {
         if (e.buttons === 1) {
-            handlePointerDown(e);
+          handlePointerDown(e);
         }
-    }}
-      strokeWidth={2}
+      }}
       onPointerDown={(e) => handlePointerDown(e)}
       onTouchStart={(e) => handleOnTouchDown(e)}
-      style={{
-        borderColor: `${selectionColor || colorToCss(outlineFill || fill)}`,
-        backgroundColor: fillColor,
-      }}
-      className="drop-shadow-lg flex items-center justify-center border-[2px] border-spacing-3"
     >
-      <ContentEditable
-        innerRef={noteRef}
-        onKeyDown={handleKeyDown}
-        html={value || ""}
-        onChange={handleContentChange}
-        onPaste={handlePaste}
-        className={cn(
-          "h-full w-full flex items-center justify-center text-center outline-none",
-          font.className
-        )}
-        style={{
-          fontSize: textFontSize,
-          color: fill ? getContrastingTextColor(fill) : "#000",
-          textWrap: "wrap",
-          lineHeight: value ? 'normal' : `${height}px`,
-          WebkitUserSelect: 'auto'
-        }}
-        spellCheck={false}
-        disabled={expired}
+      <rect
+        x={-width / 2}
+        y={-height / 2}
+        width={width}
+        height={height}
+        fill={fillColor}
+        stroke={selectionColor || colorToCss(outlineFill || fill)}
+        strokeWidth="2"
+        className="drop-shadow-md"
       />
-    </foreignObject>
+      <foreignObject
+        x={-width / 2}
+        y={-height / 2}
+        width={width}
+        height={height}
+      >
+        <ContentEditable
+          innerRef={NoteRef}
+          onKeyDown={handleKeyDown}
+          html={value || ""}
+          onChange={handleContentChange}
+          onPaste={handlePaste}
+          className={cn(
+            "h-full w-full flex items-center justify-center text-center outline-none",
+            font.className
+          )}
+          style={{
+            fontSize: textFontSize,
+            color: fill ? getContrastingTextColor(fill) : "#000",
+            textWrap: "wrap",
+            lineHeight: value ? 'normal' : `${height}px`,
+            WebkitUserSelect: 'auto'
+          }}
+          spellCheck={false}
+          disabled={expired}
+        />
+      </foreignObject>
+    </g>
   );
-};
+});
+
+Note.displayName = 'Note';

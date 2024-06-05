@@ -3,8 +3,7 @@ import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
 
 import { LayerType, CommentBubbleLayer, UpdateLayerMutation } from "@/types/canvas";
 import { cn, colorToCss, getContrastingTextColor } from "@/lib/utils";
-import React, { useEffect, useRef, useState } from "react";
-import { useRoom } from "@/components/room";
+import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import { throttle } from "lodash";
 
 const font = Kalam({
@@ -19,6 +18,8 @@ interface CommentBubbleProps {
     selectionColor?: string;
     updateLayer?: UpdateLayerMutation;
     expired?: boolean;
+    socket?: any;
+    board?: any;
     onRefChange?: (ref: React.RefObject<any>) => void;
 };
 
@@ -36,39 +37,38 @@ const throttledUpdateLayer = throttle((updateLayer, socket, board, layerId, laye
     }
 }, 1000);
 
-export const CommentBubble = ({
+export const CommentBubble = memo(({
     layer,
     onPointerDown,
     id,
     selectionColor,
     updateLayer,
-    onRefChange
+    onRefChange,
+    expired,
+    socket,
+    board,
 }: CommentBubbleProps) => {
     const CommentBubbleRef = useRef<any>(null);
     const { x, y, width, height, fill, outlineFill, value: initialValue, textFontSize } = layer;
     const [value, setValue] = useState(initialValue);
-    const { liveLayers, socket, board, expired } = useRoom();
     const fillColor = colorToCss(fill);
 
     useEffect(() => {
-        if (liveLayers[id] && liveLayers[id].type === LayerType.CommentBubble) {
-            const CommentBubbleLayer = liveLayers[id] as CommentBubbleLayer;
-            setValue(CommentBubbleLayer.value);
-        }
-    }, [id, liveLayers]);
+        setValue(layer.value);
+    }, [id, layer]);
 
-    const updateValue = (newValue: string) => {
-        if (liveLayers[id] && liveLayers[id].type === LayerType.CommentBubble) {
-            const CommentBubbleLayer = liveLayers[id] as CommentBubbleLayer;
+    const updateValue = useCallback((newValue: string) => {
+        if (layer && layer.type === LayerType.CommentBubble) {
+            const CommentBubbleLayer = layer as CommentBubbleLayer;
             CommentBubbleLayer.value = newValue;
             setValue(newValue);
             if (expired !== true) {
-                throttledUpdateLayer(updateLayer, socket, board, id, liveLayers[id]);
+                throttledUpdateLayer(updateLayer, socket, board, id, layer);
             }
         }
-    };
+    }, [id, layer, expired, updateLayer, socket, board]);
 
-    const handleKeyDown = (e: React.KeyboardEvent) => {
+    const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
         if (e.key === 'Enter') {
             e.preventDefault();
             const selection = window.getSelection();
@@ -87,17 +87,17 @@ export const CommentBubble = ({
                 e.currentTarget.dispatchEvent(newEvent);
             }
         }
-    };
+    }, []);
 
-    const handlePointerDown = (e: React.PointerEvent) => {
+    const handlePointerDown = useCallback((e: React.PointerEvent) => {
         e.preventDefault();
         if (onPointerDown) onPointerDown(e, id);
         if (onRefChange) {
             onRefChange(CommentBubbleRef);
         }
-    };
+    }, [onPointerDown, id, onRefChange]);
 
-    const handleOnTouchDown = (e: React.TouchEvent) => {
+    const handleOnTouchDown = useCallback((e: React.TouchEvent) => {
         e.preventDefault();
         if (e.touches.length > 1) {
             return;
@@ -108,13 +108,13 @@ export const CommentBubble = ({
         if (onRefChange) {
             onRefChange(CommentBubbleRef);
         }
-    }
+    }, [onPointerDown, id, onRefChange, CommentBubbleRef]);
 
-    const handleContentChange = (e: ContentEditableEvent) => {
+    const handleContentChange = useCallback((e: ContentEditableEvent) => {
         updateValue(e.target.value);
-    };
+    }, [updateValue]);
 
-    const handlePaste = async (e: React.ClipboardEvent) => {
+    const handlePaste = useCallback(async (e: React.ClipboardEvent) => {
         e.preventDefault();
         const text = await navigator.clipboard.readText();
         const selection = window.getSelection();
@@ -123,7 +123,7 @@ export const CommentBubble = ({
             range.deleteContents();
             range.insertNode(document.createTextNode(text));
         }
-    };
+    }, []);
 
     useEffect(() => {
         if (onRefChange) {
@@ -137,7 +137,7 @@ export const CommentBubble = ({
 
     return (
         <g
-            transform={`translate(${x}, ${y})`}
+            transform={`translate(${x}, ${y + height / 2})`}
             onPointerMove={(e) => {
                 if (e.buttons === 1) {
                     handlePointerDown(e);
@@ -147,14 +147,13 @@ export const CommentBubble = ({
             onTouchStart={(e) => handleOnTouchDown(e)}
         >
             <path
-                d={`M 0 0 L ${width} 0 L ${width} ${height * 4 / 5} L ${width / 2.5} ${height * 4 / 5} L ${width / 5} ${height} L ${width / 5} ${height * 4 / 5} L 0 ${height * 4 / 5} Z`}
-                fill={fillColor}
+                d={`M 0 ${-height / 2} L ${width} ${-height / 2} L ${width} ${height * 4 / 5 - height / 2} L ${width / 2.5} ${height * 4 / 5 - height / 2} L ${width / 5} ${height - height / 2} L ${width / 5} ${height * 4 / 5 - height / 2} L 0 ${height * 4 / 5 - height / 2} Z`} fill={fillColor}
                 stroke={selectionColor || colorToCss(outlineFill || fill)}
                 strokeWidth="2"
             />
             <foreignObject
-                x="0"
-                y="0"
+                x={0}
+                y={-height / 2}
                 width={width}
                 height={height}
                 className="flex items-center justify-center"
@@ -169,12 +168,12 @@ export const CommentBubble = ({
                         "h-full w-full flex justify-center text-center outline-none items-center pb-4",
                         value ? "" : "items-start",
                         font.className
-                      )}
+                    )}
                     style={{
                         fontSize: textFontSize,
                         color: fill ? getContrastingTextColor(fill) : "#000",
                         textWrap: "wrap",
-                        lineHeight: value ? 'normal' : `${height-20}px`,
+                        lineHeight: value ? 'normal' : `${height - 20}px`,
                         WebkitUserSelect: 'auto'
                     }}
                     spellCheck={false}
@@ -183,4 +182,6 @@ export const CommentBubble = ({
             </foreignObject>
         </g>
     );
-};
+});
+
+CommentBubble.displayName = "CommentBubble";
