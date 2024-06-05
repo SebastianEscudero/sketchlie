@@ -445,13 +445,13 @@ export function getSvgPathFromPoints(points: number[][], closed = false): string
 }
 export const NAME = "Sketchlie";
 
-export const exportToPNG = async () => {
+export const exportToPNG = async (title: string) => {
   const screenShot = document.getElementById("canvas") as HTMLElement;
   screenShot.style.backgroundColor = '#F4F4F4';
   toPng(screenShot, { quality: 1 }).then((dataUrl) => {
     var anchor = document.createElement("a");
     anchor.setAttribute("href", dataUrl);
-    anchor.setAttribute("download", `Tablero.png`);
+    anchor.setAttribute("download", `${title}.png`);
     anchor.click();
     anchor.remove();
   })
