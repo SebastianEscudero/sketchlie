@@ -202,6 +202,7 @@ export type ImageLayer = {
   width: number;
   height: number;
   src: string;
+  opacity?: number;
 };
 
 export type TextLayer = {

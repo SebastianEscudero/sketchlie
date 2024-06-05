@@ -430,6 +430,7 @@ export const Canvas = () => {
             height: 100,
             width: 100,
             src: selectedImage,
+            opacity: 1,
             fill: null,
         };
 
@@ -544,7 +545,8 @@ export const Canvas = () => {
                         newLiveLayers[id] = { 
                             ...layer, 
                             ...('fill' in layer && layer.fill ? { fill: { ...layer.fill, a: layer.fill.a/4 } } : {}),
-                            ...('outlineFill' in layer && layer.outlineFill ? { outlineFill: { ...layer.outlineFill, a: layer.outlineFill.a/4 } } : {})
+                            ...('outlineFill' in layer && layer.outlineFill ? { outlineFill: { ...layer.outlineFill, a: layer.outlineFill.a/4 } } : {}),
+                            ...('opacity' in layer && layer.opacity ? { opacity: layer.opacity/4 } : {})
                         };
                         layersToDeleteEraserRef.current.add(id);
                     }

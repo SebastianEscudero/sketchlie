@@ -14,10 +14,11 @@ export const InsertImage = ({
   layer,
   onPointerDown,
 }: ImageProps) => {
-  const { x, y, width, height, src } = layer;
+  const { x, y, width, height, src, opacity } = layer;
   if (!isUploading) {
     return (
       <image
+        opacity={opacity ? opacity : 1}
         id={id}
         href={src}
         x={x}
