@@ -421,7 +421,7 @@ export const Toolbar = ({
             }}
             isActive={selectedTool === CanvasMode.Pencil}
           />
-          {/* <ToolButton
+          <ToolButton
             icon={Eraser}
             onClick={() => {
               setSelectedTool(CanvasMode.Eraser);
@@ -430,7 +430,7 @@ export const Toolbar = ({
               });
             }}
             isActive={selectedTool === CanvasMode.Eraser}
-          /> */}
+          />
           <ToolButton
             icon={Highlighter}
             onClick={() => {

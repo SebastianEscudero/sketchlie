@@ -11,6 +11,7 @@ import {
     resizeArrowBounds,
     pointerEventToCanvasPoint,
     resizeBounds,
+    findIntersectingLayersWithPoint,
 } from "@/lib/utils";
 
 import {
@@ -249,6 +250,7 @@ export const Canvas = () => {
     const [copiedLayers, setCopiedLayers] = useState<Map<string, any>>(new Map());
     const [pencilDraft, setPencilDraft] = useState<[number, number, number][]>([]);
     const [layerRef, setLayerRef] = useState<any>(null);
+    const layersToDeleteEraserRef = useRef<Set<string>>(new Set());
     const [canvasState, setCanvasState] = useState<CanvasState>({
         mode: CanvasMode.None,
     });
@@ -352,7 +354,7 @@ export const Canvas = () => {
                 center: center,
                 height: height,
                 width: width,
-                fill: fillColor,
+                fill: { r: 0, g: 0, b: 0, a: 1},
                 startArrowHead: ArrowHead.None,
                 endArrowHead: ArrowHead.Triangle,
             };
@@ -364,7 +366,7 @@ export const Canvas = () => {
                 center: center,
                 height: height,
                 width: width,
-                fill: fillColor,
+                fill: { r: 0, g: 0, b: 0, a: 1},
             };
         } else {
             if (width < 10 && height < 10) {
@@ -522,6 +524,39 @@ export const Canvas = () => {
 
         setMyPresence(newPresence);
     }, [liveLayers, liveLayerIds, setMyPresence, myPresence]);
+    
+    const EraserDeleteLayers = useCallback((current: Point) => {
+        const ids = findIntersectingLayersWithPoint(
+            liveLayerIds,
+            liveLayers,
+            current,
+        );
+    
+        if (ids.length > 0) {
+            setLiveLayers(prevLiveLayers => {
+                let newLiveLayers;
+                for (const id of ids) {
+                    const isLayerDeleted = layersToDeleteEraserRef.current.has(id);
+                    if (!isLayerDeleted) {
+                        if (!newLiveLayers) {
+                            newLiveLayers = { ...prevLiveLayers };
+                        }
+                        const layer = newLiveLayers[id];
+                        if ('fill' in layer && layer.fill) {
+                            newLiveLayers[id] = { ...layer, fill: { ...layer.fill, a: layer.fill.a/4 } };
+                        }
+    
+                        if ('outlineFill' in layer && layer.outlineFill) {
+                            newLiveLayers[id] = { ...layer, outlineFill: { ...layer.outlineFill, a: layer.outlineFill.a/4 } };
+                        }
+                        layersToDeleteEraserRef.current.add(id);
+                    }
+                }
+                return newLiveLayers || prevLiveLayers;
+            });
+        }
+    
+    }, [liveLayerIds, liveLayers, setLiveLayers]);
 
     const startMultiSelection = useCallback((
         current: Point,
@@ -896,6 +931,8 @@ export const Canvas = () => {
             startMultiSelection(current, canvasState.origin);
         } else if (canvasState.mode === CanvasMode.SelectionNet) {
             updateSelectionNet(current, canvasState.origin);
+        } else if (canvasState.mode === CanvasMode.Eraser && e.buttons === 1) {
+            EraserDeleteLayers(current);
         } else if (canvasState.mode === CanvasMode.Translating) {
             translateSelectedLayers(current);
         } else if (canvasState.mode === CanvasMode.Resizing) {
@@ -1050,6 +1087,19 @@ export const Canvas = () => {
             }
         } else if (canvasState.mode === CanvasMode.Eraser) {
             document.body.style.cursor = 'url(/custom-cursors/eraser.svg) 8 8, auto';
+            if (layersToDeleteEraserRef.current.size > 0) {
+                const newLayers = { ...liveLayers };
+                const deletedLayers: { [key: string]: any } = {};
+                Array.from(layersToDeleteEraserRef.current).forEach((id: any) => {
+                    deletedLayers[id] = newLayers[id];
+                    delete newLayers[id];
+                });
+        
+                // Create a new DeleteLayerCommand and add it to the history
+                const command = new DeleteLayerCommand(Array.from(layersToDeleteEraserRef.current), deletedLayers, liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, deleteLayer, addLayer, board, socket);
+                performAction(command);
+            }
+            layersToDeleteEraserRef.current = new Set();
             return;
         } else if (canvasState.mode === CanvasMode.Inserting && canvasState.layerType === LayerType.Image) {
             setSelectedImage("");
