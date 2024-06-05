@@ -43,7 +43,6 @@ export const LayerPreview = memo(({
   setLiveLayers,
   updateLayer,
   onRefChange,
-  zoomRef,
   socket,
   board,
   expired
@@ -65,7 +64,6 @@ export const LayerPreview = memo(({
           fill={layer.fill ? colorToCss(layer.fill) : "#000"}
           stroke={selectionColor}
           strokeSize={layer.strokeSize}
-          zoomRef={zoomRef}
         />
       )
     case LayerType.Note:

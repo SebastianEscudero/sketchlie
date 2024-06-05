@@ -15,20 +15,6 @@ import {
 import { toJpeg, toPng } from 'html-to-image';
 
 const COLORS = [
-  "#1D1D1D", // Black
-  "#9FA8B2", // Gray
-  "#FFF000", // Dark Yellow
-  "#FFFF00", // Yellow
-  "#E185F4", // Pink
-  "#AE3EC9", // Purple
-  "#4465E9", // Blue
-  "#4BA1F1", // Light Blue
-  "#FFA500", // Orange
-  "#E16919", // Dark Orange
-  "#079368", // Green
-  "#4DB05E", // Light Green
-  "#F87777", // Salmon
-  "#E03131", // Red
   "#DC2626", // Red
   "#D97706", // Amber
   "#059669", // Teal
@@ -205,6 +191,96 @@ export function getLayerIdAtPointer(current: Point, layers: { [key: string]: Lay
   return null;
 }
 
+export function findIntersectingLayersWithPoint(
+  layerIds: readonly string[],
+  layers: { [key: string]: Layer },
+  point: Point,
+) {
+  const ids = [];
+
+  for (const layerId of layerIds) {
+    const layer = layers[layerId];
+
+    if (layer == null) {
+      continue;
+    }
+
+    if (layer.type === LayerType.Arrow && layer.center || layer.type === LayerType.Line && layer.center) {
+      const { x, y, center, width, height } = layer;
+      
+      const start = { x, y };
+      const mid = { x: center.x, y: center.y };
+      const end = { x: x + width, y: y + height };
+    
+      // Calculate the distance from the point to the first part of the arrow
+      let numerator = Math.abs((mid.y - start.y) * point.x - (mid.x - start.x) * point.y + mid.x * start.y - mid.y * start.x);
+      let denominator = Math.sqrt((mid.y - start.y) ** 2 + (mid.x - start.x) ** 2);
+      let distance = numerator / denominator;
+    
+      // If the distance is less than a small threshold and the point is within the bounding box of the line segment, consider the point to be on the line
+      if (distance < 2 && point.x >= Math.min(start.x, mid.x) && point.x <= Math.max(start.x, mid.x) && point.y >= Math.min(start.y, mid.y) && point.y <= Math.max(start.y, mid.y)) {
+        ids.push(layerId);
+        continue;
+      }
+    
+      // Calculate the distance from the point to the second part of the arrow
+      numerator = Math.abs((end.y - mid.y) * point.x - (end.x - mid.x) * point.y + end.x * mid.y - end.y * mid.x);
+      denominator = Math.sqrt((end.y - mid.y) ** 2 + (end.x - mid.x) ** 2);
+      distance = numerator / denominator;
+    
+      // If the distance is less than a small threshold and the point is within the bounding box of the line segment, consider the point to be on the line
+      if (distance < 2 && point.x >= Math.min(mid.x, end.x) && point.x <= Math.max(mid.x, end.x) && point.y >= Math.min(mid.y, end.y) && point.y <= Math.max(mid.y, end.y)) {
+        ids.push(layerId);
+      }
+    } else if (layer.type === LayerType.Path) {
+        for (const pathPoint of layer.points) {
+          const pointX = pathPoint[0] + layer.x;
+          const pointY = pathPoint[1] + layer.y;
+          const distance = Math.sqrt((pointX - point.x) ** 2 + (pointY - point.y) ** 2);
+          if (layer.strokeSize && distance < layer.strokeSize/2) {
+            ids.push(layerId);
+            break;
+          }
+        }
+    
+    } else {
+      const { x, y, height, width } = layer;
+
+      if (
+        point.x > x &&
+        point.x < x + width && 
+        point.y > y &&
+        point.y < y + height
+      ) {
+        ids.push(layerId);
+      }
+    }
+  }
+
+  return ids;
+};
+
+function lineIntersectsLine(a1: Point, a2: Point, b1: Point, b2: Point) {
+  const denominator = ((b2.y - b1.y) * (a2.x - a1.x)) - ((b2.x - b1.x) * (a2.y - a1.y));
+
+  if (denominator === 0) {
+    return false;
+  }
+
+  const numerator1 = ((b2.x - b1.x) * (a1.y - b1.y)) - ((b2.y - b1.y) * (a1.x - b1.x));
+  const numerator2 = ((a2.x - a1.x) * (a1.y - b1.y)) - ((a2.y - a1.y) * (a1.x - b1.x));
+
+  if (numerator1 === 0 || numerator2 === 0) {
+    return false;
+  }
+
+  const r = numerator1 / denominator;
+  const s = numerator2 / denominator;
+
+  return (r > 0 && r < 1) && (s > 0 && s < 1);
+}
+
+
 export function findIntersectingLayersWithRectangle(
   layerIds: readonly string[],
   layers: { [key: string]: Layer },
@@ -228,19 +304,37 @@ export function findIntersectingLayersWithRectangle(
     }
 
     if (layer.type === LayerType.Arrow && layer.center || layer.type === LayerType.Line && layer.center) {
-      const { x, y, width, height, center } = layer;
-      const length = Math.sqrt(width * width + height * height);
-      const angle = Math.atan2(center.y - y, center.x - x);
-      const end = {
-        x: x + length * Math.cos(angle),
-        y: y + length * Math.sin(angle),
-      };
+      const { x, y, center, width, height } = layer;
+      
+      const start = { x, y };
+      const mid = { x: center.x, y: center.y };
+      const end = { x: x + width, y: y + height };
 
       if (
-        rect.x + rect.width > Math.min(x, end.x) &&
-        rect.x < Math.max(x, end.x) && 
-        rect.y + rect.height > Math.min(y, end.y) &&
-        rect.y < Math.max(y, end.y)
+        (start.x >= rect.x && start.x <= rect.x + rect.width && start.y >= rect.y && start.y <= rect.y + rect.height) &&
+        (end.x >= rect.x && end.x <= rect.x + rect.width && end.y >= rect.y && end.y <= rect.y + rect.height)
+      ) {
+        ids.push(layerId);
+        continue;
+      }
+
+      // Check if the rectangle intersects with the first part of the arrow
+      if (
+        lineIntersectsLine(start, mid, { x: rect.x, y: rect.y }, { x: rect.x + rect.width, y: rect.y }) ||
+        lineIntersectsLine(start, mid, { x: rect.x + rect.width, y: rect.y }, { x: rect.x + rect.width, y: rect.y + rect.height }) ||
+        lineIntersectsLine(start, mid, { x: rect.x + rect.width, y: rect.y + rect.height }, { x: rect.x, y: rect.y + rect.height }) ||
+        lineIntersectsLine(start, mid, { x: rect.x, y: rect.y + rect.height }, { x: rect.x, y: rect.y })
+      ) {
+        ids.push(layerId);
+        continue;
+      }
+
+      // Check if the rectangle intersects with the second part of the arrow
+      if (
+        lineIntersectsLine(mid, end, { x: rect.x, y: rect.y }, { x: rect.x + rect.width, y: rect.y }) ||
+        lineIntersectsLine(mid, end, { x: rect.x + rect.width, y: rect.y }, { x: rect.x + rect.width, y: rect.y + rect.height }) ||
+        lineIntersectsLine(mid, end, { x: rect.x + rect.width, y: rect.y + rect.height }, { x: rect.x, y: rect.y + rect.height }) ||
+        lineIntersectsLine(mid, end, { x: rect.x, y: rect.y + rect.height }, { x: rect.x, y: rect.y })
       ) {
         ids.push(layerId);
       }
@@ -252,54 +346,6 @@ export function findIntersectingLayersWithRectangle(
         rect.x < x + width && 
         rect.y + rect.height > y &&
         rect.y < y + height
-      ) {
-        ids.push(layerId);
-      }
-    }
-  }
-
-  return ids;
-};
-
-export function findIntersectingLayersWithPoint(
-  layerIds: readonly string[],
-  layers: { [key: string]: Layer },
-  point: Point,
-) {
-  const ids = [];
-
-  for (const layerId of layerIds) {
-    const layer = layers[layerId];
-
-    if (layer == null) {
-      continue;
-    }
-
-    if (layer.type === LayerType.Arrow && layer.center || layer.type === LayerType.Line && layer.center) {
-      const { x, y, width, height, center } = layer;
-      const length = Math.sqrt(width * width + height * height);
-      const angle = Math.atan2(center.y - y, center.x - x);
-      const end = {
-        x: x + length * Math.cos(angle),
-        y: y + length * Math.sin(angle),
-      };
-
-      if (
-        point.x > Math.min(x, end.x) &&
-        point.x < Math.max(x, end.x) && 
-        point.y > Math.min(y, end.y) &&
-        point.y < Math.max(y, end.y)
-      ) {
-        ids.push(layerId);
-      }
-    } else {
-      const { x, y, height, width } = layer;
-
-      if (
-        point.x > x &&
-        point.x < x + width && 
-        point.y > y &&
-        point.y < y + height
       ) {
         ids.push(layerId);
       }
@@ -378,6 +424,10 @@ function precise(A: number[]): string {
 export function getSvgPathFromPoints(points: number[][], closed = false): string {
   const len = points.length;
 
+  // if (len < 2) {
+  //   return '';
+  // }
+
   let d = `M${precise(points[0])}`;
 
   for (let i = 0; i < len - 1; i++) {
@@ -393,20 +443,15 @@ export function getSvgPathFromPoints(points: number[][], closed = false): string
 
   return d;
 }
-
 export const NAME = "Sketchlie";
 
-export const exportToPNG = async (title: string) => {
+export const exportToPNG = async () => {
   const screenShot = document.getElementById("canvas") as HTMLElement;
-  
-  // Set the background color and image
   screenShot.style.backgroundColor = '#F4F4F4';
-
-  // Now that the image is loaded, take the screenshot
   toPng(screenShot, { quality: 1 }).then((dataUrl) => {
     var anchor = document.createElement("a");
     anchor.setAttribute("href", dataUrl);
-    anchor.setAttribute("download", `${title}.png`);
+    anchor.setAttribute("download", `Tablero.png`);
     anchor.click();
     anchor.remove();
   })

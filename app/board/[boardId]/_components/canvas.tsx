@@ -560,7 +560,7 @@ export const Canvas = () => {
         origin: Point,
     ) => {
         if (
-            Math.abs(current.x - origin.x) + Math.abs(current.y - origin.y) > 5
+            Math.abs(current.x - origin.x) + Math.abs(current.y - origin.y) > 1
         ) {
             setCanvasState({
                 mode: CanvasMode.SelectionNet,
@@ -1093,8 +1093,9 @@ export const Canvas = () => {
                 // Create a new DeleteLayerCommand and add it to the history
                 const command = new DeleteLayerCommand(Array.from(layersToDeleteEraserRef.current), initialLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, deleteLayer, addLayer, board, socket);
                 performAction(command);
+                layersToDeleteEraserRef.current.clear();
+                return;
             }
-            layersToDeleteEraserRef.current = new Set();
             return;
         } else if (canvasState.mode === CanvasMode.Inserting && canvasState.layerType === LayerType.Image) {
             setSelectedImage("");
@@ -1255,6 +1256,7 @@ export const Canvas = () => {
             initialLayers,
             history,
             layerRef,
+            layersToDeleteEraserRef.current
         ]);
 
     const onPointerLeave = useCallback(() => {
@@ -1778,7 +1780,6 @@ export const Canvas = () => {
                             key={layerId}
                             id={layerId}
                             onRefChange={setLayerRef}
-                            zoomRef={zoomRef}
                             socket={socket}
                             board={board}
                             expired={expired}
