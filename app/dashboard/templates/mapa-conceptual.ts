@@ -6,7 +6,7 @@ export const PlantillaMapaConceptual = {
     "0BooNvpnEit3SnhRfItRn": {
       fill: { a: 1, b: 42, g: 142, r: 252 },
       height: 80,
-      outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+      outlineFill: { r: 29, g: 29, b: 29, a: 1 },
       textFontSize: 18,
       type: 0,
       value: "",
@@ -17,7 +17,7 @@ export const PlantillaMapaConceptual = {
     "3yfVHpAOoplfOLvrsTMUu": {
       center: { x: 1144, y: 205 },
       endArrowHead: "Triangle",
-      fill: { a: 0, b: 0, g: 0, r: 0 },
+      fill: { r: 29, g: 29, b: 29, a: 1 },
       height: 117,
       type: 16,
       width: 237,
@@ -27,7 +27,7 @@ export const PlantillaMapaConceptual = {
     "8aYD2hITsXjdiaCvftmV8": {
       fill: { a: 1, b: 42, g: 142, r: 252 },
       height: 80,
-      outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+      outlineFill: { r: 29, g: 29, b: 29, a: 1 },
       textFontSize: 18,
       type: 0,
       value: "",
@@ -38,7 +38,7 @@ export const PlantillaMapaConceptual = {
     "8nl3jVUW4X91EGUvjPWTZ": {
       fill: { a: 1, b: 42, g: 142, r: 252 },
       height: 80,
-      outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+      outlineFill: { r: 29, g: 29, b: 29, a: 1 },
       textFontSize: 18,
       type: 0,
       value: "",
@@ -49,7 +49,7 @@ export const PlantillaMapaConceptual = {
     D0ZTfps5PnkbQgSo3kG2J: {
       fill: { a: 1, b: 42, g: 142, r: 252 },
       height: 80,
-      outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+      outlineFill: { r: 29, g: 29, b: 29, a: 1 },
       textFontSize: 18,
       type: 0,
       value: "",
@@ -58,9 +58,9 @@ export const PlantillaMapaConceptual = {
       y: 521.6439179463089,
     },
     EuN2Yos0Fw0DUgiz7g2bP: {
-      fill: { a: 1, b: 178, g: 75, r: 65 },
+      fill: { r: 68, g: 101, b: 233, a: 1 },
       height: 80,
-      outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+      outlineFill: { r: 29, g: 29, b: 29, a: 1 },
       textFontSize: 36,
       type: 0,
       value: "Title",
@@ -71,7 +71,7 @@ export const PlantillaMapaConceptual = {
     FtsjZahjn9mw6Tgr0bJCf: {
       center: { x: 824.2414586363639, y: 460.9765035454547 },
       endArrowHead: "Triangle",
-      fill: { a: 0, b: 0, g: 0, r: 0 },
+      fill: { r: 29, g: 29, b: 29, a: 1 },
       height: 110.00000000000011,
       type: 16,
       width: -0.4545454545456096,
@@ -81,7 +81,7 @@ export const PlantillaMapaConceptual = {
     HkwuW8WxHEEtpKGdMAQxw: {
       fill: { a: 1, b: 42, g: 142, r: 252 },
       height: 80,
-      outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+      outlineFill: { r: 29, g: 29, b: 29, a: 1 },
       textFontSize: 18,
       type: 0,
       value: "",
@@ -92,7 +92,7 @@ export const PlantillaMapaConceptual = {
     PW5aesYKWMkdliAIGc8jB: {
       fill: { a: 1, b: 42, g: 142, r: 252 },
       height: 80,
-      outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+      outlineFill: { r: 29, g: 29, b: 29, a: 1 },
       textFontSize: 18,
       type: 0,
       value: "",
@@ -103,7 +103,7 @@ export const PlantillaMapaConceptual = {
     WsxOKKBG8JffdvODBbJX4: {
       center: { x: 503, y: 204 },
       endArrowHead: "Triangle",
-      fill: { a: 0, b: 0, g: 0, r: 0 },
+      fill: { r: 29, g: 29, b: 29, a: 1 },
       height: 114,
       type: 16,
       width: -245,
@@ -113,7 +113,7 @@ export const PlantillaMapaConceptual = {
     Ww1xbJU8nyp0hRxHJcL6O: {
       fill: { a: 1, b: 42, g: 142, r: 252 },
       height: 80,
-      outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+      outlineFill: { r: 29, g: 29, b: 29, a: 1 },
       textFontSize: 18,
       type: 0,
       value: "",
@@ -124,7 +124,7 @@ export const PlantillaMapaConceptual = {
     ZhotojMeR4batzuFdOWTF: {
       center: { x: 502.65054954545457, y: 463.249230818182 },
       endArrowHead: "Triangle",
-      fill: { a: 0, b: 0, g: 0, r: 0 },
+      fill: { r: 29, g: 29, b: 29, a: 1 },
       height: 107.27272727272731,
       type: 16,
       width: 0.9090909090908781,
@@ -134,7 +134,7 @@ export const PlantillaMapaConceptual = {
     cMMirutbs6RAGpU9nA5Lb: {
       fill: { a: 1, b: 42, g: 142, r: 252 },
       height: 80,
-      outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+      outlineFill: { r: 29, g: 29, b: 29, a: 1 },
       textFontSize: 18,
       type: 0,
       value: "",
@@ -145,7 +145,7 @@ export const PlantillaMapaConceptual = {
     hGprDIq91P5JNtf1m7YBu: {
       center: { x: 1144.923276818182, y: 464.1583217272729 },
       endArrowHead: "Triangle",
-      fill: { a: 0, b: 0, g: 0, r: 0 },
+      fill: { r: 29, g: 29, b: 29, a: 1 },
       height: 107.27272727272731,
       type: 16,
       width: 0.9090909090908781,
@@ -155,7 +155,7 @@ export const PlantillaMapaConceptual = {
     iInicGdLUlTb4FuejCohQ: {
       fill: { a: 1, b: 42, g: 142, r: 252 },
       height: 80,
-      outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+      outlineFill: { r: 29, g: 29, b: 29, a: 1 },
       textFontSize: 18,
       type: 0,
       value: "",
@@ -166,7 +166,7 @@ export const PlantillaMapaConceptual = {
     mMIojNLSp82BmATUpvTmp: {
       center: { x: 501.7955586363633, y: 662.6657072362032 },
       endArrowHead: "Triangle",
-      fill: { a: 0, b: 0, g: 0, r: 0 },
+      fill: { r: 29, g: 29, b: 29, a: 1 },
       height: 107.27272727272731,
       type: 16,
       width: 0.9090909090908781,
@@ -176,7 +176,7 @@ export const PlantillaMapaConceptual = {
     uBab7aTgPly1BJA7MvVsR: {
       center: { x: 1144.0682859090912, y: 663.574798145294 },
       endArrowHead: "Triangle",
-      fill: { a: 0, b: 0, g: 0, r: 0 },
+      fill: { r: 29, g: 29, b: 29, a: 1 },
       height: 107.27272727272731,
       type: 16,
       width: 0.9090909090908781,
@@ -186,7 +186,7 @@ export const PlantillaMapaConceptual = {
     y55gsNt6xvsIo6rFsM9ZC: {
       center: { x: 824.014185909091, y: 283.7037762727274 },
       endArrowHead: "Triangle",
-      fill: { a: 0, b: 0, g: 0, r: 0 },
+      fill: { r: 29, g: 29, b: 29, a: 1 },
       height: 68.18181818181819,
       type: 16,
       width: 0,
@@ -196,7 +196,7 @@ export const PlantillaMapaConceptual = {
     yHBUnNa5fIiQSuECi9EAq: {
       center: { x: 823.3864677272726, y: 660.3929799634759 },
       endArrowHead: "Triangle",
-      fill: { a: 0, b: 0, g: 0, r: 0 },
+      fill: { r: 29, g: 29, b: 29, a: 1 },
       height: 110.00000000000011,
       type: 16,
       width: -0.4545454545456096,

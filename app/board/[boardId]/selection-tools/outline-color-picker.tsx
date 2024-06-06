@@ -41,9 +41,9 @@ export const OutlineColorPicker = ({
             <ColorButton color={{ r: 68, g: 101, b: 233, a: 1 }} onClick={onChange} />
             <ColorButton color={{ r: 75, g: 161, b: 241, a: 1 }} onClick={onChange} />
             <ColorButton color={{ r: 255, g: 165, b: 0, a: 1 }} onClick={onChange} />
-            <ColorButton color={{ r: 225, g: 105, b: 25, a: 1 }} onClick={onChange} />
+            <ColorButton color={{ a: 1, b: 42, g: 142, r: 252 }} onClick={onChange} />
             <ColorButton color={{ r: 7, g: 147, b: 104, a: 1 }} onClick={onChange} />
-            <ColorButton color={{ r: 77, g: 176, b: 94, a: 1 }} onClick={onChange} />
+            <ColorButton color={{ a: 1, b: 99, g: 202, r: 68 }} onClick={onChange} />
             <ColorButton color={{ r: 248, g: 119, b: 119, a: 1 }} onClick={onChange} />
             <ColorButton color={{ r: 224, g: 49, b: 49, a: 1 }} onClick={onChange} />
           </div>

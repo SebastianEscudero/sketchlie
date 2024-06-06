@@ -6,7 +6,7 @@ export const PlantillaDiagramaIshikawa = {
     "38iHAuj6WAaUwnLv7paua": {
       fill: { a: 1, b: 69, g: 244, r: 255 },
       height: 86.71900826446279,
-      outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+      outlineFill: { r: 29, g: 29, b: 29, a: 1 },
       textFontSize: 24,
       type: 0,
       value: "Causa",
@@ -16,7 +16,7 @@ export const PlantillaDiagramaIshikawa = {
     },
     "4uo17QvMLi2DVCptKs5c0": {
       center: { x: 1320.5, y: 467 },
-      fill: { a: 0, b: 0, g: 0, r: 0 },
+      fill: { r: 29, g: 29, b: 29, a: 1 },
       height: -220,
       type: 11,
       width: -1,
@@ -26,7 +26,7 @@ export const PlantillaDiagramaIshikawa = {
     "4zaiW7HrCy3CyQf7IdgrD": {
       center: { x: 707.882750347228, y: 611.4332944898672 },
       endArrowHead: "Triangle",
-      fill: { a: 0, b: 0, g: 0, r: 0 },
+      fill: { r: 29, g: 29, b: 29, a: 1 },
       height: -279.3700578673734,
       startArrowHead: "None",
       type: 16,
@@ -107,7 +107,7 @@ export const PlantillaDiagramaIshikawa = {
     SCRVp4BhcqCFnrh6aWp9f: {
       fill: { a: 1, b: 42, g: 142, r: 252 },
       height: 86.71900826446279,
-      outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+      outlineFill: { r: 29, g: 29, b: 29, a: 1 },
       textFontSize: 24,
       type: 0,
       value: "Causa",
@@ -126,7 +126,7 @@ export const PlantillaDiagramaIshikawa = {
       y: 331,
     },
     aho5ZSzBXiiInslXm8Xeu: {
-      fill: { a: 0, b: 0, g: 0, r: 0 },
+      fill: { r: 29, g: 29, b: 29, a: 1 },
       height: 82,
       textFontSize: 18,
       type: 13,
@@ -137,7 +137,7 @@ export const PlantillaDiagramaIshikawa = {
     },
     bpBNbQIn6Sa4qxnCIPGjp: {
       center: { x: 1402.9009501721848, y: 412.0325060112539 },
-      fill: { a: 0, b: 0, g: 0, r: 0 },
+      fill: { r: 29, g: 29, b: 29, a: 1 },
       height: 107.64405415232739,
       type: 11,
       width: 164.95984871973906,
@@ -147,7 +147,7 @@ export const PlantillaDiagramaIshikawa = {
     bssVXDtb2oerdaUJSWMzC: {
       center: { x: 483.9396161155512, y: 611.1127711863836 },
       endArrowHead: "Triangle",
-      fill: { a: 0, b: 0, g: 0, r: 0 },
+      fill: { r: 29, g: 29, b: 29, a: 1 },
       height: -279.3700578673734,
       startArrowHead: "None",
       type: 16,
@@ -158,7 +158,7 @@ export const PlantillaDiagramaIshikawa = {
     dVU6OxWzfz1nd1qfIhmjX: {
       center: { x: 710.9429917816396, y: 327.825248762435 },
       endArrowHead: "Triangle",
-      fill: { a: 0, b: 0, g: 0, r: 0 },
+      fill: { r: 29, g: 29, b: 29, a: 1 },
       height: 274.88900538252034,
       startArrowHead: "None",
       type: 16,
@@ -169,7 +169,7 @@ export const PlantillaDiagramaIshikawa = {
     eLuogufsyQXueZyiAwtiM: {
       fill: { a: 1, b: 35, g: 82, r: 243 },
       height: 86.71900826446279,
-      outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+      outlineFill: { r: 29, g: 29, b: 29, a: 1 },
       textFontSize: 24,
       type: 0,
       value: "Causa",
@@ -180,7 +180,7 @@ export const PlantillaDiagramaIshikawa = {
     gaPGKEQaHKI29undskfCo: {
       fill: { a: 1, b: 245, g: 105, r: 155 },
       height: 86.71900826446279,
-      outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+      outlineFill: { r: 29, g: 29, b: 29, a: 1 },
       textFontSize: 24,
       type: 0,
       value: "Causa",
@@ -201,7 +201,7 @@ export const PlantillaDiagramaIshikawa = {
     jHLyoXbTmLcWTCgwbLOSP: {
       center: { x: 981.8794699317693, y: 326.7663529002929 },
       endArrowHead: "Triangle",
-      fill: { a: 0, b: 0, g: 0, r: 0 },
+      fill: { r: 29, g: 29, b: 29, a: 1 },
       height: 274.88900538252034,
       startArrowHead: "None",
       type: 16,
@@ -222,7 +222,7 @@ export const PlantillaDiagramaIshikawa = {
     mq1xAY58ltHbFyvGh0ce9: {
       fill: { a: 1, b: 99, g: 202, r: 68 },
       height: 86.71900826446279,
-      outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+      outlineFill: { r: 29, g: 29, b: 29, a: 1 },
       textFontSize: 24,
       type: 0,
       value: "Causa",
@@ -233,7 +233,7 @@ export const PlantillaDiagramaIshikawa = {
     nWdliK6b7qoZdOvJZO6yw: {
       center: { x: 839.5176799073279, y: 467.7767383741651 },
       endArrowHead: "Triangle",
-      fill: { a: 0, b: 0, g: 0, r: 0 },
+      fill: { r: 29, g: 29, b: 29, a: 1 },
       height: -0.4054853851929465,
       startArrowHead: "None",
       type: 16,
@@ -242,9 +242,9 @@ export const PlantillaDiagramaIshikawa = {
       y: 467.9794810667616,
     },
     ote5dF4X6on0e4LcdH034: {
-      fill: { a: 1, b: 237, g: 142, r: 39 },
+      fill: { r: 75, g: 161, b: 241, a: 1 },
       height: 86.71900826446279,
-      outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+      outlineFill: { r: 29, g: 29, b: 29, a: 1 },
       textFontSize: 24,
       type: 0,
       value: "Causa",
@@ -255,7 +255,7 @@ export const PlantillaDiagramaIshikawa = {
     s80IiV8vPNI1V12eHbEie: {
       center: { x: 484.9001523053753, y: 327.1764186317988 },
       endArrowHead: "Triangle",
-      fill: { a: 0, b: 0, g: 0, r: 0 },
+      fill: { r: 29, g: 29, b: 29, a: 1 },
       height: 274.88900538252034,
       startArrowHead: "None",
       type: 16,
@@ -266,7 +266,7 @@ export const PlantillaDiagramaIshikawa = {
     xDvvIwaO7C3iPiggKpO3m: {
       center: { x: 980.4541789186566, y: 610.8618659184419 },
       endArrowHead: "Triangle",
-      fill: { a: 0, b: 0, g: 0, r: 0 },
+      fill: { r: 29, g: 29, b: 29, a: 1 },
       height: -279.3700578673734,
       startArrowHead: "None",
       type: 16,
@@ -276,7 +276,7 @@ export const PlantillaDiagramaIshikawa = {
     },
     yW4GgdH3DHBquOD4AqFv6: {
       center: { x: 1403.7844092657888, y: 520.5363127904493 },
-      fill: { a: 0, b: 0, g: 0, r: 0 },
+      fill: { r: 29, g: 29, b: 29, a: 1 },
       height: -110.50641654892064,
       type: 11,
       width: 162.621501961102,

@@ -6,7 +6,7 @@ export const PlantillaDiagrama = {
         "6tZHbMi2m71HXICvj26hk": {
             fill: { a: 1, b: 255, g: 255, r: 255 },
             height: 134.14539575927495,
-            outlineFill: { a: 1, b: 178, g: 75, r: 65 },
+            outlineFill: { r: 68, g: 101, b: 233, a: 1 },
             textFontSize: 36,
             type: 0,
             value: "Conclusión",
@@ -17,7 +17,7 @@ export const PlantillaDiagrama = {
         Ht3GKBA6wS3hrFqIPqSQD: {
             center: { x: 594.0364298132345, y: 735.9312014555625 },
             endArrowHead: "Triangle",
-            fill: { a: 0, b: 0, g: 0, r: 0 },
+            fill: { r: 29, g: 29, b: 29, a: 1 },
             height: 181.92710951686877,
             startArrowHead: "None",
             type: 16,
@@ -28,7 +28,7 @@ export const PlantillaDiagrama = {
         IJdzq0vlW2Yym8EzWSLyn: {
             fill: { a: 1, b: 99, g: 202, r: 68 },
             height: 148.5058278411148,
-            outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+            outlineFill: { r: 29, g: 29, b: 29, a: 1 },
             textFontSize: 12,
             type: 1,
             width: 155.59606560364568,
@@ -38,7 +38,7 @@ export const PlantillaDiagrama = {
         NFTqdUD9LQCNUINLXvyxH: {
             center: { x: 1190.944381763222, y: 249.09150212468683 },
             endArrowHead: "Triangle",
-            fill: { a: 0, b: 0, g: 0, r: 0 },
+            fill: { r: 29, g: 29, b: 29, a: 1 },
             height: 182.62935491489412,
             startArrowHead: "None",
             type: 16,
@@ -49,7 +49,7 @@ export const PlantillaDiagrama = {
         V4shZRPkDAOhgNKIpHM6k: {
             center: { x: 593.5232716950038, y: 249.45730537285277 },
             endArrowHead: "Triangle",
-            fill: { a: 0, b: 0, g: 0, r: 0 },
+            fill: { r: 29, g: 29, b: 29, a: 1 },
             height: 156.49545575310063,
             startArrowHead: "None",
             type: 16,
@@ -60,7 +60,7 @@ export const PlantillaDiagrama = {
         fMzcE3Db5rFOkt9K1p5p1: {
             center: { x: 1190.044226232505, y: 735.129899479876 },
             endArrowHead: "Triangle",
-            fill: { a: 0, b: 0, g: 0, r: 0 },
+            fill: { r: 29, g: 29, b: 29, a: 1 },
             height: 183.04211680485355,
             startArrowHead: "None",
             type: 16,
@@ -71,7 +71,7 @@ export const PlantillaDiagrama = {
         gaoN71jBLytNReOGC7vxh: {
             fill: { a: 1, b: 255, g: 255, r: 255 },
             height: 111.35526285714292,
-            outlineFill: { a: 1, b: 178, g: 75, r: 65 },
+            outlineFill: { r: 68, g: 101, b: 233, a: 1 },
             textFontSize: 36,
             type: 0,
             value: "Argumento",
@@ -82,7 +82,7 @@ export const PlantillaDiagrama = {
         h0HwTKqPPMT45yltlRnIn: {
             center: { x: 889.066280345352, y: 610.1523764585872 },
             endArrowHead: "Triangle",
-            fill: { a: 0, b: 0, g: 0, r: 0 },
+            fill: { r: 29, g: 29, b: 29, a: 1 },
             height: 115.60260298643277,
             startArrowHead: "None",
             type: 16,
@@ -93,7 +93,7 @@ export const PlantillaDiagrama = {
         nDxaAkV6vwskaptwUQ5jZ: {
             fill: { a: 1, b: 99, g: 202, r: 68 },
             height: 148.5058278411148,
-            outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+            outlineFill: { r: 29, g: 29, b: 29, a: 1 },
             textFontSize: 12,
             type: 1,
             width: 155.59606560364568,
@@ -103,7 +103,7 @@ export const PlantillaDiagrama = {
         pU8601LtvByvDYqLEw526: {
             fill: { a: 1, b: 245, g: 105, r: 155 },
             height: 148.5058278411148,
-            outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+            outlineFill: { r: 29, g: 29, b: 29, a: 1 },
             textFontSize: 12,
             type: 1,
             width: 155.59606560364568,
@@ -113,7 +113,7 @@ export const PlantillaDiagrama = {
         pawUhLbvOx1366YpXgQws: {
             center: { x: 888.7792338309071, y: 353.37116648093274 },
             endArrowHead: "Triangle",
-            fill: { a: 0, b: 0, g: 0, r: 0 },
+            fill: { r: 29, g: 29, b: 29, a: 1 },
             height: 94.24209170607207,
             startArrowHead: "None",
             type: 16,

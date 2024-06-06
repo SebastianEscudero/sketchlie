@@ -4,7 +4,7 @@ export const PlantillaMapaDeProceso = {
     href: "/plantillas/mapa-de-proceso/",
     layers: {
         "1OOpG5AGUJbpJIz7adxSi": {
-            fill: { a: 0, b: 0, g: 0, r: 0 },
+            fill: { r: 29, g: 29, b: 29, a: 1 },
             height: 37,
             textFontSize: 24,
             type: 13,
@@ -16,7 +16,7 @@ export const PlantillaMapaDeProceso = {
         "2N3bPqAdpXhGXGGRrsvIB": {
             center: { x: 607.9828484036543, y: 393.55191645640286 },
             endArrowHead: "Triangle",
-            fill: { a: 0, b: 0, g: 0, r: 0 },
+            fill: { a: 1, b: 0, g: 0, r: 0 },
             height: 69.0722023315655,
             startArrowHead: "None",
             type: 16,
@@ -30,7 +30,7 @@ export const PlantillaMapaDeProceso = {
                 y: 324.58643126890485,
             },
             endArrowHead: "Triangle",
-            fill: { a: 0, b: 0, g: 0, r: 0 },
+            fill: { a: 1, b: 0, g: 0, r: 0 },
             height: 222.54310307658017,
             startArrowHead: "None",
             type: 16,
@@ -41,7 +41,7 @@ export const PlantillaMapaDeProceso = {
         "7ly8wyEeUufySFMqWuh8v": {
             center: { x: 930.5, y: 390 },
             endArrowHead: "None",
-            fill: { a: 1, b: 1, g: 1, r: 1 },
+            fill: { r: 29, g: 29, b: 29, a: 1 },
             height: 0,
             startArrowHead: "None",
             type: 16,
@@ -55,6 +55,7 @@ export const PlantillaMapaDeProceso = {
             src: "https://sketchlie.s3.us-east-2.amazonaws.com/clufwcban0000qncizownxztp_cog.svg",
             textFontSize: 0,
             type: 15,
+            opacity: 1,
             width: 53,
             x: 402,
             y: 414,
@@ -62,7 +63,7 @@ export const PlantillaMapaDeProceso = {
         DlUmCcWBeY3Ss4ereQBbU: {
             fill: { a: 1, b: 42, g: 142, r: 252 },
             height: 55.742099118570366,
-            outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+            outlineFill: { r: 29, g: 29, b: 29, a: 1 },
             textFontSize: 12,
             type: 0,
             width: 108.91381064951804,
@@ -72,7 +73,7 @@ export const PlantillaMapaDeProceso = {
         HqKiR9olFDmb03c4Do0d1: {
             fill: { a: 1, b: 42, g: 142, r: 252 },
             height: 60.88419823714082,
-            outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+            outlineFill: { r: 29, g: 29, b: 29, a: 1 },
             textFontSize: 12,
             type: 0,
             width: 118.8276212990362,
@@ -82,7 +83,7 @@ export const PlantillaMapaDeProceso = {
         J7UEMhDLH9snwCIMtzIvq: {
             fill: { a: 1, b: 42, g: 142, r: 252 },
             height: 60.88419823714082,
-            outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+            outlineFill: { r: 29, g: 29, b: 29, a: 1 },
             textFontSize: 12,
             type: 0,
             width: 118.8276212990362,
@@ -92,7 +93,7 @@ export const PlantillaMapaDeProceso = {
         M1UsA4YT986jvCcI39I7R: {
             center: { x: 929.5798101419634, y: 517.7185967672368 },
             endArrowHead: "None",
-            fill: { a: 1, b: 1, g: 1, r: 1 },
+            fill: { r: 29, g: 29, b: 29, a: 1 },
             height: 0,
             startArrowHead: "None",
             type: 16,
@@ -103,7 +104,7 @@ export const PlantillaMapaDeProceso = {
         OHvtq1QQ0NbR0rDmgcu6O: {
             fill: { a: 1, b: 42, g: 142, r: 252 },
             height: 60.88419823714082,
-            outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+            outlineFill: { r: 29, g: 29, b: 29, a: 1 },
             textFontSize: 12,
             type: 0,
             width: 118.8276212990362,
@@ -113,7 +114,7 @@ export const PlantillaMapaDeProceso = {
         QwLHU2qiRgPhVYT9RigRr: {
             center: { x: 1181.49030485284, y: 582.018585817045 },
             endArrowHead: "Triangle",
-            fill: { a: 0, b: 0, g: 0, r: 0 },
+            fill: { a: 1, b: 0, g: 0, r: 0 },
             height: 0.6124539457142646,
             startArrowHead: "None",
             type: 16,
@@ -127,7 +128,7 @@ export const PlantillaMapaDeProceso = {
                 y: 323.77125506715913,
             },
             endArrowHead: "Triangle",
-            fill: { a: 0, b: 0, g: 0, r: 0 },
+            fill: { a: 1, b: 0, g: 0, r: 0 },
             height: 0,
             startArrowHead: "None",
             type: 16,
@@ -138,7 +139,7 @@ export const PlantillaMapaDeProceso = {
         WkXFuBxD523OWNM0KsA5S: {
             fill: { a: 1, b: 255, g: 255, r: 255 },
             height: 369.2610661025775,
-            outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+            outlineFill: { r: 29, g: 29, b: 29, a: 1 },
             textFontSize: 0,
             type: 0,
             width: 1161,
@@ -151,12 +152,13 @@ export const PlantillaMapaDeProceso = {
             src: "https://sketchlie.s3.us-east-2.amazonaws.com/clufwcban0000qncizownxztp_briefcase-business.svg",
             textFontSize: 0,
             type: 15,
+            opacity: 1,
             width: 48,
             x: 406,
             y: 542,
         },
         ZyvQnk2w8r76W4AdFLNfo: {
-            fill: { a: 0, b: 0, g: 0, r: 0 },
+            fill: { r: 29, g: 29, b: 29, a: 1 },
             height: 37,
             textFontSize: 24,
             type: 13,
@@ -166,9 +168,9 @@ export const PlantillaMapaDeProceso = {
             y: 353,
         },
         gZ9GGaMMVFPYacm0wMtLA: {
-            fill: { a: 1, b: 178, g: 75, r: 65 },
+            fill: { r: 68, g: 101, b: 233, a: 1 },
             height: 60.88419823714082,
-            outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+            outlineFill: { r: 29, g: 29, b: 29, a: 1 },
             textFontSize: 12,
             type: 0,
             width: 118.8276212990362,
@@ -178,7 +180,7 @@ export const PlantillaMapaDeProceso = {
         iSFv1Wa3X81GDXEIYKBPZ: {
             center: { x: 502.5820384472372, y: 449.2709419355666 },
             endArrowHead: "None",
-            fill: { a: 0, b: 0, g: 0, r: 0 },
+            fill: { a: 1, b: 0, g: 0, r: 0 },
             height: -368.454609899233,
             startArrowHead: "None",
             type: 16,
@@ -187,7 +189,7 @@ export const PlantillaMapaDeProceso = {
             y: 633.4982468851831,
         },
         nHPkBkHM7lyX2RibeTf3s: {
-            fill: { a: 0, b: 0, g: 0, r: 0 },
+            fill: { r: 29, g: 29, b: 29, a: 1 },
             height: 72,
             textFontSize: 48,
             type: 13,
@@ -199,7 +201,7 @@ export const PlantillaMapaDeProceso = {
         qOSaFj26CMwma0mGbPQsu: {
             center: { x: 825.8459492544343, y: 321.7938044275077 },
             endArrowHead: "None",
-            fill: { a: 0, b: 0, g: 0, r: 0 },
+            fill: { a: 1, b: 0, g: 0, r: 0 },
             height: -111.03646735570504,
             startArrowHead: "None",
             type: 16,
@@ -210,7 +212,7 @@ export const PlantillaMapaDeProceso = {
         qt67AtPxVmXztAuyrxRmI: {
             center: { x: 825.3807172128718, y: 581.1759394117425 },
             endArrowHead: "None",
-            fill: { a: 0, b: 0, g: 0, r: 0 },
+            fill: { a: 1, b: 0, g: 0, r: 0 },
             height: 86.74724012164461,
             startArrowHead: "None",
             type: 16,
@@ -221,7 +223,7 @@ export const PlantillaMapaDeProceso = {
         vEquqnymrVxhuWDfVf5XZ: {
             center: { x: 715.4402641610993, y: 463.9766766688592 },
             endArrowHead: "Triangle",
-            fill: { a: 0, b: 0, g: 0, r: 0 },
+            fill: { a: 1, b: 0, g: 0, r: 0 },
             height: 0,
             startArrowHead: "None",
             type: 16,
@@ -230,7 +232,7 @@ export const PlantillaMapaDeProceso = {
             y: 463.9766766688592,
         },
         wWvIzAoCMHJFr4QT7kcSs: {
-            fill: { a: 0, b: 0, g: 0, r: 0 },
+            fill: { r: 29, g: 29, b: 29, a: 1 },
             height: 37,
             textFontSize: 24,
             type: 13,
@@ -240,9 +242,9 @@ export const PlantillaMapaDeProceso = {
             y: 591.5,
         },
         wiyppndGB51toacyqwk5d: {
-            fill: { a: 1, b: 178, g: 75, r: 65 },
+            fill: { r: 68, g: 101, b: 233, a: 1 },
             height: 60.88419823714082,
-            outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+            outlineFill: { r: 29, g: 29, b: 29, a: 1 },
             textFontSize: 12,
             type: 0,
             width: 118.8276212990362,
@@ -255,6 +257,7 @@ export const PlantillaMapaDeProceso = {
             src: "https://sketchlie.s3.us-east-2.amazonaws.com/clufwcban0000qncizownxztp_user.svg",
             textFontSize: 0,
             type: 15,
+            opacity: 1,
             width: 60,
             x: 398,
             y: 290,
@@ -262,7 +265,7 @@ export const PlantillaMapaDeProceso = {
         ztxCjO5nqjGkZalidbh6l: {
             fill: { a: 1, b: 35, g: 82, r: 243 },
             height: 60.88419823714082,
-            outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+            outlineFill: { r: 29, g: 29, b: 29, a: 1 },
             textFontSize: 12,
             type: 0,
             width: 108.91381064951815,

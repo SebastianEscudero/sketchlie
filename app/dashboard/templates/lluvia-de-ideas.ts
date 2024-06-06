@@ -34,7 +34,7 @@ export const PlantillaLluviaDeIdeas = {
       y: 286.80801673677115,
     },
     CTthHTldMlaUIQRWKkqsh: {
-      fill: { a: 1, b: 1, g: 1, r: 1 },
+      fill: { r: 29, g: 29, b: 29, a: 1 },
       height: 87,
       textFontSize: 56,
       type: 13,
@@ -54,7 +54,7 @@ export const PlantillaLluviaDeIdeas = {
       y: 332.456817962602,
     },
     I1COje9nl3QHZysEmh52x: {
-      fill: { a: 1, b: 1, g: 1, r: 1 },
+      fill: { r: 29, g: 29, b: 29, a: 1 },
       height: 37,
       textFontSize: 24,
       type: 13,
@@ -76,7 +76,7 @@ export const PlantillaLluviaDeIdeas = {
     NTA34dXdvd55sqyaJn6du: {
       fill: { a: 1, b: 255, g: 255, r: 255 },
       height: 297,
-      outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+      outlineFill: { r: 29, g: 29, b: 29, a: 1 },
       type: 0,
       width: 495,
       x: 402.83687981099877,
@@ -95,14 +95,14 @@ export const PlantillaLluviaDeIdeas = {
     TG4TFay7PcuruGuzypZNy: {
       fill: { a: 1, b: 42, g: 142, r: 252 },
       height: 297,
-      outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+      outlineFill: { r: 29, g: 29, b: 29, a: 1 },
       type: 0,
       width: 495,
       x: 909.2142857142858,
       y: 208.21428571428572,
     },
     Wdo45d2r3DKdJwkgyutw6: {
-      fill: { a: 1, b: 237, g: 142, r: 39 },
+      fill: { r: 75, g: 161, b: 241, a: 1 },
       height: 122.35146391133719,
       outlineFill: { a: 0, b: 0, g: 0, r: 0 },
       textFontSize: 12,
@@ -112,9 +112,9 @@ export const PlantillaLluviaDeIdeas = {
       y: 628.4446882526254,
     },
     WviozHBd6l0AA1J5XE6T5: {
-      fill: { a: 1, b: 237, g: 142, r: 39 },
+      fill: { r: 75, g: 161, b: 241, a: 1 },
       height: 297,
-      outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+      outlineFill: { r: 29, g: 29, b: 29, a: 1 },
       type: 0,
       width: 495,
       x: 403,
@@ -131,7 +131,7 @@ export const PlantillaLluviaDeIdeas = {
       y: 327.68282005469837,
     },
     XalqrcxGVyXdeETqEt215: {
-      fill: { a: 1, b: 1, g: 1, r: 1 },
+      fill: { r: 29, g: 29, b: 29, a: 1 },
       height: 37,
       textFontSize: 24,
       type: 13,
@@ -151,7 +151,7 @@ export const PlantillaLluviaDeIdeas = {
       y: 579.5112096966136,
     },
     h3hfwDWd2beJi6x74YBAe: {
-      fill: { a: 1, b: 237, g: 142, r: 39 },
+      fill: { r: 75, g: 161, b: 241, a: 1 },
       height: 122.35146391133719,
       outlineFill: { a: 0, b: 0, g: 0, r: 0 },
       textFontSize: 12,
@@ -163,7 +163,7 @@ export const PlantillaLluviaDeIdeas = {
     mcinvu8S4Z9Q8qfLLZQPf: {
       fill: { a: 1, b: 69, g: 244, r: 255 },
       height: 297,
-      outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+      outlineFill: { r: 29, g: 29, b: 29, a: 1 },
       type: 0,
       width: 495,
       x: 909.0511655252845,

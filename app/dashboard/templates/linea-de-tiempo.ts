@@ -4,9 +4,9 @@ export const PlantillaLineaDeTiempo = {
   href: "/plantillas/linea-de-tiempo/",
   layers: {
     "2bzdKp8yFGGV6ZgRmaapf": {
-      fill: { a: 1, b: 178, g: 75, r: 65 },
+      fill: { r: 68, g: 101, b: 233, a: 1 },
       height: 158.7354304377949,
-      outlineFill: { a: 0, b: 0, g: 0, r: 0 },
+      outlineFill: { r: 29, g: 29, b: 29, a: 1 },
       textFontSize: 36,
       type: 1,
       value: "Evento",
@@ -15,7 +15,7 @@ export const PlantillaLineaDeTiempo = {
       y: 123.15741070629385,
     },
     "9NAArRho97pBuuvuImzbj": {
-      fill: { a: 0, b: 0, g: 0, r: 0 },
+      fill: { r: 29, g: 29, b: 29, a: 1 },
       height: 87,
       textFontSize: 56,
       type: 13,
@@ -27,7 +27,7 @@ export const PlantillaLineaDeTiempo = {
     CUtBnplg3UegDCjwGptRz: {
       center: { x: 354.2987072163829, y: 393.05187592578886 },
       endArrowHead: "None",
-      fill: { a: 1, b: 237, g: 142, r: 39 },
+      fill: { r: 75, g: 161, b: 241, a: 1 },
       height: -223.26562415433744,
       startArrowHead: "None",
       type: 16,
@@ -38,7 +38,7 @@ export const PlantillaLineaDeTiempo = {
     EqqwttlCtHj2FaWVIlHfS: {
       fill: { a: 1, b: 42, g: 142, r: 252 },
       height: 123.41999999999999,
-      outlineFill: { a: 0, b: 0, g: 0, r: 0 },
+      outlineFill: { r: 29, g: 29, b: 29, a: 1 },
       textFontSize: 36,
       type: 0,
       value: "Actividad",
@@ -49,7 +49,7 @@ export const PlantillaLineaDeTiempo = {
     GdzD2ErLPHkCkiD9AB7Yd: {
       fill: { a: 1, b: 99, g: 202, r: 68 },
       height: 12.571428571428555,
-      outlineFill: { a: 0, b: 0, g: 0, r: 0 },
+      outlineFill: { r: 29, g: 29, b: 29, a: 1 },
       textFontSize: 0,
       type: 1,
       width: 12,
@@ -57,9 +57,9 @@ export const PlantillaLineaDeTiempo = {
       y: 499.709086834542,
     },
     Jnj5OJljjH2VyIj6z3c2A: {
-      fill: { a: 1, b: 237, g: 142, r: 39 },
+      fill: { r: 75, g: 161, b: 241, a: 1 },
       height: 12.571428571428555,
-      outlineFill: { a: 0, b: 0, g: 0, r: 0 },
+      outlineFill: { r: 29, g: 29, b: 29, a: 1 },
       textFontSize: 0,
       type: 1,
       width: 12,
@@ -78,9 +78,9 @@ export const PlantillaLineaDeTiempo = {
       y: 507.0052203648999,
     },
     PCscdEXATw1HWmSOaZKj6: {
-      fill: { a: 1, b: 237, g: 142, r: 39 },
+      fill: { r: 75, g: 161, b: 241, a: 1 },
       height: 123.41999999999999,
-      outlineFill: { a: 0, b: 0, g: 0, r: 0 },
+      outlineFill: { r: 29, g: 29, b: 29, a: 1 },
       textFontSize: 36,
       type: 0,
       value: "Actividad",
@@ -89,7 +89,7 @@ export const PlantillaLineaDeTiempo = {
       y: 653.7958579887854,
     },
     PgC1QVc34t7J16DkezKoh: {
-      fill: { a: 0, b: 0, g: 0, r: 0 },
+      fill: { r: 29, g: 29, b: 29, a: 1 },
       height: 87,
       textFontSize: 56,
       type: 13,
@@ -101,7 +101,7 @@ export const PlantillaLineaDeTiempo = {
     UghOI8PR1xYFl4JSjHFz1: {
       fill: { a: 1, b: 42, g: 142, r: 252 },
       height: 12.571428571428555,
-      outlineFill: { a: 0, b: 0, g: 0, r: 0 },
+      outlineFill: { r: 29, g: 29, b: 29, a: 1 },
       textFontSize: 0,
       type: 1,
       width: 12,
@@ -109,7 +109,7 @@ export const PlantillaLineaDeTiempo = {
       y: 498.3207251418762,
     },
     bTbVp6p3PbyAQBQv1BRY0: {
-      fill: { a: 0, b: 0, g: 0, r: 0 },
+      fill: { r: 29, g: 29, b: 29, a: 1 },
       height: 43,
       textFontSize: 27.935922385932894,
       type: 13,
@@ -118,9 +118,9 @@ export const PlantillaLineaDeTiempo = {
       y: 795.4330000000002,
     },
     bZ4mWwQC9sO8j8MqaecpF: {
-      fill: { a: 1, b: 178, g: 75, r: 65 },
+      fill: { r: 68, g: 101, b: 233, a: 1 },
       height: 12.571428571428555,
-      outlineFill: { a: 0, b: 0, g: 0, r: 0 },
+      outlineFill: { r: 29, g: 29, b: 29, a: 1 },
       textFontSize: 0,
       type: 1,
       width: 12,
@@ -130,7 +130,7 @@ export const PlantillaLineaDeTiempo = {
     cgL2szJQK1CrpAyMUJT30: {
       fill: { a: 1, b: 99, g: 202, r: 68 },
       height: 158.7354304377949,
-      outlineFill: { a: 0, b: 0, g: 0, r: 0 },
+      outlineFill: { r: 29, g: 29, b: 29, a: 1 },
       textFontSize: 36,
       type: 1,
       value: "Evento",
@@ -139,7 +139,7 @@ export const PlantillaLineaDeTiempo = {
       y: 126.94094215787658,
     },
     jDngK9NQeI0Z8dEJyiFtk: {
-      fill: { a: 0, b: 0, g: 0, r: 0 },
+      fill: { r: 29, g: 29, b: 29, a: 1 },
       height: 87,
       textFontSize: 56,
       type: 13,
@@ -149,9 +149,9 @@ export const PlantillaLineaDeTiempo = {
       y: 411.5,
     },
     jlP1xJ3BFI8QE62JGNBU2: {
-      fill: { a: 1, b: 237, g: 142, r: 39 },
+      fill: { r: 75, g: 161, b: 241, a: 1 },
       height: 12.571428571428555,
-      outlineFill: { a: 0, b: 0, g: 0, r: 0 },
+      outlineFill: { r: 29, g: 29, b: 29, a: 1 },
       textFontSize: 0,
       type: 1,
       width: 12,
@@ -159,7 +159,7 @@ export const PlantillaLineaDeTiempo = {
       y: 498.6064394275905,
     },
     lNyyeU0hZqVYqGAcCESmw: {
-      fill: { a: 0, b: 0, g: 0, r: 0 },
+      fill: { r: 29, g: 29, b: 29, a: 1 },
       height: 43,
       textFontSize: 27.935922385932894,
       type: 13,
@@ -168,9 +168,9 @@ export const PlantillaLineaDeTiempo = {
       y: 795.0330000000002,
     },
     nHVUvHPHtYhzZ824BU6YZ: {
-      fill: { a: 1, b: 237, g: 142, r: 39 },
+      fill: { r: 75, g: 161, b: 241, a: 1 },
       height: 123.41999999999999,
-      outlineFill: { a: 0, b: 0, g: 0, r: 0 },
+      outlineFill: { r: 29, g: 29, b: 29, a: 1 },
       textFontSize: 36,
       type: 0,
       value: "Actividad",
@@ -181,7 +181,7 @@ export const PlantillaLineaDeTiempo = {
     qh0HE15jYqUJTR5WOQ3nI: {
       center: { x: 1485.1271122279109, y: 578.8050997502019 },
       endArrowHead: "None",
-      fill: { a: 1, b: 237, g: 142, r: 39 },
+      fill: { r: 75, g: 161, b: 241, a: 1 },
       height: -149.50747146223324,
       startArrowHead: "None",
       type: 16,
@@ -192,7 +192,7 @@ export const PlantillaLineaDeTiempo = {
     r8vbThY6oYis4dHhljFuT: {
       center: { x: 1014.7464171692192, y: 392.571100823203 },
       endArrowHead: "None",
-      fill: { a: 1, b: 178, g: 75, r: 65 },
+      fill: { r: 68, g: 101, b: 233, a: 1 },
       height: -221.30117618023178,
       startArrowHead: "None",
       type: 16,
@@ -203,7 +203,7 @@ export const PlantillaLineaDeTiempo = {
     s2sfK1Ay37zAJt8HW8gWt: {
       center: { x: 987.6718505430009, y: 505.14850588754786 },
       endArrowHead: "Triangle",
-      fill: { a: 0, b: 0, g: 0, r: 0 },
+      fill: { r: 29, g: 29, b: 29, a: 1 },
       height: 0.41831428571424567,
       startArrowHead: "Triangle",
       type: 16,
@@ -223,7 +223,7 @@ export const PlantillaLineaDeTiempo = {
       y: 655.7376037004883,
     },
     vd9f4vq8wy4xLA6cuIMky: {
-      fill: { a: 0, b: 0, g: 0, r: 0 },
+      fill: { r: 29, g: 29, b: 29, a: 1 },
       height: 87,
       textFontSize: 56,
       type: 13,

@@ -118,7 +118,7 @@ class DeleteLayerCommand implements Command {
         private deleteLayer: (args: { board: any; layerId: any; }) => void,
         private addLayer: (args: { board: any; layer: any; layerId: any; }) => void,
         private board: any,
-        private socket: Socket | null) {}
+        private socket: Socket | null) { }
 
     execute() {
         const remainingLayers = { ...this.prevLayers };
@@ -138,7 +138,7 @@ class DeleteLayerCommand implements Command {
 
         // Call the deleteLayer API mutation to delete all the layers in the database
         this.deleteLayer({ board: this.board, layerId: this.layerIds });
-        this.board.layers = remainingLayers;    
+        this.board.layers = remainingLayers;
         this.board.layerIds = remainingLayerIds;
 
         if (this.socket) {
@@ -330,7 +330,7 @@ export const Canvas = () => {
                 y: position.y,
                 height: height,
                 width: width,
-                fill: fillColor,
+                fill: { r: 29, g: 29, b: 29, a: 1 },
                 textFontSize: 12,
                 outlineFill: null
             };
@@ -353,7 +353,7 @@ export const Canvas = () => {
                 center: center,
                 height: height,
                 width: width,
-                fill: { r: 0, g: 0, b: 0, a: 1},
+                fill: { r: 29, g: 29, b: 29, a: 1 },
                 startArrowHead: ArrowHead.None,
                 endArrowHead: ArrowHead.Triangle,
             };
@@ -365,7 +365,7 @@ export const Canvas = () => {
                 center: center,
                 height: height,
                 width: width,
-                fill: { r: 0, g: 0, b: 0, a: 1},
+                fill: { r: 29, g: 29, b: 29, a: 1 },
             };
         } else {
             if (width < 10 && height < 10) {
@@ -379,9 +379,9 @@ export const Canvas = () => {
                 height: height,
                 width: width,
                 fill: fillColor,
-                outlineFill: { r: 1, g: 1, b: 1, a: 1 },
+                outlineFill: { r: 29, g: 29, b: 29, a: 1 },
                 textFontSize: 12,
-            }; 
+            };
         }
 
         const newLayers = { ...liveLayers, [layerId]: layer };
@@ -524,7 +524,7 @@ export const Canvas = () => {
 
         setMyPresence(newPresence);
     }, [liveLayers, liveLayerIds, setMyPresence, myPresence]);
-    
+
     const EraserDeleteLayers = useCallback((current: Point) => {
         const ids = findIntersectingLayersWithPoint(
             liveLayerIds,
@@ -532,7 +532,7 @@ export const Canvas = () => {
             current,
             zoom
         );
-    
+
         if (ids.length > 0) {
             setLiveLayers(prevLiveLayers => {
                 let newLiveLayers;
@@ -543,11 +543,11 @@ export const Canvas = () => {
                             newLiveLayers = { ...prevLiveLayers };
                         }
                         const layer = newLiveLayers[id];
-                        newLiveLayers[id] = { 
-                            ...layer, 
-                            ...('fill' in layer && layer.fill ? { fill: { ...layer.fill, a: layer.fill.a/4 } } : {}),
-                            ...('outlineFill' in layer && layer.outlineFill ? { outlineFill: { ...layer.outlineFill, a: layer.outlineFill.a/4 } } : {}),
-                            ...('opacity' in layer && layer.opacity ? { opacity: layer.opacity/4 } : {})
+                        newLiveLayers[id] = {
+                            ...layer,
+                            ...('fill' in layer && layer.fill ? { fill: { ...layer.fill, a: layer.fill.a / 4 } } : {}),
+                            ...('outlineFill' in layer && layer.outlineFill ? { outlineFill: { ...layer.outlineFill, a: layer.outlineFill.a / 4 } } : {}),
+                            ...('opacity' in layer && layer.opacity ? { opacity: layer.opacity / 4 } : {})
                         };
                         layersToDeleteEraserRef.current.add(id);
                     }
@@ -555,7 +555,7 @@ export const Canvas = () => {
                 return newLiveLayers || prevLiveLayers;
             });
         }
-    
+
     }, [liveLayerIds, liveLayers, setLiveLayers, zoom]);
 
     const startMultiSelection = useCallback((
@@ -604,25 +604,25 @@ export const Canvas = () => {
             : [...pencilDraft, [point.x, point.y, e.pressure]]);
 
 
-            const newPresence: Presence = {
-                ...myPresence,
-                cursor: point,
-                pencilDraft: pencilDraft.length === 1 &&
-                    pencilDraft[0][0] === point.x &&
-                    pencilDraft[0][1] === point.y
-                    ? pencilDraft
-                    : [...pencilDraft, [point.x, point.y, e.pressure]],
-                pathStrokeSize: canvasState.mode === CanvasMode.Laser
-                    ? 5 / zoom
-                    : canvasState.mode === CanvasMode.Highlighter
-                        ? 30 / zoom // Increase stroke size for highlighter
-                        : pathStrokeSize,
-                    pathStrokeColor: canvasState.mode === CanvasMode.Laser
-                        ? { r: 243, g: 82, b: 35, a: 1 } // F35223 in RGB
-                        : canvasState.mode === CanvasMode.Highlighter
-                            ? { ...pathColor, a: 0.7 } // Semi-transparent yellow
-                            : pathColor,
-            };
+        const newPresence: Presence = {
+            ...myPresence,
+            cursor: point,
+            pencilDraft: pencilDraft.length === 1 &&
+                pencilDraft[0][0] === point.x &&
+                pencilDraft[0][1] === point.y
+                ? pencilDraft
+                : [...pencilDraft, [point.x, point.y, e.pressure]],
+            pathStrokeSize: canvasState.mode === CanvasMode.Laser
+                ? 5 / zoom
+                : canvasState.mode === CanvasMode.Highlighter
+                    ? 30 / zoom // Increase stroke size for highlighter
+                    : pathStrokeSize,
+            pathStrokeColor: canvasState.mode === CanvasMode.Laser
+                ? { r: 243, g: 82, b: 35, a: 1 } // F35223 in RGB
+                : canvasState.mode === CanvasMode.Highlighter
+                    ? { ...pathColor, a: 0.7 } // Semi-transparent yellow
+                    : pathColor,
+        };
 
         setMyPresence(newPresence);
 
@@ -754,8 +754,8 @@ export const Canvas = () => {
 
         if (layer) {
             const newLayer = { ...layer }; // Create a new object instead of modifying the existing one
-            if (newLayer.type === LayerType.Note 
-                || newLayer.type === LayerType.Rectangle 
+            if (newLayer.type === LayerType.Note
+                || newLayer.type === LayerType.Rectangle
                 || newLayer.type === LayerType.Ellipse
                 || newLayer.type === LayerType.Rhombus
                 || newLayer.type === LayerType.Triangle
@@ -960,34 +960,34 @@ export const Canvas = () => {
 
             switch (canvasState.layerType) {
                 case LayerType.Rectangle:
-                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12,  type: LayerType.Rectangle, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
+                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.Rectangle, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
                     break;
                 case LayerType.Triangle:
-                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12,  type: LayerType.Triangle, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
+                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.Triangle, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
                     break;
                 case LayerType.Star:
-                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12,  type: LayerType.Star, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
+                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.Star, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
                     break;
                 case LayerType.Hexagon:
-                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12,  type: LayerType.Hexagon, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
+                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.Hexagon, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
                     break;
                 case LayerType.BigArrowLeft:
-                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12,  type: LayerType.BigArrowLeft, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
+                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.BigArrowLeft, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
                     break;
                 case LayerType.BigArrowRight:
-                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12,  type: LayerType.BigArrowRight, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
+                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.BigArrowRight, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
                     break;
                 case LayerType.BigArrowUp:
-                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12,  type: LayerType.BigArrowUp, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
+                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.BigArrowUp, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
                     break;
                 case LayerType.BigArrowDown:
-                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12,  type: LayerType.BigArrowDown, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
+                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.BigArrowDown, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
                     break;
                 case LayerType.CommentBubble:
-                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12,  type: LayerType.CommentBubble, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
+                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.CommentBubble, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
                     break;
                 case LayerType.Rhombus:
-                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12,  type: LayerType.Rhombus, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
+                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.Rhombus, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
                     break;
                 case LayerType.Ellipse:
                     setCurrentPreviewLayer({ x, y, width, height, type: LayerType.Ellipse, textFontSize: 12, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
@@ -1044,7 +1044,7 @@ export const Canvas = () => {
             expired
         ]);
 
-    const onPointerUp = useCallback((e: React.PointerEvent) => {    
+    const onPointerUp = useCallback((e: React.PointerEvent) => {
         setIsRightClickPanning(false);
         const point = pointerEventToCanvasPoint(e, camera, zoom);
         if (canvasState.mode === CanvasMode.SelectionNet) {
@@ -1092,7 +1092,7 @@ export const Canvas = () => {
                 Array.from(layersToDeleteEraserRef.current).forEach((id: any) => {
                     delete newLayers[id];
                 });
-        
+
                 // Create a new DeleteLayerCommand and add it to the history
                 const command = new DeleteLayerCommand(Array.from(layersToDeleteEraserRef.current), initialLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, deleteLayer, addLayer, board, socket);
                 performAction(command);
@@ -1172,10 +1172,10 @@ export const Canvas = () => {
                 const initialLayer = JSON.stringify(initialLayers[selectedLayersRef.current[0]]);
                 const liveLayer = JSON.stringify(liveLayers[selectedLayersRef.current[0]]);
                 const changed = initialLayer === liveLayer;
-                if ((layerType === LayerType.Text 
-                    || layerType === LayerType.Note 
+                if ((layerType === LayerType.Text
+                    || layerType === LayerType.Note
                     || layerType === LayerType.Rectangle
-                    || layerType === LayerType.Ellipse 
+                    || layerType === LayerType.Ellipse
                     || layerType === LayerType.Rhombus
                     || layerType === LayerType.Triangle
                     || layerType === LayerType.Star
@@ -1201,7 +1201,7 @@ export const Canvas = () => {
                         layer.selectionStart = layer.selectionEnd = layer.value.length;
                     }
                 }
-            }   
+            }
 
             setCanvasState({
                 mode: CanvasMode.None,
@@ -1389,7 +1389,7 @@ export const Canvas = () => {
         }
     };
 
-    
+
     const onTouchDown = useCallback((e: React.TouchEvent) => {
         setActiveTouches(e.touches.length);
     }, []);
@@ -1728,7 +1728,7 @@ export const Canvas = () => {
                     isPenEraserSwitcherOpen={isPenEraserSwitcherOpen}
                     setIsPenEraserSwitcherOpen={setIsPenEraserSwitcherOpen}
                     selectedTool={selectedTool}
-                    setSelectedTool={setSelectedTool}                />
+                    setSelectedTool={setSelectedTool} />
             )}
             {canvasState.mode === CanvasMode.None && expired !== true && (
                 <SelectionTools
@@ -1793,23 +1793,23 @@ export const Canvas = () => {
                             layer={currentPreviewLayer}
                         />
                     )}
-                    {(canvasState.mode === CanvasMode.SelectionNet || canvasState.mode === CanvasMode.None || CanvasMode.Resizing) && expired !== true && activeTouches < 2 && (
-                        <SelectionBox
-                            zoom={zoom}
-                            liveLayers={liveLayers}
-                            selectedLayers={selectedLayersRef.current}
-                            onResizeHandlePointerDown={onResizeHandlePointerDown}
-                            onArrowResizeHandlePointerDown={onArrowResizeHandlePointerDown}
-                            setCanvasState={setCanvasState}
-                            camera={camera}
-                        />
+                    {(canvasState.mode === CanvasMode.SelectionNet || canvasState.mode === CanvasMode.None || canvasState.mode === CanvasMode.Resizing) && expired !== true && activeTouches < 2 && (
+                    <SelectionBox
+                        zoom={zoom}
+                        liveLayers={liveLayers}
+                        selectedLayers={selectedLayersRef.current}
+                        onResizeHandlePointerDown={onResizeHandlePointerDown}
+                        onArrowResizeHandlePointerDown={onArrowResizeHandlePointerDown}
+                        setCanvasState={setCanvasState}
+                        camera={camera}
+                    />
                     )}
                     {canvasState.mode === CanvasMode.SelectionNet && canvasState.current != null && (
                         <rect
                             style={{
                                 fill: 'rgba(59, 130, 246, 0.3)',
                                 stroke: '#3B82F6',
-                                strokeWidth: 1/zoom
+                                strokeWidth: 1 / zoom
                             }}
                             x={Math.min(canvasState.origin.x, canvasState.current.x)}
                             y={Math.min(canvasState.origin.y, canvasState.current.y)}

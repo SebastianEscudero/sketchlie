@@ -6,7 +6,7 @@ export const PlantillaLowFidelityWireframe = {
         "5TqLGFHb0ssl1anI5blMB": {
             fill: { a: 1, b: 255, g: 255, r: 255 },
             height: 550.5,
-            outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+            outlineFill: { r: 29, g: 29, b: 29, a: 1 },
             textFontSize: 0,
             type: 0,
             width: 213,
@@ -14,7 +14,7 @@ export const PlantillaLowFidelityWireframe = {
             y: 210.88600000000008,
         },
         GKIPdmL5QvqKZ00xBijOD: {
-            fill: { a: 0, b: 0, g: 0, r: 0 },
+            fill: { r: 29, g: 29, b: 29, a: 1 },
             height: 28,
             textFontSize: 18,
             type: 13,
@@ -26,7 +26,7 @@ export const PlantillaLowFidelityWireframe = {
         Iak3jK5WsXQxs14wiPGhx: {
             fill: { a: 1, b: 255, g: 255, r: 255 },
             height: 550.5,
-            outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+            outlineFill: { r: 29, g: 29, b: 29, a: 1 },
             textFontSize: 0,
             type: 0,
             width: 213,
@@ -34,7 +34,7 @@ export const PlantillaLowFidelityWireframe = {
             y: 212.21700000000004,
         },
         YtRaQtjoM9uL341Jf0jcm: {
-            fill: { a: 0, b: 0, g: 0, r: 0 },
+            fill: { r: 29, g: 29, b: 29, a: 1 },
             height: 28,
             textFontSize: 18,
             type: 13,
@@ -44,7 +44,7 @@ export const PlantillaLowFidelityWireframe = {
             y: 178.24184264611827,
         },
         j0M5eDh5GaDXYk82MD63R: {
-            fill: { a: 0, b: 0, g: 0, r: 0 },
+            fill: { r: 29, g: 29, b: 29, a: 1 },
             height: 28,
             textFontSize: 18,
             type: 13,
@@ -54,7 +54,7 @@ export const PlantillaLowFidelityWireframe = {
             y: 181.7890419804906,
         },
         lxYGReU8UMaryjgPdE43E: {
-            fill: { a: 0, b: 0, g: 0, r: 0 },
+            fill: { r: 29, g: 29, b: 29, a: 1 },
             height: 28,
             textFontSize: 18,
             type: 13,
@@ -66,7 +66,7 @@ export const PlantillaLowFidelityWireframe = {
         sDB5t5zKVWRTCjrLDuHwV: {
             fill: { a: 1, b: 255, g: 255, r: 255 },
             height: 550.5,
-            outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+            outlineFill: { r: 29, g: 29, b: 29, a: 1 },
             textFontSize: 0,
             type: 0,
             width: 213,
@@ -76,7 +76,7 @@ export const PlantillaLowFidelityWireframe = {
         ztt3yvYAD6IM2RR558f0L: {
             fill: { a: 1, b: 255, g: 255, r: 255 },
             height: 550.5,
-            outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+            outlineFill: { r: 29, g: 29, b: 29, a: 1 },
             textFontSize: 0,
             type: 0,
             width: 213,

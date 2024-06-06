@@ -6,7 +6,7 @@ export const PlantillaDiagramaDeFlujo = {
         "1q7ytAzhyyx5OmWBD3jHl": {
             center: { x: 458.00826446280996, y: 475.3471074380165 },
             endArrowHead: "Triangle",
-            fill: { a: 0, b: 0, g: 0, r: 0 },
+            fill: { r: 29, g: 29, b: 29, a: 1 },
             height: 0,
             type: 16,
             width: 84,
@@ -16,7 +16,7 @@ export const PlantillaDiagramaDeFlujo = {
         "6Wz6MCEBXO5t5eX6OBkPW": {
             fill: { a: 1, b: 177, g: 249, r: 255 },
             height: 93,
-            outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+            outlineFill: { r: 29, g: 29, b: 29, a: 1 },
             textFontSize: 24,
             type: 0,
             value: "Inicio",
@@ -26,7 +26,7 @@ export const PlantillaDiagramaDeFlujo = {
         },
         "7XpF75ziVyidAFJ9dcksT": {
             center: { x: 1044.7918287947828, y: 573.2212071390154 },
-            fill: { a: 0, b: 0, g: 0, r: 0 },
+            fill: { r: 29, g: 29, b: 29, a: 1 },
             height: 100.80040770712242,
             type: 16,
             width: 0.7029540477644787,
@@ -36,7 +36,7 @@ export const PlantillaDiagramaDeFlujo = {
         HyE0alujPY4OUaTdSN6ZW: {
             fill: { a: 1, b: 99, g: 202, r: 68 },
             height: 93,
-            outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+            outlineFill: { r: 29, g: 29, b: 29, a: 1 },
             textFontSize: 12,
             type: 0,
             width: 150,
@@ -46,7 +46,7 @@ export const PlantillaDiagramaDeFlujo = {
         IhUnWFNjnrDhEN0r0LIW6: {
             fill: { a: 1, b: 99, g: 202, r: 68 },
             height: 93,
-            outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+            outlineFill: { r: 29, g: 29, b: 29, a: 1 },
             textFontSize: 12,
             type: 0,
             width: 150,
@@ -56,7 +56,7 @@ export const PlantillaDiagramaDeFlujo = {
         JRcVIxmgh2MIjyrsaAdUL: {
             center: { x: 801.1281109713301, y: 276.8304477637488 },
             endArrowHead: "Triangle",
-            fill: { a: 0, b: 0, g: 0, r: 0 },
+            fill: { r: 29, g: 29, b: 29, a: 1 },
             height: -124.26995873517734,
             type: 16,
             width: 273.2418892572414,
@@ -66,7 +66,7 @@ export const PlantillaDiagramaDeFlujo = {
         cTGsfrhtzEXJVryoYQ9KO: {
             center: { x: 1277.5, y: 278 },
             endArrowHead: "Triangle",
-            fill: { a: 0, b: 0, g: 0, r: 0 },
+            fill: { r: 29, g: 29, b: 29, a: 1 },
             height: 0,
             type: 16,
             width: 84,
@@ -76,7 +76,7 @@ export const PlantillaDiagramaDeFlujo = {
         iZoMdKJBht0VwlUQFKqHt: {
             fill: { a: 1, b: 255, g: 255, r: 255 },
             height: 144.4276770599488,
-            outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+            outlineFill: { r: 29, g: 29, b: 29, a: 1 },
             textFontSize: 24,
             type: 2,
             value: "Proceso",
@@ -87,7 +87,7 @@ export const PlantillaDiagramaDeFlujo = {
         j4slR1D6tGqLRSjFdpvmi: {
             center: { x: 685.8970958659775, y: 474.9353510633651 },
             endArrowHead: "Triangle",
-            fill: { a: 0, b: 0, g: 0, r: 0 },
+            fill: { r: 29, g: 29, b: 29, a: 1 },
             height: -0.05242617044387998,
             type: 16,
             width: 64.86200912177128,
@@ -95,9 +95,9 @@ export const PlantillaDiagramaDeFlujo = {
             y: 474.961564148587,
         },
         nrHChkGW3xfm6f6JnNiyI: {
-            fill: { a: 1, b: 237, g: 142, r: 39 },
+            fill: { r: 75, g: 161, b: 241, a: 1 },
             height: 93,
-            outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+            outlineFill: { r: 29, g: 29, b: 29, a: 1 },
             textFontSize: 24,
             type: 0,
             value: "Fin",
@@ -107,7 +107,7 @@ export const PlantillaDiagramaDeFlujo = {
         },
         ny5A0TyBrW8hHvA7mScvn: {
             center: { x: 800.1519141770327, y: 586.2455698820692 },
-            fill: { a: 0, b: 0, g: 0, r: 0 },
+            fill: { r: 29, g: 29, b: 29, a: 1 },
             height: -78.88400066146585,
             type: 16,
             width: -0.2951175075181709,
@@ -116,7 +116,7 @@ export const PlantillaDiagramaDeFlujo = {
         },
         pTI7jZhVDXlhJ0vW96EU9: {
             center: { x: 922.3852744073954, y: 670.2550484345588 },
-            fill: { a: 0, b: 0, g: 0, r: 0 },
+            fill: { r: 29, g: 29, b: 29, a: 1 },
             height: 0.07473565324494302,
             type: 16,
             width: -91.37057020451095,
@@ -124,9 +124,9 @@ export const PlantillaDiagramaDeFlujo = {
             y: 670.2176806079364,
         },
         sRYSgYgnD0kvBHRSph1Pc: {
-            fill: { a: 1, b: 237, g: 142, r: 39 },
+            fill: { r: 75, g: 161, b: 241, a: 1 },
             height: 93,
-            outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+            outlineFill: { r: 29, g: 29, b: 29, a: 1 },
             textFontSize: 12,
             type: 0,
             width: 150,
@@ -136,7 +136,7 @@ export const PlantillaDiagramaDeFlujo = {
         sRmMYXL5CDxvIbk7StHNR: {
             fill: { a: 1, b: 42, g: 142, r: 252 },
             height: 93,
-            outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+            outlineFill: { r: 29, g: 29, b: 29, a: 1 },
             textFontSize: 12,
             type: 0,
             width: 150,
@@ -146,7 +146,7 @@ export const PlantillaDiagramaDeFlujo = {
         sb44FYQSeSOXFhZ57Jkwq: {
             center: { x: 921.8344203490037, y: 473.35162901888117 },
             endArrowHead: "Triangle",
-            fill: { a: 0, b: 0, g: 0, r: 0 },
+            fill: { r: 29, g: 29, b: 29, a: 1 },
             height: 0.1829402908343809,
             type: 16,
             width: 85.12764987140895,
@@ -156,7 +156,7 @@ export const PlantillaDiagramaDeFlujo = {
         xdsRlOvS3LhHdpGOeOFdp: {
             fill: { a: 1, b: 99, g: 202, r: 68 },
             height: 93,
-            outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+            outlineFill: { r: 29, g: 29, b: 29, a: 1 },
             textFontSize: 12,
             type: 0,
             width: 150,

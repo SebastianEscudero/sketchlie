@@ -52,7 +52,7 @@ const throttledUpdateLayer = throttle((updateLayer, socket, board, layerId, laye
     const { x, y, width, height, fill, value: initialValue, textFontSize } = layer;
     const [value, setValue] = useState(initialValue);
     const textRef = useRef<any>(null);
-    const fillColor = colorToCss(layer.fill);
+    const fillColor = colorToCss(fill);
     const isTransparent = fillColor === 'rgba(0,0,0,0)';
 
     const handlePointerDown = useCallback((e: React.PointerEvent) => {

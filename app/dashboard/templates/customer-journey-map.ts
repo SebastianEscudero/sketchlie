@@ -5,7 +5,7 @@ export const PlantillaCustomerJourneyMap = {
   layers: {
     "0yy9qgzr3v5IY1YSxDIg7": {
       center: { x: 1102.08761831597, y: 486.60813875098125 },
-      fill: { a: 0, b: 0, g: 0, r: 0 },
+      fill: { a: 1, b: 0, g: 0, r: 0 },
       height: 773.6354781498903,
       type: 11,
       width: -0.9638694363011382,
@@ -14,7 +14,7 @@ export const PlantillaCustomerJourneyMap = {
     },
     "4df2HmoQCFECMlDt3gSiL": {
       center: { x: 944.2443691215765, y: 333.12556255440325 },
-      fill: { a: 0, b: 0, g: 0, r: 0 },
+      fill: { a: 1, b: 0, g: 0, r: 0 },
       height: 0.1822130963349764,
       type: 11,
       width: 1470.5576174873502,
@@ -33,7 +33,7 @@ export const PlantillaCustomerJourneyMap = {
     },
     "8b2Mdg4DtJebyJHsy0t1Q": {
       center: { x: 944.2021112037766, y: 581.6576315223535 },
-      fill: { a: 0, b: 0, g: 0, r: 0 },
+      fill: { a: 1, b: 0, g: 0, r: 0 },
       height: 0.18227540407951892,
       type: 11,
       width: 1469.8358400163297,
@@ -41,7 +41,7 @@ export const PlantillaCustomerJourneyMap = {
       y: 581.5664938203138,
     },
     "9wjl7I5veBCKemYNvdN57": {
-      fill: { a: 0, b: 0, g: 0, r: 0 },
+      fill: { r: 29, g: 29, b: 29, a: 1 },
       height: 28,
       textFontSize: 18,
       type: 13,
@@ -52,7 +52,7 @@ export const PlantillaCustomerJourneyMap = {
     },
     AKXQlXBatScFZfLanN6Js: {
       center: { x: 852.1665343273336, y: 487.11144515202386 },
-      fill: { a: 0, b: 0, g: 0, r: 0 },
+      fill: { a: 1, b: 0, g: 0, r: 0 },
       height: 775.4678270211521,
       type: 11,
       width: -0.8799876131729434,
@@ -64,7 +64,7 @@ export const PlantillaCustomerJourneyMap = {
         x: 1379.9743084033735,
         y: 486.55519412798975,
       },
-      fill: { a: 0, b: 0, g: 0, r: 0 },
+      fill: { a: 1, b: 0, g: 0, r: 0 },
       height: 773.3737354489102,
       type: 11,
       width: -1.2577651712556417,
@@ -72,7 +72,7 @@ export const PlantillaCustomerJourneyMap = {
       y: 99.86832640353464,
     },
     EfYgOYAt5Mx42y9Ec4xcq: {
-      fill: { a: 0, b: 0, g: 0, r: 0 },
+      fill: { r: 29, g: 29, b: 29, a: 1 },
       height: 28,
       textFontSize: 18,
       type: 13,
@@ -94,7 +94,7 @@ export const PlantillaCustomerJourneyMap = {
     },
     IoGxElRfzRm76P97UimgI: {
       center: { x: 635.3461459085979, y: 488.6887880612312 },
-      fill: { a: 0, b: 0, g: 0, r: 0 },
+      fill: { a: 1, b: 0, g: 0, r: 0 },
       height: 775.4678270211521,
       type: 11,
       width: -0.8799876131729434,
@@ -102,7 +102,7 @@ export const PlantillaCustomerJourneyMap = {
       y: 99.36632674680028,
     },
     R2cJ8j5wO74quGTWZX2Sg: {
-      fill: { a: 0, b: 0, g: 0, r: 0 },
+      fill: { r: 29, g: 29, b: 29, a: 1 },
       height: 28,
       textFontSize: 18,
       type: 13,
@@ -112,7 +112,7 @@ export const PlantillaCustomerJourneyMap = {
       y: 598.6541562834764,
     },
     RHkCI4Ckg09cwbunIIGpL: {
-      fill: { a: 0, b: 0, g: 0, r: 0 },
+      fill: { r: 29, g: 29, b: 29, a: 1 },
       height: 28,
       textFontSize: 18,
       type: 13,
@@ -133,7 +133,7 @@ export const PlantillaCustomerJourneyMap = {
       y: 607.1510887608995,
     },
     XQmLk6HmgqJqCArTdBHUg: {
-      fill: { a: 1, b: 128, g: 128, r: 128 },
+      fill: { r: 159, g: 168, b: 178, a: 1 },
       height: 36,
       textFontSize: 12,
       type: 13,
@@ -144,7 +144,7 @@ export const PlantillaCustomerJourneyMap = {
     },
     a9ZHaxgRF2Sdn0fmfu2Pm: {
       center: { x: 400.5600061934135, y: 486.9307821474317 },
-      fill: { a: 0, b: 0, g: 0, r: 0 },
+      fill: { a: 1, b: 0, g: 0, r: 0 },
       height: 775.4678270211521,
       type: 11,
       width: -0.8799876131729434,
@@ -152,7 +152,7 @@ export const PlantillaCustomerJourneyMap = {
       y: 99.19686863685598,
     },
     aDcZHRWmXpIvh9n53Xa2a: {
-      fill: { a: 0, b: 0, g: 0, r: 0 },
+      fill: { r: 29, g: 29, b: 29, a: 1 },
       height: 27.000000000000004,
       textFontSize: 18,
       type: 13,
@@ -163,7 +163,7 @@ export const PlantillaCustomerJourneyMap = {
     },
     azPYRvlg4bm0G5uY67Fuh: {
       center: { x: 944.3162140734274, y: 165.04126906764202 },
-      fill: { a: 0, b: 0, g: 0, r: 0 },
+      fill: { a: 1, b: 0, g: 0, r: 0 },
       height: -0.14949201047164706,
       type: 11,
       width: 1470.701307391052,
@@ -172,7 +172,7 @@ export const PlantillaCustomerJourneyMap = {
     },
     cFrPA1B4M0cLFVai3IwmW: {
       center: { x: 943.354044070947, y: 451.7349140261641 },
-      fill: { a: 0, b: 0, g: 0, r: 0 },
+      fill: { a: 1, b: 0, g: 0, r: 0 },
       height: 0.274686286847043,
       type: 11,
       width: 1470.260747413597,
@@ -191,7 +191,7 @@ export const PlantillaCustomerJourneyMap = {
       y: 730.9673872898801,
     },
     krxIBN9SHd5jGAk2kd1kg: {
-      fill: { a: 0, b: 0, g: 0, r: 0 },
+      fill: { r: 29, g: 29, b: 29, a: 1 },
       height: 28,
       textFontSize: 18,
       type: 13,
@@ -202,7 +202,7 @@ export const PlantillaCustomerJourneyMap = {
     },
     lYhVLg56rBWeR2aWSNoi1: {
       center: { x: 943.5621625157975, y: 718.4521230904041 },
-      fill: { a: 0, b: 0, g: 0, r: 0 },
+      fill: { a: 1, b: 0, g: 0, r: 0 },
       height: 0.6178203812244192,
       type: 11,
       width: 1470.2034694610388,
@@ -222,7 +222,7 @@ export const PlantillaCustomerJourneyMap = {
     x0wBd1NgO8Ju8hVDVgTHN: {
       fill: { a: 1, b: 255, g: 255, r: 255 },
       height: 775.8808618900299,
-      outlineFill: { a: 1, b: 1, g: 1, r: 1 },
+      outlineFill: { r: 29, g: 29, b: 29, a: 1 },
       textFontSize: 0,
       type: 0,
       width: 1472,
