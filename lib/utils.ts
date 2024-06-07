@@ -541,7 +541,7 @@ export function getShapeType(pencilDraft: number[][], circleTolerance: number, r
     return LayerType.Rectangle;
   } else if (isLine) {
     return LayerType.Line;
-  } else if (isTriangle && lineCheck < lineTolerance) {
+  } else if (isTriangle) {
     return LayerType.Triangle;
   } else {
     return LayerType.Path;
