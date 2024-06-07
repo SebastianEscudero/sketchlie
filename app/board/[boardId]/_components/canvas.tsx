@@ -1652,6 +1652,11 @@ export const Canvas = () => {
         document.addEventListener('mousemove', onMouseMove);
 
         function onKeyDown(e: KeyboardEvent) {
+
+            if (!e.key) {
+                return;
+            }
+
             switch (e.key.toLocaleLowerCase()) {
                 case "z": {
                     if (e.ctrlKey || e.metaKey) {

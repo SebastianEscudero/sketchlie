@@ -249,6 +249,8 @@ export const OrganizationSettings = ({
                                                         if (result.isOrgDeleted) {
                                                             setActiveOrganization("null");
                                                             localStorage.setItem("activeOrganization", "null");
+                                                        } else {
+                                                            toast.info("Removed succesfully");
                                                         }
                                                         update();
                                                     })
