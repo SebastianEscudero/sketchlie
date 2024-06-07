@@ -66,7 +66,7 @@ export const Info = ({
                 </Hint>
             <TabSeparator />
             <Actions id={board._id} title={board.title} side="bottom" sideOffset={10} org={org} showExport={true}>
-                <div>
+                <div className="w-10 flex justify-center items-center">
                     <Hint label="Main menu" side="bottom" sideOffset={10}>
                         <Button size="icon" variant="board">
                             <Menu />

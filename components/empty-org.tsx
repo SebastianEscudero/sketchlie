@@ -40,7 +40,7 @@ export const EmptyOrg = ({
                     />
                 </Dialog>
             )}
-            <div className="p-6">
+            <div className="p-0">
                 <h2 className="text-3xl font-semibold">Choose a Template</h2>
                 <div className="flex mt-8 border rounded-md p-4 h-[170px] overflow-hidden">
                     <div className="flex flex-wrap gap-x-5 gap-y-20">

@@ -583,9 +583,15 @@ export const Canvas = () => {
     }, []);
 
     const startDrawing = useCallback((point: Point, pressure: number) => {
+
         if (activeTouches > 1) {
             return;
         }
+
+        if (pinchStartDist !== null) {
+            return;
+        }
+
 
         const pencilDraft: [number, number, number][] = [[point.x, point.y, pressure]];
         setPencilDraft(pencilDraft);
@@ -595,13 +601,14 @@ export const Canvas = () => {
         };
 
         setMyPresence(newPresence);
-    }, [myPresence, setMyPresence, activeTouches]);
+    }, [myPresence, setMyPresence, activeTouches, pinchStartDist]);
 
     const continueDrawing = useCallback((point: Point, e: React.PointerEvent) => {
         if (
             (canvasState.mode !== CanvasMode.Pencil && canvasState.mode !== CanvasMode.Laser && canvasState.mode !== CanvasMode.Highlighter) ||
             e.buttons !== 1 ||
-            pencilDraft == null
+            pencilDraft == null ||
+            activeTouches > 1
         ) {
             return;
         }
@@ -648,7 +655,8 @@ export const Canvas = () => {
 
         if (
             pencilDraft == null ||
-            pencilDraft[0].length < 2
+            (pencilDraft[0] && pencilDraft[0].length < 2) ||
+            activeTouches > 1
         ) {
             setPencilDraft([]);
             return;
@@ -683,7 +691,7 @@ export const Canvas = () => {
         setMyPresence(newPresence);
 
         setCanvasState({ mode: CanvasMode.Pencil });
-    }, [pencilDraft, liveLayers, setLiveLayers, setLiveLayerIds, myPresence, org, proModal, liveLayerIds, socket, board, addLayer]);
+    }, [pencilDraft, liveLayers, setLiveLayers, setLiveLayerIds, myPresence, org, proModal, liveLayerIds, socket, board, addLayer, activeTouches]);
 
     useEffect(() => {
         if (pencilDraft === null || magicPathAssist === false || pencilDraft.length === 0) {
@@ -774,7 +782,8 @@ export const Canvas = () => {
 
         if (
             pencilDraft == null ||
-            pencilDraft[0].length < 2
+            (pencilDraft[0] && pencilDraft[0].length < 2) ||
+            activeTouches > 1
         ) {
             setPencilDraft([]);
             return;
@@ -1481,8 +1490,9 @@ export const Canvas = () => {
 
 
     const onTouchDown = useCallback((e: React.TouchEvent) => {
+        mousePositionRef.current = pointerEventToCanvasPoint(e, camera, zoom);
         setActiveTouches(e.touches.length);
-    }, []);
+    }, [mousePositionRef, camera, zoom]);
 
     const onTouchUp = useCallback((e: React.TouchEvent) => {
         setActiveTouches(e.changedTouches.length);
@@ -1792,6 +1802,7 @@ export const Canvas = () => {
             <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
             <Info board={board} org={org} />
             <Participants
+                org={org}
                 otherUsers={otherUsers}
                 User={User}
             />
@@ -1912,7 +1923,7 @@ export const Canvas = () => {
                     )}
                     {otherUsers && <CursorsPresence otherUsers={otherUsers} zoom={zoom} />}
                     {
-                        pencilDraft != null && pencilDraft.length > 0 && pencilDraft[0].length > 0 && !pencilDraft.some(array => array.some(isNaN)) && (
+                        pencilDraft != null && pencilDraft && pencilDraft.length > 0 && pencilDraft[0].length > 0 && !pencilDraft.some(array => array.some(isNaN)) && (
                             <Path
                                 points={pencilDraft}
                                 fill={
