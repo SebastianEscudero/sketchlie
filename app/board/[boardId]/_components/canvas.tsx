@@ -12,8 +12,7 @@ import {
     pointerEventToCanvasPoint,
     resizeBounds,
     findIntersectingLayersWithPoint,
-    checkIfPathIsCircle,
-    checkIfPathIsRectangle,
+    getShapeType,
 } from "@/lib/utils";
 
 import {
@@ -272,6 +271,7 @@ export const Canvas = () => {
     const [pinchStartDist, setPinchStartDist] = useState<number | null>(null);
     const [activeTouches, setActiveTouches] = useState(0);
     const [magicPathAssist, setMagicPathAssist] = useState(false);
+    const [layerWithAssistDraw, setLayerWithAssistDraw] = useState(false);
     const updateLayerMutation = useRef(useApiMutation(api.board.updateLayer).mutate);
     const addLayerMutation = useRef(useApiMutation(api.board.addLayer).mutate);
     const deleteLayerMutation = useRef(useApiMutation(api.board.deleteLayer).mutate);
@@ -694,34 +694,68 @@ export const Canvas = () => {
             const maxX = Math.max(...pencilDraft.map(point => point[0]));
             const minY = Math.min(...pencilDraft.map(point => point[1]));
             const maxY = Math.max(...pencilDraft.map(point => point[1]));
-            const width = Math.abs(maxX - minX);
-            const height = Math.abs(maxY - minY);
-            const CircleTolerance = Math.min(width/zoom, (height)/zoom)/(10/zoom)
-            const RectangleTolerance = 0.86;
-            let {isCircle, circleCheck} = checkIfPathIsCircle(pencilDraft, CircleTolerance);
-            let {isRectangle, RectangleCheck} = checkIfPathIsRectangle(pencilDraft, RectangleTolerance);
-            
-            if (isCircle || isRectangle) {
+            const CircleTolerance = 0.30;
+            const RectangleTolerance = 0.80;
+            const LineTolerance = 20;
+            const triangleTolerance = 0.80;
 
-                const layerType = isRectangle ? LayerType.Rectangle : LayerType.Ellipse;
+            const layerType = getShapeType(pencilDraft, CircleTolerance, RectangleTolerance, LineTolerance, triangleTolerance);
+
+            if (layerType !== LayerType.Path) {
+
                 let panX = minX;
                 let panY = minY;
-
+              
                 if (Math.abs(mousePositionRef.current.x - minX) < Math.abs(mousePositionRef.current.x - maxX)) {
-                    panX = maxX
+                  panX = maxX
                 }
-
+              
                 if (Math.abs(mousePositionRef.current.y - minY) < Math.abs(mousePositionRef.current.y - maxY)) {
-                    panY = maxY
+                  panY = maxY
                 }
-
-                setCanvasState({ mode: CanvasMode.Inserting, layerType: layerType });
+              
                 setPencilDraft([]);
-                setCurrentPreviewLayer({ x: Math.min(minX, maxX), y: Math.min(minY, maxY), width, height, textFontSize: 12,  type: layerType, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
-                setStartPanPoint({ x: panX , y: panY });
+              
+                if (layerType === LayerType.Line) {
+
+                  const width =  panX - mousePositionRef.current.x
+                  const height = panY - mousePositionRef.current.y
+
+                  setCurrentPreviewLayer({
+                    type: LayerType.Line,
+                    x: mousePositionRef.current.x,
+                    y: mousePositionRef.current.y,
+                    center: { x: (minX + maxX) / 2, y: (minY + maxY) / 2 },
+                    height,
+                    width,
+                    fill: { r: 0, g: 0, b: 0, a: 0 },
+                  });
+
+                  setStartPanPoint({ x: mousePositionRef.current.x, y: mousePositionRef.current.y });
+                } else {
+
+                  const width = Math.abs(maxX - minX);
+                  const height = Math.abs(maxY - minY);
+
+                  setCurrentPreviewLayer({
+                    x: Math.min(minX, maxX),
+                    y: Math.min(minY, maxY),
+                    width,
+                    height,
+                    textFontSize: 12,
+                    type: layerType,
+                    fill: { r: 0, g: 0, b: 0, a: 0 },
+                    outlineFill: { r: 1, g: 1, b: 1, a: 1 },
+                  });
+                  setStartPanPoint({ x: panX, y: panY });
+                }
+              
+                setCanvasState({ mode: CanvasMode.Inserting, layerType: layerType });
                 setIsPanning(true);
-            }   
+                setLayerWithAssistDraw(true);
+              }
         }, 1000);
+
         return () => clearTimeout(timeoutId);
     }, [pencilDraft, setPencilDraft, zoom, magicPathAssist]);
 
