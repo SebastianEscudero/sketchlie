@@ -439,7 +439,7 @@ export const exportToSVG = async (title: string) => {
   // implement
 };
 
-export function checkIfPathIsCircle(pencilDraft: number[][], tolerance: number): {isCircle: boolean, circleCheck: number} {
+export function checkIfPathIsEllipse(pencilDraft: number[][], tolerance: number): {isEllipse: boolean, ellipseCheck: number} {
   const [minX, minY, maxX, maxY] = pencilDraft.reduce(
     ([minX, minY, maxX, maxY], [x, y]) => [
       Math.min(minX, x),
@@ -452,12 +452,18 @@ export function checkIfPathIsCircle(pencilDraft: number[][], tolerance: number):
 
   const centerX = (minX + maxX) / 2;
   const centerY = (minY + maxY) / 2;
-  const radius = Math.max(maxX - minX, maxY - minY) / 2;
+  const majorRadius = (maxX - minX) / 2;
+  const minorRadius = (maxY - minY) / 2;
 
-  const distancesToCenter = pencilDraft.map(([x, y]) => Math.sqrt((x - centerX) ** 2 + (y - centerY) ** 2));
-  const maxDeviation = Math.max(...distancesToCenter.map(d => Math.abs(d - radius)));
+  const distancesToCenter = pencilDraft.map(([x, y]) => {
+    const dx = x - centerX;
+    const dy = y - centerY;
+    return Math.sqrt((dx * dx) / (majorRadius * majorRadius) + (dy * dy) / (minorRadius * minorRadius));
+  });
 
-  return {isCircle: maxDeviation < tolerance, circleCheck: maxDeviation};
+  const maxDeviation = Math.max(...distancesToCenter.map(d => Math.abs(d - 1)));
+
+  return {isEllipse: maxDeviation < tolerance, ellipseCheck: maxDeviation};
 }
 
 export function checkIfPathIsRectangle(pencilDraft: number[][], tolerance: number): {isRectangle: boolean, RectangleCheck: number} {
@@ -481,4 +487,67 @@ export function checkIfPathIsRectangle(pencilDraft: number[][], tolerance: numbe
   const ratio = Math.abs(pathArea/boundingBoxArea);
 
   return {isRectangle: ratio > tolerance, RectangleCheck: ratio};
+}
+
+export function checkIfPathIsLine(pencilDraft: number[][], tolerance: number): {isLine: boolean, lineCheck: number} {
+  const [[x1, y1], [x2, y2]] = [pencilDraft[0], pencilDraft[pencilDraft.length - 1]];
+
+  const lineLength = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+
+  const distancesToLine = pencilDraft.map(([x, y]) => {
+    // Distance from point to line formula
+    return Math.abs((y2 - y1) * x - (x2 - x1) * y + x2 * y1 - y2 * x1) / lineLength;
+  });
+
+  const maxDeviation = Math.max(...distancesToLine);
+
+  return {isLine: maxDeviation < tolerance, lineCheck: maxDeviation};
+}
+
+export function checkIfPathIsTriangle(pencilDraft: number[][]): {isTriangle: boolean, triangleCheck: number} {
+  // Convex Hull algorithm (Gift wrapping aka Jarvis march algorithm)
+  const points = [...pencilDraft];
+  const convexHull = [];
+  let pointOnHull = points.reduce((leftmost, point) => point[0] < leftmost[0] ? point : leftmost, points[0]);
+
+  while (true) {
+    convexHull.push(pointOnHull);
+    let endpoint = points[0];
+
+    for (let i = 1; i < points.length; i++) {
+      const direction = ((endpoint[0] - pointOnHull[0]) * (points[i][1] - pointOnHull[1])) - ((endpoint[1] - pointOnHull[1]) * (points[i][0] - pointOnHull[0]));
+      if (endpoint === pointOnHull || direction > 0) {
+        endpoint = points[i];
+      }
+    }
+
+    pointOnHull = endpoint;
+    if (endpoint === convexHull[0]) break;
+  }
+
+  // If there are three points on the convex hull, it's a triangle
+  return {isTriangle: convexHull.length <= 10, triangleCheck: convexHull.length};
+}
+
+export function getShapeType(pencilDraft: number[][], circleTolerance: number, rectangleTolerance: number, lineTolerance: number, triangleTolerance: number): any {
+  const {isEllipse, ellipseCheck} = checkIfPathIsEllipse(pencilDraft, circleTolerance);
+  const {isRectangle, RectangleCheck} = checkIfPathIsRectangle(pencilDraft, rectangleTolerance);
+  const {isLine, lineCheck} = checkIfPathIsLine(pencilDraft, lineTolerance);
+  const {isTriangle, triangleCheck} = checkIfPathIsTriangle(pencilDraft);
+
+  console.log(triangleCheck)
+  console.log(RectangleCheck)
+  console.log(ellipseCheck)
+
+  if (isEllipse) {
+    return LayerType.Ellipse;
+  } else if (isRectangle) {
+    return LayerType.Rectangle;
+  } else if (isLine) {
+    return LayerType.Line;
+  } else if (isTriangle) {
+    return LayerType.Triangle;
+  } else {
+    return LayerType.Path;
+  }
 }
