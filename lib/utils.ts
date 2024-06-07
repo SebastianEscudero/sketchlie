@@ -438,3 +438,47 @@ export const exportToPNG = async (title: string) => {
 export const exportToSVG = async (title: string) => {
   // implement
 };
+
+export function checkIfPathIsCircle(pencilDraft: number[][], tolerance: number): {isCircle: boolean, circleCheck: number} {
+  const [minX, minY, maxX, maxY] = pencilDraft.reduce(
+    ([minX, minY, maxX, maxY], [x, y]) => [
+      Math.min(minX, x),
+      Math.min(minY, y),
+      Math.max(maxX, x),
+      Math.max(maxY, y),
+    ],
+    [Infinity, Infinity, -Infinity, -Infinity]
+  );
+
+  const centerX = (minX + maxX) / 2;
+  const centerY = (minY + maxY) / 2;
+  const radius = Math.max(maxX - minX, maxY - minY) / 2;
+
+  const distancesToCenter = pencilDraft.map(([x, y]) => Math.sqrt((x - centerX) ** 2 + (y - centerY) ** 2));
+  const maxDeviation = Math.max(...distancesToCenter.map(d => Math.abs(d - radius)));
+
+  return {isCircle: maxDeviation < tolerance, circleCheck: maxDeviation};
+}
+
+export function checkIfPathIsRectangle(pencilDraft: number[][], tolerance: number): {isRectangle: boolean, RectangleCheck: number} {
+  const [minX, minY, maxX, maxY] = pencilDraft.reduce(
+    ([minX, minY, maxX, maxY], [x, y]) => [
+      Math.min(minX, x),
+      Math.min(minY, y),
+      Math.max(maxX, x),
+      Math.max(maxY, y),
+    ],
+    [Infinity, Infinity, -Infinity, -Infinity]
+  );
+
+  const boundingBoxArea = (maxX - minX) * (maxY - minY);
+
+  const pathArea = Math.abs(pencilDraft.reduce((sum, [x1, y1], i) => {
+    const [x2, y2] = pencilDraft[(i + 1) % pencilDraft.length];
+    return sum + (x1 * y2 - x2 * y1);
+  }, 0) / 2);
+
+  const ratio = Math.abs(pathArea/boundingBoxArea);
+
+  return {isRectangle: ratio > tolerance, RectangleCheck: ratio};
+}

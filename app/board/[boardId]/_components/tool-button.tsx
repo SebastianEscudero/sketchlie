@@ -9,13 +9,15 @@ interface ToolButtonProps {
     onClick: () => void;
     isActive?: boolean;
     isDisabled?: boolean;
+    label?: string;
 };
 
 export const ToolButton = ({
     icon: Icon,
     onClick,
     isActive,
-    isDisabled
+    isDisabled,
+    label
 }: ToolButtonProps) => {
     
     let side: "right" | "top" | "bottom" | "left" | undefined = "right";
@@ -23,9 +25,17 @@ export const ToolButton = ({
         side = "top";
     }
 
-    return (
+    const button = (
         <Button disabled={isDisabled} onClick={onClick} className="h-10 w-10 p-2" variant={isActive ? "iconActive" : "icon"}>
             <Icon className="h-5 w-5" />
         </Button>
-    )
+    );
+
+    return label ? (
+        <Hint side={side} label={label} sideOffset={14}>
+            {button}
+        </Hint>
+    ) : (
+        button
+    );
 }

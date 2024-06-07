@@ -12,6 +12,8 @@ import {
     pointerEventToCanvasPoint,
     resizeBounds,
     findIntersectingLayersWithPoint,
+    checkIfPathIsCircle,
+    checkIfPathIsRectangle,
 } from "@/lib/utils";
 
 import {
@@ -269,6 +271,7 @@ export const Canvas = () => {
     const [pathStrokeSize, setPathStrokeSize] = useState(4);
     const [pinchStartDist, setPinchStartDist] = useState<number | null>(null);
     const [activeTouches, setActiveTouches] = useState(0);
+    const [magicPathAssist, setMagicPathAssist] = useState(false);
     const updateLayerMutation = useRef(useApiMutation(api.board.updateLayer).mutate);
     const addLayerMutation = useRef(useApiMutation(api.board.addLayer).mutate);
     const deleteLayerMutation = useRef(useApiMutation(api.board.deleteLayer).mutate);
@@ -626,7 +629,7 @@ export const Canvas = () => {
 
         setMyPresence(newPresence);
 
-    }, [canvasState.mode, pencilDraft, myPresence, setMyPresence]);
+    }, [canvasState.mode, pencilDraft, myPresence, setMyPresence, activeTouches]);
 
 
     const insertPath = useCallback(() => {
@@ -638,7 +641,8 @@ export const Canvas = () => {
         }
 
         if (
-            pencilDraft == null
+            pencilDraft == null ||
+            pencilDraft[0].length < 2
         ) {
             setPencilDraft([]);
             return;
@@ -675,6 +679,52 @@ export const Canvas = () => {
         setCanvasState({ mode: CanvasMode.Pencil });
     }, [pencilDraft, liveLayers, setLiveLayers, setLiveLayerIds, myPresence, org, proModal, liveLayerIds, socket, board, addLayer]);
 
+    useEffect(() => {
+        if (pencilDraft === null || magicPathAssist === false || pencilDraft.length === 0) {
+            return;
+        }
+    
+        const timeoutId = setTimeout(() => {
+
+            if (pencilDraft[0] && pencilDraft[0].length < 2) {
+                return;
+            }
+
+            const minX = Math.min(...pencilDraft.map(point => point[0]));
+            const maxX = Math.max(...pencilDraft.map(point => point[0]));
+            const minY = Math.min(...pencilDraft.map(point => point[1]));
+            const maxY = Math.max(...pencilDraft.map(point => point[1]));
+            const width = Math.abs(maxX - minX);
+            const height = Math.abs(maxY - minY);
+            const CircleTolerance = Math.min(width/zoom, (height)/zoom)/(10/zoom)
+            const RectangleTolerance = 0.86;
+            let {isCircle, circleCheck} = checkIfPathIsCircle(pencilDraft, CircleTolerance);
+            let {isRectangle, RectangleCheck} = checkIfPathIsRectangle(pencilDraft, RectangleTolerance);
+            
+            if (isCircle || isRectangle) {
+
+                const layerType = isRectangle ? LayerType.Rectangle : LayerType.Ellipse;
+                let panX = minX;
+                let panY = minY;
+
+                if (Math.abs(mousePositionRef.current.x - minX) < Math.abs(mousePositionRef.current.x - maxX)) {
+                    panX = maxX
+                }
+
+                if (Math.abs(mousePositionRef.current.y - minY) < Math.abs(mousePositionRef.current.y - maxY)) {
+                    panY = maxY
+                }
+
+                setCanvasState({ mode: CanvasMode.Inserting, layerType: layerType });
+                setPencilDraft([]);
+                setCurrentPreviewLayer({ x: Math.min(minX, maxX), y: Math.min(minY, maxY), width, height, textFontSize: 12,  type: layerType, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
+                setStartPanPoint({ x: panX , y: panY });
+                setIsPanning(true);
+            }   
+        }, 1000);
+        return () => clearTimeout(timeoutId);
+    }, [pencilDraft, setPencilDraft, zoom, magicPathAssist]);
+
     const insertHighlight = useCallback(() => {
 
         if (org && liveLayerIds.length >= getMaxCapas(org)) {
@@ -684,7 +734,7 @@ export const Canvas = () => {
 
         if (
             pencilDraft == null ||
-            pencilDraft.length < 2
+            pencilDraft[0].length < 2
         ) {
             setPencilDraft([]);
             return;
@@ -718,7 +768,7 @@ export const Canvas = () => {
         setMyPresence(newPresence);
         setPencilDraft([]);
         setCanvasState({ mode: CanvasMode.Highlighter });
-    }, [pencilDraft, liveLayers, setLiveLayers, setLiveLayerIds, myPresence, org, proModal, liveLayerIds, socket, board, addLayer]);
+    }, [pencilDraft, liveLayers, setLiveLayers, setLiveLayerIds, myPresence, org, proModal, liveLayerIds, socket, board, addLayer, zoom]);
 
     const resizeSelectedLayer = useCallback((point: Point) => {
         const layer = liveLayers[selectedLayersRef.current[0]];
@@ -1728,7 +1778,10 @@ export const Canvas = () => {
                     isPenEraserSwitcherOpen={isPenEraserSwitcherOpen}
                     setIsPenEraserSwitcherOpen={setIsPenEraserSwitcherOpen}
                     selectedTool={selectedTool}
-                    setSelectedTool={setSelectedTool} />
+                    setSelectedTool={setSelectedTool}
+                    setMagicPathAssist={setMagicPathAssist}
+                    magicPathAssist={magicPathAssist}    
+                />
             )}
             {canvasState.mode === CanvasMode.None && expired !== true && (
                 <SelectionTools

@@ -16,6 +16,7 @@ interface ImageButtonProps {
     isActive?: boolean;
     isDisabled?: boolean;
     setIsUploading: Dispatch<SetStateAction<boolean>>;
+    label: string;
     org: any;
 };
 
@@ -26,7 +27,8 @@ export const ImageButton = ({
     isActive,
     isDisabled,
     onImageSelect,
-    org
+    org,
+    label
 }: ImageButtonProps) => {
     
     const user = useCurrentUser();
@@ -91,15 +93,17 @@ export const ImageButton = ({
     }
 
     return (
-        <Button disabled={isDisabled} onClick={handleButtonClick} size="icon" variant={isActive ? "iconActive" : "icon"}>
-            <Icon />
-            <input
-                type="file"
-                onChange={handleUpload}
-                ref={inputFileRef}
-                accept="image/*"
-                style={{ display: 'none' }}
-            />
-        </Button>
+        <Hint side={side} label={label} sideOffset={14}>
+            <Button disabled={isDisabled} onClick={handleButtonClick} size="icon" variant={isActive ? "iconActive" : "icon"}>
+                <Icon />
+                <input
+                    type="file"
+                    onChange={handleUpload}
+                    ref={inputFileRef}
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                />
+            </Button>
+        </Hint>
     )
 }
