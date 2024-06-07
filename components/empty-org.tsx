@@ -13,13 +13,13 @@ import { Skeleton } from "./ui/skeleton";
 
 interface EmptyOrgProps {
     setActiveOrganization: (id: string) => void;
-    activeOrganization: string | null;
+    user: any;
 };
 
 
 export const EmptyOrg = ({
     setActiveOrganization,
-    activeOrganization
+    user
 }: EmptyOrgProps) => {
 
     const [isOpen, setIsOpen] = useState(false)
@@ -30,7 +30,7 @@ export const EmptyOrg = ({
 
     return (
         <div className="h-full flex flex-col">
-            {!activeOrganization && (
+            {user.organizations.length === 0 && (
                 <Dialog open={isOpen}>
                     <CreateOrganization
                         showCloseButton={false}

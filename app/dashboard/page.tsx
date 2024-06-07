@@ -70,7 +70,7 @@ const DashboardPage = () => {
               {!activeOrg ? (
                 <EmptyOrg 
                   setActiveOrganization={setActiveOrganization} 
-                  activeOrganization={activeOrganization}
+                  user={user}
                 />
               ) : (
                 <BoardList
