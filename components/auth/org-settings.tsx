@@ -99,8 +99,15 @@ export const OrganizationSettings = ({
             // Set active organization to the first organization in the user's organizations list
             if (user && user.organizations && user?.organizations?.length > 0) {
                 const firstOrgId = user?.organizations[0].id;
-                setActiveOrganization(firstOrgId);
-                localStorage.setItem("activeOrganization", firstOrgId);
+                
+                if (firstOrgId !== activeOrg.id) {
+                    setActiveOrganization(firstOrgId);
+                    localStorage.setItem("activeOrganization", firstOrgId);
+                
+                } else {
+                    setActiveOrganization(null);
+                    localStorage.setItem("activeOrganization", '');
+                }
             } else {
                 setActiveOrganization(null);
                 localStorage.setItem("activeOrganization", '');
