@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
                 "reason": `Sketchlie ${plan.label} Plan`,
                 "external_reference": `${organizationId}-${plan.label}`,
                 "payer_email": user.email,
-                "notificacion_url": `${process.env.NEXT_PUBLIC_APP_URL}/api/webhook`, 
+                "notificacion_url": `${process.env.NEXT_PUBLIC_APP_URL}/api/webhook/`, 
                 "auto_recurring": {
                     "frequency": 1,
                     "frequency_type": "months",
@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
                     "transaction_amount": plan.price*organizationMembers,
                     "currency_id": "CLP"
                 },
-                "back_url": `${process.env.NEXT_PUBLIC_APP_URL}/dashboard`,
+                "back_url": `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/`,
                 "status": "active",
             })
         });
