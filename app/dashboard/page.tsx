@@ -17,12 +17,14 @@ const DashboardPage = () => {
   const search = searchParams.get("search") || undefined;
   const favorites = searchParams.get("favorites") || undefined
   const [activeOrganization, setActiveOrganization] = useState<string | null>(null);
+  const user = useCurrentUser();
   const proModal = useProModal();
 
   useEffect(() => {
     document.body.style.cursor = 'default';
     setActiveOrganization(localStorage.getItem("activeOrganization"));
   }, []);
+
 
   useEffect(() => {
     if (!activeOrganization) return;
@@ -34,8 +36,6 @@ const DashboardPage = () => {
         proModal.onOpen(activeOrganization);
     }
 }, []);
-
-  const user = useCurrentUser();
 
   if (!user) return <Loading />;
 
@@ -68,7 +68,10 @@ const DashboardPage = () => {
             )}
             <div className="flex-1 h-[calc(100%-80px)] p-6">
               {!activeOrg ? (
-                <EmptyOrg setActiveOrganization={setActiveOrganization} />
+                <EmptyOrg 
+                  setActiveOrganization={setActiveOrganization} 
+                  activeOrganization={activeOrganization}
+                />
               ) : (
                 <BoardList
                   userId={user.id}

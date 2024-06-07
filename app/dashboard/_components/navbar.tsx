@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Zap } from "lucide-react";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { useCurrentUser } from "@/hooks/use-current-user";
+import { NotificationsMenu } from "./notifications-menu";
 
 interface NavbarProps {
     activeOrganization: string | null;
@@ -71,6 +72,11 @@ export const Navbar = ({
                         )}
                     </>
                 )}
+                <div className="mx-2 sm:flex hidden items-center justify-center">
+                    <NotificationsMenu 
+                        setActiveOrganization={setActiveOrganization}
+                    />
+                </div>
                 <UserButton />
             </div>
         </div>

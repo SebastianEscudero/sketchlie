@@ -23,6 +23,11 @@ export const acceptInvite = async (
 
   const invitation = await db.organizationInvitation.findUnique({
     where: { id: invitationId },
+    select: {
+      subscriptionPlan: true,
+      status: true,
+      role: true,
+    }
   });
 
   // Check if the invitation exists and is still pending

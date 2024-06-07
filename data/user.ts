@@ -36,7 +36,8 @@ export const getUserById = async (id: string) => {
             organization: { 
               select: {
                 id: true,
-                name: true
+                name: true,
+                subscriptionPlan: true,
               }
             }
           }

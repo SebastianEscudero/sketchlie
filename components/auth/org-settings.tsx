@@ -20,7 +20,6 @@ import { Input } from "@/components/ui/input";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { useCurrentUser } from "@/hooks/use-current-user";
-import Image from "next/image";
 import { Button } from "../ui/button";
 import { Ellipsis, Settings, User, X, Zap } from "lucide-react";
 import { organizationSettings } from "@/actions/organization-settings";
@@ -45,10 +44,12 @@ import { useQuery } from "convex/react";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { editUserRole } from "@/actions/edit-role";
 import { toast } from "sonner";
+import { getPlanColor } from "@/lib/orgUtils";
+import { OrgImage } from "./org-image";
 
 interface OrganizationSettingsProps {
     activeOrganization: string | null;
-    setActiveOrganization: (id: string) => void;
+    setActiveOrganization: (id: any) => void;
     plan: string;
 }
 
@@ -62,23 +63,11 @@ export const OrganizationSettings = ({
     const usersRole = activeOrg?.users.find((u: any) => u.id === user?.id)?.role;
     const Initial = activeOrg?.name.charAt(0).toUpperCase();
 
-    let Color, LetterColor;
-    switch (plan) {
-        case 'Gratis':
-            Color = '6C47FF';
-            LetterColor = 'FFFFFF';
-            break;
-        case 'Starter':
-            Color = 'F59E0B';
-            LetterColor = '000000';
-            break;
-        case 'Business':
-            Color = '000000';
-            LetterColor = 'FFFFFF';
-            break;
-        default:
-            Color = '6C47FF';
-            LetterColor = '000000';
+    let color = "#000000"; // default color
+    let letterColor = "#FFFFFF"; // default letter color
+
+    if (activeOrg) {
+        ({ color, letterColor } = getPlanColor(activeOrg.subscriptionPlan));
     }
 
     const [error, setError] = useState<string | undefined>();
@@ -107,8 +96,15 @@ export const OrganizationSettings = ({
                     mutate({ id: board._id, userId: user?.id })
                 ))
             }
-            setActiveOrganization("null");
-            localStorage.setItem("activeOrganization", "null");
+            // Set active organization to the first organization in the user's organizations list
+            if (user && user.organizations && user?.organizations?.length > 0) {
+                const firstOrgId = user?.organizations[0].id;
+                setActiveOrganization(firstOrgId);
+                localStorage.setItem("activeOrganization", firstOrgId);
+            } else {
+                setActiveOrganization(null);
+                localStorage.setItem("activeOrganization", '');
+            }
             update();
         })
 
@@ -142,13 +138,12 @@ export const OrganizationSettings = ({
         <div className="flex sm:flex-row flex-col max-h-[600px]">
             <div className="sm:w-1/3 w-full space-y-4 sm:pr-4 sm:pb-0 pb-4 sm:border-r sm:border-b-0 border-b">
                 <div className="flex mb-3 items-center pb-0">
-                    <Image
-                        sizes="48px"
-                        alt={activeOrg.name}
-                        src={`https://img.clerk.com/preview.png?size=144&seed=seed&initials=${Initial}&isSquare=true&bgType=marble&bgColor=${Color}&fgType=initials&fgColor=${LetterColor}&type=organization&w=48&q=75`}
-                        className="rounded-md"
-                        width={35}
-                        height={35}
+                    <OrgImage 
+                        width="35px"
+                        height="35px"
+                        letter={Initial || ""}
+                        color={color}
+                        letterColor={letterColor}
                     />
                     <div className="ml-3 text-sm">
                         <p className="truncate sm:max-w-[100px] max-w-[200px]">{activeOrg.name}</p>
@@ -344,6 +339,12 @@ export const OrganizationSettings = ({
                                         {activeOrg.subscriptionPlan === "Gratis" && <Zap className="w-4 h-4 ml-2 fill-white" />}
                                     </Button>
                                 </div>
+                                {activeOrg.subscriptionPlan !== "Gratis" && (
+                                    <p className="text-neutral-500 text-sm mt-2">
+                                        You are currently on the {activeOrg.subscriptionPlan} plan, if you need any help please 
+                                        contact us at <a href="mailto:contact@sketchlie.com" className="text-custom-blue hover:underline">contact@sketchlie.com</a>
+                                    </p>
+                                )}
                             </div>
                         )}
                     </div>
@@ -357,11 +358,11 @@ export const OrganizationSettings = ({
                                 Cancel
                             </Button>
                             <DialogClose>
-                                <Button variant="destructive"
+                                <div className="bg-destructive text-white rounded-md py-2 px-4 cursor-pointer"
                                     onClick={onDelete}
                                 >
                                     Delete Organization
-                                </Button>
+                                </div>
                             </DialogClose>
                         </div>
                     </div>

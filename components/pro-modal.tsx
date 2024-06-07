@@ -38,82 +38,75 @@ export const ProModal = () => {
                         <div className="flex justify-center text-xl md:text-2xl items-center flex-wrap text-center">
                             <p>Choose organization to upgrade:</p>
                             <DropdownMenu>
-                                <DropdownMenuTrigger>
-                                    <div
-                                        className="text-xl md:text-2xl flex flex-row items-center ml-3 text-custom-blue"
-                                    >
-                                        {activeOrg ? activeOrg.name : "Select organization"}
-                                        <ChevronsDown className="ml-2" />
-                                    </div>
+                                <DropdownMenuTrigger className="text-xl md:text-2xl flex flex-row items-center ml-3 text-custom-blue">
+                                    {activeOrg ? activeOrg.name : "Select organization"}
+                                    <ChevronsDown className="ml-2" />
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent>
                                     <div className="flex flex-col gap-y-2">
                                         {organizations.map((organization) => (
                                             <DropdownMenuItem
-                                                className="w-[200px] truncate"
+                                                className="w-[200px] truncate text-custom-blue hover:bg-accent hover:cursor-pointer"
                                                 key={organization.id}
+                                                onClick={() => {
+                                                    setSelectedOrganization(organization.id)
+                                                }}
                                             >
-                                                <Button
-                                                    onClick={() => {
-                                                        setSelectedOrganization(organization.id)
-                                                    }}
-                                                    variant="selectOrg"
-                                                    className="p-0 w-full flex justify-start">
-                                                    <div className="ml-2 text-left w-[180px] text-sm md:text-base">
-                                                        <p className="text-sm truncate">
-                                                            {organization.name}
-                                                        </p>
-                                                        <p className="truncate text-[10px] md:text-[12px] text-zinc-400">{organization.subscriptionPlan} - {organization.users.length} members </p>
-                                                    </div>
-                                                </Button>
+                                                <div className="flex flex-col ml-2">
+                                                    <p className="text-sm truncate">
+                                                        {organization.name}
+                                                    </p>
+                                                    <p className="truncate text-[10px] md:text-[12px] text-zinc-400">{organization.subscriptionPlan} - {organization.users.length} members </p>
+                                                </div>
                                             </DropdownMenuItem>
                                         ))}
                                     </div>
                                 </DropdownMenuContent>
                             </DropdownMenu>
                         </div>
-                        <DialogDescription className="gap-4 text-zinc-900 font-medium flex flex-col md:flex-row max-h-[700px] pt-4 text-sm md:text-base ">
-                            {paidPlans.map((subscriptionPlan) => (
-                                <Card
-                                    key={subscriptionPlan.label}
-                                    className={`p-5 md:flex flex-col flex-1 ${subscriptionPlan.recommended && 'border-2 border-custom-blue'}`}>
-                                    <div className="h-[100px]">
-                                        <div className="gap-x-4 font-semibold text-lg md:text-xl mb-2 flex">
-                                            {subscriptionPlan.recommended ?
-                                                <>
-                                                    {subscriptionPlan.label}
-                                                    <Badge variant="outline" className="uppercase text-xs md:text-sm py-1">
-                                                        Popular
-                                                    </Badge>
-                                                </>
-                                                : subscriptionPlan.label}
-                                        </div>
-                                        <div className="text-xs md:text-sm mb-auto">
-                                            {subscriptionPlan.description}
-                                        </div>
-                                    </div>
-                                    <div className="flex">
-                                        <p className="font-bold text-3xl">${subscriptionPlan.price}/m</p>
-                                    </div>
-                                    <p className="text-sm md:text-base">por miembro</p>
-                                    <div className="flex flex-col gap-y-2 mt-8 flex-1 mb-4 text-sm md:text-base">
-                                        <p>{subscriptionPlan.characteristicsDescription}</p>
-                                        {Object.entries(subscriptionPlan.features).map(([feature, value]) => (
-                                            <div key={feature} className="flex items-center gap-x-2">
-                                                <Check className="w-4 h-4 text-blue-500 flex-shrink-0" />
-                                                <span className="text-black-5">{feature}:</span>
-                                                <span className="text-black-5 font-bold">{value}</span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                    <SubscriptionButton
-                                        plan={subscriptionPlan}
-                                        selectedOrganization={selectedOrganization}
-                                    />
-                                </Card>
-                            ))}
-                        </DialogDescription>
                     </DialogHeader>
+                    <div className="gap-4 text-zinc-900 font-medium flex flex-col md:flex-row max-h-[700px] pt-4 text-sm md:text-base ">
+                        {paidPlans.map((subscriptionPlan) => (
+                            <Card
+                                key={subscriptionPlan.label}
+                                className={`p-5 md:flex flex-col flex-1 ${subscriptionPlan.recommended && 'border-2 border-custom-blue'}`}
+                            >
+                                <div className="h-[100px]">
+                                    <div className="gap-x-4 font-semibold text-lg md:text-xl mb-2 flex">
+                                        {subscriptionPlan.recommended ?
+                                            <>
+                                                {subscriptionPlan.label}
+                                                <Badge variant="outline" className="uppercase text-xs md:text-sm py-1">
+                                                    Popular
+                                                </Badge>
+                                            </>
+                                            : subscriptionPlan.label}
+                                    </div>
+                                    <div className="text-xs md:text-sm mb-auto">
+                                        {subscriptionPlan.description}
+                                    </div>
+                                </div>
+                                <div className="flex flex-col">
+                                    <p className="font-bold text-3xl">${subscriptionPlan.price}/m</p>
+                                    <p className="text-sm md:text-base">por miembro</p>
+                                </div>
+                                <div className="flex flex-col gap-y-2 mt-8 flex-1 mb-4 text-sm md:text-base">
+                                    <p>{subscriptionPlan.characteristicsDescription}</p>
+                                    {Object.entries(subscriptionPlan.features).map(([feature, value]) => (
+                                        <div key={feature} className="flex items-center gap-x-2">
+                                            <Check className="w-4 h-4 text-blue-500 flex-shrink-0" />
+                                            <span className="text-black-5">{feature}:</span>
+                                            <span className="text-black-5 font-bold">{value}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                                <SubscriptionButton
+                                    plan={subscriptionPlan}
+                                    selectedOrganization={selectedOrganization}
+                                />
+                            </Card>
+                        ))}
+                    </div>
                 </DialogContent>
             </Dialog>
         </div>

@@ -27,12 +27,16 @@ import { getMaxOrganizations } from "@/lib/planLimits";
 interface CreateOrganizationProps {
     activeOrganization: string | null;
     setActiveOrganization: (id: string) => void;
+    label?: string;
+    showCloseButton?: boolean;
 };
 
 
 export const CreateOrganization = ({
     activeOrganization,
-    setActiveOrganization
+    setActiveOrganization,
+    label = "Create Organization",
+    showCloseButton = true,
 }: CreateOrganizationProps) => {
     const user = useCurrentUser();
     const [error, setError] = useState<string | undefined>();
@@ -81,9 +85,9 @@ export const CreateOrganization = ({
     };
 
     return (
-        <DialogContent className="max-w-[480px] w-full">
+        <DialogContent className="max-w-[480px] w-full" showCloseButton={showCloseButton}>
             <DialogHeader>
-                <DialogTitle>Create Organization</DialogTitle>
+                <DialogTitle>{label}</DialogTitle>
             </DialogHeader>
             <Form {...form}>
                 <form
@@ -108,26 +112,26 @@ export const CreateOrganization = ({
                             )}
                         />
                     </div>
-                    <FormError message={error} />
-                    <FormSuccess message={success} />
-                    {!form.formState.isValid ? ( 
-                        <Button 
+                    {!form.formState.isValid ? (
+                        <Button
                             disabled={isPending}
                             type="submit"
                             variant="auth"
-                        > 
+                        >
                             Create organization
-                        </Button> ) : ( 
-                        <DialogClose asChild> 
+                        </Button>) : (
+                        <DialogClose asChild>
                             <Button
                                 disabled={isPending}
                                 type="submit"
                                 variant="auth"
-                            > 
+                            >
                                 Create organization
-                            </Button> 
-                        </DialogClose> )}
-                    </form>
+                            </Button>
+                        </DialogClose>)}
+                </form>
+                <FormError message={error} />
+                <FormSuccess message={success} />
             </Form>
         </DialogContent>
     )
