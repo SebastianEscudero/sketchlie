@@ -27,9 +27,14 @@ const DashboardPage = () => {
 
 
   useEffect(() => {
-    if (!activeOrganization) return;
-    localStorage.setItem("activeOrganization", activeOrganization);
-  }, [activeOrganization]);
+    if (activeOrganization) {
+      localStorage.setItem("activeOrganization", activeOrganization);
+    } else {
+      if (user?.organizations.length) {
+        setActiveOrganization(user.organizations[0].id);
+      }
+    }
+  }, [activeOrganization, user]);
 
   useEffect(() => {
     if (searchParams.get("openProModal")) {
