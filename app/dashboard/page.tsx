@@ -30,7 +30,7 @@ const DashboardPage = () => {
     if (activeOrganization) {
       localStorage.setItem("activeOrganization", activeOrganization);
     } else {
-      if (user?.organizations.length) {
+      if (user?.organizations && user?.organizations.length > 0) {
         setActiveOrganization(user.organizations[0].id);
       }
     }
