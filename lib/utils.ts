@@ -534,18 +534,14 @@ export function getShapeType(pencilDraft: number[][], circleTolerance: number, r
   const {isRectangle, RectangleCheck} = checkIfPathIsRectangle(pencilDraft, rectangleTolerance);
   const {isLine, lineCheck} = checkIfPathIsLine(pencilDraft, lineTolerance);
   const {isTriangle, triangleCheck} = checkIfPathIsTriangle(pencilDraft);
-
-  console.log(triangleCheck)
-  console.log(RectangleCheck)
-  console.log(ellipseCheck)
-
+  
   if (isEllipse) {
     return LayerType.Ellipse;
   } else if (isRectangle) {
     return LayerType.Rectangle;
   } else if (isLine) {
     return LayerType.Line;
-  } else if (isTriangle) {
+  } else if (isTriangle && lineCheck < lineTolerance) {
     return LayerType.Triangle;
   } else {
     return LayerType.Path;

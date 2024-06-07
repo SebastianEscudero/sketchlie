@@ -406,8 +406,14 @@ export const Canvas = () => {
 
         setShowingSelectionBox(true);
         setMyPresence(newPresence);
-        setCanvasState({ mode: CanvasMode.None });
-    }, [liveLayers, liveLayerIds, myPresence, socket, org, proModal, User.userId, setLiveLayers, setLiveLayerIds, board, addLayer]);
+
+        if (layerWithAssistDraw) {
+            setLayerWithAssistDraw(false);
+            setCanvasState({ mode: CanvasMode.Pencil });
+        } else {
+            setCanvasState({ mode: CanvasMode.None });
+
+        }    }, [liveLayers, liveLayerIds, myPresence, socket, org, proModal, User.userId, setLiveLayers, setLiveLayerIds, board, addLayer, layerWithAssistDraw]);
 
     const insertImage = useCallback((
         layerType: LayerType.Image,
