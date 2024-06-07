@@ -27,8 +27,11 @@ const DashboardPage = () => {
 
 
   useEffect(() => {
-    if (!activeOrganization) return;
-    localStorage.setItem("activeOrganization", activeOrganization);
+    if (activeOrganization) {
+      localStorage.setItem("activeOrganization", activeOrganization);
+    } else {
+      localStorage.setItem("activeOrganization", "")
+    }
   }, [activeOrganization]);
 
   useEffect(() => {
