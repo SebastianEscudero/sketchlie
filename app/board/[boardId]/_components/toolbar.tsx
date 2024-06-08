@@ -437,11 +437,11 @@ export const Toolbar = ({
       }
       {isPenEraserSwitcherOpen && (canvasState.mode === CanvasMode.Pencil || canvasState.mode === CanvasMode.Eraser || canvasState.mode === CanvasMode.Laser || canvasState.mode === CanvasMode.Highlighter) &&
         <div className="h-600:w-[44px] h-600:xs:w-[52px] absolute h-600:left-[115%] left-20 h-600:bottom-auto h-600:top-20 bottom-16 p-2 bg-white rounded-lg shadow-sm h-600:space-y-1 flex flex-row h-600:space-x-0 space-x-1 h-600:flex-col items-center cursor-default">
-          <Hint label="Magic Drawing" side="right" sideOffset={14}>
+          {/* <Hint label="Magic Drawing" side="right" sideOffset={14}>
             <Button className="h-8 w-8 xs:h-10 xs:w-10 p-2" variant={magicPathAssist ? "magicAssistActive" : "magicAssist"} onClick={() => setMagicPathAssist(!magicPathAssist)}>
               <WandSparkles className="w-5 h-5"/>
             </Button>
-          </Hint>
+          </Hint> */}
           <ToolButton
             label="Pencil"
             icon={Pencil}
