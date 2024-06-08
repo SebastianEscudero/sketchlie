@@ -607,8 +607,7 @@ export const Canvas = () => {
         if (
             (canvasState.mode !== CanvasMode.Pencil && canvasState.mode !== CanvasMode.Laser && canvasState.mode !== CanvasMode.Highlighter) ||
             e.buttons !== 1 ||
-            pencilDraft == null ||
-            activeTouches > 1
+            pencilDraft == null
         ) {
             return;
         }
@@ -719,33 +718,39 @@ export const Canvas = () => {
 
                 let panX = minX;
                 let panY = minY;
-              
+                let startX = minX
+                let startY = minY;
+
                 if (Math.abs(mousePositionRef.current.x - minX) < Math.abs(mousePositionRef.current.x - maxX)) {
                   panX = maxX
+                } else {
+                    startX = maxX
                 }
               
                 if (Math.abs(mousePositionRef.current.y - minY) < Math.abs(mousePositionRef.current.y - maxY)) {
                   panY = maxY
+                } else {
+                    startY = maxY
                 }
               
                 setPencilDraft([]);
               
                 if (layerType === LayerType.Line) {
 
-                  const width =  panX - mousePositionRef.current.x
-                  const height = panY - mousePositionRef.current.y
+                  const width =  panX - startX
+                  const height = panY - startY
 
                   setCurrentPreviewLayer({
                     type: LayerType.Line,
-                    x: mousePositionRef.current.x,
-                    y: mousePositionRef.current.y,
+                    x: startX,
+                    y: startY,
                     center: { x: (minX + maxX) / 2, y: (minY + maxY) / 2 },
                     height,
                     width,
                     fill: { r: 0, g: 0, b: 0, a: 0 },
                   });
 
-                  setStartPanPoint({ x: mousePositionRef.current.x, y: mousePositionRef.current.y });
+                  setStartPanPoint({ x: startX, y: startY });
                 } else {
 
                   const width = Math.abs(maxX - minX);
@@ -1490,9 +1495,8 @@ export const Canvas = () => {
 
 
     const onTouchDown = useCallback((e: React.TouchEvent) => {
-        mousePositionRef.current = pointerEventToCanvasPoint(e, camera, zoom);
         setActiveTouches(e.touches.length);
-    }, [mousePositionRef, camera, zoom]);
+    }, []);
 
     const onTouchUp = useCallback((e: React.TouchEvent) => {
         setActiveTouches(e.changedTouches.length);
