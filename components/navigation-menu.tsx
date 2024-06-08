@@ -15,8 +15,8 @@ import { Button } from "./ui/button"
 
 const porEquipo: { title: string; href: string }[] = [
     {
-        title: "Gestión de producto 🚧",
-        href: "/gestion-producto",
+        title: "Diseño de Producto",
+        href: "/diseno-de-producto",
     },
     {
         title: "Equipos de Ingeniería 🚧",

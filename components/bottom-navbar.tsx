@@ -10,14 +10,13 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion"
 import { LogoSlider } from "./logo-slider";
-import { useCurrentUser } from "@/hooks/use-current-user";
 import { usePathname } from "next/navigation";
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
 
 const porEquipo: { title: string; href: string }[] = [
     {
-        title: "Gestión de producto 🚧",
-        href: "/gestion-producto",
+        title: "Diseño de Producto",
+        href: "/diseno-de-producto",
     },
     {
         title: "Equipos de Ingeniería 🚧",

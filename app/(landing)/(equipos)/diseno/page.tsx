@@ -125,6 +125,7 @@ const LandingPage = () => {
             <BlogSection
                 title="Incluye tus equipos desde cualquier lugar"
                 text="Involucra a tus equipos de diseño, desarrollo y marketing en el proceso de diseño de UX/UI con Sketchlie. Nuestra plataforma basada en la nube te permite colaborar en tiempo real, compartir comentarios y realizar ajustes en tus diseños desde cualquier lugar del mundo. Con una interfaz intuitiva y fácil de usar, puedes crear experiencias de usuario excepcionales y mejorar la eficiencia de tu equipo en cada proyecto."
+                alt="Línea de Tiempo"
                 img="/placeholders/linea-de-tiempo.png"
                 side="right"
             />
