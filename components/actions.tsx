@@ -1,7 +1,7 @@
 "use client";
 
 import { toast } from "sonner";
-import { ArrowUpFromLine, ChevronRight, Link2, Pencil, Trash2 } from "lucide-react";
+import { ArrowUpFromLine, Check, ChevronRight, Eye, Link2, Pencil, Trash2 } from "lucide-react";
 import { DropdownMenuContentProps } from "@radix-ui/react-dropdown-menu";
 
 import { ConfirmModal } from "@/components/confirm-modal";
@@ -26,8 +26,11 @@ interface ActionsProps {
   sideOffset?: DropdownMenuContentProps["sideOffset"];
   id: string;
   title: string;
+  showGrid?: boolean;
   showExport?: boolean;
   org: any;
+  setIsBackgroundGridVisible: (isVisible: boolean) => void;
+  isBackgroundGridVisible: boolean;
 };
 
 export const Actions = ({
@@ -36,8 +39,11 @@ export const Actions = ({
   sideOffset,
   id,
   title,
+  showGrid = false,
   showExport = false,
   org,
+  setIsBackgroundGridVisible,
+  isBackgroundGridVisible,
 }: ActionsProps) => {
   const { onOpen } = useRenameModal();
   const { mutate, pending } = useApiMutation(api.board.remove);
@@ -73,7 +79,7 @@ export const Actions = ({
         onClick={(e) => e.stopPropagation()}
         side={side}
         sideOffset={sideOffset}
-        className="w-60"
+        className="w-60 ml-10"
       >
         <DropdownMenuItem
           onClick={onCopyLink}
@@ -98,20 +104,47 @@ export const Actions = ({
         >
           <Button
             disabled={usersRole !== "Admin"}
-            variant="ghost"
-            className="p-3 cursor-pointer w-full justify-start font-normal text-red-500 hover:text-red-700"
+            className="p-3 cursor-pointer w-full justify-start font-normal text-red-500 hover:text-red-700 bg-white hover:bg-accent"
           >
             <Trash2 className="h-4 w-4 mr-2" />
             {usersRole === "Admin" ? "Delete" : "Delete (Admin)"}
           </Button>
         </ConfirmModal>
+        {showGrid && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <DropdownMenuItem className="p-3 cursor-pointer flex justify-between">
+                <div className="flex flex-row items-center">
+                  <Eye className="h-4 w-4 mr-2" />
+                  View
+                </div>
+                <ChevronRight className="h-4 w-4 ml-auto" />
+              </DropdownMenuItem>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent side="right" sideOffset={10}>
+              <Button
+                variant="ghost"
+                className="p-3 cursor-pointer text-sm w-full justify-start"
+                onClick={() => {
+                  setIsBackgroundGridVisible(!isBackgroundGridVisible)
+                  localStorage.setItem("isBackgroundGridVisible", JSON.stringify(!isBackgroundGridVisible))
+                }}
+              >
+                {isBackgroundGridVisible && (
+                  <Check className="h-4 w-4 mr-2" />
+                )}
+                Show Grid
+              </Button>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
         {showExport && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <DropdownMenuItem className="p-3 cursor-pointer flex justify-between">
                 <div className="flex flex-row items-center">
                   <ArrowUpFromLine className="h-4 w-4 mr-2" />
-                  Export 
+                  Export
                 </div>
                 <ChevronRight className="h-4 w-4" />
               </DropdownMenuItem>

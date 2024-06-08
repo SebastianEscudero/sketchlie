@@ -13,6 +13,8 @@ import { useCurrentUser } from "@/hooks/use-current-user";
 interface InfoProps {
     board: any;
     org: any;
+    setIsBackgroundGridVisible: (isVisible: boolean) => void;
+    isBackgroundGridVisible: boolean;
 }
 
 const TabSeparator = () => {
@@ -26,7 +28,9 @@ const TabSeparator = () => {
 
 export const Info = ({
     board,
-    org
+    org,
+    setIsBackgroundGridVisible,
+    isBackgroundGridVisible,
 }: InfoProps) => {
 
     const { onOpen } = useRenameModal();
@@ -65,7 +69,17 @@ export const Info = ({
                     </Button>
                 </Hint>
             <TabSeparator />
-            <Actions id={board._id} title={board.title} side="bottom" sideOffset={10} org={org} showExport={true}>
+            <Actions 
+                id={board._id} 
+                title={board.title} 
+                side="bottom" 
+                sideOffset={10} 
+                org={org} 
+                showExport={true}
+                showGrid={true}
+                setIsBackgroundGridVisible={setIsBackgroundGridVisible}
+                isBackgroundGridVisible={isBackgroundGridVisible}
+            >
                 <div className="w-10 flex justify-center items-center">
                     <Hint label="Main menu" side="bottom" sideOffset={10}>
                         <Button size="icon" variant="board">

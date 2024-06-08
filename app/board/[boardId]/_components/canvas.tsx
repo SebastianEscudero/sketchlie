@@ -279,6 +279,10 @@ export const Canvas = () => {
     const updateLayer = useCallback((args: { board: any; layerId: any; layerUpdates: any; }) => updateLayerMutation.current(args), []);
     const deleteLayer = useCallback((args: { board: any; layerId: any; }) => deleteLayerMutation.current(args), []);
     const proModal = useProModal();
+    const [isBackgroundGridVisible, setIsBackgroundGridVisible] = useState(() => { // used for showing/hiding the grid
+        const storedValue = localStorage.getItem('isBackgroundGridVisible');
+        return storedValue !== null ? JSON.parse(storedValue) : true;
+    });
 
     useDisableScrollBounce();
 
@@ -1792,19 +1796,24 @@ export const Canvas = () => {
         <main
             className={`fixed h-full w-full bg-neutral-100 touch-none overscroll-none ${isDraggingOverCanvas ? 'bg-neutral-300 border-2 border-dashed border-custom-blue' : ''}`}
             style={{
-                background: `
-                  linear-gradient(0deg, rgba(0,0,0,0.05) 1px, transparent 1px),
-                  linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px),
-                  #f4f4f4
-                `,
-                backgroundSize: `${65 * zoom}px ${65 * zoom}px`, // Adjust the size based on the zoom level
-                backgroundPosition: `${camera.x}px ${camera.y}px`,
+                background: isBackgroundGridVisible ? `
+                linear-gradient(0deg, rgba(0,0,0,0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px),
+                #f4f4f4
+            ` : '#f4f4f4',
+                backgroundSize: isBackgroundGridVisible ? `${65 * zoom}px ${65 * zoom}px` : undefined, // Adjust the size based on the zoom level
+                backgroundPosition: isBackgroundGridVisible ? `${camera.x}px ${camera.y}px` : undefined,
                 WebkitOverflowScrolling: 'touch',
                 WebkitUserSelect: 'none',
             }}
         >
             <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-            <Info board={board} org={org} />
+            <Info 
+                board={board} 
+                org={org} 
+                setIsBackgroundGridVisible={setIsBackgroundGridVisible}
+                isBackgroundGridVisible={isBackgroundGridVisible}
+            />
             <Participants
                 org={org}
                 otherUsers={otherUsers}
