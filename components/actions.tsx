@@ -79,7 +79,7 @@ export const Actions = ({
         onClick={(e) => e.stopPropagation()}
         side={side}
         sideOffset={sideOffset}
-        className="w-60 ml-10"
+        className="w-60"
       >
         <DropdownMenuItem
           onClick={onCopyLink}
@@ -112,7 +112,7 @@ export const Actions = ({
         </ConfirmModal>
         {showGrid && (
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
+            <DropdownMenuTrigger asChild className="h-[44px]">
               <DropdownMenuItem className="p-3 cursor-pointer flex justify-between">
                 <div className="flex flex-row items-center">
                   <Eye className="h-4 w-4 mr-2" />
@@ -140,7 +140,7 @@ export const Actions = ({
         )}
         {showExport && (
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
+            <DropdownMenuTrigger asChild className="h-[44px]">
               <DropdownMenuItem className="p-3 cursor-pointer flex justify-between">
                 <div className="flex flex-row items-center">
                   <ArrowUpFromLine className="h-4 w-4 mr-2" />
