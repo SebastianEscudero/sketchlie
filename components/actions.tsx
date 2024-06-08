@@ -29,8 +29,8 @@ interface ActionsProps {
   showGrid?: boolean;
   showExport?: boolean;
   org: any;
-  setIsBackgroundGridVisible: (isVisible: boolean) => void;
-  isBackgroundGridVisible: boolean;
+  setIsBackgroundGridVisible?: (isVisible: boolean) => void;
+  isBackgroundGridVisible?: boolean;
 };
 
 export const Actions = ({
@@ -126,7 +126,7 @@ export const Actions = ({
                 variant="ghost"
                 className="p-3 cursor-pointer text-sm w-full justify-start"
                 onClick={() => {
-                  setIsBackgroundGridVisible(!isBackgroundGridVisible)
+                  setIsBackgroundGridVisible && setIsBackgroundGridVisible(!isBackgroundGridVisible)
                   localStorage.setItem("isBackgroundGridVisible", JSON.stringify(!isBackgroundGridVisible))
                 }}
               >
