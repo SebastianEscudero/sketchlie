@@ -38,7 +38,7 @@ export const SelectionBox = memo(({
   const isShowingHandles = useMemo(() => {
     if (soleLayerId) {
       const soleLayer = liveLayers[soleLayerId];
-      return soleLayer && soleLayer.type !== LayerType.Path;
+      return soleLayer;
     }
     return false;
   }, [soleLayerId, liveLayers]);

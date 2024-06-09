@@ -146,6 +146,67 @@ export function resizeBounds(
   return result;
 };
 
+export function resizePathLayer(
+  bounds: XYWH,
+  corner: Side,
+  point: Point,
+  layer: PathLayer
+): PathLayer {
+
+  const result = {
+    ...layer,
+    x: bounds.x,
+    y: bounds.y,
+    width: bounds.width,
+    height: bounds.height,
+  };
+
+  let newWidth = (corner & Side.Left) === Side.Left ? bounds.x + bounds.width - point.x : point.x - bounds.x;
+  let newHeight = (corner & Side.Top) === Side.Top ? bounds.y + bounds.height - point.y : point.y - bounds.y;
+
+  newWidth = newWidth === 0 || isNaN(newWidth) ? 1 : newWidth;
+  newHeight = newHeight === 0 || isNaN(newHeight) ? 1 : newHeight;
+
+  if ((corner & Side.Left) === Side.Left) {
+    result.x = newWidth < 0 ? point.x : bounds.x + bounds.width - newWidth;
+
+    if (point.x > bounds.x + bounds.width) {
+      result.x = bounds.x + bounds.width;
+    }
+
+    result.width = Math.abs(newWidth);
+  }
+  
+  if ((corner & Side.Right) === Side.Right) {
+    result.x = newWidth < 0 ? point.x : bounds.x;
+    result.width = Math.abs(newWidth);
+  }
+  
+  if ((corner & Side.Top) === Side.Top) {
+    result.y = newHeight < 0 ? point.y : bounds.y + bounds.height - newHeight;
+
+    if (point.y > bounds.y + bounds.height) {
+      result.y = bounds.y + bounds.height;
+    }
+
+    result.height = Math.abs(newHeight);
+  }
+  
+  if ((corner & Side.Bottom) === Side.Bottom) {
+    result.y = newHeight < 0 ? point.y : bounds.y;
+    result.height = Math.abs(newHeight);
+  }
+
+  if (layer) {
+    const xRatio = result.width / layer.width;
+    const yRatio = result.height / layer.height;
+
+    result.points = layer.points.map(([x, y]) => [x * xRatio, y * yRatio]);
+  }
+
+  return result;
+};
+
 export function resizeArrowBounds(
   bounds: any, 
   point: Point,

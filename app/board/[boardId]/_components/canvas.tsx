@@ -13,6 +13,7 @@ import {
     resizeBounds,
     findIntersectingLayersWithPoint,
     getShapeType,
+    resizePathLayer,
 } from "@/lib/utils";
 
 import {
@@ -836,6 +837,13 @@ export const Canvas = () => {
                     layerRef,
                     layer,
                 );
+            } else if (layer.type === LayerType.Path) {
+                bounds = resizePathLayer(
+                    canvasState.initialBounds,
+                    canvasState.corner,
+                    point,
+                    layer,
+                )
             } else {
                 bounds = resizeBounds(
                     layer?.type,
@@ -914,6 +922,13 @@ export const Canvas = () => {
         const isMouseWheel = Math.abs(e.deltaY) % 100 === 0 && e.deltaX === 0;
 
         if (isMouseWheel || e.ctrlKey) {
+
+            let ZoomMultiplier = 1.15
+
+            if (e.ctrlKey && isMouseWheel === false) { // mac zoom in is stronger so multiplier will be smaller 
+                ZoomMultiplier = 1.06
+            }
+            
             // Zooming
             let newZoom = zoom;
             if (e.deltaY < 0) {
