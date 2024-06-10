@@ -154,7 +154,7 @@ export const Note = memo(({
         fill={fillColor}
         stroke={selectionColor || colorToCss(outlineFill || fill)}
         strokeWidth="2"
-        className="drop-shadow-md"
+        className="drop-shadow-sm"
       />
       <foreignObject
         x={-width / 2}
