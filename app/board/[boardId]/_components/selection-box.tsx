@@ -35,14 +35,6 @@ export const SelectionBox = memo(({
 
   const soleLayerId = selectedLayers.length === 1 ? selectedLayers[0] : null;
 
-  const isShowingHandles = useMemo(() => {
-    if (soleLayerId) {
-      const soleLayer = liveLayers[soleLayerId];
-      return soleLayer;
-    }
-    return false;
-  }, [soleLayerId, liveLayers]);
-
   const isTextLayer = useMemo(() => {
     if (soleLayerId) {
       const soleLayer = liveLayers[soleLayerId];
@@ -135,7 +127,6 @@ export const SelectionBox = memo(({
           })
         }}
       />
-      {isShowingHandles && (
         <>
           <rect
             className="fill-white stroke-blue-500 p-4"
@@ -268,7 +259,6 @@ export const SelectionBox = memo(({
             }}
           />
         </>
-      )}
     </>
   );
 });

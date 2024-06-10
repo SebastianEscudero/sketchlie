@@ -13,7 +13,8 @@ import {
     resizeBounds,
     findIntersectingLayersWithPoint,
     getShapeType,
-    resizePathLayer,
+    resizeBox,
+    calculateBoundingBox,
 } from "@/lib/utils";
 
 import {
@@ -824,73 +825,48 @@ export const Canvas = () => {
     }, [pencilDraft, liveLayers, setLiveLayers, setLiveLayerIds, myPresence, org, proModal, liveLayerIds, socket, board, addLayer, zoom]);
 
     const resizeSelectedLayer = useCallback((point: Point) => {
-        const layer = liveLayers[selectedLayersRef.current[0]];
-        let bounds
+        const initialBoundingBox = calculateBoundingBox(selectedLayersRef.current.map(id => liveLayers[id]));
+        let bounds: any;
+        let hasImageOrText = selectedLayersRef.current.some(id => liveLayers[id].type === LayerType.Image || liveLayers[id].type === LayerType.Text);
+        let mantainAspectRatio = hasImageOrText
+        let singleLayer = selectedLayersRef.current.length === 1
 
-        if (canvasState.mode === CanvasMode.Resizing) {
-            if (layer.type === LayerType.Text) {
-                bounds = resizeBounds(
-                    layer?.type,
+        selectedLayersRef.current.forEach(id => {
+            const newLayer = { ...liveLayers[id] };
+    
+            if (canvasState.mode === CanvasMode.Resizing) {
+                const newBoundingBox = resizeBounds(
                     canvasState.initialBounds,
                     canvasState.corner,
                     point,
-                    layerRef,
-                    layer,
+                    mantainAspectRatio
                 );
-            } else if (layer.type === LayerType.Path) {
-                bounds = resizePathLayer(
+
+                if (newLayer.type === LayerType.Text) {
+                    bounds = resizeBox(initialBoundingBox, newBoundingBox, newLayer, canvasState.corner, layerRef, singleLayer);
+                } else {
+                    bounds = resizeBox(initialBoundingBox, newBoundingBox, newLayer, canvasState.corner);
+                }
+
+            } else if (canvasState.mode === CanvasMode.ArrowResizeHandler) {
+                bounds = resizeArrowBounds(
                     canvasState.initialBounds,
-                    canvasState.corner,
                     point,
-                    layer,
-                )
-            } else {
-                bounds = resizeBounds(
-                    layer?.type,
-                    canvasState.initialBounds,
-                    canvasState.corner,
-                    point,
+                    canvasState.handle,
                 );
             }
-        } else if (canvasState.mode === CanvasMode.ArrowResizeHandler) {
-            bounds = resizeArrowBounds(
-                canvasState.initialBounds,
-                point,
-                canvasState.handle,
-            );
-        } else {
-            return;
-        }
-
-        if (layer) {
-            const newLayer = { ...layer }; // Create a new object instead of modifying the existing one
-            if (newLayer.type === LayerType.Note
-                || newLayer.type === LayerType.Rectangle
-                || newLayer.type === LayerType.Ellipse
-                || newLayer.type === LayerType.Rhombus
-                || newLayer.type === LayerType.Triangle
-                || newLayer.type === LayerType.Star
-                || newLayer.type === LayerType.Hexagon
-                || newLayer.type === LayerType.BigArrowLeft
-                || newLayer.type === LayerType.BigArrowRight
-                || newLayer.type === LayerType.BigArrowUp
-                || newLayer.type === LayerType.BigArrowDown
-                || newLayer.type === LayerType.CommentBubble
-            ) {
-                bounds.textFontSize = newLayer.textFontSize;
-            } else if (newLayer.type === LayerType.Arrow || newLayer.type === LayerType.Line) {
-                newLayer.center = bounds.center;
-            }
+    
             Object.assign(newLayer, bounds);
-            liveLayers[selectedLayersRef.current[0]] = newLayer;
-            setLiveLayers({ ...liveLayers });
+            liveLayers[id] = newLayer;
 
             if (socket && expired !== true) {
-                socket.emit('layer-update', selectedLayersRef.current[0], newLayer);
+                socket.emit('layer-update', [id], [newLayer]);
             }
-        }
 
-    }, [canvasState, liveLayers, selectedLayersRef, socket, layerRef]);
+        })
+        setLiveLayers({ ...liveLayers });
+        
+    }, [canvasState, liveLayers, selectedLayersRef, layerRef]);
 
     const onResizeHandlePointerDown = useCallback((
         corner: Side,
@@ -922,13 +898,6 @@ export const Canvas = () => {
         const isMouseWheel = Math.abs(e.deltaY) % 100 === 0 && e.deltaX === 0;
 
         if (isMouseWheel || e.ctrlKey) {
-
-            let ZoomMultiplier = 1.15
-
-            if (e.ctrlKey && isMouseWheel === false) { // mac zoom in is stronger so multiplier will be smaller 
-                ZoomMultiplier = 1.06
-            }
-            
             // Zooming
             let newZoom = zoom;
             if (e.deltaY < 0) {

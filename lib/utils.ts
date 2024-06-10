@@ -65,12 +65,10 @@ export function colorToCss(color: Color) {
 }
 
 export function resizeBounds(
-  type: any,
-  bounds: XYWH, 
-  corner: Side, 
+  bounds: XYWH,
+  corner: Side,
   point: Point,
-  textareaRef?: React.RefObject<HTMLTextAreaElement>,
-  layer?: Layer
+  maintainAspectRatio = false
 ): XYWH {
 
   const result = {
@@ -78,70 +76,156 @@ export function resizeBounds(
     y: bounds.y,
     width: bounds.width,
     height: bounds.height,
-    textFontSize: 0
   };
 
-  if (layer?.type === LayerType.Text) {
-    result.textFontSize = layer.textFontSize;
-  }
-
-  const isCorner = corner === (Side.Top + Side.Left) || corner === (Side.Top + Side.Right) || corner === (Side.Bottom + Side.Left) || corner === (Side.Bottom + Side.Right);
   const aspectRatio = bounds.width / bounds.height;
 
-  if ((type === LayerType.Text || type === LayerType.Image) && isCorner) {
-    let newWidth = (corner & Side.Left) === Side.Left ? Math.abs(bounds.x + bounds.width - point.x) : Math.abs(point.x - bounds.x);
-    let newHeight = newWidth / aspectRatio;
-
-    if ((corner & Side.Left) === Side.Left) {
-      result.x = bounds.x + (bounds.width - newWidth);
-      result.width = newWidth;
+  if (corner === Side.Right) {
+    result.x = Math.min(point.x, bounds.x);
+    result.width = Math.abs(point.x - bounds.x);
+    if (maintainAspectRatio) {
+      result.height = result.width / aspectRatio;
     }
+  }
 
-    if ((corner & Side.Right) === Side.Right) {
-      result.width = newWidth;
-    }
-
-    if ((corner & Side.Top) === Side.Top) {
-      result.y = bounds.y + (bounds.height - newHeight);
-      result.height = newHeight;
-    }
-
-    if ((corner & Side.Bottom) === Side.Bottom) {
-      result.height = newHeight;
-    }
-  } else {
-    if ((corner & Side.Left) === Side.Left) {
-      result.x = Math.min(point.x, bounds.x + bounds.width);
-      result.width = Math.abs(bounds.x + bounds.width - point.x);
-    }
-
-    if ((corner & Side.Right) === Side.Right) {
-      result.x = Math.min(point.x, bounds.x);
-      result.width = Math.abs(point.x - bounds.x);
-    }
-
-    if ((corner & Side.Top) === Side.Top) {
+  if (corner === Side.Top) {
       result.y = Math.min(point.y, bounds.y + bounds.height);
       result.height = Math.abs(bounds.y + bounds.height - point.y);
+      if (maintainAspectRatio) {
+        result.width = result.height * aspectRatio;
+      }
     }
 
-    if ((corner & Side.Bottom) === Side.Bottom) {
-      result.y = Math.min(point.y, bounds.y);
-      result.height = Math.abs(point.y - bounds.y);
+  if (corner === Side.Left) {
+    result.x = Math.min(point.x, bounds.x + bounds.width);
+    result.width = Math.abs(bounds.x + bounds.width - point.x);
+    if (maintainAspectRatio) {
+      result.height = result.width / aspectRatio;
     }
   }
 
-  if (layer && Math.abs((layer?.height / layer?.width) - (result.height / result.width)) < 0.0001 && layer.height !== result.height && layer.width !== result.width
-  && textareaRef && textareaRef.current && layer.type === LayerType.Text) {
-    const newFontSize = result.width / layer.width * layer.textFontSize
-    result.textFontSize = newFontSize
-    return result
+  if (corner === Side.Bottom) {
+    result.y = Math.min(point.y, bounds.y);
+    result.height = Math.abs(point.y - bounds.y);
+    if (maintainAspectRatio) {
+      result.width = result.height * aspectRatio;
+    }
   }
 
-  if (!isCorner && textareaRef && textareaRef.current) {
-    result.height = textareaRef.current.scrollHeight;
-    return result
-  } 
+  if (corner === Side.Top + Side.Left) {
+    const oldWidth = bounds.x + bounds.width - point.x;
+    const oldHeight = bounds.y + bounds.height - point.y;
+    if (maintainAspectRatio) {
+      const newWidth = oldHeight * aspectRatio;
+      const newHeight = oldWidth / aspectRatio;
+      if (newWidth > oldWidth) {
+        result.width = newWidth;
+        result.height = oldHeight;
+      } else {
+        result.width = oldWidth;
+        result.height = newHeight;
+      }
+    } else {
+      result.width = oldWidth;
+      result.height = oldHeight;
+    }
+    result.x = bounds.x + bounds.width - result.width;
+    result.y = bounds.y + bounds.height - result.height;
+
+    if (result.width < 0) {
+      result.width = -result.width;
+      result.x -= result.width;
+    }
+  }
+
+  if (corner === Side.Top + Side.Right) {
+    const oldWidth = point.x - bounds.x;
+    const oldHeight = bounds.y + bounds.height - point.y;
+    if (maintainAspectRatio) {
+      const newWidth = oldHeight * aspectRatio;
+      const newHeight = oldWidth / aspectRatio;
+      if (newWidth > oldWidth) {
+        result.width = newWidth;
+        result.height = oldHeight;
+      } else {
+        result.width = oldWidth;
+        result.height = newHeight;
+      }
+    } else {
+      result.width = oldWidth;
+      result.height = oldHeight;
+    }
+    result.y = bounds.y + bounds.height - result.height;
+  
+    if (result.width < 0) {
+      result.width = -result.width;
+      result.x -= result.width;
+    }
+
+    if (result.height < 0) {
+      result.height = -result.height;
+      result.y -= result.height;
+    }
+  }
+
+  if (corner === Side.Bottom + Side.Left) {
+    const oldWidth = bounds.x + bounds.width - point.x;
+    const oldHeight = point.y - bounds.y;
+    if (maintainAspectRatio) {
+      const newWidth = oldHeight * aspectRatio;
+      const newHeight = oldWidth / aspectRatio;
+      if (newWidth > oldWidth) {
+        result.width = newWidth;
+        result.height = oldHeight;
+      } else {
+        result.width = oldWidth;
+        result.height = newHeight;
+      }
+    } else {
+      result.width = oldWidth;
+      result.height = oldHeight;
+    }
+    result.x = bounds.x + bounds.width - result.width;
+  
+    if (result.width < 0) {
+      result.width = -result.width;
+      result.x -= result.width;
+    }
+
+    if (result.height < 0) {
+      result.height = -result.height;
+      result.y -= result.height;
+    }
+  }
+  
+  if (corner === Side.Bottom + Side.Right) {
+    const oldWidth = point.x - bounds.x;
+    const oldHeight = point.y - bounds.y;
+    if (maintainAspectRatio) {
+      const newWidth = oldHeight * aspectRatio;
+      const newHeight = oldWidth / aspectRatio;
+      if (newWidth > oldWidth) {
+        result.width = newWidth;
+        result.height = oldHeight;
+      } else {
+        result.width = oldWidth;
+        result.height = newHeight;
+      }
+    } else {
+      result.width = oldWidth;
+      result.height = oldHeight;
+    }
+  
+    if (result.width < 0) {
+      result.width = -result.width;
+      result.x -= result.width;
+    }
+  
+    if (result.height < 0) {
+      result.height = -result.height;
+      result.y -= result.height;
+    }
+  }
 
   return result;
 };
@@ -607,4 +691,166 @@ export function getShapeType(pencilDraft: number[][], circleTolerance: number, r
   } else {
     return LayerType.Path;
   }
+}
+
+export function calculateBoundingBox(layers: Layer[]): any | null {
+
+  const first = layers[0];
+
+  if (!first) {
+    return null;
+  }
+  
+  if (layers.length === 1) {
+    let minX = first.x;
+    let maxX = first.x + first.width;
+    let minY = first.y;
+    let maxY = first.y + first.height;
+
+    for (let i = 1; i < layers.length; i++) {
+      const layer = layers[i];
+
+      if (layer.type === LayerType.Arrow && layer.center || layer.type === LayerType.Line && layer.center) {
+        const { x, y, width, height, center } = layer;
+        const length = Math.sqrt(width * width + height * height);
+        const angle = Math.atan2(center.y - y, center.x - x);
+        const end = {
+          x: x + length * Math.cos(angle),
+          y: y + length * Math.sin(angle),
+        };
+
+        minX = Math.min(minX, x, end.x);
+        maxX = Math.max(maxX, x, end.x);
+        minY = Math.min(minY, y, end.y);
+        maxY = Math.max(maxY, y, end.y);
+      } else {
+        const { x, y, width, height } = layer;
+
+        minX = Math.min(minX, x);
+        maxX = Math.max(maxX, x + width);
+        minY = Math.min(minY, y);
+        maxY = Math.max(maxY, y + height);
+      }
+    }
+
+    return {
+      x: minX,
+      y: minY,
+      width: maxX - minX,
+      height: maxY - minY,
+    };
+  };
+
+  let minX = Infinity;
+  let maxX = -Infinity;
+  let minY = Infinity;
+  let maxY = -Infinity;
+  
+  for (const layer of layers) {
+    let x1 = layer.x;
+    let x2 = layer.x + layer.width;
+    let y1 = layer.y;
+    let y2 = layer.y + layer.height;
+  
+    if (layer.type === LayerType.Arrow && layer.center || layer.type === LayerType.Line && layer.center) {
+      const end = { x: layer.x + layer.width, y: layer.y + layer.height };
+  
+      x1 = Math.min(x1, layer.x, layer.center.x, end.x);
+      x2 = Math.max(x2, layer.x, layer.center.x, end.x);
+      y1 = Math.min(y1, layer.y, layer.center.y, end.y);
+      y2 = Math.max(y2, layer.y, layer.center.y, end.y);
+    }
+  
+    minX = Math.min(minX, x1);
+    maxX = Math.max(maxX, x2);
+    minY = Math.min(minY, y1);
+    maxY = Math.max(maxY, y2);
+  }
+  
+  return {
+    x: minX,
+    y: minY,
+    width: maxX - minX,
+    height: maxY - minY,
+  };
+}
+
+export function resizeBox(
+  initialBoundingBox: XYWH,
+  newBoundingBox: XYWH,
+  newLayer: Layer,
+  corner: Side,
+  textareaRef?: React.RefObject<HTMLTextAreaElement>,
+  singleLayer?: boolean,
+) {
+  const isCorner = corner === (Side.Top + Side.Left) || corner === (Side.Top + Side.Right) || corner === (Side.Bottom + Side.Left) || corner === (Side.Bottom + Side.Right);
+
+  // Calculate the scale factors based on the initial bounding box
+  const epsilon = 0.000001; // Sometimes it bugs out check it out if it causes
+  const scaleX = newBoundingBox.width !== 0 ? newBoundingBox.width / initialBoundingBox.width : epsilon;
+  const scaleY = newBoundingBox.height !== 0 ? newBoundingBox.height / initialBoundingBox.height : epsilon;
+
+  // Calculate the new width, height, and position based on the scale factors
+  let width = newLayer.width * scaleX
+  let height = newLayer.height * scaleY
+  // Calculate the relative positions of the layer within the bounding box
+  let relativeX = (newLayer.x - initialBoundingBox.x) / initialBoundingBox.width;
+  let relativeY = (newLayer.y - initialBoundingBox.y) / initialBoundingBox.height;
+
+  // Apply the scaling factor to the relative positions
+  let x = (relativeX * newBoundingBox.width) + newBoundingBox.x;
+  let y = (relativeY * newBoundingBox.height) + newBoundingBox.y;
+
+  // If the layer is an arrow, calculate the relative position of the center and apply the scaling factors
+  let center;
+  if ((newLayer.type === LayerType.Arrow || newLayer.type === LayerType.Line) && newLayer.center) {
+    let relativeCenterX = (newLayer.center.x - initialBoundingBox.x) / initialBoundingBox.width;
+    let relativeCenterY = (newLayer.center.y - initialBoundingBox.y) / initialBoundingBox.height;
+
+    let centerX = (relativeCenterX * newBoundingBox.width) + newBoundingBox.x;
+    let centerY = (relativeCenterY * newBoundingBox.height) + newBoundingBox.y;
+
+    center = { x: centerX, y: centerY };
+  }
+
+  let textFontSize;
+  if (
+    newLayer.type !== LayerType.Path &&
+    newLayer.type !== LayerType.Image &&
+    newLayer.type !== LayerType.Line &&
+    newLayer.type !== LayerType.Arrow
+  ) {
+      textFontSize = newLayer.textFontSize;
+  } 
+
+  let points;
+
+  if (newLayer.type === LayerType.Path) {
+    points = newLayer.points.map(([x, y]) => {
+      return [x * scaleX, y * scaleY];
+    });
+  }
+
+  // Apply the scale factors to the layer
+  let bounds = {
+    x: x,
+    y: y,
+    width: width,
+    height: height,
+    center: center,
+    textFontSize: textFontSize,
+    points: points
+  }
+
+  if (newLayer && Math.abs((newLayer?.height / newLayer?.width) - (bounds.height / bounds.width)) < 0.0001 && newLayer.height !== bounds.height && newLayer.width !== bounds.width
+    && textareaRef && textareaRef.current && newLayer.type === LayerType.Text) {
+    const newFontSize = bounds.width / newLayer.width * newLayer.textFontSize
+    bounds.textFontSize = newFontSize
+  }
+
+  if (!isCorner && textareaRef && textareaRef.current && newLayer.type === LayerType.Text && singleLayer) {
+    bounds.height = textareaRef.current.scrollHeight;
+  }
+
+  return bounds
 }
