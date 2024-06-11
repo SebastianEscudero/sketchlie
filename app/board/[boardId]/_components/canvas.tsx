@@ -1256,9 +1256,7 @@ export const Canvas = () => {
                 setCanvasState({ mode: CanvasMode.None });
                 const intersectingLayers = findIntersectingLayersWithPoint(liveLayerIds, liveLayers, point, zoom);
                 const id = intersectingLayers[intersectingLayers.length - 1];
-                console.log(liveLayers[id])
                 if (selectedLayersRef.current.includes(id)) {
-                    console.log('includes')
                     selectedLayersRef.current = [id];
                     return;
                 }
