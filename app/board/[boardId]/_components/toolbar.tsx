@@ -41,7 +41,7 @@ import { Hint } from "@/components/hint";
 interface ToolbarProps {
   isUploading: boolean;
   setIsUploading: Dispatch<SetStateAction<boolean>>;
-  onImageSelect: (src: string) => void;
+  setSelectedImage: (info: any) => void;
   canvasState: CanvasState;
   setCanvasState: (newState: any) => void;
   org: any;
@@ -70,7 +70,7 @@ export const Toolbar = ({
   setIsUploading,
   canvasState,
   setCanvasState,
-  onImageSelect,
+  setSelectedImage,
   org,
   pathStrokeSize,
   setPathColor,
@@ -241,7 +241,7 @@ export const Toolbar = ({
           org={org}
           isUploading={isUploading}
           setIsUploading={setIsUploading}
-          onImageSelect={onImageSelect}
+          setSelectedImage={setSelectedImage}
           icon={Image}
           onClick={() => setCanvasState({
             mode: CanvasMode.Inserting,

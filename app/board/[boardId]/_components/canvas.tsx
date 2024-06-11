@@ -264,7 +264,7 @@ export const Canvas = () => {
     const [isPanning, setIsPanning] = useState(false);
     const [rightClickPanning, setIsRightClickPanning] = useState(false);
     const [startPanPoint, setStartPanPoint] = useState({ x: 0, y: 0 });
-    const [selectedImage, setSelectedImage] = useState<string>("");
+    const [selectedImage, setSelectedImage] = useState<{info: any} | null>(null);
     const [isUploading, setIsUploading] = useState(false);
     const [currentPreviewLayer, setCurrentPreviewLayer] = useState<PreviewLayer | null>(null);
     const [myPresence, setMyPresence] = useState<Presence | null>(null);
@@ -424,7 +424,7 @@ export const Canvas = () => {
     const insertImage = useCallback((
         layerType: LayerType.Image,
         position: Point,
-        selectedImage: string,
+        info: any
     ) => {
 
         if (org && liveLayerIds.length >= getMaxCapas(org)) {
@@ -434,17 +434,22 @@ export const Canvas = () => {
 
         const layerId = nanoid();
 
-        if (selectedImage === "") {
+        if (info.src === null) {
             return;
         }
 
+        const aspectRatio = info.dimensions.width / info.dimensions.height;
+        const width = 200/zoom
+        const height = width / aspectRatio;
+
+
         const layer = {
             type: layerType,
-            x: position.x,
-            y: position.y,
-            height: 100,
-            width: 100,
-            src: selectedImage,
+            x: position.x - width / 2,
+            y: position.y - height / 2,
+            height: height,
+            width: width,
+            src: info.url,
             opacity: 1,
             fill: null,
         };
@@ -461,7 +466,7 @@ export const Canvas = () => {
 
         selectedLayersRef.current = [layerId];
         setCanvasState({ mode: CanvasMode.None });
-    }, [liveLayers, liveLayerIds, myPresence, socket, org, proModal, User.userId, setLiveLayers, setLiveLayerIds, board, addLayer]);
+    }, [liveLayers, liveLayerIds, myPresence, socket, org, proModal, User.userId, setLiveLayers, setLiveLayerIds, board, addLayer, zoom]);
 
     const translateSelectedLayers = useCallback((point: Point) => {
         if (canvasState.mode !== CanvasMode.Translating) {
@@ -1130,7 +1135,7 @@ export const Canvas = () => {
             activeTouches,
             expired
         ]);
-
+    
     const onPointerUp = useCallback((e: React.PointerEvent) => {
         setIsRightClickPanning(false);
         const point = pointerEventToCanvasPoint(e, camera, zoom);
@@ -1188,7 +1193,7 @@ export const Canvas = () => {
             }
             return;
         } else if (canvasState.mode === CanvasMode.Inserting && canvasState.layerType === LayerType.Image) {
-            setSelectedImage("");
+            setSelectedImage(null);
             insertImage(LayerType.Image, point, selectedImage);
         } else if (canvasState.mode === CanvasMode.Inserting && canvasState.layerType !== LayerType.Image) {
 
@@ -1427,7 +1432,6 @@ export const Canvas = () => {
         event.preventDefault();
         setIsDraggingOverCanvas(false);
     };
-
     const onDrop = (event: React.DragEvent) => {
         event.preventDefault();
         setIsDraggingOverCanvas(false);
@@ -1440,19 +1444,19 @@ export const Canvas = () => {
                 toast.error('File type not accepted. Please upload an image file.');
                 continue;  // Skip if not an image
             }
-
+    
             // Check file size
             const fileSizeInMB = file.size / 1024 / 1024;
             if (fileSizeInMB > maxFileSize) {
                 toast.error(`File size has to be lower than ${maxFileSize}MB. Please try again.`);
                 return;
             }
-
+    
             const toastId = toast.loading("Image is being processed, please wait...");
             const formData = new FormData();
             formData.append('file', file);
             formData.append('userId', User.userId);
-
+    
             fetch('/api/aws-s3-images', {
                 method: 'POST',
                 body: formData
@@ -1462,9 +1466,19 @@ export const Canvas = () => {
                         throw new Error('Network response was not ok');
                     }
                     const url = await res.text();
-
+    
+                    const img = new Image();
+                    const imgLoad = new Promise<{ url: string, dimensions: { width: number, height: number } }>((resolve) => {
+                        img.onload = () => {
+                            const dimensions = { width: img.width, height: img.height };
+                            resolve({ url, dimensions });
+                        };
+                    });
+                    img.src = url;
+                    const info = await imgLoad;
+    
                     // Insert the image into the canvas
-                    insertImage(LayerType.Image, { x: x, y: y }, url);
+                    insertImage(LayerType.Image, { x: x, y: y }, info);
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -1475,7 +1489,6 @@ export const Canvas = () => {
                 });
         }
     };
-
 
     const onTouchDown = useCallback((e: React.TouchEvent) => {
         setActiveTouches(e.touches.length);
@@ -1811,7 +1824,7 @@ export const Canvas = () => {
                     setPathStrokeSize={setPathStrokeSize}
                     isUploading={isUploading}
                     setIsUploading={setIsUploading}
-                    onImageSelect={setSelectedImage}
+                    setSelectedImage={setSelectedImage}
                     canvasState={canvasState}
                     setCanvasState={setCanvasState}
                     org={org}

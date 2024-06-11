@@ -10,7 +10,7 @@ import { useCurrentUser } from "@/hooks/use-current-user";
 
 interface ImageButtonProps {
     isUploading: boolean;
-    onImageSelect: (src: string) => void;
+    setSelectedImage: (info: any) => void;
     icon: LucideIcon;
     onClick: () => void;
     isActive?: boolean;
@@ -26,7 +26,7 @@ export const ImageButton = ({
     onClick,
     isActive,
     isDisabled,
-    onImageSelect,
+    setSelectedImage,
     org,
     label
 }: ImageButtonProps) => {
@@ -74,7 +74,17 @@ export const ImageButton = ({
                 throw new Error('Network response was not ok');
             }
             const url = await res.text();
-            onImageSelect(url);
+    
+            const img = new Image();
+            const imgLoad = new Promise<{ url: string, dimensions: { width: number, height: number } }>((resolve) => {
+                img.onload = () => {
+                    const dimensions = { width: img.width, height: img.height };
+                    resolve({ url, dimensions });
+                };
+            });
+            img.src = url;
+            const info = await imgLoad;
+            setSelectedImage(info);
         })
         .catch(error => {
             console.error('Error:', error);
