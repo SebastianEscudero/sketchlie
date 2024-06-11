@@ -27,13 +27,18 @@ const DashboardPage = () => {
 
 
   useEffect(() => {
-    if (activeOrganization) {
-      localStorage.setItem("activeOrganization", activeOrganization);
-    } else {
-      if (user?.organizations && user?.organizations.length > 0) {
-        setActiveOrganization(user.organizations[0].id);
+    const timer = setTimeout(() => {
+      if (activeOrganization) {
+        localStorage.setItem("activeOrganization", activeOrganization);
+      } else {
+        if (user?.organizations && user?.organizations.length > 0) {
+          setActiveOrganization(user.organizations[0].id);
+        }
       }
-    }
+    }, 10); // 10 milliseconds = 0.01 seconds
+  
+    // Clear the timer when the component unmounts
+    return () => clearTimeout(timer);
   }, [activeOrganization, user]);
 
   useEffect(() => {
