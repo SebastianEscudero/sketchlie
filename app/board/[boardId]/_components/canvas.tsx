@@ -1248,6 +1248,23 @@ export const Canvas = () => {
             document.body.style.cursor = 'url(/custom-cursors/hand.svg) 8 8, auto';
             setIsPanning(false);
         } else if (canvasState.mode === CanvasMode.Translating) {
+            const initialLayer = JSON.stringify(initialLayers[selectedLayersRef.current[0]]);
+            const liveLayer = JSON.stringify(liveLayers[selectedLayersRef.current[0]]);
+            const changed = initialLayer !== liveLayer;
+
+            if (!changed) {
+                setCanvasState({ mode: CanvasMode.None });
+                const intersectingLayers = findIntersectingLayersWithPoint(liveLayerIds, liveLayers, point, zoom);
+                const id = intersectingLayers[intersectingLayers.length - 1];
+                console.log(liveLayers[id])
+                if (selectedLayersRef.current.includes(id)) {
+                    console.log('includes')
+                    selectedLayersRef.current = [id];
+                    return;
+                }
+            }
+
+
             let layerIds: any = [];
             let layerUpdates: any = [];
             selectedLayersRef.current.forEach(id => {
