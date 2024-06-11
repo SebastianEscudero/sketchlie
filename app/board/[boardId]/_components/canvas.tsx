@@ -434,8 +434,16 @@ export const Canvas = () => {
 
         const layerId = nanoid();
 
-        if (info.src === null) {
+        if (!info || !info.url) {
             return;
+        }
+
+        if (info.dimensions.width === 0) {
+            info.dimensions.width = 200;
+        }
+
+        if (info.dimensions.height === 0) {
+            info.dimensions.height = 200;
         }
 
         const aspectRatio = info.dimensions.width / info.dimensions.height;
