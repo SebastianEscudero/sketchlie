@@ -1248,12 +1248,17 @@ export const Canvas = () => {
             document.body.style.cursor = 'url(/custom-cursors/hand.svg) 8 8, auto';
             setIsPanning(false);
         } else if (canvasState.mode === CanvasMode.Translating) {
+            const layerType = liveLayers[selectedLayersRef.current[0]].type;
             const initialLayer = JSON.stringify(initialLayers[selectedLayersRef.current[0]]);
             const liveLayer = JSON.stringify(liveLayers[selectedLayersRef.current[0]]);
             const changed = initialLayer !== liveLayer;
 
-            if (!changed) {
-                setCanvasState({ mode: CanvasMode.None });
+            setShowingSelectionBox(true);
+            setCanvasState({
+                mode: CanvasMode.None,
+            });
+
+            if (!changed && selectedLayersRef.current.length > 1) {
                 const intersectingLayers = findIntersectingLayersWithPoint(liveLayerIds, liveLayers, point, zoom);
                 const id = intersectingLayers[intersectingLayers.length - 1];
                 if (selectedLayersRef.current.includes(id)) {
@@ -1286,12 +1291,7 @@ export const Canvas = () => {
                 }
             }
 
-            setShowingSelectionBox(true);
             if (selectedLayersRef.current.length === 1 && showingSelectionBox && e.button === 0) {
-                const layerType = liveLayers[selectedLayersRef.current[0]].type;
-                const initialLayer = JSON.stringify(initialLayers[selectedLayersRef.current[0]]);
-                const liveLayer = JSON.stringify(liveLayers[selectedLayersRef.current[0]]);
-                const changed = initialLayer === liveLayer;
                 if ((layerType === LayerType.Text
                     || layerType === LayerType.Note
                     || layerType === LayerType.Rectangle
@@ -1305,7 +1305,7 @@ export const Canvas = () => {
                     || layerType === LayerType.BigArrowUp
                     || layerType === LayerType.BigArrowDown
                     || layerType === LayerType.CommentBubble)
-                    && changed && layerRef.current
+                    && !changed && layerRef.current
                 ) {
                     const layer = layerRef.current;
                     layer.focus();
