@@ -133,9 +133,15 @@ export function resizeBounds(
     result.y = bounds.y + bounds.height - result.height;
 
     if (result.width < 0) {
-      result.width = -result.width;
+      result.width = Math.abs(result.width);
       result.x -= result.width;
     }
+
+    if (result.height < 0) {
+      result.height = Math.abs(result.height);
+      result.y -= result.height;
+    }
+
   }
 
   if (corner === Side.Top + Side.Right) {
@@ -158,12 +164,12 @@ export function resizeBounds(
     result.y = bounds.y + bounds.height - result.height;
   
     if (result.width < 0) {
-      result.width = -result.width;
+      result.width = Math.abs(result.width);
       result.x -= result.width;
     }
 
     if (result.height < 0) {
-      result.height = -result.height;
+      result.height = Math.abs(result.height);
       result.y -= result.height;
     }
   }
@@ -188,12 +194,12 @@ export function resizeBounds(
     result.x = bounds.x + bounds.width - result.width;
   
     if (result.width < 0) {
-      result.width = -result.width;
+      result.width = Math.abs(result.width);
       result.x -= result.width;
     }
 
     if (result.height < 0) {
-      result.height = -result.height;
+      result.height = Math.abs(result.height);
       result.y -= result.height;
     }
   }
@@ -217,12 +223,12 @@ export function resizeBounds(
     }
   
     if (result.width < 0) {
-      result.width = -result.width;
+      result.width = Math.abs(result.width);
       result.x -= result.width;
     }
   
     if (result.height < 0) {
-      result.height = -result.height;
+      result.height = Math.abs(result.height);
       result.y -= result.height;
     }
   }
@@ -853,4 +859,11 @@ export function resizeBox(
   }
 
   return bounds
+}
+
+export function removeHighlightFromText() {
+  const selection = window.getSelection();
+  if (selection && selection.rangeCount > 0) {
+    selection.removeAllRanges();
+  }
 }
