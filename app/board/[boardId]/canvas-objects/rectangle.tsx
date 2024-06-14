@@ -172,7 +172,7 @@ export const Rectangle = memo(({
         onDragStart={(e) => e.preventDefault()}
       >
         <div
-          className={`h-full w-full bg-blue-500 flex ${alignY === 'top' ? 'items-start' : alignY === 'bottom' ? 'items-end' : 'items-center'} ${alignX === 'left' ? 'justify-start' : alignX === 'right' ? 'justify-end' : 'justify-center'} p-1`}
+          className={`h-full w-full flex ${alignY === 'top' ? 'items-start' : alignY === 'bottom' ? 'items-end' : 'items-center'} ${alignX === 'left' ? 'justify-start' : alignX === 'right' ? 'justify-end' : 'justify-center'} p-1`}
         >
           <ContentEditable
             innerRef={RectangleRef}
