@@ -1775,7 +1775,7 @@ export const Canvas = () => {
         } else if (canvasState.mode === CanvasMode.ArrowResizeHandler) {
             document.body.style.cursor = 'url(/custom-cursors/grab.svg) 8 8, auto';
         } else if (canvasState.mode === CanvasMode.Resizing || canvasState.mode === CanvasMode.Translating) {
-            removeHighlightFromText();
+            // removeHighlightFromText();
         } else if (rightClickPanning) {
             document.body.style.cursor = 'url(/custom-cursors/grab.svg) 8 8, auto';
         } else {
