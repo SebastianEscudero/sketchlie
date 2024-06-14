@@ -18,7 +18,7 @@ export const ColorPicker = ({
   openSelector,
   setOpenSelector
 }: ColorPickerProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+
   let colorButtonColor
   if (layers.length === 1) {
     colorButtonColor = layers[0].fill;
@@ -26,13 +26,9 @@ export const ColorPicker = ({
     colorButtonColor = { r: 0, g: 0, b: 0, a: 0 };
   }
 
-  useEffect(() => {
-      setOpenSelector(isOpen ? SelectorType.Color : null)
-  }, [isOpen]);
-
   return (
     <div className="relative text-left border-r pr-1.5 border-neutral-200">
-      <ColorButton color={colorButtonColor} onClick={() => setIsOpen(!isOpen)} />
+      <ColorButton color={colorButtonColor} onClick={() => setOpenSelector(openSelector === SelectorType.Color ? null : SelectorType.Color)} />
       {openSelector === SelectorType.Color && (
         <div
           className="origin-top-right absolute right-0 mt-2 w-[210px] rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"

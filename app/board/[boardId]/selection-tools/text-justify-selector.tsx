@@ -27,15 +27,9 @@ export const TextJustifySelector = ({
     openSelector,
     setOpenSelector
 }: TextJustifySelectorProps) => {
-    const [isOpen, setIsOpen] = useState(false);
-
     let alignX = liveLayers[selectedLayers[0]].alignX || "center";
     let alignY = liveLayers[selectedLayers[0]].alignY || "center";
     let hasTextLayer = selectedLayers.some((layerId: string) => liveLayers[layerId].type === LayerType.Text);
-
-    useEffect(() => {
-        setOpenSelector(isOpen ? SelectorType.TextJustify : null)
-    }, [isOpen]);
 
     const updateAlignment = (newAlignX: string | null, newAlignY: string | null) => {
         const newLayers = { ...liveLayers };
@@ -72,15 +66,15 @@ export const TextJustifySelector = ({
         }
 
         setLiveLayers(newLayers);
-        setIsOpen(false);
+        setOpenSelector(null);
     };
 
     return (
         <div className="relative text-left border-r pr-1.5 border-neutral-200 flex justify-center">
 
-            {alignX === 'left' && <AlignLeft className='w-6 h-6 mx-2 hover:cursor-pointer' onClick={() => setIsOpen(!isOpen)} />}
-            {alignX === 'right' && <AlignRight className='w-6 h-6 mx-2 hover:cursor-pointer' onClick={() => setIsOpen(!isOpen)} />}
-            {alignX === 'center' && <AlignCenter className='w-6 h-6 mx-2 hover:cursor-pointer' onClick={() => setIsOpen(!isOpen)} />}
+            {alignX === 'left' && <AlignLeft className='w-6 h-6 mx-2 hover:cursor-pointer' onClick={() => setOpenSelector(openSelector === SelectorType.TextJustify ? null : SelectorType.TextJustify)} />}
+            {alignX === 'right' && <AlignRight className='w-6 h-6 mx-2 hover:cursor-pointer' onClick={() => setOpenSelector(openSelector === SelectorType.TextJustify ? null : SelectorType.TextJustify)} />}
+            {alignX === 'center' && <AlignCenter className='w-6 h-6 mx-2 hover:cursor-pointer' onClick={() => setOpenSelector(openSelector === SelectorType.TextJustify ? null : SelectorType.TextJustify)} />}
 
             {openSelector === SelectorType.TextJustify && (
                 <div className="p-3 absolute top-7 left-1/2 transform -translate-x-1/2 mt-2 w-[140px] rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">

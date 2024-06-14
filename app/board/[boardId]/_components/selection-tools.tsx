@@ -3,7 +3,7 @@
 import { memo, useCallback, useEffect, useState } from "react";
 import { BringToFront, Copy, SendToBack, Trash2 } from "lucide-react";
 import { Hint } from "@/components/hint";
-import { Camera, Color, LayerType, Presence, SelectorType, UpdateLayerMutation } from "@/types/canvas";
+import { Camera, CanvasMode, Color, LayerType, Presence, SelectorType, UpdateLayerMutation } from "@/types/canvas";
 import { Button } from "@/components/ui/button";
 import { useSelectionBounds } from "@/hooks/use-selection-bounds";
 import { ColorPicker } from "../selection-tools/color-picker";
@@ -37,6 +37,7 @@ interface SelectionToolsProps {
   InsertLayerCommand: any;
   myPresence: Presence | null;
   setMyPresence: (presence: Presence) => void;
+  canvasState: CanvasMode;
 };
 
 export const SelectionTools = memo(({
@@ -57,7 +58,8 @@ export const SelectionTools = memo(({
   proModal,
   InsertLayerCommand,
   myPresence,
-  setMyPresence
+  setMyPresence,
+  canvasState
 }: SelectionToolsProps) => {
   const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
   const nanoid = customAlphabet(alphabet, 21);
@@ -103,6 +105,12 @@ export const SelectionTools = memo(({
   const layers = selectedLayers.map(id => liveLayers[id]);
   const [initialPosition, setInitialPosition] = useState<{ x: number, y: number } | null>(null);
   const selectionBounds = useSelectionBounds(selectedLayers, liveLayers);
+
+  useEffect(() => {
+    if (canvasState !== CanvasMode.None) {
+      setOpenSelector(null);
+    }
+  }, [canvasState]);
 
   useEffect(() => {
     if (selectionBounds) {

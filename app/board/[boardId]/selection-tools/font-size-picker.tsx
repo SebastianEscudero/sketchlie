@@ -26,14 +26,8 @@ export const FontSizePicker = ({
     openSelector,
     setOpenSelector
 }: FontSizePickerProps) => {
-    const [isOpen, setIsOpen] = useState(false);
     const [inputFontSize, setInputFontSize] = useState(liveLayers[selectedLayers[0]].textFontSize);
-
-    useEffect(() => {
-        setOpenSelector(isOpen ? SelectorType.FontSize : null)
-    }, [isOpen]);
-
-
+    
     const handleFontSizeChange = (fontSize: number) => {
         const newLayers = { ...liveLayers };
         const updatedIds: any = [];
@@ -106,7 +100,7 @@ export const FontSizePicker = ({
     return (
         <div className="relative inline-block text-left">
             <div className='flex flex-row items center justify-center'>
-                <div onClick={() => setIsOpen(!isOpen)}>
+                <div onClick={() => setOpenSelector(openSelector === SelectorType.FontSize ? null : SelectorType.FontSize)}>
                     <input
                         id="font-size-menu"
                         type="number"

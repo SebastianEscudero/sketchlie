@@ -25,15 +25,10 @@ export const ArrowHeadSelection = ({
     openSelector,
     setOpenSelector
 }: ArrowHeadSelectionProps) => {
-    const [isOpen, setIsOpen] = useState(false);
     const [selectedHead, setSelectedHead] = useState<'start' | 'end'>('start');
     const layer = liveLayers[selectedLayers[0]]
     const startArrowHead = layer.startArrowHead;
     const endArrowHead = layer.endArrowHead;
-
-    useEffect(() => {
-        setOpenSelector(isOpen ? SelectorType.ArrowHead : null)
-    }, [isOpen]);
 
     const handleArrowHeadChange = (newArrowHead: ArrowHead) => {
         const newLayers = { ...liveLayers };
@@ -68,7 +63,7 @@ export const ArrowHeadSelection = ({
         }
 
         setLiveLayers(newLayers);
-        setIsOpen(false);
+        setOpenSelector(openSelector === SelectorType.ArrowHead ? null : SelectorType.ArrowHead);
     }
 
     const reverseHeads = (startArrowHead: ArrowHead, endArrowHead: ArrowHead) => {
@@ -106,13 +101,27 @@ export const ArrowHeadSelection = ({
     return (
         <div className="relative inline-block text-left pl-1">
             <div className='flex flex-row items center justify-center gap-x-1'>
-                <Button variant="board" size="default" onClick={() => { setIsOpen(!isOpen); setSelectedHead('start') }}>
+                <Button variant="board" size="default" onClick={() => {
+                    if (openSelector === SelectorType.ArrowHead && selectedHead === 'start') {
+                        setOpenSelector(null);
+                    } else {
+                        setOpenSelector(SelectorType.ArrowHead);
+                    }
+                    setSelectedHead('start');
+                }}>
                     {startArrowHead === ArrowHead.Triangle ? <MoveLeft /> : <span>None</span>}
                 </Button>
                 <Button variant="board" size="icon" onClick={() => reverseHeads(startArrowHead, endArrowHead)}>
                     <RefreshCcw />
                 </Button>
-                <Button variant="board" size="default" onClick={() => { setIsOpen(!isOpen); setSelectedHead('end') }}>
+                <Button variant="board" size="default" onClick={() => {
+                    if (openSelector === SelectorType.ArrowHead && selectedHead === 'end') {
+                        setOpenSelector(null);
+                    } else {
+                        setOpenSelector(SelectorType.ArrowHead);
+                    }
+                    setSelectedHead('end');
+                }}>
                     {endArrowHead === ArrowHead.Triangle ? <MoveRight /> : <span>None</span>}
                 </Button>
             </div>

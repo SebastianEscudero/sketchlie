@@ -1891,6 +1891,7 @@ export const Canvas = () => {
                     InsertLayerCommand={InsertLayerCommand}
                     myPresence={myPresence}
                     setMyPresence={setMyPresence}
+                    canvasState={canvasState.mode}
                 />
             )}
             <svg
