@@ -1865,7 +1865,7 @@ export const Canvas = () => {
                     magicPathAssist={magicPathAssist}
                 />
             )}
-            {!isMoving && canvasState.mode !== CanvasMode.Resizing && canvasState.mode !== CanvasMode.SelectionNet && activeTouches < 2 && (
+            {!isMoving && canvasState.mode !== CanvasMode.Resizing && canvasState.mode !== CanvasMode.ArrowResizeHandler && canvasState.mode !== CanvasMode.SelectionNet && activeTouches < 2 && (
                 <SelectionTools
                     setLiveLayerIds={setLiveLayerIds}
                     setLiveLayers={setLiveLayers}
