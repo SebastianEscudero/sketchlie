@@ -20,6 +20,7 @@ interface TextProps {
     socket?: any;
     board?: any;
     onRefChange?: (ref: React.RefObject<any>) => void;
+    focused?: boolean;
 };
 
 const throttledUpdateLayer = throttle((updateLayer, socket, board, layerId, layerUpdates) => {
@@ -48,18 +49,42 @@ const throttledUpdateLayer = throttle((updateLayer, socket, board, layerId, laye
     expired,
     socket,
     board,
+    focused = false
 }: TextProps) => {
     const { x, y, width, height, fill, value: initialValue, textFontSize } = layer;
+    const alignX = layer.alignX || "center";
     const [value, setValue] = useState(initialValue);
     const textRef = useRef<any>(null);
     const fillColor = colorToCss(fill);
     const isTransparent = fillColor === 'rgba(0,0,0,0)';
 
     const handlePointerDown = useCallback((e: React.PointerEvent) => {
-        e.preventDefault();
-        onPointerDown?.(e, id);
-        onRefChange?.(textRef);
-    }, [onPointerDown, id, onRefChange]);
+
+        if (e.pointerType === "touch") {
+            return;
+          }
+
+          onRefChange?.(textRef);
+      
+          if (e.target === textRef.current) {
+      
+            if (focused) {
+              e.stopPropagation();
+            } else {
+              e.preventDefault();
+              if (onPointerDown) onPointerDown(e, id);
+            }
+            return;
+          } else if (focused) {
+            e.preventDefault();
+            e.stopPropagation();
+            textRef.current.focus();
+          }
+      
+          if (onPointerDown) {
+            onPointerDown(e, id);
+          }
+    }, [onPointerDown, id, onRefChange, focused]);
 
     const handleOnTouchDown = useCallback((e: React.TouchEvent) => {
         e.preventDefault();
@@ -84,12 +109,6 @@ const throttledUpdateLayer = throttle((updateLayer, socket, board, layerId, laye
     }, [layer, textFontSize, setLiveLayers, updateLayer, socket, board, id]);
 
     useEffect(() => {
-        if (onRefChange) {
-            onRefChange(textRef);
-        }
-    }, [textRef, onRefChange]);
-
-    useEffect(() => {
         if (textRef.current) {
             textRef.current.focus();
         }
@@ -111,11 +130,6 @@ const throttledUpdateLayer = throttle((updateLayer, socket, board, layerId, laye
                 height={height}
                 style={{
                     outline: selectionColor ? `2px solid ${selectionColor}` : "none",
-                }}
-                onPointerMove={(e) => {
-                    if (e.buttons === 1) {
-                        handlePointerDown(e);
-                    }
                 }}
                 onPointerDown={(e) => handlePointerDown(e)}
                 onTouchStart={(e) => handleOnTouchDown(e)}
@@ -144,6 +158,7 @@ const throttledUpdateLayer = throttle((updateLayer, socket, board, layerId, laye
                         overflowX: "hidden",
                         userSelect: "none",
                         fontSize: textFontSize,
+                        textAlign: alignX
                     }}
                 />
             </foreignObject>

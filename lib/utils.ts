@@ -49,9 +49,19 @@ export function pointerEventToCanvasPoint(
   camera: Camera,
   zoom: number,
 ) {
+  let clientX, clientY;
+
+  if (e.type === "touchstart") {
+    clientX = e.touches[0].clientX;
+    clientY = e.touches[0].clientY;
+  } else {
+    clientX = e.clientX;
+    clientY = e.clientY;
+  }
+
   return {
-    x: (Math.round(e.clientX) - camera.x) / zoom,
-    y: (Math.round(e.clientY) - camera.y) / zoom,
+    x: (Math.round(clientX) - camera.x) / zoom,
+    y: (Math.round(clientY) - camera.y) / zoom,
   };
 };
 

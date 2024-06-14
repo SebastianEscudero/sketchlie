@@ -109,7 +109,7 @@ export const SelectionBox = memo(({
     <>
       <rect
         onContextMenu={handleRightClick}
-        className="fill-transparent stroke-blue-500"
+        className=" stroke-blue-500 fill-transparent pointer-events-none"
         style={{
           strokeWidth: strokeWidth,
           transform: `translate(${bounds.x}px, ${bounds.y}px)`,
@@ -118,14 +118,6 @@ export const SelectionBox = memo(({
         y={0}
         width={bounds.width}
         height={bounds.height}
-        onPointerDown={(e) => {
-          e.stopPropagation();
-          const position = pointerEventToCanvasPoint(e, camera, zoom)
-          setCanvasState({
-            mode: CanvasMode.Translating,
-            current: position
-          })
-        }}
       />
         <>
           <rect

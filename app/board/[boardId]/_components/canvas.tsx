@@ -15,6 +15,7 @@ import {
     getShapeType,
     resizeBox,
     calculateBoundingBox,
+    removeHighlightFromText,
 } from "@/lib/utils";
 
 import {
@@ -236,11 +237,12 @@ const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz
 const nanoid = customAlphabet(alphabet, 21);
 
 export const Canvas = () => {
+    const [isMoving, setIsMoving] = useState(false);
+    const [justChanged, setJustChanged] = useState(false);
     const [isPenMenuOpen, setIsPenMenuOpen] = useState(false);
     const [isShapesMenuOpen, setIsShapesMenuOpen] = useState(false);
     const [isPenEraserSwitcherOpen, setIsPenEraserSwitcherOpen] = useState(false);
     const [selectedTool, setSelectedTool] = useState(CanvasMode.None);
-    const [showingSelectionBox, setShowingSelectionBox] = useState(false);
     const [initialLayers, setInitialLayers] = useState<Layers>({}); // used for undo/redo
     const [history, setHistory] = useState<Command[]>([]);
     const [redoStack, setRedoStack] = useState<Command[]>([]);
@@ -264,7 +266,7 @@ export const Canvas = () => {
     const [isPanning, setIsPanning] = useState(false);
     const [rightClickPanning, setIsRightClickPanning] = useState(false);
     const [startPanPoint, setStartPanPoint] = useState({ x: 0, y: 0 });
-    const [selectedImage, setSelectedImage] = useState<{info: any} | null>(null);
+    const [selectedImage, setSelectedImage] = useState<{ info: any } | null>(null);
     const [isUploading, setIsUploading] = useState(false);
     const [currentPreviewLayer, setCurrentPreviewLayer] = useState<PreviewLayer | null>(null);
     const [myPresence, setMyPresence] = useState<Presence | null>(null);
@@ -341,7 +343,8 @@ export const Canvas = () => {
                 width: width,
                 fill: { r: 29, g: 29, b: 29, a: 1 },
                 textFontSize: 12,
-                outlineFill: null
+                outlineFill: null,
+                alignX: 'left',
             };
         } else if (layerType === LayerType.Note) {
             layer = {
@@ -353,6 +356,8 @@ export const Canvas = () => {
                 fill: fillColor,
                 outlineFill: { r: 0, g: 0, b: 0, a: 0 },
                 textFontSize: 12,
+                alignX: 'center',
+                alignY: 'center',
             };
         } else if (layerType === LayerType.Arrow) {
             layer = {
@@ -390,6 +395,8 @@ export const Canvas = () => {
                 fill: fillColor,
                 outlineFill: { r: 29, g: 29, b: 29, a: 1 },
                 textFontSize: 12,
+                alignX: 'center',
+                alignY: 'center',
             };
         }
 
@@ -410,7 +417,6 @@ export const Canvas = () => {
             selection: [layerId]
         };
 
-        setShowingSelectionBox(true);
         setMyPresence(newPresence);
 
         if (layerWithAssistDraw) {
@@ -419,7 +425,8 @@ export const Canvas = () => {
         } else {
             setCanvasState({ mode: CanvasMode.None });
 
-        }    }, [liveLayers, liveLayerIds, myPresence, socket, org, proModal, User.userId, setLiveLayers, setLiveLayerIds, board, addLayer, layerWithAssistDraw]);
+        }
+    }, [liveLayers, liveLayerIds, myPresence, socket, org, proModal, User.userId, setLiveLayers, setLiveLayerIds, board, addLayer, layerWithAssistDraw]);
 
     const insertImage = useCallback((
         layerType: LayerType.Image,
@@ -447,7 +454,7 @@ export const Canvas = () => {
         }
 
         const aspectRatio = info.dimensions.width / info.dimensions.height;
-        const width = 200/zoom
+        const width = 200 / zoom
         const height = width / aspectRatio;
 
 
@@ -709,7 +716,7 @@ export const Canvas = () => {
     //     if (pencilDraft === null || magicPathAssist === false || pencilDraft.length === 0) {
     //         return;
     //     }
-    
+
     //     const timeoutId = setTimeout(() => {
 
     //         if (pencilDraft[0] && pencilDraft[0].length < 2) {
@@ -739,15 +746,15 @@ export const Canvas = () => {
     //             } else {
     //                 startX = maxX
     //             }
-              
+
     //             if (Math.abs(mousePositionRef.current.y - minY) < Math.abs(mousePositionRef.current.y - maxY)) {
     //               panY = maxY
     //             } else {
     //                 startY = maxY
     //             }
-              
+
     //             setPencilDraft([]);
-              
+
     //             if (layerType === LayerType.Line) {
 
     //               const width =  panX - startX
@@ -781,7 +788,7 @@ export const Canvas = () => {
     //               });
     //               setStartPanPoint({ x: panX, y: panY });
     //             }
-              
+
     //             setCanvasState({ mode: CanvasMode.Inserting, layerType: layerType });
     //             setIsPanning(true);
     //             setLayerWithAssistDraw(true);
@@ -846,7 +853,7 @@ export const Canvas = () => {
 
         selectedLayersRef.current.forEach(id => {
             const newLayer = { ...liveLayers[id] };
-    
+
             if (canvasState.mode === CanvasMode.Resizing) {
                 const newBoundingBox = resizeBounds(
                     canvasState.initialBounds,
@@ -868,7 +875,7 @@ export const Canvas = () => {
                     canvasState.handle,
                 );
             }
-    
+
             Object.assign(newLayer, bounds);
             liveLayers[id] = newLayer;
 
@@ -878,7 +885,7 @@ export const Canvas = () => {
 
         })
         setLiveLayers({ ...liveLayers });
-        
+
     }, [canvasState, liveLayers, selectedLayersRef, layerRef]);
 
     const onResizeHandlePointerDown = useCallback((
@@ -940,11 +947,25 @@ export const Canvas = () => {
         e: React.PointerEvent,
     ) => {
 
+        const bounds = calculateBoundingBox(selectedLayersRef.current.map(id => liveLayers[id]));
+        const point = pointerEventToCanvasPoint(e, camera, zoom);
+
+        if (point && bounds) {
+            if (point.x > bounds.x &&
+                point.x < bounds.x + bounds.width &&
+                point.y > bounds.y &&
+                point.y < bounds.y + bounds.height) {
+                setCanvasState({ mode: CanvasMode.Translating, current: point });
+                return;
+            }
+        }
+
+        removeHighlightFromText();
+        unselectLayers();
+
         if (activeTouches > 1) {
             return;
         }
-
-        const point = pointerEventToCanvasPoint(e, camera, zoom);
 
         if (e.button === 0 && expired !== true && !isPanning) {
             if (canvasState.mode === CanvasMode.Eraser) {
@@ -986,7 +1007,7 @@ export const Canvas = () => {
                 socket.emit('layer-update', selectedLayersRef.current, liveLayers);
             }
         }
-    }, [camera, canvasState.mode, setCanvasState, startDrawing, setIsPanning, setIsRightClickPanning, zoom, activeTouches, expired, isPanning]);
+    }, [camera, canvasState.mode, setCanvasState, startDrawing, setIsPanning, setIsRightClickPanning, zoom, activeTouches, expired, isPanning, unselectLayers, liveLayers]);
 
     const onPointerMove = useCallback((e: React.PointerEvent) => {
         e.preventDefault();
@@ -996,6 +1017,7 @@ export const Canvas = () => {
             return;
         }
 
+        setIsMoving(false);
         if (rightClickPanning || e.buttons === 2 || e.buttons === 4) {
             const newCameraPosition = {
                 x: camera.x + e.clientX - startPanPoint.x,
@@ -1039,9 +1061,11 @@ export const Canvas = () => {
         } else if (canvasState.mode === CanvasMode.Eraser && e.buttons === 1) {
             EraserDeleteLayers(current);
         } else if (canvasState.mode === CanvasMode.Translating) {
+            setIsMoving(true);
             translateSelectedLayers(current);
         } else if (canvasState.mode === CanvasMode.Resizing) {
             resizeSelectedLayer(current);
+            removeHighlightFromText();
         } else if (canvasState.mode === CanvasMode.ArrowResizeHandler) {
             resizeSelectedLayer(current);
         } else if (canvasState.mode === CanvasMode.Pencil && e.buttons === 1 || canvasState.mode === CanvasMode.Laser && e.buttons === 1 || canvasState.mode === CanvasMode.Highlighter && e.buttons === 1) {
@@ -1148,28 +1172,16 @@ export const Canvas = () => {
             activeTouches,
             expired
         ]);
-    
+
     const onPointerUp = useCallback((e: React.PointerEvent) => {
         setIsRightClickPanning(false);
         const point = pointerEventToCanvasPoint(e, camera, zoom);
-        if (canvasState.mode === CanvasMode.SelectionNet) {
-            if (selectedLayersRef.current.length > 0) {
-                setShowingSelectionBox(true);
-            } else {
-                setShowingSelectionBox(false);
-            }
-        }
-
-        if (canvasState.mode !== CanvasMode.Translating && canvasState.mode !== CanvasMode.SelectionNet) {
-            setShowingSelectionBox(false)
-        }
 
         if (
             canvasState.mode === CanvasMode.None ||
             canvasState.mode === CanvasMode.Pressing
         ) {
             document.body.style.cursor = 'default';
-            unselectLayers();
             setCanvasState({
                 mode: CanvasMode.None,
             });
@@ -1253,7 +1265,6 @@ export const Canvas = () => {
             const liveLayer = JSON.stringify(liveLayers[selectedLayersRef.current[0]]);
             const changed = initialLayer !== liveLayer;
 
-            setShowingSelectionBox(true);
             setCanvasState({
                 mode: CanvasMode.None,
             });
@@ -1267,7 +1278,7 @@ export const Canvas = () => {
                 }
             }
 
-
+            setJustChanged(changed);
             let layerIds: any = [];
             let layerUpdates: any = [];
             selectedLayersRef.current.forEach(id => {
@@ -1291,43 +1302,10 @@ export const Canvas = () => {
                 }
             }
 
-            if (selectedLayersRef.current.length === 1 && showingSelectionBox && e.button === 0) {
-                if ((layerType === LayerType.Text
-                    || layerType === LayerType.Note
-                    || layerType === LayerType.Rectangle
-                    || layerType === LayerType.Ellipse
-                    || layerType === LayerType.Rhombus
-                    || layerType === LayerType.Triangle
-                    || layerType === LayerType.Star
-                    || layerType === LayerType.Hexagon
-                    || layerType === LayerType.BigArrowLeft
-                    || layerType === LayerType.BigArrowRight
-                    || layerType === LayerType.BigArrowUp
-                    || layerType === LayerType.BigArrowDown
-                    || layerType === LayerType.CommentBubble)
-                    && !changed && layerRef.current
-                ) {
-                    const layer = layerRef.current;
-                    layer.focus();
-
-                    const range = document.createRange();
-                    range.selectNodeContents(layer);
-                    range.collapse(false);
-
-                    const selection = window.getSelection();
-                    selection?.removeAllRanges();
-                    selection?.addRange(range);
-                    if (layer.value || layer.value === "") {
-                        layer.selectionStart = layer.selectionEnd = layer.value.length;
-                    }
-                }
-            }
-
             setCanvasState({
                 mode: CanvasMode.None,
             });
         } else if (canvasState.mode === CanvasMode.Resizing || canvasState.mode === CanvasMode.ArrowResizeHandler) {
-            setShowingSelectionBox(true);
             let layerIds: any = [];
             let layerUpdates: any = [];
             selectedLayersRef.current.forEach(id => {
@@ -1404,7 +1382,7 @@ export const Canvas = () => {
             canvasStateRef.current.mode === CanvasMode.Eraser ||
             canvasStateRef.current.mode === CanvasMode.Laser ||
             canvasStateRef.current.mode === CanvasMode.Highlighter ||
-            e.button !== 0 ||
+            (e.pointerType && e.button !== 0) ||
             expired === true
         ) {
             return;
@@ -1472,19 +1450,19 @@ export const Canvas = () => {
                 toast.error('File type not accepted. Please upload an image file.');
                 continue;  // Skip if not an image
             }
-    
+
             // Check file size
             const fileSizeInMB = file.size / 1024 / 1024;
             if (fileSizeInMB > maxFileSize) {
                 toast.error(`File size has to be lower than ${maxFileSize}MB. Please try again.`);
                 return;
             }
-    
+
             const toastId = toast.loading("Image is being processed, please wait...");
             const formData = new FormData();
             formData.append('file', file);
             formData.append('userId', User.userId);
-    
+
             fetch('/api/aws-s3-images', {
                 method: 'POST',
                 body: formData
@@ -1494,7 +1472,7 @@ export const Canvas = () => {
                         throw new Error('Network response was not ok');
                     }
                     const url = await res.text();
-    
+
                     const img = new Image();
                     const imgLoad = new Promise<{ url: string, dimensions: { width: number, height: number } }>((resolve) => {
                         img.onload = () => {
@@ -1504,7 +1482,7 @@ export const Canvas = () => {
                     });
                     img.src = url;
                     const info = await imgLoad;
-    
+
                     // Insert the image into the canvas
                     insertImage(LayerType.Image, { x: x, y: y }, info);
                 })
@@ -1519,14 +1497,17 @@ export const Canvas = () => {
     };
 
     const onTouchDown = useCallback((e: React.TouchEvent) => {
+        setIsMoving(false);
         setActiveTouches(e.touches.length);
     }, []);
 
     const onTouchUp = useCallback((e: React.TouchEvent) => {
+        setIsMoving(false);
         setActiveTouches(e.changedTouches.length);
     }, []);
 
     const onTouchMove = useCallback((e: React.TouchEvent) => {
+        setIsMoving(true);
         setActiveTouches(e.touches.length);
 
         if (e.touches.length < 2) {
@@ -1691,15 +1672,22 @@ export const Canvas = () => {
             switch (e.key.toLocaleLowerCase()) {
                 case "z": {
                     if (e.ctrlKey || e.metaKey) {
-                        e.preventDefault();
-                        if (e.shiftKey && redoStack.length > 0) {
-                            redo();
-                            return;
-                        } else if (!e.shiftKey && history.length > 0) {
-                            undo();
-                            return;
+
+                        if (
+                            document.activeElement &&
+                            document.activeElement.getAttribute('contentEditable') !== 'true' &&
+                            document.activeElement.tagName !== 'TEXTAREA'
+                        ) {
+                            // if we are not inside a content editable or textarea
+                            if (e.shiftKey && redoStack.length > 0) {
+                                redo();
+                                return;
+                            } else if (!e.shiftKey && history.length > 0) {
+                                undo();
+                                return;
+                            }
+                            e.preventDefault();
                         }
-                        e.preventDefault();
                     }
                     break;
                 }
@@ -1838,9 +1826,9 @@ export const Canvas = () => {
             }}
         >
             <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-            <Info 
-                board={board} 
-                org={org} 
+            <Info
+                board={board}
+                org={org}
                 setIsBackgroundGridVisible={setIsBackgroundGridVisible}
                 isBackgroundGridVisible={isBackgroundGridVisible}
             />
@@ -1874,10 +1862,10 @@ export const Canvas = () => {
                     selectedTool={selectedTool}
                     setSelectedTool={setSelectedTool}
                     setMagicPathAssist={setMagicPathAssist}
-                    magicPathAssist={magicPathAssist}    
+                    magicPathAssist={magicPathAssist}
                 />
             )}
-            {canvasState.mode === CanvasMode.None && expired !== true && (
+            {!isMoving && canvasState.mode !== CanvasMode.Resizing && canvasState.mode !== CanvasMode.SelectionNet && activeTouches < 2 && (
                 <SelectionTools
                     setLiveLayerIds={setLiveLayerIds}
                     setLiveLayers={setLiveLayers}
@@ -1920,38 +1908,42 @@ export const Canvas = () => {
                         transformOrigin: 'top left',
                     }}
                 >
-                    {liveLayerIds.map((layerId: any) => (
-                        <LayerPreview
-                            selectionColor={layerIdsToColorSelection[layerId]}
-                            onLayerPointerDown={onLayerPointerDown}
-                            layer={liveLayers[layerId]}
-                            setLiveLayers={setLiveLayers}
-                            updateLayer={updateLayer}
-                            key={layerId}
-                            id={layerId}
-                            onRefChange={setLayerRef}
-                            socket={socket}
-                            board={board}
-                            expired={expired}
-                        />
-                    ))}
+                    {liveLayerIds.map((layerId: any) => {
+                        const isFocused = selectedLayersRef.current.length === 1 && selectedLayersRef.current[0] === layerId && !justChanged;
+                        return (
+                            <LayerPreview
+                                selectionColor={layerIdsToColorSelection[layerId]}
+                                onLayerPointerDown={onLayerPointerDown}
+                                focused={isFocused}
+                                layer={liveLayers[layerId]}
+                                setLiveLayers={setLiveLayers}
+                                updateLayer={updateLayer}
+                                key={layerId}
+                                id={layerId}
+                                onRefChange={setLayerRef}
+                                socket={socket}
+                                board={board}
+                                expired={expired}
+                            />
+                        );
+                    })}
                     {currentPreviewLayer && (
                         <CurrentPreviewLayer
                             layer={currentPreviewLayer}
                         />
                     )}
-                    {(canvasState.mode === CanvasMode.SelectionNet || canvasState.mode === CanvasMode.None || canvasState.mode === CanvasMode.Resizing) && expired !== true && activeTouches < 2 && (
-                    <SelectionBox
-                        zoom={zoom}
-                        liveLayers={liveLayers}
-                        selectedLayers={selectedLayersRef.current}
-                        onResizeHandlePointerDown={onResizeHandlePointerDown}
-                        onArrowResizeHandlePointerDown={onArrowResizeHandlePointerDown}
-                        setCanvasState={setCanvasState}
-                        camera={camera}
-                    />
+                    {!isMoving && activeTouches < 2 && (
+                        <SelectionBox
+                            zoom={zoom}
+                            liveLayers={liveLayers}
+                            selectedLayers={selectedLayersRef.current}
+                            onResizeHandlePointerDown={onResizeHandlePointerDown}
+                            onArrowResizeHandlePointerDown={onArrowResizeHandlePointerDown}
+                            setCanvasState={setCanvasState}
+                            camera={camera}
+                        />
                     )}
-                    {canvasState.mode === CanvasMode.SelectionNet && canvasState.current != null && (
+                    {canvasState.mode === CanvasMode.SelectionNet && canvasState.current != null && activeTouches < 2 && (
                         <rect
                             style={{
                                 fill: 'rgba(59, 130, 246, 0.3)',

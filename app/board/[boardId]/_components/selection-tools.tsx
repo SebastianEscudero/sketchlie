@@ -16,6 +16,7 @@ import { ArrowHeadSelection } from "../selection-tools/arrow-head-selection";
 import { PathStokeSizeSelection } from "../selection-tools/path-stroke-size-selection";
 import { customAlphabet } from "nanoid";
 import { getMaxCapas } from "@/lib/planLimits";
+import { TextJustifySelector } from "../selection-tools/text-justify-selector";
 
 interface SelectionToolsProps {
   board: any;
@@ -368,6 +369,16 @@ export const SelectionTools = memo(({
       )}
       {hasText && (
         <FontSizePicker
+          selectedLayers={selectedLayers}
+          setLiveLayers={setLiveLayers}
+          liveLayers={liveLayers}
+          updateLayer={updateLayer}
+          board={board}
+          socket={socket}
+        />
+      )}
+      {hasText && (
+        <TextJustifySelector
           selectedLayers={selectedLayers}
           setLiveLayers={setLiveLayers}
           liveLayers={liveLayers}

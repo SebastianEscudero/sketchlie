@@ -24,6 +24,7 @@ import { Line } from "../canvas-objects/line";
 interface LayerPreviewProps {
   id: string;
   onLayerPointerDown: (e: React.PointerEvent, layerId: string) => void;
+  focused?: boolean;
   selectionColor?: string;
   layer: Layer;
   setLiveLayers: (layers: any) => void;
@@ -38,6 +39,7 @@ interface LayerPreviewProps {
 export const LayerPreview = memo(({
   id,
   onLayerPointerDown,
+  focused,
   selectionColor,
   layer,
   setLiveLayers,
@@ -74,10 +76,10 @@ export const LayerPreview = memo(({
           layer={layer}
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
-          onRefChange={onRefChange}
           socket={socket}
           board={board}
           expired={expired}
+          focused={focused}
         />
       );
     case LayerType.Text:
@@ -93,6 +95,7 @@ export const LayerPreview = memo(({
           socket={socket}
           board={board}
           expired={expired}
+          focused={focused}
         />
       );
     case LayerType.Ellipse:
@@ -103,10 +106,10 @@ export const LayerPreview = memo(({
           layer={layer}
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
-          onRefChange={onRefChange}
           socket={socket}
           board={board}
           expired={expired}
+          focused={focused}
         />
       );
     case LayerType.Rectangle:
@@ -117,10 +120,10 @@ export const LayerPreview = memo(({
           layer={layer}
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
-          onRefChange={onRefChange}
           socket={socket}
           board={board}
           expired={expired}
+          focused={focused}
         />
       );
     case LayerType.Rhombus:
@@ -131,10 +134,10 @@ export const LayerPreview = memo(({
           layer={layer}
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
-          onRefChange={onRefChange}
           socket={socket}
           board={board}
           expired={expired}
+          focused={focused}
         />
       );
     case LayerType.Triangle:
@@ -145,10 +148,10 @@ export const LayerPreview = memo(({
           layer={layer}
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
-          onRefChange={onRefChange}
           socket={socket}
           board={board}
           expired={expired}
+          focused={focused}
         />
       );
     case LayerType.Star:
@@ -159,10 +162,10 @@ export const LayerPreview = memo(({
           layer={layer}
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
-          onRefChange={onRefChange}
           socket={socket}
           board={board}
           expired={expired}
+          focused={focused}
         />
       );
     case LayerType.Hexagon:
@@ -173,10 +176,10 @@ export const LayerPreview = memo(({
           layer={layer}
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
-          onRefChange={onRefChange}
           socket={socket}
           board={board}
           expired={expired}
+          focused={focused}
         />
       );
     case LayerType.CommentBubble:
@@ -187,10 +190,10 @@ export const LayerPreview = memo(({
           layer={layer}
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
-          onRefChange={onRefChange}
           socket={socket}
           board={board}
           expired={expired}
+          focused={focused}
         />
       );
     case LayerType.Line:
@@ -210,10 +213,10 @@ export const LayerPreview = memo(({
           layer={layer}
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
-          onRefChange={onRefChange}
           socket={socket}
           board={board}
           expired={expired}
+          focused={focused}
         />
       );
     case LayerType.BigArrowRight:
@@ -224,10 +227,10 @@ export const LayerPreview = memo(({
           layer={layer}
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
-          onRefChange={onRefChange}
           socket={socket}
           board={board}
           expired={expired}
+          focused={focused}
         />
       );
     case LayerType.BigArrowUp:
@@ -238,10 +241,10 @@ export const LayerPreview = memo(({
           layer={layer}
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
-          onRefChange={onRefChange}
           socket={socket}
           board={board}
           expired={expired}
+          focused={focused}
         />
       );
     case LayerType.BigArrowDown:
@@ -252,10 +255,10 @@ export const LayerPreview = memo(({
           layer={layer}
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
-          onRefChange={onRefChange}
           socket={socket}
           board={board}
           expired={expired}
+          focused={focused}
         />
       );
     case LayerType.Image:

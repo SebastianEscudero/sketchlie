@@ -33,6 +33,8 @@ const buttonVariants = cva(
         iconActive: "bg-custom-blue/90 text-white",
         magicAssist: "text-black hover:text-custom-blue",
         magicAssistActive: "text-custom-blue",
+        aligned: "bg-white",
+        alignedActive: "bg-accent/90 text-custom-blue",
       },
       size: {
         default: "h-10 px-4 py-2",

@@ -2,9 +2,8 @@ import { Kalam } from "next/font/google";
 import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
 
 import { LayerType, RhombusLayer, UpdateLayerMutation } from "@/types/canvas";
-import { cn, colorToCss, getContrastingTextColor } from "@/lib/utils";
+import { cn, colorToCss, getContrastingTextColor, removeHighlightFromText } from "@/lib/utils";
 import React, { memo, useCallback, useEffect, useRef, useState } from "react";
-import { useRoom } from "@/components/room";
 import { throttle } from "lodash";
 
 const font = Kalam({
@@ -21,7 +20,7 @@ interface RhombusProps {
   expired?: boolean;
   socket?: any;
   board?: any;
-  onRefChange?: (ref: React.RefObject<any>) => void;
+  focused?: boolean;
 };
 
 const throttledUpdateLayer = throttle((updateLayer, socket, board, layerId, layerUpdates) => {
@@ -44,19 +43,28 @@ export const Rhombus = memo(({
   id,
   selectionColor,
   updateLayer,
-  onRefChange,
   expired,
   socket,
   board,
+  focused = false,
 }: RhombusProps) => {
-  const RhombusRef = useRef<any>(null);
   const { x, y, width, height, fill, outlineFill, value: initialValue, textFontSize } = layer;
+  const alignX = layer.alignX || "center";
+  const alignY = layer.alignY || "center";
   const [value, setValue] = useState(initialValue);
   const fillColor = colorToCss(fill);
+  const RhombusRef = useRef<any>(null);
 
   useEffect(() => {
     setValue(layer.value);
   }, [id, layer]);
+
+  useEffect(() => {
+    if (!focused) {
+      removeHighlightFromText();
+    }
+  }, [focused])
+
 
   const updateValue = useCallback((newValue: string) => {
     if (layer && layer.type === LayerType.Rhombus) {
@@ -68,48 +76,6 @@ export const Rhombus = memo(({
       }
     }
   }, [id, layer, expired, updateLayer, socket, board]);
-
-  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      const selection = window.getSelection();
-      if (selection && selection.rangeCount > 0) {
-        const range = selection.getRangeAt(0);
-        range.deleteContents();
-        const br = document.createElement('br');
-        range.insertNode(br);
-        // Create another <br> element
-        const extraBr = document.createElement('br');
-        range.insertNode(extraBr);
-        // Move the cursor to the new line
-        range.setStartAfter(extraBr);
-        range.collapse(true);
-        const newEvent = new Event('input', { bubbles: true });
-        e.currentTarget.dispatchEvent(newEvent);
-      }
-    }
-  }, []);
-
-  const handlePointerDown = useCallback((e: React.PointerEvent) => {
-    e.preventDefault();
-    if (onPointerDown) onPointerDown(e, id);
-    if (onRefChange) {
-      onRefChange(RhombusRef);
-    }
-  }, [onPointerDown, id, onRefChange]);
-
-  const handleOnTouchDown = useCallback((e: React.TouchEvent) => {
-    e.preventDefault();
-    if (e.touches.length > 1) {
-      return;
-    }
-    if (onPointerDown) {
-      onPointerDown(e, id);
-    }
-    if (onRefChange) {
-      onRefChange(RhombusRef);
-    }
-  }, [onPointerDown, id, onRefChange, RhombusRef]);
 
   const handleContentChange = useCallback((e: ContentEditableEvent) => {
     updateValue(e.target.value);
@@ -126,11 +92,59 @@ export const Rhombus = memo(({
     }
   }, []);
 
-  useEffect(() => {
-    if (onRefChange) {
-      onRefChange(RhombusRef);
+  const handlePointerDown = (e: React.PointerEvent) => {
+
+    if (e.pointerType === "touch") {
+      return;
     }
-  }, [layer]);
+
+    if (e.target === RhombusRef.current) {
+
+      if (focused) {
+        e.stopPropagation();
+      } else {
+        e.preventDefault();
+        if (onPointerDown) onPointerDown(e, id);
+      }
+      return;
+    } else if (focused) {
+      e.preventDefault();
+      e.stopPropagation();
+      RhombusRef.current.focus();
+    }
+
+    if (onPointerDown) {
+      onPointerDown(e, id);
+    }
+  };
+
+  const handleTouchDown = (e: React.TouchEvent) => {
+    if (e.touches.length > 1 || document.activeElement === RhombusRef.current) {
+      e.preventDefault();
+      return;
+    }
+
+    if (e.target === RhombusRef.current) {
+      if (focused) {
+        e.stopPropagation();
+      } else {
+        e.preventDefault();
+        if (onPointerDown) onPointerDown(e, id);
+      }
+      return;
+    }
+
+    if (!focused && onPointerDown) {
+      onPointerDown(e, id);
+    }
+  }
+
+  const divWidth = width * 0.50;
+  const divHeight = height * 0.50;
+
+  // Calculate the position to center the foreignObject within the Rhombus
+  const foreignObjectX = (width - divWidth) / 2;
+  const foreignObjectY = (height - divHeight) / 2;
 
   if (!fill) {
     return null;
@@ -138,48 +152,55 @@ export const Rhombus = memo(({
 
   return (
     <g
-      transform={`translate(${x}, ${y + height / 2})`}
-      onPointerMove={(e) => {
-        if (e.buttons === 1) {
-          handlePointerDown(e);
-        }
-      }}
+      transform={`translate(${x}, ${y})`}
       onPointerDown={(e) => handlePointerDown(e)}
-      onTouchStart={(e) => handleOnTouchDown(e)}
+      onTouchStart={(e) => handleTouchDown(e)}
     >
       <path
-        d={`M ${width / 2} ${-height / 2} L ${width} 0 L ${width / 2} ${height / 2} L 0 0 Z`}
+        d={`M ${width / 2} 0 L ${width} ${height / 2} L ${width / 2} ${height} L 0 ${height / 2} Z`}
         fill={fillColor}
         stroke={selectionColor || colorToCss(outlineFill || fill)}
         strokeWidth="2"
       />
       <foreignObject
-        x={0}
-        y={-height / 2}
-        width={width}
-        height={height}
-        className="flex items-center justify-center"
+        x={foreignObjectX} // Adjust x position to center the foreignObject
+        y={foreignObjectY} // Adjust y position to center the foreignObject
+        width={divWidth} // Adjust width to 80% of the Rhombus's width
+        height={divHeight} // Adjust height to 80% of the Rhombus's height
+        onDragStart={(e) => e.preventDefault()}
       >
-        <ContentEditable
-          innerRef={RhombusRef}
-          onKeyDown={handleKeyDown}
-          html={value || ""}
-          onChange={handleContentChange}
-          onPaste={handlePaste}
-          className={cn(
-            "h-full w-full flex items-center justify-center text-center outline-none",
-            font.className
-          )}
-          style={{
-            fontSize: textFontSize,
-            color: fill ? getContrastingTextColor(fill) : "#000",
-            textWrap: "wrap",
-            lineHeight: value ? 'normal' : `${height}px`,
-            WebkitUserSelect: 'auto'
-          }}
-          spellCheck={false}
-          disabled={expired}
-        />
+        <div
+          className={`h-full w-full flex ${alignY === 'top' ? 'items-start' : alignY === 'bottom' ? 'items-end' : 'items-center'} ${alignX === 'left' ? 'justify-start' : alignX === 'right' ? 'justify-end' : 'justify-center'} p-1`}
+        >
+          <ContentEditable
+            innerRef={RhombusRef}
+            html={value || ""}
+            onChange={handleContentChange}
+            onPaste={handlePaste}
+            onKeyDown={(e) => {
+              // Check if the pressed key is Enter
+              if (e.key === 'Enter') {
+                e.preventDefault(); // Prevent the default Enter key behavior
+                
+                // Insert a new line at the current cursor position
+                document.execCommand('insertHTML', false, '<br><br>');
+              }
+            }}
+            className={cn(
+              "outline-none w-full",
+              font.className
+            )}
+            style={{
+              fontSize: textFontSize,
+              color: fill ? getContrastingTextColor(fill) : "#000",
+              textWrap: "wrap",
+              WebkitUserSelect: 'auto',
+              textAlign: alignX
+            }}
+            spellCheck={false}
+            onDragStart={(e) => e.preventDefault()}
+          />
+        </div>
       </foreignObject>
     </g>
   );
