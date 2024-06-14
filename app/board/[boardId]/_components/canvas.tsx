@@ -1261,7 +1261,6 @@ export const Canvas = () => {
             document.body.style.cursor = 'url(/custom-cursors/hand.svg) 8 8, auto';
             setIsPanning(false);
         } else if (canvasState.mode === CanvasMode.Translating) {
-            const layerType = liveLayers[selectedLayersRef.current[0]].type;
             const initialLayer = JSON.stringify(initialLayers[selectedLayersRef.current[0]]);
             const liveLayer = JSON.stringify(liveLayers[selectedLayersRef.current[0]]);
             const changed = initialLayer !== liveLayer;
@@ -1307,6 +1306,11 @@ export const Canvas = () => {
                 mode: CanvasMode.None,
             });
         } else if (canvasState.mode === CanvasMode.Resizing || canvasState.mode === CanvasMode.ArrowResizeHandler) {
+            const initialLayer = JSON.stringify(initialLayers[selectedLayersRef.current[0]]);
+            const liveLayer = JSON.stringify(liveLayers[selectedLayersRef.current[0]]);
+            const changed = initialLayer !== liveLayer;
+            setJustChanged(changed);
+            
             let layerIds: any = [];
             let layerUpdates: any = [];
             selectedLayersRef.current.forEach(id => {
