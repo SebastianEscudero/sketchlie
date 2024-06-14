@@ -185,7 +185,7 @@ export const Hexagon = memo(({
               }
             }}
             className={cn(
-              "outline-none w-full",
+              "outline-none w-full p-1",
               font.className
             )}
             style={{

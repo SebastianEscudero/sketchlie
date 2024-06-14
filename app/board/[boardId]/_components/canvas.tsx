@@ -325,8 +325,7 @@ export const Canvas = () => {
                 width = 80
                 height = 80
             }
-
-            fillColor = { r: 255, g: 249, b: 177, a: 1 }
+            fillColor = { r: 252, g: 225, b: 156, a: 1 }
         }
 
         if (layerType === LayerType.Text) {
@@ -947,6 +946,8 @@ export const Canvas = () => {
         e: React.PointerEvent,
     ) => {
 
+        console.log('down')
+
         const bounds = calculateBoundingBox(selectedLayersRef.current.map(id => liveLayers[id]));
         const point = pointerEventToCanvasPoint(e, camera, zoom);
 
@@ -1122,7 +1123,7 @@ export const Canvas = () => {
                     setCurrentPreviewLayer({ x, y, width, height, type: LayerType.Ellipse, textFontSize: 12, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
                     break;
                 case LayerType.Text:
-                    setCurrentPreviewLayer({ x, y, width, height: 18, textFontSize: 12, type: LayerType.Rectangle, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 65, g: 75, b: 178, a: 1 } });
+                    setCurrentPreviewLayer({ x, y, width, height: 18, textFontSize: 12, type: LayerType.Rectangle, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 75, g: 161, b: 241, a: 1 } });
                     break;
                 case LayerType.Note:
                     setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.Note, fill: { r: 255, g: 249, b: 177, a: 1 }, outlineFill: { r: 0, g: 0, b: 0, a: 0 } });
@@ -1374,6 +1375,8 @@ export const Canvas = () => {
     }, [setMyPresence, myPresence, socket, User.userId]);
 
     const onLayerPointerDown = useCallback((e: React.PointerEvent, layerId: string) => {
+
+        console.log('layer down')
 
         if (
             canvasStateRef.current.mode === CanvasMode.Pencil ||
@@ -1628,7 +1631,8 @@ export const Canvas = () => {
         setLiveLayerIds(newLiveLayerIds);
 
 
-
+        selectedLayersRef.current = newSelection;
+    
         const newPresence: Presence = {
             ...myPresence,
             selection: newSelection
@@ -1867,7 +1871,7 @@ export const Canvas = () => {
                     magicPathAssist={magicPathAssist}
                 />
             )}
-            {!isMoving && canvasState.mode !== CanvasMode.Resizing && canvasState.mode !== CanvasMode.ArrowResizeHandler && canvasState.mode !== CanvasMode.SelectionNet && activeTouches < 2 && (
+            {!isMoving && canvasState.mode !== CanvasMode.Resizing && canvasState.mode !== CanvasMode.ArrowResizeHandler && canvasState.mode !== CanvasMode.SelectionNet && canvasState.mode !== CanvasMode.Inserting && activeTouches < 2 && (
                 <SelectionTools
                     setLiveLayerIds={setLiveLayerIds}
                     setLiveLayers={setLiveLayers}
@@ -1934,7 +1938,7 @@ export const Canvas = () => {
                             layer={currentPreviewLayer}
                         />
                     )}
-                    {!isMoving && activeTouches < 2 && (
+                    {!isMoving && activeTouches < 2 && canvasState.mode !== CanvasMode.Inserting && (
                         <SelectionBox
                             zoom={zoom}
                             liveLayers={liveLayers}
