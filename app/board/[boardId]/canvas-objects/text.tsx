@@ -31,10 +31,6 @@ const throttledUpdateLayer = throttle((updateLayer, socket, board, layerId, laye
         layerUpdates
       });
     }
-  
-    if (socket) {
-      socket.emit('layer-update', layerId, layerUpdates);
-    }
   }, 1000); 
 
 
@@ -57,6 +53,10 @@ const throttledUpdateLayer = throttle((updateLayer, socket, board, layerId, laye
     const textRef = useRef<any>(null);
     const fillColor = colorToCss(fill);
     const isTransparent = fillColor === 'rgba(0,0,0,0)';
+
+    useEffect(() => {
+      setValue(layer.value);
+    }, [id, layer]);
 
     const handlePointerDown = useCallback((e: React.PointerEvent) => {
 
@@ -105,6 +105,9 @@ const throttledUpdateLayer = throttle((updateLayer, socket, board, layerId, laye
                 return { ...prevLayers, [id]: { ...newLayer } };
             });
             throttledUpdateLayer(updateLayer, socket, board, id, newLayer); // Pass newLayer instead of layer
+            if (socket) {
+              socket.emit('layer-update', id, newLayer);
+            }
         }
     }, [layer, textFontSize, setLiveLayers, updateLayer, socket, board, id]);
 

@@ -31,10 +31,6 @@ const throttledUpdateLayer = throttle((updateLayer, socket, board, layerId, laye
       layerUpdates
     });
   }
-
-  if (socket) {
-    socket.emit('layer-update', layerId, layerUpdates);
-  }
 }, 1000);
 
 export const Ellipse = memo(({
@@ -73,6 +69,9 @@ export const Ellipse = memo(({
       setValue(newValue);
       if (expired !== true) {
         throttledUpdateLayer(updateLayer, socket, board, id, layer);
+        if (socket) {
+          socket.emit('layer-update', id, layer);
+        }
       }
     }
   }, [id, layer, expired, updateLayer, socket, board]);
@@ -173,7 +172,7 @@ export const Ellipse = memo(({
         onDragStart={(e) => e.preventDefault()}
       >
         <div
-          className={`h-full w-full flex ${alignY === 'top' ? 'items-start' : alignY === 'bottom' ? 'items-end' : 'items-center'} ${alignX === 'left' ? 'justify-start' : alignX === 'right' ? 'justify-end' : 'justify-center'} p-1`}
+          className={`h-full w-full bg-blue-500 flex ${alignY === 'top' ? 'items-start' : alignY === 'bottom' ? 'items-end' : 'items-center'} ${alignX === 'left' ? 'justify-start' : alignX === 'right' ? 'justify-end' : 'justify-center'} p-1`}
         >
           <ContentEditable
             innerRef={EllipseRef}

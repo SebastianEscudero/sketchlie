@@ -31,10 +31,6 @@ const throttledUpdateLayer = throttle((updateLayer, socket, board, layerId, laye
       layerUpdates
     });
   }
-
-  if (socket) {
-    socket.emit('layer-update', layerId, layerUpdates);
-  }
 }, 1000);
 
 export const Star = memo(({
@@ -73,6 +69,9 @@ export const Star = memo(({
       setValue(newValue);
       if (expired !== true) {
         throttledUpdateLayer(updateLayer, socket, board, id, layer);
+        if (socket) {
+          socket.emit('layer-update', id, layer);
+        }
       }
     }
   }, [id, layer, expired, updateLayer, socket, board]);
