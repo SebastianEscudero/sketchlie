@@ -1702,9 +1702,13 @@ export const Canvas = () => {
                     break;
                 }
                 case "v": {
-                    if (document.activeElement instanceof HTMLTextAreaElement) {
+                    if (
+                        document.activeElement instanceof HTMLTextAreaElement ||
+                        document.activeElement instanceof HTMLInputElement ||
+                        (document.activeElement instanceof HTMLElement && document.activeElement.contentEditable === "true")
+                      ) {
                         break;
-                    }
+                      }
                     if (e.ctrlKey || e.metaKey) {
                         if (copiedLayers.size > 0) {
                             e.preventDefault();
