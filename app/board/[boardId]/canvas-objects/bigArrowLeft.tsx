@@ -181,7 +181,7 @@ export const BigArrowLeft = memo(({
                 e.preventDefault(); // Prevent the default Enter key behavior
                 
                 // Insert a new line at the current cursor position
-                document.execCommand('insertHTML', false, '<br><br>');
+                document.execCommand('insertText', false, '\n');
               }
             }}
             className={cn(
