@@ -1,6 +1,6 @@
-import { LayerType } from '@/types/canvas';
+import { LayerType, SelectorType } from '@/types/canvas';
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Socket } from 'socket.io-client';
 
 interface FontSizePickerProps {
@@ -10,6 +10,8 @@ interface FontSizePickerProps {
     updateLayer: any;
     board: any;
     socket: Socket | null;
+    openSelector: SelectorType | null;
+    setOpenSelector: (Selector: SelectorType | null) => void;
 };
 
 const fontSizes = [10, 12, 14, 18, 24, 36, 48, 56, 64, 80, 144];
@@ -21,9 +23,16 @@ export const FontSizePicker = ({
     updateLayer,
     board,
     socket,
+    openSelector,
+    setOpenSelector
 }: FontSizePickerProps) => {
     const [isOpen, setIsOpen] = useState(false);
     const [inputFontSize, setInputFontSize] = useState(liveLayers[selectedLayers[0]].textFontSize);
+
+    useEffect(() => {
+        setOpenSelector(isOpen ? SelectorType.FontSize : null)
+    }, [isOpen]);
+
 
     const handleFontSizeChange = (fontSize: number) => {
         const newLayers = { ...liveLayers };
@@ -113,7 +122,7 @@ export const FontSizePicker = ({
                     <button onClick={() => handleArrowClick('down')}><ChevronDown className="h-4 w-4" /></button>
                 </div>
             </div>
-            {isOpen && (
+            {openSelector === SelectorType.FontSize && (
                 <div
                     className="absolute mt-3 right-5 w-[65px] bg-white ring-1 ring-black ring-opacity-5"
                 >

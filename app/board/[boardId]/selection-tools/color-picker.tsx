@@ -1,18 +1,22 @@
 "use client";
 
-import { Color } from "@/types/canvas";
+import { Color, SelectorType } from "@/types/canvas";
 import { colorToCss } from "@/lib/utils";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface ColorPickerProps {
   onChange: (color: Color) => void;
   layers: any;
+  openSelector: SelectorType | null;
+  setOpenSelector: (Selector: SelectorType | null) => void;
 };
 
 
 export const ColorPicker = ({
   onChange,
-  layers
+  layers,
+  openSelector,
+  setOpenSelector
 }: ColorPickerProps) => {
   const [isOpen, setIsOpen] = useState(false);
   let colorButtonColor
@@ -22,10 +26,14 @@ export const ColorPicker = ({
     colorButtonColor = { r: 0, g: 0, b: 0, a: 0 };
   }
 
+  useEffect(() => {
+      setOpenSelector(isOpen ? SelectorType.Color : null)
+  }, [isOpen]);
+
   return (
     <div className="relative text-left border-r pr-1.5 border-neutral-200">
       <ColorButton color={colorButtonColor} onClick={() => setIsOpen(!isOpen)} />
-      {isOpen && (
+      {openSelector === SelectorType.Color && (
         <div
           className="origin-top-right absolute right-0 mt-2 w-[210px] rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
         >

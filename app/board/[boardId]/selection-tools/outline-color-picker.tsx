@@ -1,18 +1,22 @@
 "use client";
 
-import { Color } from "@/types/canvas";
+import { Color, SelectorType } from "@/types/canvas";
 import { colorToCss } from "@/lib/utils";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface OutlineColorPickerProps {
   onChange: (color: Color) => void;
   layers: any;
+  openSelector: SelectorType | null;
+  setOpenSelector: (Selector: SelectorType | null) => void;
 };
 
 
 export const OutlineColorPicker = ({
   onChange,
-  layers
+  layers,
+  openSelector,
+  setOpenSelector
 }: OutlineColorPickerProps) => {
   const [isOpen, setIsOpen] = useState(false);
   let colorButtonColor
@@ -22,10 +26,14 @@ export const OutlineColorPicker = ({
     colorButtonColor = { r: 0, g: 0, b: 0, a: 0 };
   }
 
+  useEffect(() => {
+    setOpenSelector(isOpen ? SelectorType.OutlineColor : null)
+  }, [isOpen]);
+
   return (
     <div className="relative text-left border-r px-1 border-neutral-200">
       <OutlineColorButton color={colorButtonColor} onClick={() => setIsOpen(!isOpen)} />
-      {isOpen && (
+      {openSelector === SelectorType.OutlineColor && (
         <div
           className="origin-top-right absolute right-0 mt-2 w-[210px] rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
         >

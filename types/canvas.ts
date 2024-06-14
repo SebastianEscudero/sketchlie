@@ -386,3 +386,11 @@ export enum ArrowHead {
 export type PreviewLayer = RectangleLayer | EllipseLayer | RhombusLayer | 
 TriangleLayer | StarLayer | HexagonLayer | BigArrowDownLayer | BigArrowLeftLayer | LineLayer
 | BigArrowRightLayer | BigArrowUpLayer | CommentBubbleLayer | TextLayer | NoteLayer | ArrowLayer;
+
+export enum SelectorType {
+  Color,
+  OutlineColor,
+  ArrowHead,
+  TextJustify,
+  FontSize
+};

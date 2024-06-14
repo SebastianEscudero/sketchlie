@@ -3,7 +3,7 @@
 import { memo, useCallback, useEffect, useState } from "react";
 import { BringToFront, Copy, SendToBack, Trash2 } from "lucide-react";
 import { Hint } from "@/components/hint";
-import { Camera, Color, LayerType, Presence, UpdateLayerMutation } from "@/types/canvas";
+import { Camera, Color, LayerType, Presence, SelectorType, UpdateLayerMutation } from "@/types/canvas";
 import { Button } from "@/components/ui/button";
 import { useSelectionBounds } from "@/hooks/use-selection-bounds";
 import { ColorPicker } from "../selection-tools/color-picker";
@@ -63,6 +63,7 @@ export const SelectionTools = memo(({
   const nanoid = customAlphabet(alphabet, 21);
   const { mutate: updateLayerIds } = useApiMutation(api.board.updateLayerIds);
   const { mutate: deleteLayer } = useApiMutation(api.board.deleteLayer);
+  const [openSelector, setOpenSelector] = useState<SelectorType | null>(null);
 
   const hasText = selectedLayers.every(layer =>
     liveLayers[layer]?.type === LayerType.Text ||
@@ -365,6 +366,8 @@ export const SelectionTools = memo(({
           updateLayer={updateLayer}
           board={board}
           socket={socket}
+          openSelector={openSelector}
+          setOpenSelector={setOpenSelector}
         />
       )}
       {hasText && (
@@ -375,6 +378,8 @@ export const SelectionTools = memo(({
           updateLayer={updateLayer}
           board={board}
           socket={socket}
+          openSelector={openSelector}
+          setOpenSelector={setOpenSelector}
         />
       )}
       {hasText && (
@@ -385,18 +390,24 @@ export const SelectionTools = memo(({
           updateLayer={updateLayer}
           board={board}
           socket={socket}
+          openSelector={openSelector}
+          setOpenSelector={setOpenSelector}
         />
       )}
       {hasOutline && (
         <OutlineColorPicker
           layers={layers}
           onChange={setOutlineFill}
+          openSelector={openSelector}
+          setOpenSelector={setOpenSelector}
         />
       )}
       {!isImageLayer && (
         <ColorPicker
           layers={layers}
           onChange={setFill}
+          openSelector={openSelector}
+          setOpenSelector={setOpenSelector}
         />
       )}
       <Hint label="Duplicate">

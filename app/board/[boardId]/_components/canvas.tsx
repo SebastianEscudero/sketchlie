@@ -946,8 +946,6 @@ export const Canvas = () => {
         e: React.PointerEvent,
     ) => {
 
-        console.log('down')
-
         const bounds = calculateBoundingBox(selectedLayersRef.current.map(id => liveLayers[id]));
         const point = pointerEventToCanvasPoint(e, camera, zoom);
 
@@ -1310,7 +1308,7 @@ export const Canvas = () => {
             const liveLayer = JSON.stringify(liveLayers[selectedLayersRef.current[0]]);
             const changed = initialLayer !== liveLayer;
             setJustChanged(changed);
-            
+
             let layerIds: any = [];
             let layerUpdates: any = [];
             selectedLayersRef.current.forEach(id => {
@@ -1379,8 +1377,6 @@ export const Canvas = () => {
     }, [setMyPresence, myPresence, socket, User.userId]);
 
     const onLayerPointerDown = useCallback((e: React.PointerEvent, layerId: string) => {
-
-        console.log('layer down')
 
         if (
             canvasStateRef.current.mode === CanvasMode.Pencil ||

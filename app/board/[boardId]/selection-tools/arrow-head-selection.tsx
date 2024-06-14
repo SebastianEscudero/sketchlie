@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
-import { ArrowHead } from '@/types/canvas';
+import { ArrowHead, SelectorType } from '@/types/canvas';
 import { MoveLeft, MoveRight, RefreshCcw } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Socket } from 'socket.io-client';
 
 interface ArrowHeadSelectionProps {
@@ -11,6 +11,8 @@ interface ArrowHeadSelectionProps {
     updateLayer: any;
     board: any;
     socket: Socket | null;
+    openSelector: SelectorType | null;
+    setOpenSelector: (Selector: SelectorType | null) => void;
 };
 
 export const ArrowHeadSelection = ({
@@ -20,12 +22,18 @@ export const ArrowHeadSelection = ({
     updateLayer,
     board,
     socket,
+    openSelector,
+    setOpenSelector
 }: ArrowHeadSelectionProps) => {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedHead, setSelectedHead] = useState<'start' | 'end'>('start');
     const layer = liveLayers[selectedLayers[0]]
     const startArrowHead = layer.startArrowHead;
     const endArrowHead = layer.endArrowHead;
+
+    useEffect(() => {
+        setOpenSelector(isOpen ? SelectorType.ArrowHead : null)
+    }, [isOpen]);
 
     const handleArrowHeadChange = (newArrowHead: ArrowHead) => {
         const newLayers = { ...liveLayers };
@@ -108,7 +116,7 @@ export const ArrowHeadSelection = ({
                     {endArrowHead === ArrowHead.Triangle ? <MoveRight /> : <span>None</span>}
                 </Button>
             </div>
-            {isOpen && (
+            {openSelector === SelectorType.ArrowHead && (
                 <div
                     className={`absolute mt-3 ${selectedHead === 'start' ? 'left-[-10px]' : 'right-[-10px]'} w-[75px] bg-white ring-1 ring-black ring-opacity-5`}
                 >
