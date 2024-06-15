@@ -33,7 +33,7 @@ export const TemplatesSlider = () => {
                 </Button>
                 <div ref={scrollContainerRef} className="no-scrollbar px-10 flex flex-row overflow-x-auto gap-5 md:mb-20 md:mt-8 my-5 items-center">
                     <div className="flex-shrink-0 w-[0%] xl:w-[7%]"></div>
-                    {templates.slice(0, 10).map((template, index) => (
+                    {templates.slice(0, 11).map((template, index) => (
                         <TemplateInSlider
                             key={index}
                             name={template.name}

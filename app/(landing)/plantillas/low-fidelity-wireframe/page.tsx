@@ -10,6 +10,8 @@ import Link from "next/link";
 import { BlogStructure } from "@/components/blog-structure";
 import { TemplatesSlider } from "@/components/templates-slider";
 import { Button } from "@/components/ui/button";
+import { HowToCreate } from "@/components/how-to-create";
+import { FaqSection } from "@/components/faq-section";
 
 export const metadata: Metadata = {
     title: "Plantillas de Wireframes gratuitas | Sketchlie",
@@ -20,6 +22,51 @@ export const metadata: Metadata = {
     }
 };
 const LandingPage = () => {
+    const steps = [
+        {
+            trigger: "1. Define los objetivos y requisitos del proyecto",
+            text: "Antes de comenzar, asegúrate de comprender claramente los objetivos del proyecto y los requisitos específicos que debe cumplir el wireframe."
+        },
+        {
+            trigger: "2. Dibuja los elementos básicos de la interfaz",
+            text: "Utiliza herramientas de dibujo disponibles en herramientas como Figma, Adobe XD o Sketchlie para crear los elementos clave de la interfaz, como botones, campos de texto, imágenes y menús."
+        },
+        {
+            trigger: "3. Organiza los elementos para reflejar la estructura y navegación",
+            text: "Coloca y organiza los elementos de manera que reflejen la estructura y la navegación del sitio web o la aplicación. Decide la disposición y el flujo de la información de manera efectiva."
+        },
+        {
+            trigger: "4. Añade anotaciones para explicar funcionalidades y comportamientos",
+            text: "Incorpora anotaciones claras y concisas para describir funcionalidades específicas, interacciones o comportamientos esperados de los elementos de la interfaz."
+        }
+    ];
+    
+    const faqData = [
+        {
+            value: "item-1",
+            trigger: "¿Qué es un wireframe?",
+            content: "Un wireframe es un esquema visual básico que representa la estructura y el contenido de una página web o aplicación. Sirve para planificar la disposición de los elementos y funcionalidades antes de iniciar el diseño detallado."
+        },
+        {
+            value: "item-2",
+            trigger: "¿Qué herramientas online existen para crear wireframes?",
+            content: "Existen varias herramientas online para crear wireframes, como Figma, Adobe XD, Sketchlie. Estas herramientas permiten diseñar interfaces de usuario de manera eficiente y colaborativa, ofreciendo funciones específicas para wireframing."
+        },
+        {
+            value: "item-3",
+            trigger: "¿Qué es una plantilla de wireframe de baja fidelidad?",
+            content: "Una plantilla de wireframe de baja fidelidad es un diseño esquemático simple y no detallado que representa la estructura básica de una interfaz. Se utiliza para explorar y validar conceptos de diseño antes de invertir en el desarrollo completo."
+        },
+        {
+            value: "item-4",
+            trigger: "¿Dónde puedo encontrar plantillas de wireframe de baja fidelidad?",
+            content: (
+                <span>Sketchlie ofrece varias plantillas una de ellas siendo su <Link className="text-custom-blue hover:underline" href="/dashboard/">plantilla de wireframe de baja fidelidad</Link> Esta plantilla te ayudará a comenzar con estructuras predefinidas para explorar y validar tus ideas de diseño. </span>
+            )
+        }
+    ];
+    
+
     return (
         <div>
             <div className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
@@ -128,7 +175,14 @@ const LandingPage = () => {
                     </Link>
                 </div>
             </div>
+            <div className="my-20">
+                <HowToCreate
+                    title="¿Cómo se crea un wireframe online?"
+                    steps={steps}
+                />
+            </div>
             <TemplatesSlider />
+            <FaqSection accordionData={faqData} sectionTitle="los wireframes" />
         </div >
     );
 }

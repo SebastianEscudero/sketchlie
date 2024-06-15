@@ -10,6 +10,8 @@ import Link from "next/link";
 import { BlogStructure } from "@/components/blog-structure";
 import { TemplatesSlider } from "@/components/templates-slider";
 import { Button } from "@/components/ui/button";
+import { HowToCreate } from "@/components/how-to-create";
+import { FaqSection } from "@/components/faq-section";
 
 export const metadata: Metadata = {
     title: "Plantillas gratuita de mapa conceptual | Sketchlie",
@@ -20,6 +22,57 @@ export const metadata: Metadata = {
     }
 };
 const LandingPage = () => {
+
+    const steps = [
+        {
+            trigger: "1. Selecciona un Enfoque Central",
+            text: "Identifica el tema o la pregunta principal que deseas explorar y colócalo en el centro de tu mapa conceptual."
+        },
+        {
+            trigger: "2. Identifica los Conceptos Clave",
+            text: "Haz una lluvia de ideas para listar todos los conceptos importantes relacionados con el tema central. Agrupa conceptos similares."
+        },
+        {
+            trigger: "3. Organiza los Conceptos",
+            text: "Organiza los conceptos desde el más general al más específico en una estructura jerárquica. Coloca los conceptos más generales cerca del centro y los más específicos en la periferia."
+        },
+        {
+            trigger: "4. Conecta los Conceptos",
+            text: "Dibuja líneas entre los conceptos y utiliza palabras enlace para describir las relaciones entre ellos. Asegúrate de que cada línea tenga una etiqueta que explique cómo los conceptos están conectados."
+        },
+        {
+            trigger: "5. Revisa y Ajusta",
+            text: "Revisa tu mapa conceptual para asegurarte de que todas las conexiones son claras y lógicas. Añade detalles adicionales o ejemplos si es necesario y ajusta la estructura según sea necesario para mejorar la claridad."
+        }
+    ];
+    
+
+    const faqData = [
+        {
+            value: "item-1",
+            trigger: "¿Qué es un mapa conceptual?",
+            content: "Un mapa conceptual es una herramienta visual que organiza y representa información. Utiliza nodos (conceptos) y enlaces (relaciones) para mostrar la conexión entre ideas. Es especialmente útil para comprender y recordar grandes cantidades de información compleja."
+        },
+        {
+            value: "item-2",
+            trigger: "¿Cuáles son los beneficios de usar mapas conceptuales?",
+            content: "Los beneficios de los mapas conceptuales incluyen: mejorar la comprensión y la retención de la información, facilitar el aprendizaje visual, promover el pensamiento crítico, y ayudar a identificar relaciones complejas entre conceptos. Son útiles tanto en la educación como en el ámbito empresarial para planificar, organizar ideas y resolver problemas."
+        },
+        {
+            value: "item-3",
+            trigger: "¿Qué herramientas en línea puedo usar para crear mapas conceptuales?",
+            content: (
+                <span>Existen varias herramientas en línea para crear mapas conceptuales, en Sketchlie ofrecemos un tablero infinito donde puedes colaborar en tiempo real, parte con nuestra <Link className="text-custom-blue hover:underline" href="/dashboard/">plantilla de mapa conceptual</Link> o parte desde cero.</span>
+            )
+        },
+        {
+            value: "item-4",
+            trigger: "¿Cómo se usan los mapas conceptuales en la educación?",
+            content: "En la educación, los mapas conceptuales se utilizan para ayudar a los estudiantes a organizar y estructurar nuevos conocimientos, relacionar información previa con nueva, planificar proyectos de escritura, y crear guías de estudio. Los maestros pueden usarlos para planificar el currículo, evaluar la comprensión de los estudiantes, y explicar ideas complejas."
+        }
+    ];
+    
+
     return (
         <div>
             <div className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
@@ -198,7 +251,14 @@ const LandingPage = () => {
                     </Link>
                 </div>
             </div>
+            <div className="my-20">
+                <HowToCreate
+                    title="¿Cómo crear un mapa conceptual?"
+                    steps={steps}
+                />
+            </div>
             <TemplatesSlider />
+            <FaqSection accordionData={faqData} sectionTitle="los mapas conceptuales"/>
         </div >
     );
 }

@@ -10,6 +10,8 @@ import Link from "next/link";
 import { BlogStructure } from "@/components/blog-structure";
 import { TemplatesSlider } from "@/components/templates-slider";
 import { Button } from "@/components/ui/button";
+import { HowToCreate } from "@/components/how-to-create";
+import { FaqSection } from "@/components/faq-section";
 
 export const metadata: Metadata = {
     title: "Plantillas gratuita de mapa de proceso | Sketchlie",
@@ -20,6 +22,55 @@ export const metadata: Metadata = {
     }
 };
 const LandingPage = () => {
+    const steps = [
+        {
+            trigger: "1. Define el objetivo del mapa de proceso",
+            text: "Determina claramente qué proceso deseas representar y cuál es el propósito del mapa de proceso. Esto asegura que el mapa sea relevante y útil para quienes lo utilizan."
+        },
+        {
+            trigger: "2. Identifica las etapas principales del proceso",
+            text: "Identifica y lista las etapas o fases clave del proceso que deseas documentar en el mapa. Estas etapas deben reflejar la secuencia lógica del proceso desde el inicio hasta el final."
+        },
+        {
+            trigger: "3. Detalla las actividades y decisiones en cada etapa",
+            text: "Para cada etapa identificada, describe las actividades específicas que ocurren y las decisiones que se toman. Esto ayudará a comprender cómo se desarrolla cada parte del proceso."
+        },
+        {
+            trigger: "4. Establece las conexiones entre las etapas",
+            text: "Dibuja conexiones claras y precisas que muestren cómo una etapa del proceso se conecta con la siguiente. Esto proporciona una visión holística del flujo general del proceso."
+        },
+        {
+            trigger: "5. Revisa y valida el mapa de proceso",
+            text: "Revisa el mapa de proceso con los stakeholders y usuarios relevantes para asegurarte de que todas las etapas, actividades y conexiones sean precisas y comprensibles. Realiza ajustes según sea necesario."
+        }
+    ];
+
+    
+    const faqData = [
+        {
+            value: "item-1",
+            trigger: "¿Qué es un mapa de proceso?",
+            content: "Un mapa de proceso es una representación visual que muestra las etapas y actividades de un proceso específico. Se utiliza para entender cómo funciona un proceso, identificar áreas de mejora y comunicar eficazmente los pasos involucrados."
+        },
+        {
+            value: "item-2",
+            trigger: "¿Cuáles son los beneficios de utilizar mapas de proceso?",
+            content: "Los beneficios de los mapas de proceso incluyen la mejora de la eficiencia operativa, la identificación de cuellos de botella y áreas de mejora, la estandarización de procedimientos, y la comunicación clara de los pasos del proceso a todos los involucrados."
+        },
+        {
+            value: "item-3",
+            trigger: "¿Qué herramientas se pueden utilizar para crear mapas de proceso?",
+            content: "Existen varias herramientas para crear mapas de proceso, como Microsoft Visio, Lucidchart, Bizagi, y Draw.io. Estas herramientas ofrecen funcionalidades específicas para dibujar diagramas de procesos de manera eficiente."
+        },
+        {
+            value: "item-4",
+            trigger: "¿Dónde puedo encontrar plantillas de mapas de proceso?",
+            content: (
+                <span>Sketchlie ofrece varias plantillas una de ellas siendo su <Link className="text-custom-blue hover:underline" href="/dashboard/">plantilla de mapa de proceso</Link> Esta plantilla proporcionará una estructura predefinida que puedes personalizar según tus necesidades específicas de proceso. </span>
+            )
+        }
+    ];
+    
     return (
         <div>
             <div className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
@@ -167,8 +218,15 @@ const LandingPage = () => {
                     </Link>
                 </div>
             </div>
+            <div className="my-20">
+                <HowToCreate
+                    title="¿Cómo se crea un mapa de procesos?"
+                    steps={steps}
+                />
+            </div>
             <TemplatesSlider />
-        </div >
+            <FaqSection accordionData={faqData} sectionTitle="los mapas de procesos" />
+        </div>
     );
 }
 

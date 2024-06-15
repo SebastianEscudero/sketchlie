@@ -350,8 +350,6 @@ export const SelectionTools = memo(({
     position = initialPosition.y < 130
       ? initialPosition.y + selectionBounds.height * zoom + 30
       : initialPosition.y - 30;
-  
-    console.log(position + 50 + 113 > window.innerHeight);
   }
 
   return (

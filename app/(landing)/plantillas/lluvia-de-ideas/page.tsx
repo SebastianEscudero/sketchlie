@@ -10,6 +10,8 @@ import Link from "next/link";
 import { BlogStructure } from "@/components/blog-structure";
 import { TemplatesSlider } from "@/components/templates-slider";
 import { Button } from "@/components/ui/button";
+import { HowToCreate } from "@/components/how-to-create";
+import { FaqSection } from "@/components/faq-section";
 
 export const metadata: Metadata = {
     title: "Plantillas de lluvia de ideas | Sketchlie",
@@ -20,6 +22,64 @@ export const metadata: Metadata = {
     }
 };
 const LandingPage = () => {
+
+    const steps = [
+        {
+            trigger: "1. Define el Problema o Tema",
+            text: "Clarifica el problema o tema sobre el cual quieres generar ideas. Asegúrate de que todos los participantes comprendan el objetivo de la sesión."
+        },
+        {
+            trigger: "2. Establece un Límite de Tiempo",
+            text: "Fija un límite de tiempo adecuado para la sesión de lluvia de ideas. Esto ayuda a mantener el enfoque y la energía durante el proceso."
+        },
+        {
+            trigger: "3. Genera Ideas sin Crítica",
+            text: "Anima a todos los participantes a compartir cualquier idea que se les ocurra, sin evaluar ni criticar. Es importante crear un ambiente donde todas las ideas sean bienvenidas."
+        },
+        {
+            trigger: "4. Evalúa y Selecciona Ideas",
+            text: "Al finalizar la lluvia de ideas, revisa todas las ideas generadas. Identifica las más viables, creativas o prometedoras según los criterios establecidos."
+        },
+        {
+            trigger: "5. Documenta y Sigue Adelante",
+            text: "Documenta todas las ideas generadas y las decisiones tomadas. Define los próximos pasos o acciones a seguir basados en las ideas seleccionadas."
+        }
+    ];
+
+
+
+
+    const faqData = [
+        {
+            value: "item-1",
+            trigger: "¿Qué es una lluvia de ideas?",
+            content: "Una lluvia de ideas es una técnica utilizada para generar ideas de manera creativa y libre sobre un tema específico. Consiste en reunir a un grupo de personas para que contribuyan con ideas sin crítica inicial, fomentando así la innovación y la exploración de soluciones."
+        },
+        {
+            value: "item-2",
+            trigger: "¿Cómo se realiza una lluvia de ideas?",
+            content: "Para realizar una lluvia de ideas efectiva, sigue estos pasos, Define claramente el problema o tema, Reúne a un grupo diverso de personas, Establece reglas para no juzgar las ideas inicialmente, Anota todas las ideas sin filtro, Evalúa y selecciona las ideas más prometedoras."
+        },
+        {
+            value: "item-3",
+            trigger: "¿Cuáles son los beneficios de utilizar una lluvia de ideas?",
+            content: "Los beneficios de la lluvia de ideas incluyen estimular la creatividad, fomentar la colaboración entre equipos, explorar diferentes perspectivas sobre un problema y generar soluciones innovadoras. Es una herramienta útil para resolver problemas complejos y generar ideas fuera de lo común."
+        },
+        {
+            value: "item-4",
+            trigger: "¿Qué técnicas se pueden utilizar en una lluvia de ideas?",
+            content: "Entre las técnicas más efectivas para una lluvia de ideas se encuentran el brainwriting (escritura de ideas en silencio), el uso de estímulos visuales o palabras clave, y la técnica de asociación libre. Estas técnicas ayudan a desbloquear la creatividad y a generar ideas de manera más innovadora."
+        },
+        {
+            value: "item-5",
+            trigger: "¿Dónde puedo encontrar plantillas para realizar una lluvia de ideas?",
+            content: (
+                <span>Puedes encontrar plantillas para lluvia de ideas en diversas plataformas, en Sketchlie tenemos nuestra <Link className="text-custom-blue hover:underline" href="/dashboard/">plantilla de lluvia de ideas</Link>, esta plantilla está diseñada para facilitar el proceso de captura y desarrollo de ideas durante una sesión de lluvia de ideas.</span>
+            )
+        }
+    ];
+
+
     return (
         <div>
             <div className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
@@ -154,7 +214,14 @@ const LandingPage = () => {
                     </Link>
                 </div>
             </div>
+            <div className="my-20">
+                <HowToCreate
+                    title="¿Cómo hacer una sesión de brainstorming?"
+                    steps={steps}
+                />
+            </div>
             <TemplatesSlider />
+            <FaqSection accordionData={faqData} sectionTitle="las lluvias de ideas" />
         </div >
     );
 }

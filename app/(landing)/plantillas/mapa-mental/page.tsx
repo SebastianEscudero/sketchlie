@@ -10,6 +10,8 @@ import Link from "next/link";
 import { BlogStructure } from "@/components/blog-structure";
 import { TemplatesSlider } from "@/components/templates-slider";
 import { Button } from "@/components/ui/button";
+import { HowToCreate } from "@/components/how-to-create";
+import { FaqSection } from "@/components/faq-section";
 
 export const metadata: Metadata = {
     title: "Plantillas de mapa mental gratuita | Sketchlie",
@@ -20,6 +22,59 @@ export const metadata: Metadata = {
     }
 };
 const LandingPage = () => {
+    const steps = [
+        {
+            trigger: "1. Selecciona un tema central",
+            text: "Elige el tema o concepto principal que deseas explorar y colócalo en el centro de tu mapa mental."
+        },
+        {
+            trigger: "2. Identifica conceptos clave",
+            text: "Haz una lluvia de ideas para identificar y listar los conceptos o ideas principales relacionadas con el tema central."
+        },
+        {
+            trigger: "3. Organiza los conceptos",
+            text: "Organiza los conceptos de manera jerárquica, colocando los más generales cerca del centro y los más específicos en las ramas exteriores del mapa mental."
+        },
+        {
+            trigger: "4. Conecta los conceptos",
+            text: "Dibuja líneas o flechas para conectar los conceptos entre sí. Utiliza palabras clave o frases cortas para describir las relaciones."
+        },
+        {
+            trigger: "5. Revisa y ajusta",
+            text: "Revisa tu mapa mental para asegurarte de que sea claro y coherente. Añade colores, imágenes o iconos para mejorar la visualización y ajusta la estructura según sea necesario."
+        }
+    ];
+
+    const faqData = [
+        {
+            value: "item-1",
+            trigger: "¿Qué es un mapa mental?",
+            content: "Un mapa mental es una representación gráfica que organiza información de manera visual. Utiliza nodos (conceptos o ideas) y conexiones (líneas) para mostrar cómo están relacionados entre sí."
+        },
+        {
+            value: "item-2",
+            trigger: "¿Cómo se utiliza un mapa mental?",
+            content: "Los mapas mentales se utilizan para capturar y organizar ideas, facilitar la memorización y comprensión de conceptos complejos, y fomentar la creatividad en la planificación de proyectos y toma de decisiones."
+        },
+        {
+            value: "item-3",
+            trigger: "¿Cuáles son los beneficios de usar un mapa mental?",
+            content: "Los beneficios incluyen mejorar la organización y comprensión de información, estimular la creatividad y el pensamiento lateral, y facilitar la planificación estratégica y la resolución de problemas."
+        },
+        {
+            value: "item-4",
+            trigger: "¿Qué herramientas online puedo usar para crear mapas mentales?",
+            content: "Existen varias herramientas online como MindMeister, XMind, Coggle y Lucidchart que permiten crear, editar y colaborar en mapas mentales. Estas herramientas ofrecen plantillas y funciones para personalizar y compartir mapas."
+        },
+        {
+            value: "item-5",
+            trigger: "¿Dónde puedo encontrar plantillas de mapa mental?",
+            content: (
+                <span>Puedes encontrar plantillas de mapa mental en plataformas como Sketchlie, utiliza nuestra  <Link className="text-custom-blue hover:underline" href="/dashboard/">plantilla de mapa mental</Link> para acelerar el proceso de creación y personalización de tu mapa mental, o puedes optar por realizar tu propio diseño desde cero.</span>
+            )
+        }
+    ];
+    
     return (
         <div>
             <div className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
@@ -151,7 +206,14 @@ const LandingPage = () => {
                     </Link>
                 </div>
             </div>
+            <div className="my-20">
+                <HowToCreate
+                    title="¿Cómo se hace un mapa mental?"
+                    steps={steps}
+                />
+            </div>
             <TemplatesSlider />
+            <FaqSection accordionData={faqData} sectionTitle="los mapas mentales" />
         </div >
     );
 }

@@ -10,6 +10,8 @@ import Link from "next/link";
 import { BlogStructure } from "@/components/blog-structure";
 import { TemplatesSlider } from "@/components/templates-slider";
 import { Button } from "@/components/ui/button";
+import { HowToCreate } from "@/components/how-to-create";
+import { FaqSection } from "@/components/faq-section";
 
 export const metadata: Metadata = {
     title: "Creador de diagramas y plantillas gratuitas | Sketchlie",
@@ -20,6 +22,58 @@ export const metadata: Metadata = {
     }
 };
 const LandingPage = () => {
+    const steps = [
+        {
+            trigger: "1. Define el propósito del diagrama",
+            text: "Determina claramente qué proceso, sistema o concepto deseas representar con el diagrama. Esto asegura que el diagrama sea relevante y útil para quienes lo utilizan."
+        },
+        {
+            trigger: "2. Selecciona el tipo de diagrama adecuado",
+            text: "Elige el tipo de diagrama que mejor represente la información que deseas comunicar. Puede ser un diagrama de flujo, un diagrama de red, un diagrama de Gantt, entre otros."
+        },
+        {
+            trigger: "3. Recopila la información necesaria",
+            text: "Reúne todos los datos y detalles pertinentes que necesitarás incluir en el diagrama. Esto puede incluir procesos, relaciones, datos técnicos o cualquier otra información relevante."
+        },
+        {
+            trigger: "4. Crea el diagrama utilizando herramientas adecuadas",
+            text: "Utiliza herramientas específicas como Lucidchart, Microsoft Visio, Draw.io o herramientas online como Figma y Canva para diseñar y construir el diagrama. Añade elementos visuales y textuales según sea necesario."
+        },
+        {
+            trigger: "5. Revisa y valida el diagrama",
+            text: "Revisa el diagrama con los stakeholders y usuarios relevantes para asegurarte de que la información representada sea precisa, clara y comprensible. Realiza ajustes según sea necesario."
+        }
+    ];
+
+    const faqData = [
+        {
+            value: "item-1",
+            trigger: "¿Qué es un diagrama y para qué se utiliza?",
+            content: "Un diagrama es una representación visual de información, conceptos o procesos. Se utiliza para clarificar ideas complejas, comunicar información de manera visual y facilitar la comprensión de sistemas, procesos o relaciones."
+        },
+        {
+            value: "item-2",
+            trigger: "¿Cuáles son los tipos más comunes de diagramas?",
+            content: "Los tipos comunes de diagramas incluyen diagramas de flujo, diagramas de red, diagramas de Gantt, diagramas de casos de uso, diagramas de estructura organizacional, entre otros. Cada tipo se adapta mejor a representar diferentes tipos de información y procesos."
+        },
+        {
+            value: "item-3",
+            trigger: "¿Cómo se crea un diagrama online?",
+            content: "Para crear un diagrama online, utiliza herramientas como Lucidchart, Microsoft Visio Online, Figma o Sketchlie. Establece el propósito del diagrama, selecciona el tipo adecuado, recopila la información necesaria, crea el diagrama utilizando herramientas adecuadas y revisa con stakeholders para validar la precisión."
+        },
+        {
+            value: "item-4",
+            trigger: "¿Dónde puedo encontrar plantillas de diagramas?",
+            content: "Puedes encontrar plantillas de diagramas en plataformas como Lucidchart, Microsoft Visio, Figma y Sketchlie. Estas plantillas te permiten empezar rápidamente con estructuras predefinidas que puedes personalizar según tus necesidades específicas de diagramación."
+        },
+        {
+            value: "item-5",
+            trigger: "¿Qué ventajas ofrecen los diagramas online sobre los tradicionales?",
+            content: "Los diagramas online ofrecen ventajas como accesibilidad desde cualquier lugar con conexión a Internet, colaboración en tiempo real con otros usuarios, actualización instantánea de contenido y compatibilidad con diversas herramientas integradas."
+        }
+    ];
+    
+
     return (
         <div>
             <div className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
@@ -148,7 +202,14 @@ const LandingPage = () => {
                     </Link>
                 </div>
             </div>
+            <div className="my-20">
+                <HowToCreate
+                    title="¿Cómo se hace un diagrama?"
+                    steps={steps}
+                />
+            </div>
             <TemplatesSlider />
+            <FaqSection accordionData={faqData} sectionTitle="los diagramas" />
         </div >
     );
 }

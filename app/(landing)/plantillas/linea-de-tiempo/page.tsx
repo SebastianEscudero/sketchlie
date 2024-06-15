@@ -10,6 +10,8 @@ import Link from "next/link";
 import { BlogStructure } from "@/components/blog-structure";
 import { TemplatesSlider } from "@/components/templates-slider";
 import { Button } from "@/components/ui/button";
+import { HowToCreate } from "@/components/how-to-create";
+import { FaqSection } from "@/components/faq-section";
 
 export const metadata: Metadata = {
     title: "Plantilla de línea de tiempo gratuita | Sketchlie",
@@ -20,6 +22,54 @@ export const metadata: Metadata = {
     }
 };
 const LandingPage = () => {
+    const steps = [
+        {
+            trigger: "1. Utiliza herramientas adecuadas",
+            text: "Selecciona una herramienta de creación de diagramas que se adapte a tus necesidades y habilidades. Puedes optar por software especializado, como Sketchlie"
+        },
+        {
+            trigger: "2. Define el propósito de la línea de tiempo",
+            text: "Determina claramente el motivo por el cual estás creando la línea de tiempo. Esto te ayudará a establecer qué eventos o procesos incluir y cómo organizarlos cronológicamente."
+        },
+        {
+            trigger: "3. Organiza los eventos cronológicamente",
+            text: "Enumera los eventos o hitos que deseas incluir en la línea de tiempo y ordénalos de acuerdo con su secuencia temporal. Asegúrate de incluir fechas precisas y descripciones claras para cada evento."
+        },
+        {
+            trigger: "4. Revisa y ajusta la línea de tiempo",
+            text: "Revisa la línea de tiempo para asegurarte de que todos los eventos estén correctamente representados y sean fáciles de entender. Ajusta el diseño, los colores y los detalles según sea necesario para mejorar la claridad y la estética."
+        }
+    ];
+
+    const faqData = [
+        {
+            value: "item-1",
+            trigger: "¿Qué es una plantilla de línea de tiempo?",
+            content: "Una plantilla de línea de tiempo es una herramienta visual utilizada para representar eventos en orden cronológico. Facilita la visualización y comprensión de la secuencia temporal de acontecimientos."
+        },
+        {
+            value: "item-2",
+            trigger: "¿Cómo se utiliza una plantilla de línea de tiempo?",
+            content: "Una plantilla de línea de tiempo se utiliza seleccionando un formato (horizontal, vertical, interactivo), añadiendo eventos con fechas y descripciones relevantes, y ajustando el diseño para mejorar la claridad visual."
+        },
+        {
+            value: "item-3",
+            trigger: "¿Cuáles son los beneficios de usar una línea de tiempo?",
+            content: "Los beneficios de usar una línea de tiempo incluyen la capacidad de visualizar y comunicar secuencias temporales complejas de manera clara y efectiva, facilitando la planificación y el análisis de proyectos y eventos."
+        },
+        {
+            value: "item-4",
+            trigger: "¿Dónde puedo encontrar plantillas de línea de tiempo?",
+            content: "Puedes encontrar plantillas de línea de tiempo en herramientas como Sketchlie, Tldraw, Miro, y sitios web especializados en recursos para presentaciones. Estas plantillas son útiles para comenzar rápidamente y personalizar según tus necesidades específicas."
+        },
+        {
+            value: "item-5",
+            trigger: "¿Cómo puedo crear una línea de tiempo efectiva?",
+            content: "Para crear una línea de tiempo efectiva, define claramente el propósito, organiza los eventos en orden cronológico, selecciona un formato adecuado, utiliza herramientas de diseño y revisa el diseño final para asegurar la claridad y precisión."
+        }
+    ];
+    
+    
     return (
         <div>
             <div className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
@@ -144,7 +194,14 @@ const LandingPage = () => {
                     </Link>
                 </div>
             </div>
+            <div className="my-20">
+                <HowToCreate
+                    title="¿Cómo se hace una linea de tiempo?"
+                    steps={steps}
+                />
+            </div>
             <TemplatesSlider />
+            <FaqSection accordionData={faqData} sectionTitle="las lineas de tiempo" />
         </div >
     );
 }

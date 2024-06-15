@@ -10,6 +10,8 @@ import Link from "next/link";
 import { BlogStructure } from "@/components/blog-structure";
 import { TemplatesSlider } from "@/components/templates-slider";
 import { Button } from "@/components/ui/button";
+import { HowToCreate } from "@/components/how-to-create";
+import { FaqSection } from "@/components/faq-section";
 
 export const metadata: Metadata = {
     title: "Plantillas gratuitas de diagrama de flujo | Sketchlie",
@@ -20,6 +22,61 @@ export const metadata: Metadata = {
     }
 };
 const LandingPage = () => {
+    
+    const steps = [
+        {
+            trigger: "1. Define el propósito del diagrama",
+            text: "Determina qué proceso deseas representar y cuál es el objetivo de crear el diagrama de flujo. Identifica los puntos de inicio y fin del proceso."
+        },
+        {
+            trigger: "2. Reúne información",
+            text: "Consulta con las partes interesadas para recopilar todos los pasos y decisiones involucrados en el proceso. Asegúrate de tener una comprensión completa del proceso antes de comenzar a diagramar."
+        },
+        {
+            trigger: "3. Selecciona un formato o plantilla",
+            text: "Elige una plantilla de diagrama de flujo adecuada o comienza con un lienzo en blanco. Herramientas en línea como Lucidchart, Mural y Canva ofrecen plantillas útiles para empezar."
+        },
+        {
+            trigger: "4. Dibuja el diagrama",
+            text: "Utiliza símbolos estándar para representar los diferentes tipos de acciones y decisiones en tu proceso. Conecta estos símbolos con flechas para mostrar la secuencia del flujo. Asegúrate de que el diagrama sea claro y fácil de seguir."
+        },
+        {
+            trigger: "5. Revisa y valida el diagrama",
+            text: "Revisa el diagrama de flujo con las partes interesadas para asegurar que todos los pasos estén correctamente representados y que el diagrama sea preciso. Haz ajustes según sea necesario y actualiza el diagrama conforme cambie el proceso."
+        }
+    ];
+    
+    
+
+    const faqData = [
+        {
+            value: "item-1",
+            trigger: "¿Qué es un diagrama de flujo?",
+            content: "Un diagrama de flujo es una representación visual de los pasos y decisiones involucrados en un proceso. Utiliza símbolos y flechas para mostrar el flujo del proceso, facilitando la comprensión y comunicación de cómo funciona un sistema o proceso."
+        },
+        {
+            value: "item-2",
+            trigger: "¿Cuáles son los elementos básicos de un diagrama de flujo?",
+            content: "Los elementos básicos de un diagrama de flujo incluyen puntos de inicio y fin, pasos del proceso, puntos de decisión, conectores o flechas que muestran el flujo del proceso y anotaciones o descripciones adicionales para proporcionar contexto."
+        },
+        {
+            value: "item-3",
+            trigger: "¿Cómo se crea un diagrama de flujo?",
+            content: "Para crear un diagrama de flujo, primero identifica el proceso a representar y define sus puntos de inicio y fin. Luego, desglosa el proceso en pasos simples, usa símbolos para cada paso y conecta estos símbolos con flechas para mostrar el flujo. Finalmente, revisa y valida el diagrama con los stakeholders para asegurarte de su precisión."
+        },
+        {
+            value: "item-4",
+            trigger: "¿Cuáles son los usos de un diagrama de flujo?",
+            content: "Los diagramas de flujo se usan para mapear y documentar procesos, analizar y optimizar flujos de trabajo, apoyar en la toma de decisiones, planificar y gestionar proyectos, desarrollar software y diseñar sistemas. Son herramientas versátiles aplicables en muchas áreas para mejorar la comprensión y la comunicación."
+        },
+        {
+            value: "item-5",
+            trigger: "¿Cuáles son las ventajas y desventajas de usar un diagrama de flujo?",
+            content: "Las ventajas de los diagramas de flujo incluyen la visualización de procesos complejos, mejora de la comunicación y comprensión entre los miembros del equipo, identificación de cuellos de botella y facilitación de mejoras en el proceso. Las desventajas pueden incluir la posibilidad de simplificar en exceso los procesos complejos y el tiempo requerido para crearlos y mantenerlos actualizados."
+        }
+    ];
+    
+
     return (
         <div>
             <div className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
@@ -173,7 +230,14 @@ const LandingPage = () => {
                     </Link>
                 </div>
             </div>
+            <div className="my-20">
+                <HowToCreate
+                    title="¿Cómo hacer un diagrama de flujo?"
+                    steps={steps}
+                />
+            </div>
             <TemplatesSlider />
+            <FaqSection accordionData={faqData} sectionTitle="los diagramas de flujo"/>
         </div >
     );
 }
