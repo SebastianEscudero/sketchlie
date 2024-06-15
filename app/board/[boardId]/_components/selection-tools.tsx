@@ -66,7 +66,6 @@ export const SelectionTools = memo(({
   const { mutate: updateLayerIds } = useApiMutation(api.board.updateLayerIds);
   const { mutate: deleteLayer } = useApiMutation(api.board.deleteLayer);
   const [openSelector, setOpenSelector] = useState<SelectorType | null>(null);
-  const [isAbove, setIsAbove] = useState<boolean>(true);
 
   const hasText = selectedLayers.every(layer =>
     liveLayers[layer]?.type === LayerType.Text ||
@@ -126,7 +125,6 @@ export const SelectionTools = memo(({
 
         if (y < 130) {
           y = Math.max(centerY, startY, endY) * zoom + camera.y + 130;
-          setIsAbove(false);
         }
       } else {
         x = (selectionBounds.width / 2 + selectionBounds.x) * zoom + camera.x;
@@ -347,13 +345,22 @@ export const SelectionTools = memo(({
     return null;
   }
 
+  let position = 0
+  if (initialPosition) {
+    position = initialPosition.y < 130
+      ? initialPosition.y + selectionBounds.height * zoom + 30
+      : initialPosition.y - 30;
+  
+    console.log(position + 50 + 113 > window.innerHeight);
+  }
+
   return (
     <div
       className="absolute p-1 rounded-sm bg-white shadow-sm border flex select-none gap-x-2 items-center"
       style={{
         transform: initialPosition
           ? `translate(
-          calc(${initialPosition.x < 265 ? 265 : initialPosition.x + 205 > window.innerWidth ? window.innerWidth - 205 : initialPosition.x}px - 50%),
+          calc(${initialPosition.x < 300 ? 300 : initialPosition.x + 230 > window.innerWidth ? window.innerWidth - 230 : initialPosition.x}px - 50%),
           ${initialPosition.y < 130
             ? `calc(${initialPosition.y + selectionBounds.height * zoom + 30}px)`
             : `calc(${initialPosition.y - 30}px - 100%)`
@@ -382,7 +389,7 @@ export const SelectionTools = memo(({
           socket={socket}
           openSelector={openSelector}
           setOpenSelector={setOpenSelector}
-          isAbove={isAbove}
+          expandUp={position + 50 + 80 > window.innerHeight}
         />
       )}
       {hasText && (
@@ -395,6 +402,7 @@ export const SelectionTools = memo(({
           socket={socket}
           openSelector={openSelector}
           setOpenSelector={setOpenSelector}
+          expandUp={position + 50 + 460 > window.innerHeight}
         />
       )}
       {hasText && (
@@ -407,6 +415,7 @@ export const SelectionTools = memo(({
           socket={socket}
           openSelector={openSelector}
           setOpenSelector={setOpenSelector}
+          expandUp={position + 50 + 113 > window.innerHeight}
         />
       )}
       {hasOutline && (
@@ -415,6 +424,7 @@ export const SelectionTools = memo(({
           onChange={setOutlineFill}
           openSelector={openSelector}
           setOpenSelector={setOpenSelector}
+          expandUp={position + 50 + 205 > window.innerHeight}
         />
       )}
       {!isImageLayer && (
@@ -423,6 +433,7 @@ export const SelectionTools = memo(({
           onChange={setFill}
           openSelector={openSelector}
           setOpenSelector={setOpenSelector}
+          expandUp={position + 50 + 205 > window.innerHeight}
         />
       )}
       <Hint label="Duplicate">

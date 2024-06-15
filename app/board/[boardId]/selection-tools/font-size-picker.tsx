@@ -12,6 +12,7 @@ interface FontSizePickerProps {
     socket: Socket | null;
     openSelector: SelectorType | null;
     setOpenSelector: (Selector: SelectorType | null) => void;
+    expandUp: boolean;
 };
 
 const fontSizes = [10, 12, 14, 18, 24, 36, 48, 56, 64, 80, 144];
@@ -24,7 +25,8 @@ export const FontSizePicker = ({
     board,
     socket,
     openSelector,
-    setOpenSelector
+    setOpenSelector,
+    expandUp = false
 }: FontSizePickerProps) => {
     const [inputFontSize, setInputFontSize] = useState(liveLayers[selectedLayers[0]].textFontSize);
     
@@ -97,6 +99,8 @@ export const FontSizePicker = ({
         }
     };
 
+    const selectorPositionClass = expandUp ? 'bottom-[100%] mb-3' : 'top-[100%] mt-3';
+
     return (
         <div className="relative inline-block text-left">
             <div className='flex flex-row items center justify-center'>
@@ -118,7 +122,7 @@ export const FontSizePicker = ({
             </div>
             {openSelector === SelectorType.FontSize && (
                 <div
-                    className="absolute mt-3 right-5 w-[65px] bg-white ring-1 ring-black ring-opacity-5"
+                    className={`absolute ${selectorPositionClass} right-5 w-[65px] bg-white ring-1 ring-black ring-opacity-5`}
                 >
                     <div className="py-5 px-3 grid grid-cols-1 gap-5 w-full text-sm" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                         {fontSizes.map(fontSize => (

@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { ArrowHead, SelectorType } from '@/types/canvas';
 import { MoveLeft, MoveRight, RefreshCcw } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Socket } from 'socket.io-client';
 
 interface ArrowHeadSelectionProps {
@@ -13,6 +13,7 @@ interface ArrowHeadSelectionProps {
     socket: Socket | null;
     openSelector: SelectorType | null;
     setOpenSelector: (Selector: SelectorType | null) => void;
+    expandUp: boolean;
 };
 
 export const ArrowHeadSelection = ({
@@ -23,7 +24,8 @@ export const ArrowHeadSelection = ({
     board,
     socket,
     openSelector,
-    setOpenSelector
+    setOpenSelector,
+    expandUp = false
 }: ArrowHeadSelectionProps) => {
     const [selectedHead, setSelectedHead] = useState<'start' | 'end'>('start');
     const layer = liveLayers[selectedLayers[0]]
@@ -98,6 +100,8 @@ export const ArrowHeadSelection = ({
         setLiveLayers(newLayers);
     }
 
+    const selectorPositionClass = expandUp ? 'bottom-[100%] mb-3' : 'top-[100%] mt-3';
+
     return (
         <div className="relative inline-block text-left pl-1">
             <div className='flex flex-row items center justify-center gap-x-1'>
@@ -127,7 +131,7 @@ export const ArrowHeadSelection = ({
             </div>
             {openSelector === SelectorType.ArrowHead && (
                 <div
-                    className={`absolute mt-3 ${selectedHead === 'start' ? 'left-[-10px]' : 'right-[-10px]'} w-[75px] bg-white ring-1 ring-black ring-opacity-5`}
+                className={`absolute ${selectorPositionClass} ${selectedHead === 'start' ? 'left-[-10px]' : 'right-[-10px]'} w-[75px] bg-white ring-1 ring-black ring-opacity-5`}
                 >
                     <div className="p-3 grid grid-cols-1 gap-2 w-full text-sm" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                         <Button variant="board" size="default" onClick={() => handleArrowHeadChange(ArrowHead.None)}>

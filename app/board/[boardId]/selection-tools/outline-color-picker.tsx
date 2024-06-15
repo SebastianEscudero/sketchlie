@@ -2,13 +2,13 @@
 
 import { Color, SelectorType } from "@/types/canvas";
 import { colorToCss } from "@/lib/utils";
-import { useEffect, useState } from 'react';
 
 interface OutlineColorPickerProps {
   onChange: (color: Color) => void;
   layers: any;
   openSelector: SelectorType | null;
   setOpenSelector: (Selector: SelectorType | null) => void;
+  expandUp: boolean;
 };
 
 
@@ -16,7 +16,8 @@ export const OutlineColorPicker = ({
   onChange,
   layers,
   openSelector,
-  setOpenSelector
+  setOpenSelector,
+  expandUp = false
 }: OutlineColorPickerProps) => {
   let colorButtonColor
   if (layers.length === 1) {
@@ -25,12 +26,14 @@ export const OutlineColorPicker = ({
     colorButtonColor = { r: 0, g: 0, b: 0, a: 0 };
   }
 
+  const selectorPositionClass = expandUp ? 'bottom-[100%] mb-4' : 'top-[100%] mt-4';
+
   return (
     <div className="relative text-left border-r px-1 border-neutral-200">
       <OutlineColorButton color={colorButtonColor} onClick={() => setOpenSelector(openSelector === SelectorType.OutlineColor ? null : SelectorType.OutlineColor)} />
       {openSelector === SelectorType.OutlineColor && (
         <div
-          className="origin-top-right absolute right-0 mt-2 w-[210px] rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
+          className={`origin-top-right absolute right-0 ${selectorPositionClass} translate-x-1/3 w-[210px] rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5`}
         >
           <div className="p-3 grid grid-cols-4 gap-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
             <ColorButton color={{ r: 0, g: 0, b: 0, a: 0 }} onClick={onChange} />
