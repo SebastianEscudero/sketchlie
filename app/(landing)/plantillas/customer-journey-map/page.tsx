@@ -26,57 +26,54 @@ const LandingPage = () => {
     const steps = [
         {
             trigger: "1. Identifica los Segmentos de Clientes",
-            text: "Define claramente quiénes son tus clientes potenciales y agrúpalos en segmentos basados en características comunes."
+            text: "Define claramente quiénes son tus clientes potenciales y agrúpalos en segmentos basados en características comunes como demografía, comportamiento, necesidades y preferencias. Utiliza herramientas como encuestas, entrevistas y análisis de datos para obtener información detallada sobre tus clientes."
         },
         {
-            trigger: "2. Define la Propuesta de Valor",
-            text: "Determina qué problema estás resolviendo para tus clientes y qué beneficios específicos les ofreces que te diferencian de la competencia."
+            trigger: "2. Mapea las Etapas del Viaje del Cliente",
+            text: "Identifica y define las diferentes etapas que un cliente atraviesa desde el primer contacto con tu empresa hasta la post-compra. Estas etapas suelen incluir: Conciencia, Consideración, Decisión de Compra, Retención y Lealtad. Cada etapa debe reflejar las acciones, pensamientos y emociones del cliente."
         },
         {
-            trigger: "3. Selecciona los Canales",
-            text: "Establece cómo llegarás a tus segmentos de clientes. Considera canales de distribución, comunicación y ventas."
+            trigger: "3. Lista los Puntos de Contacto del Cliente",
+            text: "Enumera todos los puntos de contacto o interacciones que los clientes tienen con tu empresa en cada etapa del viaje. Estos puntos de contacto pueden ser online (sitio web, redes sociales) u offline (tiendas físicas, llamadas telefónicas). Es importante mapear cada punto de contacto para entender cómo y dónde los clientes interactúan con tu marca."
         },
         {
-            trigger: "4. Establece Relaciones con Clientes",
-            text: "Define el tipo de relación que deseas mantener con cada segmento de clientes, ya sea personal, automatizada, autoservicio, etc."
+            trigger: "4. Recoge y Analiza Datos del Cliente",
+            text: "Recopila datos cuantitativos y cualitativos sobre las experiencias de tus clientes en cada punto de contacto. Utiliza herramientas como Google Analytics, encuestas de satisfacción, entrevistas con clientes y análisis de redes sociales. Analiza estos datos para identificar patrones, puntos de dolor y oportunidades de mejora."
         },
         {
-            trigger: "5. Determina las Fuentes de Ingresos",
-            text: "Describe cómo generará ingresos tu negocio. Considera las diferentes formas de monetización, como ventas directas, suscripciones, licencias, etc."
+            trigger: "5. Identifica los Puntos de Dolor y Oportunidades",
+            text: "Examina los datos recogidos para identificar puntos de dolor (problemas o frustraciones que experimentan los clientes) y oportunidades de mejora. Esto puede incluir dificultades en la navegación del sitio web, tiempos de espera largos, falta de información clara, entre otros. Identificar estos puntos es crucial para mejorar la experiencia del cliente."
         }
     ];
-
+    
     const faqData = [
         {
             value: "item-1",
-            trigger: "¿Qué es el modelo de negocio canvas?",
-            content: "El modelo de negocio canvas, también conocido como business model canvas, es una herramienta estratégica y de gestión que permite describir, diseñar, desafiar, inventar y pivotar modelos de negocio. Presenta los principales aspectos de un negocio de manera visual en un lienzo dividido en nueve bloques."
+            trigger: "¿Qué es un customer journey map?",
+            content: "Un customer journey map es una representación visual de las etapas que un cliente atraviesa al interactuar con una empresa, desde el conocimiento inicial hasta la compra y las actividades post-compra. Ayuda a las empresas a comprender y mejorar la experiencia del cliente en cada etapa."
         },
         {
             value: "item-2",
-            trigger: "¿Cómo hacer un modelo de negocio canvas?",
-            content: "Para hacer un modelo de negocio canvas, debes completar cada uno de los nueve bloques con la información relevante de tu negocio. Estos bloques incluyen Propuesta de Valor, Segmentos de Clientes, Canales, Relación con Clientes, Fuentes de Ingresos, Recursos Clave, Actividades Clave, Socios Clave y Estructura de Costos. Utiliza una plantilla modelo canvas para facilitar el proceso."
+            trigger: "¿Cuáles son las etapas de un customer journey map?",
+            content: "Las etapas comunes de un customer journey map son: 1) Conciencia, 2) Consideración, 3) Decisión de compra, 4) Retención, 5) Abogacía. Cada etapa ayuda a entender el comportamiento, los puntos de dolor y las motivaciones del cliente."
         },
         {
             value: "item-3",
-            trigger: "¿Dónde descargar una plantilla modelo canvas?",
-            content: (
-                <span>
-                    Puedes descargar una plantilla modelo canvas en diversas fuentes en línea, como sitios web de recursos empresariales, blogs de negocios y plataformas educativas. También puedes usar la <Link className="text-custom-blue hover:underline" href="/dashboard/">plantilla modelo canvas</Link> de Sketchlie, los creadores del business model canvas.
-                </span>
-            )
+            trigger: "¿Por qué es importante un customer journey map?",
+            content: "Un customer journey map es importante porque proporciona una visión clara de la experiencia del cliente, ayudando a identificar y solucionar problemas, mejorar la satisfacción del cliente y alinear las estrategias de marketing y ventas con las necesidades del cliente."
         },
         {
             value: "item-4",
-            trigger: "¿Cuál es el objetivo del modelo canvas?",
-            content: "El objetivo del modelo canvas, o modelo de negocio canvas, es proporcionar una representación visual y sencilla de todos los aspectos clave de un negocio. Esto ayuda a los emprendedores y empresarios a analizar, diseñar y mejorar sus modelos de negocio de manera efectiva."
-        },
-        {
-            value: "item-5",
-            trigger: "¿Qué ejemplos hay de modelos canvas exitosos?",
-            content: "Hay muchos ejemplos de modelos canvas exitosos, incluyendo grandes empresas como Airbnb, Uber y Amazon. Estas empresas han utilizado el business model canvas para definir y ajustar sus estrategias, identificando sus Propuestas de Valor y optimizando sus operaciones y relaciones con los clientes."
+            trigger: "¿Qué herramientas se pueden usar para crear un customer journey map?",
+            content: (
+                <span>
+                    Existen varias herramientas para crear un customer journey map con Sketchlie puedes partir desde nuestra <Link className="text-custom-blue hover:underline" href="/dashboard/">plantilla de customer journey map</Link> y personalizarla según las necesidades de tu empresa. Otras herramientas populares incluyen Lucidchart, Canva, Adobe XD y Miro.
+                </span>
+            )
         }
     ];
+    
+    
 
     return (
         <div>
@@ -196,12 +193,12 @@ const LandingPage = () => {
             </div>
             <div className="my-20">
                 <HowToCreate
-                    title="¿Cómo crear un modelo canvas?"
+                    title="¿Cómo crear un customer journey map?"
                     steps={steps}
                 />
             </div>
             <TemplatesSlider />
-            <FaqSection accordionData={faqData} sectionTitle="los modelos canvas"/>
+            <FaqSection accordionData={faqData} sectionTitle="los customer journey maps"/>
         </div >
     );
 }
