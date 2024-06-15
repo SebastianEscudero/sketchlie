@@ -10,6 +10,8 @@ import Link from "next/link";
 import { BlogStructure } from "@/components/blog-structure";
 import { TemplatesSlider } from "@/components/templates-slider";
 import { Button } from "@/components/ui/button";
+import { HowToCreate } from "@/components/how-to-create";
+import { FaqSection } from "@/components/faq-section";
 
 export const metadata: Metadata = {
     title: "Plantilla de diagrama de ishikawa gratuita | Sketchlie",
@@ -20,6 +22,60 @@ export const metadata: Metadata = {
     }
 };
 const LandingPage = () => {
+    const steps = [
+        {
+            trigger: "1. Identifica el problema central",
+            text: "Define claramente el problema o efecto que deseas analizar y colócalo en la cabeza del diagrama de Ishikawa."
+        },
+        {
+            trigger: "2. Identifica las categorías principales",
+            text: "Identifica y enumera las categorías principales que podrían estar contribuyendo al problema (por ejemplo, personas, procesos, materiales, máquinas, entorno)."
+        },
+        {
+            trigger: "3. Enumera las causas potenciales",
+            text: "Bajo cada categoría, enumera todas las posibles causas que podrían contribuir al problema identificado."
+        },
+        {
+            trigger: "4. Analiza y organiza las causas",
+            text: "Analiza cada causa identificada para determinar su relevancia y relación con el problema. Organiza las causas de manera que muestren claramente sus interacciones y relaciones."
+        },
+        {
+            trigger: "5. Finaliza y revisa",
+            text: "Finaliza el diagrama de Ishikawa asegurándote de que todas las causas relevantes estén incluidas y revisa el diagrama con el equipo para validar y obtener perspectivas adicionales."
+        }
+    ];
+
+    const faqData = [
+        {
+            value: "item-1",
+            trigger: "¿Qué es un diagrama de Ishikawa?",
+            content: "Un diagrama de Ishikawa, también conocido como diagrama de espina de pescado o diagrama de causa y efecto, es una herramienta visual utilizada para identificar y organizar las causas potenciales de un problema o efecto específico."
+        },
+        {
+            value: "item-2",
+            trigger: "¿Cómo se utiliza un diagrama de Ishikawa?",
+            content: "Se utiliza colocando el problema o efecto en la cabeza del diagrama y categorizando las posibles causas bajo categorías principales como personas, procesos, materiales, máquinas y entorno. Esto facilita el análisis y la identificación de las causas raíz del problema."
+        },
+        {
+            value: "item-3",
+            trigger: "¿Cuáles son los beneficios de usar un diagrama de Ishikawa?",
+            content: "Los beneficios incluyen la identificación sistemática de las causas potenciales de un problema, facilitando el trabajo en equipo y la comunicación, y permitiendo soluciones efectivas y preventivas."
+        },
+        {
+            value: "item-4",
+            trigger: "¿Dónde puedo encontrar plantillas de diagrama de Ishikawa?",
+            content: "Puedes encontrar plantillas de diagrama de Ishikawa en herramientas como Lucidchart, Canva y Microsoft Office. Estas plantillas proporcionan un punto de partida para crear diagramas personalizados según tus necesidades específicas."
+        },
+        {
+            value: "item-5",
+            trigger: "¿Cómo puedo hacer un diagrama de Ishikawa efectivo?",
+            content: (
+                <span>Puedes encontrar plantillas del diagrama de ishikawa en plataformas como Sketchlie, utiliza nuestra  <Link className="text-custom-blue hover:underline" href="/dashboard/">plantilla de diagrama de espina</Link> para identificar problemas/causas y crear soluciones efectivas que mejoren el flujo de tu empresa.</span>
+            )
+        }
+    ];
+    
+    
     return (
         <div>
             <div className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
@@ -138,7 +194,14 @@ const LandingPage = () => {
                     </Link>
                 </div>
             </div>
+            <div className="my-20">
+                <HowToCreate
+                    title="¿Cómo se hace un diagrama de ishikawa?"
+                    steps={steps}
+                />
+            </div>
             <TemplatesSlider />
+            <FaqSection accordionData={faqData} sectionTitle="los diagramas de espina de pescado" />
         </div >
     );
 }
