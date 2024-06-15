@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 const LandingPage = () => {
     return (
         <div>
-            <div className="mt-[3%] xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[3%]">
+            <div className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
                 <Breadcrumb>
                     <BreadcrumbList>
                         <BreadcrumbItem>
@@ -48,7 +48,7 @@ const LandingPage = () => {
                     cta="Utilizar plantilla"
                 />
             </div>
-            <div className="flex flex-col-reverse lg:flex-row justify-between mt-[3%] xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[3%]">
+            <div className="flex flex-col-reverse lg:flex-row justify-between xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
                 <div className="lg:max-w-[70%] text-xl">
                     <p className="mb-10">En Sketchlie, entendemos la importancia de mapear el viaje del cliente para mejorar la experiencia y ofrecer un producto excepcional. Aquí te guiaremos a través del proceso de creación de un customer journey map, respondiendo a las preguntas más buscadas sobre este tema.</p>
                     <div id="1" className="h-[80px] mt-[-80px]"></div>

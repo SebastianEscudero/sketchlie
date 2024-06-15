@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 const LandingPage = () => {
     return (
         <div>
-            <div className="mt-[3%] xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[3%]">
+            <div className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
                 <Breadcrumb>
                     <BreadcrumbList>
                         <BreadcrumbItem>
@@ -39,7 +39,6 @@ const LandingPage = () => {
                     </BreadcrumbList>
                 </Breadcrumb>
             </div>
-            <div className="mt-[-70px]">
                 <BlogStructure
                     title="Plantillas de Wireframes de baja fidelidad"
                     description="Organiza tus ideas y haz un plan de tu proyecto con nuestras plantillas de wireframes de baja fidelidad. Utiliza nuestra plantilla personalizable para crear el futuro de tu proyecto de diseño web o móvil."
@@ -47,8 +46,7 @@ const LandingPage = () => {
                     alt="Plantilla de Wireframe baja fidelidad"
                     cta="Utilizar plantilla"
                 />
-            </div>
-            <div className="flex flex-col-reverse lg:flex-row justify-between mt-[3%] xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[3%]">
+            <div className="flex flex-col-reverse lg:flex-row justify-between xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
                 <div className="lg:max-w-[70%] text-xl">
                     <p className="mb-10">Un <Link className="text-custom-blue hover:underline" href="/wireframe/">wireframe</Link> es un esquema visual que representa la estructura y funcionalidad básica de un sitio web o una aplicación. Se utiliza como una herramienta de diseño para planificar la disposición de los elementos en una interfaz, incluidos el contenido, los botones, los menús y otros elementos interactivos.</p>
                     <div id="1" className="h-[80px] mt-[-80px]"></div>

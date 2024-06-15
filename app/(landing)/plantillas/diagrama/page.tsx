@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 const LandingPage = () => {
     return (
         <div>
-            <div className="mt-[3%] xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[3%]">
+            <div className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
                 <Breadcrumb>
                     <BreadcrumbList>
                         <BreadcrumbItem>
@@ -39,7 +39,6 @@ const LandingPage = () => {
                     </BreadcrumbList>
                 </Breadcrumb>
             </div>
-            <div className="mt-[-70px]">
                 <BlogStructure
                     title="Plantillas gratuitas de diagrama"
                     description="Utiliza nuestras plantillas de diagramas, diagramas de flujo y diagramas de ishikawa para mejorar tu flujo de trabajo y fomentar la colaboración en línea con tus compañeros."
@@ -47,8 +46,7 @@ const LandingPage = () => {
                     alt="Plantilla de Diagrama"
                     cta="Utilizar plantilla"
                 />
-            </div>
-            <div className="flex flex-col-reverse lg:flex-row justify-between mt-[3%] xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[3%]">
+            <div className="flex flex-col-reverse lg:flex-row justify-between xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
                 <div className="lg:max-w-[70%] text-xl">
                     <div id="1" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">¿Qué es un Diagrama?</h2>
