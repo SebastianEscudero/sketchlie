@@ -8,8 +8,9 @@ import { PlantillaLowFidelityWireframe } from "./low-fidelity-wireframe";
 import { PlantillaMapaConceptual } from "./mapa-conceptual";
 import { PlantillaMapaDeProceso } from "./mapa-de-proceso";
 import { PlantillaMapaMental } from "./mapa-mental";
+import { PlantillaModeloCanvas } from "./modelo-canvas";
 
 
-export const templates = [PlantillaMapaConceptual, PlantillaDiagramaDeFlujo, PlantillaCustomerJourneyMap, PlantillaLluviaDeIdeas, PlantillaLowFidelityWireframe, PlantillaMapaDeProceso,
+export const templates = [PlantillaMapaConceptual, PlantillaDiagramaDeFlujo, PlantillaModeloCanvas, PlantillaCustomerJourneyMap, PlantillaLluviaDeIdeas, PlantillaLowFidelityWireframe, PlantillaMapaDeProceso,
     PlantillaDiagrama, PlantillaLineaDeTiempo, PlantillaMapaMental, PlantillaDiagramaIshikawa,
 ];

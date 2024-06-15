@@ -58,6 +58,12 @@ const throttledUpdateLayer = throttle((updateLayer, socket, board, layerId, laye
       setValue(layer.value);
     }, [id, layer]);
 
+    useEffect(() => {
+      if (textRef.current) {
+          textRef.current.focus();
+      }
+  }, [textRef]);
+
     const handlePointerDown = useCallback((e: React.PointerEvent) => {
 
         if (e.pointerType === "touch") {
@@ -110,12 +116,6 @@ const throttledUpdateLayer = throttle((updateLayer, socket, board, layerId, laye
             }
         }
     }, [layer, textFontSize, setLiveLayers, updateLayer, socket, board, id]);
-
-    useEffect(() => {
-        if (textRef.current) {
-            textRef.current.focus();
-        }
-    }, []);
 
     useEffect(() => {        
         textRef.current.style.height = `${textFontSize*1.5}px`;
