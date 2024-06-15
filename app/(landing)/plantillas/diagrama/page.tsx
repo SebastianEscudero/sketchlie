@@ -39,13 +39,15 @@ const LandingPage = () => {
                     </BreadcrumbList>
                 </Breadcrumb>
             </div>
-                <BlogStructure
-                    title="Plantillas gratuitas de diagrama"
-                    description="Utiliza nuestras plantillas de diagramas, diagramas de flujo y diagramas de ishikawa para mejorar tu flujo de trabajo y fomentar la colaboración en línea con tus compañeros."
-                    img="/templates/diagrama.png"
-                    alt="Plantilla de Diagrama"
-                    cta="Utilizar plantilla"
-                />
+            <div className="xl:mt-[-30px] mb-14">
+                    <BlogStructure
+                        title="Plantillas gratuitas de diagrama"
+                        description="Utiliza nuestras plantillas de diagramas, diagramas de flujo y diagramas de ishikawa para mejorar tu flujo de trabajo y fomentar la colaboración en línea con tus compañeros."
+                        img="/templates/diagrama.png"
+                        alt="Plantilla de Diagrama"
+                        cta="Utilizar plantilla"
+                    />
+                </div>
             <div className="flex flex-col-reverse lg:flex-row justify-between xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
                 <div className="lg:max-w-[70%] text-xl">
                     <div id="1" className="h-[80px] mt-[-80px]"></div>

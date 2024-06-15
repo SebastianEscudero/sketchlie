@@ -39,6 +39,7 @@ const LandingPage = () => {
                     </BreadcrumbList>
                 </Breadcrumb>
             </div>
+            <div className="xl:mt-[-30px] mb-14">
                 <BlogStructure
                     title="Plantilla de lluvia de ideas"
                     description="Reune tu equipo y explora las ideas para diseñar el futuro, crea planes innovadores y estrategias efectivas. En Sketchlie nuestra prioridad es ayudarte a ir de idea a plan de acción."
@@ -46,6 +47,7 @@ const LandingPage = () => {
                     alt="Plantilla de Lluvia de ideas"
                     cta="Utilizar plantilla"
                 />
+            </div>
             <div className="flex flex-col-reverse lg:flex-row justify-between xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
                 <div className="lg:max-w-[70%] text-xl">
                     <div id="1" className="h-[80px] mt-[-80px]"></div>

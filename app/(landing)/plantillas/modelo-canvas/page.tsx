@@ -64,6 +64,7 @@ const LandingPage = () => {
                     </BreadcrumbList>
                 </Breadcrumb>
             </div>
+            <div className="xl:mt-[-30px] mb-14">
                 <BlogStructure
                     title="Plantilla de modelo canvas"
                     description="Gestiona tu empresa de forma eficiente con el modelo canvas. Crea tu modelo de negocio con nuestra plantilla gratuita y colaborativa."
@@ -71,6 +72,7 @@ const LandingPage = () => {
                     alt="Plantilla de Modelo Canvas"
                     cta="Utilizar plantilla"
                 />
+            </div>
             <div className="flex flex-col-reverse lg:flex-row justify-between xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
                 <div className="lg:max-w-[70%] text-xl">
                     <div id="1" className="h-[80px] mt-[-80px]"></div>
@@ -158,7 +160,7 @@ const LandingPage = () => {
                         Comienza con nuestra plantilla
                     </h3>
                     <p className="text-lg text-zinc-600 mb-4 font-roobert">
-                        Mapea tu proceso y hazlo con todo tu equipo, en un lugar seguro responsivo y para colaborar.
+                        Crea tu modelo canvas de forma sencilla y colaborativa con nuestra plantilla gratuita.
                     </p>
                     <Link href="/dashboard/">
                         <Button variant="auth" size="lg" className="text-lg">
@@ -168,7 +170,7 @@ const LandingPage = () => {
                 </div>
             </div>
             <div className="my-20">
-                <HowToCreate 
+                <HowToCreate
                     title="¿Cómo crear un Modelo Canvas?"
                     steps={steps}
                 />

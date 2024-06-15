@@ -39,6 +39,7 @@ const LandingPage = () => {
                     </BreadcrumbList>
                 </Breadcrumb>
             </div>
+            <div className="xl:mt-[-30px] mb-14">
                 <BlogStructure
                     title="Plantillas de diagrama de flujo"
                     description="Desarrolla una ruta clara y eficiente para tus procesos con nuestras plantillas de diagramas de flujo. Nuestras plantillas te ayudarán a visualizar y comunicar tus ideas de manera efectiva."
@@ -46,6 +47,7 @@ const LandingPage = () => {
                     alt="Plantilla de Diagrama de flujo"
                     cta="Utilizar plantilla"
                 />
+            </div>
             <div className="flex flex-col-reverse lg:flex-row justify-between xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
                 <div className="lg:max-w-[70%] text-xl">
                     <div id="1" className="h-[80px] mt-[-80px]"></div>

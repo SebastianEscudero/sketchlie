@@ -39,6 +39,7 @@ const LandingPage = () => {
                     </BreadcrumbList>
                 </Breadcrumb>
             </div>
+            <div className="xl:mt-[-30px] mb-14">
                 <BlogStructure
                     title="Plantilla gratuita de mapa de procesos"
                     description="Dibuja el proceso de tu proyecto, empresa o tarea con nuestra plantilla de mapa de procesos. Personaliza, colabora y comparte en tiempo real con tu equipo."
@@ -46,6 +47,7 @@ const LandingPage = () => {
                     alt="Plantilla de Mapa de Proceso"
                     cta="Utilizar plantilla"
                 />
+            </div>
             <div className="flex flex-col-reverse lg:flex-row justify-between xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
                 <div className="lg:max-w-[70%] text-xl">
                     <div id="1" className="h-[80px] mt-[-80px]"></div>

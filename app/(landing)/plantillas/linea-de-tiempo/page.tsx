@@ -39,6 +39,7 @@ const LandingPage = () => {
                     </BreadcrumbList>
                 </Breadcrumb>
             </div>
+            <div className="xl:mt-[-30px] mb-14">
                 <BlogStructure
                     title="Plantilla de línea de tiempo gratis"
                     description="Haz una biografía, dibuja un proceso, analiza la historia de tu marca. Las líneas de tiempo o cronogramas son una forma visual de representar eventos en secuencia. Utiliza nuestra plantilla de línea de tiempo para crear una representación visual de la historia de tu proyecto o evento."
@@ -46,6 +47,7 @@ const LandingPage = () => {
                     alt="Plantilla de Línea de tiempo"
                     cta="Utilizar plantilla"
                 />
+            </div>
             <div className="flex flex-col-reverse lg:flex-row justify-between xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
                 <div className="lg:max-w-[70%] text-xl">
                     <div id="1" className="h-[80px] mt-[-80px]"></div>

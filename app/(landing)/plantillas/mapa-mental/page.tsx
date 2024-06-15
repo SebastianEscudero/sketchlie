@@ -39,6 +39,7 @@ const LandingPage = () => {
                     </BreadcrumbList>
                 </Breadcrumb>
             </div>
+            <div className="xl:mt-[-30px] mb-14">
                 <BlogStructure
                     title="Plantilla de mapa mental gratis"
                     description="La manera más rápida y sencilla de crear un mapa mental es utilizando una plantilla. Con nuestra plantilla de mapa mental, puedes organizar tus ideas, visualizar conceptos y estructurar información de manera clara y efectiva."
@@ -46,6 +47,7 @@ const LandingPage = () => {
                     alt="Plantilla de Mapa Mental"
                     cta="Utilizar plantilla"
                 />
+            </div>
             <div className="flex flex-col-reverse lg:flex-row justify-between xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
                 <div className="lg:max-w-[70%] text-xl">
                     <p className="mb-10">Un <Link className="text-custom-blue hover:underline" href="/mapa-mental-online/">mapa mental</Link> es una herramienta gráfica que ayuda a organizar y visualizar información de manera creativa y estructurada. Se utiliza para brainstorming, planificación, toma de notas, estudio y resolución de problemas.</p>

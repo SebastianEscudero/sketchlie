@@ -39,7 +39,7 @@ const LandingPage = () => {
                     </BreadcrumbList>
                 </Breadcrumb>
             </div>
-            <div className="mt-[-70px]">
+            <div className="xl:mt-[-30px] mb-14">
                 <BlogStructure
                     title="Plantilla de customer journey map"
                     description="Grafíca la experiencia de tus clientes con nuestra plantilla de customer journey map. Abre el dashboard, elige la plantilla y personaliza tu mapa de viaje del cliente en línea."
