@@ -66,6 +66,7 @@ export const SelectionTools = memo(({
   const { mutate: updateLayerIds } = useApiMutation(api.board.updateLayerIds);
   const { mutate: deleteLayer } = useApiMutation(api.board.deleteLayer);
   const [openSelector, setOpenSelector] = useState<SelectorType | null>(null);
+  const [isAbove, setIsAbove] = useState<boolean>(true);
 
   const hasText = selectedLayers.every(layer =>
     liveLayers[layer]?.type === LayerType.Text ||
@@ -122,6 +123,11 @@ export const SelectionTools = memo(({
         const endY = arrowLayer.y + arrowLayer.height
         x = (arrowLayer.width / 2 + arrowLayer.x) * zoom + camera.x;
         y = Math.min(centerY, startY, endY) * zoom + camera.y;
+
+        if (y < 130) {
+          y = Math.max(centerY, startY, endY) * zoom + camera.y + 130;
+          setIsAbove(false);
+        }
       } else {
         x = (selectionBounds.width / 2 + selectionBounds.x) * zoom + camera.x;
         y = (selectionBounds.y) * zoom + camera.y;
@@ -376,6 +382,7 @@ export const SelectionTools = memo(({
           socket={socket}
           openSelector={openSelector}
           setOpenSelector={setOpenSelector}
+          isAbove={isAbove}
         />
       )}
       {hasText && (
