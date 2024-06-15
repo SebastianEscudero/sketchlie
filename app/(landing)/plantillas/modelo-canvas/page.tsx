@@ -11,6 +11,7 @@ import { BlogStructure } from "@/components/blog-structure";
 import { TemplatesSlider } from "@/components/templates-slider";
 import { Button } from "@/components/ui/button";
 import { HowToCreate } from "@/components/how-to-create";
+import { FaqSection } from "@/components/faq-section";
 
 export const metadata: Metadata = {
     title: "Plantilla de modelo canvas | Sketchlie",
@@ -45,6 +46,40 @@ const LandingPage = () => {
         }
     ];
 
+    const faqData = [
+        {
+            value: "item-1",
+            trigger: "¿Qué es el modelo de negocio canvas?",
+            content: "El modelo de negocio canvas, también conocido como business model canvas, es una herramienta estratégica y de gestión que permite describir, diseñar, desafiar, inventar y pivotar modelos de negocio. Presenta los principales aspectos de un negocio de manera visual en un lienzo dividido en nueve bloques."
+        },
+        {
+            value: "item-2",
+            trigger: "¿Cómo hacer un modelo de negocio canvas?",
+            content: "Para hacer un modelo de negocio canvas, debes completar cada uno de los nueve bloques con la información relevante de tu negocio. Estos bloques incluyen Propuesta de Valor, Segmentos de Clientes, Canales, Relación con Clientes, Fuentes de Ingresos, Recursos Clave, Actividades Clave, Socios Clave y Estructura de Costos. Utiliza una plantilla modelo canvas para facilitar el proceso."
+        },
+        {
+            value: "item-3",
+            trigger: "¿Dónde descargar una plantilla modelo canvas?",
+            content: (
+                <span>
+                    Puedes descargar una plantilla modelo canvas en diversas fuentes en línea, como sitios web de recursos empresariales, blogs de negocios y plataformas educativas. También puedes usar la <Link className="text-custom-blue hover:underline" href="/dashboard/">plantilla modelo canvas</Link> de Sketchlie, los creadores del business model canvas.
+                </span>
+            )
+        },
+        {
+            value: "item-4",
+            trigger: "¿Cuál es el objetivo del modelo canvas?",
+            content: "El objetivo del modelo canvas, o modelo de negocio canvas, es proporcionar una representación visual y sencilla de todos los aspectos clave de un negocio. Esto ayuda a los emprendedores y empresarios a analizar, diseñar y mejorar sus modelos de negocio de manera efectiva."
+        },
+        {
+            value: "item-5",
+            trigger: "¿Qué ejemplos hay de modelos canvas exitosos?",
+            content: "Hay muchos ejemplos de modelos canvas exitosos, incluyendo grandes empresas como Airbnb, Uber y Amazon. Estas empresas han utilizado el business model canvas para definir y ajustar sus estrategias, identificando sus Propuestas de Valor y optimizando sus operaciones y relaciones con los clientes."
+        }
+    ];
+    
+    
+
     return (
         <div>
             <div className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
@@ -59,7 +94,7 @@ const LandingPage = () => {
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
-                            <BreadcrumbPage>Modelo Canvas</BreadcrumbPage>
+                            <BreadcrumbPage>modelo canvas</BreadcrumbPage>
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>
@@ -69,26 +104,26 @@ const LandingPage = () => {
                     title="Plantilla de modelo canvas"
                     description="Gestiona tu empresa de forma eficiente con el modelo canvas. Crea tu modelo de negocio con nuestra plantilla gratuita y colaborativa."
                     img="/templates/modelo-canvas.png"
-                    alt="Plantilla de Modelo Canvas"
+                    alt="Plantilla de modelo canvas"
                     cta="Utilizar plantilla"
                 />
             </div>
             <div className="flex flex-col-reverse lg:flex-row justify-between xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
                 <div className="lg:max-w-[70%] text-xl">
                     <div id="1" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-4xl md:text-5xl mb-10">1. ¿Qué es el Modelo Canvas?</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">1. ¿Qué es el modelo canvas?</h2>
                     <p className="mb-10">
-                        El Modelo Canvas es una herramienta estratégica de gestión empresarial que permite diseñar, describir y pivotar modelos de negocio de manera visual y simplificada. Fue propuesto por Alexander Osterwalder e Yves Pigneur en su libro Business Model Generation.
+                        El modelo canvas es una herramienta estratégica de gestión empresarial que permite diseñar, describir y pivotar modelos de negocio de manera visual y simplificada. Fue propuesto por Alexander Osterwalder e Yves Pigneur en su libro Business Model Generation.
                     </p>
                     <p className="mb-10">
-                        Este modelo se representa en un lienzo dividido en nueve bloques que cubren las áreas esenciales de un negocio: segmentos de clientes, propuesta de valor, canales, relaciones con clientes, fuentes de ingresos, recursos clave, actividades clave, socios clave y estructura de costos. Cada bloque del Modelo Canvas ayuda a comprender mejor y a gestionar las distintas partes de una empresa, facilitando la alineación y comunicación de la estrategia entre los equipos.
+                        Este modelo se representa en un lienzo dividido en nueve bloques que cubren las áreas esenciales de un negocio: segmentos de clientes, propuesta de valor, canales, relaciones con clientes, fuentes de ingresos, recursos clave, actividades clave, socios clave y estructura de costos. Cada bloque del modelo canvas ayuda a comprender mejor y a gestionar las distintas partes de una empresa, facilitando la alineación y comunicación de la estrategia entre los equipos.
                     </p>
                     <p className="mb-10">
                         Esta herramienta es ampliamente utilizada por startups y grandes empresas debido a su capacidad para simplificar conceptos complejos y su flexibilidad para adaptarse a diferentes tipos de negocios.
                     </p>
 
                     <div id="2" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-4xl md:text-5xl mb-10">2. ¿Cómo se utiliza una plantilla del Modelo Canvas?</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">2. ¿Cómo se utiliza una plantilla del modelo canvas?</h2>
                     <p className="mb-10">
                         Utilizar una <Link className="text-custom-blue hover:underline" href="/dashboard/">plantilla de modelo canvas</Link> es sencillo y se centra en llenar los nueve bloques que componen el modelo. Primero, se debe definir claramente el segmento de clientes, identificando quiénes son los clientes potenciales. Luego, se establece la propuesta de valor, que es lo que diferencia al producto o servicio en el mercado.
                     </p>
@@ -100,7 +135,7 @@ const LandingPage = () => {
                     </p>
 
                     <div id="3" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-4xl md:text-5xl mb-10">3. ¿Cuáles son los componentes del Modelo Canvas?</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">3. ¿Cuáles son los componentes del modelo canvas?</h2>
                     <ul style={{ listStyleType: 'disc' }}>
                         <li className="mb-10 ml-5">
                             <strong>Segmentos de Clientes:</strong> Los diferentes grupos de personas u organizaciones a los que se dirige el negocio.
@@ -132,15 +167,15 @@ const LandingPage = () => {
                     </ul>
 
                     <div id="4" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-4xl md:text-5xl mb-10">4. ¿Qué ventajas ofrece el Modelo Canvas?</h2>
+                    <h2 className="text-4xl md:text-5xl mb-10">4. ¿Qué ventajas ofrece el modelo canvas?</h2>
                     <p className="mb-10">
-                        El Modelo Canvas ofrece numerosas ventajas para las empresas de todos los tamaños. En primer lugar, su formato visual facilita la comprensión y la comunicación de la estrategia empresarial entre todos los miembros del equipo, eliminando la necesidad de extensos documentos escritos.
+                        El modelo canvas ofrece numerosas ventajas para las empresas de todos los tamaños. En primer lugar, su formato visual facilita la comprensión y la comunicación de la estrategia empresarial entre todos los miembros del equipo, eliminando la necesidad de extensos documentos escritos.
                     </p>
                     <p className="mb-10">
                         Además, permite una visión holística del negocio, lo que facilita la identificación de áreas de mejora y la alineación de todos los aspectos del modelo de negocio. También fomenta la innovación, ya que permite experimentar con diferentes elementos del modelo de negocio de manera rápida y económica.
                     </p>
                     <p className="mb-10">
-                        Otra ventaja es su flexibilidad, ya que puede adaptarse a cualquier tipo de industria o mercado. Finalmente, el Modelo Canvas ayuda en la toma de decisiones estratégicas, proporcionando una estructura clara para analizar y comparar diferentes opciones de negocio.
+                        Otra ventaja es su flexibilidad, ya que puede adaptarse a cualquier tipo de industria o mercado. Finalmente, el modelo canvas ayuda en la toma de decisiones estratégicas, proporcionando una estructura clara para analizar y comparar diferentes opciones de negocio.
                     </p>
                     <ul style={{ listStyleType: 'disc' }}>
                         <li className="mb-10 ml-5">
@@ -171,11 +206,12 @@ const LandingPage = () => {
             </div>
             <div className="my-20">
                 <HowToCreate
-                    title="¿Cómo crear un Modelo Canvas?"
+                    title="¿Cómo crear un modelo canvas?"
                     steps={steps}
                 />
             </div>
             <TemplatesSlider />
+            <FaqSection accordionData={faqData} sectionTitle="los modelos canvas"/>
         </div >
     );
 }

@@ -10,6 +10,8 @@ import Link from "next/link";
 import { BlogStructure } from "@/components/blog-structure";
 import { TemplatesSlider } from "@/components/templates-slider";
 import { Button } from "@/components/ui/button";
+import { HowToCreate } from "@/components/how-to-create";
+import { FaqSection } from "@/components/faq-section";
 
 export const metadata: Metadata = {
     title: "Plantilla de customer journey map | Sketchlie",
@@ -20,6 +22,62 @@ export const metadata: Metadata = {
     }
 };
 const LandingPage = () => {
+
+    const steps = [
+        {
+            trigger: "1. Identifica los Segmentos de Clientes",
+            text: "Define claramente quiénes son tus clientes potenciales y agrúpalos en segmentos basados en características comunes."
+        },
+        {
+            trigger: "2. Define la Propuesta de Valor",
+            text: "Determina qué problema estás resolviendo para tus clientes y qué beneficios específicos les ofreces que te diferencian de la competencia."
+        },
+        {
+            trigger: "3. Selecciona los Canales",
+            text: "Establece cómo llegarás a tus segmentos de clientes. Considera canales de distribución, comunicación y ventas."
+        },
+        {
+            trigger: "4. Establece Relaciones con Clientes",
+            text: "Define el tipo de relación que deseas mantener con cada segmento de clientes, ya sea personal, automatizada, autoservicio, etc."
+        },
+        {
+            trigger: "5. Determina las Fuentes de Ingresos",
+            text: "Describe cómo generará ingresos tu negocio. Considera las diferentes formas de monetización, como ventas directas, suscripciones, licencias, etc."
+        }
+    ];
+
+    const faqData = [
+        {
+            value: "item-1",
+            trigger: "¿Qué es el modelo de negocio canvas?",
+            content: "El modelo de negocio canvas, también conocido como business model canvas, es una herramienta estratégica y de gestión que permite describir, diseñar, desafiar, inventar y pivotar modelos de negocio. Presenta los principales aspectos de un negocio de manera visual en un lienzo dividido en nueve bloques."
+        },
+        {
+            value: "item-2",
+            trigger: "¿Cómo hacer un modelo de negocio canvas?",
+            content: "Para hacer un modelo de negocio canvas, debes completar cada uno de los nueve bloques con la información relevante de tu negocio. Estos bloques incluyen Propuesta de Valor, Segmentos de Clientes, Canales, Relación con Clientes, Fuentes de Ingresos, Recursos Clave, Actividades Clave, Socios Clave y Estructura de Costos. Utiliza una plantilla modelo canvas para facilitar el proceso."
+        },
+        {
+            value: "item-3",
+            trigger: "¿Dónde descargar una plantilla modelo canvas?",
+            content: (
+                <span>
+                    Puedes descargar una plantilla modelo canvas en diversas fuentes en línea, como sitios web de recursos empresariales, blogs de negocios y plataformas educativas. También puedes usar la <Link className="text-custom-blue hover:underline" href="/dashboard/">plantilla modelo canvas</Link> de Sketchlie, los creadores del business model canvas.
+                </span>
+            )
+        },
+        {
+            value: "item-4",
+            trigger: "¿Cuál es el objetivo del modelo canvas?",
+            content: "El objetivo del modelo canvas, o modelo de negocio canvas, es proporcionar una representación visual y sencilla de todos los aspectos clave de un negocio. Esto ayuda a los emprendedores y empresarios a analizar, diseñar y mejorar sus modelos de negocio de manera efectiva."
+        },
+        {
+            value: "item-5",
+            trigger: "¿Qué ejemplos hay de modelos canvas exitosos?",
+            content: "Hay muchos ejemplos de modelos canvas exitosos, incluyendo grandes empresas como Airbnb, Uber y Amazon. Estas empresas han utilizado el business model canvas para definir y ajustar sus estrategias, identificando sus Propuestas de Valor y optimizando sus operaciones y relaciones con los clientes."
+        }
+    ];
+
     return (
         <div>
             <div className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
@@ -136,7 +194,14 @@ const LandingPage = () => {
                     </Link>
                 </div>
             </div>
+            <div className="my-20">
+                <HowToCreate
+                    title="¿Cómo crear un modelo canvas?"
+                    steps={steps}
+                />
+            </div>
             <TemplatesSlider />
+            <FaqSection accordionData={faqData} sectionTitle="los modelos canvas"/>
         </div >
     );
 }

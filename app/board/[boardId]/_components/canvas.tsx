@@ -1124,7 +1124,7 @@ export const Canvas = () => {
                     setCurrentPreviewLayer({ x, y, width, height: 18, textFontSize: 12, type: LayerType.Rectangle, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 75, g: 161, b: 241, a: 1 } });
                     break;
                 case LayerType.Note:
-                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.Note, fill: { r: 255, g: 249, b: 177, a: 1 }, outlineFill: { r: 0, g: 0, b: 0, a: 0 } });
+                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.Note, fill: { r: 252, g: 225, b: 156, a: 1 }, outlineFill: { r: 0, g: 0, b: 0, a: 0 } });
                     break;
                 case LayerType.Arrow:
                     setCurrentPreviewLayer({
@@ -1943,7 +1943,7 @@ export const Canvas = () => {
                             layer={currentPreviewLayer}
                         />
                     )}
-                    {!isMoving && activeTouches < 2 && canvasState.mode !== CanvasMode.Inserting && (
+                    {!isMoving && activeTouches < 2 && canvasState.mode !== CanvasMode.Inserting && canvasState.mode !== CanvasMode.ArrowResizeHandler && (
                         <SelectionBox
                             zoom={zoom}
                             liveLayers={liveLayers}

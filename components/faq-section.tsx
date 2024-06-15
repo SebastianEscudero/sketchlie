@@ -4,11 +4,12 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion"
+import React from "react";
 
 interface FaqItem {
     value: string;
     trigger: string;
-    content: string;
+    content: string | React.ReactNode;
   }
   
   interface FaqSectionProps {
