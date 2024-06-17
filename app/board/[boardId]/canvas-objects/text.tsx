@@ -21,7 +21,7 @@ interface TextProps {
     socket?: any;
     onRefChange?: (ref: React.RefObject<any>) => void;
     focused?: boolean;
-    boardId: string;
+    boardId?: string;
 };
 
 const throttledUpdateLayer = throttle((boardId, layerId, layerUpdates) => {

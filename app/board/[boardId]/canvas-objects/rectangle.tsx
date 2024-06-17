@@ -15,7 +15,7 @@ const font = Kalam({
 interface RectangleProps {
   id: string;
   layer: RectangleLayer;
-  boardId: string;
+  boardId?: string;
   onPointerDown?: (e: any, id: string) => void;
   selectionColor?: string;
   expired?: boolean;

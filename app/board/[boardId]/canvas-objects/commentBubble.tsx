@@ -15,7 +15,7 @@ const font = Kalam({
 interface CommentBubbleProps {
   id: string;
   layer: CommentBubbleLayer;
-  boardId: string;
+  boardId?: string;
   onPointerDown?: (e: any, id: string) => void;
   selectionColor?: string;
   expired?: boolean;

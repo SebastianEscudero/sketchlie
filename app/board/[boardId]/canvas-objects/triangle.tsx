@@ -15,7 +15,7 @@ const font = Kalam({
 interface TriangleProps {
   id: string;
   layer: TriangleLayer;
-  boardId: string;
+  boardId?: string;
   onPointerDown?: (e: any, id: string) => void;
   selectionColor?: string;
   expired?: boolean;

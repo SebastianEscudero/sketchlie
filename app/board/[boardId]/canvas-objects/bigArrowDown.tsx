@@ -15,7 +15,7 @@ const font = Kalam({
 interface BigArrowDownProps {
   id: string;
   layer: BigArrowDownLayer;
-  boardId: string;
+  boardId?: string;
   onPointerDown?: (e: any, id: string) => void;
   selectionColor?: string;
   expired?: boolean;

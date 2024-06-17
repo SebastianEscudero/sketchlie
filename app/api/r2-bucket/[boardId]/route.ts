@@ -1,5 +1,5 @@
+import { bodyToString } from "@/lib/utils";
 import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
-import { Readable } from "stream";
 
 export const GET = async (request: Request): Promise<Response> => {
     const url = new URL(request.url);
@@ -8,8 +8,6 @@ export const GET = async (request: Request): Promise<Response> => {
     // Skip the first segment if it's empty due to a leading slash
     const startIndex = pathnameSegments[0] === '' ? 3 : 2;
     const boardId = pathnameSegments.length > startIndex ? pathnameSegments[startIndex] : null;
-
-    console.log('fetching')
 
     if (!boardId) {
         return new Response(JSON.stringify({ error: "Board ID is undefined" }), {
@@ -68,26 +66,3 @@ export const GET = async (request: Request): Promise<Response> => {
         });
     }
 };
-
-// Helper function to convert a ReadableStream (in browsers) or a Readable (in Node.js) to a string
-export async function bodyToString(body: Blob | ReadableStream | Readable): Promise<string> {
-    if (body instanceof ReadableStream || body instanceof Blob) {
-        // Browser environment
-        const reader = body instanceof ReadableStream ? body.getReader() : body.stream().getReader();
-        let chunks = '';
-        let result;
-        while (!(result = await reader.read()).done) {
-            const chunk = result.value;
-            chunks += new TextDecoder().decode(chunk);
-        }
-        return chunks;
-    } else {
-        // Node.js environment, assuming body is a Readable stream
-        return new Promise((resolve, reject) => {
-            const chunks: Buffer[] = [];
-            body.on('data', (chunk) => chunks.push(chunk));
-            body.on('end', () => resolve(Buffer.concat(chunks).toString('utf-8')));
-            body.on('error', reject);
-        });
-    }
-}

@@ -13,6 +13,7 @@ import {
   XYWH
 } from "@/types/canvas";
 import { toJpeg, toPng } from 'html-to-image';
+import { Readable } from "stream";
 
 const COLORS = [
   "#DC2626", // Red
@@ -872,5 +873,27 @@ export function removeHighlightFromText() {
   const selection = window.getSelection();
   if (selection && selection.rangeCount > 0) {
     selection.removeAllRanges();
+  }
+}
+
+export async function bodyToString(body: Blob | ReadableStream | Readable): Promise<string> {
+  if (body instanceof ReadableStream || body instanceof Blob) {
+      // Browser environment
+      const reader = body instanceof ReadableStream ? body.getReader() : body.stream().getReader();
+      let chunks = '';
+      let result;
+      while (!(result = await reader.read()).done) {
+          const chunk = result.value;
+          chunks += new TextDecoder().decode(chunk);
+      }
+      return chunks;
+  } else {
+      // Node.js environment, assuming body is a Readable stream
+      return new Promise((resolve, reject) => {
+          const chunks: Buffer[] = [];
+          body.on('data', (chunk) => chunks.push(chunk));
+          body.on('end', () => resolve(Buffer.concat(chunks).toString('utf-8')));
+          body.on('error', reject);
+      });
   }
 }

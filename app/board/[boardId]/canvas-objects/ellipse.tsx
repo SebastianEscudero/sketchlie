@@ -15,7 +15,7 @@ const font = Kalam({
 interface EllipseProps {
   id: string;
   layer: EllipseLayer;
-  boardId: string;
+  boardId?: string;
   onPointerDown?: (e: any, id: string) => void;
   selectionColor?: string;
   expired?: boolean;

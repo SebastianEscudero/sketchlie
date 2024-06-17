@@ -15,7 +15,7 @@ const font = Kalam({
 interface StarProps {
   id: string;
   layer: StarLayer;
-  boardId: string;
+  boardId?: string;
   onPointerDown?: (e: any, id: string) => void;
   selectionColor?: string;
   expired?: boolean;

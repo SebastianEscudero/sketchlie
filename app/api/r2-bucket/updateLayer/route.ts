@@ -1,5 +1,5 @@
+import { bodyToString } from "@/lib/utils";
 import { S3Client, PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
-import { bodyToString } from "../[boardId]/route";
 
 async function fetchBoardData(boardId: string): Promise<any> {
     const BUCKET_NAME = process.env.CLOUDFLARE_R2_BUCKET_NAME;
@@ -73,8 +73,6 @@ export const POST = async (request: Request): Promise<Response> => {
     });
 
     serializedBoard = JSON.stringify(existingBoardData);
-
-    console.log(serializedBoard)
 
     // Use the board's ID as the object key
     const objectKey = `board-${boardId}.json`;

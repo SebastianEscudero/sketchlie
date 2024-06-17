@@ -15,7 +15,7 @@ const font = Kalam({
 interface NoteProps {
   id: string;
   layer: NoteLayer;
-  boardId: string;
+  boardId?: string;
   onPointerDown?: (e: any, id: string) => void;
   selectionColor?: string;
   expired?: boolean;

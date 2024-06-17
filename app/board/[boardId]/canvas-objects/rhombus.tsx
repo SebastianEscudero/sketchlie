@@ -15,7 +15,7 @@ const font = Kalam({
 interface RhombusProps {
   id: string;
   layer: RhombusLayer;
-  boardId: string;
+  boardId?: string;
   onPointerDown?: (e: any, id: string) => void;
   selectionColor?: string;
   expired?: boolean;
