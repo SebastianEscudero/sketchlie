@@ -33,13 +33,13 @@ interface ActionsProps {
   org: any;
   setIsBackgroundGridVisible?: (isVisible: boolean) => void;
   isBackgroundGridVisible?: boolean;
-  insertLayerCommand: any;
-  performAction: any;
-  setLiveLayers: any;
-  setLiveLayerIds: any;
-  liveLayers: any;
-  liveLayerIds: any;
-  socket: any;
+  insertLayerCommand?: any;
+  performAction?: any;
+  setLiveLayers?: any;
+  setLiveLayerIds?: any;
+  liveLayers?: any;
+  liveLayerIds?: any;
+  socket?: any;
 };
 
 export const Actions = ({

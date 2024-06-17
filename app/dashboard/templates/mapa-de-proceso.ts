@@ -52,7 +52,7 @@ export const PlantillaMapaDeProceso = {
         CywM8ei1IP8z6OFKG4G4K: {
             fill: null,
             height: 53,
-            src: "https://sketchlie.s3.us-east-2.amazonaws.com/clufwcban0000qncizownxztp_cog.svg",
+            src: "https://sketchlie.s3.us-east-2.amazonaws.com/cog.svg",
             textFontSize: 0,
             type: 15,
             opacity: 1,
@@ -149,7 +149,7 @@ export const PlantillaMapaDeProceso = {
         Z5G9kA7axVWN9Qnce3uoU: {
             fill: null,
             height: 48,
-            src: "https://sketchlie.s3.us-east-2.amazonaws.com/clufwcban0000qncizownxztp_briefcase-business.svg",
+            src: "https://sketchlie.s3.us-east-2.amazonaws.com/briefcase-business.svg",
             textFontSize: 0,
             type: 15,
             opacity: 1,
@@ -254,7 +254,7 @@ export const PlantillaMapaDeProceso = {
         z0yshsBtrCUg8sC0N1pFY: {
             fill: null,
             height: 60,
-            src: "https://sketchlie.s3.us-east-2.amazonaws.com/clufwcban0000qncizownxztp_user.svg",
+            src: "https://sketchlie.s3.us-east-2.amazonaws.com/user.svg",
             textFontSize: 0,
             type: 15,
             opacity: 1,

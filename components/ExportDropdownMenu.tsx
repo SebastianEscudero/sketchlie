@@ -1,4 +1,4 @@
-import { exportToJSON, exportToPNG } from "@/lib/export";
+import { exportToJSON, exportToPdf, exportToPNG } from "@/lib/export";
 import { useRoom } from "./room";
 import {
     DropdownMenu,
@@ -17,7 +17,7 @@ interface ExportDropdownMenuProps {
 
 export const ExportDropdownMenu = ({ id, title }: ExportDropdownMenuProps) => {
     const { liveLayers, liveLayerIds } = useRoom(); // Step 2: Use the hook here
-    
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild className="h-[44px]">
@@ -30,6 +30,12 @@ export const ExportDropdownMenu = ({ id, title }: ExportDropdownMenuProps) => {
                 </DropdownMenuItem>
             </DropdownMenuTrigger>
             <DropdownMenuContent side="right" sideOffset={8}>
+                <DropdownMenuItem
+                    onClick={() => exportToPdf(title)}
+                    className="p-3 cursor-pointer"
+                >
+                    to PDF
+                </DropdownMenuItem>
                 <DropdownMenuItem
                     onClick={() => exportToPNG(title)}
                     className="p-3 cursor-pointer"
@@ -47,12 +53,6 @@ export const ExportDropdownMenu = ({ id, title }: ExportDropdownMenuProps) => {
                     className="p-3 cursor-pointer"
                 >
                     to SVG <Badge className="ml-2" variant="inProgress">SOON</Badge>
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                    onClick={() => toast.info("Coming soon")}
-                    className="p-3 cursor-pointer"
-                >
-                    to PDF <Badge className="ml-2" variant="inProgress">SOON</Badge>
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>

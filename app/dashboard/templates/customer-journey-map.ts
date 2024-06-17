@@ -16,7 +16,7 @@ export const PlantillaCustomerJourneyMap = {
     "2dInDMS5m9EhmuFvwzZGz": {
       fill: null,
       height: 46.309690178196036,
-      src: "https://sketchlie.s3.us-east-2.amazonaws.com/clufwcban0000qncizownxztp_laptop.svg",
+      src: "https://sketchlie.s3.us-east-2.amazonaws.com/laptop.svg",
       type: 15,
       width: 46.30969017819606,
       x: 705.6787557680902,
@@ -80,7 +80,7 @@ export const PlantillaCustomerJourneyMap = {
     "7hqO6AEKmwYojze4QAFVz": {
       fill: null,
       height: 43.50626737826389,
-      src: "https://sketchlie.s3.us-east-2.amazonaws.com/clufwcban0000qncizownxztp_smartphone.svg",
+      src: "https://sketchlie.s3.us-east-2.amazonaws.com/smartphone.svg",
       type: 15,
       width: 43.50626737826391,
       x: 777.074922500398,
@@ -145,7 +145,7 @@ export const PlantillaCustomerJourneyMap = {
     H1GC8sL3ADF384KJPGyAn: {
       fill: null,
       height: 46.309690178196036,
-      src: "https://sketchlie.s3.us-east-2.amazonaws.com/clufwcban0000qncizownxztp_laptop.svg",
+      src: "https://sketchlie.s3.us-east-2.amazonaws.com/laptop.svg",
       type: 15,
       width: 46.30969017819606,
       x: 1268.6951835226405,
@@ -306,7 +306,7 @@ export const PlantillaCustomerJourneyMap = {
     bdBMe2ydcnecN8eAFaj2F: {
       fill: null,
       height: 46.309690178196036,
-      src: "https://sketchlie.s3.us-east-2.amazonaws.com/clufwcban0000qncizownxztp_laptop.svg",
+      src: "https://sketchlie.s3.us-east-2.amazonaws.com/laptop.svg",
       type: 15,
       width: 46.30969017819606,
       x: 418.60637243074467,
@@ -388,7 +388,7 @@ export const PlantillaCustomerJourneyMap = {
     hD6kLHb5TUlnu27GFXNpl: {
       fill: null,
       height: 43.50626737826389,
-      src: "https://sketchlie.s3.us-east-2.amazonaws.com/clufwcban0000qncizownxztp_smartphone.svg",
+      src: "https://sketchlie.s3.us-east-2.amazonaws.com/smartphone.svg",
       type: 15,
       width: 43.50626737826391,
       x: 494.66537545947426,
@@ -410,7 +410,7 @@ export const PlantillaCustomerJourneyMap = {
     kCU6jy3MlKAqSicx1Hsg3: {
       fill: null,
       height: 43.50626737826389,
-      src: "https://sketchlie.s3.us-east-2.amazonaws.com/clufwcban0000qncizownxztp_smartphone.svg",
+      src: "https://sketchlie.s3.us-east-2.amazonaws.com/smartphone.svg",
       type: 15,
       width: 43.50626737826391,
       x: 1349.5444722326088,
@@ -419,7 +419,7 @@ export const PlantillaCustomerJourneyMap = {
     nKUFsJPAqkell4s6K5vxr: {
       fill: null,
       height: 46.309690178196036,
-      src: "https://sketchlie.s3.us-east-2.amazonaws.com/clufwcban0000qncizownxztp_laptop.svg",
+      src: "https://sketchlie.s3.us-east-2.amazonaws.com/laptop.svg",
       type: 15,
       width: 46.30969017819606,
       x: 1598.420714166183,
@@ -470,7 +470,7 @@ export const PlantillaCustomerJourneyMap = {
     sKefBLhonRUcycfjSWwNe: {
       fill: null,
       height: 43.49659926298879,
-      src: "https://sketchlie.s3.us-east-2.amazonaws.com/clufwcban0000qncizownxztp_smartphone.svg",
+      src: "https://sketchlie.s3.us-east-2.amazonaws.com/smartphone.svg",
       type: 15,
       width: 43.496599262988845,
       x: 1671.7481254502632,
@@ -515,7 +515,7 @@ export const PlantillaCustomerJourneyMap = {
     uqRwQRg20ENyYqyEy6Jy8: {
       fill: null,
       height: 46.309690178196036,
-      src: "https://sketchlie.s3.us-east-2.amazonaws.com/clufwcban0000qncizownxztp_laptop.svg",
+      src: "https://sketchlie.s3.us-east-2.amazonaws.com/laptop.svg",
       type: 15,
       width: 46.30969017819606,
       x: 990.044489575051,
@@ -583,7 +583,7 @@ export const PlantillaCustomerJourneyMap = {
     xr0ShrWixT8GJHzLuYICi: {
       fill: null,
       height: 43.50626737826389,
-      src: "https://sketchlie.s3.us-east-2.amazonaws.com/clufwcban0000qncizownxztp_smartphone.svg",
+      src: "https://sketchlie.s3.us-east-2.amazonaws.com/smartphone.svg",
       type: 15,
       width: 43.50626737826391,
       x: 1063.8836979341377,

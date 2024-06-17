@@ -1,4 +1,5 @@
 import { toJpeg, toPng } from 'html-to-image';
+import { jsPDF } from "jspdf";
 
 export const exportToPNG = async (title: string) => {
   const screenShot = document.getElementById("canvas") as HTMLElement;
@@ -7,7 +8,9 @@ export const exportToPNG = async (title: string) => {
   // Change the background color for the export
   screenShot.style.backgroundColor = '#F4F4F4';
   
-  toPng(screenShot, { quality: 1 }).then((dataUrl) => {
+  toPng(screenShot, {
+     quality: 1,
+  }).then((dataUrl) => {
     // Revert the background color after export
     screenShot.style.backgroundColor = originalBackgroundColor;
     
@@ -37,4 +40,28 @@ export const exportToPNG = async (title: string) => {
 
 export const exportToSVG = async (title: string) => {
 // implement
+};
+
+export const exportToPdf = async (title: string) => {
+  const screenShot = document.getElementById("canvas") as HTMLElement;
+  // Store the original background color
+  const originalBackgroundColor = screenShot.style.backgroundColor;
+  // Change the background color for the export
+  screenShot.style.backgroundColor = '#F4F4F4';
+  
+  console.log(screenShot.clientHeight, screenShot.clientWidth)
+
+  toPng(screenShot, { quality: 1 }).then((dataUrl) => {
+    // Revert the background color after export
+    screenShot.style.backgroundColor = originalBackgroundColor;
+    
+    const pdf = new jsPDF({
+      orientation: "landscape",
+      unit: "px",
+      format: [screenShot.clientWidth, screenShot.clientHeight]
+    });
+    
+    pdf.addImage(dataUrl, 'PNG', 0, 0, screenShot.clientWidth,  screenShot.clientHeight);
+    pdf.save(`${title}.pdf`);
+  });
 };
