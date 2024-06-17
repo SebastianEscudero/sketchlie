@@ -28,12 +28,11 @@ interface LayerPreviewProps {
   selectionColor?: string;
   layer: Layer;
   setLiveLayers: (layers: any) => void;
-  updateLayer: UpdateLayerMutation;
   onRefChange?: (ref: React.RefObject<any>) => void;
   zoomRef?: React.RefObject<any>;
   socket: any;
-  board: any;
   expired: boolean;
+  boardId: string;
 };
 
 export const LayerPreview = memo(({
@@ -43,11 +42,10 @@ export const LayerPreview = memo(({
   selectionColor,
   layer,
   setLiveLayers,
-  updateLayer,
   onRefChange,
   socket,
-  board,
-  expired
+  expired,
+  boardId,
 }: LayerPreviewProps) => {
 
   if (!layer) {
@@ -71,13 +69,12 @@ export const LayerPreview = memo(({
     case LayerType.Note:
       return (
         <Note
-          updateLayer={updateLayer}
           id={id}
           layer={layer}
+          boardId={boardId}
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
           socket={socket}
-          board={board}
           expired={expired}
           focused={focused}
         />
@@ -86,28 +83,26 @@ export const LayerPreview = memo(({
       return (
         <Text
           onRefChange={onRefChange}
-          updateLayer={updateLayer}
           setLiveLayers={setLiveLayers}
           id={id}
           layer={layer}
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
           socket={socket}
-          board={board}
           expired={expired}
           focused={focused}
+          boardId={boardId}
         />
       );
     case LayerType.Ellipse:
       return (
         <Ellipse
-          updateLayer={updateLayer}
           id={id}
           layer={layer}
+          boardId={boardId}
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
           socket={socket}
-          board={board}
           expired={expired}
           focused={focused}
         />
@@ -115,13 +110,12 @@ export const LayerPreview = memo(({
     case LayerType.Rectangle:
       return (
         <Rectangle
-          updateLayer={updateLayer}
           id={id}
           layer={layer}
+          boardId={boardId}
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
           socket={socket}
-          board={board}
           expired={expired}
           focused={focused}
         />
@@ -129,13 +123,12 @@ export const LayerPreview = memo(({
     case LayerType.Rhombus:
       return (
         <Rhombus
-          updateLayer={updateLayer}
           id={id}
           layer={layer}
+          boardId={boardId}
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
           socket={socket}
-          board={board}
           expired={expired}
           focused={focused}
         />
@@ -143,13 +136,12 @@ export const LayerPreview = memo(({
     case LayerType.Triangle:
       return (
         <Triangle
-          updateLayer={updateLayer}
           id={id}
           layer={layer}
+          boardId={boardId}
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
           socket={socket}
-          board={board}
           expired={expired}
           focused={focused}
         />
@@ -157,13 +149,12 @@ export const LayerPreview = memo(({
     case LayerType.Star:
       return (
         <Star
-          updateLayer={updateLayer}
           id={id}
           layer={layer}
+          boardId={boardId}
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
           socket={socket}
-          board={board}
           expired={expired}
           focused={focused}
         />
@@ -171,13 +162,12 @@ export const LayerPreview = memo(({
     case LayerType.Hexagon:
       return (
         <Hexagon
-          updateLayer={updateLayer}
           id={id}
           layer={layer}
+          boardId={boardId}
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
           socket={socket}
-          board={board}
           expired={expired}
           focused={focused}
         />
@@ -185,13 +175,12 @@ export const LayerPreview = memo(({
     case LayerType.CommentBubble:
       return (
         <CommentBubble
-          updateLayer={updateLayer}
           id={id}
           layer={layer}
+          boardId={boardId}
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
           socket={socket}
-          board={board}
           expired={expired}
           focused={focused}
         />
@@ -208,13 +197,12 @@ export const LayerPreview = memo(({
     case LayerType.BigArrowLeft:
       return (
         <BigArrowLeft
-          updateLayer={updateLayer}
           id={id}
           layer={layer}
+          boardId={boardId}
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
           socket={socket}
-          board={board}
           expired={expired}
           focused={focused}
         />
@@ -222,13 +210,12 @@ export const LayerPreview = memo(({
     case LayerType.BigArrowRight:
       return (
         <BigArrowRight
-          updateLayer={updateLayer}
           id={id}
           layer={layer}
+          boardId={boardId}
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
           socket={socket}
-          board={board}
           expired={expired}
           focused={focused}
         />
@@ -236,13 +223,12 @@ export const LayerPreview = memo(({
     case LayerType.BigArrowUp:
       return (
         <BigArrowUp
-          updateLayer={updateLayer}
           id={id}
           layer={layer}
+          boardId={boardId}
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
           socket={socket}
-          board={board}
           expired={expired}
           focused={focused}
         />
@@ -250,13 +236,12 @@ export const LayerPreview = memo(({
     case LayerType.BigArrowDown:
       return (
         <BigArrowDown
-          updateLayer={updateLayer}
           id={id}
           layer={layer}
+          boardId={boardId}
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
           socket={socket}
-          board={board}
           expired={expired}
           focused={focused}
         />

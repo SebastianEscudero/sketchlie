@@ -30,9 +30,11 @@ interface RoomProps {
   fallback: NonNullable<ReactNode> | null;
   userInfo: any;
   board: any;
+  layers: Layers;
+  layerIds: string[];
 }
 
-export const Room = React.memo(({ children, roomId, fallback, userInfo, board }: RoomProps) => {
+export const Room = React.memo(({ children, roomId, fallback, userInfo, board, layers, layerIds }: RoomProps) => {
 
   const orgId = board?.orgId;
   const org = userInfo.organizations.find((org: any) => org.id === orgId);
@@ -65,9 +67,9 @@ export const Room = React.memo(({ children, roomId, fallback, userInfo, board }:
   const [otherUsers, setOtherUsers] = useState<User[]>([]);
 
   useEffect(() => {
-    if (board) {
-      setLiveLayers(board.layers || {});
-      setLiveLayerIds(board.layerIds || {});
+    if (layers && layerIds) {
+      setLiveLayers(layers);
+      setLiveLayerIds(layerIds);
     }
   }, []);
 
@@ -101,7 +103,6 @@ export const Room = React.memo(({ children, roomId, fallback, userInfo, board }:
         layerIds.forEach((layerId: string, index: any) => {
           newLayers[layerId] = { ...newLayers[layerId], ...layers[index] };
         });
-        board.layers = newLayers;
         return newLayers;
       });
     
@@ -125,19 +126,16 @@ export const Room = React.memo(({ children, roomId, fallback, userInfo, board }:
         layerId.forEach((id: string) => {
           delete newLayers[id];
         });
-        board.layers = newLayers; 
         return newLayers;
       });
     
       setLiveLayerIds(layerIds => {
         const newLayerIds = layerIds.filter(id => !layerId.includes(id));
-        board.layerIds = newLayerIds; // Update the board object
         return newLayerIds;
       });
     });
 
     newSocket.on('layer-send', (newLayerIds) => {
-      board.layerIds = newLayerIds;
       setLiveLayerIds(newLayerIds);
     });
 

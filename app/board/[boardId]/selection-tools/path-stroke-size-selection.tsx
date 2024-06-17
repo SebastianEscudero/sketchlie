@@ -1,22 +1,21 @@
 import { Slider } from '@/components/ui/slider';
+import { updateR2Bucket } from '@/lib/r2-bucket-functions';
 import { Socket } from 'socket.io-client';
 
 interface PathStokeSizeSelectionProps {
     selectedLayers: any;
     setLiveLayers: (layers: any) => void;
     liveLayers: any;
-    updateLayer: any;
-    board: any;
     socket: Socket | null;
+    boardId: string;
 };
 
 export const PathStokeSizeSelection = ({
     selectedLayers,
     setLiveLayers,
     liveLayers,
-    updateLayer,
-    board,
     socket,
+    boardId,
 }: PathStokeSizeSelectionProps) => {
 
     const strokeSize = liveLayers[selectedLayers[0]].strokeSize;
@@ -37,11 +36,7 @@ export const PathStokeSizeSelection = ({
         });
 
         if (updatedIds.length > 0) {
-            updateLayer({
-                board: board,
-                layerId: updatedIds,
-                layerUpdates: updatedLayers
-            });
+            updateR2Bucket('/api/r2-bucket/updateLayer', boardId, updatedIds, updatedLayers);
         }
 
         if (socket) {

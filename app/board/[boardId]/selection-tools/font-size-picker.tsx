@@ -1,3 +1,4 @@
+import { updateR2Bucket } from '@/lib/r2-bucket-functions';
 import { LayerType, SelectorType } from '@/types/canvas';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -7,9 +8,8 @@ interface FontSizePickerProps {
     selectedLayers: any;
     setLiveLayers: (layers: any) => void;
     liveLayers: any;
-    updateLayer: any;
-    board: any;
     socket: Socket | null;
+    boardId: string;
     openSelector: SelectorType | null;
     setOpenSelector: (Selector: SelectorType | null) => void;
     expandUp: boolean;
@@ -21,9 +21,8 @@ export const FontSizePicker = ({
     selectedLayers,
     setLiveLayers,
     liveLayers,
-    updateLayer,
-    board,
     socket,
+    boardId,
     openSelector,
     setOpenSelector,
     expandUp = false
@@ -55,11 +54,7 @@ export const FontSizePicker = ({
         });
       
         if (updatedIds.length > 0) {
-          updateLayer({
-            board: board,
-            layerId: updatedIds,
-            layerUpdates: updatedLayers
-          });
+            updateR2Bucket('/api/r2-bucket/updateLayer', boardId, updatedIds, updatedLayers);
         }
       
         if (socket) {

@@ -12,6 +12,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { templates } from "../templates/templates";
 import { ShowAllTemplates } from "./show-all-templates";
 import { cn } from "@/lib/utils";
+import { updateR2Bucket } from "@/lib/r2-bucket-functions";
 
 interface TemplateProps {
     org: any
@@ -37,23 +38,21 @@ export const Templates = ({
         return null;
     }
 
-    const onClick = (templateName: string, templateLayerIds: any, templateLayers: any) => {
+    const onClick = async (templateName: string, templateLayerIds: any, templateLayers: any) => {
         if (maxAmountOfBoards !== null && (data?.length ?? 0) < maxAmountOfBoards) {
-            mutate({
-                orgId: orgId,
-                title: templateName,
-                userId: user.id,
-                userName: user.name,
-                layerIds: templateLayerIds,
-                layers: templateLayers,
-            })
-                .then((id) => {
-                    toast.success("Board created");
-                    router.push(`/board/${id}`);
-                })
-                .catch(() => {
-                    toast.error("Failed to create board");
+            try {
+                const id = await mutate({
+                    orgId: org.id,
+                    title: templateName,
+                    userId: user.id,
+                    userName: user.name,
                 });
+                await updateR2Bucket('/api/r2-bucket/createBoard', id, templateLayerIds, templateLayers);
+                toast.success("Board created");
+                await router.push(`/board/${id}`);
+            } catch (error) {
+                toast.error("Failed to create board");
+            }
         } else {
             proModal.onOpen(orgId);
         }

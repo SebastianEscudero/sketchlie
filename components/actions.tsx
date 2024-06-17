@@ -65,9 +65,28 @@ export const Actions = ({
 
   const onDelete = () => {
     mutate({ id, userId: user.id })
+      .then(() => {
+        // After mutate, call the server endpoint to delete the object
+        return fetch('/api/r2-bucket/deleteBoard', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ boardId: id }),
+        });
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to delete board from server');
+        }
+        return response.json(); // Assuming the server responds with JSON
+      })
       .then(() => toast.success("Board deleted"))
       .then(() => router.push("/dashboard/"))
-      .catch(() => toast.error("Failed to delete board"));
+      .catch((error) => {
+        console.error(error);
+        toast.error("Failed to delete board");
+      });
   };
 
   return (

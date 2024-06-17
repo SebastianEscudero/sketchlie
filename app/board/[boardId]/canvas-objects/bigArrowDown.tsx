@@ -1,80 +1,73 @@
 import { Kalam } from "next/font/google";
 import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
 
-import { LayerType, BigArrowDownLayer, UpdateLayerMutation } from "@/types/canvas";
+import { LayerType, BigArrowDownLayer } from "@/types/canvas";
 import { cn, colorToCss, getContrastingTextColor, removeHighlightFromText } from "@/lib/utils";
 import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import { throttle } from "lodash";
+import { updateR2Bucket } from "@/lib/r2-bucket-functions";
 
 const font = Kalam({
-    subsets: ["latin"],
-    weight: ["400"],
+  subsets: ["latin"],
+  weight: ["400"],
 });
 
 interface BigArrowDownProps {
-    id: string;
-    layer: BigArrowDownLayer;
-    onPointerDown?: (e: any, id: string) => void;
-    selectionColor?: string;
-    updateLayer?: UpdateLayerMutation;
-    expired?: boolean;
-    socket?: any;
-    board?: any;
-    focused?: boolean;
+  id: string;
+  layer: BigArrowDownLayer;
+  boardId: string;
+  onPointerDown?: (e: any, id: string) => void;
+  selectionColor?: string;
+  expired?: boolean;
+  socket?: any;
+  focused?: boolean;
 };
 
-const throttledUpdateLayer = throttle((updateLayer, socket, board, layerId, layerUpdates) => {
-    if (updateLayer) {
-        updateLayer({
-            board,
-            layerId,
-            layerUpdates
-        });
-    }
+const throttledUpdateLayer = throttle((boardId, layerId, layerUpdates) => {
+  updateR2Bucket('/api/r2-bucket/updateLayer', boardId, layerId, layerUpdates);
 }, 1000);
 
 export const BigArrowDown = memo(({
-    layer,
-    onPointerDown,
-    id,
-    selectionColor,
-    updateLayer,
-    expired,
-    socket,
-    board,
-    focused = false,
+  layer,
+  boardId,
+  onPointerDown,
+  id,
+  selectionColor,
+  expired,
+  socket,
+  focused = false,
 }: BigArrowDownProps) => {
-    const { x, y, width, height, fill, outlineFill, value: initialValue, textFontSize } = layer;
-    const alignX = layer.alignX || "center";
-    const alignY = layer.alignY || "center";
-    const [value, setValue] = useState(initialValue);
-    const fillColor = colorToCss(fill);
-    const BigArrowDownRef = useRef<any>(null);
+  const { x, y, width, height, fill, outlineFill, value: initialValue, textFontSize } = layer;
+  const alignX = layer.alignX || "center";
+  const alignY = layer.alignY || "center";
+  const [value, setValue] = useState(initialValue);
+  const fillColor = colorToCss(fill);
+  const BigArrowDownRef = useRef<any>(null);
 
-    useEffect(() => {
-        setValue(layer.value);
-    }, [id, layer]);
+  useEffect(() => {
+    setValue(layer.value);
+  }, [id, layer]);
 
-    useEffect(() => {
-        if (!focused) {
-            removeHighlightFromText();
+  useEffect(() => {
+    if (!focused) {
+      removeHighlightFromText();
+    }
+  }, [focused])
+
+
+  const updateValue = useCallback((newValue: string) => {
+    if (layer && layer.type === LayerType.BigArrowDown) {
+      const BigArrowDownLayer = layer as BigArrowDownLayer;
+      BigArrowDownLayer.value = newValue;
+      setValue(newValue);
+      if (expired !== true) {
+        throttledUpdateLayer(boardId, id, layer);
+        if (socket) {
+          socket.emit('layer-update', id, layer);
         }
-    }, [focused])
-
-
-    const updateValue = useCallback((newValue: string) => {
-        if (layer && layer.type === LayerType.BigArrowDown) {
-            const BigArrowDownLayer = layer as BigArrowDownLayer;
-            BigArrowDownLayer.value = newValue;
-            setValue(newValue);
-            if (expired !== true) {
-                throttledUpdateLayer(updateLayer, socket, board, id, layer);
-                if (socket) {
-                    socket.emit('layer-update', id, layer);
-                }
-            }
-        }
-    }, [id, layer, expired, updateLayer, socket, board]);
+      }
+    }
+  }, [id, layer, expired, socket, boardId]);
 
     const handleContentChange = useCallback((e: ContentEditableEvent) => {
         updateValue(e.target.value);

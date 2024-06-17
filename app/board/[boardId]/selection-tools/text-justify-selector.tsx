@@ -5,14 +5,14 @@ import { AlignCenter, AlignLeft, AlignRight, ArrowDownToLine, ArrowUpToLine, Fol
 import { LayerType, SelectorType } from '@/types/canvas';
 import { Button } from '@/components/ui/button';
 import { Socket } from 'socket.io-client';
+import { updateR2Bucket } from '@/lib/r2-bucket-functions';
 
 interface TextJustifySelectorProps {
     selectedLayers: any;
     setLiveLayers: (layers: any) => void;
-    updateLayer: any;
     liveLayers: any;
-    board: any;
     socket: Socket | null;
+    boardId: string;
     openSelector: SelectorType | null;
     setOpenSelector: (Selector: SelectorType | null) => void;
     expandUp: boolean;
@@ -21,10 +21,9 @@ interface TextJustifySelectorProps {
 export const TextJustifySelector = ({
     selectedLayers,
     setLiveLayers,
-    updateLayer,
     liveLayers,
-    board,
     socket,
+    boardId,
     openSelector,
     setOpenSelector,
     expandUp = false
@@ -56,11 +55,7 @@ export const TextJustifySelector = ({
         });
 
         if (updatedIds.length > 0) {
-            updateLayer({
-                board: board,
-                layerId: updatedIds,
-                layerUpdates: updatedLayers
-            });
+            updateR2Bucket('/api/r2-bucket/updateLayer', boardId, updatedIds, updatedLayers);
         }
 
         if (socket) {

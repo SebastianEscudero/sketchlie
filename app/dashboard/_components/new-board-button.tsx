@@ -12,6 +12,7 @@ import { useQuery } from "convex/react";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { getMaxBoards } from "@/lib/planLimits";
+import { updateR2Bucket } from "@/lib/r2-bucket-functions";
 
 
 
@@ -45,20 +46,20 @@ export const NewBoardButton = ({
         return null;
     }
 
-    const onClick = () => {
-        mutate({
-            orgId: org.id,
-            title,
-            userId: user.id,
-            userName: user.name,
-        })
-            .then((id) => {
-                toast.success("Board created");
-                router.push(`/board/${id}`);
-            })
-            .catch(() => {
-                toast.error("Failed to create board");
+    const onClick = async () => {
+        try {
+            const id = await mutate({
+                orgId: org.id,
+                title,
+                userId: user.id,
+                userName: user.name,
             });
+            await updateR2Bucket('/api/r2-bucket/createBoard', id, [], {});
+            toast.success("Board created");
+            await router.push(`/board/${id}`);
+        } catch (error) {
+            toast.error("Failed to create board");
+        }
     }
 
     const onConfirm = () => {

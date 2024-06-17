@@ -9,17 +9,16 @@ import { useSelectionBounds } from "@/hooks/use-selection-bounds";
 import { ColorPicker } from "../selection-tools/color-picker";
 import { FontSizePicker } from "../selection-tools/font-size-picker"
 import { Socket } from "socket.io-client";
-import { useApiMutation } from "@/hooks/use-api-mutation";
-import { api } from "@/convex/_generated/api";
 import { OutlineColorPicker } from "../selection-tools/outline-color-picker";
 import { ArrowHeadSelection } from "../selection-tools/arrow-head-selection";
 import { PathStokeSizeSelection } from "../selection-tools/path-stroke-size-selection";
 import { customAlphabet } from "nanoid";
 import { getMaxCapas } from "@/lib/planLimits";
 import { TextJustifySelector } from "../selection-tools/text-justify-selector";
+import { updateR2Bucket } from "@/lib/r2-bucket-functions";
 
 interface SelectionToolsProps {
-  board: any;
+  boardId: string;
   camera: Camera;
   zoom: number;
   selectedLayers: string[];
@@ -28,10 +27,8 @@ interface SelectionToolsProps {
   setLiveLayers: (layers: any) => void;
   setLiveLayerIds: (ids: string[]) => void;
   socket: Socket | null;
-  updateLayer: UpdateLayerMutation;
   DeleteLayerCommand: any;
   performAction: any;
-  addLayer: any;
   org: any;
   proModal: any;
   InsertLayerCommand: any;
@@ -41,7 +38,7 @@ interface SelectionToolsProps {
 };
 
 export const SelectionTools = memo(({
-  board,
+  boardId,
   camera,
   zoom,
   selectedLayers,
@@ -50,10 +47,8 @@ export const SelectionTools = memo(({
   liveLayers,
   liveLayerIds,
   socket,
-  updateLayer,
   DeleteLayerCommand,
   performAction,
-  addLayer,
   org,
   proModal,
   InsertLayerCommand,
@@ -63,8 +58,6 @@ export const SelectionTools = memo(({
 }: SelectionToolsProps) => {
   const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
   const nanoid = customAlphabet(alphabet, 21);
-  const { mutate: updateLayerIds } = useApiMutation(api.board.updateLayerIds);
-  const { mutate: deleteLayer } = useApiMutation(api.board.deleteLayer);
   const [openSelector, setOpenSelector] = useState<SelectorType | null>(null);
 
   const hasText = selectedLayers.every(layer =>
@@ -161,16 +154,13 @@ export const SelectionTools = memo(({
 
     setLiveLayerIds(arr);
 
-    updateLayerIds({
-      board: board,
-      layerIds: arr
-    });
+    updateR2Bucket('/api/r2-bucket/updateLayerIds', boardId, arr);
 
     if (socket) {
       socket.emit('layer-send', arr);
     }
 
-  }, [selectedLayers, setLiveLayerIds, liveLayerIds, updateLayerIds, board, socket]);
+  }, [selectedLayers, setLiveLayerIds, liveLayerIds, boardId, socket]);
 
   const moveToBack = useCallback(() => {
     const indices: number[] = [];
@@ -199,16 +189,13 @@ export const SelectionTools = memo(({
 
     setLiveLayerIds(arr);
 
-    updateLayerIds({
-      board: board,
-      layerIds: arr
-    });
+    updateR2Bucket('/api/r2-bucket/updateLayerIds', boardId, arr);
 
     if (socket) {
       socket.emit('layer-send', arr);
     }
 
-  }, [selectedLayers, setLiveLayerIds, liveLayerIds, updateLayerIds, board, socket]);
+  }, [selectedLayers, setLiveLayerIds, liveLayerIds, boardId, socket]);
 
   const setFill = useCallback((fill: Color) => {
     setLiveLayers((prevLayers: any) => {
@@ -226,11 +213,7 @@ export const SelectionTools = memo(({
       });
 
       if (updatedIds.length > 0) {
-        updateLayer({
-          board: board,
-          layerId: updatedIds,
-          layerUpdates: updatedLayers.map(() => ({ fill }))
-        });
+        updateR2Bucket('/api/r2-bucket/updateLayer', boardId, updatedIds, updatedLayers);
       }
 
       if (socket) {
@@ -239,7 +222,7 @@ export const SelectionTools = memo(({
 
       return newLayers;
     });
-  }, [selectedLayers, setLiveLayers, socket, updateLayer, board]);
+  }, [selectedLayers, setLiveLayers, socket, boardId]);
 
   const setOutlineFill = useCallback((outlineFill: Color) => {
     setLiveLayers((prevLayers: any) => {
@@ -256,13 +239,8 @@ export const SelectionTools = memo(({
         }
       });
 
-      if (updatedIds.length > 0) {
-        updateLayer({
-          board: board,
-          layerId: updatedIds,
-          layerUpdates: updatedLayers.map(() => ({ outlineFill }))
-        });
-      }
+      updateR2Bucket('/api/r2-bucket/updateLayer', boardId, updatedIds, updatedLayers);
+
 
       if (socket) {
         socket.emit('layer-update', updatedIds, updatedLayers);
@@ -270,7 +248,7 @@ export const SelectionTools = memo(({
 
       return newLayers;
     });
-  }, [selectedLayers, setLiveLayers, socket, updateLayer, board]);
+  }, [selectedLayers, setLiveLayers, boardId, socket]);
 
   const duplicateLayers = useCallback(() => {
     if (org && liveLayerIds.length >= getMaxCapas(org)) {
@@ -312,7 +290,7 @@ export const SelectionTools = memo(({
       clonedLayers.push(clonedLayer);
     });
   
-    const command = new InsertLayerCommand(newIds, clonedLayers, liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, deleteLayer, addLayer, board, socket);
+    const command = new InsertLayerCommand(newIds, clonedLayers, liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, boardId, socket);
     performAction(command);
     setLiveLayers(newLiveLayers);
     setLiveLayerIds(newLiveLayerIds);
@@ -324,13 +302,13 @@ export const SelectionTools = memo(({
   
     setMyPresence(newPresence);
   
-  }, [selectedLayers, myPresence, setLiveLayers, setLiveLayerIds, setMyPresence, org, proModal, liveLayerIds, socket, liveLayers, addLayer, board]);
+  }, [selectedLayers, myPresence, setLiveLayers, setLiveLayerIds, setMyPresence, org, proModal, liveLayerIds, socket, liveLayers, performAction, InsertLayerCommand, boardId, nanoid]);
 
   const deleteLayers = useCallback(() => {
     let newLiveLayers = { ...liveLayers };
     let newLiveLayerIds = liveLayerIds.filter(id => !selectedLayers.includes(id));
 
-    const command = new DeleteLayerCommand(selectedLayers, liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, deleteLayer, addLayer, board, socket);
+    const command = new DeleteLayerCommand(selectedLayers, liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, boardId, socket);
     performAction(command);
 
     selectedLayers.forEach((id) => {
@@ -339,7 +317,7 @@ export const SelectionTools = memo(({
 
     setLiveLayers(newLiveLayers);
     setLiveLayerIds(newLiveLayerIds);
-  }, [liveLayers, liveLayerIds, selectedLayers, socket, deleteLayer, board, setLiveLayers, setLiveLayerIds, performAction, addLayer, DeleteLayerCommand]);
+  }, [liveLayers, liveLayerIds, selectedLayers, socket, setLiveLayers, setLiveLayerIds, performAction, DeleteLayerCommand, boardId]);
 
   if (!selectionBounds) {
     return null;
@@ -372,9 +350,8 @@ export const SelectionTools = memo(({
           selectedLayers={selectedLayers}
           setLiveLayers={setLiveLayers}
           liveLayers={liveLayers}
-          updateLayer={updateLayer}
-          board={board}
           socket={socket}
+          boardId={boardId}
         />
       )}
       {isArrowLayer && (
@@ -382,9 +359,8 @@ export const SelectionTools = memo(({
           selectedLayers={selectedLayers}
           setLiveLayers={setLiveLayers}
           liveLayers={liveLayers}
-          updateLayer={updateLayer}
-          board={board}
           socket={socket}
+          boardId={boardId}
           openSelector={openSelector}
           setOpenSelector={setOpenSelector}
           expandUp={position + 50 + 80 > window.innerHeight}
@@ -395,9 +371,8 @@ export const SelectionTools = memo(({
           selectedLayers={selectedLayers}
           setLiveLayers={setLiveLayers}
           liveLayers={liveLayers}
-          updateLayer={updateLayer}
-          board={board}
           socket={socket}
+          boardId={boardId}
           openSelector={openSelector}
           setOpenSelector={setOpenSelector}
           expandUp={position + 50 + 460 > window.innerHeight}
@@ -408,9 +383,8 @@ export const SelectionTools = memo(({
           selectedLayers={selectedLayers}
           setLiveLayers={setLiveLayers}
           liveLayers={liveLayers}
-          updateLayer={updateLayer}
-          board={board}
           socket={socket}
+          boardId={boardId}
           openSelector={openSelector}
           setOpenSelector={setOpenSelector}
           expandUp={position + 50 + 113 > window.innerHeight}

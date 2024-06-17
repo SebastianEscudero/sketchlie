@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { updateR2Bucket } from '@/lib/r2-bucket-functions';
 import { ArrowHead, SelectorType } from '@/types/canvas';
 import { MoveLeft, MoveRight, RefreshCcw } from 'lucide-react';
 import { useState } from 'react';
@@ -8,9 +9,8 @@ interface ArrowHeadSelectionProps {
     selectedLayers: any;
     setLiveLayers: (layers: any) => void;
     liveLayers: any;
-    updateLayer: any;
-    board: any;
     socket: Socket | null;
+    boardId: string;
     openSelector: SelectorType | null;
     setOpenSelector: (Selector: SelectorType | null) => void;
     expandUp: boolean;
@@ -20,9 +20,8 @@ export const ArrowHeadSelection = ({
     selectedLayers,
     setLiveLayers,
     liveLayers,
-    updateLayer,
-    board,
     socket,
+    boardId,
     openSelector,
     setOpenSelector,
     expandUp = false
@@ -53,11 +52,7 @@ export const ArrowHeadSelection = ({
         });
 
         if (updatedIds.length > 0) {
-            updateLayer({
-                board: board,
-                layerId: updatedIds,
-                layerUpdates: updatedLayers
-            });
+            updateR2Bucket('/api/r2-bucket/updateLayer', boardId, updatedIds, updatedLayers);
         }
 
         if (socket) {
@@ -86,11 +81,7 @@ export const ArrowHeadSelection = ({
         });
 
         if (updatedIds.length > 0) {
-            updateLayer({
-                board: board,
-                layerId: updatedIds,
-                layerUpdates: updatedLayers
-            });
+            updateR2Bucket('/api/r2-bucket/updateLayer', boardId, updatedIds, updatedLayers);
         }
 
         if (socket) {

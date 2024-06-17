@@ -1,10 +1,11 @@
 import { Kalam } from "next/font/google";
 import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
 
-import { LayerType, RectangleLayer, UpdateLayerMutation } from "@/types/canvas";
+import { LayerType, RectangleLayer } from "@/types/canvas";
 import { cn, colorToCss, getContrastingTextColor, removeHighlightFromText } from "@/lib/utils";
 import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import { throttle } from "lodash";
+import { updateR2Bucket } from "@/lib/r2-bucket-functions";
 
 const font = Kalam({
   subsets: ["latin"],
@@ -14,34 +15,26 @@ const font = Kalam({
 interface RectangleProps {
   id: string;
   layer: RectangleLayer;
+  boardId: string;
   onPointerDown?: (e: any, id: string) => void;
   selectionColor?: string;
-  updateLayer?: UpdateLayerMutation;
   expired?: boolean;
   socket?: any;
-  board?: any;
   focused?: boolean;
 };
 
-const throttledUpdateLayer = throttle((updateLayer, socket, board, layerId, layerUpdates) => {
-  if (updateLayer) {
-    updateLayer({
-      board,
-      layerId,
-      layerUpdates
-    });
-  }
+const throttledUpdateLayer = throttle((boardId, layerId, layerUpdates) => {
+  updateR2Bucket('/api/r2-bucket/updateLayer', boardId, layerId, layerUpdates);
 }, 1000);
 
 export const Rectangle = memo(({
   layer,
+  boardId,
   onPointerDown,
   id,
   selectionColor,
-  updateLayer,
   expired,
   socket,
-  board,
   focused = false,
 }: RectangleProps) => {
   const { x, y, width, height, fill, outlineFill, value: initialValue, textFontSize } = layer;
@@ -64,17 +57,17 @@ export const Rectangle = memo(({
 
   const updateValue = useCallback((newValue: string) => {
     if (layer && layer.type === LayerType.Rectangle) {
-      const rectangleLayer = layer as RectangleLayer;
-      rectangleLayer.value = newValue;
+      const RectangleLayer = layer as RectangleLayer;
+      RectangleLayer.value = newValue;
       setValue(newValue);
       if (expired !== true) {
-        throttledUpdateLayer(updateLayer, socket, board, id, layer);
+        throttledUpdateLayer(boardId, id, layer);
         if (socket) {
           socket.emit('layer-update', id, layer);
         }
       }
     }
-  }, [id, layer, expired, updateLayer, socket, board]);
+  }, [id, layer, expired, socket, boardId]);
 
   const handleContentChange = useCallback((e: ContentEditableEvent) => {
     updateValue(e.target.value);

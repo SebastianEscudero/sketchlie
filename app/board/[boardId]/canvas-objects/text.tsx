@@ -3,6 +3,7 @@ import { TextLayer, UpdateLayerMutation } from "@/types/canvas";
 import { cn, colorToCss } from "@/lib/utils";
 import { Kalam } from "next/font/google";
 import { throttle } from 'lodash';
+import { updateR2Bucket } from '@/lib/r2-bucket-functions';
 
 const font = Kalam({
     subsets: ["latin"],
@@ -18,21 +19,14 @@ interface TextProps {
     updateLayer?: UpdateLayerMutation;
     expired?: boolean;
     socket?: any;
-    board?: any;
     onRefChange?: (ref: React.RefObject<any>) => void;
     focused?: boolean;
+    boardId: string;
 };
 
-const throttledUpdateLayer = throttle((updateLayer, socket, board, layerId, layerUpdates) => {
-    if (updateLayer) {
-      updateLayer({
-        board,
-        layerId,
-        layerUpdates
-      });
-    }
-  }, 1000); 
-
+const throttledUpdateLayer = throttle((boardId, layerId, layerUpdates) => {
+  updateR2Bucket('/api/r2-bucket/updateLayer', boardId, layerId, layerUpdates);
+}, 1000);
 
   export const Text = memo(({
     layer,
@@ -40,12 +34,11 @@ const throttledUpdateLayer = throttle((updateLayer, socket, board, layerId, laye
     id,
     selectionColor,
     setLiveLayers,
-    updateLayer,
     onRefChange,
     expired,
     socket,
-    board,
-    focused = false
+    focused = false,
+    boardId,
 }: TextProps) => {
     const { x, y, width, height, fill, value: initialValue, textFontSize } = layer;
     const alignX = layer.alignX || "center";
@@ -102,20 +95,20 @@ const throttledUpdateLayer = throttle((updateLayer, socket, board, layerId, laye
     }, [onPointerDown, id, onRefChange]);
 
     const handleContentChange = useCallback((newValue: string) => {
-        setValue(newValue);
-        const newLayer = { ...layer, value: newValue };
-        textRef.current.style.height = `${textFontSize*1.5}px`;
-        newLayer.height = textRef.current.scrollHeight;
-        if (setLiveLayers) {
-            setLiveLayers((prevLayers: any) => {
-                return { ...prevLayers, [id]: { ...newLayer } };
-            });
-            throttledUpdateLayer(updateLayer, socket, board, id, newLayer); // Pass newLayer instead of layer
-            if (socket) {
-              socket.emit('layer-update', id, newLayer);
-            }
-        }
-    }, [layer, textFontSize, setLiveLayers, updateLayer, socket, board, id]);
+      setValue(newValue);
+      const newLayer = { ...layer, value: newValue };
+      textRef.current.style.height = `${textFontSize*1.5}px`;
+      newLayer.height = textRef.current.scrollHeight;
+      if (setLiveLayers) {
+          setLiveLayers((prevLayers: any) => {
+              return { ...prevLayers, [id]: { ...newLayer } };
+          });
+          throttledUpdateLayer(boardId, id, newLayer); // Pass newLayer instead of layer
+          if (socket) {
+            socket.emit('layer-update', id, newLayer);
+          }
+      }
+  }, [layer, textFontSize, setLiveLayers, socket, boardId, id]);
 
     useEffect(() => {        
         textRef.current.style.height = `${textFontSize*1.5}px`;

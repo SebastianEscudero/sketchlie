@@ -8,6 +8,7 @@ import { api } from "@/convex/_generated/api";
 import { useState, useEffect } from "react";
 import { useConvex } from "convex/react";
 import { Loading } from "@/components/auth/loading";
+import { Layers } from "@/types/canvas";
 
 interface BoardIdPageProps {
   params: {
@@ -23,16 +24,17 @@ const BoardIdPage = ({
   const [board, setBoard] = useState<{
     _id: Id<"boards">;
     _creationTime: number;
-    layers?: any;
     title: string;
     orgId: string;
     authorId: string;
     authorName: string;
     imageUrl: string;
-    layerIds: string[];
   } | null>(null);
 
   const convex = useConvex();
+
+  const [layers, setLayers] = useState<Layers | null>(null);
+  const [layerIds, setLayerIds] = useState<string[] | null>(null);
 
   useEffect(() => {
     const fetchBoard = async () => {
@@ -41,7 +43,20 @@ const BoardIdPage = ({
       });
       setBoard(fetchedBoard);
     };
+
     fetchBoard();
+
+    const fetchLayers = async () => {
+      const response = await fetch(`/api/r2-bucket/${params.boardId}/`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      setLayers(data.layers);
+      setLayerIds(data.layerIds);
+    }
+
+    fetchLayers();
 
     const handleTitleChange = () => {
       fetchBoard();
@@ -52,13 +67,13 @@ const BoardIdPage = ({
     };
   }, [params]);
 
-  if (!user || !board) {
+  if (!user || !board || layers === null || layerIds === null) {
     return <Loading />;
   }
 
   return (
-    <Room roomId={params.boardId} board={board} userInfo={user} fallback={<Loading />}>
-      <Canvas/>
+    <Room roomId={params.boardId} board={board} layers={layers} layerIds={layerIds} userInfo={user} fallback={<Loading />}>
+      <Canvas boardId={params.boardId}/>
     </Room>
   );
 };
