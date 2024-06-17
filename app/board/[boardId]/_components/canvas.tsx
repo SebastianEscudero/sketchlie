@@ -404,9 +404,6 @@ export const Canvas = ({
         const command = new InsertLayerCommand([layerId], [layer], liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, boardId, socket);
         performAction(command);
 
-        if (layer.type !== LayerType.Text) {
-            selectedLayersRef.current = [layerId];
-        }
         setLiveLayerIds(newLayerIds);
         setLiveLayers(newLayers as Layers);
 
@@ -477,8 +474,6 @@ export const Canvas = ({
         };
 
         setMyPresence(newPresence);
-
-        selectedLayersRef.current = [layerId];
         setCanvasState({ mode: CanvasMode.None });
     }, [liveLayers, liveLayerIds, myPresence, socket, org, proModal, User.userId, setLiveLayers, setLiveLayerIds, board, zoom]);
 
