@@ -85,52 +85,25 @@ export const BigArrowDown = memo(({
     }, []);
 
     const handlePointerDown = (e: React.PointerEvent) => {
-
-        if (e.pointerType === "touch") {
-            return;
-        }
-
         if (e.target === BigArrowDownRef.current) {
-
-            if (focused) {
-                e.stopPropagation();
-            } else {
-                e.preventDefault();
-                if (onPointerDown) onPointerDown(e, id);
-            }
-            return;
-        } else if (focused) {
-            e.preventDefault();
+    
+          if (focused) {
             e.stopPropagation();
-            BigArrowDownRef.current.focus();
-        }
-
-        if (onPointerDown) {
-            onPointerDown(e, id);
-        }
-    };
-
-    const handleTouchDown = (e: React.TouchEvent) => {
-        if (e.touches.length > 1 || document.activeElement === BigArrowDownRef.current) {
+          } else {
             e.preventDefault();
-            return;
+            if (onPointerDown) onPointerDown(e, id);
+          }
+          return;
+        } else if (focused) {
+          e.preventDefault();
+          e.stopPropagation();
+          BigArrowDownRef.current.focus();
         }
-
-        if (e.target === BigArrowDownRef.current) {
-            if (focused) {
-                e.stopPropagation();
-            } else {
-                e.preventDefault();
-                if (onPointerDown) onPointerDown(e, id);
-            }
-            return;
+    
+        if (onPointerDown) {
+          onPointerDown(e, id);
         }
-
-        if (!focused && onPointerDown) {
-            onPointerDown(e, id);
-        }
-    }
-
+      };
     const divWidth = width * 0.5;
     const divHeight = height * 0.75;
   
@@ -146,8 +119,8 @@ export const BigArrowDown = memo(({
         <g
             transform={`translate(${x}, ${y})`}
             onPointerDown={(e) => handlePointerDown(e)}
-            onTouchStart={(e) => handleTouchDown(e)}
-        >
+            onTouchStart={(e) => e.preventDefault()}
+            >
             <path
                 d={`M ${width / 2} ${height} L 0 ${height / 2} L ${width / 4} ${height / 2} L ${width / 4} ${0} L ${width * 3 / 4} ${0} L ${width * 3 / 4} ${height / 2} L ${width} ${height / 2} Z`} fill={fillColor}
                 stroke={selectionColor || colorToCss(outlineFill || fill)}

@@ -85,11 +85,6 @@ export const Rectangle = memo(({
   }, []);
 
   const handlePointerDown = (e: React.PointerEvent) => {
-
-    if (e.pointerType === "touch") {
-      return;
-    }
-
     if (e.target === RectangleRef.current) {
 
       if (focused) {
@@ -110,27 +105,6 @@ export const Rectangle = memo(({
     }
   };
 
-  const handleTouchDown = (e: React.TouchEvent) => {
-    if (e.touches.length > 1 || document.activeElement === RectangleRef.current) {
-      e.preventDefault();
-      return;
-    }
-
-    if (e.target === RectangleRef.current) {
-      if (focused) {
-        e.stopPropagation();
-      } else {
-        e.preventDefault();
-        if (onPointerDown) onPointerDown(e, id);
-      }
-      return;
-    }
-
-    if (!focused && onPointerDown) {
-      onPointerDown(e, id);
-    }
-  }
-
   const divWidth = width * 1;
   const divHeight = height * 1;
 
@@ -146,7 +120,7 @@ export const Rectangle = memo(({
     <g
       transform={`translate(${x}, ${y})`}
       onPointerDown={(e) => handlePointerDown(e)}
-      onTouchStart={(e) => handleTouchDown(e)}
+      onTouchStart={(e) => e.preventDefault()}
     >
       <rect
         width={width}

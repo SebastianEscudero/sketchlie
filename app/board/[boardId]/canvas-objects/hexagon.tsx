@@ -85,11 +85,6 @@ export const Hexagon = memo(({
   }, []);
 
   const handlePointerDown = (e: React.PointerEvent) => {
-
-    if (e.pointerType === "touch") {
-      return;
-    }
-
     if (e.target === HexagonRef.current) {
 
       if (focused) {
@@ -110,27 +105,6 @@ export const Hexagon = memo(({
     }
   };
 
-  const handleTouchDown = (e: React.TouchEvent) => {
-    if (e.touches.length > 1 || document.activeElement === HexagonRef.current) {
-      e.preventDefault();
-      return;
-    }
-
-    if (e.target === HexagonRef.current) {
-      if (focused) {
-        e.stopPropagation();
-      } else {
-        e.preventDefault();
-        if (onPointerDown) onPointerDown(e, id);
-      }
-      return;
-    }
-
-    if (!focused && onPointerDown) {
-      onPointerDown(e, id);
-    }
-  }
-
   const divWidth = width * 0.65;
   const divHeight = height * 0.65;
 
@@ -146,7 +120,7 @@ export const Hexagon = memo(({
     <g
       transform={`translate(${x}, ${y})`}
       onPointerDown={(e) => handlePointerDown(e)}
-      onTouchStart={(e) => handleTouchDown(e)}
+      onTouchStart={(e) => e.preventDefault()}
     >
       <path
         d={`M ${width * 0.5},${0} L ${width}, ${height * 0.25} L ${width}, ${height * 0.75} L ${width * 0.5}, ${height} L 0, ${height * 0.75} L 0, ${height * 0.25} Z`} fill={fillColor}

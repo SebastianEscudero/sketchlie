@@ -85,11 +85,6 @@ export const Ellipse = memo(({
   }, []);
 
   const handlePointerDown = (e: React.PointerEvent) => {
-
-    if (e.pointerType === "touch") {
-      return;
-    }
-
     if (e.target === EllipseRef.current) {
 
       if (focused) {
@@ -110,27 +105,6 @@ export const Ellipse = memo(({
     }
   };
 
-  const handleTouchDown = (e: React.TouchEvent) => {
-    if (e.touches.length > 1 || document.activeElement === EllipseRef.current) {
-      e.preventDefault();
-      return;
-    }
-
-    if (e.target === EllipseRef.current) {
-      if (focused) {
-        e.stopPropagation();
-      } else {
-        e.preventDefault();
-        if (onPointerDown) onPointerDown(e, id);
-      }
-      return;
-    }
-
-    if (!focused && onPointerDown) {
-      onPointerDown(e, id);
-    }
-  }
-
   const divWidth = width * 0.70;
   const divHeight = height * 0.70;
 
@@ -146,7 +120,7 @@ export const Ellipse = memo(({
     <g
       transform={`translate(${x}, ${y})`}
       onPointerDown={(e) => handlePointerDown(e)}
-      onTouchStart={(e) => handleTouchDown(e)}
+      onTouchStart={(e) => e.preventDefault()}
     >
       <ellipse
         cx={width / 2}

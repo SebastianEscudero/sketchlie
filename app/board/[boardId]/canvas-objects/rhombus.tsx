@@ -85,11 +85,6 @@ export const Rhombus = memo(({
   }, []);
 
   const handlePointerDown = (e: React.PointerEvent) => {
-
-    if (e.pointerType === "touch") {
-      return;
-    }
-
     if (e.target === RhombusRef.current) {
 
       if (focused) {
@@ -110,27 +105,6 @@ export const Rhombus = memo(({
     }
   };
 
-  const handleTouchDown = (e: React.TouchEvent) => {
-    if (e.touches.length > 1 || document.activeElement === RhombusRef.current) {
-      e.preventDefault();
-      return;
-    }
-
-    if (e.target === RhombusRef.current) {
-      if (focused) {
-        e.stopPropagation();
-      } else {
-        e.preventDefault();
-        if (onPointerDown) onPointerDown(e, id);
-      }
-      return;
-    }
-
-    if (!focused && onPointerDown) {
-      onPointerDown(e, id);
-    }
-  }
-
   const divWidth = width * 0.50;
   const divHeight = height * 0.50;
 
@@ -146,7 +120,7 @@ export const Rhombus = memo(({
     <g
       transform={`translate(${x}, ${y})`}
       onPointerDown={(e) => handlePointerDown(e)}
-      onTouchStart={(e) => handleTouchDown(e)}
+      onTouchStart={(e) => e.preventDefault()}
     >
       <path
         d={`M ${width / 2} 0 L ${width} ${height / 2} L ${width / 2} ${height} L 0 ${height / 2} Z`}
