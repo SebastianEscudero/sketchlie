@@ -12,7 +12,6 @@ import {
   Side, 
   XYWH
 } from "@/types/canvas";
-import { toJpeg, toPng } from 'html-to-image';
 import { Readable } from "stream";
 
 const COLORS = [
@@ -581,22 +580,6 @@ export function getSvgPathFromPoints(points: number[][], closed = false): string
   return d;
 }
 export const NAME = "Sketchlie";
-
-export const exportToPNG = async (title: string) => {
-  const screenShot = document.getElementById("canvas") as HTMLElement;
-  screenShot.style.backgroundColor = '#F4F4F4';
-  toPng(screenShot, { quality: 1 }).then((dataUrl) => {
-    var anchor = document.createElement("a");
-    anchor.setAttribute("href", dataUrl);
-    anchor.setAttribute("download", `${title}.png`);
-    anchor.click();
-    anchor.remove();
-  })
-};
-
-export const exportToSVG = async (title: string) => {
-  // implement
-};
 
 export function checkIfPathIsEllipse(pencilDraft: number[][], tolerance: number): {isEllipse: boolean, ellipseCheck: number} {
   const [minX, minY, maxX, maxY] = pencilDraft.reduce(
