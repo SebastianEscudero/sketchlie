@@ -61,13 +61,23 @@ class InsertLayerCommand implements Command {
         private layers: any[],
         private prevLayers: Layers,
         private prevLayerIds: string[],
-        private setLiveLayers: (layers: Layers) => void,
+        private setLiveLayers: (layers: Layers | any) => void,
         private setLiveLayerIds: (layerIds: string[]) => void,
         private boardId: string,
-        private socket: Socket | null
+        private socket: Socket | null,
+        private imported: boolean = false
     ) {}
 
     execute() {
+
+        if (this.imported) {
+            const layers = this.layers.reduce((acc, layer, index) => ({ ...acc, [this.layerIds[index]]: layer }), {})
+            this.setLiveLayerIds(this.layerIds);
+            this.setLiveLayers(layers);
+            updateR2Bucket('/api/r2-bucket/addLayer', this.boardId, this.layerIds, layers);
+            return;
+        }
+
         let newLayers = { ...this.prevLayers };
         let newLayerIds = [...this.prevLayerIds];
 
@@ -1825,6 +1835,13 @@ export const Canvas = ({
                 org={org}
                 setIsBackgroundGridVisible={setIsBackgroundGridVisible}
                 isBackgroundGridVisible={isBackgroundGridVisible}
+                setLiveLayerIds={setLiveLayerIds}
+                setLiveLayers={setLiveLayers}
+                liveLayerIds={liveLayerIds}
+                liveLayers={liveLayers}
+                insertLayerCommand={InsertLayerCommand}
+                performAction={performAction}
+                socket={socket}
             />
             <Participants
                 org={org}

@@ -15,6 +15,13 @@ interface InfoProps {
     org: any;
     setIsBackgroundGridVisible: (isVisible: boolean) => void;
     isBackgroundGridVisible: boolean;
+    insertLayerCommand: any;
+    performAction: any;
+    setLiveLayers: any;
+    setLiveLayerIds: any;
+    liveLayers: any;
+    liveLayerIds: any;
+    socket: any;
 }
 
 const TabSeparator = () => {
@@ -31,6 +38,13 @@ export const Info = ({
     org,
     setIsBackgroundGridVisible,
     isBackgroundGridVisible,
+    insertLayerCommand,
+    performAction,
+    setLiveLayers,
+    setLiveLayerIds,
+    liveLayers,
+    liveLayerIds,
+    socket
 }: InfoProps) => {
 
     const { onOpen } = useRenameModal();
@@ -77,8 +91,16 @@ export const Info = ({
                 org={org} 
                 showExport={true}
                 showGrid={true}
+                showImport={true}
                 setIsBackgroundGridVisible={setIsBackgroundGridVisible}
                 isBackgroundGridVisible={isBackgroundGridVisible}
+                setLiveLayers={setLiveLayers}
+                setLiveLayerIds={setLiveLayerIds}
+                liveLayers={liveLayers}
+                liveLayerIds={liveLayerIds}
+                insertLayerCommand={insertLayerCommand}
+                performAction={performAction}
+                socket={socket}
             >
                 <div className="w-10 flex justify-center items-center">
                     <Hint label="Main menu" side="bottom" sideOffset={10}>

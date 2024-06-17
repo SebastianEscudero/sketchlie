@@ -17,8 +17,8 @@ import { Button } from "@/components/ui/button";
 import { useRenameModal } from "@/store/use-rename-modal";
 import { useRouter } from "next/navigation";
 import { useCurrentUser } from "@/hooks/use-current-user";
-import { Badge } from "./ui/badge";
 import { ExportDropdownMenu } from "./ExportDropdownMenu";
+import { ImportDropdownMenu } from "./ImportDropdownmenu";
 
 
 interface ActionsProps {
@@ -29,9 +29,17 @@ interface ActionsProps {
   title: string;
   showGrid?: boolean;
   showExport?: boolean;
+  showImport?: boolean;
   org: any;
   setIsBackgroundGridVisible?: (isVisible: boolean) => void;
   isBackgroundGridVisible?: boolean;
+  insertLayerCommand: any;
+  performAction: any;
+  setLiveLayers: any;
+  setLiveLayerIds: any;
+  liveLayers: any;
+  liveLayerIds: any;
+  socket: any;
 };
 
 export const Actions = ({
@@ -42,9 +50,17 @@ export const Actions = ({
   title,
   showGrid = false,
   showExport = false,
+  showImport = false,
   org,
   setIsBackgroundGridVisible,
   isBackgroundGridVisible,
+  insertLayerCommand,
+  performAction,
+  setLiveLayers,
+  setLiveLayerIds,
+  liveLayers,
+  liveLayerIds,
+  socket
 }: ActionsProps) => {
   const { onOpen } = useRenameModal();
   const { mutate, pending } = useApiMutation(api.board.remove);
@@ -130,6 +146,20 @@ export const Actions = ({
             {usersRole === "Admin" ? "Delete" : "Delete (Admin)"}
           </Button>
         </ConfirmModal>
+        {showImport && 
+          <ImportDropdownMenu 
+            id={id} 
+            usersRole={usersRole}
+            setLiveLayers={setLiveLayers}
+            setLiveLayerIds={setLiveLayerIds}
+            liveLayers={liveLayers}
+            liveLayerIds={liveLayerIds}
+            insertLayerCommand={insertLayerCommand}
+            performAction={performAction} 
+            socket={socket}
+          />
+        }
+        {showExport && <ExportDropdownMenu id={id} title={title} />}
         {showGrid && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild className="h-[44px]">
@@ -158,7 +188,6 @@ export const Actions = ({
             </DropdownMenuContent>
           </DropdownMenu>
         )}
-        {showExport && <ExportDropdownMenu id={id} title={title} />}
       </DropdownMenuContent>
     </DropdownMenu>
   );
