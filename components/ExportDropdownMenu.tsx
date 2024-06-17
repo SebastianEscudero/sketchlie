@@ -31,13 +31,25 @@ export const ExportDropdownMenu = ({ id, title }: ExportDropdownMenuProps) => {
             </DropdownMenuTrigger>
             <DropdownMenuContent side="right" sideOffset={8}>
                 <DropdownMenuItem
-                    onClick={() => exportToPdf(title)}
+                    onClick={async () => {
+                        try {
+                            await exportToPdf(title);
+                        } catch (error) {
+                            toast.error("Failed to export to PNG, try a different browser.");
+                        }
+                    }}
                     className="p-3 cursor-pointer"
                 >
                     to PDF
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                    onClick={() => exportToPNG(title)}
+                    onClick={async () => {
+                        try {
+                            await exportToPNG(title);
+                        } catch (error) {
+                            toast.error("Failed to export to PNG, try a different browser.");
+                        }
+                    }}
                     className="p-3 cursor-pointer"
                 >
                     to PNG
