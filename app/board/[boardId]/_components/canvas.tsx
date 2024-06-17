@@ -424,6 +424,7 @@ export const Canvas = ({
             setCanvasState({ mode: CanvasMode.None });
 
         }
+        
     }, [liveLayers, liveLayerIds, myPresence, socket, org, proModal, User.userId, setLiveLayers, setLiveLayerIds, board, layerWithAssistDraw]);
 
     const insertImage = useCallback((
@@ -1001,7 +1002,7 @@ export const Canvas = ({
                 socket.emit('layer-update', selectedLayersRef.current, liveLayers);
             }
         }
-    }, [camera, canvasState.mode, setCanvasState, startDrawing, setIsPanning, setIsRightClickPanning, zoom, activeTouches, expired, isPanning, unselectLayers, liveLayers]);
+    }, [camera, canvasState.mode, setCanvasState, startDrawing, setIsPanning, setIsRightClickPanning, zoom, activeTouches, expired, isPanning, unselectLayers, liveLayers, myPresence]);
 
     const onPointerMove = useCallback((e: React.PointerEvent) => {
         e.preventDefault();
@@ -1329,8 +1330,12 @@ export const Canvas = ({
         }
 
         if (selectedLayersRef.current.length === 0) {
+            const newPresence: Presence = {
+                ...myPresence,
+                selection: [],
+            };
             if (socket && expired !== true) {
-                socket.emit('presence', null, User.userId);
+                socket.emit('presence', newPresence, User.userId);
             }
         }
     },
@@ -1354,7 +1359,9 @@ export const Canvas = ({
             initialLayers,
             history,
             layerRef,
-            layersToDeleteEraserRef.current
+            layersToDeleteEraserRef.current,
+            socket,
+            myPresence
         ]);
 
     const onPointerLeave = useCallback(() => {

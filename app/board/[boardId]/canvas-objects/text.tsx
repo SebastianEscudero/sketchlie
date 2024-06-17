@@ -51,12 +51,6 @@ const throttledUpdateLayer = throttle((boardId, layerId, layerUpdates) => {
       setValue(layer.value);
     }, [id, layer]);
 
-    useEffect(() => {
-      if (textRef.current) {
-          textRef.current.focus();
-      }
-  }, [textRef]);
-
     const handlePointerDown = useCallback((e: React.PointerEvent) => {
 
         if (e.pointerType === "touch") {
