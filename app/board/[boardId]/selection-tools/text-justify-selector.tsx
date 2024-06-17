@@ -49,8 +49,7 @@ export const TextJustifySelector = ({
             }
             updatedIds.push(layerId);
             updatedLayers.push({
-                startArrowHead: newLayers[layerId].startArrowHead,
-                endArrowHead: newLayers[layerId].endArrowHead,
+                ...newLayers[layerId],
             });
         });
 
