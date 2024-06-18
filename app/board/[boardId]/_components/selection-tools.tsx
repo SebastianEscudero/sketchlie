@@ -205,11 +205,17 @@ export const SelectionTools = memo(({
 
       selectedLayers.forEach((id) => {
         const layer = newLayers[id];
-        if (layer) {
-          newLayers[id] = { ...layer, fill: fill };
-          updatedIds.push(id);
-          updatedLayers.push(newLayers[id]);
+        let newFill = fill;
+        if (layer && layer.type === LayerType.Path) {
+          if (layer.fill && layer.fill.a === 0.7) {
+            newFill = { ...fill, a: 0.7 };
+          }
+
+          console.log(newFill);
         }
+        newLayers[id] = { ...layer, fill: newFill };
+        updatedIds.push(id);
+        updatedLayers.push(newLayers[id]);
       });
 
       if (updatedIds.length > 0) {
