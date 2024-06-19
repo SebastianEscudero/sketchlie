@@ -8,8 +8,8 @@ import { Check, ChevronRight, Eye } from "lucide-react";
 import { Button } from "./ui/button";
 
 interface BackgroundMenuProps {
-    Background: string;
-    setBackground: (Background: string) => void;
+    Background?: string;
+    setBackground?: (Background: string) => void;
 }
 
 export const BackgroundMenu = ({
@@ -36,7 +36,7 @@ export const BackgroundMenu = ({
                         variant="ghost"
                         className="p-3 cursor-pointer text-sm w-full justify-start"
                         onClick={() => {
-                            setBackground(option)
+                            setBackground && setBackground(option)
                             localStorage.setItem("background", option)
                         }}
                     >

@@ -32,8 +32,8 @@ interface ActionsProps {
   showExport?: boolean;
   showImport?: boolean;
   org: any;
-  setBackground: (background: string) => void;
-  Background: string;
+  setBackground?: (background: string) => void;
+  Background?: string;
   insertLayerCommand?: any;
   performAction?: any;
   setLiveLayers?: any;
