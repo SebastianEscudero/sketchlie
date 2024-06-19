@@ -35,8 +35,6 @@ import { ColorButton } from "../selection-tools/color-picker";
 import { Slider } from "@/components/ui/slider";
 import { LaserIcon } from "@/public/custom-cursors/laser";
 import { LineIcon } from "@/public/custom-cursors/line";
-import { Button } from "@/components/ui/button";
-import { Hint } from "@/components/hint";
 
 interface ToolbarProps {
   isUploading: boolean;
@@ -63,6 +61,7 @@ interface ToolbarProps {
   pathColor: Color;
   magicPathAssist: boolean;
   setMagicPathAssist: Dispatch<SetStateAction<boolean>>;
+  isPlacingLayer: boolean;
 }
 
 export const Toolbar = ({
@@ -88,6 +87,7 @@ export const Toolbar = ({
   selectedTool,
   setSelectedTool,
   pathColor,
+  isPlacingLayer,
   magicPathAssist,
   setMagicPathAssist,
 }: ToolbarProps) => {
@@ -105,14 +105,14 @@ export const Toolbar = ({
       setIsPenEraserSwitcherOpen(false);
     }
 
-    if (canvasState.mode !== CanvasMode.Inserting) {
+    if (canvasState.mode !== CanvasMode.Inserting || isPlacingLayer) {
       setIsShapesMenuOpen(false);
     } else {
       if (canvasState.layerType === LayerType.Arrow || canvasState.layerType === LayerType.Note || canvasState.layerType === LayerType.Image || canvasState.layerType === LayerType.Text) {
         setIsShapesMenuOpen(false);
       }
     }
-  }, [canvasState]);
+  }, [canvasState, isPlacingLayer]);
 
 
 

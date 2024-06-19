@@ -282,9 +282,9 @@ export const Canvas = ({
     const [magicPathAssist, setMagicPathAssist] = useState(false);
     const [layerWithAssistDraw, setLayerWithAssistDraw] = useState(false);
     const proModal = useProModal();
-    const [isBackgroundGridVisible, setIsBackgroundGridVisible] = useState(() => { // used for showing/hiding the grid
-        const storedValue = localStorage.getItem('isBackgroundGridVisible');
-        return storedValue !== null ? JSON.parse(storedValue) : true;
+    const [background, setBackground] = useState(() => {
+        const storedValue = localStorage.getItem('background');
+        return storedValue ? storedValue : 'grid';
     });
 
     useDisableScrollBounce();
@@ -1818,25 +1818,27 @@ export const Canvas = ({
 
     return (
         <main
-            className={`fixed h-full w-full bg-neutral-100 touch-none overscroll-none ${isDraggingOverCanvas ? 'bg-neutral-300 border-2 border-dashed border-custom-blue' : ''}`}
-            style={{
-                background: isBackgroundGridVisible ? `
-                linear-gradient(0deg, rgba(0,0,0,0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px),
-                #f4f4f4
-            ` : '#f4f4f4',
-                backgroundSize: isBackgroundGridVisible ? `${65 * zoom}px ${65 * zoom}px` : undefined, // Adjust the size based on the zoom level
-                backgroundPosition: isBackgroundGridVisible ? `${camera.x}px ${camera.y}px` : undefined,
-                WebkitOverflowScrolling: 'touch',
-                WebkitUserSelect: 'none',
-            }}
-        >
+        className={`fixed h-full w-full bg-neutral-100 touch-none overscroll-none ${isDraggingOverCanvas ? 'bg-neutral-300 border-2 border-dashed border-custom-blue' : ''}`}
+        style={{
+          backgroundImage: (background === 'grid') ? `
+            linear-gradient(0deg, rgba(0,0,0,0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px)
+          ` : (background === 'line') ? `
+            linear-gradient(0deg, rgba(0,0,0,0.05) 1px, transparent 1px)
+          ` : 'none',
+          backgroundColor: '#f4f4f4',
+          backgroundSize: (background === 'grid' || background === 'line') ? `${65 * zoom}px ${65 * zoom}px` : undefined,
+          backgroundPosition: (background === 'grid' || background === 'line') ? `${camera.x}px ${camera.y}px` : undefined,
+          WebkitOverflowScrolling: 'touch',
+          WebkitUserSelect: 'none',
+        }}
+      >
             <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
             <Info
                 board={board}
                 org={org}
-                setIsBackgroundGridVisible={setIsBackgroundGridVisible}
-                isBackgroundGridVisible={isBackgroundGridVisible}
+                setBackground={setBackground}
+                Background={background}
                 setLiveLayerIds={setLiveLayerIds}
                 setLiveLayers={setLiveLayers}
                 liveLayerIds={liveLayerIds}
@@ -1876,6 +1878,7 @@ export const Canvas = ({
                     setSelectedTool={setSelectedTool}
                     setMagicPathAssist={setMagicPathAssist}
                     magicPathAssist={magicPathAssist}
+                    isPlacingLayer={currentPreviewLayer !== null}
                 />
             )}
             {!isMoving && canvasState.mode !== CanvasMode.Resizing && canvasState.mode !== CanvasMode.ArrowResizeHandler && canvasState.mode !== CanvasMode.SelectionNet && canvasState.mode !== CanvasMode.Inserting && activeTouches < 2 && (

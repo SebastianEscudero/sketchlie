@@ -13,8 +13,8 @@ import { useCurrentUser } from "@/hooks/use-current-user";
 interface InfoProps {
     board: any;
     org: any;
-    setIsBackgroundGridVisible: (isVisible: boolean) => void;
-    isBackgroundGridVisible: boolean;
+    setBackground: (background: string) => void;
+    Background: string;
     insertLayerCommand: any;
     performAction: any;
     setLiveLayers: any;
@@ -36,8 +36,8 @@ const TabSeparator = () => {
 export const Info = ({
     board,
     org,
-    setIsBackgroundGridVisible,
-    isBackgroundGridVisible,
+    setBackground,
+    Background,
     insertLayerCommand,
     performAction,
     setLiveLayers,
@@ -92,8 +92,8 @@ export const Info = ({
                 showExport={true}
                 showGrid={true}
                 showImport={true}
-                setIsBackgroundGridVisible={setIsBackgroundGridVisible}
-                isBackgroundGridVisible={isBackgroundGridVisible}
+                setBackground={setBackground}
+                Background={Background}
                 setLiveLayers={setLiveLayers}
                 setLiveLayerIds={setLiveLayerIds}
                 liveLayers={liveLayers}

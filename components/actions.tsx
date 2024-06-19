@@ -19,6 +19,7 @@ import { useRouter } from "next/navigation";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { ExportDropdownMenu } from "./ExportDropdownMenu";
 import { ImportDropdownMenu } from "./ImportDropdownmenu";
+import { BackgroundMenu } from "./background-menu";
 
 
 interface ActionsProps {
@@ -31,8 +32,8 @@ interface ActionsProps {
   showExport?: boolean;
   showImport?: boolean;
   org: any;
-  setIsBackgroundGridVisible?: (isVisible: boolean) => void;
-  isBackgroundGridVisible?: boolean;
+  setBackground: (background: string) => void;
+  Background: string;
   insertLayerCommand?: any;
   performAction?: any;
   setLiveLayers?: any;
@@ -52,8 +53,8 @@ export const Actions = ({
   showExport = false,
   showImport = false,
   org,
-  setIsBackgroundGridVisible,
-  isBackgroundGridVisible,
+  setBackground,
+  Background,
   insertLayerCommand,
   performAction,
   setLiveLayers,
@@ -160,34 +161,7 @@ export const Actions = ({
           />
         }
         {showExport && <ExportDropdownMenu id={id} title={title} />}
-        {showGrid && (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild className="h-[44px]">
-              <DropdownMenuItem className="p-3 cursor-pointer flex justify-between">
-                <div className="flex flex-row items-center">
-                  <Eye className="h-4 w-4 mr-2" />
-                  View
-                </div>
-                <ChevronRight className="h-4 w-4 ml-auto" />
-              </DropdownMenuItem>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent side="right" sideOffset={10}>
-              <Button
-                variant="ghost"
-                className="p-3 cursor-pointer text-sm w-full justify-start"
-                onClick={() => {
-                  setIsBackgroundGridVisible && setIsBackgroundGridVisible(!isBackgroundGridVisible)
-                  localStorage.setItem("isBackgroundGridVisible", JSON.stringify(!isBackgroundGridVisible))
-                }}
-              >
-                {isBackgroundGridVisible && (
-                  <Check className="h-4 w-4 mr-2" />
-                )}
-                Show Grid
-              </Button>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        )}
+        {showGrid && <BackgroundMenu setBackground={setBackground} Background={Background}/>}
       </DropdownMenuContent>
     </DropdownMenu>
   );
