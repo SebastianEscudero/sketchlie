@@ -5,15 +5,10 @@ import { toast } from 'sonner';
 export const exportToPdf = async (title: string) => {
   try {
     const screenShot = document.getElementById("canvas") as HTMLElement;
-    // Store the original background color
-    const originalBackgroundColor = screenShot.style.backgroundColor;
-    // Change the background color for the export
-    screenShot.style.backgroundColor = '#F4F4F4';
-
-    toPng(screenShot, { quality: 1 }).then((dataUrl) => {
-      // Revert the background color after export
-      screenShot.style.backgroundColor = originalBackgroundColor;
-
+    toPng(screenShot, { 
+      quality: 1,
+      backgroundColor: '#F4F4F4',
+    }).then((dataUrl) => {
       const pdf = new jsPDF({
         orientation: "landscape",
         unit: "px",
@@ -31,18 +26,10 @@ export const exportToPdf = async (title: string) => {
 export const exportToPNG = async (title: string) => {
   try {
     const screenShot = document.getElementById("canvas") as HTMLElement;
-    // Store the original background color
-    
-    const originalBackgroundColor = screenShot.style.backgroundColor;
-    // Change the background color for the export
-    screenShot.style.backgroundColor = '#F4F4F4';
-
     toPng(screenShot, {
       quality: 1,
+      backgroundColor: '#F4F4F4',
     }).then((dataUrl) => {
-      // Revert the background color after export
-      screenShot.style.backgroundColor = originalBackgroundColor;
-
       var anchor = document.createElement("a");
       anchor.setAttribute("href", dataUrl);
       anchor.setAttribute("download", `${title}.png`);
@@ -57,21 +44,13 @@ export const exportToPNG = async (title: string) => {
 export const exportToJPG = async (title: string) => {
   try {
     const screenShot = document.getElementById("canvas") as HTMLElement;
-    // Store the original background color
-    
-    const originalBackgroundColor = screenShot.style.backgroundColor;
-    // Change the background color for the export
-    screenShot.style.backgroundColor = '#F4F4F4';
-
     toJpeg(screenShot, {
       quality: 1,
+      backgroundColor: '#F4F4F4',
     }).then((dataUrl) => {
-      // Revert the background color after export
-      screenShot.style.backgroundColor = originalBackgroundColor;
-
       var anchor = document.createElement("a");
       anchor.setAttribute("href", dataUrl);
-      anchor.setAttribute("download", `${title}.png`);
+      anchor.setAttribute("download", `${title}.jpg`);
       anchor.click();
       anchor.remove();
     })
@@ -83,23 +62,16 @@ export const exportToJPG = async (title: string) => {
 export const exportToSVG = async (title: string) => {
   try {
     const screenShot = document.getElementById("canvas") as HTMLElement;
-    // Store the original background color
-    const originalBackgroundColor = screenShot.style.backgroundColor;
-    // Change the background color for the export
-    screenShot.style.backgroundColor = '#F4F4F4';
-
     toSvg(screenShot, {
       quality: 1,
+      backgroundColor: '#F4F4F4',
     }).then((dataUrl) => {
-      // Revert the background color after export
-      screenShot.style.backgroundColor = originalBackgroundColor;
-
       var anchor = document.createElement("a");
       anchor.setAttribute("href", dataUrl);
-      anchor.setAttribute("download", `${title}.svg`); // Corrected file extension to .svg
-      document.body.appendChild(anchor); // Ensure the anchor is in the document
+      anchor.setAttribute("download", `${title}.svg`);
+      document.body.appendChild(anchor);
       anchor.click();
-      document.body.removeChild(anchor); // Clean up
+      document.body.removeChild(anchor);
     })
   } catch (error) {
     toast.error('An error occurred while exporting the board. Please try a different browser.');
