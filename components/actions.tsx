@@ -1,7 +1,7 @@
 "use client";
 
 import { toast } from "sonner";
-import { ArrowUpFromLine, Check, ChevronRight, Eye, Link2, Pencil, Trash2 } from "lucide-react";
+import { Link2, Pencil, Trash2 } from "lucide-react";
 import { DropdownMenuContentProps } from "@radix-ui/react-dropdown-menu";
 
 import { ConfirmModal } from "@/components/confirm-modal";
@@ -20,6 +20,7 @@ import { useCurrentUser } from "@/hooks/use-current-user";
 import { ExportDropdownMenu } from "./ExportDropdownMenu";
 import { ImportDropdownMenu } from "./ImportDropdownmenu";
 import { BackgroundMenu } from "./background-menu";
+import { useEffect, useState } from "react";
 
 
 interface ActionsProps {
@@ -41,6 +42,8 @@ interface ActionsProps {
   liveLayers?: any;
   liveLayerIds?: any;
   socket?: any;
+  showActions?: boolean;
+  setShowActions?: any;
 };
 
 export const Actions = ({
@@ -61,8 +64,17 @@ export const Actions = ({
   setLiveLayerIds,
   liveLayers,
   liveLayerIds,
-  socket
+  socket,
+  showActions = false,
+  setShowActions,
 }: ActionsProps) => {
+  const [isOpen, setIsOpen] = useState(showActions);
+
+  // Effect to sync external `showActions` with internal `isOpen` state
+  useEffect(() => {
+    setIsOpen(showActions);
+  }, [showActions]);
+
   const { onOpen } = useRenameModal();
   const { mutate, pending } = useApiMutation(api.board.remove);
 
@@ -97,7 +109,7 @@ export const Actions = ({
         if (!response.ok) {
           throw new Error('Failed to delete board from server');
         }
-        return response.json(); // Assuming the server responds with JSON
+        return response.json();
       })
       .then(() => toast.success("Board deleted"))
       .then(() => router.push("/dashboard/"))
@@ -108,7 +120,13 @@ export const Actions = ({
   };
 
   return (
-    <DropdownMenu>
+    <DropdownMenu
+      open={isOpen}
+      onOpenChange={(newOpenState) => {
+        setIsOpen(newOpenState);
+        setShowActions(newOpenState);
+      }}
+    >      
       <DropdownMenuTrigger asChild>
         {children}
       </DropdownMenuTrigger>
@@ -147,21 +165,21 @@ export const Actions = ({
             {usersRole === "Admin" ? "Delete" : "Delete (Admin)"}
           </Button>
         </ConfirmModal>
-        {showImport && 
-          <ImportDropdownMenu 
-            id={id} 
+        {showImport &&
+          <ImportDropdownMenu
+            id={id}
             usersRole={usersRole}
             setLiveLayers={setLiveLayers}
             setLiveLayerIds={setLiveLayerIds}
             liveLayers={liveLayers}
             liveLayerIds={liveLayerIds}
             insertLayerCommand={insertLayerCommand}
-            performAction={performAction} 
+            performAction={performAction}
             socket={socket}
           />
         }
         {showExport && <ExportDropdownMenu id={id} title={title} />}
-        {showGrid && <BackgroundMenu setBackground={setBackground} Background={Background}/>}
+        {showGrid && <BackgroundMenu setBackground={setBackground} Background={Background} />}
       </DropdownMenuContent>
     </DropdownMenu>
   );

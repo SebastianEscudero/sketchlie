@@ -14,7 +14,7 @@ import { useApiMutation } from "@/hooks/use-api-mutation";
 import { Footer } from "./footer";
 import { Overlay } from "./overlay";
 import { useCurrentUser } from "@/hooks/use-current-user";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 interface BoardCardProps {
   id: string;
@@ -75,11 +75,34 @@ export const BoardCard = ({
     setIsLoading(true);
   };
 
+  const [showActions, setShowActions] = useState(false);
+
+  const handleContextMenu = useCallback((e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent the default context menu
+    setShowActions(true); // Show the actions
+  }, []);
+
+  const handleTouchStart = useCallback(() => {
+    setShowActions(false); // Reset state to ensure it shows up on long press
+    const timer = setTimeout(() => {
+      setShowActions(true); // Show the actions after a delay
+    }, 500); // 500ms for long press
+
+    const cancelLongPress = () => {
+      clearTimeout(timer);
+      window.removeEventListener('touchend', cancelLongPress);
+    };
+
+    window.addEventListener('touchend', cancelLongPress);
+  }, []);
+
   return (
     <Link href={`/board/${id}`}>
       <div
         className={`group aspect-[100/127] border rounded-lg flex flex-col justify-between overflow-hidden ${isLoading ? 'opacity-80 transition-opacity cursor-not-allowed' : ''}`}
         onClick={handleClick}
+        onContextMenu={handleContextMenu}
+        onTouchStart={handleTouchStart}
       >
         <div className="relative flex-1 bg-amber-50">
           <Image
@@ -94,9 +117,12 @@ export const BoardCard = ({
             id={id}
             title={title}
             side="right"
+            showActions={showActions}
+            setShowActions={setShowActions}
           >
             <button
               className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity px-3 py-2 outline-none"
+              onClick={() => setShowActions(true)}
             >
               <MoreHorizontal
                 className="text-white opacity-75 hover:opacity-100 transition-opacity"
