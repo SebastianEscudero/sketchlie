@@ -1,10 +1,11 @@
 import Image from "next/image"
 import { templates } from "../templates/templates"
 import { cn } from "@/lib/utils";
+import { DialogClose } from "@/components/ui/dialog";
 
 interface ShowAllTemplatesProps {
     onClick: (templateName: string, templateLayerIds: any, templateLayers: any) => void;
-    pending: boolean;
+    pending?: boolean;
     usersRole: any;
 }
 
@@ -22,7 +23,7 @@ export const ShowAllTemplates = ({
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-10">
                 {templates.map((template, index) => (
                     <div key={index} className="rounded-lg flex flex-col">
-                        <button
+                        <DialogClose
                             disabled={usersRole !== 'Admin'}
                             onClick={() => onClick(template.name, template.layerIds, template.layers)}
                             className={cn(
@@ -41,7 +42,7 @@ export const ShowAllTemplates = ({
                             <h2 className="text-left font-semibold pt-2 text-xs sm:text-[13px] w-[140px] text-gray-700 hover:text-custom-blue flex-wrap">
                                 + {template.name}
                             </h2>
-                        </button>
+                        </DialogClose>
                     </div>
                 ))}
             </div>

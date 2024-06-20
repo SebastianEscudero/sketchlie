@@ -5,10 +5,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { Hint } from "@/components/hint";
 import { useRenameModal } from "@/store/use-rename-modal";
-import { Menu, Zap } from "lucide-react";
+import { LayoutTemplate, Menu, Zap } from "lucide-react";
 import { Actions } from "@/components/actions";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { useCurrentUser } from "@/hooks/use-current-user";
+import { toast } from "sonner";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { ShowAllTemplates } from "@/app/dashboard/_components/show-all-templates";
+import { CanvasMode } from "@/types/canvas";
 
 interface InfoProps {
     board: any;
@@ -22,6 +26,10 @@ interface InfoProps {
     liveLayers: any;
     liveLayerIds: any;
     socket: any;
+    nanoid: any;
+    camera: any;
+    zoom: any;
+    setCanvasState: any;
 }
 
 const TabSeparator = () => {
@@ -44,7 +52,11 @@ export const Info = ({
     setLiveLayerIds,
     liveLayers,
     liveLayerIds,
-    socket
+    socket,
+    nanoid,
+    camera,
+    zoom,
+    setCanvasState
 }: InfoProps) => {
 
     const { onOpen } = useRenameModal();
@@ -52,6 +64,55 @@ export const Info = ({
     const orgId = board.orgId;
     const user = useCurrentUser();
     const usersRole = org.users.find((u: any) => u.id === user?.id)?.role;
+
+
+    const onChooseTemplate = async (templateName: string, templateLayerIds: any, templateLayers: any) => {
+        try {
+          const newTemplateLayerIds = templateLayerIds.map(() => nanoid());
+          const viewportCenterX = window.innerWidth / 2;
+          const viewportCenterY = window.innerHeight / 2;
+    
+          // Calculate the center of the template
+          let templateMinX = Infinity, templateMaxX = -Infinity, templateMinY = Infinity, templateMaxY = -Infinity;
+          templateLayerIds.forEach((id: any) => {
+            const layer = templateLayers[id];
+            templateMinX = Math.min(templateMinX, layer.x);
+            templateMaxX = Math.max(templateMaxX, layer.x);
+            templateMinY = Math.min(templateMinY, layer.y);
+            templateMaxY = Math.max(templateMaxY, layer.y);
+          });
+          const templateCenterX = (templateMinX + templateMaxX) / 2;
+          const templateCenterY = (templateMinY + templateMaxY) / 2;
+    
+          // Calculate the adjustments needed to center the template
+          let adjustX = ((viewportCenterX - camera.x) / zoom) - templateCenterX;
+          let adjustY = ((viewportCenterY - camera.y) / zoom) - templateCenterY;
+    
+          const orderedLayers = templateLayerIds.map((id: any, index: number) => {
+            const newLayer = {
+              ...templateLayers[id],
+              id: newTemplateLayerIds[index],
+              x: templateLayers[id].x + adjustX,
+              y: templateLayers[id].y + adjustY,
+            };
+    
+            if (newLayer.center) {
+              newLayer.center = {
+                x: newLayer.center.x + adjustX,
+                y: newLayer.center.y + adjustY,
+              };
+            }
+    
+            return newLayer;
+          });
+    
+          const command = new insertLayerCommand(newTemplateLayerIds, orderedLayers, liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, board._id, socket, org, proModal);
+          performAction(command);
+          toast.success(`${templateName} inserted successfully!`);
+        } catch (error) {
+          toast.error("Unable to insert template. Please try again.");
+        }
+      }
 
     if (!board) return <InfoSkeleton />;
 
@@ -110,6 +171,22 @@ export const Info = ({
                     </Hint>
                 </div>
             </Actions>
+            <TabSeparator />
+            <Dialog>
+                <Hint label="Templates" side="bottom" sideOffset={10}>
+                <DialogTrigger className="flex justify-center items-center" onClick={() => setCanvasState({ mode: CanvasMode.None })}>
+                    <Button asChild className="h-8 w-8 xs:h-10 xs:w-10 p-2" variant="board">
+                    <LayoutTemplate className="h-5 w-5" />
+                    </Button>
+                </DialogTrigger>
+                </Hint>
+                <DialogContent className="w-full max-w-[80%] max-h-[85%] xl:max-w-[50%] overflow-y-auto">
+                    <ShowAllTemplates
+                    usersRole={usersRole}
+                    onClick={onChooseTemplate}
+                    />
+                </DialogContent>
+            </Dialog>
             <TabSeparator />
             <Hint label="Upgrade" side="bottom" sideOffset={10}>
                 <Button variant="board"
