@@ -284,7 +284,7 @@ export const Canvas = ({
     const proModal = useProModal();
     const [background, setBackground] = useState(() => {
         const storedValue = localStorage.getItem('background');
-        return storedValue ? storedValue : 'grid';
+        return storedValue ? storedValue : 'none';
     });
 
     useDisableScrollBounce();

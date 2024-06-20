@@ -16,6 +16,14 @@ interface ExportDropdownMenuProps {
 export const ExportDropdownMenu = ({ id, title }: ExportDropdownMenuProps) => {
     const { liveLayers, liveLayerIds } = useRoom();
 
+    const exportOptions = [
+        { label: 'to PDF', action: () => exportToPdf(title) },
+        { label: 'to PNG', action: () => exportToPNG(title) },
+        { label: 'to JPG', action: () => exportToJPG(title) },
+        { label: 'to SVG', action: () => exportToSVG(title) },
+        { label: 'to JSON', action: () => exportToJSON(id, liveLayers, liveLayerIds) },
+    ];
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild className="h-[44px]">
@@ -28,36 +36,15 @@ export const ExportDropdownMenu = ({ id, title }: ExportDropdownMenuProps) => {
                 </DropdownMenuItem>
             </DropdownMenuTrigger>
             <DropdownMenuContent side="right" sideOffset={8} className="w-[100px]">
-                <DropdownMenuItem
-                    onClick={() => exportToPdf(title)}
-                    className="p-3 cursor-pointer"
-                >
-                    to PDF
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                    onClick={() => exportToPNG(title)}
-                    className="p-3 cursor-pointer"
-                >
-                    to PNG
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                    onClick={() => exportToJPG(title)}
-                    className="p-3 cursor-pointer"
-                >
-                    to JPG
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                    onClick={() => exportToSVG(title)}
-                    className="p-3 cursor-pointer"
-                >
-                    to SVG
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                    onClick={() => exportToJSON(id, liveLayers, liveLayerIds)}
-                    className="p-3 cursor-pointer"
-                >
-                    to JSON
-                </DropdownMenuItem>
+                {exportOptions.map((option, index) => (
+                    <DropdownMenuItem
+                        key={index}
+                        onClick={option.action}
+                        className="p-3 cursor-pointer"
+                    >
+                        {option.label}
+                    </DropdownMenuItem>
+                ))}
             </DropdownMenuContent>
         </DropdownMenu>
     );
