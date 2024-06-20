@@ -1,12 +1,13 @@
-import { toJpeg, toPng, toSvg } from 'html-to-image';
 import { jsPDF } from "jspdf";
 import { toast } from 'sonner';
+import { domToJpeg, domToPng, domToSvg } from 'modern-screenshot'
 
 export const exportToPdf = async (title: string) => {
   try {
-    const screenShot = document.getElementById("canvas") as HTMLElement;
-    toPng(screenShot, { 
+    const screenShot = document.querySelector("#canvas") as HTMLElement;
+    domToPng(screenShot, { 
       quality: 1,
+      scale: 3,
       backgroundColor: '#F4F4F4',
     }).then((dataUrl) => {
       const pdf = new jsPDF({
@@ -25,9 +26,10 @@ export const exportToPdf = async (title: string) => {
 
 export const exportToPNG = async (title: string) => {
   try {
-    const screenShot = document.getElementById("canvas") as HTMLElement;
-    toPng(screenShot, {
+    const screenShot = document.querySelector("#canvas") as HTMLElement;
+    domToPng(screenShot, {
       quality: 1,
+      scale: 3,
       backgroundColor: '#F4F4F4',
     }).then((dataUrl) => {
       var anchor = document.createElement("a");
@@ -43,9 +45,10 @@ export const exportToPNG = async (title: string) => {
 
 export const exportToJPG = async (title: string) => {
   try {
-    const screenShot = document.getElementById("canvas") as HTMLElement;
-    toJpeg(screenShot, {
+    const screenShot = document.querySelector("#canvas") as HTMLElement;
+    domToJpeg(screenShot, {
       quality: 1,
+      scale: 3,
       backgroundColor: '#F4F4F4',
     }).then((dataUrl) => {
       var anchor = document.createElement("a");
@@ -61,9 +64,10 @@ export const exportToJPG = async (title: string) => {
 
 export const exportToSVG = async (title: string) => {
   try {
-    const screenShot = document.getElementById("canvas") as HTMLElement;
-    toSvg(screenShot, {
+    const screenShot = document.querySelector("#canvas") as HTMLElement;
+    domToSvg(screenShot, {
       quality: 1,
+      scale: 3,
       backgroundColor: '#F4F4F4',
     }).then((dataUrl) => {
       var anchor = document.createElement("a");
