@@ -1,4 +1,4 @@
-import { exportToJSON, exportToPdf, exportToPNG } from "@/lib/export";
+import { exportToJPG, exportToJSON, exportToPdf, exportToPNG, exportToSVG } from "@/lib/export";
 import { useRoom } from "./room";
 import {
     DropdownMenu,
@@ -7,8 +7,6 @@ import {
     DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { ArrowUpFromLine, ChevronRight } from "lucide-react";
-import { toast } from "sonner";
-import { Badge } from "./ui/badge";
 
 interface ExportDropdownMenuProps {
     id: string;
@@ -16,7 +14,7 @@ interface ExportDropdownMenuProps {
 }
 
 export const ExportDropdownMenu = ({ id, title }: ExportDropdownMenuProps) => {
-    const { liveLayers, liveLayerIds } = useRoom(); // Step 2: Use the hook here
+    const { liveLayers, liveLayerIds } = useRoom();
 
     return (
         <DropdownMenu>
@@ -29,7 +27,7 @@ export const ExportDropdownMenu = ({ id, title }: ExportDropdownMenuProps) => {
                     <ChevronRight className="h-4 w-4" />
                 </DropdownMenuItem>
             </DropdownMenuTrigger>
-            <DropdownMenuContent side="right" sideOffset={8}>
+            <DropdownMenuContent side="right" sideOffset={8} className="w-[100px]">
                 <DropdownMenuItem
                     onClick={() => exportToPdf(title)}
                     className="p-3 cursor-pointer"
@@ -43,16 +41,22 @@ export const ExportDropdownMenu = ({ id, title }: ExportDropdownMenuProps) => {
                     to PNG
                 </DropdownMenuItem>
                 <DropdownMenuItem
+                    onClick={() => exportToJPG(title)}
+                    className="p-3 cursor-pointer"
+                >
+                    to JPG
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                    onClick={() => exportToSVG(title)}
+                    className="p-3 cursor-pointer"
+                >
+                    to SVG
+                </DropdownMenuItem>
+                <DropdownMenuItem
                     onClick={() => exportToJSON(id, liveLayers, liveLayerIds)}
                     className="p-3 cursor-pointer"
                 >
                     to JSON
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                    onClick={() => toast.info("Coming soon")}
-                    className="p-3 cursor-pointer"
-                >
-                    to SVG <Badge className="ml-2" variant="inProgress">SOON</Badge>
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
