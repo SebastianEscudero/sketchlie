@@ -123,7 +123,7 @@ class InsertLayerCommand implements Command {
         }
 
         //overwrite r2 bucket
-        updateR2Bucket('/api/r2-bucket/deleteLayer', this.boardId, remainingLayers, remainingLayerIds);
+        updateR2Bucket('/api/r2-bucket/deleteLayer', this.boardId, remainingLayerIds, remainingLayers);
     }
 }
 
