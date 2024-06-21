@@ -210,8 +210,6 @@ export const SelectionTools = memo(({
           if (layer.fill && layer.fill.a === 0.7) {
             newFill = { ...fill, a: 0.7 };
           }
-
-          console.log(newFill);
         }
         newLayers[id] = { ...layer, fill: newFill };
         updatedIds.push(id);

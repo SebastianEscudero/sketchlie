@@ -1721,6 +1721,7 @@ export const Canvas = ({
 
     useEffect(() => {
         if (canvasState.mode === CanvasMode.Inserting) {
+            selectedLayersRef.current = [];
             if (canvasState.layerType === LayerType.Text) {
                 document.body.style.cursor = 'url(/custom-cursors/text-cursor.svg) 8 8, auto';
             } else {
@@ -1728,12 +1729,16 @@ export const Canvas = ({
             }
         } else if (canvasState.mode === CanvasMode.Pencil) {
             document.body.style.cursor = 'url(/custom-cursors/pencil.svg) 2 18, auto';
+            selectedLayersRef.current = [];
         } else if (canvasState.mode === CanvasMode.Highlighter) {
             document.body.style.cursor = 'url(/custom-cursors/highlighter.svg) 2 18, auto';
+            selectedLayersRef.current = [];
         } else if (canvasState.mode === CanvasMode.Laser) {
             document.body.style.cursor = 'url(/custom-cursors/laser.svg) 4 18, auto';
+            selectedLayersRef.current = [];
         } else if (canvasState.mode === CanvasMode.Eraser) {
             document.body.style.cursor = 'url(/custom-cursors/eraser.svg) 8 8, auto';
+            selectedLayersRef.current = [];
         } else if (canvasState.mode === CanvasMode.Moving) {
             document.body.style.cursor = 'url(/custom-cursors/hand.svg) 8 8, auto';
         } else if (canvasState.mode === CanvasMode.ArrowResizeHandler) {
@@ -1846,7 +1851,7 @@ export const Canvas = ({
                     isPlacingLayer={currentPreviewLayer !== null}
                 />
             )}
-            {!isMoving && canvasState.mode !== CanvasMode.Resizing && canvasState.mode !== CanvasMode.ArrowResizeHandler && canvasState.mode !== CanvasMode.SelectionNet && canvasState.mode !== CanvasMode.Inserting && activeTouches < 2 && (
+            {!isMoving && canvasState.mode !== CanvasMode.Resizing && canvasState.mode !== CanvasMode.ArrowResizeHandler && canvasState.mode !== CanvasMode.SelectionNet && activeTouches < 2 && (
                 <SelectionTools
                     boardId={boardId}
                     setLiveLayerIds={setLiveLayerIds}
@@ -1911,7 +1916,7 @@ export const Canvas = ({
                                 layer={currentPreviewLayer}
                             />
                         )}
-                        {!isMoving && activeTouches < 2 && canvasState.mode !== CanvasMode.Inserting && canvasState.mode !== CanvasMode.ArrowResizeHandler && (
+                        {!isMoving && activeTouches < 2 && canvasState.mode !== CanvasMode.ArrowResizeHandler && (
                             <SelectionBox
                                 zoom={zoom}
                                 liveLayers={liveLayers}

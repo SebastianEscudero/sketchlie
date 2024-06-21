@@ -179,11 +179,11 @@ export const Info = ({
             <TabSeparator />
             <Dialog>
                 <Hint label="Templates" side="bottom" sideOffset={10}>
-                <DialogTrigger className="justify-center items-center xs:hidden flex" onClick={() => setCanvasState({ mode: CanvasMode.None })}>
-                    <Button asChild className="h-8 w-8 xs:h-10 xs:w-10 p-2" variant="board">
-                    <LayoutTemplate className="h-5 w-5" />
-                    </Button>
-                </DialogTrigger>
+                    <DialogTrigger className="justify-center items-center xs:flex hidden" onClick={() => setCanvasState({ mode: CanvasMode.None })}>
+                        <Button asChild className="h-8 w-8 xs:h-10 xs:w-10 p-2" variant="board">
+                            <LayoutTemplate className="h-5 w-5" />
+                        </Button>
+                    </DialogTrigger>
                 </Hint>
                 <DialogContent className="w-full max-w-[80%] max-h-[85%] xl:max-w-[50%] overflow-y-auto">
                     <ShowAllTemplates
@@ -192,7 +192,9 @@ export const Info = ({
                     />
                 </DialogContent>
             </Dialog>
-            <TabSeparator />
+            <div className="text-neutral-300 px-1.5 xs:flex hidden">
+                |
+            </div>
             <Hint label="Upgrade" side="bottom" sideOffset={10}>
                 <Button variant="board"
                     size="icon"
