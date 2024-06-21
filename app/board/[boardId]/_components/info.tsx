@@ -30,6 +30,7 @@ interface InfoProps {
     camera: any;
     zoom: any;
     setCanvasState: any;
+    selectedLayersRef: any;
 }
 
 const TabSeparator = () => {
@@ -56,7 +57,8 @@ export const Info = ({
     nanoid,
     camera,
     zoom,
-    setCanvasState
+    setCanvasState,
+    selectedLayersRef
 }: InfoProps) => {
 
     const { onOpen } = useRenameModal();
@@ -108,6 +110,9 @@ export const Info = ({
     
           const command = new insertLayerCommand(newTemplateLayerIds, orderedLayers, liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, board._id, socket, org, proModal);
           performAction(command);
+
+          selectedLayersRef.current = newTemplateLayerIds;
+          
           toast.success(`${templateName} inserted successfully!`);
         } catch (error) {
           toast.error("Unable to insert template. Please try again.");

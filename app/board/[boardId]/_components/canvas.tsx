@@ -403,6 +403,10 @@ export const Canvas = ({
         const command = new InsertLayerCommand([layerId], [layer], liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, boardId, socket, org, proModal);
         performAction(command);
 
+        if (layer.type !== LayerType.Text) {
+            selectedLayersRef.current = [layerId];
+        }
+
         if (layerWithAssistDraw) {
             setLayerWithAssistDraw(false);
             setCanvasState({ mode: CanvasMode.Pencil });
@@ -1806,6 +1810,7 @@ export const Canvas = ({
                 nanoid={nanoid}
                 zoom={zoom}
                 camera={camera}
+                selectedLayersRef={selectedLayersRef}
             />
             <Participants
                 org={org}
