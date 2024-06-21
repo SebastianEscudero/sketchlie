@@ -179,7 +179,7 @@ export const Info = ({
             <TabSeparator />
             <Dialog>
                 <Hint label="Templates" side="bottom" sideOffset={10}>
-                <DialogTrigger className="flex justify-center items-center" onClick={() => setCanvasState({ mode: CanvasMode.None })}>
+                <DialogTrigger className="justify-center items-center xs:hidden flex" onClick={() => setCanvasState({ mode: CanvasMode.None })}>
                     <Button asChild className="h-8 w-8 xs:h-10 xs:w-10 p-2" variant="board">
                     <LayoutTemplate className="h-5 w-5" />
                     </Button>
