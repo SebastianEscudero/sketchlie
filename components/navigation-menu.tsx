@@ -16,31 +16,31 @@ import { Button } from "./ui/button"
 const porEquipo: { title: string; href: string }[] = [
     {
         title: "Diseño de Producto",
-        href: "/diseno-de-producto",
+        href: "/diseno-de-producto/",
     },
     {
-        title: "Equipos de Ingeniería 🚧",
-        href: "/equipos-de-ingenieria",
+        title: "Equipos de Ingeniería",
+        href: "/equipos-de-ingenieria/",
     },
     {
         title: "Diseño",
         href: "/diseno/",
     },
     {
-        title: "Equipos de IT 🚧",
-        href: "/equipos-de-it",
+        title: "Equipos de TI",
+        href: "/equipos-de-ti/",
     },
     {
-        title: "Marketing 🚧",
-        href: "/marketing",
+        title: "Marketing ",
+        href: "/marketing/",
+    },
+     {
+        title: "Agencias y Consultoras",
+        href: "/agencias-y-consultoras/",
     },
     {
-        title: "Agencias y Consultorías 🚧",
-        href: "/agencias-consultorías",
-    },
-    {
-        title: "Ventas 🚧",
-        href: "/ventas",
+        title: "Ventas",
+        href: "/ventas/",
     },
 ]
 
@@ -110,13 +110,13 @@ export function NavigationMenuLanding() {
                             <div className="grid w-[400px] p-6 md:w-[500px] lg:w-[300px]">
                                 <p className="px-3 text-base mb-2 text-neutral-600 font-semibold">Producto</p>
                                 <NavigationMenuLink
-                                    href={"/descripcion"}
+                                    href="/quienes-somos/"
                                 >
                                     <Button
                                         className='w-full justify-start my-[3px] text-base'
-                                        variant={pathname === "/descripcion" ? 'auth' : 'ghost'}
+                                        variant={pathname === "/quienes-somos/" ? 'auth' : 'ghost'}
                                     >
-                                        Descripcion de Sketchlie 🚧
+                                        Descripcion de Sketchlie
                                     </Button>
                                 </NavigationMenuLink>
                             </div>

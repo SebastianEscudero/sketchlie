@@ -8,8 +8,8 @@ export const LandingHero = () => {
             title="Dibuja tus sueños y conviértelos en realidad"
             description="Haz una lluvia de ideas, colabora y da vida a tus ideas en nuestro espacio de colaboración en tiempo real. Únete a nosotros y convierte tus ideas en realidad."
             cta="Regístrate gratis"
-            img="/placeholders/linea-de-tiempo.png"
-            alt="Linea de tiempo"
+            img="/placeholders/modelo-canvas.png"
+            alt="Modelo Canvas"
         />
     )
 }

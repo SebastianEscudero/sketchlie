@@ -3,11 +3,11 @@ import { Metadata } from "next";
 import { BlogSection } from "@/components/blog-section";
 import { LogoSlider } from "@/components/logo-slider";
 import { FaqSection } from "@/components/faq-section";
-import { HowToCreate } from "@/components/how-to-create";
+import { BlogLinks } from "@/components/blog-links";
 import { PlatformYouCanTrust } from "@/components/platform-you-can-trust";
 import { LandingVideo } from "@/components/landing-video";
+import { HowToCreate } from "@/components/how-to-create";
 import { VerMas } from "@/components/ver-mas";
-import Link from "next/link";
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -15,73 +15,70 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
+import Link from "next/link";
 import { TemplatesSlider } from "@/components/templates-slider";
 
 export const metadata: Metadata = {
-    title: "Crea una línea de tiempo | Sketchlie",
-    description: "Crea una línea de tiempo con Sketchlie gratis, el mejor creador de líneas de tiempo. Explora nuestra plantilla de línea de tiempo para acelerar tu flujo de trabajo.",
-    keywords: ["línea de tiempo", "crear línea de tiempo", "plantilla de línea de tiempo", "línea de tiempo online", "línea de tiempo gratis", "línea de tiempo colaborativa", "línea de tiempo interactiva", "línea de tiempo de eventos", "línea de tiempo de historia", "línea de tiempo de proyectos", "línea de tiempo de vida", "línea de tiempo de trabajo", "línea de tiempo de eventos históricos", "línea de tiempo de eventos importantes", "línea de tiempo de eventos personales", "línea de tiempo de eventos futuros", "línea de tiempo de eventos pasados", "línea de tiempo de eventos actuales", "línea de tiempo de eventos de la vida", "línea de tiempo de eventos de la historia", "línea de tiempo de eventos de proyectos", "línea de tiempo de eventos de trabajo", "línea de tiempo de eventos de vida", "línea de tiempo de eventos de eventos", "línea de tiempo de eventos de eventos históricos", "línea de tiempo de eventos de eventos importantes", "línea de tiempo de eventos de eventos personales", "línea de tiempo de eventos de eventos futuros", "línea de tiempo de eventos de eventos pasados", "línea de tiempo de eventos de eventos actuales", "línea de tiempo de eventos de eventos de la vida", "línea de tiempo de eventos de eventos de la historia", "línea de tiempo de eventos de eventos de proyectos", "línea de tiempo de eventos de eventos de trabajo", "línea de tiempo de eventos de eventos de vida", "línea de tiempo de eventos de eventos de eventos", "línea de tiempo de eventos de eventos de eventos históricos", "línea de tiempo de eventos de eventos de eventos importantes", "línea de tiempo de eventos de eventos de eventos personales", "línea de tiempo de eventos de eventos de eventos futuros", "línea de tiempo de eventos de eventos de eventos pasados", "línea de tiempo de eventos de eventos de eventos actuales", "línea de tiempo de eventos de eventos de eventos de la vida"],
+    title: "Crea una Línea de Tiempo Online | Sketchlie",
+    description: "Diseña líneas de tiempo interactivas y visualmente atractivas con Sketchlie. Organiza eventos, planifica proyectos y visualiza la historia de forma eficiente.",
+    keywords: ["línea de tiempo", "timeline online", "herramienta de planificación", "visualización de eventos"],
     alternates: {
         canonical: "https://www.sketchlie.com/linea-de-tiempo/",
     }
 };
 
 const LandingPage = () => {
-    const faqData = [
-        {
-            value: "item-1",
-            trigger: "¿Qué es una línea de tiempo?",
-            content: "Una línea de tiempo es una representación visual de eventos o procesos en orden cronológico. Se utiliza para mostrar la secuencia de eventos a lo largo del tiempo, desde el pasado hasta el presente y, en algunos casos, hacia el futuro. Las líneas de tiempo pueden ser simples o complejas, dependiendo de la cantidad de eventos que se desean representar y la cantidad de información que se desea incluir. Se utilizan en una variedad de contextos, incluyendo la historia, la ciencia, la tecnología, la educación y los negocios, entre otros. Las líneas de tiempo son una herramienta poderosa para visualizar y comprender la secuencia de eventos y su relación entre sí."
-        },
-        {
-            value: "item-2",
-            trigger: "¿Cómo se crea un cronograma?",
-            content: "Para crear una línea de tiempo, sigue estos pasos: 1. Identifica los eventos o procesos que deseas representar en la línea de tiempo. 2. Organiza los eventos en orden cronológico, desde el pasado hasta el presente y, si es necesario, hacia el futuro. 3. Selecciona un formato de línea de tiempo que se adapte a tus necesidades, como una línea de tiempo lineal, una línea de tiempo de bloques o una línea de tiempo de puntos. 4. Agrega los eventos a la línea de tiempo, incluyendo fechas, descripciones y cualquier otra información relevante. 5. Personaliza la línea de tiempo con colores, fuentes y estilos para que se ajuste a tu estilo y necesidades. 6. Revisa y ajusta la línea de tiempo según sea necesario para asegurarte de que represente con precisión los eventos que deseas mostrar. 7. Comparte la línea de tiempo con otros para colaborar y comunicar de manera efectiva la secuencia de eventos."
-        },
-        {
-            value: "item-3",
-            trigger: "¿Cuáles son los tipos más comunes de diagramas de flujo?",
-            content: "Hay cuatro tipos principales de diagramas de flujo. Un diagrama de flujo de permite comunicar un proceso o proyecto. Un diagrama de flujo muestra la forma en la que funciona un negocio o un proceso. Un diagrama de flujo de carriles permite separar personas o equipos cuando necesitas mostrar varios flujos de información uno al lado del otro. Un diagrama de flujo de datos muestra cómo se procesan los datos dentro de un sistema."
-        },
-        {
-            value: "item-4",
-            trigger: "¿Para qué se utilizan las líneas de tiempo?",
-            content: "Las líneas de tiempo se utilizan para visualizar y comprender la secuencia de eventos a lo largo del tiempo. Son útiles en diversos contextos, como en la educación (para enseñar historia), en la investigación (para organizar eventos importantes) y en los negocios (para planificar proyectos y estrategias)."
-        },
-        {
-            value: "item-5",
-            trigger: "¿Cuáles son los elementos comunes de una línea de tiempo?",
-            content: "Los elementos comunes de una línea de tiempo incluyen un eje horizontal que representa el tiempo, marcadores de tiempo (fechas) a lo largo del eje, eventos o hitos colocados en la línea de tiempo según su fecha y etiquetas que describen cada evento."
-        },
-        {
-            value: "item-6",
-            trigger: "¿Qué tipos de líneas de tiempo existen?",
-            content: "Hay varios tipos de líneas de tiempo, incluyendo líneas de tiempo lineales, líneas de tiempo de bandas múltiples (que muestran eventos en diferentes categorías), líneas de tiempo circulares (que muestran eventos en un círculo) y líneas de tiempo históricas (que muestran eventos a lo largo de la historia)."
-        }
-    ];
 
     const steps = [
         {
-            trigger: "1. Define el propósito y el tema",
-            text: "Decide qué evento o período de tiempo quieres representar en tu línea de tiempo. Puede ser histórico, biográfico, científico, etc."
+            trigger: "1. Definir el propósito",
+            text: "Determina el objetivo de tu línea de tiempo. ¿Es para un proyecto, para visualizar la historia de una empresa, o para planificar eventos futuros?"
         },
         {
-            trigger: "2. Recopila la información",
-            text: "Reúne todos los eventos relevantes que quieres incluir en la línea de tiempo. Investiga y asegúrate de tener las fechas correctas y cualquier detalle adicional que desees agregar."
+            trigger: "2. Recopilar información",
+            text: "Reúne todos los datos relevantes, incluyendo fechas, eventos, hitos y cualquier detalle importante que quieras incluir en tu línea de tiempo."
         },
         {
-            trigger: "3. Abre el creador de líneas de tiempo de Sketchlie",
-            text: "Puedes partir desde cero o elegir una plantilla de línea de tiempo para comenzar. Agrega los eventos, fechas y descripciones según sea necesario para crear tu línea de tiempo"
+            trigger: "3. Organizar cronológicamente",
+            text: "Ordena tus eventos de forma cronológica. Decide si tu línea de tiempo será ascendente (del pasado al futuro) o descendente."
         },
         {
-            trigger: "4. Organiza los eventos",
-            text: "Ordena los eventos de manera cronológica, desde el inicio hasta el final, colocando las fechas en el eje horizontal y los eventos en el eje vertical."
+            trigger: "4. Diseñar la línea de tiempo",
+            text: "Utiliza las herramientas de Sketchlie para crear una representación visual atractiva. Añade elementos gráficos, colores y formas para mejorar la legibilidad y el atractivo visual."
         },
         {
-            trigger: "5. Diseña y personaliza",
-            text: "Añade detalles visuales como colores, iconos o imágenes para resaltar eventos importantes. Asegúrate de que la línea de tiempo sea fácil de entender y visualmente atractiva."
+            trigger: "5. Añadir detalles y contexto",
+            text: "Incluye descripciones breves, imágenes o enlaces para proporcionar más contexto a cada evento o hito en tu línea de tiempo."
+        }
+    ];
+
+    const faqData = [
+        {
+            value: "item-1",
+            trigger: "¿Qué es una línea de tiempo y para qué se utiliza?",
+            content: "Una línea de tiempo es una representación gráfica que muestra eventos o hitos en orden cronológico. Se utiliza para visualizar la secuencia de eventos históricos, planificar proyectos, mostrar la evolución de una empresa o producto, y organizar información de manera clara y concisa."
         },
-    ]
+        {
+            value: "item-2",
+            trigger: "¿Qué tipos de líneas de tiempo puedo crear con Sketchlie?",
+            content: "Con Sketchlie, puedes crear una amplia variedad de líneas de tiempo, incluyendo líneas de tiempo históricas, líneas de tiempo de proyectos, líneas de tiempo biográficas, líneas de tiempo de productos, y líneas de tiempo interactivas para presentaciones o sitios web."
+        },
+        {
+            value: "item-3",
+            trigger: "¿Cómo puedo personalizar mi línea de tiempo en Sketchlie?",
+            content: "Sketchlie ofrece numerosas opciones de personalización. Puedes ajustar colores, fuentes, formas y estilos de línea. También puedes añadir imágenes, iconos y enlaces para hacer tu línea de tiempo más interactiva y atractiva visualmente."
+        },
+        {
+            value: "item-4",
+            trigger: "¿Puedo colaborar con otros en la creación de una línea de tiempo?",
+            content: "Sí, Sketchlie permite la colaboración en tiempo real. Puedes invitar a miembros de tu equipo para trabajar juntos en la misma línea de tiempo, haciendo que sea fácil coordinar y compartir información en proyectos grupales."
+        },
+        {
+            value: "item-5",
+            trigger: "¿Es posible exportar o compartir mi línea de tiempo una vez terminada?",
+            content: "Absolutamente. Sketchlie te permite exportar tu línea de tiempo en varios formatos, incluyendo PNG, PDF y SVG. También puedes compartir un enlace directo a tu línea de tiempo para que otros puedan verla o editarla, dependiendo de los permisos que establezcas."
+        }
+    ];
 
     return (
         <div>
@@ -92,46 +89,54 @@ const LandingPage = () => {
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
-                        <BreadcrumbPage>Línea de tiempo</BreadcrumbPage>
+                        <BreadcrumbPage>Línea de Tiempo</BreadcrumbPage>
                     </BreadcrumbItem>
                 </BreadcrumbList>
             </Breadcrumb>
             <BlogStructure
-                title="Creador de líneas de tiempo gratuito"
-                description="Crea una línea de tiempo con Sketchlie gratis, el mejor creador de líneas de tiempo. Explora nuestra plantilla de línea de tiempo para acelerar tu flujo de trabajo."
-                cta="Crear línea de tiempo"
-                alt="Linea de tiempo"
+                title="Crea Líneas de Tiempo Impactantes"
+                description="Visualiza eventos, planifica proyectos y cuenta historias de manera efectiva con nuestras herramientas de línea de tiempo online. Sketchlie te ofrece una plataforma intuitiva para crear líneas de tiempo interactivas y visualmente atractivas."
+                cta="Crea tu Línea de Tiempo Gratis"
+                alt="Línea de Tiempo Interactiva"
                 img="/placeholders/linea-de-tiempo.png"
             />
             <LogoSlider />
             <LandingVideo />
             <BlogSection
-                title="¿Cómo funciona el creador de líneas de tiempo de Sketchlie?"
-                text="Nuestro creador de líneas de tiempo es una herramienta poderosa y fácil de usar que te permite visualizar eventos y procesos en orden cronológico. Con una interfaz intuitiva y funciones avanzadas, puedes crear líneas de tiempo personalizadas en minutos."
-                text2={
+                title="Visualiza la Historia con Claridad"
+                text={
                     <>
-                        Comienza seleccionando una <Link href="/plantillas/linea-de-tiempo" className="text-custom-blue" target="_blank">plantilla de línea de tiempo</Link> o creando una desde cero. Agrega eventos, fechas, descripciones y otros detalles para personalizar tu línea de tiempo
+                        Transforma datos complejos en narrativas visuales convincentes con las líneas de tiempo de Sketchlie. Ya sea que estés mapeando la historia de tu empresa, planificando un proyecto a largo plazo o presentando una secuencia de eventos históricos, nuestra <Link href="/plantillas/linea-de-tiempo/" className="text-custom-blue hover:underline">plantilla de línea de tiempo</Link> te ayudará a comunicar tu mensaje de manera efectiva y memorable.
                     </>
                 }
-                alt="Mapa mental"
-                img="/placeholders/mapa-mental.png"
+                alt="Línea de Tiempo Histórica"
+                img="/placeholders/modelo-canvas.png"
                 side="right"
             />
             <BlogSection
-                title="Visualiza tus eventos en orden cronológico"
-                text="En Sketchlie, damos vida a tus proyectos con líneas de tiempo dinámicas. Organiza tus tareas, fija plazos y presenta hitos de forma clara y atractiva. Ya sea para resumir reuniones, documentar procesos o presentar planes a clientes, nuestras líneas de tiempo son tu herramienta ideal."
-                alt="Mapa de Proceso"
-                img="/placeholders/improve-performance.png"
+                title="Planificación de Proyectos Simplificada"
+                text="Optimiza la gestión de tus proyectos con líneas de tiempo interactivas. Visualiza fases, hitos y deadlines de manera clara, permitiendo a tu equipo comprender fácilmente el progreso y los próximos pasos. Con Sketchlie, la planificación y seguimiento de proyectos se vuelve más intuitiva y eficiente."
+                text2="Nuestras herramientas de colaboración en tiempo real aseguran que todos los miembros del equipo estén sincronizados y actualizados sobre el estado del proyecto."
+                alt="Línea de Tiempo de Proyecto"
+                img="/placeholders/mapa-de-procesos.png"
                 side="right"
             />
             <BlogSection
-                title="Crea una línea cronológica de manera sencilla."
-                text="Visualiza tu proyecto, evento o historia de manera clara y concisa con nuestro creador de líneas de tiempo. Crea un historial en minutos y personalízala con colores, fuentes y estilos para que se ajuste a tus necesidades. Comparte tu cronograma con otros para colaborar y comunicar de manera efectiva la secuencia de eventos."
-                alt="Diagrama de Flujo"
-                img="/placeholders/diagrama-de-flujo.png"
+                title="Presenta Datos de Forma Impactante"
+                text="Convierte datos y estadísticas en visualizaciones atractivas con nuestras líneas de tiempo personalizables. Ideal para presentaciones, informes y análisis de tendencias, Sketchlie te permite crear líneas de tiempo que no solo informan, sino que también cautivan a tu audiencia."
+                text2="Integra fácilmente gráficos, imágenes y enlaces para enriquecer tu línea de tiempo y proporcionar un contexto más profundo."
+                alt="Línea de Tiempo de Datos"
+                img="/placeholders/lluvia-de-ideas.png"
                 side="right"
             />
-            <HowToCreate steps={steps} title="¿Cómo se crea una linea de tiempo?" img="/templates/linea-de-tiempo.png" alt="Linea de tiempo" cta="Crear linea de tiempo"/>
+            <BlogSection
+                title="Colaboración Sin Límites"
+                text="Fomenta la colaboración efectiva en tu equipo con nuestras funciones de edición en tiempo real. Trabaja simultáneamente en la misma línea de tiempo, compartiendo ideas y realizando ajustes al instante. Perfecto para equipos remotos o distribuidos, Sketchlie asegura que todos estén en la misma página, literalmente."
+                alt="Colaboración en Línea de Tiempo"
+                img="/placeholders/diagrama-ishikawa.png"
+                side="right"
+            />
+            <HowToCreate steps={steps} title="Cómo Crear una Línea de Tiempo Efectiva" img="/templates/linea-de-tiempo.png" alt="Creación de Línea de Tiempo" cta="Crea tu Línea de Tiempo"/>
             <TemplatesSlider />
             <div className="my-20">
                 <PlatformYouCanTrust />
@@ -143,7 +148,6 @@ const LandingPage = () => {
                 <VerMas title="Razones para hacer un cronograma" href="/linea-de-tiempo/que-es-linea-de-tiempo/" />
             </div>
         </div>
-
     );
 }
 

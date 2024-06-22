@@ -16,31 +16,31 @@ import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
 const porEquipo: { title: string; href: string }[] = [
     {
         title: "Diseño de Producto",
-        href: "/diseno-de-producto",
+        href: "/diseno-de-producto/",
     },
     {
-        title: "Equipos de Ingeniería 🚧",
-        href: "/equipos-de-ingenieria",
+        title: "Equipos de Ingeniería",
+        href: "/equipos-de-ingenieria/",
     },
     {
         title: "Diseño",
         href: "/diseno/",
     },
     {
-        title: "Equipos de IT 🚧",
-        href: "/equipos-de-it",
+        title: "Equipos de TI",
+        href: "/equipos-de-ti/",
     },
     {
-        title: "Marketing 🚧",
-        href: "/marketing",
+        title: "Marketing ",
+        href: "/marketing/",
+    },
+     {
+        title: "Agencias y Consultoras",
+        href: "/agencias-y-consultoras/",
     },
     {
-        title: "Agencias y Consultorías 🚧",
-        href: "/agencias-consultorías",
-    },
-    {
-        title: "Ventas 🚧",
-        href: "/ventas",
+        title: "Ventas",
+        href: "/ventas/",
     },
 ]
 
@@ -223,13 +223,13 @@ export const BotNavbar = () => {
                     <AccordionTrigger className="font-semibold">Producto</AccordionTrigger>
                     <AccordionContent className="flex flex-col w-full gap-1">
                         <Link
-                            href="/descripcion"
+                            href="/quienes-somos/"
                         >
                             <Button
                                 className='w-full justify-start my-[2px] text-[16px]'
-                                variant={pathname === "/descripcion" ? 'secondary' : 'ghostDark'}
+                                variant={pathname === "/quienes-somos/" ? 'secondary' : 'ghostDark'}
                             >
-                                Descripcion de Sketchlie 🚧
+                                Descripcion de Sketchlie
                             </Button>
                         </Link>
                     </AccordionContent>
