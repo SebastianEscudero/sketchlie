@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     description: "Descubre cómo el Modelo Canvas puede transformar tu estrategia empresarial. Aprende a crear, implementar y optimizar tu modelo de negocio con Sketchlie.",
     keywords: ["modelo canvas", "business model canvas", "estrategia empresarial"],
     alternates: {
-        canonical: "https://www.sketchlie.com//modelo-canvas/",
+        canonical: "https://www.sketchlie.com/modelo-canvas/que-es-modelo-canvas/",
     }
 };
 
