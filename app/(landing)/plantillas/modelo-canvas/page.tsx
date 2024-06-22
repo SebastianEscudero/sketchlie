@@ -204,11 +204,8 @@ const LandingPage = () => {
                     </Link>
                 </div>
             </div>
-            <div className="my-20">
-                <HowToCreate
-                    title="¿Cómo crear un modelo canvas?"
-                    steps={steps}
-                />
+            <div className="mt-10">
+                <HowToCreate steps={steps} title="¿Cómo se crea un modelo canvas?" img="/templates/modelo-canvas.png" alt="Modelo Canvas" cta="Crear modelo canvas"/>
             </div>
             <TemplatesSlider />
             <FaqSection accordionData={faqData} sectionTitle="los modelos canvas"/>

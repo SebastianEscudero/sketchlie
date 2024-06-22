@@ -148,11 +148,11 @@ const LandingPage = () => {
                 img="/placeholders/pizarra-online.png"
                 side="right"
             />
+            <HowToCreate steps={steps} title="¿Cómo crear un mapa conceptual?" img="/templates/mapa-conceptual.png" alt="Mapa conceptual" cta="Crear mapa conceptual"/>
             <TemplatesSlider />
             <div className="my-20">
                 <PlatformYouCanTrust />
             </div>
-            <HowToCreate steps={steps} title="Cómo hacer un mapa conceptual" />
             <FaqSection accordionData={faqData} sectionTitle="los mapas conceptuales online" />
             <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5 md:my-10 my-5">
                 <VerMas title="¿Qué es un Mapa Conceptual?" href="/mapa-conceptual/que-es-mapa-conceptual/" />

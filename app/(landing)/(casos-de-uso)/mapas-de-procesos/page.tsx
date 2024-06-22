@@ -64,7 +64,7 @@ const LandingPage = () => {
 
         {
             trigger: "2. Divide las etapas del proceso:",
-            text: "Divide el proceso en etapas o pasos distintos y secuenciales. Por lo general, un proceso consta de cuatro a seis etapas principales. Para este ejemplo, utilizaremos cuatro etapas:\n\n- Inicio: Esta etapa representa el punto de partida del proceso. Puede incluir actividades como recibir una solicitud, iniciar un proyecto, etc.\n\n- Desarrollo: Aquí es donde se lleva a cabo la mayor parte del trabajo del proceso. Puede involucrar actividades como análisis, producción, ensamblaje, etc.\n\n- Revisión/Control: En esta etapa, se verifica la calidad del trabajo realizado en la etapa de desarrollo. Puede incluir inspecciones, pruebas, revisión de documentos, etc.\n\n- Finalización: Esta es la etapa final del proceso donde se completa el trabajo y se entrega el resultado final al cliente o al siguiente paso del proceso. Puede incluir actividades como la entrega del producto, la generación de informes finales, la facturación, etc."
+            text: "Divide el proceso en etapas o pasos distintos y secuenciales. Por lo general, un proceso consta de cuatro a seis etapas principales. Para este ejemplo, 1. Inicio 2. Desarrollo 3. Revisión 4. Finalización."
         },
 
         {
@@ -138,11 +138,11 @@ const LandingPage = () => {
                 img="/placeholders/pizarra-online.png"
                 side="right"
             />
+            <HowToCreate steps={steps} title="¿Cómo se crea un mapa de procesos?" img="/templates/mapa-de-proceso.png" alt="Mapa de procesos" cta="Crear mapa de procesos"/>
             <TemplatesSlider />
             <div className="my-20">
                 <PlatformYouCanTrust />
             </div>
-            <HowToCreate steps={steps} title="¿Cómo se crea un mapa mental?" />
             <FaqSection accordionData={faqData} sectionTitle="mapas mentales" />
             <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5 md:my-10 my-5">
                 <VerMas title="¿Qué es un mapa de procesos?" href="/mapas-de-procesos/que-es-mapa-procesos" />

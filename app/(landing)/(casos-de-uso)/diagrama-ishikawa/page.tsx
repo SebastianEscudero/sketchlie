@@ -138,11 +138,11 @@ const LandingPage = () => {
                 img="/placeholders/diagrama-de-flujo.png"
                 side="right"
             />
+            <HowToCreate steps={steps} title="¿Cómo se crea un diagrama ishikawa?" img="/templates/diagrama-ishikawa.png" alt="Diagrama Ishikawa" cta="Crear diagrama"/>
             <TemplatesSlider />
             <div className="my-20">
                 <PlatformYouCanTrust />
             </div>
-            <HowToCreate steps={steps} title="Cómo hacer un diagrama de flujo"/>
             <FaqSection accordionData={faqData} sectionTitle="diagramas de flujo" />
             <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5 md:my-10 my-5">
                 <VerMas title="Que significa cada parte del diagrama de pescado" href="/diagrama-ishikawa/que-es-diagrama-ishikawa/" />

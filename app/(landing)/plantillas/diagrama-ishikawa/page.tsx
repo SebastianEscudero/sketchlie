@@ -194,11 +194,8 @@ const LandingPage = () => {
                     </Link>
                 </div>
             </div>
-            <div className="my-20">
-                <HowToCreate
-                    title="¿Cómo se hace un diagrama de ishikawa?"
-                    steps={steps}
-                />
+            <div className="mt-10">
+                <HowToCreate steps={steps} title="¿Cómo se crea un diagrama ishikawa?" img="/templates/diagrama-ishikawa.png" alt="Diagrama Ishikawa" cta="Crear diagrama"/>
             </div>
             <TemplatesSlider />
             <FaqSection accordionData={faqData} sectionTitle="los diagramas de espina de pescado" />

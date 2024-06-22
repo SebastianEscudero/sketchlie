@@ -175,11 +175,8 @@ const LandingPage = () => {
                     </Link>
                 </div>
             </div>
-            <div className="my-20">
-                <HowToCreate
-                    title="¿Cómo se crea un wireframe online?"
-                    steps={steps}
-                />
+            <div className="mt-10">
+                <HowToCreate steps={steps} title="¿Cómo se crea un wireframe?" img="/templates/lowfidelity-wireframe.png" alt="Wireframe" cta="Crear wireframe"/>
             </div>
             <TemplatesSlider />
             <FaqSection accordionData={faqData} sectionTitle="los wireframes" />

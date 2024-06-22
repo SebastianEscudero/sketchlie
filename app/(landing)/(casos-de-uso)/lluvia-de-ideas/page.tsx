@@ -152,11 +152,11 @@ const LandingPage = () => {
                 img="/placeholders/pizarra-online.png"
                 side="right"
             />
+            <HowToCreate steps={steps} title="¿Cómo se hacer una sesión de lluvia de ideas?" img="/templates/lluvia-de-ideas.png" alt="Lluvia de ideas" cta="Hacer lluvia de ideas"/>
             <TemplatesSlider />
             <div className="my-20">
                 <PlatformYouCanTrust />
             </div>
-            <HowToCreate steps={steps} title="Cómo hacer una lluvia de ideas" />
             <FaqSection accordionData={faqData} sectionTitle="las lluvias de ideas" />
             <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5 md:my-10 my-5">
                 <VerMas title="¿Qué es una lluvia de ideas?" href="/lluvia-de-ideas/que-es-lluvia-de-ideas/" />

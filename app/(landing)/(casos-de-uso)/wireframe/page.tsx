@@ -72,7 +72,7 @@ const LandingPage = () => {
 
     return (
         <div>
-                        <Breadcrumb className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
+            <Breadcrumb className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
                 <BreadcrumbList>
                     <BreadcrumbItem>
                         <Link href="/" title="Home">Home</Link>
@@ -130,11 +130,11 @@ const LandingPage = () => {
                 img="/placeholders/pizarra-online.png"
                 side="right"
             />
+            <HowToCreate steps={steps} title="¿Cómo se crea un wireframe?" img="/templates/lowfidelity-wireframe.png" alt="Wireframe" cta="Crear wireframe"/>
             <TemplatesSlider />
             <div className="my-20">
                 <PlatformYouCanTrust />
             </div>
-            <HowToCreate steps={steps} title="Cómo hacer un wireframe" />
             <FaqSection accordionData={faqData} sectionTitle="los wireframes" />
             <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5 md:my-10 my-5">
                 <VerMas title="¿Qué es un wireframe?" href="/wireframe/que-es-wireframe/" />

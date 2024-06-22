@@ -194,11 +194,8 @@ const LandingPage = () => {
                     </Link>
                 </div>
             </div>
-            <div className="my-20">
-                <HowToCreate
-                    title="¿Cómo se hace una linea de tiempo?"
-                    steps={steps}
-                />
+            <div className="mt-10">
+                <HowToCreate steps={steps} title="¿Cómo se crea una linea de tiempo?" img="/templates/linea-de-tiempo.png" alt="Linea de tiempo" cta="Crear linea de tiempo"/>
             </div>
             <TemplatesSlider />
             <FaqSection accordionData={faqData} sectionTitle="las lineas de tiempo" />

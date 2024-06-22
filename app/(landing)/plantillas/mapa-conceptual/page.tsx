@@ -251,11 +251,8 @@ const LandingPage = () => {
                     </Link>
                 </div>
             </div>
-            <div className="my-20">
-                <HowToCreate
-                    title="¿Cómo crear un mapa conceptual?"
-                    steps={steps}
-                />
+            <div className="mt-10">
+                <HowToCreate steps={steps} title="¿Cómo crear un mapa conceptual?" img="/templates/mapa-conceptual.png" alt="Mapa conceptual" cta="Crear mapa conceptual"/>
             </div>
             <TemplatesSlider />
             <FaqSection accordionData={faqData} sectionTitle="los mapas conceptuales"/>

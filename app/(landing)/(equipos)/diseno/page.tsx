@@ -139,8 +139,8 @@ const LandingPage = () => {
                 img="/placeholders/diagrama-ishikawa.png"
                 side="right"
             />
+            <HowToCreate steps={steps} title="Cómo diseñar una experiencia de usuario (UX)" img="/templates/customer-journey-map.png" alt="Customer journey map" cta="Comienza hoy gratis"/>
             <TemplatesSlider />
-            <HowToCreate steps={steps} title="Cómo diseñar una experiencia de usuario (UX)" />
             <FaqSection accordionData={faqData} sectionTitle="el diseño UX/UI" />
             <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5 md:my-10 my-5">
                 <VerMas title="¿Qué es el diseño UX?" href="/diseno/que-es-diseno/" />

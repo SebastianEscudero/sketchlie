@@ -206,11 +206,8 @@ const LandingPage = () => {
                     </Link>
                 </div>
             </div>
-            <div className="my-20">
-                <HowToCreate
-                    title="¿Cómo se hace un mapa mental?"
-                    steps={steps}
-                />
+            <div className="mt-10">
+                <HowToCreate steps={steps} title="¿Cómo se crea un mapa mental?" img="/templates/mapa-mental.png" alt="Mapa mental" cta="Crear mapa mental"/>
             </div>
             <TemplatesSlider />
             <FaqSection accordionData={faqData} sectionTitle="los mapas mentales" />

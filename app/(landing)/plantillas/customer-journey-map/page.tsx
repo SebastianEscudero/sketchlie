@@ -45,7 +45,7 @@ const LandingPage = () => {
             text: "Examina los datos recogidos para identificar puntos de dolor (problemas o frustraciones que experimentan los clientes) y oportunidades de mejora. Esto puede incluir dificultades en la navegación del sitio web, tiempos de espera largos, falta de información clara, entre otros. Identificar estos puntos es crucial para mejorar la experiencia del cliente."
         }
     ];
-    
+
     const faqData = [
         {
             value: "item-1",
@@ -72,8 +72,8 @@ const LandingPage = () => {
             )
         }
     ];
-    
-    
+
+
 
     return (
         <div>
@@ -191,14 +191,11 @@ const LandingPage = () => {
                     </Link>
                 </div>
             </div>
-            <div className="my-20">
-                <HowToCreate
-                    title="¿Cómo crear un customer journey map?"
-                    steps={steps}
-                />
+            <div className="mt-10">
+                <HowToCreate steps={steps} title="¿Cómo crear un customer journey map?" img="/templates/customer-journey-map.png" alt="Customer journey map" cta="Crear customer journey map" />
             </div>
             <TemplatesSlider />
-            <FaqSection accordionData={faqData} sectionTitle="los customer journey maps"/>
+            <FaqSection accordionData={faqData} sectionTitle="los customer journey maps" />
         </div >
     );
 }

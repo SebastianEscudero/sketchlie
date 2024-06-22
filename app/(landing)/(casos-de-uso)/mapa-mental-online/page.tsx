@@ -135,11 +135,11 @@ const LandingPage = () => {
                 img="/placeholders/pizarra-online.png"
                 side="right"
             />
+            <HowToCreate steps={steps} title="¿Cómo se crea un mapa mental?" img="/templates/mapa-mental.png" alt="Mapa mental" cta="Crear mapa mental"/>
             <TemplatesSlider />
             <div className="my-20">
                 <PlatformYouCanTrust />
             </div>
-            <HowToCreate steps={steps} title="¿Cómo se crea un mapa mental?" />
             <FaqSection accordionData={faqData} sectionTitle="mapas mentales" />
             <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5 md:my-10 my-5">
                 <VerMas title="¿Cómo hacer un mapa mental?" href="/mapa-mental-online/que-es-mapa-mental/" />

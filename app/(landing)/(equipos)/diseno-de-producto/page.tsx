@@ -134,11 +134,11 @@ const LandingPage = () => {
                 img="/placeholders/diagrama-ishikawa.png"
                 side="right"
             />
+            <HowToCreate steps={steps} title="Cómo diseña un producto con Sketchlie" img="/templates/modelo-canvas.png" alt="Modelo Canvas" cta="Diseñar producto"/>
             <TemplatesSlider />
             <div className="mt-10 mb-20">
                 <PlatformYouCanTrust />
             </div>
-            <HowToCreate steps={steps} title="Cómo diseña un producto con Sketchlie" />
             <FaqSection accordionData={faqData} sectionTitle="el proceso de diseño de productos" />
             <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5 md:my-10 my-5">
                 <VerMas title="¿Qué es el diseño de productos?" href="/diseno/que-es-diseno/" />

@@ -141,11 +141,11 @@ const LandingPage = () => {
                 img="/placeholders/pizarra-online.png"
                 side="right"
             />
+            <HowToCreate steps={steps} title="¿Cómo se crea un diagrama de flujo?" img="/templates/diagrama-de-flujo.png" alt="Diagrama de flujo" cta="Crear diagrama de flujo"/>
             <TemplatesSlider />
             <div className="my-20">
                 <PlatformYouCanTrust />
             </div>
-            <HowToCreate steps={steps} title="Cómo hacer un diagrama de flujo" />
             <FaqSection accordionData={faqData} sectionTitle="diagramas de flujo" />
             <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5 md:my-10 my-5">
                 <VerMas title="Cómo hacer un Diagrama de Flujo" href="/diagrama-de-flujo/que-es-diagrama-de-flujo/" />

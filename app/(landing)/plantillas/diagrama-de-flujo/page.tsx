@@ -230,11 +230,8 @@ const LandingPage = () => {
                     </Link>
                 </div>
             </div>
-            <div className="my-20">
-                <HowToCreate
-                    title="¿Cómo hacer un diagrama de flujo?"
-                    steps={steps}
-                />
+            <div className="mt-10">
+                <HowToCreate steps={steps} title="¿Cómo se crea un diagrama de flujo?" img="/templates/diagrama-de-flujo.png" alt="Diagrama de flujo" cta="Crear diagrama de flujo"/>
             </div>
             <TemplatesSlider />
             <FaqSection accordionData={faqData} sectionTitle="los diagramas de flujo"/>

@@ -131,11 +131,11 @@ const LandingPage = () => {
                 img="/placeholders/diagrama-de-flujo.png"
                 side="right"
             />
+            <HowToCreate steps={steps} title="¿Cómo se crea una linea de tiempo?" img="/templates/linea-de-tiempo.png" alt="Linea de tiempo" cta="Crear linea de tiempo"/>
             <TemplatesSlider />
             <div className="my-20">
                 <PlatformYouCanTrust />
             </div>
-            <HowToCreate steps={steps} title="Cómo hacer una línea de tiempo" />
             <FaqSection accordionData={faqData} sectionTitle="líneas de tiempo" />
             <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5 md:my-10 my-5">
                 <VerMas title="Cómo hacer una línea de tiempo" href="/linea-de-tiempo/que-es-linea-de-tiempo/" />

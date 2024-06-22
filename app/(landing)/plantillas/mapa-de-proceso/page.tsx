@@ -218,11 +218,8 @@ const LandingPage = () => {
                     </Link>
                 </div>
             </div>
-            <div className="my-20">
-                <HowToCreate
-                    title="¿Cómo se crea un mapa de procesos?"
-                    steps={steps}
-                />
+            <div className="mt-10">
+                <HowToCreate steps={steps} title="¿Cómo se crea un mapa de procesos?" img="/templates/mapa-de-proceso.png" alt="Mapa de procesos" cta="Crear mapa de procesos"/>
             </div>
             <TemplatesSlider />
             <FaqSection accordionData={faqData} sectionTitle="los mapas de procesos" />

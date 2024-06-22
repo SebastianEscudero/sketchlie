@@ -214,11 +214,8 @@ const LandingPage = () => {
                     </Link>
                 </div>
             </div>
-            <div className="my-20">
-                <HowToCreate
-                    title="¿Cómo hacer una sesión de brainstorming?"
-                    steps={steps}
-                />
+            <div className="mt-10">
+                <HowToCreate steps={steps} title="¿Cómo se hacer una sesión de lluvia de ideas?" img="/templates/lluvia-de-ideas.png" alt="Lluvia de ideas" cta="Hacer lluvia de ideas"/>
             </div>
             <TemplatesSlider />
             <FaqSection accordionData={faqData} sectionTitle="las lluvias de ideas" />
