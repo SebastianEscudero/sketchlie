@@ -19,8 +19,8 @@ import { PlatformYouCanTrust } from "@/components/platform-you-can-trust";
 
 export const metadata: Metadata = {
     title: "Realiza una lluvia de ideas online | Sketchlie",
-    description: "Potencia tu creatividad con Sketchlie, la plataforma líder en lluvia de ideas online. Colabora en tiempo real, visualiza conceptos y transforma ideas en acción. Prueba gratis hoy.",
-    keywords: ["lluvia de ideas", "brainstorming", "ideación visual", "colaboración creativa", "mapas mentales", "Sketchlie"],
+    description: "Potencia tu creatividad con Sketchlie: plataforma líder en lluvia de ideas online. Colabora en tiempo real, visualiza conceptos y transforma ideas en acción. Prueba gratis ahora.",
+    keywords: ["lluvia de ideas online", "brainstorming", "ideación visual", "colaboración en tiempo real", "mapas mentales", "Sketchlie"],
     alternates: {
         canonical: "https://www.sketchlie.com/lluvia-de-ideas/",
     }

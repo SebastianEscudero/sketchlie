@@ -4,7 +4,6 @@ import { BlogSection } from "@/components/blog-section";
 import { LogoSlider } from "@/components/logo-slider";
 import { FaqSection } from "@/components/faq-section";
 import { HowToCreate } from "@/components/how-to-create";
-import { BlogLinks } from "@/components/blog-links";
 import { PlatformYouCanTrust } from "@/components/platform-you-can-trust";
 import { LandingVideo } from "@/components/landing-video";
 import { VerMas } from "@/components/ver-mas";
@@ -19,9 +18,9 @@ import Link from "next/link";
 import { TemplatesSlider } from "@/components/templates-slider";
 
 export const metadata: Metadata = {
-    title: "La herramienta de Mapa de Procesos | Sketchlie",
-    description: "El mapa de procesos ayuda a los equipos a mapear y implementar mejoras. Registrate hoy con una 3 espacios de trabajo gratuitos para empezar a utilizar la mejor herramienta de mapa de procesos. Empieza hoy gratis.",
-    keywords: ["mapa de procesos", "mapa de procesos online", "mapa de procesos gratis"],
+    title: "Mapa de Procesos Online Gratis | Sketchlie",
+    description: "Crea mapas de procesos interactivos fácilmente. Colabora en tiempo real, usa plantillas personalizables y optimiza tus flujos de trabajo. Prueba Sketchlie gratis.",
+    keywords: ["mapa de procesos", "diagrama de flujo", "colaboración en tiempo real", "gestión visual de procesos"],
     alternates: {
         canonical: "https://www.sketchlie.com/mapas-de-procesos/",
     }
@@ -58,23 +57,20 @@ const LandingPage = () => {
 
     const steps = [
         {
-            trigger: "1. Identificar el proceso:",
-            text: "Define claramente cuál es el proceso que deseas mapear. Por ejemplo, podrías estar creando un mapa de procesos para el proceso de ventas, servicio al cliente, producción, etc."
+            trigger: "1. Elige una plantilla o comienza desde cero",
+            text: "Selecciona una de nuestras plantillas prediseñadas o inicia tu mapa de procesos desde una pizarra en blanco."
         },
-
         {
-            trigger: "2. Divide las etapas del proceso:",
-            text: "Divide el proceso en etapas o pasos distintos y secuenciales. Por lo general, un proceso consta de cuatro a seis etapas principales. Para este ejemplo, 1. Inicio 2. Desarrollo 3. Revisión 4. Finalización."
+            trigger: "2. Agrega y conecta elementos",
+            text: "Arrastra y suelta formas, conectores y texto para construir tu mapa de procesos. Personaliza colores y estilos para una mejor visualización."
         },
-
         {
-            trigger: "3. Mapear las actividades:",
-            text: "Para cada etapa del proceso, identifica las actividades específicas que se realizan. Puedes representar estas actividades utilizando cuadros o formas en el mapa de procesos y conectarlas con flechas para mostrar la secuencia."
+            trigger: "3. Colabora con tu equipo",
+            text: "Invita a miembros de tu equipo para editar y comentar en tiempo real. Asigna tareas y responsabilidades directamente en el mapa."
         },
-
         {
-            trigger: "4. Revisar y mejorar:",
-            text: "Una vez que hayas creado el mapa de procesos, revísalo para asegurarte de que captura con precisión el flujo de trabajo. Identifica áreas donde puedas mejorar la eficiencia, reducir el desperdicio o eliminar pasos innecesarios. Ajusta el mapa de procesos según sea necesario y continúa revisándolo periódicamente para garantizar que siga siendo relevante y útil."
+            trigger: "4. Analiza y optimiza",
+            text: "Utiliza nuestras herramientas de análisis para identificar áreas de mejora. Itera y actualiza tu mapa de procesos continuamente para mantenerlo relevante."
         }
     ];
 
@@ -100,12 +96,6 @@ const LandingPage = () => {
             />
             <LogoSlider />
             <LandingVideo />
-            <div className="mb:my-28 my-14">
-                <BlogSection
-                    title="Mejora la eficiencia operativa con mapas de procesos"
-                    text="Los mapas de procesos te permiten identificar y analizar cada paso de tus operaciones. Con una visualización clara de tus procesos, podrás detectar posibles cuellos de botella y áreas de mejora para optimizar la eficiencia de tu equipo."
-                />
-            </div>
             <BlogSection
                 title="Fomenta la colaboración y la transparencia"
                 text={
@@ -118,27 +108,37 @@ const LandingPage = () => {
                 side="right"
             />
             <BlogSection
-                title="Reduce errores y minimiza riesgos"
-                text="Al visualizar tus procesos, puedes identificar fácilmente posibles puntos de error y tomar medidas preventivas para mitigar riesgos. La claridad proporcionada por los mapas de procesos ayuda a minimizar los errores y garantiza una ejecución más fluida y precisa de las tareas."
-                alt="Mapa de Proceso"
-                img="/placeholders/improve-performance.png"
+                title="Colaboración en tiempo real"
+                text="Trabaja con tu equipo en el mismo mapa de procesos simultáneamente. Comenta, edita y actualiza en tiempo real, sin importar dónde se encuentren tus colaboradores."
+                alt="Modelo Canvas"
+                img="/placeholders/modelo-canvas.png"
                 side="right"
             />
+
             <BlogSection
-                title="Impulsa la innovación y la mejora continua"
-                text="Al comprender completamente tus procesos actuales, puedes identificar áreas para la innovación y la mejora continua. Los mapas de procesos te brindan una visión holística de tus operaciones, lo que te permite desarrollar nuevas ideas y estrategias para mantener la competitividad en un mercado en constante cambio."
-                alt="Diagrama de Flujo"
-                img="/placeholders/diagrama-de-flujo.png"
+                title="Plantillas personalizables"
+                text="Ahorra tiempo con nuestras plantillas prediseñadas para diferentes industrias y procesos. Personalízalas fácilmente para adaptarlas a las necesidades específicas de tu organización."
+                alt="Lluvia de Ideas"
+                img="/placeholders/lluvia-de-ideas.png"
                 side="right"
             />
+
             <BlogSection
-                title="Maximiza la productividad del equipo"
-                text="Al simplificar y optimizar tus flujos de trabajo mediante mapas de procesos, puedes aumentar la productividad de tu equipo. Elimina la confusión y la redundancia, permitiendo que tus empleados se centren en tareas de mayor valor añadido y alcancen sus metas con mayor rapidez."
+                title="Integración con tus herramientas favoritas"
+                text="Conecta Sketchlie con las aplicaciones que ya utilizas. Importa datos, sincroniza cambios y mantén todos tus procesos actualizados automáticamente."
+                alt="Customer Journey Map"
+                img="/placeholders/customer-journey-map.png"
+                side="right"
+            />
+
+            <BlogSection
+                title="Análisis y optimización de procesos"
+                text="Identifica cuellos de botella y oportunidades de mejora con nuestras herramientas de análisis integradas. Optimiza tus procesos basándote en datos reales y métricas clave."
                 alt="Pizarra Online"
                 img="/placeholders/pizarra-online.png"
                 side="right"
             />
-            <HowToCreate steps={steps} title="¿Cómo se crea un mapa de procesos?" img="/templates/mapa-de-proceso.png" alt="Mapa de procesos" cta="Crear mapa de procesos"/>
+            <HowToCreate steps={steps} title="¿Cómo se crea un mapa de procesos?" img="/templates/mapa-de-proceso.png" alt="Mapa de procesos" cta="Crear mapa de procesos" />
             <TemplatesSlider />
             <div className="my-20">
                 <PlatformYouCanTrust />

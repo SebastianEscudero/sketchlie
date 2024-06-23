@@ -19,7 +19,7 @@ import { PlatformYouCanTrust } from "@/components/platform-you-can-trust";
 import { BlogLinks } from "@/components/blog-links";
 
 export const metadata: Metadata = {
-    title: "Gestión de Proyectos de TI y Colaboración en Equipos Tecnológicos | Sketchlie",
+    title: "Gestión de Proyectos TI y Colaboración | Sketchlie",
     description: "Potencia la eficiencia de tus equipos de TI con Sketchlie. Optimiza la gestión de proyectos, planificación de infraestructura, desarrollo ágil y resolución de incidentes en una plataforma colaborativa.",
     keywords: ["gestión de proyectos de TI", "colaboración en equipos de TI", "planificación de infraestructura tecnológica", "desarrollo ágil de software", "resolución de incidentes de TI", "Sketchlie"],
     alternates: {
