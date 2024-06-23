@@ -3,8 +3,6 @@ import { Metadata } from "next";
 import { BlogSection } from "@/components/blog-section";
 import { LogoSlider } from "@/components/logo-slider";
 import { FaqSection } from "@/components/faq-section";
-import { BlogLinks } from "@/components/blog-links";
-import { PlatformYouCanTrust } from "@/components/platform-you-can-trust";
 import { LandingVideo } from "@/components/landing-video";
 import { HowToCreate } from "@/components/how-to-create";
 import { VerMas } from "@/components/ver-mas";
@@ -17,17 +15,18 @@ import {
 } from "@/components/ui/breadcrumb"
 import Link from "next/link";
 import { TemplatesSlider } from "@/components/templates-slider";
+import { PlatformYouCanTrust } from "@/components/platform-you-can-trust";
 
 export const metadata: Metadata = {
     title: "Realiza una lluvia de ideas online | Sketchlie",
-    description: "Realiza una lluvia de ideas online de forma gratuita con Sketchlie. Comienza ahora y colabora con tu equipo en una sesion de lluvia de ideas.",
-    keywords: ["lluvia de ideas", "colaboración en línea", "lluvia de ideas online"],
+    description: "Potencia tu creatividad con Sketchlie, la plataforma líder en lluvia de ideas online. Colabora en tiempo real, visualiza conceptos y transforma ideas en acción. Prueba gratis hoy.",
+    keywords: ["lluvia de ideas", "brainstorming", "ideación visual", "colaboración creativa", "mapas mentales", "Sketchlie"],
     alternates: {
         canonical: "https://www.sketchlie.com/lluvia-de-ideas/",
     }
 };
 
-const LandingPage = () => {
+const LluviaDeIdeas = () => {
 
     const steps = [
         {
@@ -95,7 +94,6 @@ const LandingPage = () => {
     ];
 
 
-
     return (
         <div>
             <Breadcrumb className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
@@ -105,67 +103,60 @@ const LandingPage = () => {
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
-                        <BreadcrumbPage>Lluvia de ideas</BreadcrumbPage>
+                        <BreadcrumbPage>Lluvia de Ideas</BreadcrumbPage>
                     </BreadcrumbItem>
                 </BreadcrumbList>
             </Breadcrumb>
             <BlogStructure
-                title="Realiza una lluvia de ideas efectiva"
-                description="Una sesión de lluvia de ideas es un proceso grupal para generar ideas sobre un tema. Se sigue un proceso estructurado que incluye la identificación del problema, la generación de ideas y la selección de las más prometedoras para su desarrollo. Esto fomenta la creatividad y la innovación en diferentes contextos."
-                cta="Empieza hoy gratis"
+                title="Desata tu Creatividad con Lluvia de Ideas Visual"
+                description="Transforma tu proceso de ideación con Sketchlie. Colabora en tiempo real, visualiza conceptos y lleva tus mejores ideas del pensamiento a la acción. Nuestra plataforma intuitiva hace que la lluvia de ideas sea más efectiva, divertida y productiva que nunca."
+                cta="Empieza Gratis"
                 alt="Lluvia de Ideas"
                 img="/placeholders/lluvia-de-ideas.png"
             />
             <LogoSlider />
             <LandingVideo />
             <BlogSection
-                title="El mejor lugar para lluvias de ideas"
-                text={
-                    <>
-                        Descubre cómo transformar conceptos complejos en ideas claras y creativas con una sesión de lluvia de ideas online. Utiliza la plataforma de Sketchlie para estructurar y capturar todas las ideas de tu equipo, ya sea para desarrollar un nuevo producto o para enriquecer una lección en clase. Aprovecha las herramientas de diseño disponibles como nuestra <Link href="/plantillas/lluvia-de-ideas/" className="text-custom-blue hover:underline">plantilla de lluvia de ideas</Link> para generar ideas innovadoras y cautivar a tu audiencia con soluciones únicas.
-                    </>
-                }
-                alt="Wireframe"
-                img="/placeholders/wireframe.png"
+                title="Lienzo Infinito para Ideas Sin Límites"
+                text="Libera tu creatividad en nuestro lienzo digital ilimitado. Captura cada chispa de inspiración con notas adhesivas virtuales, dibujos a mano alzada y elementos multimedia. Organiza y reorganiza tus ideas con facilidad, permitiendo que los patrones y conexiones emerjan naturalmente."
+                alt="Modelo Canvas"
+                img="/placeholders/modelo-canvas.png"
                 side="right"
             />
             <BlogSection
-                title="Organiza una sesión de lluvia de ideas efectiva"
-                text="Preparar una sesión de lluvia de ideas efectiva es clave para inspirar la creatividad y el pensamiento innovador en tu equipo. Con Sketchlie, simplifica este proceso al ofrecer una amplia gama de herramientas y funciones que facilitan la generación y captura de ideas."
-                text2="Una vez finalizada la sesión, comparte fácilmente tus ideas utilizando el modo de presentación integrado en la plataforma. Además, características avanzadas como formatos condicionales y vinculación de datos garantizan una representación clara y organizada de las ideas."
-                alt="Mapa mental"
-                img="/placeholders/mapa-mental.png"
+                title="Colaboración en Tiempo Real para Mentes Brillantes"
+                text="Reúne a tu equipo, sin importar dónde se encuentren. Sketchlie permite que todos contribuyan simultáneamente, viendo las ideas fluir en tiempo real. Fomenta la participación equitativa y aprovecha la diversidad de pensamiento para generar soluciones verdaderamente innovadoras."
+                alt="Mapa de Procesos"
+                img="/placeholders/mapa-de-procesos.png"
                 side="right"
             />
             <BlogSection
-                title="Convierte lluvias de ideas en soluciones innovadoras"
-                text="En Sketchlie, colaborar se vuelve simple, permitiendo compartir y trabajar en tiempo real con otros usuarios sin complicaciones. Al estar basado en la nube, ofrece una experiencia fluida y sin obstáculos, lo que facilita la colaboración entre equipos distribuidos geográficamente."
-                text2="Con nosotros, es posible crear, compartir y colaborar en lluvias de ideas de manera eficiente y efectiva, mejorando significativamente el flujo de trabajo en la creación de soluciones."
-                alt="Mapa de Proceso"
-                img="/placeholders/improve-performance.png"
+                title="Visualización Poderosa para Claridad Conceptual"
+                text="Transforma ideas abstractas en conceptos tangibles con nuestras herramientas de visualización. Crea mapas mentales, diagramas de flujo y esquemas visuales que clarifican el pensamiento y revelan nuevas perspectivas. Haz que las ideas complejas sean fácilmente comprensibles y accionables."
+                alt="Customer Journey Map"
+                img="/placeholders/customer-journey-map.png"
                 side="right"
             />
             <BlogSection
-                title="Captura y da forma a tus ideas"
-                text="Eleva la colaboración a un nivel superior, desde sesiones de lluvia de ideas hasta reuniones de seguimiento de proyectos, esta herramienta versátil y fácil de usar está diseñada para potenciar la creatividad y la productividad de tu equipo. Únete a la revolución de la colaboración online con Sketchlie y optimiza tus sesiones de lluvias de ideas."
-                alt="Pizarra Online"
-                img="/placeholders/pizarra-online.png"
+                title="De la Ideación a la Acción: Prioriza y Ejecuta"
+                text="No dejes que las grandes ideas se queden en el aire. Utiliza nuestras funciones de votación y priorización para identificar los conceptos más prometedores. Convierte ideas en tareas accionables y sigue su progreso, asegurando que la inspiración se traduzca en resultados tangibles."
+                img="/placeholders/diagrama-ishikawa.png"
+                alt="Diagrama Ishikawa"
                 side="right"
             />
             <HowToCreate steps={steps} title="¿Cómo se hacer una sesión de lluvia de ideas?" img="/templates/lluvia-de-ideas.png" alt="Lluvia de ideas" cta="Hacer lluvia de ideas"/>
             <TemplatesSlider />
-            <div className="my-20">
+            <div className="mt-10 mb-20">
                 <PlatformYouCanTrust />
             </div>
-            <FaqSection accordionData={faqData} sectionTitle="las lluvias de ideas" />
+            <FaqSection accordionData={faqData} sectionTitle="lluvia de ideas y Sketchlie" />
             <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5 md:my-10 my-5">
                 <VerMas title="¿Qué es una lluvia de ideas?" href="/lluvia-de-ideas/que-es-lluvia-de-ideas/" />
                 <VerMas title="Consejos y Trucos para una Lluvia de Ideas Exitosa" href="/lluvia-de-ideas/que-es-lluvia-de-ideas/" />
                 <VerMas title="Tipos de Lluvia de Ideas" href="/lluvia-de-ideas/que-es-lluvia-de-ideas/" />
             </div>
         </div>
-
     );
 }
 
-export default LandingPage;
+export default LluviaDeIdeas;
