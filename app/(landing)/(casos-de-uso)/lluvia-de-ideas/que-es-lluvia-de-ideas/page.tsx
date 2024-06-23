@@ -11,12 +11,12 @@ import Link from "next/link";
 import { BlogLinks } from "@/components/blog-links";
 
 export const metadata: Metadata = {
-    title: "¿Qué es una lluvia de ideas? Ejemplos y técnicas | Sketchlie",
-    description: "Descubre cómo la lluvia de ideas online puede mejorar la colaboración y la creatividad de tu equipo. Aprende sobre las técnicas, beneficios y tipos de lluvias de ideas con Sketchlie.",
-    keywords: ["lluvia de ideas", "colaboración online", "lluvia de ideas online"],
+    title: "Lluvia de ideas: Definición y técnicas | Sketchlie",
+    description: "Aprende qué es una lluvia de ideas, sus técnicas y cómo hacerla online. Impulsa la creatividad de tu equipo con Sketchlie.",
+    keywords: ["lluvia de ideas", "brainstorming", "técnicas creativas"],
     alternates: {
         canonical: "https://www.sketchlie.com/lluvia-de-ideas/que-es-lluvia-de-ideas/",
-    }
+    },
 };
 
 const LandingPage = () => {

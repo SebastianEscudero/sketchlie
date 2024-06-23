@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     description: "Descubre qué es un diagrama, sus tipos y cómo crearlos online. Mejora la visualización de ideas con Sketchlie, herramienta gratuita de diagramación.",
     keywords: ["diagrama", "tipos de diagramas", "diagrama online", "herramienta de diagramación"],
     alternates: {
-        canonical: "https://www.sketchlie.com/es/diagrama/que-es-diagrama/",
+        canonical: "https://www.sketchlie.com/diagrama/que-es-diagrama/",
     },
 };
 

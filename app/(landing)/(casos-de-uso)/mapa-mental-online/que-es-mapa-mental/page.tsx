@@ -12,8 +12,8 @@ import { BlogLinks } from "@/components/blog-links";
 
 export const metadata: Metadata = {
     title: "¿Qué es un Mapa Mental? Tipos y técnicas | Sketchlie",
-    description: "Descubre cómo el mapa mental online puede mejorar la colaboración y la creatividad de tu equipo. Aprende sobre las técnicas, beneficios y tipos de mapas mentales con Sketchlie.",
-    keywords: ["mapa mental", "colaboración online", "mapa mental online"],
+    description: "Descubre qué es un mapa mental, sus tipos y cómo crearlo online. Organiza ideas y mejora el aprendizaje con Sketchlie.",
+    keywords: ["mapa mental", "mind mapping", "organización de ideas", "mapa mental online"],
     alternates: {
         canonical: "https://www.sketchlie.com/mapa-mental-online/que-es-mapa-mental/",
     }

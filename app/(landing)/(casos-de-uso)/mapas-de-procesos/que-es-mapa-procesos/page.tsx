@@ -11,12 +11,12 @@ import Link from "next/link";
 import { BlogLinks } from "@/components/blog-links";
 
 export const metadata: Metadata = {
-    title: "¿Qué es un mapa de procesos? Técnicas y beneficios | Sketchlie",
-    description: "Descubre cómo los mapas de procesos puede mejorar la colaboración y la creatividad de tu equipo. Aprende sobre las técnicas, beneficios y tipos de mapas de procesos con Sketchlie.",
-    keywords: ["mapa de procesos", "colaboración online", "mapa de procesos online"],
+    title: "Mapa de procesos: Definición y beneficios | Sketchlie",
+    description: "Descubre qué es un mapa de procesos, sus beneficios y cómo crearlo online. Mejora la eficiencia de tu equipo con Sketchlie.",
+    keywords: ["mapa de procesos", "mapeo de procesos", "diagrama de flujo"],
     alternates: {
         canonical: "https://www.sketchlie.com/mapas-de-procesos/que-es-mapa-procesos/",
-    }
+    },
 };
 
 const LandingPage = () => {
