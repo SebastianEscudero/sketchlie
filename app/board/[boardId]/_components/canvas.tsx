@@ -642,7 +642,7 @@ export const Canvas = ({
     const insertPath = useCallback(() => {
 
         if (
-            pencilDraft == null ||
+            pencilDraft.length === 0 ||
             (pencilDraft[0] && pencilDraft[0].length < 2) ||
             activeTouches > 1
         ) {
@@ -768,8 +768,9 @@ export const Canvas = ({
     // }, [pencilDraft, setPencilDraft, zoom, magicPathAssist]);
 
     const insertHighlight = useCallback(() => {
+
         if (
-            pencilDraft == null ||
+            pencilDraft.length === 0 ||
             (pencilDraft[0] && pencilDraft[0].length < 2) ||
             activeTouches > 1
         ) {
