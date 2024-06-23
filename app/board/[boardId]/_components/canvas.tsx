@@ -1720,6 +1720,12 @@ export const Canvas = ({
     }, []);
 
     useEffect(() => {
+
+        if (rightClickPanning) {
+            document.body.style.cursor = 'url(/custom-cursors/grab.svg) 8 8, auto';
+            return;
+        }
+
         if (canvasState.mode === CanvasMode.Inserting) {
             selectedLayersRef.current = [];
             if (canvasState.layerType === LayerType.Text) {
@@ -1742,10 +1748,6 @@ export const Canvas = ({
         } else if (canvasState.mode === CanvasMode.Moving) {
             document.body.style.cursor = 'url(/custom-cursors/hand.svg) 8 8, auto';
         } else if (canvasState.mode === CanvasMode.ArrowResizeHandler) {
-            document.body.style.cursor = 'url(/custom-cursors/grab.svg) 8 8, auto';
-        } else if (canvasState.mode === CanvasMode.Resizing || canvasState.mode === CanvasMode.Translating) {
-            // removeHighlightFromText();
-        } else if (rightClickPanning) {
             document.body.style.cursor = 'url(/custom-cursors/grab.svg) 8 8, auto';
         } else {
             document.body.style.cursor = 'default';
