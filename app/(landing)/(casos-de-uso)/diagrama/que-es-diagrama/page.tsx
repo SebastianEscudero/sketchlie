@@ -11,12 +11,12 @@ import Link from "next/link";
 import { BlogLinks } from "@/components/blog-links";
 
 export const metadata: Metadata = {
-    title: "¿Qué es un diagrama? Tipos y técnicas | Sketchlie",
-    description: "Descubre cómo los diagramas pueden mejorar la colaboración y la creatividad de tu equipo. Aprende sobre las técnicas, beneficios y tipos de diagramas con Sketchlie.",
-    keywords: ["diagrama", "colaboración online", "diagrama online"],
+    title: "¿Qué es un diagrama? Tipos y ejemplos | Sketchlie",
+    description: "Descubre qué es un diagrama, sus tipos y cómo crearlos online. Mejora la visualización de ideas con Sketchlie, herramienta gratuita de diagramación.",
+    keywords: ["diagrama", "tipos de diagramas", "diagrama online", "herramienta de diagramación"],
     alternates: {
-        canonical: "https://www.sketchlie.com/diagrama/que-es-diagrama/",
-    }
+        canonical: "https://www.sketchlie.com/es/diagrama/que-es-diagrama/",
+    },
 };
 
 const LandingPage = () => {
@@ -189,9 +189,9 @@ const LandingPage = () => {
                 </div>
             </div>
             <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-5 md:my-20 my-5">
-                <BlogLinks blogTitle="Mapa Conceptual Online" blogImage="/placeholders/mapa-conceptual-online.png" blogHref="/mapa-conceptual/" blogDescription="Descubre cómo desatar tu creatividad y potenciar la colaboración en tiempo real con Sketchlie."/>
-                <BlogLinks blogTitle="Mapa de Procesos" blogImage="/placeholders/mapa-de-procesos.png" blogHref="/mapas-de-procesos" blogDescription="El mapa de procesos ayuda a los equipos a mapear y implementar mejoras. Registrate hoy con una 3 espacios de trabajo gratuitos para empezar a utilizar la mejor herramienta de mapa de procesos."/>
-                <BlogLinks blogTitle="Mapas Mentales" blogImage="/placeholders/mapa-mental.png" blogHref="/mapa-mental-online/" blogDescription="Explora nuestras herramientas para simplificar la creación de mapas mentales. Organiza tus ideas de manera jerárquica y potencia tu creatividad con nuestro intuitivo creador de mapas mentales."/>
+                <BlogLinks blogTitle="Mapa Conceptual Online" blogImage="/placeholders/mapa-conceptual-online.png" blogHref="/mapa-conceptual/" blogDescription="Descubre cómo desatar tu creatividad y potenciar la colaboración en tiempo real con Sketchlie." />
+                <BlogLinks blogTitle="Mapa de Procesos" blogImage="/placeholders/mapa-de-procesos.png" blogHref="/mapas-de-procesos" blogDescription="El mapa de procesos ayuda a los equipos a mapear y implementar mejoras. Registrate hoy con una 3 espacios de trabajo gratuitos para empezar a utilizar la mejor herramienta de mapa de procesos." />
+                <BlogLinks blogTitle="Mapas Mentales" blogImage="/placeholders/mapa-mental.png" blogHref="/mapa-mental-online/" blogDescription="Explora nuestras herramientas para simplificar la creación de mapas mentales. Organiza tus ideas de manera jerárquica y potencia tu creatividad con nuestro intuitivo creador de mapas mentales." />
             </div>
         </div>
     );
