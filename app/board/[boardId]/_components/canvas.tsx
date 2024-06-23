@@ -584,10 +584,6 @@ export const Canvas = ({
     }, []);
 
     const startDrawing = useCallback((point: Point, pressure: number) => {
-        if (activeTouches > 1) {
-            return;
-        }
-
         const pencilDraft: [number, number, number][] = [[point.x, point.y, pressure]];
         setPencilDraft(pencilDraft);
         const newPresence: Presence = {
@@ -596,13 +592,13 @@ export const Canvas = ({
         };
 
         setMyPresence(newPresence);
-    }, [myPresence, setMyPresence, activeTouches]);
+    }, [myPresence, setMyPresence]);
 
     const continueDrawing = useCallback((point: Point, e: React.PointerEvent) => {
         if (
             (canvasState.mode !== CanvasMode.Pencil && canvasState.mode !== CanvasMode.Laser && canvasState.mode !== CanvasMode.Highlighter) ||
-            e.buttons !== 1 || activeTouches > 1 ||
-            pencilDraft == null
+            e.buttons !== 1 ||
+            pencilDraft.length === 0
         ) {
             return;
         }
@@ -1470,6 +1466,11 @@ export const Canvas = ({
     const onTouchDown = useCallback((e: React.TouchEvent) => {
         setIsMoving(false);
         setActiveTouches(e.touches.length);
+
+        if (e.touches.length > 1) {
+            selectedLayersRef.current = [];
+        }
+
     }, []);
 
     const onTouchUp = useCallback((e: React.TouchEvent) => {
@@ -1504,9 +1505,9 @@ export const Canvas = ({
             return;
         }
 
-        const distChange = Math.abs(dist - pinchStartDist);
+        const isZooming = Math.abs(dist - pinchStartDist) > 10;
 
-        if (distChange > 10) { // Zooming
+        if (isZooming) { // Zooming
             let newZoom = zoom;
             if (dist > pinchStartDist) {
                 newZoom = Math.min(zoom * 1.1, 10);
