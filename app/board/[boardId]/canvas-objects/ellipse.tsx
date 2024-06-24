@@ -120,7 +120,6 @@ export const Ellipse = memo(({
     <g
       transform={`translate(${x}, ${y})`}
       onPointerDown={(e) => handlePointerDown(e)}
-      onTouchStart={(e) => e.preventDefault()}
     >
       <ellipse
         cx={width / 2}

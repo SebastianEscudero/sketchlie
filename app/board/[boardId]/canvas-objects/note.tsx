@@ -120,7 +120,6 @@ export const Note = memo(({
     <g
       transform={`translate(${x}, ${y})`}
       onPointerDown={(e) => handlePointerDown(e)}
-      onTouchStart={(e) => e.preventDefault()}
     >
       <rect
         width={width}

@@ -119,7 +119,6 @@ export const BigArrowRight = memo(({
     <g
       transform={`translate(${x}, ${y})`}
       onPointerDown={(e) => handlePointerDown(e)}
-      onTouchStart={(e) => e.preventDefault()}
     >
       <path
         d={`M ${width} ${height / 2} L ${width / 2} ${0} L ${width / 2} ${height / 4} L 0 ${height / 4} L 0 ${height * 3 / 4} L ${width / 2} ${height * 3 / 4} L ${width / 2} ${height} Z`}
