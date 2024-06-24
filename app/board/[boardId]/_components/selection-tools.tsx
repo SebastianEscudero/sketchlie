@@ -13,7 +13,6 @@ import { OutlineColorPicker } from "../selection-tools/outline-color-picker";
 import { ArrowHeadSelection } from "../selection-tools/arrow-head-selection";
 import { PathStokeSizeSelection } from "../selection-tools/path-stroke-size-selection";
 import { customAlphabet } from "nanoid";
-import { getMaxCapas } from "@/lib/planLimits";
 import { TextJustifySelector } from "../selection-tools/text-justify-selector";
 import { updateR2Bucket } from "@/lib/r2-bucket-functions";
 
@@ -21,7 +20,7 @@ interface SelectionToolsProps {
   boardId: string;
   camera: Camera;
   zoom: number;
-  selectedLayers: string[];
+  selectedLayersRef: any
   liveLayers: any;
   liveLayerIds: string[];
   setLiveLayers: (layers: any) => void;
@@ -41,7 +40,7 @@ export const SelectionTools = memo(({
   boardId,
   camera,
   zoom,
-  selectedLayers,
+  selectedLayersRef,
   setLiveLayers,
   setLiveLayerIds,
   liveLayers,
@@ -60,44 +59,26 @@ export const SelectionTools = memo(({
   const nanoid = customAlphabet(alphabet, 21);
   const [openSelector, setOpenSelector] = useState<SelectorType | null>(null);
 
-  const hasText = selectedLayers.every(layer =>
-    liveLayers[layer]?.type === LayerType.Text ||
-    liveLayers[layer]?.type === LayerType.Note ||
-    liveLayers[layer]?.type === LayerType.Rectangle ||
-    liveLayers[layer]?.type === LayerType.Ellipse ||
-    liveLayers[layer]?.type === LayerType.Rhombus ||
-    liveLayers[layer]?.type === LayerType.Triangle ||
-    liveLayers[layer]?.type === LayerType.Star ||
-    liveLayers[layer]?.type === LayerType.Hexagon ||
-    liveLayers[layer]?.type === LayerType.BigArrowLeft ||
-    liveLayers[layer]?.type === LayerType.BigArrowRight ||
-    liveLayers[layer]?.type === LayerType.BigArrowUp ||
-    liveLayers[layer]?.type === LayerType.BigArrowDown ||
-    liveLayers[layer]?.type === LayerType.CommentBubble
-  );
+  let hasText = true, isImageLayer = false, hasOutline = true, isArrowLayer = true, isLineLayer = true, isPathLayer = true;
 
-  const isImageLayer = selectedLayers.some(layer => liveLayers[layer]?.type === LayerType.Image);
-  const hasOutline = selectedLayers.every(layer =>
-    liveLayers[layer]?.type === LayerType.Note ||
-    liveLayers[layer]?.type === LayerType.Rectangle ||
-    liveLayers[layer]?.type === LayerType.Ellipse ||
-    liveLayers[layer]?.type === LayerType.Rhombus ||
-    liveLayers[layer]?.type === LayerType.Triangle ||
-    liveLayers[layer]?.type === LayerType.Star ||
-    liveLayers[layer]?.type === LayerType.Hexagon ||
-    liveLayers[layer]?.type === LayerType.BigArrowLeft ||
-    liveLayers[layer]?.type === LayerType.BigArrowRight ||
-    liveLayers[layer]?.type === LayerType.BigArrowUp ||
-    liveLayers[layer]?.type === LayerType.BigArrowDown ||
-    liveLayers[layer]?.type === LayerType.CommentBubble
-  );
-  const isArrowLayer = selectedLayers.every(layer => liveLayers[layer]?.type === LayerType.Arrow);
-  const isLineLayer = selectedLayers.every(layer => liveLayers[layer]?.type === LayerType.Line);
-  const isPathLayer = selectedLayers.every(layer => liveLayers[layer]?.type === LayerType.Path);
-
-  const layers = selectedLayers.map(id => liveLayers[id]);
+  selectedLayersRef.current.forEach((id: string) => {
+    const type = liveLayers[id]?.type;
+    const isTextType = [LayerType.Text, LayerType.Note, LayerType.Rectangle, LayerType.Ellipse, LayerType.Rhombus, LayerType.Triangle, LayerType.Star, LayerType.Hexagon, LayerType.BigArrowLeft, LayerType.BigArrowRight, LayerType.BigArrowUp, LayerType.BigArrowDown, LayerType.CommentBubble].includes(type);
+    const isOutlineType = [LayerType.Note, LayerType.Rectangle, LayerType.Ellipse, LayerType.Rhombus, LayerType.Triangle, LayerType.Star, LayerType.Hexagon, LayerType.BigArrowLeft, LayerType.BigArrowRight, LayerType.BigArrowUp, LayerType.BigArrowDown, LayerType.CommentBubble].includes(type);
+  
+    // Update conditions based on the current layer type
+    hasText = hasText && isTextType;
+    isImageLayer = isImageLayer || type === LayerType.Image;
+    hasOutline = hasOutline && isOutlineType;
+    isArrowLayer = isArrowLayer && type === LayerType.Arrow;
+    isLineLayer = isLineLayer && type === LayerType.Line;
+    isPathLayer = isPathLayer && type === LayerType.Path;
+  });
+  
+  // Continue with the rest of the code
+  const layers = selectedLayersRef.current.map((id: string) => liveLayers[id]);
   const [initialPosition, setInitialPosition] = useState<{ x: number, y: number } | null>(null);
-  const selectionBounds = useSelectionBounds(selectedLayers, liveLayers);
+  const selectionBounds = useSelectionBounds(selectedLayersRef.current, liveLayers);
 
   useEffect(() => {
     if (canvasState !== CanvasMode.None) {
@@ -109,7 +90,7 @@ export const SelectionTools = memo(({
     if (selectionBounds) {
       let x, y;
       if (isArrowLayer || isLineLayer) {
-        const arrowLayer = liveLayers[selectedLayers[0]];
+        const arrowLayer = liveLayers[selectedLayersRef.current[0]];
         const centerY = arrowLayer.center.y
         const startY = arrowLayer.y
         const endY = arrowLayer.y + arrowLayer.height
@@ -125,7 +106,7 @@ export const SelectionTools = memo(({
       }
       setInitialPosition({ x, y });
     }
-  }, [selectedLayers, zoom, camera, liveLayers]);
+  }, [selectedLayersRef.current, zoom, camera, liveLayers]);
 
   const moveToFront = useCallback(() => {
     const indices: number[] = [];
@@ -137,7 +118,7 @@ export const SelectionTools = memo(({
     let arr = [...liveLayerIds];
 
     for (let i = 0; i < arr.length; i++) {
-      if (selectedLayers.includes(arr[i])) {
+      if (selectedLayersRef.current.includes(arr[i])) {
         indices.push(i);
       }
     }
@@ -160,7 +141,7 @@ export const SelectionTools = memo(({
       socket.emit('layer-send', arr);
     }
 
-  }, [selectedLayers, setLiveLayerIds, liveLayerIds, boardId, socket]);
+  }, [selectedLayersRef.current, setLiveLayerIds, liveLayerIds, boardId, socket]);
 
   const moveToBack = useCallback(() => {
     const indices: number[] = [];
@@ -172,7 +153,7 @@ export const SelectionTools = memo(({
     let arr = [...liveLayerIds];
 
     for (let i = 0; i < arr.length; i++) {
-      if (selectedLayers.includes(arr[i])) {
+      if (selectedLayersRef.current.includes(arr[i])) {
         indices.push(i);
       }
     }
@@ -195,7 +176,7 @@ export const SelectionTools = memo(({
       socket.emit('layer-send', arr);
     }
 
-  }, [selectedLayers, setLiveLayerIds, liveLayerIds, boardId, socket]);
+  }, [selectedLayersRef.current, setLiveLayerIds, liveLayerIds, boardId, socket]);
 
   const setFill = useCallback((fill: Color) => {
     setLiveLayers((prevLayers: any) => {
@@ -203,7 +184,7 @@ export const SelectionTools = memo(({
       const updatedIds: any = [];
       const updatedLayers: any = [];
 
-      selectedLayers.forEach((id) => {
+      selectedLayersRef.current.forEach((id: string) => {
         const layer = newLayers[id];
         let newFill = fill;
         if (layer && layer.type === LayerType.Path) {
@@ -226,7 +207,7 @@ export const SelectionTools = memo(({
 
       return newLayers;
     });
-  }, [selectedLayers, setLiveLayers, socket, boardId]);
+  }, [selectedLayersRef.current, setLiveLayers, socket, boardId]);
 
   const setOutlineFill = useCallback((outlineFill: Color) => {
     setLiveLayers((prevLayers: any) => {
@@ -234,7 +215,7 @@ export const SelectionTools = memo(({
       const updatedIds: any = [];
       const updatedLayers: any = [];
 
-      selectedLayers.forEach((id) => {
+      selectedLayersRef.current.forEach((id: string) => {
         const layer = newLayers[id];
         if (layer) {
           newLayers[id] = { ...layer, outlineFill: outlineFill };
@@ -252,19 +233,14 @@ export const SelectionTools = memo(({
 
       return newLayers;
     });
-  }, [selectedLayers, setLiveLayers, boardId, socket]);
+  }, [selectedLayersRef.current, setLiveLayers, boardId, socket]);
 
   const duplicateLayers = useCallback(() => {
-    if (org && liveLayerIds.length >= getMaxCapas(org)) {
-      proModal.onOpen(org._id);
-      return;
-    }
-  
     let minX = Infinity;
     let minY = Infinity;
     let maxX = -Infinity;
     let maxY = -Infinity;
-    selectedLayers.forEach((id) => {
+    selectedLayersRef.current.forEach((id: string) => {
       const layer = liveLayers[id];
       minX = Math.min(minX, layer.x);
       minY = Math.min(minY, layer.y);
@@ -274,54 +250,48 @@ export const SelectionTools = memo(({
   
     const offsetX = maxX - minX + 10; // Offset by 10 units for visibility
   
-    const newSelection = [] as string[];
-    const newLiveLayers = { ...liveLayers };
-    const newLiveLayerIds = [...liveLayerIds];
     const newIds: any = [];
     const clonedLayers: any = [];
-    selectedLayers.forEach((id) => {
+    selectedLayersRef.current.forEach((id: string) => {
       const layer = liveLayers[id];
       const newId = nanoid();
-      newSelection.push(newId);
-      newLiveLayerIds.push(newId);
       const clonedLayer = JSON.parse(JSON.stringify(layer));
       clonedLayer.x = clonedLayer.x + offsetX;
       if (clonedLayer.type === LayerType.Arrow || clonedLayer.type === LayerType.Line) {
         clonedLayer.center.x += offsetX;
       }
-      newLiveLayers[newId] = clonedLayer;
       newIds.push(newId);
       clonedLayers.push(clonedLayer);
     });
   
     const command = new InsertLayerCommand(newIds, clonedLayers, liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, boardId, socket, org, proModal);
     performAction(command);
-    setLiveLayers(newLiveLayers);
-    setLiveLayerIds(newLiveLayerIds);
+
+    selectedLayersRef.current = newIds;
   
     const newPresence: Presence = {
       ...myPresence,
-      selection: newSelection
+      selection: newIds
     };
   
     setMyPresence(newPresence);
   
-  }, [selectedLayers, myPresence, setLiveLayers, setLiveLayerIds, setMyPresence, org, proModal, liveLayerIds, socket, liveLayers, performAction, InsertLayerCommand, boardId, nanoid]);
+  }, [selectedLayersRef.current, myPresence, setLiveLayers, setLiveLayerIds, setMyPresence, org, proModal, liveLayerIds, socket, liveLayers, performAction, InsertLayerCommand, boardId, nanoid]);
 
   const deleteLayers = useCallback(() => {
     let newLiveLayers = { ...liveLayers };
-    let newLiveLayerIds = liveLayerIds.filter(id => !selectedLayers.includes(id));
+    let newLiveLayerIds = liveLayerIds.filter(id => !selectedLayersRef.current.includes(id));
 
-    const command = new DeleteLayerCommand(selectedLayers, liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, boardId, socket);
+    const command = new DeleteLayerCommand(selectedLayersRef.current, liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, boardId, socket);
     performAction(command);
 
-    selectedLayers.forEach((id) => {
+    selectedLayersRef.current.forEach((id: string) => {
       delete newLiveLayers[id];
     });
 
     setLiveLayers(newLiveLayers);
     setLiveLayerIds(newLiveLayerIds);
-  }, [liveLayers, liveLayerIds, selectedLayers, socket, setLiveLayers, setLiveLayerIds, performAction, DeleteLayerCommand, boardId]);
+  }, [liveLayers, liveLayerIds, selectedLayersRef.current, socket, setLiveLayers, setLiveLayerIds, performAction, DeleteLayerCommand, boardId]);
 
   if (!selectionBounds) {
     return null;
@@ -351,7 +321,7 @@ export const SelectionTools = memo(({
     >
       {isPathLayer && (
         <PathStokeSizeSelection
-          selectedLayers={selectedLayers}
+          selectedLayers={selectedLayersRef.current}
           setLiveLayers={setLiveLayers}
           liveLayers={liveLayers}
           socket={socket}
@@ -360,7 +330,7 @@ export const SelectionTools = memo(({
       )}
       {isArrowLayer && (
         <ArrowHeadSelection
-          selectedLayers={selectedLayers}
+          selectedLayers={selectedLayersRef.current}
           setLiveLayers={setLiveLayers}
           liveLayers={liveLayers}
           socket={socket}
@@ -372,7 +342,7 @@ export const SelectionTools = memo(({
       )}
       {hasText && (
         <FontSizePicker
-          selectedLayers={selectedLayers}
+          selectedLayers={selectedLayersRef.current}
           setLiveLayers={setLiveLayers}
           liveLayers={liveLayers}
           socket={socket}
@@ -384,7 +354,7 @@ export const SelectionTools = memo(({
       )}
       {hasText && (
         <TextJustifySelector
-          selectedLayers={selectedLayers}
+          selectedLayers={selectedLayersRef.current}
           setLiveLayers={setLiveLayers}
           liveLayers={liveLayers}
           socket={socket}

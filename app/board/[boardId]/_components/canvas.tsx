@@ -907,9 +907,9 @@ export const Canvas = ({
         e: React.PointerEvent,
     ) => {
 
-        const bounds = calculateBoundingBox(selectedLayersRef.current.map(id => liveLayers[id]));
         const point = pointerEventToCanvasPoint(e, camera, zoom);
-        if (point && bounds) {
+        if (point && selectedLayersRef.current.length > 0) {
+            const bounds = calculateBoundingBox(selectedLayersRef.current.map(id => liveLayers[id]));
             if (point.x > bounds.x &&
                 point.x < bounds.x + bounds.width &&
                 point.y > bounds.y &&
@@ -1569,13 +1569,10 @@ export const Canvas = ({
         const offsetX = mousePosition.x - centerX;
         const offsetY = mousePosition.y - centerY;
 
-        const newLiveLayers = { ...liveLayers };
-        const newLiveLayerIds = [...liveLayerIds];
         const newIds: any = [];
         const clonedLayers: any = [];
         copiedLayers.forEach((layer) => {
             const newId = nanoid();
-            newLiveLayerIds.push(newId);
             const clonedLayer = JSON.parse(JSON.stringify(layer));
             clonedLayer.x = clonedLayer.x + offsetX;
             clonedLayer.y = clonedLayer.y + offsetY;
@@ -1583,7 +1580,6 @@ export const Canvas = ({
                 clonedLayer.center.x += offsetX;
                 clonedLayer.center.y += offsetY;
             }
-            newLiveLayers[newId] = clonedLayer;
             newIds.push(newId);
             clonedLayers.push(clonedLayer);
         });
@@ -1878,7 +1874,7 @@ export const Canvas = ({
                     setLiveLayers={setLiveLayers}
                     liveLayerIds={liveLayerIds}
                     liveLayers={liveLayers}
-                    selectedLayers={selectedLayersRef.current}
+                    selectedLayersRef={selectedLayersRef}
                     zoom={zoom}
                     camera={camera}
                     socket={socket}
