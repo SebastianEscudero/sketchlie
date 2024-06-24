@@ -1686,7 +1686,6 @@ export const Canvas = ({
                             document.activeElement.tagName !== 'TEXTAREA'
                         ) {
                             // if we are not inside a content editable or textarea
-                            console.log('hi')
                             selectedLayersRef.current = liveLayerIds;
                         }
                     }

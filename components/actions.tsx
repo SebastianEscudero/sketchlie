@@ -109,8 +109,7 @@ export const Actions = ({
   };
 
   return (
-    <DropdownMenu
-    >      
+    <DropdownMenu>      
       <DropdownMenuTrigger asChild>
         {children}
       </DropdownMenuTrigger>
@@ -157,9 +156,9 @@ export const Actions = ({
             setLiveLayerIds={setLiveLayerIds}
             liveLayers={liveLayers}
             liveLayerIds={liveLayerIds}
+            org={org}
             insertLayerCommand={insertLayerCommand}
             performAction={performAction}
-            org={org}
             socket={socket}
           />
         }
