@@ -2,13 +2,13 @@ import { jsPDF } from "jspdf";
 import { toast } from 'sonner';
 import { domToJpeg, domToPng, domToSvg } from 'modern-screenshot'
 
-export const exportToPdf = async (title: string) => {
+export const exportToPdf = async (title: string, isTransparent: boolean) => {
   try {
     const screenShot = document.querySelector("#canvas") as HTMLElement;
     domToPng(screenShot, { 
       quality: 1,
       scale: 3,
-      backgroundColor: '#F4F4F4',
+      backgroundColor: isTransparent ? 'transparent' : '#F4F4F4',
     }).then((dataUrl) => {
       const pdf = new jsPDF({
         orientation: "landscape",
@@ -24,13 +24,13 @@ export const exportToPdf = async (title: string) => {
   }
 };
 
-export const exportToPNG = async (title: string) => {
+export const exportToPNG = async (title: string, isTransparent: boolean) => {
   try {
     const screenShot = document.querySelector("#canvas") as HTMLElement;
     domToPng(screenShot, {
       quality: 1,
       scale: 3,
-      backgroundColor: '#F4F4F4',
+      backgroundColor: isTransparent ? 'transparent' : '#F4F4F4',
     }).then((dataUrl) => {
       var anchor = document.createElement("a");
       anchor.setAttribute("href", dataUrl);
@@ -43,13 +43,13 @@ export const exportToPNG = async (title: string) => {
   }
 };
 
-export const exportToJPG = async (title: string) => {
+export const exportToJPG = async (title: string, isTransparent: boolean) => {
   try {
     const screenShot = document.querySelector("#canvas") as HTMLElement;
     domToJpeg(screenShot, {
       quality: 1,
       scale: 3,
-      backgroundColor: '#F4F4F4',
+      backgroundColor: isTransparent ? 'transparent' : '#F4F4F4',
     }).then((dataUrl) => {
       var anchor = document.createElement("a");
       anchor.setAttribute("href", dataUrl);
@@ -62,13 +62,13 @@ export const exportToJPG = async (title: string) => {
   }
 };
 
-export const exportToSVG = async (title: string) => {
+export const exportToSVG = async (title: string, isTransparent: boolean) => {
   try {
     const screenShot = document.querySelector("#canvas") as HTMLElement;
     domToSvg(screenShot, {
       quality: 1,
       scale: 3,
-      backgroundColor: '#F4F4F4',
+      backgroundColor: isTransparent ? 'transparent' : '#F4F4F4',
     }).then((dataUrl) => {
       var anchor = document.createElement("a");
       anchor.setAttribute("href", dataUrl);

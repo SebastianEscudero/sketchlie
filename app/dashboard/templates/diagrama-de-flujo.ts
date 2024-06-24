@@ -3,25 +3,7 @@ export const PlantillaDiagramaDeFlujo = {
     image: '/templates/diagrama-de-flujo.png',
     href: "/plantillas/diagrama-de-flujo/",
     "layers": {
-        "1q7ytAzhyyx5OmWBD3jHl": {
-            "center": {
-                "x": 458.00826446280996,
-                "y": 475.3471074380165
-            },
-            "endArrowHead": "Triangle",
-            "fill": {
-                "r": 29,
-                "g": 29,
-                "b": 29,
-                "a": 1
-            },
-            "height": 0,
-            "type": 16,
-            "width": 84,
-            "x": 412.00826446280996,
-            "y": 475.3471074380165
-        },
-        "6Wz6MCEBXO5t5eX6OBkPW": {
+        "RhHvg4m66sZEWLhG6c0ix": {
             "fill": {
                 "a": 1,
                 "b": 177,
@@ -39,88 +21,14 @@ export const PlantillaDiagramaDeFlujo = {
             "type": 0,
             "value": "Inicio",
             "width": 150,
-            "x": 260.00826446280996,
-            "y": 429.3471074380165
+            "x": 359.0324880337952,
+            "y": 429.8489224527294,
+            "id": "RhHvg4m66sZEWLhG6c0ix"
         },
-        "7XpF75ziVyidAFJ9dcksT": {
+        "wJ4cgBqr2kHVKagQfqXJd": {
             "center": {
-                "x": 1044.7918287947828,
-                "y": 573.2212071390154
-            },
-            "fill": {
-                "r": 29,
-                "g": 29,
-                "b": 29,
-                "a": 1
-            },
-            "height": 100.80040770712242,
-            "type": 16,
-            "width": 0.7029540477644787,
-            "x": 1044.4403517709006,
-            "y": 522.8210032854543
-        },
-        "HyE0alujPY4OUaTdSN6ZW": {
-            "fill": {
-                "a": 1,
-                "b": 99,
-                "g": 202,
-                "r": 68
-            },
-            "height": 93,
-            "outlineFill": {
-                "r": 29,
-                "g": 29,
-                "b": 29,
-                "a": 1
-            },
-            "textFontSize": 12,
-            "type": 0,
-            "width": 150,
-            "x": 726.0705595096508,
-            "y": 624.7176806079364
-        },
-        "IhUnWFNjnrDhEN0r0LIW6": {
-            "fill": {
-                "a": 1,
-                "b": 99,
-                "g": 202,
-                "r": 68
-            },
-            "height": 93,
-            "outlineFill": {
-                "r": 29,
-                "g": 29,
-                "b": 29,
-                "a": 1
-            },
-            "textFontSize": 12,
-            "type": 0,
-            "width": 150,
-            "x": 968.5735878653287,
-            "y": 428.70723824702907
-        },
-        "JRcVIxmgh2MIjyrsaAdUL": {
-            "center": {
-                "x": 800.6475483289581,
-                "y": 276.66028707896584
-            },
-            "endArrowHead": "Triangle",
-            "fill": {
-                "r": 29,
-                "g": 29,
-                "b": 29,
-                "a": 1
-            },
-            "height": -125.20463410762721,
-            "type": 16,
-            "width": 273.77851937129003,
-            "x": 799.7481678457734,
-            "y": 401.63320553619866
-        },
-        "cTGsfrhtzEXJVryoYQ9KO": {
-            "center": {
-                "x": 1277.5,
-                "y": 278
+                "x": 557.0324880337951,
+                "y": 475.8489224527294
             },
             "endArrowHead": "Triangle",
             "fill": {
@@ -132,34 +40,14 @@ export const PlantillaDiagramaDeFlujo = {
             "height": 0,
             "type": 16,
             "width": 84,
-            "x": 1231.5,
-            "y": 278
+            "x": 511.03248803379506,
+            "y": 475.8489224527294,
+            "id": "wJ4cgBqr2kHVKagQfqXJd"
         },
-        "iZoMdKJBht0VwlUQFKqHt": {
-            "fill": {
-                "a": 1,
-                "b": 255,
-                "g": 255,
-                "r": 255
-            },
-            "height": 144.4276770599488,
-            "outlineFill": {
-                "r": 29,
-                "g": 29,
-                "b": 29,
-                "a": 1
-            },
-            "textFontSize": 20,
-            "type": 2,
-            "value": "Proceso",
-            "width": 156.8461035211318,
-            "x": 721.3896517468456,
-            "y": 402.1131381149115
-        },
-        "j4slR1D6tGqLRSjFdpvmi": {
+        "taLCqjggH7gSE2RI3Mulc": {
             "center": {
-                "x": 683.5970958659775,
-                "y": 474.33535106336507
+                "x": 782.6213194369627,
+                "y": 474.837166078078
             },
             "endArrowHead": "Triangle",
             "fill": {
@@ -171,10 +59,91 @@ export const PlantillaDiagramaDeFlujo = {
             "height": -0.05242617044387998,
             "type": 16,
             "width": 64.86200912177128,
-            "x": 651.1660913050919,
-            "y": 474.361564148587
+            "x": 750.1903148760771,
+            "y": 474.8633791632998,
+            "id": "taLCqjggH7gSE2RI3Mulc"
         },
-        "nrHChkGW3xfm6f6JnNiyI": {
+        "byBuNH8mFEGSRm08WkSeT": {
+            "fill": {
+                "a": 1,
+                "b": 42,
+                "g": 142,
+                "r": 252
+            },
+            "height": 93,
+            "outlineFill": {
+                "r": 29,
+                "g": 29,
+                "b": 29,
+                "a": 1
+            },
+            "textFontSize": 12,
+            "type": 0,
+            "width": 150,
+            "x": 602.0324880337951,
+            "y": 429.3489224527294,
+            "id": "byBuNH8mFEGSRm08WkSeT"
+        },
+        "wqasCzDYV0fn4GKxvn3XA": {
+            "center": {
+                "x": 919.6997428999433,
+                "y": 259.3189800936787
+            },
+            "endArrowHead": "Triangle",
+            "fill": {
+                "r": 29,
+                "g": 29,
+                "b": 29,
+                "a": 1
+            },
+            "height": -125.20463410762721,
+            "type": 16,
+            "width": 273.77851937129003,
+            "x": 918.8003624167586,
+            "y": 384.2918985509115,
+            "id": "wqasCzDYV0fn4GKxvn3XA"
+        },
+        "aocXAaay67o3bYoqDuawC": {
+            "fill": {
+                "r": 75,
+                "g": 161,
+                "b": 241,
+                "a": 1
+            },
+            "height": 93,
+            "outlineFill": {
+                "r": 29,
+                "g": 29,
+                "b": 29,
+                "a": 1
+            },
+            "textFontSize": 12,
+            "type": 0,
+            "width": 150,
+            "x": 1198.0521945709852,
+            "y": 214.15869301471287,
+            "id": "aocXAaay67o3bYoqDuawC"
+        },
+        "q3nYDyuRNYLBGhgNearVe": {
+            "center": {
+                "x": 1396.5521945709852,
+                "y": 260.6586930147129
+            },
+            "endArrowHead": "Triangle",
+            "fill": {
+                "r": 29,
+                "g": 29,
+                "b": 29,
+                "a": 1
+            },
+            "height": 0,
+            "type": 16,
+            "width": 84,
+            "x": 1350.5521945709852,
+            "y": 260.6586930147129,
+            "id": "q3nYDyuRNYLBGhgNearVe"
+        },
+        "gx4xmnR2CJ1O5akPNCQ5P": {
             "fill": {
                 "r": 75,
                 "g": 161,
@@ -192,87 +161,14 @@ export const PlantillaDiagramaDeFlujo = {
             "type": 0,
             "value": "Fin",
             "width": 149.7625082259051,
-            "x": 1322.737491774095,
-            "y": 231.5
+            "x": 1441.7896863450803,
+            "y": 214.15869301471287,
+            "id": "gx4xmnR2CJ1O5akPNCQ5P"
         },
-        "ny5A0TyBrW8hHvA7mScvn": {
+        "uMt5BmmDC8KsFiti7Zwgk": {
             "center": {
-                "x": 800.1519141770327,
-                "y": 586.2455698820692
-            },
-            "fill": {
-                "r": 29,
-                "g": 29,
-                "b": 29,
-                "a": 1
-            },
-            "height": -78.88400066146585,
-            "type": 16,
-            "width": -0.2951175075181709,
-            "x": 800.2994729307918,
-            "y": 625.687570212802
-        },
-        "pTI7jZhVDXlhJ0vW96EU9": {
-            "center": {
-                "x": 922.3852744073954,
-                "y": 670.2550484345588
-            },
-            "fill": {
-                "r": 29,
-                "g": 29,
-                "b": 29,
-                "a": 1
-            },
-            "height": 0.07473565324494302,
-            "type": 16,
-            "width": -91.37057020451095,
-            "x": 968.0705595096508,
-            "y": 670.2176806079364
-        },
-        "sRYSgYgnD0kvBHRSph1Pc": {
-            "fill": {
-                "r": 75,
-                "g": 161,
-                "b": 241,
-                "a": 1
-            },
-            "height": 93,
-            "outlineFill": {
-                "r": 29,
-                "g": 29,
-                "b": 29,
-                "a": 1
-            },
-            "textFontSize": 12,
-            "type": 0,
-            "width": 150,
-            "x": 1079,
-            "y": 231.5
-        },
-        "sRmMYXL5CDxvIbk7StHNR": {
-            "fill": {
-                "a": 1,
-                "b": 42,
-                "g": 142,
-                "r": 252
-            },
-            "height": 93,
-            "outlineFill": {
-                "r": 29,
-                "g": 29,
-                "b": 29,
-                "a": 1
-            },
-            "textFontSize": 12,
-            "type": 0,
-            "width": 150,
-            "x": 503.00826446280996,
-            "y": 428.8471074380165
-        },
-        "sb44FYQSeSOXFhZ57Jkwq": {
-            "center": {
-                "x": 921.6344203490037,
-                "y": 474.35162901888117
+                "x": 1059.917965318557,
+                "y": 474.75984918658366
             },
             "endArrowHead": "Triangle",
             "fill": {
@@ -284,10 +180,11 @@ export const PlantillaDiagramaDeFlujo = {
             "height": 0.1829402908343809,
             "type": 16,
             "width": 85.12764987140895,
-            "x": 879.0705954132992,
-            "y": 474.260158873464
+            "x": 1017.3541403828526,
+            "y": 474.66837904116653,
+            "id": "uMt5BmmDC8KsFiti7Zwgk"
         },
-        "xdsRlOvS3LhHdpGOeOFdp": {
+        "zjVX9hyrHZOOxNVaurXMr": {
             "fill": {
                 "a": 1,
                 "b": 99,
@@ -304,26 +201,145 @@ export const PlantillaDiagramaDeFlujo = {
             "textFontSize": 12,
             "type": 0,
             "width": 150,
-            "x": 968.7372792673495,
-            "y": 624.2810941875555
+            "x": 1106.8571328348821,
+            "y": 429.1154584147316,
+            "id": "zjVX9hyrHZOOxNVaurXMr"
+        },
+        "1n2FEwkEtel5MofAm27GC": {
+            "center": {
+                "x": 1179.8354636489066,
+                "y": 572.2738949045589
+            },
+            "fill": {
+                "r": 29,
+                "g": 29,
+                "b": 29,
+                "a": 1
+            },
+            "height": 100.80040770712242,
+            "type": 16,
+            "width": 0.7029540477644787,
+            "x": 1179.4839866250245,
+            "y": 521.8736910509982,
+            "id": "1n2FEwkEtel5MofAm27GC"
+        },
+        "Gd58aJ1W4TDbLymkXSSol": {
+            "fill": {
+                "a": 1,
+                "b": 99,
+                "g": 202,
+                "r": 68
+            },
+            "height": 93,
+            "outlineFill": {
+                "r": 29,
+                "g": 29,
+                "b": 29,
+                "a": 1
+            },
+            "textFontSize": 12,
+            "type": 0,
+            "width": 150,
+            "x": 1106.1327640439217,
+            "y": 624.043108942586,
+            "id": "Gd58aJ1W4TDbLymkXSSol"
+        },
+        "dKRcErxQLCjphyiwbn5lc": {
+            "center": {
+                "x": 1050.4616115218212,
+                "y": 668.5756433264977
+            },
+            "fill": {
+                "r": 29,
+                "g": 29,
+                "b": 29,
+                "a": 1
+            },
+            "height": 0.2255215579675678,
+            "type": 16,
+            "width": -109.61500146993217,
+            "x": 1105.2691122567871,
+            "y": 668.4628825475139,
+            "id": "dKRcErxQLCjphyiwbn5lc"
+        },
+        "hCEwanafQKsyD3liFhm7F": {
+            "fill": {
+                "a": 1,
+                "b": 99,
+                "g": 202,
+                "r": 68
+            },
+            "height": 93,
+            "outlineFill": {
+                "r": 29,
+                "g": 29,
+                "b": 29,
+                "a": 1
+            },
+            "textFontSize": 12,
+            "type": 0,
+            "width": 150,
+            "x": 845.024680991366,
+            "y": 623.1136684522368,
+            "id": "hCEwanafQKsyD3liFhm7F"
+        },
+        "xu0vAgjUMX8bfQ7Kn1hIt": {
+            "center": {
+                "x": 918.9375974246406,
+                "y": 594.5702796854354
+            },
+            "fill": {
+                "r": 29,
+                "g": 29,
+                "b": 29,
+                "a": 1
+            },
+            "height": -59.02655674333414,
+            "type": 16,
+            "width": -0.631993975733053,
+            "x": 919.2535944125071,
+            "y": 624.0835580571023,
+            "id": "xu0vAgjUMX8bfQ7Kn1hIt"
+        },
+        "bZm863oHiKEzOGqLsq4Qc": {
+            "fill": {
+                "a": 1,
+                "b": 255,
+                "g": 255,
+                "r": 255
+            },
+            "height": 179.94999551618974,
+            "outlineFill": {
+                "r": 29,
+                "g": 29,
+                "b": 29,
+                "a": 1
+            },
+            "textFontSize": 20,
+            "type": 2,
+            "value": "Proceso",
+            "width": 196.92644082139682,
+            "x": 820.2843830279351,
+            "y": 384.85377987218357,
+            "id": "bZm863oHiKEzOGqLsq4Qc"
         }
     },
     "layerIds": [
-        "6Wz6MCEBXO5t5eX6OBkPW",
-        "1q7ytAzhyyx5OmWBD3jHl",
-        "j4slR1D6tGqLRSjFdpvmi",
-        "sRmMYXL5CDxvIbk7StHNR",
-        "JRcVIxmgh2MIjyrsaAdUL",
-        "sRYSgYgnD0kvBHRSph1Pc",
-        "cTGsfrhtzEXJVryoYQ9KO",
-        "nrHChkGW3xfm6f6JnNiyI",
-        "sb44FYQSeSOXFhZ57Jkwq",
-        "IhUnWFNjnrDhEN0r0LIW6",
-        "7XpF75ziVyidAFJ9dcksT",
-        "xdsRlOvS3LhHdpGOeOFdp",
-        "pTI7jZhVDXlhJ0vW96EU9",
-        "HyE0alujPY4OUaTdSN6ZW",
-        "ny5A0TyBrW8hHvA7mScvn",
-        "iZoMdKJBht0VwlUQFKqHt"
+        "RhHvg4m66sZEWLhG6c0ix",
+        "wJ4cgBqr2kHVKagQfqXJd",
+        "taLCqjggH7gSE2RI3Mulc",
+        "byBuNH8mFEGSRm08WkSeT",
+        "wqasCzDYV0fn4GKxvn3XA",
+        "aocXAaay67o3bYoqDuawC",
+        "q3nYDyuRNYLBGhgNearVe",
+        "gx4xmnR2CJ1O5akPNCQ5P",
+        "uMt5BmmDC8KsFiti7Zwgk",
+        "zjVX9hyrHZOOxNVaurXMr",
+        "1n2FEwkEtel5MofAm27GC",
+        "Gd58aJ1W4TDbLymkXSSol",
+        "dKRcErxQLCjphyiwbn5lc",
+        "hCEwanafQKsyD3liFhm7F",
+        "xu0vAgjUMX8bfQ7Kn1hIt",
+        "bZm863oHiKEzOGqLsq4Qc"
     ]
 };

@@ -5,8 +5,12 @@ import {
     DropdownMenuTrigger,
     DropdownMenuContent,
     DropdownMenuItem,
+    DropdownMenuCheckboxItem,
+    DropdownMenuGroup,
 } from "@/components/ui/dropdown-menu";
-import { ArrowUpFromLine, ChevronRight } from "lucide-react";
+import { ArrowUpFromLine, ChevronRight, ToggleLeft, ToggleRight } from "lucide-react";
+import { useState } from "react";
+import { Button } from "./ui/button";
 
 interface ExportDropdownMenuProps {
     id: string;
@@ -15,12 +19,15 @@ interface ExportDropdownMenuProps {
 
 export const ExportDropdownMenu = ({ id, title }: ExportDropdownMenuProps) => {
     const { liveLayers, liveLayerIds } = useRoom();
+    const [isTransparent, setIsTransparent] = useState(false); // State to manage transparency
+
+    const toggleTransparency = () => setIsTransparent(!isTransparent); // Toggle function
 
     const exportOptions = [
-        { label: 'to PDF', action: () => exportToPdf(title) },
-        { label: 'to PNG', action: () => exportToPNG(title) },
-        { label: 'to JPG', action: () => exportToJPG(title) },
-        { label: 'to SVG', action: () => exportToSVG(title) },
+        { label: 'to PDF', action: () => exportToPdf(title, isTransparent) },
+        { label: 'to PNG', action: () => exportToPNG(title, isTransparent) },
+        { label: 'to JPG', action: () => exportToJPG(title, isTransparent) },
+        { label: 'to SVG', action: () => exportToSVG(title, isTransparent) },
         { label: 'to JSON', action: () => exportToJSON(id, liveLayers, liveLayerIds) },
     ];
 
@@ -35,7 +42,7 @@ export const ExportDropdownMenu = ({ id, title }: ExportDropdownMenuProps) => {
                     <ChevronRight className="h-4 w-4" />
                 </DropdownMenuItem>
             </DropdownMenuTrigger>
-            <DropdownMenuContent side="right" sideOffset={8} className="w-[100px]">
+            <DropdownMenuContent side="right" sideOffset={8} className="w-[140px]">
                 {exportOptions.map((option, index) => (
                     <DropdownMenuItem
                         key={index}
@@ -45,6 +52,15 @@ export const ExportDropdownMenu = ({ id, title }: ExportDropdownMenuProps) => {
                         {option.label}
                     </DropdownMenuItem>
                 ))}
+                <div className="border-t pt-1">
+                    <Button
+                        onClick={toggleTransparency}
+                        className="p-3 cursor-pointer w-full justify-start font-normal bg-white hover:bg-accent"
+                        variant="ghost"
+                    >
+                        {isTransparent ? <ToggleRight className="mr-2" /> : <ToggleLeft className="mr-2 text-neutral-400" />} Transparent
+                    </Button>
+                </div>
             </DropdownMenuContent>
         </DropdownMenu>
     );
