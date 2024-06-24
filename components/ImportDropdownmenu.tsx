@@ -10,8 +10,8 @@ import {
     AlertDialogCancel,
     AlertDialogTitle,
     AlertDialogDescription,
-} from "@/components/ui/alert-dialog"; // Adjust the import path as necessary
-
+} from "@/components/ui/alert-dialog";
+import { useProModal } from "@/hooks/use-pro-modal";
 interface ImportDropdownMenuProps {
     id: string;
     usersRole: string;
@@ -21,11 +21,12 @@ interface ImportDropdownMenuProps {
     setLiveLayerIds: any;
     liveLayers: any;
     liveLayerIds: any;
+    org: any
     socket: any;
 }
 
 interface ImportData {
-    layers: Record<string, any>; // Adjust the type according to the actual structure of your layers
+    layers: Record<string, any>;
     layerIds: string[];
 }
 
@@ -39,11 +40,14 @@ export const ImportDropdownMenu = (
         setLiveLayerIds,
         liveLayers,
         liveLayerIds,
-        socket
+        socket,
+        org
     }: ImportDropdownMenuProps) => {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
-    const [importData, setImportData] = useState<ImportData | null>(null); // Updated this line
+    const [importData, setImportData] = useState<ImportData | null>(null);
+    const proModal = useProModal();
+
 
     const onImportClick = () => {
         fileInputRef.current?.click();
@@ -58,15 +62,14 @@ export const ImportDropdownMenu = (
             try {
                 const json = JSON.parse(e.target?.result as string);
                 if (json.layers && Array.isArray(json.layerIds)) {
-                    setImportData(json); // Save the data temporarily
-                    setIsAlertDialogOpen(true); // Show the AlertDialog
+                    setImportData(json);
+                    setIsAlertDialogOpen(true);
                 } else {
                     toast.error("File format is incorrect");
                 }
             } catch (error) {
                 toast.error("Error importing board");
             } finally {
-                // Reset the file input after processing the file
                 event.target.value = '';
             }
         };
@@ -76,21 +79,10 @@ export const ImportDropdownMenu = (
     const handleImport = () => {
         if (!importData) return;
 
-        // Transform importData.layers object into an array matching the order of importData.layerIds
         const orderedLayers = importData.layerIds.map(id => importData.layers[id]);
         const imported = true
 
-        const command = new insertLayerCommand(
-            importData.layerIds,
-            orderedLayers,
-            liveLayers,
-            liveLayerIds,
-            setLiveLayers,
-            setLiveLayerIds,
-            id,
-            socket,
-            imported
-        );
+        const command = new insertLayerCommand(importData.layerIds, orderedLayers,liveLayers, liveLayerIds, setLiveLayers ,setLiveLayerIds, id, socket, org, proModal, imported);
 
         performAction(command);
         setIsAlertDialogOpen(false);

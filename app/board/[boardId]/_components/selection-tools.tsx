@@ -294,7 +294,7 @@ export const SelectionTools = memo(({
       clonedLayers.push(clonedLayer);
     });
   
-    const command = new InsertLayerCommand(newIds, clonedLayers, liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, boardId, socket);
+    const command = new InsertLayerCommand(newIds, clonedLayers, liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, boardId, socket, org, proModal);
     performAction(command);
     setLiveLayers(newLiveLayers);
     setLiveLayerIds(newLiveLayerIds);

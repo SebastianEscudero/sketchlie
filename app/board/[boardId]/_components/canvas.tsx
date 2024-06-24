@@ -1677,6 +1677,21 @@ export const Canvas = ({
                     }
                     break;
                 }
+                case "a": {
+                    if (e.ctrlKey || e.metaKey) {
+
+                        if (
+                            document.activeElement &&
+                            document.activeElement.getAttribute('contentEditable') !== 'true' &&
+                            document.activeElement.tagName !== 'TEXTAREA'
+                        ) {
+                            // if we are not inside a content editable or textarea
+                            console.log('hi')
+                            selectedLayersRef.current = liveLayerIds;
+                        }
+                    }
+                    break;
+                }
                 case "backspace":
                     if (
                         document.activeElement instanceof HTMLTextAreaElement ||

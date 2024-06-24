@@ -42,8 +42,6 @@ interface ActionsProps {
   liveLayers?: any;
   liveLayerIds?: any;
   socket?: any;
-  showActions?: boolean;
-  setShowActions?: any;
 };
 
 export const Actions = ({
@@ -65,16 +63,7 @@ export const Actions = ({
   liveLayers,
   liveLayerIds,
   socket,
-  showActions = false,
-  setShowActions,
 }: ActionsProps) => {
-  const [isOpen, setIsOpen] = useState(showActions);
-
-  // Effect to sync external `showActions` with internal `isOpen` state
-  useEffect(() => {
-    setIsOpen(showActions);
-  }, [showActions]);
-
   const { onOpen } = useRenameModal();
   const { mutate, pending } = useApiMutation(api.board.remove);
 
@@ -121,11 +110,6 @@ export const Actions = ({
 
   return (
     <DropdownMenu
-      open={isOpen}
-      onOpenChange={(newOpenState) => {
-        setIsOpen(newOpenState);
-        setShowActions(newOpenState);
-      }}
     >      
       <DropdownMenuTrigger asChild>
         {children}
@@ -175,6 +159,7 @@ export const Actions = ({
             liveLayerIds={liveLayerIds}
             insertLayerCommand={insertLayerCommand}
             performAction={performAction}
+            org={org}
             socket={socket}
           />
         }
