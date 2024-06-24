@@ -1479,7 +1479,9 @@ export const Canvas = ({
     }, []);
 
     const onTouchMove = useCallback((e: React.TouchEvent) => {
-        setIsMoving(true);
+        if (canvasState.mode === CanvasMode.Translating) {
+            setIsMoving(true);
+        }
         setActiveTouches(e.touches.length);
 
         if (e.touches.length < 2) {
@@ -1535,7 +1537,7 @@ export const Canvas = ({
 
         setPinchStartDist(dist);
         setStartPanPoint({ x, y });
-    }, [zoom, pinchStartDist, camera, startPanPoint]);
+    }, [zoom, pinchStartDist, camera, startPanPoint, canvasState]);
 
     const copySelectedLayers = useCallback(() => {
         const copied = new Map();
