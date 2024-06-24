@@ -78,17 +78,17 @@ export const ZoomToolbar = ({
     return (
         <div className="absolute h-12 bottom-2 left-2 bg-white rounded-md py-3 flex items-center shadow-md">
             <Hint label="Zoom out" sideOffset={4}>
-                <Button onClick={handleZoomOut} className="ml-2" variant="board">
+                <Button onClick={handleZoomOut} className="ml-2 px-3" variant="board">
                     <Minus className="h-5 w-5" />
                 </Button>
             </Hint>
             <Hint label="Reset zoom" sideOffset={4}>
-                <Button onClick={handleResetZoom} variant="board">
+                <Button onClick={handleResetZoom} variant="board" className="px-3">
                     {zoomPercentage}%
                 </Button>
             </Hint>
             <Hint label="Zoom in" sideOffset={4}>
-                <Button onClick={handleZoomIn} className="mr-2" variant="board">
+                <Button onClick={handleZoomIn} className="mr-2 px-3" variant="board">
                     <Plus className="h-5 w-5" />
                 </Button>
             </Hint>
