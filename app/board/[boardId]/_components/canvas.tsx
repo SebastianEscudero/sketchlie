@@ -49,6 +49,7 @@ import { useRoom } from "@/components/room";
 import { toast } from "sonner";
 import { Socket } from "socket.io-client";
 import { updateR2Bucket } from "@/lib/r2-bucket-functions";
+import { ZoomToolbar } from "./zoom-toolbar";
 
 interface Command {
     execute(): void;
@@ -1888,6 +1889,7 @@ export const Canvas = ({
                     canvasState={canvasState.mode}
                 />
             )}
+            <ZoomToolbar zoom={zoom} setZoom={setZoom} setCamera={setCamera} camera={camera}/>
             <div id="canvas">
                 <svg
                     className="h-[100vh] w-[100vw]"
