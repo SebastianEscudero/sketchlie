@@ -164,7 +164,7 @@ export const Ellipse = memo(({
               textWrap: "wrap",
               WebkitUserSelect: 'auto',
               textAlign: alignX,
-              cursor: focused ? 'text' : 'default',
+              cursor: focused && 'text',
             }}
             spellCheck={false}
             onDragStart={(e) => e.preventDefault()}
