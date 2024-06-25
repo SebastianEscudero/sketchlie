@@ -3,7 +3,6 @@ import { Metadata } from "next";
 import { BlogSection } from "@/components/blog-section";
 import { LogoSlider } from "@/components/logo-slider";
 import { FaqSection } from "@/components/faq-section";
-import { BlogLinks } from "@/components/blog-links";
 import { LandingVideo } from "@/components/landing-video";
 import { VerMas } from "@/components/ver-mas";
 import {
@@ -17,45 +16,56 @@ import Link from "next/link";
 import { TemplatesSlider } from "@/components/templates-slider";
 
 export const metadata: Metadata = {
-    title: "Crea tu Pizarra Online Gratis | Sketchlie",
-    description: "Colabora de manera efectiva y presenta ideas con la pizarra online de Sketchlie. Mejora tus productos desde una plataforma segura diseñada para empresas.",
-    keywords: ["pizarra online", "pizarra online gratis", "pizarra online colaborativa"],
+    title: "Pizarra Online Gratis | Colaboración en Tiempo Real | Sketchlie",
+    description: "Crea, colabora y comparte ideas en tiempo real con la pizarra online gratuita de Sketchlie. Ideal para lluvia de ideas, planificación visual y enseñanza remota. Fácil de usar, sin registro requerido.",
+    keywords: [
+        "pizarra online",
+        "pizarra colaborativa",
+        "pizarra virtual",
+        "lluvia de ideas online",
+        "mapas mentales",
+        "diagramas online",
+        "herramienta de colaboración",
+        "planificación visual",
+        "enseñanza remota",
+        "Sketchlie"
+    ],
     alternates: {
-        canonical: "https://www.sketchlie.com/pizarra-online/",
-    }
+        canonical: "https://www.sketchlie.com/es/pizarra-online/",
+    },
 };
 
 const LandingPage = () => {
     const faqData = [
         {
             value: "item-1",
-            trigger: "¿Qué es una pizarra online?",
-            content: "Una pizarra online es un espacio virtual donde se puede dibujar todo tipo de ideas, diseños, procesos etc. En Sketchlie trabajamos para que puedas tener la pizarra online colaborativa infinita más rápida para que sea ideal para todo tipo de equipos."
+            trigger: "¿Qué es una pizarra online y cómo funciona?",
+            content: "Una pizarra online es un espacio digital interactivo que permite dibujar, escribir y colaborar en tiempo real. En Sketchlie, nuestra pizarra online ofrece un lienzo infinito donde puedes crear diagramas, mapas mentales, procesos y más. Funciona en cualquier dispositivo con conexión a internet, permitiendo la colaboración instantánea entre usuarios desde cualquier ubicación."
         },
         {
             value: "item-2",
-            trigger: "¿La pizarra online de Sketchlie es grátis?",
-            content: "Sí! Sketchlie es gratis y no requiere tarjeta de crédito para registrarte, para equipos que quieran ir más allá tenemos planes de pago, pero la versión gratuita es ideal para equipos pequeños."
+            trigger: "¿La pizarra online de Sketchlie es realmente gratis?",
+            content: "¡Absolutamente! Sketchlie ofrece una potente pizarra online totalmente gratis. No se requiere tarjeta de crédito para registrarse, y la versión gratuita incluye todas las funciones esenciales para colaboración efectiva. Para equipos que necesitan características avanzadas, ofrecemos planes premium, pero nuestra versión gratuita es ideal para la mayoría de los usuarios."
         },
         {
             value: "item-3",
-            trigger: "¿Se puede utilizar la pizarra online de Sketchlie para hacer clases?",
-            content: "Sí! Sketchlie ofrece organizadores gráficos intuitivos y dinámicos, como líneas del tiempo, mapas mentales y diagramas de Venn que se adaptan a todos los estudiantes. Edita en tiempo real con tus alumnos, prepara clases, comparte materiales, haz videollamadas, comentarios, encuestas y muchas otras funciones para hacer que tus clases online sean aún más interesantes. Regístrate para estimular el pensamiento crítico y la creatividad de tus estudiantes."
+            trigger: "¿Cómo puedo usar la pizarra online de Sketchlie en educación?",
+            content: "Sketchlie es una herramienta versátil para la educación. Puedes crear lecciones interactivas, usar plantillas de organizadores gráficos, hacer lluvia de ideas en clase, y fomentar la colaboración entre estudiantes. Nuestras funciones de videollamada, comentarios y encuestas integradas hacen que las clases online sean más dinámicas y participativas. Es perfecta para estimular el pensamiento crítico y la creatividad en entornos educativos virtuales o híbridos."
         },
         {
             value: "item-4",
-            trigger: "¿Por qué Sketchlie?",
-            content: "Sketchlie ofrece simplemente la pizarra online más rápida y fácil de usar, con una interfaz intuitiva y una amplia gama de herramientas de colaboración. Nuestra pizarra online es ideal para equipos de cualquier tamaño, desde pequeñas empresas hasta grandes corporaciones. También es perfecta para profesores y estudiantes que buscan una forma más interactiva de enseñar y aprender."
+            trigger: "¿Por qué elegir la pizarra online de Sketchlie?",
+            content: "Sketchlie destaca por ofrecer la pizarra online más rápida y fácil de usar del mercado. Nuestra interfaz intuitiva, combinada con potentes herramientas de colaboración, la hace ideal para equipos de cualquier tamaño. Además, nuestra pizarra se adapta perfectamente a diversos escenarios: desde reuniones empresariales hasta aulas virtuales, garantizando una experiencia fluida y productiva en cada uso."
         },
         {
             value: "item-5",
-            trigger: "¿Cómo puedo empezar a usar la pizarra online de Sketchlie?",
-            content: "Es muy sencillo, solo tienes que registrarte en Sketchlie y podrás empezar a usar la pizarra online gratuita. No necesitas tarjeta de crédito para registrarte."
+            trigger: "¿Cómo empiezo a usar la pizarra online de Sketchlie?",
+            content: "Comenzar con Sketchlie es increíblemente sencillo. Solo necesitas registrarte gratuitamente en nuestra plataforma, sin necesidad de proporcionar datos de tarjeta de crédito. Una vez registrado, puedes crear tu primera pizarra online con un solo clic y empezar a colaborar de inmediato. Ofrecemos tutoriales y guías para ayudarte a aprovechar al máximo todas nuestras funciones."
         },
         {
             value: "item-6",
-            trigger: "¿Puedo usar la pizarra online de Sketchlie para hacer presentaciones?",
-            content: "Sí! Sketchlie es ideal para hacer presentaciones, puedes compartir tu pizarra online con otras personas y hacer presentaciones en tiempo real."
+            trigger: "¿Puedo usar la pizarra online de Sketchlie para presentaciones profesionales?",
+            content: "¡Definitivamente! La pizarra online de Sketchlie es una excelente herramienta para crear y realizar presentaciones dinámicas e interactivas. Puedes preparar tu presentación con anticipación, utilizar nuestras plantillas profesionales, y luego compartir tu pizarra en tiempo real durante reuniones o conferencias. Nuestro modo de presentación te permite guiar a tu audiencia a través del contenido de manera fluida y atractiva."
         }
     ];
     return (
@@ -72,57 +82,57 @@ const LandingPage = () => {
                 </BreadcrumbList>
             </Breadcrumb>
             <BlogStructure
-                title="La pizarra online para colaborar."
-                description="Sketchlie es una pizarra online rápida, gratuita y fácil de usar pensada para  ayudarte a colaborar con cualquier persona desde cualquier lugar."
-                cta="Crear tablero gratis"
-                alt="Pizarra online"
+                title="Pizarra Online Gratis: Colaboración Sin Límites"
+                description="Descubre Sketchlie: la pizarra online más rápida y versátil. Colabora en tiempo real, crea proyectos interactivos y potencia la productividad de tu equipo desde cualquier lugar. Gratis, fácil de usar y sin límites."
+                cta="Crea tu pizarra online gratis"
+                alt="Pizarra online colaborativa de Sketchlie"
                 img="/placeholders/pizarra-online.png"
             />
             <LogoSlider />
             <LandingVideo />
             <div className="my-28">
                 <BlogSection
-                    title="Espacio de trabajo pensado en ti"
-                    text="Sketchlie es más que una pizarra online, es un espacio virtual donde los usuarios pueden colaborar en tiempo real, compartir ideas, añadir notas, y desarrollar proyectos de forma conjunta, sin importar su ubicación geográfica. En Sketchlie, nuestra pizarra online va más allá al ofrecer una amplia gama de características diseñadas específicamente para potenciar la creatividad y la productividad de los equipos."
+                    title="Tu Espacio de Trabajo Digital Definitivo"
+                    text="Sketchlie trasciende el concepto tradicional de pizarra online. Es un ecosistema digital completo donde la colaboración en tiempo real se fusiona con herramientas avanzadas de productividad. Aquí, los equipos pueden generar ideas, desarrollar proyectos y tomar decisiones de manera conjunta, sin importar su ubicación geográfica. Nuestra pizarra virtual está diseñada para potenciar la creatividad y eficiencia de tu equipo, ofreciendo un entorno intuitivo y flexible que se adapta a cualquier flujo de trabajo."
                 />
             </div>
             <BlogSection
-                title="La pizarra online para colaborar efectivamente"
-                text="En el contexto actual, donde la colaboración remota es esencial, contar con herramientas que faciliten el trabajo en equipo y fomenten la creatividad se ha vuelto fundamental. Nuestra pizarra online no solo permite a los equipos colaborar de manera efectiva, sino que también proporciona un entorno dinámico donde las ideas pueden fluir libremente y los proyectos pueden cobrar vida."
-                alt="Mapa mental"
-                img="/placeholders/mapa-mental.png"
+                title="Colaboración Efectiva en la Era Digital"
+                text="En un mundo donde el trabajo remoto y la colaboración a distancia son la norma, Sketchlie se posiciona como la herramienta esencial para equipos modernos. Nuestra pizarra online no solo facilita la comunicación y el trabajo conjunto, sino que también crea un espacio donde las ideas pueden fluir libremente, transformándose en proyectos tangibles. Con Sketchlie, eliminas las barreras geográficas y temporales, permitiendo que tu equipo alcance su máximo potencial creativo y productivo."
+                alt="Colaboración en pizarra online"
+                img="/placeholders/modelo-canvas.png"
                 side="right"
             />
 
             <BlogSection
-                title="Colaboración en Tiempo Real"
-                text="Con Sketchlie, la colaboración en tiempo real es más que una posibilidad: es una realidad. Nuestra pizarra online permite a los usuarios trabajar juntos en proyectos de forma instantánea, lo que facilita la comunicación instantánea, la toma de decisiones ágil y la maximización de la eficiencia del equipo."
-                alt="Mapa de Proceso"
-                img="/placeholders/improve-performance.png"
+                title="Colaboración en Tiempo Real sin Precedentes"
+                text="La pizarra online de Sketchlie redefine la colaboración en tiempo real. Experimenta una sincronización instantánea que permite a múltiples usuarios trabajar simultáneamente en el mismo proyecto. Desde lluvia de ideas hasta la toma de decisiones críticas, nuestra plataforma facilita una comunicación fluida y una interacción sin fricciones. Con Sketchlie, cada miembro del equipo puede contribuir en tiempo real, acelerando los procesos creativos y mejorando la eficiencia general del proyecto."
+                alt="Colaboración en tiempo real en pizarra virtual"
+                img="/placeholders/diagrama-de-venn.png"
                 side="right"
             />
 
             <BlogSection
-                title="Planificación y Gestión de Proyectos"
-                text="Equipada con herramientas de planificación integradas, nuestra pizarra online simplifica la organización de tareas, la asignación de responsabilidades y el seguimiento del progreso del proyecto. Desde la creación de listas de tareas hasta la visualización de cronogramas, Sketchlie te ofrece todo lo que necesitas para gestionar tus proyectos de manera eficaz en un solo lugar."
-                alt="Diagrama de Flujo"
-                img="/placeholders/diagrama-de-flujo.png"
+                title="Gestión de Proyectos Visual e Intuitiva"
+                text="Transforma la manera en que planificas y gestionas proyectos con la pizarra online de Sketchlie. Nuestras herramientas integradas permiten crear flujos de trabajo visuales, asignar tareas y seguir el progreso de manera intuitiva. Desde diagramas de Gantt hasta tableros Kanban, Sketchlie ofrece la flexibilidad para adaptar tu pizarra a cualquier metodología de gestión de proyectos. Centraliza la información, mejora la transparencia y mantén a tu equipo alineado con nuestro espacio de trabajo visual altamente personalizable."
+                alt="Gestión de proyectos en pizarra online"
+                img="/placeholders/mapa-de-procesos.png"
                 side="right"
             />
 
             <BlogSection
-                title="La pizarra online única de Sketchlie."
-                text="Invita a colegas a tu pizarra online para sesiones de lluvia de ideas, toma de notas y seguimiento de proyectos. Comparte tu pantalla, realiza videoconferencias y aprovecha el modo de presentación para reuniones estimulantes. La rapidez y versatilidad de Sketchlie permiten que múltiples usuarios trabajen simultáneamente sin esfuerzo, convirtiendo cada sesión en una experiencia colaborativa inigualable."
-                alt="Mapa Conceptual"
-                img="/placeholders/mapa-conceptual-online.png"
+                title="La Experiencia Única de la Pizarra Online de Sketchlie"
+                text="Descubre una nueva dimensión de colaboración con Sketchlie. Nuestra pizarra online va más allá de las herramientas convencionales, ofreciendo un espacio donde la creatividad y la productividad convergen. Invita a colegas, realiza videoconferencias integradas, y utiliza nuestro modo de presentación para reuniones impactantes. La velocidad y versatilidad de Sketchlie permiten que múltiples usuarios trabajen sin esfuerzo en un lienzo infinito, convirtiendo cada sesión en una experiencia colaborativa inigualable. Con Sketchlie, no solo trabajas en proyectos; los llevas a la vida en un entorno dinámico y estimulante."
+                alt="Experiencia única en pizarra virtual"
+                img="/placeholders/lluvia-de-ideas.png"
                 side="right"
             />
             <TemplatesSlider />
-            <FaqSection accordionData={faqData} sectionTitle="las pizarras online" />
+            <FaqSection accordionData={faqData} sectionTitle="Pizarra Online" />
             <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5 md:my-10 my-5">
-                <VerMas title="Cómo Utilizar una Pizarra Online" href="/pizarra-online/que-es-pizarra-online/" />
-                <VerMas title="Beneficios de una Pizarra Online" href="/pizarra-online/que-es-pizarra-online/" />
-                <VerMas title="¿Qué es una Pizarra Online?" href="/pizarra-online/que-es-pizarra-online/" />
+                <VerMas title="Maximiza tu Productividad con Nuestra Pizarra Online" href="/pizarra-online/que-es-pizarra-online/" />
+                <VerMas title="Ventajas de la Pizarra Online Colaborativa" href="/pizarra-online/beneficios-pizarra-online/" />
+                <VerMas title="Guía Completa: Pizarra Online para Equipos" href="/pizarra-online/guia-pizarra-online/" />
             </div>
         </div>
 

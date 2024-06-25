@@ -53,123 +53,99 @@ const LandingPage = () => {
             </div>
             <div className="flex flex-col-reverse lg:flex-row justify-between mt-[3%]">
                 <div className="lg:max-w-[70%] text-xl">
-                    <div id="1" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-4xl md:text-5xl mb-10">1. Introducción a la Pizarra Online</h2>
-                    <p className="mb-10">La tecnología ha transformado la manera en que colaboramos y trabajamos en equipo. Una herramienta fundamental en este contexto es la pizarra online. En Sketchlie, comprendemos la importancia de la colaboración en tiempo real, y es por eso que hemos desarrollado una plataforma que ofrece una experiencia fluida y eficiente para trabajar en proyectos conjuntos, permitiendo a los usuarios dibujar, agregar imágenes y objetos, y mucho más. En este artículo, exploraremos en profundidad qué es una pizarra online, cómo se utiliza, sus beneficios y consejos para aprovechar al máximo esta herramienta de colaboración.</p>
-                    <div id="2" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-4xl md:text-5xl mb-10">2. ¿Qué es una Pizarra Online?</h2>
-                    <p className="mb-10">Una pizarra online es una plataforma digital que permite a los usuarios colaborar en tiempo real en un espacio virtual compartido. Al igual que una pizarra física, una pizarra online es un lienzo en blanco donde los equipos pueden dibujar, escribir, agregar imágenes, y organizar ideas de manera visual. En Sketchlie, nuestra pizarra online ofrece una amplia gama de herramientas y funciones que facilitan la colaboración y la creatividad.</p>
-                    <div id="3" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-4xl md:text-5xl mb-10">3. Cómo Utilizar una Pizarra Online</h2>
-                    <p className="mb-10">Utilizar una pizarra online es sencillo y accesible para cualquier persona con acceso a internet. Aquí hay algunos pasos básicos para empezar:</p>
+                    <div id="introduccion" className="h-[80px] mt-[-80px]"></div>
+                    <h2 className="text-4xl md:text-5xl mb-5">Introducción a la Pizarra Online</h2>
+                    <p className="mb-5">Una <strong>pizarra online</strong> es una herramienta digital revolucionaria que permite a equipos y individuos colaborar en tiempo real, sin importar su ubicación física. En Sketchlie, hemos desarrollado una plataforma intuitiva que transforma la manera en que trabajamos juntos, facilitando la generación de ideas, la planificación de proyectos y la enseñanza remota.</p>
+                    <p className="mb-10">En esta guía completa, exploraremos en detalle qué es una pizarra online, cómo puede beneficiar a tu equipo y las mejores prácticas para aprovechar al máximo esta poderosa herramienta de colaboración.</p>
+                    
+                    <div id="definicion" className="h-[80px] mt-[-80px]"></div>
+                    <h2 className="text-4xl md:text-5xl mb-5">¿Qué es exactamente una Pizarra Online?</h2>
+                    <p className="mb-5">Una pizarra online, también conocida como pizarra virtual o whiteboard digital, es un espacio de trabajo colaborativo en la nube que simula una pizarra física tradicional, pero con capacidades infinitamente superiores. Permite a los usuarios dibujar, escribir, añadir imágenes, y organizar ideas de forma visual, todo en un entorno digital compartido.</p>
+                    <h3 className="text-3xl mb-3">Características principales de una pizarra online:</h3>
                     <ul style={{ listStyleType: 'disc' }}>
-                        <li className="mb-10 ml-5">
-                            <strong>Accede a la plataforma:</strong> Para empezar, visita <Link className="text-custom-blue hover:underline" href="/">Sketchlie</Link> y crea una cuenta o inicia sesión si ya tienes una.
-                        </li>
-                        <li className="mb-10 ml-5">
-                            <strong>Crea una nueva pizarra:</strong> Una vez dentro, selecciona la opción para crear una nueva <Link className="text-custom-blue hover:underline" href="/pizarra-online/">pizarra online</Link> y elige las opciones de personalización según tus necesidades.
-                        </li>
-                        <li className="mb-10 ml-5">
-                            <strong>Invita a colaboradores:</strong> Comparte el enlace de la pizarra con tus compañeros de equipo para que puedan unirse y colaborar contigo en tiempo real.
-                        </li>
+                        <li className="mb-3 ml-5">Colaboración en tiempo real entre múltiples usuarios</li>
+                        <li className="mb-3 ml-5">Espacio de trabajo infinito y escalable</li>
+                        <li className="mb-3 ml-5">Herramientas de dibujo y texto avanzadas</li>
+                        <li className="mb-3 ml-5">Integración de multimedia (imágenes, videos, documentos)</li>
+                        <li className="mb-3 ml-5">Guardado automático y acceso desde cualquier dispositivo</li>
+                        <li className="mb-3 ml-5">Plantillas prediseñadas para diferentes tipos de proyectos</li>
                     </ul>
-                    <p className="mb-10">Una vez que estés dentro de la pizarra, explora las diferentes herramientas disponibles, como lápices de colores, formas geométricas, texto, y más, para expresar tus ideas de manera efectiva.</p>
-                    <div id="4" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-4xl md:text-5xl mb-10">4. Beneficios de una Pizarra Online</h2>
-                    <p className="mb-10">La utilización de una pizarra online ofrece una serie de beneficios significativos para los equipos y colaboradores:</p>
+                    
+                    <div id="como-usar" className="h-[80px] mt-[-80px]"></div>
+                    <h2 className="text-4xl md:text-5xl mb-5">Cómo Utilizar una Pizarra Online</h2>
+                    <p className="mb-5">Utilizar una pizarra online es intuitivo y accesible para cualquier persona con conexión a internet. Sigue estos pasos para comenzar:</p>
+                    <ol className="list-decimal ml-5 mb-5">
+                        <li className="mb-3"><strong>Accede a la plataforma:</strong> Visita <Link className="text-custom-blue hover:underline" href="/">Sketchlie.com</Link> y crea una cuenta gratuita.</li>
+                        <li className="mb-3"><strong>Crea una nueva pizarra:</strong> Haz clic en Nueva Pizarra y elige una plantilla o comienza desde cero.</li>
+                        <li className="mb-3"><strong>Invita colaboradores:</strong> Comparte el enlace de tu pizarra con tu equipo para colaboración en tiempo real.</li>
+                        <li className="mb-3"><strong>Explora las herramientas:</strong> Familiarízate con las opciones de dibujo, texto, formas y multimedia.</li>
+                        <li className="mb-3"><strong>Comienza a colaborar:</strong> Trabaja en tus ideas, comparte pensamientos y crea juntos en tiempo real.</li>
+                    </ol>
+                    
+                    <div id="beneficios" className="h-[80px] mt-[-80px]"></div>
+                    <h2 className="text-4xl md:text-5xl mb-5">Beneficios de Usar una Pizarra Online</h2>
+                    <p className="mb-5">Las pizarras online ofrecen numerosas ventajas para equipos y organizaciones:</p>
                     <ul style={{ listStyleType: 'disc' }}>
-                        <li className="mb-10 ml-5">
-                            <strong>Colaboración en tiempo real:</strong> Permite a los equipos trabajar juntos de forma remota y en tiempo real, sin importar la ubicación geográfica.
-                        </li>
-                        <li className="mb-10 ml-5">
-                            <strong>Facilita la comunicación:</strong> Proporciona un espacio visual donde los miembros del equipo pueden compartir ideas, comentarios y sugerencias de manera clara y concisa.
-                        </li>
-                        <li className="mb-10 ml-5">
-                            <strong>Organización y estructuración:</strong> Permite organizar y estructurar información de manera visual, lo que facilita la comprensión y el seguimiento de las tareas y proyectos.
-                        </li>
+                        <li className="mb-3 ml-5"><strong>Colaboración sin fronteras:</strong> Trabaja con equipos distribuidos globalmente en tiempo real.</li>
+                        <li className="mb-3 ml-5"><strong>Mejora la comunicación visual:</strong> Expresa ideas complejas de forma clara y concisa.</li>
+                        <li className="mb-3 ml-5"><strong>Aumenta la productividad:</strong> Centraliza la información y reduce el tiempo de reuniones.</li>
+                        <li className="mb-3 ml-5"><strong>Fomenta la creatividad:</strong> Proporciona un espacio flexible para la lluvia de ideas y la innovación.</li>
+                        <li className="mb-3 ml-5"><strong>Facilita el aprendizaje remoto:</strong> Ideal para educación a distancia y formación corporativa.</li>
                     </ul>
-                    <p className="mb-10">Estos son solo algunos ejemplos de los muchos beneficios que ofrece una pizarra online en el entorno colaborativo.</p>
-                    <div id="5" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-4xl md:text-5xl mb-10">5. Consejos para Sacar el Máximo Provecho de una Pizarra Online</h2>
-                    <p className="mb-10">Para aprovechar al máximo una pizarra online, considera seguir estos consejos prácticos:</p>
+                    
+                    <div id="mejores-practicas" className="h-[80px] mt-[-80px]"></div>
+                    <h2 className="text-4xl md:text-5xl mb-5">Mejores Prácticas para Usar Pizarras Online</h2>
+                    <p className="mb-5">Maximiza el potencial de tu pizarra online con estos consejos:</p>
+                    <ol className="list-decimal ml-5 mb-5">
+                        <li className="mb-3"><strong>Establece reglas claras:</strong> Define pautas para la colaboración y el uso de la pizarra.</li>
+                        <li className="mb-3"><strong>Usa plantillas:</strong> Aprovecha las plantillas prediseñadas para ahorrar tiempo y mantener la consistencia.</li>
+                        <li className="mb-3"><strong>Organiza el contenido:</strong> Utiliza colores, etiquetas y agrupaciones para estructurar la información.</li>
+                        <li className="mb-3"><strong>Fomenta la participación:</strong> Anima a todos los miembros del equipo a contribuir activamente.</li>
+                        <li className="mb-3"><strong>Guarda y comparte:</strong> Haz copias de seguridad regulares y comparte los resultados con los stakeholders.</li>
+                    </ol>
+                    
+                    <div id="casos-de-uso" className="h-[80px] mt-[-80px]"></div>
+                    <h2 className="text-4xl md:text-5xl mb-5">Casos de Uso de Pizarras Online</h2>
+                    <p className="mb-5">Las pizarras online son versátiles y se adaptan a diversas situaciones:</p>
                     <ul style={{ listStyleType: 'disc' }}>
-                        <li className="mb-10 ml-5">
-                            <strong>Planifica y estructura:</strong> Antes de empezar a trabajar en la <Link className="text-custom-blue hover:underline" href="/pizarra-online/">pizarra online</Link>, dedica tiempo a planificar y estructurar tus ideas. Esto te ayudará a aprovechar al máximo el espacio disponible y a mantener un enfoque claro en tus objetivos.
-                        </li>
-                        <li className="mb-10 ml-5">
-                            <strong>Utiliza herramientas de colaboración:</strong> Explora las diferentes herramientas de colaboración disponibles en la plataforma, como la posibilidad de añadir comentarios, etiquetas y menciones, para facilitar la comunicación entre los miembros del equipo.
-                        </li>
-                        <li className="mb-10 ml-5">
-                            <strong>Personaliza tu espacio de trabajo:</strong> Aprovecha las opciones de personalización para adaptar la pizarra a tus necesidades específicas, como cambiar el fondo, ajustar el tamaño de la pizarra y agregar plantillas predefinidas.
-                        </li>
-                        <li className="mb-10 ml-5">
-                            <strong>Experimenta con diferentes formatos:</strong> No tengas miedo de probar diferentes formatos y estilos de trabajo en la pizarra. La versatilidad de la plataforma te permite explorar nuevas ideas y enfoques de manera creativa.
-                        </li>
+                        <li className="mb-3 ml-5"><strong>Reuniones virtuales:</strong> Facilita la toma de notas y la visualización de ideas en tiempo real.</li>
+                        <li className="mb-3 ml-5"><strong>Planificación de proyectos:</strong> Crea mapas mentales, diagramas de Gantt y tableros Kanban.</li>
+                        <li className="mb-3 ml-5"><strong>Diseño UX/UI:</strong> Elabora wireframes y prototipos colaborativos.</li>
+                        <li className="mb-3 ml-5"><strong>Educación online:</strong> Imparte clases interactivas y crea materiales didácticos visuales.</li>
+                        <li className="mb-3 ml-5"><strong>Brainstorming:</strong> Realiza sesiones de lluvia de ideas dinámicas y creativas.</li>
                     </ul>
-                    <p className="mb-10">Siguiendo estos consejos, podrás sacar el máximo provecho de tu experiencia en la pizarra online y mejorar la eficiencia y la productividad de tu equipo.</p>
-                    <div id="6" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-4xl md:text-5xl mb-10">6. Ejemplos de Pizarras Online</h2>
-                    <p className="mb-10">Las pizarras online se pueden utilizar en una amplia variedad de contextos y situaciones. Aquí hay algunos ejemplos de cómo puedes utilizar una pizarra online en tu trabajo diario:</p>
-                    <ul style={{ listStyleType: 'disc' }}>
-                        <li className="mb-10 ml-5">
-                            <strong>Reuniones virtuales:</strong> Utiliza la pizarra online durante reuniones virtuales para tomar notas, organizar ideas y visualizar conceptos complejos.
-                        </li>
-                        <li className="mb-10 ml-5">
-                            <strong>Sesiones de lluvia de ideas:</strong> Invita a tu equipo a una sesión de lluvia de ideas en la pizarra online para generar nuevas ideas y soluciones creativas.
-                        </li>
-                        <li className="mb-10 ml-5">
-                            <strong>Desarrollo de proyectos:</strong> Colabora con tu equipo en el desarrollo de proyectos utilizando la pizarra online para planificar tareas, asignar responsabilidades y hacer un seguimiento del progreso.
-                        </li>
-                    </ul>
-                    <p className="mb-10">Estos son solo algunos ejemplos de cómo puedes utilizar una pizarra online en tu trabajo diario. La versatilidad y la flexibilidad de la plataforma hacen que sea una herramienta indispensable para cualquier equipo que valore la colaboración y la creatividad.</p>
-                    <div id="7" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-4xl md:text-5xl mb-10">7. Organización de Talleres con Pizarras Online</h2>
-                    <p className="mb-10">Organizar talleres y sesiones de formación utilizando pizarras online puede ser una forma efectiva de fomentar la participación y el aprendizaje colaborativo. Aquí hay algunos consejos para organizar un taller con pizarras online:</p>
-                    <ul style={{ listStyleType: 'disc' }}>
-                        <li className="mb-10 ml-5">
-                            <strong>Define los objetivos:</strong> Antes de empezar, asegúrate de tener claros los objetivos y el alcance del taller para garantizar que se cubran todos los temas importantes.
-                        </li>
-                        <li className="mb-10 ml-5">
-                            <strong>Prepara el contenido:</strong> Prepara el contenido del taller, como presentaciones, ejercicios prácticos y material de apoyo, y cárgalo en la pizarra online antes del evento.
-                        </li>
-                        <li className="mb-10 ml-5">
-                            <strong>Fomenta la participación:</strong> Durante el taller, fomenta la participación activa de los asistentes utilizando herramientas de colaboración como encuestas, preguntas abiertas y ejercicios interactivos.
-                        </li>
-                    </ul>
-                    <p className="mb-10">Al utilizar una pizarra online para organizar talleres y sesiones de formación, puedes crear un entorno dinámico y participativo que facilite el aprendizaje y la colaboración entre los participantes.</p>
-                    <div id="8" className="h-[80px] mt-[-80px]"></div>
-                    <h2 className="text-4xl md:text-5xl mb-10">8. Conclusiones</h2>
-                    <p className="mb-10">En resumen, una pizarra online es una herramienta poderosa que facilita la colaboración, la comunicación y la creatividad en equipos y entornos de trabajo. En Sketchlie, estamos comprometidos a proporcionar una plataforma intuitiva y eficiente que permita a los usuarios colaborar de manera efectiva en proyectos conjuntos. Esperamos que este artículo te haya proporcionado una comprensión más profunda de qué es una pizarra online y cómo puedes utilizarla para mejorar la productividad y el trabajo en equipo.</p>
-                    <p className="mb-10">Si deseas obtener más información sobre las pizarras online y otras herramientas de colaboración disponibles en Sketchlie, visita nuestra página principal <Link className="text-custom-blue hover:underline" href="/">Sketchlie</Link>.</p>
+                    
+                    <div id="conclusion" className="h-[80px] mt-[-80px]"></div>
+                    <h2 className="text-4xl md:text-5xl mb-5">Conclusión: El Futuro de la Colaboración</h2>
+                    <p className="mb-5">Las pizarras online han revolucionado la forma en que los equipos colaboran, comunican ideas y gestionan proyectos. En Sketchlie, estamos comprometidos a proporcionar una plataforma intuitiva y potente que permita a los usuarios desbloquear todo su potencial creativo y colaborativo.</p>
+                    <p className="mb-10">Ya sea que estés gestionando un equipo remoto, impartiendo clases online o planificando el próximo gran proyecto de tu empresa, una pizarra online es una herramienta indispensable en el toolkit de cualquier profesional moderno.</p>
+                    <p className="mb-5">¿Listo para llevar tu colaboración al siguiente nivel? <Link className="text-custom-blue hover:underline" href="/registro">Regístrate gratis en Sketchlie</Link> y comienza a experimentar el poder de las pizarras online hoy mismo.</p>
                 </div>
                 <div className="lg:w-[30%] xl:ml-10 lg:ml-5 border border-black rounded-lg p-10 bg-[#FFF] lg:sticky lg:z-30 lg:top-24 lg:h-[50%] lg:mb-0 mb-10">
                     <h3 className="text-2xl mb-3">
-                        Indice
+                        Índice
                     </h3>
                     <ul>
                         <li className="mb-4">
-                            <Link href="#1" className="text-custom-blue hover:underline mb-10">1. Introducción a la Pizarra Online</Link>
+                            <Link href="#introduccion" className="text-custom-blue hover:underline">Introducción a la Pizarra Online</Link>
                         </li>
                         <li className="mb-4">
-                            <Link href="#2" className="text-custom-blue hover:underline mb-10">2. ¿Qué es una Pizarra Online?</Link>
+                            <Link href="#definicion" className="text-custom-blue hover:underline">¿Qué es exactamente una Pizarra Online?</Link>
                         </li>
                         <li className="mb-4">
-                            <Link href="#3" className="text-custom-blue hover:underline mb-10">3. Cómo Utilizar una Pizarra Online</Link>
+                            <Link href="#como-usar" className="text-custom-blue hover:underline">Cómo Utilizar una Pizarra Online</Link>
                         </li>
                         <li className="mb-4">
-                            <Link href="#4" className="text-custom-blue hover:underline mb-10">4. Beneficios de una Pizarra Online</Link>
+                            <Link href="#beneficios" className="text-custom-blue hover:underline">Beneficios de Usar una Pizarra Online</Link>
                         </li>
                         <li className="mb-4">
-                            <Link href="#5" className="text-custom-blue hover:underline mb-10">5. Consejos para Sacar el Máximo Provecho de una Pizarra Online</Link>
+                            <Link href="#mejores-practicas" className="text-custom-blue hover:underline">Mejores Prácticas para Usar Pizarras Online</Link>
                         </li>
                         <li className="mb-4">
-                            <Link href="#6" className="text-custom-blue hover:underline mb-10">6. Ejemplos de Pizarras Online</Link>
+                            <Link href="#casos-de-uso" className="text-custom-blue hover:underline">Casos de Uso de Pizarras Online</Link>
                         </li>
                         <li className="mb-4">
-                            <Link href="#7" className="text-custom-blue hover:underline mb-10">7. Organización de Talleres con Pizarras Online</Link>
-                        </li>
-                        <li className="mb-4">
-                            <Link href="#8" className="text-custom-blue hover:underline mb-10">8. Conclusiones</Link>
+                            <Link href="#conclusion" className="text-custom-blue hover:underline">Conclusión: El Futuro de la Colaboración</Link>
                         </li>
                     </ul>
                 </div>
