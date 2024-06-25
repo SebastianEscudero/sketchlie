@@ -1237,27 +1237,10 @@ export const Canvas = ({
             }
 
             setJustChanged(changed);
-            let layerIds: any = [];
-            let layerUpdates: any = [];
-            selectedLayersRef.current.forEach(id => {
-                const newLayer = liveLayers[id];
-                if (newLayer) {
-                    layerIds.push(id);
-                    layerUpdates.push(newLayer);
-                }
-            });
 
-            if (layerIds.length > 0) {
-                let lastState;
-                if (history.length > 0) {
-                    lastState = (history[history.length - 1] as TranslateLayersCommand).finalLayers;
-                }
-
-                // Compare the initialLayers with the finalLayers of the last history state
-                if (!lastState || JSON.stringify(liveLayers) !== JSON.stringify(lastState)) {
-                    const command = new TranslateLayersCommand(layerIds, initialLayers, liveLayers, setLiveLayers, boardId, socket);
-                    performAction(command);
-                }
+            if (selectedLayersRef.current.length > 0 && changed === true) {
+                const command = new TranslateLayersCommand(selectedLayersRef.current, initialLayers, liveLayers, setLiveLayers, boardId, socket);
+                performAction(command);
             }
 
             setCanvasState({
@@ -1269,18 +1252,8 @@ export const Canvas = ({
             const changed = initialLayer !== liveLayer;
             setJustChanged(changed);
 
-            let layerIds: any = [];
-            let layerUpdates: any = [];
-            selectedLayersRef.current.forEach(id => {
-                const newLayer = liveLayers[id];
-                if (newLayer) {
-                    layerIds.push(id);
-                    layerUpdates.push(newLayer);
-                }
-            });
-
-            if (layerIds.length > 0) {
-                const command = new TranslateLayersCommand(layerIds, initialLayers, liveLayers, setLiveLayers, boardId, socket);
+            if (selectedLayersRef.current.length > 0 && changed === true) {
+                const command = new TranslateLayersCommand(selectedLayersRef.current, initialLayers, liveLayers, setLiveLayers, boardId, socket);
                 performAction(command);
             }
             setCanvasState({

@@ -159,7 +159,8 @@ export const Star = memo(({
               color: fill ? getContrastingTextColor(fill) : "#000",
               textWrap: "wrap",
               WebkitUserSelect: 'auto',
-              textAlign: alignX
+              textAlign: alignX,
+              cursor: focused ? 'text' : 'default',
             }}
             spellCheck={false}
             onDragStart={(e) => e.preventDefault()}
