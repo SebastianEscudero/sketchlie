@@ -68,7 +68,7 @@ export const TextJustifySelector = ({
     const selectorPositionClass = expandUp ? 'bottom-[100%] mb-4' : 'top-[100%] mt-4';
 
     return (
-        <div className="relative text-left border-r pr-1.5 border-neutral-200 flex justify-center">
+        <div className="relative text-left border-neutral-200 flex justify-center">
 
             {alignX === 'left' && <AlignLeft className='w-6 h-6 mx-2 hover:cursor-pointer' onClick={() => setOpenSelector(openSelector === SelectorType.TextJustify ? null : SelectorType.TextJustify)} />}
             {alignX === 'right' && <AlignRight className='w-6 h-6 mx-2 hover:cursor-pointer' onClick={() => setOpenSelector(openSelector === SelectorType.TextJustify ? null : SelectorType.TextJustify)} />}

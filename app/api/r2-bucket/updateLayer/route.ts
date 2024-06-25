@@ -66,10 +66,11 @@ export const POST = async (request: Request): Promise<Response> => {
     const layersUpdates = Array.isArray(layer) ? layer : [layer];
 
     layerIds.forEach((layerId, index) => {
-      if (!existingBoardData.layers[layerId]) {
-        throw new Error(`Layer ${layerId} not found`);
-      }
-      existingBoardData.layers[layerId] = { ...existingBoardData.layers[layerId], ...layersUpdates[index] };
+        if (existingBoardData.layers[layerId]) {
+            existingBoardData.layers[layerId] = { ...existingBoardData.layers[layerId], ...layersUpdates[index] };
+        } else {
+            existingBoardData.layers[layerId] = layersUpdates[index];
+        }
     });
 
     serializedBoard = JSON.stringify(existingBoardData);

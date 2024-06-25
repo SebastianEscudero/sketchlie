@@ -269,7 +269,7 @@ export const Toolbar = ({
       </div>
 
       {isPenMenuOpen && (canvasState.mode === CanvasMode.Highlighter || canvasState.mode === CanvasMode.Pencil) && isPenEraserSwitcherOpen &&
-        <div className="absolute h-600:left-[235%] h-600:top-20 h-600:bottom-auto bottom-32 p-2 bg-white rounded-lg shadow-sm w-[206px] space-y-4 flex flex-col items-center cursor-default">
+        <div className="absolute h-600:left-[235%] h-600:top-20 h-600:bottom-auto bottom-32 p-2 bg-white rounded-lg shadow-sm w-[190px] space-y-2 flex flex-col items-center cursor-default">
           <Slider
             defaultValue={[pathStrokeSize]}
             min={1}
@@ -278,7 +278,7 @@ export const Toolbar = ({
             className='bg-white w-[90%] pt-3 cursor-pointer'
             onValueChange={handleStrokeSizeChange}
           />
-          <div className="grid grid-cols-4 gap-[2px]" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+          <div className="grid grid-cols-4 gap-x-2" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
             <ColorButton color={{ r: 0, g: 0, b: 0, a: 0 }} onClick={onPathColorChange} pathColor={pathColor} />
             <ColorButton color={{ r: 255, g: 255, b: 255, a: 1 }} onClick={onPathColorChange} pathColor={pathColor} />
             <ColorButton color={{ r: 29, g: 29, b: 29, a: 1 }} onClick={onPathColorChange} pathColor={pathColor} />

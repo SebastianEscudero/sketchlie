@@ -3,7 +3,7 @@
 import { memo, useCallback, useEffect, useState } from "react";
 import { BringToFront, Copy, SendToBack, Trash2 } from "lucide-react";
 import { Hint } from "@/components/hint";
-import { Camera, CanvasMode, Color, LayerType, Presence, SelectorType, UpdateLayerMutation } from "@/types/canvas";
+import { Camera, CanvasMode, Color, LayerType, Presence, SelectorType } from "@/types/canvas";
 import { Button } from "@/components/ui/button";
 import { useSelectionBounds } from "@/hooks/use-selection-bounds";
 import { ColorPicker } from "../selection-tools/color-picker";
@@ -186,13 +186,8 @@ export const SelectionTools = memo(({
 
       selectedLayersRef.current.forEach((id: string) => {
         const layer = newLayers[id];
-        let newFill = fill;
-        if (layer && layer.type === LayerType.Path) {
-          if (layer.fill && layer.fill.a === 0.7) {
-            newFill = { ...fill, a: 0.7 };
-          }
-        }
-        newLayers[id] = { ...layer, fill: newFill };
+        const opacity = layer.fill.a || 1;
+        newLayers[id] = { ...layer, fill: { ...fill, a: opacity } };
         updatedIds.push(id);
         updatedLayers.push(newLayers[id]);
       });
@@ -217,11 +212,10 @@ export const SelectionTools = memo(({
 
       selectedLayersRef.current.forEach((id: string) => {
         const layer = newLayers[id];
-        if (layer) {
-          newLayers[id] = { ...layer, outlineFill: outlineFill };
-          updatedIds.push(id);
-          updatedLayers.push(newLayers[id]);
-        }
+        const opacity = layer.outlineFill.a || 1;
+        newLayers[id] = { ...layer, outlineFill: { ...outlineFill, a: opacity } };
+        updatedIds.push(id);
+        updatedLayers.push(newLayers[id]);
       });
 
       updateR2Bucket('/api/r2-bucket/updateLayer', boardId, updatedIds, updatedLayers);
@@ -234,6 +228,56 @@ export const SelectionTools = memo(({
       return newLayers;
     });
   }, [selectedLayersRef.current, setLiveLayers, boardId, socket]);
+
+  const setOpacity = useCallback((opacity: number[]) => {
+    setLiveLayers((prevLayers: any) => {
+      const newLayers = { ...prevLayers };
+      const updatedIds: any = [];
+      const updatedLayers: any = [];
+
+      selectedLayersRef.current.forEach((id: string) => {
+        const layer = newLayers[id];
+        if (layer) {
+          newLayers[id] = { ...layer, fill: { ...layer.fill, a: opacity[0] } };
+          updatedIds.push(id);
+          updatedLayers.push(newLayers[id]);
+        }
+      });
+
+      updateR2Bucket('/api/r2-bucket/updateLayer', boardId, updatedIds, updatedLayers);
+
+      if (socket) {
+        socket.emit('layer-update', updatedIds, updatedLayers);
+      }
+
+      return newLayers;
+    });
+  }, [selectedLayersRef.current, setLiveLayers, boardId, socket])
+
+  const setOutlineOpacity = useCallback((opacity: number[]) => {
+    setLiveLayers((prevLayers: any) => {
+      const newLayers = { ...prevLayers };
+      const updatedIds: any = [];
+      const updatedLayers: any = [];
+
+      selectedLayersRef.current.forEach((id: string) => {
+        const layer = newLayers[id];
+        if (layer) {
+          newLayers[id] = { ...layer, outlineFill: { ...layer.outlineFill, a: opacity[0] } };
+          updatedIds.push(id);
+          updatedLayers.push(newLayers[id]);
+        }
+      });
+
+      updateR2Bucket('/api/r2-bucket/updateLayer', boardId, updatedIds, updatedLayers);
+
+      if (socket) {
+        socket.emit('layer-update', updatedIds, updatedLayers);
+      }
+
+      return newLayers;
+    });
+  }, [selectedLayersRef.current, setLiveLayers, boardId, socket])
 
   const duplicateLayers = useCallback(() => {
     let minX = Infinity;
@@ -367,6 +411,7 @@ export const SelectionTools = memo(({
       {hasOutline && (
         <OutlineColorPicker
           layers={layers}
+          handleOpacityChange={setOutlineOpacity}
           onChange={setOutlineFill}
           openSelector={openSelector}
           setOpenSelector={setOpenSelector}
@@ -376,6 +421,7 @@ export const SelectionTools = memo(({
       {!isImageLayer && (
         <ColorPicker
           layers={layers}
+          handleOpacityChange={setOpacity}
           onChange={setFill}
           openSelector={openSelector}
           setOpenSelector={setOpenSelector}

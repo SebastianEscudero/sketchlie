@@ -2,9 +2,12 @@
 
 import { Color, SelectorType } from "@/types/canvas";
 import { colorToCss } from "@/lib/utils";
+import { Slider } from "@/components/ui/slider";
+import { ColorButton } from "./color-picker";
 
 interface OutlineColorPickerProps {
   onChange: (color: Color) => void;
+  handleOpacityChange: (opacity: number[]) => void;
   layers: any;
   openSelector: SelectorType | null;
   setOpenSelector: (Selector: SelectorType | null) => void;
@@ -14,28 +17,37 @@ interface OutlineColorPickerProps {
 
 export const OutlineColorPicker = ({
   onChange,
+  handleOpacityChange,
   layers,
   openSelector,
   setOpenSelector,
   expandUp = false
 }: OutlineColorPickerProps) => {
-  let colorButtonColor
-  if (layers.length === 1) {
-    colorButtonColor = layers[0].outlineFill;
-  } else {
+
+  let colorButtonColor = layers[0].outlineFill;
+
+  if (!colorButtonColor) {
     colorButtonColor = { r: 0, g: 0, b: 0, a: 0 };
   }
 
-  const selectorPositionClass = expandUp ? 'bottom-[100%] mb-4' : 'top-[100%] mt-4';
+  const selectorPositionClass = expandUp ? 'bottom-[100%] mb-2' : 'top-[100%] mt-2';
+  const opacity = colorButtonColor.a;
 
   return (
-    <div className="relative text-left border-r px-1 border-neutral-200">
+    <div className="relative text-left border-r border-l px-1 border-neutral-200">
       <OutlineColorButton color={colorButtonColor} onClick={() => setOpenSelector(openSelector === SelectorType.OutlineColor ? null : SelectorType.OutlineColor)} />
       {openSelector === SelectorType.OutlineColor && (
         <div
-          className={`origin-top-right absolute right-0 ${selectorPositionClass} translate-x-1/3 w-[210px] rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5`}
+          className={`p-4 origin-top-right absolute right-0 ${selectorPositionClass} w-[190px] translate-x-1/3 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5`}
         >
-          <div className="p-3 grid grid-cols-4 gap-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+          <Slider
+            defaultValue={[opacity || 1]}
+            min={0.1}
+            max={1}
+            step={0.1}
+            onValueChange={handleOpacityChange}
+          />
+          <div className="grid grid-cols-4 gap-x-2 pt-2" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
             <ColorButton color={{ r: 0, g: 0, b: 0, a: 0 }} onClick={onChange} />
             <ColorButton color={{ r: 255, g: 255, b: 255, a: 1 }} onClick={onChange} />
             <ColorButton color={{ r: 29, g: 29, b: 29, a: 1 }} onClick={onChange} />
@@ -59,38 +71,10 @@ export const OutlineColorPicker = ({
   )
 };
 
-interface ColorButtonProps {
-  onClick: (color: Color) => void;
-  color: Color;
-};
-
-const ColorButton = ({
-  onClick,
-  color,
-}: ColorButtonProps) => {
-  return (
-    <button
-      className="w-8 h-8 my-1 items-center flex justify-center transition mx-2"
-      onClick={() => onClick(color)}
-    >
-      <div
-        className="h-7 w-7 rounded-[50%] border border-neutral-300 relative"
-        style={{ background: colorToCss(color) }}
-      >
-        {color.r === 0 && color.g === 0 && color.b === 0 && color.a === 0 && (
-          <svg className="absolute top-0 left-0 w-full h-full" viewBox="0 0 1 1">
-            <line x1="0.15" y1="0.15" x2="0.85" y2="0.85" stroke="#d4d4d4" strokeWidth="0.05" />
-          </svg>
-        )}
-      </div>
-    </button>
-  )
-}
-
 const OutlineColorButton = ({
   onClick,
   color,
-}: ColorButtonProps) => {
+}: any) => {
   return (
     <button
       className="w-8 h-8 my-1 items-center flex justify-center transition mx-2 border border-neutral-300 rounded-[50%]"

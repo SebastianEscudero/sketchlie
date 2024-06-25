@@ -911,7 +911,7 @@ export const Canvas = ({
         const point = pointerEventToCanvasPoint(e, camera, zoom);
         if (point && selectedLayersRef.current.length > 0) {
             const bounds = calculateBoundingBox(selectedLayersRef.current.map(id => liveLayers[id]));
-            if (point.x > bounds.x &&
+            if (bounds && point.x > bounds.x &&
                 point.x < bounds.x + bounds.width &&
                 point.y > bounds.y &&
                 point.y < bounds.y + bounds.height) {
