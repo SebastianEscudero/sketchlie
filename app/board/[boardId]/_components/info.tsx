@@ -138,11 +138,11 @@ export const Info = ({
                     </Link>
                 </Button>
             </Hint>
-            <div className="text-neutral-300 px-1.5 xs:flex hidden">
+            <div className="text-neutral-300 px-1.5 sm:flex hidden">
                 |
             </div>
                 <Hint label="Edit title" side="bottom" sideOffset={10}>
-                    <Button disabled={usersRole !== 'Admin'} variant="board" className="text-base px-2 sm:max-w-[200px] md:max-w-[400px] max-w-[80px] overflow-hidden relative xs:flex hidden" onClick={() => onOpen(board._id, board.title)}>
+                    <Button disabled={usersRole !== 'Admin'} variant="board" className="text-base px-2 sm:max-w-[100px] md:max-w-[400px] max-w-[80px] overflow-hidden relative sm:flex hidden" onClick={() => onOpen(board._id, board.title)}>
                         <div className="w-full text-left truncate">
                             {board.title}
                         </div>
