@@ -116,7 +116,7 @@ const LandingPage = () => {
             />
             <BlogSection
                 title="Plantillas de diagramas de Venn para cada necesidad"
-                text="Explora nuestra amplia biblioteca de plantillas de diagramas de Venn. Desde simples comparaciones de dos conjuntos hasta complejos diagramas multiconjunto, tenemos la plantilla perfecta para tu proyecto. Personaliza y adapta fácilmente a tus necesidades específicas."
+                text = {<>Explora nuestra amplia biblioteca de <Link href="/plantillas/diagrama-de-venn/" className="hover:underline text-custom-blue">plantillas de diagramas de Venn</Link>. Desde simples comparaciones de dos conjuntos hasta complejos diagramas multiconjunto, tenemos la plantilla perfecta para tu proyecto. Personaliza y adapta fácilmente a tus necesidades específicas.</>}
                 alt="Plantillas de Diagramas de Venn"
                 img="/placeholders/mapa-de-procesos.png"
                 side="right"
