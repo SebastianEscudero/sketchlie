@@ -186,7 +186,16 @@ export const SelectionTools = memo(({
 
       selectedLayersRef.current.forEach((id: string) => {
         const layer = newLayers[id];
-        const opacity = layer.fill.a || 1;
+        let opacity = layer.fill.a;
+        
+        if (fill.a === 0) {
+          opacity = 0;
+        } else {
+          if (layer.fill.a === 0) {
+            opacity = 1;
+          }
+        }
+
         newLayers[id] = { ...layer, fill: { ...fill, a: opacity } };
         updatedIds.push(id);
         updatedLayers.push(newLayers[id]);
@@ -212,7 +221,16 @@ export const SelectionTools = memo(({
 
       selectedLayersRef.current.forEach((id: string) => {
         const layer = newLayers[id];
-        const opacity = layer.outlineFill.a || 1;
+        let opacity = layer.outlineFill.a;
+
+        if (outlineFill.a === 0) {
+          opacity = 0;
+        } else {
+          if (layer.outlineFill.a === 0) {
+            opacity = 1;
+          }
+        }
+
         newLayers[id] = { ...layer, outlineFill: { ...outlineFill, a: opacity } };
         updatedIds.push(id);
         updatedLayers.push(newLayers[id]);
