@@ -35,6 +35,8 @@ import { ColorButton } from "../selection-tools/color-picker";
 import { Slider } from "@/components/ui/slider";
 import { LaserIcon } from "@/public/custom-cursors/laser";
 import { LineIcon } from "@/public/custom-cursors/line";
+import { Button } from "@/components/ui/button";
+import { Hint } from "@/components/hint";
 
 interface ToolbarProps {
   isUploading: boolean;
@@ -254,18 +256,16 @@ export const Toolbar = ({
         />
       </div>
       <div className="bg-white rounded-md p-1.5 flex h-600:flex-col flex-row items-center shadow-md">
-        <ToolButton
-          label="Undo"
-          icon={Undo2}
-          onClick={undo}
-          isDisabled={!canUndo}
-        />
-        <ToolButton
-          label="Redo"
-          icon={Redo2}
-          onClick={redo}
-          isDisabled={!canRedo}
-        />
+        <Hint side="right" label="Undo" sideOffset={14}>
+          <Button disabled={!canUndo} onClick={undo} className="h-8 w-8 xs:h-10 xs:w-10 p-2" variant="ghost">
+            <Undo2 className="h-5 w-5" />
+        </Button>
+        </Hint>
+        <Hint side="right" label="Redo" sideOffset={14}>
+          <Button disabled={!canRedo} onClick={redo} className="h-8 w-8 xs:h-10 xs:w-10 p-2" variant="ghost">
+            <Redo2 className="h-5 w-5" />
+        </Button>
+        </Hint>
       </div>
 
       {isPenMenuOpen && (canvasState.mode === CanvasMode.Highlighter || canvasState.mode === CanvasMode.Pencil) && isPenEraserSwitcherOpen &&

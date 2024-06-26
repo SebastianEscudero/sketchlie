@@ -635,7 +635,6 @@ export const Canvas = ({
 
     }, [canvasState.mode, pencilDraft, myPresence, setMyPresence, activeTouches]);
 
-
     const insertPath = useCallback(() => {
 
         if (
@@ -1164,12 +1163,6 @@ export const Canvas = ({
         } else if (canvasState.mode === CanvasMode.Eraser) {
             document.body.style.cursor = 'url(/custom-cursors/eraser.svg) 8 8, auto';
             if (layersToDeleteEraserRef.current.size > 0) {
-                const newLayers = { ...liveLayers };
-                Array.from(layersToDeleteEraserRef.current).forEach((id: any) => {
-                    delete newLayers[id];
-                });
-
-                // Create a new DeleteLayerCommand and add it to the history
                 const command = new DeleteLayerCommand(Array.from(layersToDeleteEraserRef.current), initialLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, boardId, socket);
                 performAction(command);
                 layersToDeleteEraserRef.current.clear();
@@ -1669,16 +1662,8 @@ export const Canvas = ({
                         break;
                     }
                     if (selectedLayersRef.current.length > 0) {
-                        const newLayers = { ...liveLayers };
-                        selectedLayersRef.current.forEach(id => {
-                            delete newLayers[id];
-                        });
-
-                        // Create a new DeleteLayerCommand and add it to the history
                         const command = new DeleteLayerCommand(selectedLayersRef.current, liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, boardId, socket);
                         performAction(command);
-                        setLiveLayers(newLayers);
-                        setLiveLayerIds(liveLayerIds.filter(id => !selectedLayersRef.current.includes(id)));
                         unselectLayers();
                     }
             }
@@ -1691,6 +1676,7 @@ export const Canvas = ({
             document.removeEventListener('mousemove', onMouseMove);
         }
     }, [copySelectedLayers, pasteCopiedLayers, camera, zoom, liveLayers, selectedLayersRef.current, copiedLayers, liveLayerIds]);
+
 
     useEffect(() => {
         if (typeof document !== 'undefined') {
@@ -1932,7 +1918,7 @@ export const Canvas = ({
                         )}
                         {otherUsers && <CursorsPresence otherUsers={otherUsers} zoom={zoom} />}
                         {
-                            pencilDraft != null && pencilDraft && pencilDraft.length > 0 && pencilDraft[0].length > 0 && !pencilDraft.some(array => array.some(isNaN)) && (
+                            pencilDraft && !pencilDraft.some(array => array.some(isNaN)) && (
                                 <Path
                                     points={pencilDraft}
                                     fill={
