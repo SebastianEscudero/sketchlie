@@ -35,12 +35,9 @@ interface ActionsProps {
   org: any;
   setBackground?: (background: string) => void;
   Background?: string;
-  insertLayerCommand?: any;
   performAction?: any;
   setLiveLayers?: any;
   setLiveLayerIds?: any;
-  liveLayers?: any;
-  liveLayerIds?: any;
   socket?: any;
 };
 
@@ -56,12 +53,9 @@ export const Actions = ({
   org,
   setBackground,
   Background,
-  insertLayerCommand,
   performAction,
   setLiveLayers,
   setLiveLayerIds,
-  liveLayers,
-  liveLayerIds,
   socket,
 }: ActionsProps) => {
   const { onOpen } = useRenameModal();
@@ -154,10 +148,7 @@ export const Actions = ({
             usersRole={usersRole}
             setLiveLayers={setLiveLayers}
             setLiveLayerIds={setLiveLayerIds}
-            liveLayers={liveLayers}
-            liveLayerIds={liveLayerIds}
             org={org}
-            insertLayerCommand={insertLayerCommand}
             performAction={performAction}
             socket={socket}
           />

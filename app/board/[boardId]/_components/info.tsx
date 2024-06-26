@@ -13,18 +13,16 @@ import { toast } from "sonner";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ShowAllTemplates } from "@/app/dashboard/_components/show-all-templates";
 import { CanvasMode } from "@/types/canvas";
+import { InsertLayerCommand } from "@/lib/commands";
 
 interface InfoProps {
     board: any;
     org: any;
     setBackground: (background: string) => void;
     Background: string;
-    insertLayerCommand: any;
     performAction: any;
     setLiveLayers: any;
     setLiveLayerIds: any;
-    liveLayers: any;
-    liveLayerIds: any;
     socket: any;
     nanoid: any;
     camera: any;
@@ -47,12 +45,9 @@ export const Info = ({
     org,
     setBackground,
     Background,
-    insertLayerCommand,
     performAction,
     setLiveLayers,
     setLiveLayerIds,
-    liveLayers,
-    liveLayerIds,
     socket,
     nanoid,
     camera,
@@ -108,7 +103,7 @@ export const Info = ({
             return newLayer;
           });
     
-          const command = new insertLayerCommand(newTemplateLayerIds, orderedLayers, liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, board._id, socket, org, proModal);
+          const command = new InsertLayerCommand(newTemplateLayerIds, orderedLayers, setLiveLayers, setLiveLayerIds, board._id, socket, org, proModal);
           performAction(command);
 
           selectedLayersRef.current = newTemplateLayerIds;
@@ -162,9 +157,6 @@ export const Info = ({
                 Background={Background}
                 setLiveLayers={setLiveLayers}
                 setLiveLayerIds={setLiveLayerIds}
-                liveLayers={liveLayers}
-                liveLayerIds={liveLayerIds}
-                insertLayerCommand={insertLayerCommand}
                 performAction={performAction}
                 socket={socket}
             >

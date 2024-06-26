@@ -12,8 +12,6 @@ export class InsertLayerCommand implements Command {
     constructor(
         private layerIds: any[],
         private layers: any[],
-        private prevLayers: Layers,
-        private prevLayerIds: string[],
         private setLiveLayers: (layers: Layers | any) => void,
         private setLiveLayerIds: (layerIds: string[]) => void,
         private boardId: string,

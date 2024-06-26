@@ -15,6 +15,7 @@ import { PathStokeSizeSelection } from "../selection-tools/path-stroke-size-sele
 import { customAlphabet } from "nanoid";
 import { TextJustifySelector } from "../selection-tools/text-justify-selector";
 import { updateR2Bucket } from "@/lib/r2-bucket-functions";
+import { DeleteLayerCommand, InsertLayerCommand } from "@/lib/commands";
 
 interface SelectionToolsProps {
   boardId: string;
@@ -26,11 +27,9 @@ interface SelectionToolsProps {
   setLiveLayers: (layers: any) => void;
   setLiveLayerIds: (ids: string[]) => void;
   socket: Socket | null;
-  DeleteLayerCommand: any;
   performAction: any;
   org: any;
   proModal: any;
-  InsertLayerCommand: any;
   myPresence: Presence | null;
   setMyPresence: (presence: Presence) => void;
   canvasState: CanvasMode;
@@ -46,11 +45,9 @@ export const SelectionTools = memo(({
   liveLayers,
   liveLayerIds,
   socket,
-  DeleteLayerCommand,
   performAction,
   org,
   proModal,
-  InsertLayerCommand,
   myPresence,
   setMyPresence,
   canvasState
@@ -326,7 +323,7 @@ export const SelectionTools = memo(({
       clonedLayers.push(clonedLayer);
     });
   
-    const command = new InsertLayerCommand(newIds, clonedLayers, liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, boardId, socket, org, proModal);
+    const command = new InsertLayerCommand(newIds, clonedLayers, setLiveLayers, setLiveLayerIds, boardId, socket, org, proModal);
     performAction(command);
 
     selectedLayersRef.current = newIds;

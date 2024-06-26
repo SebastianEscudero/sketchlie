@@ -221,7 +221,7 @@ export const Canvas = ({
             };
         }
 
-        const command = new InsertLayerCommand([layerId], [layer], liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, boardId, socket, org, proModal);
+        const command = new InsertLayerCommand([layerId], [layer], setLiveLayers, setLiveLayerIds, boardId, socket, org, proModal);
         performAction(command);
 
         if (layer.type !== LayerType.Text) {
@@ -236,7 +236,7 @@ export const Canvas = ({
 
         }
 
-    }, [liveLayers, liveLayerIds, myPresence, socket, org, proModal, User.userId, setLiveLayers, setLiveLayerIds, board, layerWithAssistDraw]);
+    }, [myPresence, socket, org, proModal, User.userId, setLiveLayers, setLiveLayerIds, board, layerWithAssistDraw]);
 
     const insertImage = useCallback((
         layerType: LayerType.Image,
@@ -274,10 +274,10 @@ export const Canvas = ({
             fill: null,
         };
 
-        const command = new InsertLayerCommand([layerId], [layer], liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, boardId, socket, org, proModal);
+        const command = new InsertLayerCommand([layerId], [layer], setLiveLayers, setLiveLayerIds, boardId, socket, org, proModal);
         performAction(command);
         setCanvasState({ mode: CanvasMode.None });
-    }, [liveLayers, liveLayerIds, myPresence, socket, org, proModal, User.userId, setLiveLayers, setLiveLayerIds, board, zoom]);
+    }, [myPresence, socket, org, proModal, User.userId, setLiveLayers, setLiveLayerIds, board, zoom]);
 
     const translateSelectedLayers = useCallback((point: Point) => {
         if (canvasState.mode !== CanvasMode.Translating) {
@@ -475,8 +475,6 @@ export const Canvas = ({
         const command = new InsertLayerCommand(
             [id],
             [liveLayers[id]],
-            { ...liveLayers },
-            [...liveLayerIds],
             setLiveLayers,
             setLiveLayerIds,
             boardId,
@@ -603,8 +601,6 @@ export const Canvas = ({
         const command = new InsertLayerCommand(
             [id],
             [liveLayers[id]],
-            { ...liveLayers },
-            [...liveLayerIds],
             setLiveLayers,
             setLiveLayerIds,
             boardId,
@@ -1372,7 +1368,7 @@ export const Canvas = ({
             clonedLayers.push(clonedLayer);
         });
 
-        const command = new InsertLayerCommand(newIds, clonedLayers, liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, boardId, socket, org, proModal);
+        const command = new InsertLayerCommand(newIds, clonedLayers, setLiveLayers, setLiveLayerIds, boardId, socket, org, proModal);
         performAction(command);
 
         selectedLayersRef.current = newIds;
@@ -1384,7 +1380,7 @@ export const Canvas = ({
 
         setMyPresence(newPresence);
 
-    }, [copiedLayers, myPresence, setLiveLayers, setLiveLayerIds, setMyPresence, org, proModal, liveLayerIds, socket, liveLayers, board]);
+    }, [copiedLayers, myPresence, setLiveLayers, setLiveLayerIds, setMyPresence, org, proModal, socket, board]);
 
     useEffect(() => {
         const onPointerDown = (e: PointerEvent) => {
@@ -1603,9 +1599,6 @@ export const Canvas = ({
                 Background={background}
                 setLiveLayerIds={setLiveLayerIds}
                 setLiveLayers={setLiveLayers}
-                liveLayerIds={liveLayerIds}
-                liveLayers={liveLayers}
-                insertLayerCommand={InsertLayerCommand}
                 performAction={performAction}
                 socket={socket}
                 setCanvasState={setCanvasState}
@@ -1659,11 +1652,9 @@ export const Canvas = ({
                     zoom={zoom}
                     camera={camera}
                     socket={socket}
-                    DeleteLayerCommand={DeleteLayerCommand}
                     performAction={performAction}
                     org={org}
                     proModal={proModal}
-                    InsertLayerCommand={InsertLayerCommand}
                     myPresence={myPresence}
                     setMyPresence={setMyPresence}
                     canvasState={canvasState.mode}

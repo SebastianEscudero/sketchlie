@@ -12,15 +12,13 @@ import {
     AlertDialogDescription,
 } from "@/components/ui/alert-dialog";
 import { useProModal } from "@/hooks/use-pro-modal";
+import { InsertLayerCommand } from "@/lib/commands";
 interface ImportDropdownMenuProps {
     id: string;
     usersRole: string;
-    insertLayerCommand: any;
     performAction: any;
     setLiveLayers: any;
     setLiveLayerIds: any;
-    liveLayers: any;
-    liveLayerIds: any;
     org: any
     socket: any;
 }
@@ -34,12 +32,9 @@ export const ImportDropdownMenu = (
     {
         id,
         usersRole,
-        insertLayerCommand,
         performAction,
         setLiveLayers,
         setLiveLayerIds,
-        liveLayers,
-        liveLayerIds,
         socket,
         org
     }: ImportDropdownMenuProps) => {
@@ -82,7 +77,7 @@ export const ImportDropdownMenu = (
         const orderedLayers = importData.layerIds.map(id => importData.layers[id]);
         const imported = true
 
-        const command = new insertLayerCommand(importData.layerIds, orderedLayers,liveLayers, liveLayerIds, setLiveLayers ,setLiveLayerIds, id, socket, org, proModal, imported);
+        const command = new InsertLayerCommand(importData.layerIds, orderedLayers, setLiveLayers, setLiveLayerIds, id, socket, org, proModal, imported);
 
         performAction(command);
         setIsAlertDialogOpen(false);
