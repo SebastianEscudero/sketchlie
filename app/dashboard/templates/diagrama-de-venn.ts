@@ -71,40 +71,6 @@ export const PlantillaDiagramaDeVenn = {
             "alignY": "center",
             "value": "B"
         },
-        "zeu6l6JZdyt8YXJWCitQM": {
-            "type": 13,
-            "x": 767.0427966804244,
-            "y": 482.1604822262541,
-            "height": 37.54975867764745,
-            "width": 43.621328647146846,
-            "fill": {
-                "r": 255,
-                "g": 255,
-                "b": 255,
-                "a": 0.5
-            },
-            "textFontSize": 24,
-            "outlineFill": null,
-            "alignX": "left",
-            "value": "AC"
-        },
-        "G1pkoTN7HLlMQrltqNEM3": {
-            "type": 13,
-            "x": 850.5900274998038,
-            "y": 598.3632296603149,
-            "height": 36.92994028464663,
-            "width": 36.830128490112045,
-            "fill": {
-                "r": 255,
-                "g": 255,
-                "b": 255,
-                "a": 0.5
-            },
-            "textFontSize": 24,
-            "outlineFill": null,
-            "alignX": "left",
-            "value": "AB"
-        },
         "vhPyJ4xp5U7TXpN9Yk0O5": {
             "type": 1,
             "x": 634.5729863580332,
@@ -182,10 +148,8 @@ export const PlantillaDiagramaDeVenn = {
     },
     "layerIds": [
         "iJG8HW0L3050xPAPf7EPL",
-        "YwJh6QPxKDRvZtgiqKrwN",
-        "zeu6l6JZdyt8YXJWCitQM",
-        "G1pkoTN7HLlMQrltqNEM3",
         "vhPyJ4xp5U7TXpN9Yk0O5",
+        "YwJh6QPxKDRvZtgiqKrwN",
         "CldPqYzFLpdNsPSwXlFGf",
         "1D2Rygw8ma6hNYCV2jm8R",
         "SjRXCO1qwH7oVJMsWoZBe"

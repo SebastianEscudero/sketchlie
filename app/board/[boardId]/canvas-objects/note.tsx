@@ -85,6 +85,34 @@ export const Note = memo(({
   }, []);
 
   const handlePointerDown = (e: React.PointerEvent) => {
+    if (e.pointerType === 'mouse') {
+      if (e.target === NoteRef.current) {
+
+        if (focused) {
+          e.stopPropagation();
+        } else {
+          e.preventDefault();
+          if (onPointerDown) onPointerDown(e, id);
+        }
+        return;
+      } else if (focused) {
+        e.preventDefault();
+        e.stopPropagation();
+        NoteRef.current.focus();
+      }
+  
+      if (onPointerDown) {
+        onPointerDown(e, id);
+      }
+    }
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+
+    if (e.touches.length > 1) {
+      return;
+    }
+
     if (e.target === NoteRef.current) {
 
       if (focused) {
@@ -97,13 +125,12 @@ export const Note = memo(({
     } else if (focused) {
       e.preventDefault();
       e.stopPropagation();
-      NoteRef.current.focus();
     }
 
     if (onPointerDown) {
       onPointerDown(e, id);
     }
-  };
+  }
 
   const divWidth = width * 1;
   const divHeight = height * 1;
@@ -120,6 +147,7 @@ export const Note = memo(({
     <g
       transform={`translate(${x}, ${y})`}
       onPointerDown={(e) => handlePointerDown(e)}
+      onTouchStart={(e) => handleTouchStart(e)}
     >
       <rect
         width={width}

@@ -85,6 +85,34 @@ export const BigArrowLeft = memo(({
   }, []);
 
   const handlePointerDown = (e: React.PointerEvent) => {
+    if (e.pointerType === 'mouse') {
+      if (e.target === BigArrowLeftRef.current) {
+
+        if (focused) {
+          e.stopPropagation();
+        } else {
+          e.preventDefault();
+          if (onPointerDown) onPointerDown(e, id);
+        }
+        return;
+      } else if (focused) {
+        e.preventDefault();
+        e.stopPropagation();
+        BigArrowLeftRef.current.focus();
+      }
+  
+      if (onPointerDown) {
+        onPointerDown(e, id);
+      }
+    }
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+
+    if (e.touches.length > 1) {
+      return;
+    }
+
     if (e.target === BigArrowLeftRef.current) {
 
       if (focused) {
@@ -97,13 +125,12 @@ export const BigArrowLeft = memo(({
     } else if (focused) {
       e.preventDefault();
       e.stopPropagation();
-      BigArrowLeftRef.current.focus();
     }
 
     if (onPointerDown) {
       onPointerDown(e, id);
     }
-  };
+  }
 
   const divWidth = width * 0.75;
   const divHeight = height * 0.50;
@@ -120,6 +147,7 @@ export const BigArrowLeft = memo(({
     <g
       transform={`translate(${x}, ${y})`}
       onPointerDown={(e) => handlePointerDown(e)}
+      onTouchStart={(e) => handleTouchStart(e)}
     >
       <path
         d={`M ${width / 2} ${height} L 0 ${height / 2} L ${width / 2} ${0} L ${width / 2} ${height / 4} L ${width} ${height / 4} L ${width} ${height * 3 / 4} L ${width / 2} ${height * 3 / 4} Z`} fill={fillColor}

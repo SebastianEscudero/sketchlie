@@ -13,6 +13,7 @@ export const InsertImage = ({
   id,
   layer,
   onPointerDown,
+  selectionColor,
 }: ImageProps) => {
   const { x, y, width, height, src, opacity } = layer;
   if (!isUploading) {
@@ -27,6 +28,8 @@ export const InsertImage = ({
         width={width}
         height={height}
         onPointerDown={(e) => onPointerDown(e, id)}
+        stroke={selectionColor ? selectionColor : "none"}
+        strokeWidth={selectionColor ? "2" : "0"}
       />
     );
   } else {

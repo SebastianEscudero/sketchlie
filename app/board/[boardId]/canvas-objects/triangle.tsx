@@ -85,6 +85,34 @@ export const Triangle = memo(({
   }, []);
 
   const handlePointerDown = (e: React.PointerEvent) => {
+    if (e.pointerType === 'mouse') {
+      if (e.target === TriangleRef.current) {
+
+        if (focused) {
+          e.stopPropagation();
+        } else {
+          e.preventDefault();
+          if (onPointerDown) onPointerDown(e, id);
+        }
+        return;
+      } else if (focused) {
+        e.preventDefault();
+        e.stopPropagation();
+        TriangleRef.current.focus();
+      }
+  
+      if (onPointerDown) {
+        onPointerDown(e, id);
+      }
+    }
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+
+    if (e.touches.length > 1) {
+      return;
+    }
+
     if (e.target === TriangleRef.current) {
 
       if (focused) {
@@ -97,13 +125,12 @@ export const Triangle = memo(({
     } else if (focused) {
       e.preventDefault();
       e.stopPropagation();
-      TriangleRef.current.focus();
     }
 
     if (onPointerDown) {
       onPointerDown(e, id);
     }
-  };
+  }
 
   const divWidth = width * 0.40;
   const divHeight = height * 0.60;
@@ -120,6 +147,7 @@ export const Triangle = memo(({
     <g
       transform={`translate(${x}, ${y})`}
       onPointerDown={(e) => handlePointerDown(e)}
+      onTouchStart={(e) => handleTouchStart(e)}
     >
       <polygon
         points={`${width / 2}, 0 ${width},${height} 0,${height}`}
