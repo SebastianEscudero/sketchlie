@@ -1338,7 +1338,6 @@ export const Canvas = ({
         }
 
         const newPresence: Presence = {
-            ...myPresence,
             selection: [layerId],
             cursor: point
         };
