@@ -39,7 +39,7 @@ interface ActionsProps {
   setLiveLayers?: any;
   setLiveLayerIds?: any;
   socket?: any;
-  selectedLayersRef: any;
+  selectedLayersRef?: any;
 };
 
 export const Actions = ({
