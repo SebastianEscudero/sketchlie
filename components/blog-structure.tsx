@@ -23,10 +23,13 @@ export const BlogStructure = ({
 }: BlogStructureProps) => {
     const imageElement = img && (
         <div className="flex-1 w-full border border-[#837D7C] rounded-sm md:block hidden">
-            <img
+            <Image
                 src={img}
                 alt={alt}
-                className="w-full h-full rounded-sm"
+                className="w-full rounded-sm"
+                width={1919}
+                height={1079}
+                priority
             />
         </div>
     );
