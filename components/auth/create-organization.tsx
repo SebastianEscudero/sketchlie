@@ -85,7 +85,7 @@ export const CreateOrganization = ({
     };
 
     return (
-        <DialogContent className="max-w-[480px] w-full" showCloseButton={showCloseButton}>
+        <DialogContent className="w-[80%] sm:w-[60%] lg:w-[40%] xl:w-[30%] rounded-xl" showCloseButton={showCloseButton}>
             <DialogHeader>
                 <DialogTitle>{label}</DialogTitle>
             </DialogHeader>
@@ -105,6 +105,8 @@ export const CreateOrganization = ({
                                             {...field}
                                             placeholder="Sebastian's Team"
                                             disabled={isPending}
+                                            className="text-base py-1"
+                                            maxLength={60}
                                         />
                                     </FormControl>
                                     <FormMessage />

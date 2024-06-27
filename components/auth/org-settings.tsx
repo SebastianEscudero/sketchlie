@@ -281,6 +281,8 @@ export const OrganizationSettings = ({
                                                         <Input
                                                             {...field}
                                                             placeholder="Sebastian's Team"
+                                                            maxLength={60}
+                                                            className="py-1 text-base"
                                                         />
                                                     </FormControl>
                                                     <Button
