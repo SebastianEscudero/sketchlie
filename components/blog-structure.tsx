@@ -26,7 +26,7 @@ export const BlogStructure = ({
             <img
                 src={img}
                 alt={alt}
-                className="w-full rounded-sm"
+                className="w-full h-full rounded-sm"
             />
         </div>
     );
