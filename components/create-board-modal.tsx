@@ -39,7 +39,7 @@ export const ConfirmBoardModal = ({ children, disabled, header, onConfirm, descr
                     <AlertDialogDescription>{description}</AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                    <Input type="text" placeholder="Part 1: Planning" onChange={(e) => setTitle(e.target.value || "New Board")}  className="py-1" maxLength={60}/>
+                    <Input type="text" placeholder="Part 1: Planning" onChange={(e) => setTitle(e.target.value || "New Board")}  className="py-1 text-base" maxLength={60}/>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
                     <AlertDialogAction className="bg-custom-blue hover:bg-custom-blue-dark sm:mt-0 mt-2" disabled={disabled} onClick={handleConfirm}>Confirm</AlertDialogAction>
                 </AlertDialogFooter>
