@@ -5,7 +5,17 @@ import { domToJpeg, domToPng, domToSvg } from 'modern-screenshot'
 export const exportToPdf = async (title: string, isTransparent: boolean) => {
   try {
     const screenShot = document.querySelector("#canvas") as HTMLElement;
-    domToPng(screenShot, { 
+
+    // Save the text content of the textarea elements
+    const textareas = screenShot.querySelectorAll('textarea');
+    const textareaContents = Array.from(textareas).map(textarea => textarea.textContent);
+
+    // Clear the text content of the textarea elements
+    textareas.forEach(textarea => {
+      textarea.textContent = '';
+    });
+
+    await domToPng(screenShot, {
       quality: 1,
       scale: 3,
       backgroundColor: isTransparent ? 'transparent' : '#F4F4F4',
@@ -19,6 +29,12 @@ export const exportToPdf = async (title: string, isTransparent: boolean) => {
       pdf.addImage(dataUrl, 'PNG', 0, 0, screenShot.clientWidth, screenShot.clientHeight);
       pdf.save(`${title}.pdf`);
     });
+
+    // Restore the text content of the textarea elements
+    textareas.forEach((textarea, index) => {
+      textarea.textContent = textareaContents[index];
+    });
+
   } catch (error) {
     toast.error('An error occurred while exporting the board. Please try a different browser.');
   }
@@ -27,7 +43,17 @@ export const exportToPdf = async (title: string, isTransparent: boolean) => {
 export const exportToPNG = async (title: string, isTransparent: boolean) => {
   try {
     const screenShot = document.querySelector("#canvas") as HTMLElement;
-    domToPng(screenShot, {
+
+    // Save the text content of the textarea elements
+    const textareas = screenShot.querySelectorAll('textarea');
+    const textareaContents = Array.from(textareas).map(textarea => textarea.textContent);
+
+    // Clear the text content of the textarea elements
+    textareas.forEach(textarea => {
+      textarea.textContent = '';
+    });
+
+    await domToPng(screenShot, {
       quality: 1,
       scale: 3,
       backgroundColor: isTransparent ? 'transparent' : '#F4F4F4',
@@ -37,7 +63,13 @@ export const exportToPNG = async (title: string, isTransparent: boolean) => {
       anchor.setAttribute("download", `${title}.png`);
       anchor.click();
       anchor.remove();
-    })
+    });
+
+    // Restore the text content of the textarea elements
+    textareas.forEach((textarea, index) => {
+      textarea.textContent = textareaContents[index];
+    });
+
   } catch (error) {
     toast.error('An error occurred while exporting the board. Please try a different browser.');
   }
@@ -46,7 +78,17 @@ export const exportToPNG = async (title: string, isTransparent: boolean) => {
 export const exportToJPG = async (title: string, isTransparent: boolean) => {
   try {
     const screenShot = document.querySelector("#canvas") as HTMLElement;
-    domToJpeg(screenShot, {
+
+    // Save the text content of the textarea elements
+    const textareas = screenShot.querySelectorAll('textarea');
+    const textareaContents = Array.from(textareas).map(textarea => textarea.textContent);
+
+    // Clear the text content of the textarea elements
+    textareas.forEach(textarea => {
+      textarea.textContent = '';
+    });
+
+    await domToJpeg(screenShot, {
       quality: 1,
       scale: 3,
       backgroundColor: isTransparent ? 'transparent' : '#F4F4F4',
@@ -56,7 +98,13 @@ export const exportToJPG = async (title: string, isTransparent: boolean) => {
       anchor.setAttribute("download", `${title}.jpg`);
       anchor.click();
       anchor.remove();
-    })
+    });
+
+    // Restore the text content of the textarea elements
+    textareas.forEach((textarea, index) => {
+      textarea.textContent = textareaContents[index];
+    });
+
   } catch (error) {
     toast.error('An error occurred while exporting the board. Please try a different browser.');
   }
@@ -65,7 +113,17 @@ export const exportToJPG = async (title: string, isTransparent: boolean) => {
 export const exportToSVG = async (title: string, isTransparent: boolean) => {
   try {
     const screenShot = document.querySelector("#canvas") as HTMLElement;
-    domToSvg(screenShot, {
+
+    // Save the text content of the textarea elements
+    const textareas = screenShot.querySelectorAll('textarea');
+    const textareaContents = Array.from(textareas).map(textarea => textarea.textContent);
+
+    // Clear the text content of the textarea elements
+    textareas.forEach(textarea => {
+      textarea.textContent = '';
+    });
+
+    await domToSvg(screenShot, {
       quality: 1,
       scale: 3,
       backgroundColor: isTransparent ? 'transparent' : '#F4F4F4',
@@ -76,7 +134,13 @@ export const exportToSVG = async (title: string, isTransparent: boolean) => {
       document.body.appendChild(anchor);
       anchor.click();
       document.body.removeChild(anchor);
-    })
+    });
+
+    // Restore the text content of the textarea elements
+    textareas.forEach((textarea, index) => {
+      textarea.textContent = textareaContents[index];
+    });
+
   } catch (error) {
     toast.error('An error occurred while exporting the board. Please try a different browser.');
   }
