@@ -420,7 +420,6 @@ export const Canvas = ({
     const continueDrawing = useCallback((point: Point, e: React.PointerEvent) => {
         if (
             (canvasState.mode !== CanvasMode.Pencil && canvasState.mode !== CanvasMode.Laser && canvasState.mode !== CanvasMode.Highlighter) ||
-            e.buttons !== 1 ||
             pencilDraft.length === 0
         ) {
             return;
@@ -455,7 +454,7 @@ export const Canvas = ({
 
         setMyPresence(newPresence);
 
-    }, [canvasState.mode, pencilDraft, myPresence, setMyPresence, activeTouches]);
+    }, [canvasState.mode, pencilDraft, myPresence, setMyPresence, pathColor, pathStrokeSize, zoom]);
 
     const insertPath = useCallback(() => {
 
@@ -1081,6 +1080,7 @@ export const Canvas = ({
             const newPresence: Presence = {
                 ...myPresence,
                 selection: [],
+                pencilDraft: null,
             };
             if (socket && expired !== true) {
                 socket.emit('presence', newPresence, User.userId);
@@ -1116,8 +1116,10 @@ export const Canvas = ({
         const newPresence: Presence = {
             ...myPresence,
             cursor: null,
+            pencilDraft: null
         };
 
+        setPencilDraft([]);
         setMyPresence(newPresence);
 
         if (socket && expired !== true) {
