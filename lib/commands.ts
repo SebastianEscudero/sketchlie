@@ -18,19 +18,9 @@ export class InsertLayerCommand implements Command {
         private socket: Socket | null,
         private org: any,
         private proModal: any,
-        private imported: boolean = false,
     ) { }
 
     execute(liveLayerIds: string[], liveLayers: Layers) {
-
-        if (this.imported) {
-            const layers = this.layers.reduce((acc, layer, index) => ({ ...acc, [this.layerIds[index]]: layer }), {})
-            this.setLiveLayerIds(this.layerIds);
-            this.setLiveLayers(layers);
-            updateR2Bucket('/api/r2-bucket/addLayer', this.boardId, this.layerIds, layers);
-            return;
-        }
-
         this.layerIds.forEach((layerId, index) => {
             liveLayers = { ...liveLayers, [layerId]: this.layers[index] };
             liveLayerIds = [...liveLayerIds, layerId];

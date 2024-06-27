@@ -159,6 +159,7 @@ export const Info = ({
                 setLiveLayerIds={setLiveLayerIds}
                 performAction={performAction}
                 socket={socket}
+                selectedLayersRef={selectedLayersRef}
             >
                 <div className="w-10 flex justify-center items-center">
                     <Hint label="Main menu" side="bottom" sideOffset={10}>

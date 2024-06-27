@@ -21,6 +21,7 @@ interface ImportDropdownMenuProps {
     setLiveLayerIds: any;
     org: any
     socket: any;
+    selectedLayersRef: any;
 }
 
 interface ImportData {
@@ -36,7 +37,8 @@ export const ImportDropdownMenu = (
         setLiveLayers,
         setLiveLayerIds,
         socket,
-        org
+        org,
+        selectedLayersRef
     }: ImportDropdownMenuProps) => {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
@@ -75,9 +77,10 @@ export const ImportDropdownMenu = (
         if (!importData) return;
 
         const orderedLayers = importData.layerIds.map(id => importData.layers[id]);
-        const imported = true
 
-        const command = new InsertLayerCommand(importData.layerIds, orderedLayers, setLiveLayers, setLiveLayerIds, id, socket, org, proModal, imported);
+        const command = new InsertLayerCommand(importData.layerIds, orderedLayers, setLiveLayers, setLiveLayerIds, id, socket, org, proModal);
+
+        selectedLayersRef.current = importData.layerIds;
 
         performAction(command);
         setIsAlertDialogOpen(false);

@@ -39,6 +39,7 @@ interface ActionsProps {
   setLiveLayers?: any;
   setLiveLayerIds?: any;
   socket?: any;
+  selectedLayersRef: any;
 };
 
 export const Actions = ({
@@ -57,6 +58,7 @@ export const Actions = ({
   setLiveLayers,
   setLiveLayerIds,
   socket,
+  selectedLayersRef,
 }: ActionsProps) => {
   const { onOpen } = useRenameModal();
   const { mutate, pending } = useApiMutation(api.board.remove);
@@ -151,6 +153,7 @@ export const Actions = ({
             org={org}
             performAction={performAction}
             socket={socket}
+            selectedLayersRef={selectedLayersRef}
           />
         }
         {showExport && <ExportDropdownMenu id={id} title={title} />}
