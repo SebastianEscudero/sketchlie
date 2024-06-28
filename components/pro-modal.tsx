@@ -1,7 +1,7 @@
 "use client";
 
 import { Card } from "@/components/card";
-import { Dialog, DialogContent, DialogDescription, DialogHeader } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { Check, ChevronsDown } from "lucide-react";
 import { Badge } from "./ui/badge";
@@ -9,7 +9,6 @@ import { SubscriptionButton } from "./subscription-button";
 import { useEffect, useState } from "react";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
-import { Button } from "./ui/button";
 import { subscriptionPlans } from "@/lib/subscriptionPlans";
 
 const paidPlans = subscriptionPlans.filter(plan => plan.label !== "Gratis");
@@ -31,7 +30,7 @@ export const ProModal = () => {
     }
 
     return (
-        <div>
+        <div onWheel={(e) => e.stopPropagation()}>
             <Dialog open={proModal.isOpen} onOpenChange={proModal.onClose}>
                 <DialogContent className="max-w-[90%] lg:max-w-[65%] xl:max-w-[55%] 2xl:max-w-[50%] w-full overflow-y-auto max-h-[90%] pt-10">
                     <DialogHeader>

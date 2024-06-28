@@ -15,7 +15,7 @@ export const ShowAllTemplates = ({
     usersRole,
 }: ShowAllTemplatesProps) => {
     return (
-        <div className="p-2 flex flex-col justify-center items-center">
+        <div className="p-2 flex flex-col justify-center items-center" onWheel={(e) => e.stopPropagation()}>
             <div className="flex flex-col justify-start">
                 <h1 className="text-2xl font-bold text-center">Elige una plantilla</h1>
                 <p className="text-center text-gray-600">Empieza con una plantilla para acelerar tu flujo de trabajo</p>
