@@ -120,7 +120,7 @@ export const Toolbar = ({
 
   return (
     <div className="absolute h-600:top-[50%] h-600:translate-y-[-50%] h-600:bottom-auto bottom-2 h-600:left-2 h-600:translate-x-0 left-[50%] translate-x-[-50%] flex h-600:flex-col flex-row h-600:gap-y-4 h-600:gap-x-0 gap-x-4">
-      <div className="bg-white rounded-md shadow-md p-1.5 flex h-600:gap-y-1 h-600:gap-x-0 gap-x-1 h-600:flex-col flex-row items-center h-600:w-[44px] h-600:xs:w-[52px]">
+      <div className="bg-white rounded-md drop-shadow-md p-1.5 flex h-600:gap-y-1 h-600:gap-x-0 gap-x-1 h-600:flex-col flex-row items-center h-600:w-[44px] h-600:xs:w-[52px]">
       <ToolButton
           label="Select"
           icon={MousePointer2}
@@ -255,7 +255,7 @@ export const Toolbar = ({
           }
         />
       </div>
-      <div className="bg-white rounded-md p-1.5 flex h-600:flex-col flex-row items-center shadow-md">
+      <div className="bg-white rounded-md p-1.5 flex h-600:flex-col flex-row items-center drop-shadow-md">
         <Hint side="right" label="Undo" sideOffset={14}>
           <Button disabled={!canUndo} onClick={undo} className="h-8 w-8 xs:h-10 xs:w-10 p-2" variant="ghost">
             <Undo2 className="h-5 w-5" />
@@ -269,38 +269,38 @@ export const Toolbar = ({
       </div>
 
       {isPenMenuOpen && (canvasState.mode === CanvasMode.Highlighter || canvasState.mode === CanvasMode.Pencil) && isPenEraserSwitcherOpen &&
-        <div className="absolute h-600:left-[235%] h-600:top-20 h-600:bottom-auto bottom-32 p-2 bg-white rounded-lg shadow-sm w-[190px] space-y-2 flex flex-col items-center cursor-default">
+        <div className="p-3 pt-5 pb-2 absolute h-600:left-[235%] h-600:top-20 h-600:bottom-auto bottom-32 bg-white rounded-lg drop-shadow-md w-[165px] flex flex-col items-center cursor-default">
           <Slider
             defaultValue={[pathStrokeSize]}
             min={1}
             max={8}
             step={1}
-            className='bg-white w-[90%] pt-3 cursor-pointer'
+            className='bg-white w-[90%] cursor-pointer'
             onValueChange={handleStrokeSizeChange}
           />
-          <div className="grid grid-cols-4 gap-x-2" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-            <ColorButton color={{ r: 0, g: 0, b: 0, a: 0 }} onClick={onPathColorChange} pathColor={pathColor} />
-            <ColorButton color={{ r: 255, g: 255, b: 255, a: 1 }} onClick={onPathColorChange} pathColor={pathColor} />
-            <ColorButton color={{ r: 29, g: 29, b: 29, a: 1 }} onClick={onPathColorChange} pathColor={pathColor} />
-            <ColorButton color={{ r: 159, g: 168, b: 178, a: 1 }} onClick={onPathColorChange} pathColor={pathColor} />
-            <ColorButton color={{ r: 255, g: 240, b: 0, a: 1 }} onClick={onPathColorChange} pathColor={pathColor} />
-            <ColorButton color={{ r: 252, g: 225, b: 156, a: 1 }} onClick={onPathColorChange} pathColor={pathColor} />
-            <ColorButton color={{ r: 225, g: 133, b: 244, a: 1 }} onClick={onPathColorChange} pathColor={pathColor} />
-            <ColorButton color={{ r: 174, g: 62, b: 201, a: 1 }} onClick={onPathColorChange} pathColor={pathColor} />
-            <ColorButton color={{ r: 68, g: 101, b: 233, a: 1 }} onClick={onPathColorChange} pathColor={pathColor} />
-            <ColorButton color={{ r: 75, g: 161, b: 241, a: 1 }} onClick={onPathColorChange} pathColor={pathColor} />
-            <ColorButton color={{ r: 255, g: 165, b: 0, a: 1 }} onClick={onPathColorChange} pathColor={pathColor} />
-            <ColorButton color={{ a: 1, b: 42, g: 142, r: 252 }} onClick={onPathColorChange} pathColor={pathColor} />
-            <ColorButton color={{ r: 7, g: 147, b: 104, a: 1 }} onClick={onPathColorChange} pathColor={pathColor} />
-            <ColorButton color={{ a: 1, b: 99, g: 202, r: 68 }} onClick={onPathColorChange} pathColor={pathColor} />
-            <ColorButton color={{ r: 248, g: 119, b: 119, a: 1 }} onClick={onPathColorChange} pathColor={pathColor} />
-            <ColorButton color={{ r: 224, g: 49, b: 49, a: 1 }} onClick={onPathColorChange} pathColor={pathColor} />
+          <div className="grid grid-cols-4 gap-x-1 pt-2" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+            <ColorButton color={{ r: 0, g: 0, b: 0, a: 0 }} onClick={onPathColorChange} selectedColor = {pathColor} />
+            <ColorButton color={{ r: 255, g: 255, b: 255, a: 1 }} onClick={onPathColorChange} selectedColor = {pathColor} />
+            <ColorButton color={{ r: 29, g: 29, b: 29, a: 1 }} onClick={onPathColorChange} selectedColor = {pathColor} />
+            <ColorButton color={{ r: 159, g: 168, b: 178, a: 1 }} onClick={onPathColorChange} selectedColor = {pathColor} />
+            <ColorButton color={{ r: 255, g: 240, b: 0, a: 1 }} onClick={onPathColorChange} selectedColor = {pathColor} />
+            <ColorButton color={{ r: 252, g: 225, b: 156, a: 1 }} onClick={onPathColorChange} selectedColor = {pathColor} />
+            <ColorButton color={{ r: 225, g: 133, b: 244, a: 1 }} onClick={onPathColorChange} selectedColor = {pathColor} />
+            <ColorButton color={{ r: 174, g: 62, b: 201, a: 1 }} onClick={onPathColorChange} selectedColor = {pathColor} />
+            <ColorButton color={{ r: 68, g: 101, b: 233, a: 1 }} onClick={onPathColorChange} selectedColor = {pathColor} />
+            <ColorButton color={{ r: 75, g: 161, b: 241, a: 1 }} onClick={onPathColorChange} selectedColor = {pathColor} />
+            <ColorButton color={{ r: 255, g: 165, b: 0, a: 1 }} onClick={onPathColorChange} selectedColor = {pathColor} />
+            <ColorButton color={{ a: 1, b: 42, g: 142, r: 252 }} onClick={onPathColorChange} selectedColor = {pathColor} />
+            <ColorButton color={{ r: 7, g: 147, b: 104, a: 1 }} onClick={onPathColorChange} selectedColor = {pathColor} />
+            <ColorButton color={{ a: 1, b: 99, g: 202, r: 68 }} onClick={onPathColorChange} selectedColor = {pathColor} />
+            <ColorButton color={{ r: 248, g: 119, b: 119, a: 1 }} onClick={onPathColorChange} selectedColor = {pathColor} />
+            <ColorButton color={{ r: 224, g: 49, b: 49, a: 1 }} onClick={onPathColorChange} selectedColor = {pathColor} />
           </div>
         </div>
       }
 
       {isShapesMenuOpen && canvasState.mode === CanvasMode.Inserting && canvasState.layerType !== LayerType.Image && canvasState.layerType !== LayerType.Text && canvasState.layerType !== LayerType.Arrow && canvasState.layerType !== LayerType.Note &&
-        <div className="absolute h-600:left-[115%] left-6 h-600:bottom-auto h-600:top-14 bottom-16 p-2 bg-white rounded-lg shadow-sm grid grid-cols-4 grid-rows-3 gap-2 h-[144px] w-[160px] sm:w-[192px] items-center cursor-default">
+        <div className="absolute h-600:left-[115%] left-6 h-600:bottom-auto h-600:top-14 bottom-16 p-2 bg-white rounded-lg drop-shadow-md grid grid-cols-4 grid-rows-3 gap-2 h-[144px] w-[160px] sm:w-[192px] items-center cursor-default">
           <ToolButton
             icon={Square}
             onClick={() => setCanvasState({
@@ -436,7 +436,7 @@ export const Toolbar = ({
         </div>
       }
       {isPenEraserSwitcherOpen && (canvasState.mode === CanvasMode.Pencil || canvasState.mode === CanvasMode.Eraser || canvasState.mode === CanvasMode.Laser || canvasState.mode === CanvasMode.Highlighter) &&
-        <div className="h-600:w-[44px] h-600:xs:w-[52px] absolute h-600:left-[115%] left-20 h-600:bottom-auto h-600:top-20 bottom-16 p-2 bg-white rounded-lg shadow-sm h-600:space-y-1 flex flex-row h-600:space-x-0 space-x-1 h-600:flex-col items-center cursor-default">
+        <div className="h-600:w-[44px] h-600:xs:w-[52px] absolute h-600:left-[115%] left-20 h-600:bottom-auto h-600:top-20 bottom-16 p-2 bg-white rounded-lg drop-shadow-md h-600:space-y-1 flex flex-row h-600:space-x-0 space-x-1 h-600:flex-col items-center cursor-default">
           {/* <Hint label="Magic Drawing" side="right" sideOffset={14}>
             <Button className="h-8 w-8 xs:h-10 xs:w-10 p-2" variant={magicPathAssist ? "magicAssistActive" : "magicAssist"} onClick={() => setMagicPathAssist(!magicPathAssist)}>
               <WandSparkles className="w-5 h-5"/>
@@ -496,6 +496,6 @@ export const Toolbar = ({
 
 export const ToolbarSkeleton = () => {
   return (
-    <div className="absolute top-[50%] -translate-y-[50%] left-2 flex flex-col gap-y-4 bg-white h-[360px] w-[52px] shadow-md rounded-md" />
+    <div className="absolute top-[50%] -translate-y-[50%] left-2 flex flex-col gap-y-4 bg-white h-[360px] w-[52px] drop-shadow-md rounded-md" />
   );
 };

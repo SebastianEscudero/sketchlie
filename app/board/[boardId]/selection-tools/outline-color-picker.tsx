@@ -30,7 +30,7 @@ export const OutlineColorPicker = ({
     colorButtonColor = { r: 0, g: 0, b: 0, a: 0 };
   }
 
-  const selectorPositionClass = expandUp ? 'bottom-[100%] mb-2' : 'top-[100%] mt-2';
+  const selectorPositionClass = expandUp ? 'bottom-[100%] mb-3' : 'top-[100%] mt-3';
   const opacity = colorButtonColor.a;
 
   return (
@@ -38,7 +38,7 @@ export const OutlineColorPicker = ({
       <OutlineColorButton color={colorButtonColor} onClick={() => setOpenSelector(openSelector === SelectorType.OutlineColor ? null : SelectorType.OutlineColor)} />
       {openSelector === SelectorType.OutlineColor && (
         <div
-          className={`p-4 origin-top-right absolute right-0 ${selectorPositionClass} w-[190px] translate-x-1/3 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5`}
+          className={`p-3 pt-5 pb-2 origin-top-right absolute right-0 ${selectorPositionClass} w-[165px] translate-x-1/3 rounded-md drop-shadow-md bg-white`}
         >
           <Slider
             defaultValue={[opacity || 1]}
@@ -47,23 +47,23 @@ export const OutlineColorPicker = ({
             step={0.1}
             onValueChange={handleOpacityChange}
           />
-          <div className="grid grid-cols-4 gap-x-2 pt-2" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-            <ColorButton color={{ r: 0, g: 0, b: 0, a: 0 }} onClick={onChange} />
-            <ColorButton color={{ r: 255, g: 255, b: 255, a: 1 }} onClick={onChange} />
-            <ColorButton color={{ r: 29, g: 29, b: 29, a: 1 }} onClick={onChange} />
-            <ColorButton color={{ r: 159, g: 168, b: 178, a: 1 }} onClick={onChange} />
-            <ColorButton color={{ r: 255, g: 240, b: 0, a: 1 }} onClick={onChange} />
-            <ColorButton color={{ r: 252, g: 225, b: 156, a: 1 }} onClick={onChange} />
-            <ColorButton color={{ r: 225, g: 133, b: 244, a: 1 }} onClick={onChange} />
-            <ColorButton color={{ r: 174, g: 62, b: 201, a: 1 }} onClick={onChange} />
-            <ColorButton color={{ r: 68, g: 101, b: 233, a: 1 }} onClick={onChange} />
-            <ColorButton color={{ r: 75, g: 161, b: 241, a: 1 }} onClick={onChange} />
-            <ColorButton color={{ r: 255, g: 165, b: 0, a: 1 }} onClick={onChange} />
-            <ColorButton color={{ a: 1, b: 42, g: 142, r: 252 }} onClick={onChange} />
-            <ColorButton color={{ r: 7, g: 147, b: 104, a: 1 }} onClick={onChange} />
-            <ColorButton color={{ a: 1, b: 99, g: 202, r: 68 }} onClick={onChange} />
-            <ColorButton color={{ r: 248, g: 119, b: 119, a: 1 }} onClick={onChange} />
-            <ColorButton color={{ r: 224, g: 49, b: 49, a: 1 }} onClick={onChange} />
+          <div className="grid grid-cols-4 gap-x-1 pt-2" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+            <ColorButton color={{ r: 0, g: 0, b: 0, a: 0 }} onClick={onChange} selectedColor={colorButtonColor} />
+            <ColorButton color={{ r: 255, g: 255, b: 255, a: 1 }} onClick={onChange} selectedColor={colorButtonColor} />
+            <ColorButton color={{ r: 29, g: 29, b: 29, a: 1 }} onClick={onChange} selectedColor={colorButtonColor} />
+            <ColorButton color={{ r: 159, g: 168, b: 178, a: 1 }} onClick={onChange} selectedColor={colorButtonColor} />
+            <ColorButton color={{ r: 255, g: 240, b: 0, a: 1 }} onClick={onChange} selectedColor={colorButtonColor} />
+            <ColorButton color={{ r: 252, g: 225, b: 156, a: 1 }} onClick={onChange} selectedColor={colorButtonColor} />
+            <ColorButton color={{ r: 225, g: 133, b: 244, a: 1 }} onClick={onChange} selectedColor={colorButtonColor} />
+            <ColorButton color={{ r: 174, g: 62, b: 201, a: 1 }} onClick={onChange} selectedColor={colorButtonColor} />
+            <ColorButton color={{ r: 68, g: 101, b: 233, a: 1 }} onClick={onChange} selectedColor={colorButtonColor} />
+            <ColorButton color={{ r: 75, g: 161, b: 241, a: 1 }} onClick={onChange} selectedColor={colorButtonColor} />
+            <ColorButton color={{ r: 255, g: 165, b: 0, a: 1 }} onClick={onChange} selectedColor={colorButtonColor} />
+            <ColorButton color={{ a: 1, b: 42, g: 142, r: 252 }} onClick={onChange} selectedColor={colorButtonColor} />
+            <ColorButton color={{ r: 7, g: 147, b: 104, a: 1 }} onClick={onChange} selectedColor={colorButtonColor} />
+            <ColorButton color={{ a: 1, b: 99, g: 202, r: 68 }} onClick={onChange} selectedColor={colorButtonColor} />
+            <ColorButton color={{ r: 248, g: 119, b: 119, a: 1 }} onClick={onChange} selectedColor={colorButtonColor} />
+            <ColorButton color={{ r: 224, g: 49, b: 49, a: 1 }} onClick={onChange} selectedColor={colorButtonColor} />
           </div>
         </div>
       )}
@@ -77,12 +77,12 @@ const OutlineColorButton = ({
 }: any) => {
   return (
     <button
-      className="w-8 h-8 my-1 items-center flex justify-center transition mx-2 border border-neutral-300 rounded-[50%]"
+      className="w-6 h-6 my-1 items-center flex justify-center transition mx-2 border border-neutral-300 rounded-[50%]"
       onClick={() => onClick(color)}
       style={{ background: colorToCss(color) }}
     >
       <div
-        className="h-6 w-6 rounded-[50%] border border-neutral-300 relative z-50"
+        className="h-4 w-4 rounded-[50%] border border-neutral-300 relative z-50"
         style={{ background: 'white' }}
       >
         {color.r === 0 && color.g === 0 && color.b === 0 && color.a === 0 && (
