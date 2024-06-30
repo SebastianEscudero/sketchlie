@@ -27,7 +27,7 @@ export const FontSizePicker = ({
     setOpenSelector,
     expandUp = false
 }: FontSizePickerProps) => {
-    const [inputFontSize, setInputFontSize] = useState(liveLayers[selectedLayers[0]].textFontSize);
+    const [inputFontSize, setInputFontSize] = useState(liveLayers[selectedLayers[0]].textFontSize || 12);
     
     const handleFontSizeChange = (fontSize: number) => {
         const newLayers = { ...liveLayers };

@@ -2,7 +2,7 @@
 
 import { toast } from "sonner"
 import { cn } from "@/lib/utils";
-import { Plus } from "lucide-react";
+import { LoaderCircle, Plus } from "lucide-react";
 import { api } from "@/convex/_generated/api";
 import { useApiMutation } from "@/hooks/use-api-mutation";
 import { useRouter } from "next/navigation";
@@ -85,10 +85,14 @@ export const NewBoardButton = ({
                 )}
             >
                 <div />
-                <Plus className="w-12 h-12 text-white stroke-1" />
-                <p className="text-sm text-white font-light">
-                    New Board
-                </p>
+                {pending ? <LoaderCircle className="animate-spin w-12 h-12 text-white stroke-1"/> : 
+                <>
+                    <Plus className="w-12 h-12 text-white stroke-1"/>
+                    <p className="text-sm text-white font-light">
+                        New Board
+                    </p>
+                </>
+                }
                 {usersRole !== 'Admin' && 
                 <p className="text-xs text-white font-light mx-[20%] pt-2">
                     Only <span className="font-bold">Admins</span> can create boards

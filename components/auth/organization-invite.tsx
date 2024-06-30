@@ -20,7 +20,7 @@ import { FormError } from "../form-error";
 import { FormSuccess } from "../form-success";
 import { invite } from "@/actions/invite";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, LoaderCircle } from "lucide-react";
 
 interface OrganizationInviteProps {
     activeOrganization: string | null;
@@ -118,9 +118,9 @@ export const OrganizationInvite = ({
                         disabled={isPending}
                         type="submit"
                         variant="auth"
-                        className="p-5"
+                        className="p-5 w-[180px]"
                     >
-                        Invite teammates
+                        {isPending ? <LoaderCircle className="animate-spin w-5 h-5 text-white"/> : "Invite teammates"}
                     </Button>
                 </form>
                 <div className="flex flex-col gap-y-2 pt-2">

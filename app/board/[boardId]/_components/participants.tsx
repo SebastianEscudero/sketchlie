@@ -32,7 +32,7 @@ export const Participants = ({
     const hasMoreUsers = otherUsers && otherUsers.length > MAX_SHOWN_USERS;
 
     return (
-        <div className="absolute h-12 top-2 right-2 bg-white rounded-md p-3 flex items-center shadow-md">
+        <div className="absolute h-12 top-2 right-2 bg-white rounded-md p-3 flex items-center drop-shadow-md">
             <DropdownMenu>
                 <DropdownMenuTrigger className="xs:hidden flex">
                     <ChevronsDown className="h-5 w-5" />

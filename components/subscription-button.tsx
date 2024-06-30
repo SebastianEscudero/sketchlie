@@ -1,6 +1,6 @@
 "use client";
 
-import { Zap } from "lucide-react";
+import { LoaderCircle, Zap } from "lucide-react";
 import { Button } from "./ui/button";
 import axios from "axios";
 import { toast } from "sonner";
@@ -39,7 +39,7 @@ export const SubscriptionButton = ({
 
     return (
         <Button variant="auth" onClick={onClick} disabled={isLoading}> 
-            Upgrade <Zap className="w-4 h-4 ml-2 fill-white"/>
+            {isLoading ? <LoaderCircle className="animate-spin w-5 h-5 text-white"/> : <>Upgrade <Zap className="w-4 h-4 ml-2 fill-white"/></>}
         </Button>
     )
 }
