@@ -31,7 +31,7 @@ export const metadata: Metadata = {
         "Sketchlie"
     ],
     alternates: {
-        canonical: "https://www.sketchlie.com/es/pizarra-online/",
+        canonical: "https://www.sketchlie.com/pizarra-online/",
     },
 };
 
@@ -131,8 +131,8 @@ const LandingPage = () => {
             <FaqSection accordionData={faqData} sectionTitle="Pizarra Online" />
             <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5 md:my-10 my-5">
                 <VerMas title="Maximiza tu Productividad con Nuestra Pizarra Online" href="/pizarra-online/que-es-pizarra-online/" />
-                <VerMas title="Ventajas de la Pizarra Online Colaborativa" href="/pizarra-online/beneficios-pizarra-online/" />
-                <VerMas title="Guía Completa: Pizarra Online para Equipos" href="/pizarra-online/guia-pizarra-online/" />
+                <VerMas title="Ventajas de la Pizarra Online Colaborativa" href="/pizarra-online/que-es-pizarra-online/" />
+                <VerMas title="Guía Completa: Pizarra Online para Equipos" href="/pizarra-online/que-es-pizarra-online/" />
             </div>
         </div>
 

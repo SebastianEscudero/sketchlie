@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     description: "Aprende a crear y optimizar tu customer journey map. Mejora la experiencia del cliente, aumenta la fidelización y potencia tu negocio con Sketchlie.",
     keywords: ["Customer journey map", "Mapa de experiencia del cliente", "CJM", "UX", "Fidelización de clientes", "Estrategia de negocio"],
     alternates: {
-        canonical: "https://www.sketchlie.com/customer-journey-map/",
+        canonical: "https://www.sketchlie.com/customer-journey-map/que-es-customer-journey-map/",
     },
 };
 
