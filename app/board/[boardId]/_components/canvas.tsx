@@ -640,9 +640,9 @@ export const Canvas = ({
                 );
 
                 if (newLayer.type === LayerType.Text) {
-                    bounds = resizeBox(initialBoundingBox, newBoundingBox, newLayer, canvasState.corner, layerRef, singleLayer);
+                    bounds = resizeBox(initialBoundingBox, newBoundingBox, newLayer, canvasState.corner, singleLayer, layerRef);
                 } else {
-                    bounds = resizeBox(initialBoundingBox, newBoundingBox, newLayer, canvasState.corner);
+                    bounds = resizeBox(initialBoundingBox, newBoundingBox, newLayer, canvasState.corner, singleLayer);
                 }
 
             } else if (canvasState.mode === CanvasMode.ArrowResizeHandler) {

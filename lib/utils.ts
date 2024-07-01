@@ -777,8 +777,8 @@ export function resizeBox(
   newBoundingBox: XYWH,
   newLayer: Layer,
   corner: Side,
+  singleLayer: boolean,
   textareaRef?: React.RefObject<HTMLTextAreaElement>,
-  singleLayer?: boolean,
 ) {
   const isCorner = corner === (Side.Top + Side.Left) || corner === (Side.Top + Side.Right) || corner === (Side.Bottom + Side.Left) || corner === (Side.Bottom + Side.Right);
 
@@ -817,7 +817,11 @@ export function resizeBox(
     newLayer.type !== LayerType.Line &&
     newLayer.type !== LayerType.Arrow
   ) {
-      textFontSize = newLayer.textFontSize;
+      if (!singleLayer) {
+        textFontSize = newLayer.textFontSize * scaleY;
+      } else {
+        textFontSize = newLayer.textFontSize;
+      }
   } 
 
   let points;
