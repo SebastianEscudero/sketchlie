@@ -1,7 +1,7 @@
 import Image from "next/image"
 import { templates } from "../templates/templates"
 import { cn } from "@/lib/utils";
-import { DialogClose } from "@/components/ui/dialog";
+import { DialogClose, DialogTitle } from "@/components/ui/dialog";
 
 interface ShowAllTemplatesProps {
     onClick: (templateName: string, templateLayerIds: any, templateLayers: any) => void;
@@ -16,10 +16,10 @@ export const ShowAllTemplates = ({
 }: ShowAllTemplatesProps) => {
     return (
         <div className="p-2 flex flex-col justify-center items-center" onWheel={(e) => e.stopPropagation()}>
-            <div className="flex flex-col justify-start">
-                <h1 className="text-2xl font-bold text-center">Elige una plantilla</h1>
-                <p className="text-center text-gray-600">Empieza con una plantilla para acelerar tu flujo de trabajo</p>
-            </div>
+            <DialogTitle className="flex flex-col justify-start font-normal">
+                <span className="text-2xl font-bold text-center">Choose a template</span>
+                <span className="text-center text-gray-600">Start with a template to acelerate your workflow</span>
+            </DialogTitle>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-10">
                 {templates.map((template, index) => (
                     <div key={index} className="rounded-lg flex flex-col">

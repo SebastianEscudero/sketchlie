@@ -1,7 +1,7 @@
 "use client";
 
 import { Card } from "@/components/card";
-import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { Check, ChevronsDown } from "lucide-react";
 import { Badge } from "./ui/badge";
@@ -35,7 +35,7 @@ export const ProModal = () => {
                 <DialogContent className="max-w-[90%] lg:max-w-[65%] xl:max-w-[55%] 2xl:max-w-[50%] w-full overflow-y-auto max-h-[90%] pt-10">
                     <DialogHeader>
                         <div className="flex justify-center text-xl md:text-2xl items-center flex-wrap text-center">
-                            <p>Choose organization to upgrade:</p>
+                            <DialogTitle className="text-xl md:text-2xl flex flex-row items-center font-normal">Choose organization to upgrade:</DialogTitle>
                             <DropdownMenu>
                                 <DropdownMenuTrigger className="text-xl md:text-2xl flex flex-row items-center ml-3 text-custom-blue">
                                     {activeOrg ? activeOrg.name : "Select organization"}

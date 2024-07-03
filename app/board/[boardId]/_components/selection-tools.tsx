@@ -1,7 +1,7 @@
 "use client";
 
 import { memo, useCallback, useEffect, useState } from "react";
-import { BringToFront, Copy, SendToBack, Trash2 } from "lucide-react";
+import { BringToFront, Copy, SendToBack, Sparkles, Trash2, WandSparkles } from "lucide-react";
 import { Hint } from "@/components/hint";
 import { Camera, CanvasMode, Color, LayerType, Presence, SelectorType } from "@/types/canvas";
 import { Button } from "@/components/ui/button";
@@ -16,8 +16,10 @@ import { customAlphabet } from "nanoid";
 import { TextJustifySelector } from "../selection-tools/text-justify-selector";
 import { updateR2Bucket } from "@/lib/r2-bucket-functions";
 import { DeleteLayerCommand, InsertLayerCommand } from "@/lib/commands";
+import { SketchlieAiDropdown } from "./sketchlie-ai-dropdown";
 
 interface SelectionToolsProps {
+  board: any;
   boardId: string;
   camera: Camera;
   zoom: number;
@@ -27,7 +29,7 @@ interface SelectionToolsProps {
   setLiveLayers: (layers: any) => void;
   setLiveLayerIds: (ids: string[]) => void;
   socket: Socket | null;
-  performAction: any;
+  performAction: (command: any) => void;
   org: any;
   proModal: any;
   myPresence: Presence | null;
@@ -36,6 +38,7 @@ interface SelectionToolsProps {
 };
 
 export const SelectionTools = memo(({
+  board,
   boardId,
   camera,
   zoom,
@@ -470,6 +473,15 @@ export const SelectionTools = memo(({
           <SendToBack />
         </Button>
       </Hint>
+      {/* <SketchlieAiDropdown 
+        title={board.title}
+        liveLayers={liveLayers}
+        setLiveLayers={setLiveLayers}
+        selectedLayersRef={selectedLayersRef}
+        boardId={boardId}
+        socket={socket}
+        performAction={performAction}
+      /> */}
       <div className="flex items-center pl-2 border-l border-neutral-200">
         <Hint label="Delete">
           <Button

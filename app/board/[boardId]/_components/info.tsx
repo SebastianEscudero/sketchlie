@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Hint } from "@/components/hint";
 import { useRenameModal } from "@/store/use-rename-modal";
-import { LayoutTemplate, Menu, Zap } from "lucide-react";
+import { LayoutTemplate, Menu, Sparkles, Zap } from "lucide-react";
 import { Actions } from "@/components/actions";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { useCurrentUser } from "@/hooks/use-current-user";
@@ -29,11 +29,13 @@ interface InfoProps {
     zoom: any;
     setCanvasState: any;
     selectedLayersRef: any;
+    setIsShowingAIInput: any;
+    isShowingAIInput: any;
 }
 
 const TabSeparator = () => {
     return(
-        <div className="text-neutral-300 px-1.5">
+        <div className="text-neutral-300 px-1">
             |
         </div>
     )
@@ -53,7 +55,9 @@ export const Info = ({
     camera,
     zoom,
     setCanvasState,
-    selectedLayersRef
+    selectedLayersRef,
+    setIsShowingAIInput,
+    isShowingAIInput,
 }: InfoProps) => {
 
     const { onOpen } = useRenameModal();
@@ -85,10 +89,9 @@ export const Info = ({
           let adjustX = ((viewportCenterX - camera.x) / zoom) - templateCenterX;
           let adjustY = ((viewportCenterY - camera.y) / zoom) - templateCenterY;
     
-          const orderedLayers = templateLayerIds.map((id: any, index: number) => {
+          const orderedLayers = templateLayerIds.map((id: any) => {
             const newLayer = {
               ...templateLayers[id],
-              id: newTemplateLayerIds[index],
               x: templateLayers[id].x + adjustX,
               y: templateLayers[id].y + adjustY,
             };
@@ -117,7 +120,7 @@ export const Info = ({
     if (!board) return <InfoSkeleton />;
 
     return(
-        <div className="absolute top-2 left-2 bg-white rounded-md px-1.5 h-12 flex items-center shadow-md">
+        <div className="absolute top-2 left-2 bg-white rounded-md px-1 h-12 flex items-center drop-shadow-md">
             <Hint label="Go to Dashboard" side="bottom" sideOffset={10}>
                 <Button asChild variant="board" className="px-2">
                     <Link href="/dashboard/">
@@ -133,7 +136,7 @@ export const Info = ({
                     </Link>
                 </Button>
             </Hint>
-            <div className="text-neutral-300 px-1.5 sm:flex hidden">
+            <div className="text-neutral-300 px-1 sm:flex hidden">
                 |
             </div>
                 <Hint label="Edit title" side="bottom" sideOffset={10}>
@@ -180,12 +183,12 @@ export const Info = ({
                 </Hint>
                 <DialogContent className="w-full max-w-[80%] max-h-[85%] xl:max-w-[50%] overflow-y-auto">
                     <ShowAllTemplates
-                    usersRole={usersRole}
-                    onClick={onChooseTemplate}
+                        usersRole={usersRole}
+                        onClick={onChooseTemplate}
                     />
                 </DialogContent>
             </Dialog>
-            <div className="text-neutral-300 px-1.5 xs:flex hidden">
+            <div className="text-neutral-300 px-1 xs:flex hidden">
                 |
             </div>
             <Hint label="Upgrade" side="bottom" sideOffset={10}>
@@ -196,12 +199,24 @@ export const Info = ({
                     <Zap className="h-5 w-5 fill-custom-blue text-custom-blue"/>
                 </Button>
             </Hint>
+            {/* <div className="text-neutral-300 px-1 md:flex hidden">
+                |
+            </div>
+            <Hint label="Sketchlie AI" side="bottom" sideOffset={10}>
+                <Button variant="board"
+                    size="icon"
+                    onClick={() => setIsShowingAIInput(!isShowingAIInput)}
+                    className="md:flex hidden"
+                >
+                    <Sparkles className="h-5 w-5 fill-custom-blue text-custom-blue"/>
+                </Button>
+            </Hint> */}
         </div>
     )
 }
 
 export const InfoSkeleton = () => {
     return(
-        <div className="absolute top-2 left-2 bg-white rounded-md px-1.5 h-12 flex items-center shadow-md w-[300px]"/>
+        <div className="absolute top-2 left-2 bg-white rounded-md px-1 h-12 flex items-center drop-shadow-md w-[300px]"/>
     );
 };

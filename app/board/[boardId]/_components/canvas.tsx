@@ -49,6 +49,7 @@ import { useRoom } from "@/components/room";
 import { toast } from "sonner";
 import { ZoomToolbar } from "./zoom-toolbar";
 import { Command, DeleteLayerCommand, InsertLayerCommand, TranslateLayersCommand } from "@/lib/commands";
+import { SketchlieAiInput } from "./sketchlie-ai-input";
 
 const preventDefault = (e: any) => {
     if (e.scale !== 1) {
@@ -70,6 +71,7 @@ interface CanvasProps {
 export const Canvas = ({
     boardId
 }: CanvasProps) => {
+    const [isShowingAIInput, setIsShowingAIInput] = useState(false);
     const [isMoving, setIsMoving] = useState(false);
     const [justChanged, setJustChanged] = useState(false);
     const [isPenMenuOpen, setIsPenMenuOpen] = useState(false);
@@ -164,6 +166,7 @@ export const Canvas = ({
                 width: width,
                 fill: { r: 29, g: 29, b: 29, a: 1 },
                 textFontSize: 12,
+                value: "",
                 outlineFill: null,
                 alignX: 'left',
             };
@@ -175,6 +178,7 @@ export const Canvas = ({
                 height: height,
                 width: width,
                 fill: fillColor,
+                value: "",
                 outlineFill: { r: 0, g: 0, b: 0, a: 0 },
                 textFontSize: 12,
                 alignX: 'center',
@@ -214,6 +218,7 @@ export const Canvas = ({
                 height: height,
                 width: width,
                 fill: fillColor,
+                value: "",
                 outlineFill: { r: 29, g: 29, b: 29, a: 1 },
                 textFontSize: 12,
                 alignX: 'center',
@@ -1422,7 +1427,8 @@ export const Canvas = ({
                         if (
                             document.activeElement &&
                             document.activeElement.getAttribute('contentEditable') !== 'true' &&
-                            document.activeElement.tagName !== 'TEXTAREA'
+                            document.activeElement.tagName !== 'TEXTAREA' && 
+                            document.activeElement.tagName !== 'INPUT'
                         ) {
                             // if we are not inside a content editable or textarea
                             if (e.shiftKey && redoStack.length > 0) {
@@ -1465,7 +1471,8 @@ export const Canvas = ({
                         if (
                             document.activeElement &&
                             document.activeElement.getAttribute('contentEditable') !== 'true' &&
-                            document.activeElement.tagName !== 'TEXTAREA'
+                            document.activeElement.tagName !== 'TEXTAREA' &&
+                            document.activeElement.tagName !== 'INPUT'
                         ) {
                             // if we are not inside a content editable or textarea
                             selectedLayersRef.current = liveLayerIds;
@@ -1608,6 +1615,8 @@ export const Canvas = ({
                 zoom={zoom}
                 camera={camera}
                 selectedLayersRef={selectedLayersRef}
+                setIsShowingAIInput={setIsShowingAIInput}
+                isShowingAIInput={isShowingAIInput}
             />
             <Participants
                 org={org}
@@ -1645,6 +1654,7 @@ export const Canvas = ({
             )}
             {!isMoving && canvasState.mode !== CanvasMode.Resizing && canvasState.mode !== CanvasMode.ArrowResizeHandler && canvasState.mode !== CanvasMode.SelectionNet && activeTouches < 2 && (
                 <SelectionTools
+                    board={board}
                     boardId={boardId}
                     setLiveLayerIds={setLiveLayerIds}
                     setLiveLayers={setLiveLayers}
@@ -1663,6 +1673,17 @@ export const Canvas = ({
                 />
             )}
             <ZoomToolbar zoom={zoom} setZoom={setZoom} setCamera={setCamera} camera={camera}/>
+            {/* {isShowingAIInput && (
+                <SketchlieAiInput 
+                    setLiveLayers={setLiveLayers}
+                    setLiveLayerIds={setLiveLayerIds}
+                    boardId={boardId}
+                    socket={socket}
+                    org={org}
+                    proModal={proModal}
+                    performAction={performAction}
+                />
+            )} */}
             <div id="canvas">
                 <svg
                     className="h-[100vh] w-[100vw]"

@@ -23,7 +23,6 @@ export const PlantillaDiagramaDeFlujo = {
             "width": 150,
             "x": 359.0324880337952,
             "y": 429.8489224527294,
-            "id": "RhHvg4m66sZEWLhG6c0ix"
         },
         "wJ4cgBqr2kHVKagQfqXJd": {
             "center": {
@@ -42,7 +41,6 @@ export const PlantillaDiagramaDeFlujo = {
             "width": 84,
             "x": 511.03248803379506,
             "y": 475.8489224527294,
-            "id": "wJ4cgBqr2kHVKagQfqXJd"
         },
         "taLCqjggH7gSE2RI3Mulc": {
             "center": {
@@ -61,7 +59,6 @@ export const PlantillaDiagramaDeFlujo = {
             "width": 64.86200912177128,
             "x": 750.1903148760771,
             "y": 474.8633791632998,
-            "id": "taLCqjggH7gSE2RI3Mulc"
         },
         "byBuNH8mFEGSRm08WkSeT": {
             "fill": {
@@ -79,10 +76,10 @@ export const PlantillaDiagramaDeFlujo = {
             },
             "textFontSize": 12,
             "type": 0,
+            "value": "",
             "width": 150,
             "x": 602.0324880337951,
             "y": 429.3489224527294,
-            "id": "byBuNH8mFEGSRm08WkSeT"
         },
         "wqasCzDYV0fn4GKxvn3XA": {
             "center": {
@@ -101,7 +98,6 @@ export const PlantillaDiagramaDeFlujo = {
             "width": 273.77851937129003,
             "x": 918.8003624167586,
             "y": 384.2918985509115,
-            "id": "wqasCzDYV0fn4GKxvn3XA"
         },
         "aocXAaay67o3bYoqDuawC": {
             "fill": {
@@ -119,10 +115,10 @@ export const PlantillaDiagramaDeFlujo = {
             },
             "textFontSize": 12,
             "type": 0,
+            "value": "",
             "width": 150,
             "x": 1198.0521945709852,
             "y": 214.15869301471287,
-            "id": "aocXAaay67o3bYoqDuawC"
         },
         "q3nYDyuRNYLBGhgNearVe": {
             "center": {
@@ -141,7 +137,6 @@ export const PlantillaDiagramaDeFlujo = {
             "width": 84,
             "x": 1350.5521945709852,
             "y": 260.6586930147129,
-            "id": "q3nYDyuRNYLBGhgNearVe"
         },
         "gx4xmnR2CJ1O5akPNCQ5P": {
             "fill": {
@@ -163,7 +158,6 @@ export const PlantillaDiagramaDeFlujo = {
             "width": 149.7625082259051,
             "x": 1441.7896863450803,
             "y": 214.15869301471287,
-            "id": "gx4xmnR2CJ1O5akPNCQ5P"
         },
         "uMt5BmmDC8KsFiti7Zwgk": {
             "center": {
@@ -182,7 +176,6 @@ export const PlantillaDiagramaDeFlujo = {
             "width": 85.12764987140895,
             "x": 1017.3541403828526,
             "y": 474.66837904116653,
-            "id": "uMt5BmmDC8KsFiti7Zwgk"
         },
         "zjVX9hyrHZOOxNVaurXMr": {
             "fill": {
@@ -200,10 +193,10 @@ export const PlantillaDiagramaDeFlujo = {
             },
             "textFontSize": 12,
             "type": 0,
+            "value": "",
             "width": 150,
             "x": 1106.8571328348821,
             "y": 429.1154584147316,
-            "id": "zjVX9hyrHZOOxNVaurXMr"
         },
         "1n2FEwkEtel5MofAm27GC": {
             "center": {
@@ -221,7 +214,6 @@ export const PlantillaDiagramaDeFlujo = {
             "width": 0.7029540477644787,
             "x": 1179.4839866250245,
             "y": 521.8736910509982,
-            "id": "1n2FEwkEtel5MofAm27GC"
         },
         "Gd58aJ1W4TDbLymkXSSol": {
             "fill": {
@@ -239,10 +231,10 @@ export const PlantillaDiagramaDeFlujo = {
             },
             "textFontSize": 12,
             "type": 0,
+            "value": "",
             "width": 150,
             "x": 1106.1327640439217,
             "y": 624.043108942586,
-            "id": "Gd58aJ1W4TDbLymkXSSol"
         },
         "dKRcErxQLCjphyiwbn5lc": {
             "center": {
@@ -260,7 +252,6 @@ export const PlantillaDiagramaDeFlujo = {
             "width": -109.61500146993217,
             "x": 1105.2691122567871,
             "y": 668.4628825475139,
-            "id": "dKRcErxQLCjphyiwbn5lc"
         },
         "hCEwanafQKsyD3liFhm7F": {
             "fill": {
@@ -278,10 +269,10 @@ export const PlantillaDiagramaDeFlujo = {
             },
             "textFontSize": 12,
             "type": 0,
+            "value": "",
             "width": 150,
             "x": 845.024680991366,
             "y": 623.1136684522368,
-            "id": "hCEwanafQKsyD3liFhm7F"
         },
         "xu0vAgjUMX8bfQ7Kn1hIt": {
             "center": {
@@ -299,7 +290,6 @@ export const PlantillaDiagramaDeFlujo = {
             "width": -0.631993975733053,
             "x": 919.2535944125071,
             "y": 624.0835580571023,
-            "id": "xu0vAgjUMX8bfQ7Kn1hIt"
         },
         "bZm863oHiKEzOGqLsq4Qc": {
             "fill": {
@@ -321,7 +311,6 @@ export const PlantillaDiagramaDeFlujo = {
             "width": 196.92644082139682,
             "x": 820.2843830279351,
             "y": 384.85377987218357,
-            "id": "bZm863oHiKEzOGqLsq4Qc"
         }
     },
     "layerIds": [
