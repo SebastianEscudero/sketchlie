@@ -105,7 +105,7 @@ export const ImageButton = ({
     return (
         <Hint side={side} label={label} sideOffset={14}>
             <Button disabled={isDisabled} onClick={handleButtonClick} size="icon" variant={isActive ? "iconActive" : "icon"} className="h-8 w-8">
-                <Icon className="h-5 w-5" />
+                <Icon />
                 <input
                     type="file"
                     onChange={handleUpload}
