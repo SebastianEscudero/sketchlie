@@ -1555,7 +1555,7 @@ export const Canvas = ({
         if (canvasState.mode === CanvasMode.Inserting) {
             selectedLayersRef.current = [];
             if (canvasState.layerType === LayerType.Text) {
-                document.body.style.cursor = 'url(/custom-cursors/text-cursor.svg) 8 8, auto';
+                document.body.style.cursor = 'url(/custom-cursors/text-cursor.svg) 8 0, auto';
             } else {
                 document.body.style.cursor = 'url(/custom-cursors/inserting.svg) 12 12, auto';
             }
