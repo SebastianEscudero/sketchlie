@@ -6,16 +6,9 @@ import { UserAvatar } from "./user-avatar";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { OrganizationInvite } from "@/components/auth/organization-invite";
-import { ChevronsDown, UserIcon } from "lucide-react";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { UserIcon } from "lucide-react";
 
-const MAX_SHOWN_USERS = typeof window !== 'undefined'
-    ? window.innerWidth <= 376
-        ? 4
-        : window.innerWidth <= 768
-            ? 3
-            : 6
-    : 6;
+const MAX_SHOWN_USERS = 5;
 
 interface ParticipantsProps {
     otherUsers: User[] | null;
@@ -33,7 +26,7 @@ export const Participants = ({
 
     return (
         <div className="absolute h-12 right-0 bg-white rounded-bl-lg p-3 flex items-center shadow-custom-1">
-            <div className="flex gap-x-2">
+            <div className="hidden xs:flex gap-x-2">
                 {otherUsers && otherUsers.slice(0, MAX_SHOWN_USERS)
                     .map(({ userId, connectionId, information }) => {
                         return (
@@ -66,7 +59,7 @@ export const Participants = ({
             </div>
             {org && (
                 <Dialog>
-                    <DialogTrigger asChild className="ml-3">
+                    <DialogTrigger asChild className="xs:ml-3">
                         <Button variant="auth" className="h-8 w-24">
                             <UserIcon className="h-4 w-4 mr-2" />
                             Invite
