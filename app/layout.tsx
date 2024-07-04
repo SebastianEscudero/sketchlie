@@ -38,16 +38,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className={inter.className}>
-        <Suspense fallback={<Loading />}>
-          <ConvexClientProvider>
-            <Toaster />
-            <ProModalProvider />
-            <SettingsModalProvider />
-            <ModalProvider />
-            {children}
-          </ConvexClientProvider>
-        </Suspense>
+      <body className={`${inter.className} bg-[#F9FAFB]`}>
+      <Suspense fallback={<Loading />}>
+        <ConvexClientProvider>
+          <Toaster />
+          <ProModalProvider />
+          <SettingsModalProvider />
+          <ModalProvider />
+          {children}
+        </ConvexClientProvider>
+      </Suspense>
       </body>
     </html>
   );

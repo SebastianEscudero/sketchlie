@@ -37,7 +37,7 @@ export const Cursor = memo(({
             <foreignObject
                 height={50 / zoom}
                 width={(name.length * 10 + 24) / zoom}
-                className="relative drop-shadow-md"
+                className="relative"
             >
                 <div className="flex">
                     <MousePointer2

@@ -16,8 +16,8 @@ const config = {
     },
     extend: {
       cursor: {
-        hand: 'url(/custom-cursors/hand.svg) 8 8, auto',
-        grab: 'url(/custom-cursors/grab.svg) 8 8, auto',
+        hand: 'url(/custom-cursors/hand.svg) 12 12, auto',
+        grab: 'url(/custom-cursors/grab.svg) 12 12, auto',
       },
       backgroundImage: theme => ({
         'hero-background': "url(/hero-bg.png)",
@@ -97,6 +97,12 @@ const config = {
         "2xl": "1400px",
         '3xl': '1800px',
       },
+      boxShadow: {
+        'custom-1': '0px 1px 2px rgba(0, 0, 0, 0.25), 0px 1px 3px rgba(0, 0, 0, 0.09)',
+        'custom-2': '0px 0px 2px rgba(0, 0, 0, 0.16), 0px 2px 3px rgba(0, 0, 0, 0.24), 0px 2px 6px rgba(0, 0, 0, 0.1), inset 0px 0px 0px 1px rgba(255, 255, 255, 0.1)',
+        'custom-3': '0px 1px 2px rgba(0, 0, 0, 0.28), 0px 2px 6px rgba(0, 0, 0, 0.14), inset 0px 0px 0px 1px rgba(255, 255, 255, 0.1)',
+        'custom-4': '0px 0px 3px rgba(0, 0, 0, 0.19), 0px 5px 4px rgba(0, 0, 0, 0.16), 0px 2px 16px rgba(0, 0, 0, 0.06), inset 0px 0px 0px 1px rgba(255, 255, 255, 0.1)',
+      }
     },
     
   },

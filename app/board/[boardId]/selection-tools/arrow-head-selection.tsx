@@ -122,7 +122,7 @@ export const ArrowHeadSelection = ({
             </div>
             {openSelector === SelectorType.ArrowHead && (
                 <div
-                    className={`drop-shadow-md absolute ${selectorPositionClass} ${selectedHead === 'start' ? 'left-[-10px]' : 'right-[-10px]'} w-[75px] bg-white ring-1 ring-black ring-opacity-5`}
+                    className={`shadow-custom-1 rounded-lg absolute ${selectorPositionClass} ${selectedHead === 'start' ? 'left-[-10px]' : 'right-[-10px]'} w-[75px] bg-white ring-1 ring-black ring-opacity-5`}
                 >
                     <div className="p-3 grid grid-cols-1 gap-2 w-full text-sm" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                         <Button variant="board" size="default" onClick={() => handleArrowHeadChange(ArrowHead.None)}>

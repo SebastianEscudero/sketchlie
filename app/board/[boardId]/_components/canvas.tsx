@@ -1187,20 +1187,23 @@ export const Canvas = ({
         return layerIdsToColorSelection;
     }, [otherUsers]);
 
-    const onDragOver = (event: React.DragEvent) => {
+    const onDragOver = useCallback((event: React.DragEvent) => {
         event.preventDefault();
         setIsDraggingOverCanvas(true);
-    };
 
-    const onDragLeave = (event: React.DragEvent) => {
+    }, [setIsDraggingOverCanvas]);
+    
+    const onDragLeave = useCallback((event: React.DragEvent) => {
         event.preventDefault();
         setIsDraggingOverCanvas(false);
-    };
-    const onDrop = (event: React.DragEvent) => {
+        
+    }, [setIsDraggingOverCanvas]);
+    
+    const onDrop = useCallback((event: React.DragEvent) => {
         event.preventDefault();
         setIsDraggingOverCanvas(false);
-        let x = (Math.round(event.clientX) - camera.x) / zoom
-        let y = (Math.round(event.clientY) - camera.y) / zoom
+        let x = (Math.round(event.clientX) - camera.x) / zoom;
+        let y = (Math.round(event.clientY) - camera.y) / zoom;
         const files = event.dataTransfer.files;
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
@@ -1208,19 +1211,19 @@ export const Canvas = ({
                 toast.error('File type not accepted. Please upload an image file.');
                 continue;  // Skip if not an image
             }
-
+    
             // Check file size
             const fileSizeInMB = file.size / 1024 / 1024;
             if (fileSizeInMB > maxFileSize) {
                 toast.error(`File size has to be lower than ${maxFileSize}MB. Please try again.`);
                 return;
             }
-
+    
             const toastId = toast.loading("Image is being processed, please wait...");
             const formData = new FormData();
             formData.append('file', file);
             formData.append('userId', User.userId);
-
+    
             fetch('/api/aws-s3-images', {
                 method: 'POST',
                 body: formData
@@ -1230,7 +1233,7 @@ export const Canvas = ({
                         throw new Error('Network response was not ok');
                     }
                     const url = await res.text();
-
+    
                     const img = new Image();
                     const imgLoad = new Promise<{ url: string, dimensions: { width: number, height: number } }>((resolve) => {
                         img.onload = () => {
@@ -1240,7 +1243,7 @@ export const Canvas = ({
                     });
                     img.src = url;
                     const info = await imgLoad;
-
+    
                     // Insert the image into the canvas
                     insertImage(LayerType.Image, { x: x, y: y }, info);
                 })
@@ -1252,7 +1255,7 @@ export const Canvas = ({
                     toast.success("Image uploaded successfully, you can now add it to the board.")
                 });
         }
-    };
+    }, [setIsDraggingOverCanvas, camera, zoom, maxFileSize, User.userId, insertImage]);
 
     const onTouchDown = useCallback((e: React.TouchEvent) => {
         setIsMoving(false);
@@ -1505,7 +1508,22 @@ export const Canvas = ({
     }, [copySelectedLayers, pasteCopiedLayers, camera, zoom, liveLayers, selectedLayersRef.current, copiedLayers, liveLayerIds]);
 
 
+    useEffect(() => { // for on layer pointer down to update refts
+        canvasStateRef.current = canvasState;
+        zoomRef.current = zoom;
+        cameraRef.current = camera;
+    }, [canvasState, zoom, camera]);
+
     useEffect(() => {
+        // prevent safari from going back/forward
+
+        const preventDefault = (e: any) => {
+            if (e.scale !== 1) {
+                e.preventDefault();
+            }
+        };
+
+        window.addEventListener('wheel', preventDefault, { passive: false });
         if (typeof document !== 'undefined') {
             const handleContextMenu = (e: MouseEvent) => {
                 e.preventDefault();
@@ -1517,10 +1535,18 @@ export const Canvas = ({
                 document.removeEventListener('contextmenu', handleContextMenu);
             };
         }
+
+        return () => {
+            document.removeEventListener('gesturestart', preventDefault);
+            document.removeEventListener('gesturechange', preventDefault);
+            document.removeEventListener('gestureend', preventDefault);
+            window.removeEventListener('wheel', preventDefault);
+            window.removeEventListener('wheel', preventDefault);
+        };
     }, []);
 
     useEffect(() => {
-
+        // control the cursor
         if (rightClickPanning) {
             document.body.style.cursor = 'url(/custom-cursors/grab.svg) 8 8, auto';
             return;
@@ -1553,39 +1579,9 @@ export const Canvas = ({
             document.body.style.cursor = 'default';
         }
     }, [canvasState.mode, canvasState, rightClickPanning]);
-
-    useEffect(() => { // for on layer pointer down to update refts
-        canvasStateRef.current = canvasState;
-        zoomRef.current = zoom;
-        cameraRef.current = camera;
-    }, [canvasState, zoom, camera]);
-
-    useEffect(() => {
-        return () => {
-            document.removeEventListener('gesturestart', preventDefault);
-            document.removeEventListener('gesturechange', preventDefault);
-            document.removeEventListener('gestureend', preventDefault);
-            window.removeEventListener('wheel', preventDefault);
-        };
-    }, []);
-
-    useEffect(() => {
-        const preventDefault = (e: any) => {
-            if (e.scale !== 1) {
-                e.preventDefault();
-            }
-        };
-
-        window.addEventListener('wheel', preventDefault, { passive: false });
-
-        return () => {
-            window.removeEventListener('wheel', preventDefault);
-        };
-    }, []);
-
     return (
         <main
-            className={`fixed h-full w-full bg-neutral-100 touch-none overscroll-none ${isDraggingOverCanvas ? 'bg-neutral-300 border-2 border-dashed border-custom-blue' : ''}`}
+            className={`fixed h-full w-full touch-none overscroll-none ${isDraggingOverCanvas && 'bg-neutral-300 border-2 border-dashed border-custom-blue'}`}
             style={{
                 backgroundImage: (background === 'grid') ? `
             linear-gradient(0deg, rgba(0,0,0,0.05) 1px, transparent 1px),
@@ -1593,7 +1589,7 @@ export const Canvas = ({
           ` : (background === 'line') ? `
             linear-gradient(0deg, rgba(0,0,0,0.05) 1px, transparent 1px)
           ` : 'none',
-                backgroundColor: '#f4f4f4',
+                backgroundColor: '#F9FAFB',
                 backgroundSize: (background === 'grid' || background === 'line') ? `${65 * zoom}px ${65 * zoom}px` : undefined,
                 backgroundPosition: (background === 'grid' || background === 'line') ? `${camera.x}px ${camera.y}px` : undefined,
                 WebkitOverflowScrolling: 'touch',

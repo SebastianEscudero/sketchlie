@@ -36,16 +36,16 @@ const DashboardPage = () => {
         }
       }
     }, 10); // 10 milliseconds = 0.01 seconds
-  
+
     // Clear the timer when the component unmounts
     return () => clearTimeout(timer);
   }, [activeOrganization, user]);
 
   useEffect(() => {
     if (searchParams.get("openProModal")) {
-        proModal.onOpen(activeOrganization);
+      proModal.onOpen(activeOrganization);
     }
-}, []);
+  }, []);
 
   if (!user) return <Loading />;
 
@@ -61,32 +61,32 @@ const DashboardPage = () => {
       </div>
       <div className="sm:pl-[60px] h-full">
         <div className="flex gap-x-3 h-full">
-          <OrgSidebar 
+          <OrgSidebar
             setActiveOrganization={setActiveOrganization}
             activeOrganization={activeOrganization}
           />
           <div className="h-full flex-1">
-            <Navbar 
+            <Navbar
               setActiveOrganization={setActiveOrganization}
               activeOrganization={activeOrganization}
               activeOrg={activeOrg}
             />
             {activeOrg && (
-              <Templates 
+              <Templates
                 org={activeOrg}
               />
             )}
-            <div className="flex-1 h-[calc(100%-80px)] p-6">
+            <div className="flex-1 h-[calc(100%-350px)] p-6">
               {!activeOrg ? (
-                <EmptyOrg 
-                  setActiveOrganization={setActiveOrganization} 
+                <EmptyOrg
+                  setActiveOrganization={setActiveOrganization}
                   user={user}
                 />
               ) : (
                 <BoardList
                   userId={user.id}
                   org={activeOrg}
-                  query={{search, favorites }}
+                  query={{ search, favorites }}
                 />
               )}
             </div>
@@ -96,5 +96,5 @@ const DashboardPage = () => {
     </main>
   );
 };
- 
+
 export default DashboardPage;

@@ -97,14 +97,9 @@ export const ImageButton = ({
         });
     };
 
-    let side: "right" | "top" | "bottom" | "left" | undefined = "right";
-    if (window.innerHeight < 545) {
-        side = "top";
-    }
-
     return (
-        <Hint side={side} label={label} sideOffset={14}>
-            <Button disabled={isDisabled} onClick={handleButtonClick} size="icon" variant={isActive ? "iconActive" : "icon"} className="h-8 w-8">
+        <Hint side="top" label={label} sideOffset={14}>
+            <Button disabled={isDisabled} onClick={handleButtonClick} size="icon" variant={isActive ? "iconActive" : "icon"} className="h-10 w-10">
                 <Icon />
                 <input
                     type="file"

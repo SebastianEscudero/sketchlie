@@ -368,7 +368,7 @@ export const SelectionTools = memo(({
 
   return (
     <div
-      className="absolute p-1 rounded-sm bg-white drop-shadow-sm border flex select-none gap-x-2 items-center"
+      className="absolute p-1 rounded-lg bg-white shadow-custom-1 border flex select-none gap-x-2 items-center"
       style={{
         transform: initialPosition
           ? `translate(
@@ -464,7 +464,7 @@ export const SelectionTools = memo(({
           <BringToFront />
         </Button>
       </Hint>
-      <Hint label="Send to back" side="bottom">
+      <Hint label="Send to back">
         <Button
           onClick={moveToBack}
           variant="board"

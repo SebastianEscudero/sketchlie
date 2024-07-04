@@ -117,7 +117,7 @@ export const FontSizePicker = ({
             </div>
             {openSelector === SelectorType.FontSize && (
                 <div
-                    className={`drop-shadow-md absolute ${selectorPositionClass} right-3 w-[65px] bg-white ring-1 ring-black ring-opacity-5`}
+                    className={`shadow-custom-1 rounded-lg absolute ${selectorPositionClass} right-3 w-[65px] bg-white ring-1 ring-black ring-opacity-5`}
                 >
                     <div className="py-5 px-3 grid grid-cols-1 gap-5 w-full text-sm" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                         {fontSizes.map(fontSize => (

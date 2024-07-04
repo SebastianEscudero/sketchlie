@@ -36,7 +36,7 @@ export const Navbar = ({
 
     return (
         <div className="flex flex-wrap items-center gap-x-2 gap-y-2 p-3 justify-between">
-            <div className="hidden lg:flex lg:flex-1">
+            <div className="hidden lg:flex lg:flex-1 pl-3">
                 <SearchInput />
             </div>
             <div className="flex lg:hidden items-center gap-x-4 flex-grow">

@@ -32,46 +32,8 @@ export const Participants = ({
     const hasMoreUsers = otherUsers && otherUsers.length > MAX_SHOWN_USERS;
 
     return (
-        <div className="absolute h-12 top-2 right-2 bg-white rounded-md p-3 flex items-center drop-shadow-md">
-            <DropdownMenu>
-                <DropdownMenuTrigger className="xs:hidden flex">
-                    <ChevronsDown className="h-5 w-5" />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent sideOffset={20}>
-                    <div className="gap-x-2 flex flex-row p-1">
-                        {otherUsers && otherUsers.slice(0, MAX_SHOWN_USERS)
-                            .map(({ userId, connectionId, information }) => {
-                                return (
-                                    <UserAvatar
-                                        borderColor={connectionIdToColor(connectionId)}
-                                        key={userId}
-                                        src={information?.picture}
-                                        name={information?.name}
-                                        fallback={information?.name?.[0] || "T"}
-                                    />
-                                );
-
-                            })}
-
-                        {User && (
-                            <UserAvatar
-                                borderColor={connectionIdToColor(User.connectionId)}
-                                src={User.information?.picture}
-                                name={`${User.information?.name} (You)`}
-                                fallback={User.information?.name?.[0] || "T"}
-                            />
-                        )}
-
-                        {hasMoreUsers && (
-                            <UserAvatar
-                                name={`${otherUsers.length - MAX_SHOWN_USERS} more`}
-                                fallback={`+${otherUsers.length - MAX_SHOWN_USERS}`}
-                            />
-                        )}
-                    </div>
-                </DropdownMenuContent>
-            </DropdownMenu>
-            <div className="hidden xs:flex gap-x-2">
+        <div className="absolute h-12 right-0 bg-white rounded-bl-lg p-3 flex items-center shadow-custom-1">
+            <div className="flex gap-x-2">
                 {otherUsers && otherUsers.slice(0, MAX_SHOWN_USERS)
                     .map(({ userId, connectionId, information }) => {
                         return (
@@ -123,6 +85,6 @@ export const Participants = ({
 
 export const ParticipantsSkeleton = () => {
     return (
-        <div className="absolute h-12 top-2 right-2 bg-white rounded-md p-3 flex items-center shadow-md w-[100px]" />
+        <div className="absolute h-12 right-0 bg-white rounded-bl-lg p-3 flex items-center shadow-md w-[100px]" />
     );
 };

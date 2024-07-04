@@ -30,7 +30,7 @@ export const UserButton = () => {
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="rounded-2xl shadow-xl">
+      <DropdownMenuContent align="end" className="rounded-lg drop-shadow-md">
         <div className="w-full mr-10">
           <div className="flex flex-row mb-3 items-center p-5 pb-0">
             <Avatar>

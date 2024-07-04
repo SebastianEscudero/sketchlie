@@ -64,7 +64,7 @@ export const Templates = ({
             {usersRole !== 'Admin' && (
                 <p className="text-gray-600">Only <span className="font-bold">Admins</span> can choose a template</p>
             )}
-            <div className="flex mt-8 border rounded-md p-4 h-[170px] overflow-hidden">
+            <div className="flex mt-8 border rounded-md p-4 h-[170px] overflow-hidden bg-white">
                 <div className="flex flex-wrap gap-x-5 gap-y-20">
                     {templates.map((template, index) => (
                         <div key={index} className="rounded-lg flex flex-col justify-between flex-1">

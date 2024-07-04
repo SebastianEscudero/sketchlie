@@ -75,7 +75,7 @@ export const TextJustifySelector = ({
             {alignX === 'center' && <AlignCenter className='w-6 h-6 mx-2 hover:cursor-pointer' onClick={() => setOpenSelector(openSelector === SelectorType.TextJustify ? null : SelectorType.TextJustify)} />}
 
             {openSelector === SelectorType.TextJustify && (
-                <div className={`p-3 absolute ${selectorPositionClass} left-1/2 transform -translate-x-1/2 w-[140px] rounded-md drop-shadow-md bg-white ring-1 ring-black ring-opacity-5`}>
+                <div className={`p-3 absolute ${selectorPositionClass} left-1/2 transform -translate-x-1/2 w-[140px] rounded-lg shadow-custom-1 bg-white ring-1 ring-black ring-opacity-5`}>
                     <div className='flex flex-row justify-center items-center mb-1'>
                         {/* Horizontal Alignment Buttons */}
                         <Button onClick={() => updateAlignment('left', null)} variant={alignX === 'left' ? "alignedActive" : "aligned"} className='px-1'>

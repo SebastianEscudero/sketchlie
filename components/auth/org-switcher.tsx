@@ -75,7 +75,7 @@ export const OrganizationSwitcher = ({
                 )}
                 <ChevronsUpDown className="ml-auto text-zinc-400 flex-shrink-0" width={20} />
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="rounded-2xl shadow-xl w-[350px]">
+            <DropdownMenuContent align="start" className="rounded-lg drop-shadow-md w-[350px]">
                 {hasOrg && activeOrg && (
                     <>
                         <div className="flex mb-3 items-center p-5 pb-0">

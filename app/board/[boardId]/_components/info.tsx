@@ -120,7 +120,7 @@ export const Info = ({
     if (!board) return <InfoSkeleton />;
 
     return(
-        <div className="absolute top-2 left-2 bg-white rounded-md px-1 h-12 flex items-center drop-shadow-md">
+        <div className="absolute bg-white rounded-br-lg px-1 h-12 flex items-center shadow-custom-1">
             <Hint label="Go to Dashboard" side="bottom" sideOffset={10}>
                 <Button asChild variant="board" className="px-2">
                     <Link href="/dashboard/">
@@ -217,6 +217,6 @@ export const Info = ({
 
 export const InfoSkeleton = () => {
     return(
-        <div className="absolute top-2 left-2 bg-white rounded-md px-1 h-12 flex items-center drop-shadow-md w-[300px]"/>
+        <div className="absolute bg-white rounded-lg px-1 h-12 flex items-center shadow-custom-3 w-[300px]"/>
     );
 };

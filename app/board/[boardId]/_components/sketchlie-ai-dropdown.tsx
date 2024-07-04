@@ -4,7 +4,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/compon
 import { TranslateLayersCommand } from "@/lib/commands"
 import { downloadTextAsPdf } from "@/lib/sketchlie-ai"
 import { Layers } from "@/types/canvas"
-import { FileText, LoaderCircle, Sparkles, Wand, WandSparkles } from "lucide-react"
+import { FileText, LoaderCircle, Sparkles, WandSparkles } from "lucide-react"
 import { useState } from "react"
 import { toast } from "sonner"
 
@@ -128,13 +128,13 @@ export const SketchlieAiDropdown = ({
         <DropdownMenu>
             <DropdownMenuTrigger>
                 <div className="flex items-center pl-2 border-l border-neutral-200">
-                    <Hint label="Sketchify" side="bottom">
+                    <Hint label="Sketchify">
                         <Button
                             asChild
                             variant="board"
                             size="icon"
                         >
-                            <Sparkles className="text-custom-blue p-2 fill-custom-blue" />
+                            <Sparkles className="text-purple-700 p-2 fill-purple-700 hover:text-purple-700" />
                         </Button>
                     </Hint>
                 </div>
@@ -143,7 +143,7 @@ export const SketchlieAiDropdown = ({
                 <div className="p-2">
                     <div className="text-purple-700 text-base font-bold pl-3 flex flex-row items-center">
                         Sketchify
-                        <Sparkles className="h-5 w-5 ml-2 fill-purple-700" />
+                        <Sparkles className="h-4 w-4 ml-2 fill-purple-700" />
                     </div>
                     <div className="flex flex-col">
                         <Button

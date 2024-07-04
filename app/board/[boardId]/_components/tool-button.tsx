@@ -19,20 +19,14 @@ export const ToolButton = ({
     isDisabled,
     label
 }: ToolButtonProps) => {
-    
-    let side: "right" | "top" | "bottom" | "left" | undefined = "right";
-    if (window.innerHeight < 545) {
-        side = "top";
-    }
-
     const button = (
-        <Button disabled={isDisabled} onClick={onClick} className="h-8 w-8 xs:h-10 xs:w-10 p-2" variant={isActive ? "iconActive" : "icon"}>
+        <Button disabled={isDisabled} onClick={onClick} className="h-10 w-10 p-2" variant={isActive ? "iconActive" : "icon"}>
             <Icon className="h-5 w-5" />
         </Button>
     );
 
     return label ? (
-        <Hint side={side} label={label} sideOffset={14}>
+        <Hint side="top" label={label} sideOffset={14}>
             {button}
         </Hint>
     ) : (
