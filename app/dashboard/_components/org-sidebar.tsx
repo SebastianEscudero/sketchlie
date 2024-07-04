@@ -33,7 +33,7 @@ export const OrgSidebar = ({
     const subscriptionPlan = activeOrg ? activeOrg.subscriptionPlan : null;
 
     return (
-        <div className="hidden lg:flex flex-col space-y-2 w-[206px] pl-5 pt-5">
+        <div className="hidden lg:flex flex-col space-y-2 w-[206px] pl-5 pt-5 select-none">
             <Link href="/">
                 <div className="flex items-center gap-x-2">
                     <Image

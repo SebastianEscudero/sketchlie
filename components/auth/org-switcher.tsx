@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeftRight, ChevronsUpDown, PlusIcon, Settings } from "lucide-react"
+import { ArrowLeftRight, ChevronsUpDown, PlusIcon, Settings, User } from "lucide-react"
 
 import {
     DropdownMenu,
@@ -46,7 +46,7 @@ export const OrganizationSwitcher = ({
     }
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger className="border border-zinc-200 rounded-lg p-[10px] flex items-center hover:bg-zinc-200 w-full">
+            <DropdownMenuTrigger className="border border-zinc-200 rounded-lg p-[10px] flex items-center hover:bg-zinc-200 w-full outline-none">
                 {hasOrg && activeOrg ? (
                     <div className="flex items-center truncate">
                         <div className="aspect-square relative w-[36px] flex-shrink-0">
@@ -58,8 +58,11 @@ export const OrganizationSwitcher = ({
                                 letterColor={letterColor}
                             />
                         </div>
-                        <div className="flex items-center truncate w-full sm:max-w-[150px] max-w-[200px] pr-2">
-                            <p className="ml-3 text-sm truncate">{activeOrg.name}</p>
+                        <div className="flex items-center truncate w-full sm:max-w-[150px] max-w-[200px]">
+                            <div className="flex flex-col text-left w-full font-medium">
+                                <p className="ml-3 text-sm truncate">{activeOrg.name}</p>
+                                <p className="ml-3 text-xs truncate flex flex-row items-center">{activeOrg.subscriptionPlan} - <User className="h-[11px] w-[11px] mx-1"/>{activeOrg.users.length}</p>
+                            </div>
                             {invitations.length > 0 && (
                                 <p className="ml-2 bg-custom-blue text-white px-1 mt-0.5 text-[10px] rounded-sm items-center animate-popup">{invitations.length}</p>
                             )}

@@ -52,9 +52,9 @@ export const SubscriptionPlanDropdown = ({
     return (
         <div className="flex items-center">
             <DropdownMenu>
-                <DropdownMenuTrigger className="flex outline-none">
+                <DropdownMenuTrigger className="flex outline-none w-full">
                     <div
-                        className={`text-[16px] px-2 py-1 rounded-md border  hover:bg-opacity-90`}
+                        className={`text-[16px] px-2 py-1 rounded-md w-full hover:bg-opacity-90`}
                         style={{ backgroundColor: color, color: letterColor }}
                     >
                         <span className={cn(
