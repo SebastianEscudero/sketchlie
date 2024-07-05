@@ -29,18 +29,18 @@ export const Footer = ({
   };
 
   return (
-    <div className="relative bg-white p-3">
+    <div className="relative bg-gray-800 p-3 text-white">
       <p className="text-[13px] truncate max-w-[calc(100%-20px)]">
         {title}
       </p>
-      <p className="transition-opacity text-[11px] text-muted-foreground truncate">
+      <p className="transition-opacity text-[11px] text-zinc-400">
         {authorLabel}, {createdAtLabel}
       </p>
       <button
         disabled={disabled}
         onClick={handleClick}
         className={cn(
-          "opacity-0 group-hover:opacity-100 transition absolute top-3 right-3 text-muted-foreground hover:text-blue-600",
+          "opacity-0 group-hover:opacity-100 transition absolute top-3 right-3 text-white hover:text-blue-600",
           disabled && "cursor-not-allowed opacity-75"
         )}
       >
