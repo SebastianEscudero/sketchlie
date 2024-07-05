@@ -52,26 +52,30 @@ export const SubscriptionPlanDropdown = ({
     return (
         <div className="flex items-center">
             <DropdownMenu>
-                <DropdownMenuTrigger className="flex outline-none w-full">
-                    <div
-                        className={`text-[16px] px-2 py-1 rounded-md w-full hover:bg-opacity-90`}
-                        style={{ backgroundColor: color, color: letterColor }}
-                    >
-                        <span className={cn(
-                            "text-lg",
-                            font.className,
-                        )}>
-                            Plan {subscriptionPlan}
-                        </span>
-                    </div>
-                </DropdownMenuTrigger>
+                <div className="flex flex-col outline-none w-full justify-center items-center space-y-2 bg-zinc-100 rounded-lg shadow-custom-3 p-4 border" style={{ borderColor: color }}>
+                <Zap className="w-6 h-6" style={{ stroke: color, fill: color }} />
+                <span className="text-[13px] font-medium text-center">Ready to go to the next level?</span>
+                    <DropdownMenuTrigger>
+                        <div
+                            className={`text-base py-2 px-4 rounded-md w-[150px] border border-white`}
+                            style={{ backgroundColor: color, color: letterColor }}
+                        >
+                            <span className={cn(
+                                "text-lg",
+                                font.className,
+                            )}>
+                                View plans
+                            </span>
+                        </div>
+                    </DropdownMenuTrigger>
+                </div>
                 {diffInDays <= 2 && activeOrg.subscription && (
                     <Hint label={label} sideOffset={10} side="right">
                         <CircleAlert className="fill-red-500 text-white ml-2 h-7 w-7 hover:cursor-pointer" onClick={onClick} />
                     </Hint>
                 )}
                 <DropdownMenuContent align="start" className="px-3 py-2 flex flex-col space-y-3 rounded-lg drop-shadow-md">
-                    <p className="font-semibold">{activeOrg.name} está con plan {subscriptionPlan}</p>
+                    <p className="font-semibold">{activeOrg.name} is on Plan {subscriptionPlan}</p>
                     <div className="text-sm space-y-2">
                         {subscriptionPlan === "Gratis" && (
                             <div className="flex flex-col gap-y-2">
@@ -81,11 +85,11 @@ export const SubscriptionPlanDropdown = ({
                                 </div>
                                 <div className="flex flex-row gap-x-2">
                                     <Shapes className="h-4 w-4" />
-                                    <span>Objetos máximos: 100</span>
+                                    <span>Maximum layers: 100</span>
                                 </div>
                                 <div className="flex flex-row gap-x-2">
                                     <Users className="h-4 w-4" />
-                                    <span>Equipos: 1</span>
+                                    <span>Teams: 1</span>
                                 </div>
                             </div>
                         )}
@@ -93,15 +97,15 @@ export const SubscriptionPlanDropdown = ({
                             <div className="flex flex-col gap-y-2">
                                 <div className="flex flex-row gap-x-2">
                                     <SquareMousePointer className="h-4 w-4" />
-                                    <span>Boards: Ilimitados</span>
+                                    <span>Boards: Unlimited</span>
                                 </div>
                                 <div className="flex flex-row gap-x-2">
                                     <Shapes className="h-4 w-4" />
-                                    <span>Objetos máximos: 1000</span>
+                                    <span>Maximum layers: 1000</span>
                                 </div>
                                 <div className="flex flex-row gap-x-2">
                                     <Users className="h-4 w-4" />
-                                    <span>Equipos: 10</span>
+                                    <span>Teams: 10</span>
                                 </div>
                             </div>
                         )}
@@ -109,15 +113,15 @@ export const SubscriptionPlanDropdown = ({
                             <div className="flex flex-col gap-y-2">
                                 <div className="flex flex-row gap-x-2">
                                     <SquareMousePointer className="h-4 w-4" />
-                                    <span>Boards: Ilimitados</span>
+                                    <span>Boards: Unlimited</span>
                                 </div>
                                 <div className="flex flex-row gap-x-2">
                                     <Shapes className="h-4 w-4" />
-                                    <span>Objetos máximos: Ilimitados</span>
+                                    <span>Objetos máximos: Unlimited</span>
                                 </div>
                                 <div className="flex flex-row gap-x-2">
                                     <Users className="h-4 w-4" />
-                                    <span>Equipos: Ilimitados</span>
+                                    <span>Equipos: Unlimited</span>
                                 </div>
                             </div>
                         )}
@@ -125,10 +129,10 @@ export const SubscriptionPlanDropdown = ({
                     {subscriptionPlan !== "Business" && (
                         <div className="bg-blue-100/70 p-3 space-y-2">
                             <p className="flex flex-row items-center">
-                                <Infinity className="w-4 h-4 mr-2 text-custom-blue" /> Crea tableros ilimitados
+                                <Infinity className="w-4 h-4 mr-2 text-custom-blue" /> Create unlimited boards
                             </p>
                             <p className="flex flex-row items-center">
-                                <Infinity className="w-4 h-4 mr-2 text-custom-blue" /> Objetos ilimitados
+                                <Infinity className="w-4 h-4 mr-2 text-custom-blue" /> Unlimited layers
                             </p>
                             <Button variant="auth" onClick={onClick} className="w-full">
                                 Upgrade <Zap className="w-4 h-4 ml-2 fill-white" />

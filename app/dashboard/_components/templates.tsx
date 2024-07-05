@@ -60,11 +60,8 @@ export const Templates = ({
 
     return (
         <div className="p-6">
-            <h2 className="text-3xl font-semibold">Choose a Template</h2>
-            {usersRole !== 'Admin' && (
-                <p className="text-gray-600">Only <span className="font-bold">Admins</span> can choose a template</p>
-            )}
-            <div className="flex mt-8 border rounded-md p-4 h-[170px] overflow-hidden bg-white">
+            <p className="text-gray-600 mt-2">Only <span className="font-bold">Admins</span> of the organization can choose a template</p>
+            <div className="flex mt-4 border rounded-md p-4 h-[170px] overflow-hidden bg-white shadow-custom-1">
                 <div className="flex flex-wrap gap-x-5 gap-y-20">
                     {templates.map((template, index) => (
                         <div key={index} className="rounded-lg flex flex-col justify-between flex-1">

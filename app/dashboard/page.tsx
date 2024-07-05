@@ -53,45 +53,37 @@ const DashboardPage = () => {
 
   return (
     <main className="h-full bg-[#F9FAFB]">
-      <div className="hidden sm:flex">
-        <Sidebar
-          activeOrganization={activeOrganization}
-          setActiveOrganization={setActiveOrganization}
-        />
-      </div>
-      <div className="sm:pl-[60px] h-full">
-        <div className="flex gap-x-3 h-full">
+      <div className="flex h-full">
+        {activeOrg && (
+          <OrgSidebar
+            setActiveOrganization={setActiveOrganization}
+            activeOrganization={activeOrganization}
+          />
+        )}
+        <div className="h-full flex-1">
+          <Navbar
+            setActiveOrganization={setActiveOrganization}
+            activeOrganization={activeOrganization}
+            activeOrg={activeOrg}
+          />
           {activeOrg && (
-            <OrgSidebar
-              setActiveOrganization={setActiveOrganization}
-              activeOrganization={activeOrganization}
+            <Templates
+              org={activeOrg}
             />
           )}
-          <div className="h-full flex-1">
-            <Navbar
-              setActiveOrganization={setActiveOrganization}
-              activeOrganization={activeOrganization}
-              activeOrg={activeOrg}
-            />
-            {activeOrg && (
-              <Templates
+          <div className="flex-1 h-[calc(100%-350px)] p-6">
+            {!activeOrg ? (
+              <EmptyOrg
+                setActiveOrganization={setActiveOrganization}
+                user={user}
+              />
+            ) : (
+              <BoardList
+                userId={user.id}
                 org={activeOrg}
+                query={{ search, favorites }}
               />
             )}
-            <div className="flex-1 h-[calc(100%-350px)] p-6">
-              {!activeOrg ? (
-                <EmptyOrg
-                  setActiveOrganization={setActiveOrganization}
-                  user={user}
-                />
-              ) : (
-                <BoardList
-                  userId={user.id}
-                  org={activeOrg}
-                  query={{ search, favorites }}
-                />
-              )}
-            </div>
           </div>
         </div>
       </div>

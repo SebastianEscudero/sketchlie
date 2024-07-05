@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Poppins } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { OrganizationSwitcher } from "@/components/auth/org-switcher";
-import { LayoutDashboard, LayoutTemplate, Star } from "lucide-react";
+import { ChevronsLeft, LayoutDashboard, LayoutTemplate, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSearchParams } from "next/navigation";
 import { useCurrentUser } from "@/hooks/use-current-user";
@@ -21,6 +21,7 @@ import { useProModal } from "@/hooks/use-pro-modal";
 import { updateR2Bucket } from "@/lib/r2-bucket-functions";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { SearchInput } from "./search-input";
 
 const font = Poppins({
     subsets: ["latin"],
@@ -76,81 +77,87 @@ export const OrgSidebar = ({
     }
 
     return (
-        <div className="hidden lg:flex flex-col space-y-2 w-[220px] pl-5 pt-5 select-none">
-            <Link href="/">
-                <div className="flex items-center gap-x-2">
-                    <Image
-                        src="/logo.svg"
-                        alt="Logo"
-                        height={60}
-                        width={60}
-                    />
-                    <span className={cn(
-                        "font-semibold text-2xl",
-                        font.className,
-                    )}>
-                        Sketchlie
-                    </span>
-                </div>
-            </Link>
-            {activeOrg && (
-                <SubscriptionPlanDropdown 
-                    activeOrg={activeOrg}
-                    subscriptionPlan={subscriptionPlan}
-                />
-            )}
-            <OrganizationSwitcher
-                plan={subscriptionPlan}
-                setActiveOrganization={setActiveOrganization}
-                activeOrganization={activeOrganization}
-            />
-            <div className="space-y-1 w-full">
-                <Button
-                    variant={favorites ? "ghost" : "secondary"}
-                    asChild
-                    size="lg"
-                    className="justify-start px-2 w-full"
-                >
-                    <Link href="/dashboard/">
-                        <LayoutDashboard className="h-4 w-4 mr-2" />
-                        Team boards
-                    </Link>
-                </Button>
-                <Button
-                    variant={favorites ? "secondary" : "ghost"}
-                    asChild
-                    size="lg"
-                    className="justify-start px-2 w-full"
-                >
-                    <Link href={{
-                        pathname: "/dashboard/",
-                        query: { favorites: true }
-                    }}>
-                        <Star className="h-4 w-4 mr-2" />
-                        Favorite boards
-                    </Link>
-                </Button>
-                <Dialog>
-                    <div className="rounded-lg flex flex-col justify-between flex-1">
-                        <DialogTrigger asChild className="flex justify-center">
-                            <Button
-                                variant="ghost"
-                                className="justify-start px-2 w-full"
-                                size="lg"
-                            >
-                                <LayoutTemplate className="h-4 w-4 mr-2" />
-                                Templates
-                            </Button>
-                        </DialogTrigger>
-                    </div>
-                    <DialogContent className="w-full max-w-[80%] max-h-[85%] xl:max-w-[50%] overflow-y-auto">
-                        <ShowAllTemplates
-                            usersRole={usersRole}
-                            pending={pending}
-                            onClick={onClick}
+        <div className="hidden lg:flex flex-col space-y-2 shadow-custom-3 justify-between w-[240px] px-5 pt-5 select-none">
+            <div className="flex flex-col space-y-2">
+                <Link href="/">
+                    <div className="flex items-center gap-x-2">
+                        <ChevronsLeft className="h-5 w-5 flex-shrink-0" />
+                        <Image
+                            src="/logo.svg"
+                            alt="Logo"
+                            height={60}
+                            width={60}
                         />
-                    </DialogContent>
-                </Dialog>
+                        <span className={cn(
+                            "font-semibold text-xl",
+                            font.className,
+                        )}>
+                            Sketchlie
+                        </span>
+                    </div>
+                </Link>
+                <OrganizationSwitcher
+                    plan={subscriptionPlan}
+                    setActiveOrganization={setActiveOrganization}
+                    activeOrganization={activeOrganization}
+                />
+                <SearchInput />
+                <div className="space-y-1 w-full">
+                    <Button
+                        variant={favorites ? "ghost" : "secondary"}
+                        asChild
+                        size="lg"
+                        className="justify-start px-2 w-full"
+                    >
+                        <Link href="/dashboard/">
+                            <LayoutDashboard className="h-4 w-4 mr-2" />
+                            Team boards
+                        </Link>
+                    </Button>
+                    <Button
+                        variant={favorites ? "secondary" : "ghost"}
+                        asChild
+                        size="lg"
+                        className="justify-start px-2 w-full"
+                    >
+                        <Link href={{
+                            pathname: "/dashboard/",
+                            query: { favorites: true }
+                        }}>
+                            <Star className="h-4 w-4 mr-2" />
+                            Favorite boards
+                        </Link>
+                    </Button>
+                    <Dialog>
+                        <div className="rounded-lg flex flex-col justify-between flex-1">
+                            <DialogTrigger asChild className="flex justify-center">
+                                <Button
+                                    variant="ghost"
+                                    className="justify-start px-2 w-full"
+                                    size="lg"
+                                >
+                                    <LayoutTemplate className="h-4 w-4 mr-2" />
+                                    Templates
+                                </Button>
+                            </DialogTrigger>
+                        </div>
+                        <DialogContent className="w-full max-w-[80%] max-h-[85%] xl:max-w-[50%] overflow-y-auto">
+                            <ShowAllTemplates
+                                usersRole={usersRole}
+                                pending={pending}
+                                onClick={onClick}
+                            />
+                        </DialogContent>
+                    </Dialog>
+                </div>
+            </div>
+            <div className="mt-auto pb-5">
+                {activeOrg && (
+                    <SubscriptionPlanDropdown
+                        activeOrg={activeOrg}
+                        subscriptionPlan={subscriptionPlan}
+                    />
+                )}
             </div>
         </div>
     );

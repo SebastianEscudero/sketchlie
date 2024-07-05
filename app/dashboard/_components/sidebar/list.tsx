@@ -16,9 +16,14 @@ export const List = ({
     if (!user) return null;
 
     const hasOrganizations = user.organizations.length > 0;
+    const placeholderOrgs = Array.from({ length: 30 }, (_, index) => ({
+            id: `placeholder-${index}`,
+            name: `Placeholder Org ${index + 1}`,
+            subscriptionPlan: 'Gratis'
+        }));
 
     return (
-        <ul className={`space-y-4 ${hasOrganizations ? 'sm:mb-4 mb:0' : ''}`}>
+        <ul className={`space-y-4 lg:space-y-0 lg:space-x-4 ${hasOrganizations ? 'lg:mr-4 mr:0 flex flex-col lg:flex-row' : ''}`}>
             {user?.organizations.map((org) => (
                 <Item 
                     plan={org.subscriptionPlan}

@@ -99,7 +99,7 @@ export const BoardCard = ({
   return (
     <Link href={`/board/${id}`}>
       <div
-        className={`group aspect-[100/127] border rounded-lg flex flex-col justify-between overflow-hidden ${isLoading ? 'opacity-80 transition-opacity cursor-not-allowed' : ''}`}
+        className={`group aspect-[100/127] border rounded-lg shadow-custom-1 flex flex-col justify-between overflow-hidden ${isLoading ? 'opacity-80 transition-opacity cursor-not-allowed' : ''}`}
         onClick={handleClick}
         onContextMenu={handleContextMenu}
         onTouchStart={handleTouchStart}

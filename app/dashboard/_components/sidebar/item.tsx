@@ -28,7 +28,7 @@ export const Item = ({ id, name, activeOrganization, setActiveOrganization, plan
         )}
             onClick={onClick}
         >
-            <Hint label={name} side="right" align="start" sideOffset={18}>
+            <Hint label={name} side="bottom" align="center" sideOffset={18}>
                 <div className='w-full h-full'>
                     <OrgImage
                         width="100%"

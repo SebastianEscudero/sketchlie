@@ -15,7 +15,7 @@ export const MobileSidebar = ({
 }: SideBarProps) => {
     return (
         <Sheet>
-            <SheetTrigger className="sm:hidden" asChild>
+            <SheetTrigger className="lg:hidden" asChild>
                 <Button size='icon' variant='ghost' className='top-3 left-3'>
                     <Menu size={20} />
                 </Button>

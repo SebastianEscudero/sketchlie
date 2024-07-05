@@ -10,6 +10,8 @@ import { Zap } from "lucide-react";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { NotificationsMenu } from "./notifications-menu";
+import { NewOrgButton } from "@/components/auth/org-button";
+import { List } from "./sidebar/list";
 
 interface NavbarProps {
     activeOrganization: string | null;
@@ -35,9 +37,16 @@ export const Navbar = ({
     }
 
     return (
-        <div className="flex flex-wrap items-center gap-x-2 gap-y-2 p-3 justify-between">
-            <div className="hidden lg:flex lg:flex-1 pl-3">
-                <SearchInput />
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-2 px-3 lg:py-0 py-3 justify-between lg:bg-gray-800 shadow-custom-1">
+            <div className="hidden lg:flex flex-row space-x-4 p-3 flex-1 overflow-hidden">
+                <NewOrgButton 
+                    activeOrganization={activeOrganization}
+                    setActiveOrganization={setActiveOrganization}
+                />
+                <List 
+                    activeOrganization={activeOrganization}
+                    setActiveOrganization={setActiveOrganization}
+                />
             </div>
             <div className="flex lg:hidden items-center gap-x-4 flex-grow">
                 <MobileSidebar
@@ -50,9 +59,9 @@ export const Navbar = ({
                     activeOrganization={activeOrganization}
                 />
             </div>
-            <div className="flex items-center gap-x-2">
+            <div className="flex items-center gap-x-2 justify-between md:w-auto w-full">
                 {activeOrg && (
-                    <>
+                    <div className="flex items-center space-x-2">
                         {usersRole === "Admin" && (
                             <InviteButton
                                 activeOrganization={activeOrganization}
@@ -70,14 +79,14 @@ export const Navbar = ({
                                 <Zap className="w-4 h-4 ml-2 fill-white" />
                             </Button>
                         )}
-                    </>
+                    </div>
                 )}
-                <div className="mx-2 sm:flex hidden items-center justify-center">
+                <div className="mx-2 flex flex-row space-x-4 items-center justify-center">
                     <NotificationsMenu 
                         setActiveOrganization={setActiveOrganization}
                     />
+                    <UserButton />
                 </div>
-                <UserButton />
             </div>
         </div>
     )

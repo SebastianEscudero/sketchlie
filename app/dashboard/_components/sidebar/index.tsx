@@ -11,7 +11,7 @@ export const Sidebar = ({
     setActiveOrganization
 }: SideBarProps) => {
     return (
-        <aside className="fixed z-[1] left-0 bg-blue-950 h-full w-[60px] flex p-3 flex-col text-white">
+        <aside className="fixed z-[1] top-0 bg-zinc-600 w-[65%] rounded-br-lg h-[60px] flex flex-row p-3 text-white">
             <List 
                 activeOrganization={activeOrganization}
                 setActiveOrganization={setActiveOrganization}
