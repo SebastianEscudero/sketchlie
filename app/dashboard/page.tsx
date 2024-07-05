@@ -52,7 +52,7 @@ const DashboardPage = () => {
   const activeOrg = user?.organizations.find(org => org.id === activeOrganization);
 
   return (
-    <main className="h-full">
+    <main className="h-full bg-[#F9FAFB]">
       <div className="hidden sm:flex">
         <Sidebar
           activeOrganization={activeOrganization}
@@ -61,10 +61,12 @@ const DashboardPage = () => {
       </div>
       <div className="sm:pl-[60px] h-full">
         <div className="flex gap-x-3 h-full">
-          <OrgSidebar
-            setActiveOrganization={setActiveOrganization}
-            activeOrganization={activeOrganization}
-          />
+          {activeOrg && (
+            <OrgSidebar
+              setActiveOrganization={setActiveOrganization}
+              activeOrganization={activeOrganization}
+            />
+          )}
           <div className="h-full flex-1">
             <Navbar
               setActiveOrganization={setActiveOrganization}

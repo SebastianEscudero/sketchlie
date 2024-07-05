@@ -38,7 +38,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className={`${inter.className} bg-[#F9FAFB]`}>
+      <body className={`${inter.className}`}>
       <Suspense fallback={<Loading />}>
         <ConvexClientProvider>
           <Toaster />
