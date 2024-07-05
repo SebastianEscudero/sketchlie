@@ -89,8 +89,9 @@ export const OrganizationSwitcher = ({
                                 color={color}
                                 letterColor={letterColor}
                             />
-                            <div className="ml-3 truncate w-[230px]">
-                                <p>{activeOrg.name}</p>
+                            <div className="ml-3 truncate w-[230px] font-medium">
+                                <p className="ml-3 text-sm truncate">{activeOrg.name}</p>
+                                <p className="ml-3 text-xs truncate flex flex-row items-center">{activeOrg.subscriptionPlan} - <User className="h-[11px] w-[11px] mx-1"/>{activeOrg.users.length}</p>
                             </div>
                         </div>
                         <Dialog>
@@ -136,9 +137,10 @@ export const OrganizationSwitcher = ({
                                         color={color}
                                         letterColor={letterColor}
                                     />
-                                    <p className="ml-5 text-sm truncate">
-                                        {org.name}
-                                    </p>
+                                <div className="ml-3 truncate w-[230px] font-medium">
+                                    <p className="ml-3 text-sm truncate">{org.name}</p>
+                                    <p className="ml-3 text-xs truncate flex flex-row items-center">{org.subscriptionPlan} - <User className="h-[11px] w-[11px] mx-1"/>{org.users.length}</p>
+                                </div>
                                     <ArrowLeftRight className="h-4 w-4 ml-auto text-zinc-400" />
                                 </DropdownMenuItem>
                             );

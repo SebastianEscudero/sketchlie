@@ -145,8 +145,9 @@ export const OrganizationSettings = ({
                         color={color}
                         letterColor={letterColor}
                     />
-                    <div className="ml-3 text-sm">
-                        <p className="truncate sm:max-w-[100px] max-w-[200px]">{activeOrg.name}</p>
+                    <div className="ml-3 truncate w-[230px] font-medium">
+                        <p className="ml-3 text-sm truncate">{activeOrg.name}</p>
+                        <p className="ml-3 text-xs truncate flex flex-row items-center">{activeOrg.subscriptionPlan} - <User className="h-[11px] w-[11px] mx-1"/>{activeOrg.users.length}</p>
                     </div>
                 </div>
                 <div className="flex flex-col gap-y-2">
