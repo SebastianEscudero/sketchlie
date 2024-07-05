@@ -1,11 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
-import { Poppins } from "next/font/google";
-import { cn } from "@/lib/utils";
 import { OrganizationSwitcher } from "@/components/auth/org-switcher";
-import { ChevronsLeft, LayoutDashboard, LayoutTemplate, Star } from "lucide-react";
+import { LayoutDashboard, LayoutTemplate, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSearchParams } from "next/navigation";
 import { useCurrentUser } from "@/hooks/use-current-user";
@@ -22,11 +19,7 @@ import { updateR2Bucket } from "@/lib/r2-bucket-functions";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { SearchInput } from "./search-input";
-
-const font = Poppins({
-    subsets: ["latin"],
-    weight: ["600"],
-});
+import { SketchlieButton } from "./sketchlie-button";
 
 interface OrgSidebarProps {
     activeOrganization: string | null;
@@ -79,23 +72,9 @@ export const OrgSidebar = ({
     return (
         <div className="hidden lg:flex flex-col space-y-2 shadow-custom-3 justify-between w-[240px] px-5 pt-5 select-none">
             <div className="flex flex-col space-y-2">
-                <Link href="/">
-                    <div className="flex items-center gap-x-2">
-                        <ChevronsLeft className="h-5 w-5 flex-shrink-0" />
-                        <Image
-                            src="/logo.svg"
-                            alt="Logo"
-                            height={60}
-                            width={60}
-                        />
-                        <span className={cn(
-                            "font-semibold text-xl",
-                            font.className,
-                        )}>
-                            Sketchlie
-                        </span>
-                    </div>
-                </Link>
+                <SketchlieButton 
+                    activeOrg={activeOrg}
+                />
                 <OrganizationSwitcher
                     plan={subscriptionPlan}
                     setActiveOrganization={setActiveOrganization}

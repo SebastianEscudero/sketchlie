@@ -1,10 +1,9 @@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { CircleAlert, Infinity, Shapes, SquareMousePointer, Users, Zap } from "lucide-react";
+import { Infinity, Shapes, SquareMousePointer, Users, Zap } from "lucide-react";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { Button } from "@/components/ui/button";
 import { Poppins } from "next/font/google";
 import { cn } from "@/lib/utils";
-import { Hint } from "@/components/hint";
 import { getPlanColor } from "@/lib/orgUtils";
 
 const font = Poppins({
@@ -25,21 +24,6 @@ export const SubscriptionPlanDropdown = ({
     const proModal = useProModal();
     const onClick = () => {
         proModal.onOpen(activeOrg.id);
-    }
-
-    let label = "";
-    let diffInDays = 0;
-    if (activeOrg.subscription) {
-        let subscriptionDate = new Date(activeOrg.subscription.mercadoPagoCurrentPeriodEnd);
-        let today = new Date();
-        diffInDays = Math.ceil((subscriptionDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-        label = "Subscription expired! Renew to edit boards.";
-        if (diffInDays === 0 || diffInDays === -0) {
-            label = "Subscription expires today! Renew to continue editing boards.";
-        }
-        if (diffInDays <= 2 && diffInDays > 0) {
-            label = `Subscription expires in ${diffInDays} day(s)! Renew to continue editing boards.`;
-        }
     }
 
     let color = "#000000"; // default color
@@ -69,11 +53,6 @@ export const SubscriptionPlanDropdown = ({
                         </div>
                     </DropdownMenuTrigger>
                 </div>
-                {diffInDays <= 2 && activeOrg.subscription && (
-                    <Hint label={label} sideOffset={10} side="right">
-                        <CircleAlert className="fill-red-500 text-white ml-2 h-7 w-7 hover:cursor-pointer" onClick={onClick} />
-                    </Hint>
-                )}
                 <DropdownMenuContent align="start" className="px-3 py-2 flex flex-col space-y-3 rounded-lg drop-shadow-md">
                     <p className="font-semibold">{activeOrg.name} is on Plan {subscriptionPlan}</p>
                     <div className="text-sm space-y-2">
