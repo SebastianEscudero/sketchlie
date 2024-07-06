@@ -3,10 +3,10 @@ import { ArrowHead, ArrowLayer } from '@/types/canvas';
 import React from 'react';
 
 interface ArrowProps {
-    id: string;
-    layer: ArrowLayer;
-    onPointerDown?: (e: React.PointerEvent, id: string) => void;
-    selectionColor?: string;
+  id: string;
+  layer: ArrowLayer;
+  onPointerDown?: (e: React.PointerEvent, id: string) => void;
+  selectionColor?: string;
 };
 
 export const Arrow = ({
@@ -32,16 +32,20 @@ export const Arrow = ({
     pathData = `M ${x} ${y} L ${center.x} ${center.y} L ${end.x} ${end.y}`;
   }
 
-  const arrowheadPath = `M 4 0 l -15 -5 l 0 10 l 15 -5 Z`;
-        
+  const arrowheadPath = `M -6 -4 L 0 0 L -6 4`;
+
   return (
     <>
       {startArrowHead === ArrowHead.Triangle && (
         <path
           d={arrowheadPath}
-          fill={selectionColor || (isTransparent ? "#000" : fillColor)}
+          stroke={selectionColor || (isTransparent ? "#000" : fillColor)}
+          fill="none"
           onPointerDown={onPointerDown ? (e) => onPointerDown(e, id) : undefined}
           transform={`translate(${start.x}, ${start.y}) rotate(${startAngle})`}
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin='round'
         />
       )}
       <path
@@ -50,13 +54,19 @@ export const Arrow = ({
         fill="none"
         stroke={selectionColor || (isTransparent ? "#000" : fillColor)}
         strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       {endArrowHead === ArrowHead.Triangle && (
         <path
           d={arrowheadPath}
-          fill={selectionColor || (isTransparent ? "#000" : fillColor)}
+          stroke={selectionColor || (isTransparent ? "#000" : fillColor)}
+          fill="none"
           onPointerDown={onPointerDown ? (e) => onPointerDown(e, id) : undefined}
           transform={`translate(${end.x}, ${end.y}) rotate(${endAngle})`}
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin='round'
         />
       )}
     </>

@@ -42,6 +42,6 @@ export const Path = ({
             fill="none"
             stroke={stroke ? (isHalfTransparent ? `${stroke}80` : stroke) : (isTransparent ? '#000' : fill)}
             strokeWidth={strokeSize}
-            />
+        />
     );
 };

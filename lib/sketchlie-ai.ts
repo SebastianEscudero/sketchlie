@@ -58,7 +58,7 @@ export async function groqFillTexts(selectedLayers: any, title: string, userId: 
                 content: content,
             },
         ],
-        temperature: 0.5,
+        temperature: 0.2,
         model: "llama3-8b-8192",
         user: userId,
         stream: false,

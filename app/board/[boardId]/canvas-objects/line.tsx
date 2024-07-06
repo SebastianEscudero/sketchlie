@@ -3,10 +3,10 @@ import { LineLayer } from '@/types/canvas';
 import React from 'react';
 
 interface LineProps {
-    id: string;
-    layer: LineLayer;
-    onPointerDown?: (e: React.PointerEvent, id: string) => void;
-    selectionColor?: string;
+  id: string;
+  layer: LineLayer;
+  onPointerDown?: (e: React.PointerEvent, id: string) => void;
+  selectionColor?: string;
 };
 
 export const Line = ({
@@ -27,7 +27,7 @@ export const Line = ({
   if (center) {
     pathData = `M ${x} ${y} L ${center.x} ${center.y} L ${end.x} ${end.y}`;
   }
-        
+
   return (
     <path
       onPointerDown={onPointerDown ? (e) => onPointerDown(e, id) : undefined}
@@ -35,6 +35,8 @@ export const Line = ({
       fill="none"
       stroke={selectionColor || (isTransparent ? "#000" : fillColor)}
       strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   );
 };

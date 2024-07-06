@@ -2,9 +2,8 @@
 
 import { memo, useMemo } from "react";
 
-import { ArrowHandle, ArrowLayer, CanvasMode, Layers, LayerType, Side, XYWH } from "@/types/canvas";
+import { ArrowHandle, ArrowLayer, Layers, LayerType, Side, XYWH } from "@/types/canvas";
 import { useSelectionBounds } from "@/hooks/use-selection-bounds";
-import { pointerEventToCanvasPoint } from "@/lib/utils";
 
 interface SelectionBoxProps {
   zoom: number;
@@ -12,8 +11,6 @@ interface SelectionBoxProps {
   onArrowResizeHandlePointerDown: (handle: ArrowHandle, initialBounds: XYWH) => void;
   selectedLayers: string[];
   liveLayers: Layers;
-  setCanvasState: (state: any) => void;
-  camera: any;
 };
 
 const HANDLE_SIZE = 8;
@@ -25,8 +22,6 @@ export const SelectionBox = memo(({
   onArrowResizeHandlePointerDown,
   selectedLayers,
   liveLayers,
-  setCanvasState,
-  camera,
 }: SelectionBoxProps) => {
 
   const handleRightClick = (event: React.MouseEvent) => {
@@ -60,16 +55,19 @@ export const SelectionBox = memo(({
   if (isArrowLayer && soleLayerId && selectedLayers.length === 1) {
     const arrowLayer = liveLayers[soleLayerId] as ArrowLayer;
     bounds.center = arrowLayer.center;
-    const handleRadius = HANDLE_SIZE / zoom;
+    const handleRadius = 5 / zoom;
     const strokeWidth = STROKE_WIDTH / zoom;
 
     return (
       <>
         <circle
-          className="fill-white stroke-blue-500 hover:cursor-hand active:cursor-grab"
+          className="fill-white stroke-blue-500 hover:cursor-hand"
           cx={arrowLayer.x}
           cy={arrowLayer.y}
           r={handleRadius}
+          onClick={() => {
+            document.body.style.cursor = "grab";
+          }}
           strokeWidth={strokeWidth}
           onPointerDown={(e) => {
             e.stopPropagation();
@@ -77,10 +75,13 @@ export const SelectionBox = memo(({
           }}
         />
         <circle
-          className="fill-blue-500 stroke-white hover:cursor-hand active:cursor-grab"
+          className="fill-blue-500 stroke-white hover:cursor-hand"
           cx={arrowLayer?.center?.x}
           cy={arrowLayer?.center?.y}
           r={handleRadius}
+          onClick={() => {
+            document.body.style.cursor = "grab";
+          }}
           strokeWidth={strokeWidth}
           onPointerDown={(e) => {
             e.stopPropagation();
@@ -88,10 +89,13 @@ export const SelectionBox = memo(({
           }}
         />
         <circle
-          className="fill-white stroke-blue-500 hover:cursor-hand active:cursor-grab"
+          className="fill-white stroke-blue-500 hover:cursor-hand"
           cx={arrowLayer.x + arrowLayer.width}
           cy={arrowLayer.y + arrowLayer.height}
           r={handleRadius}
+          onClick={() => {
+            document.body.style.cursor = "grab";
+          }}
           strokeWidth={strokeWidth}
           onPointerDown={(e) => {
             e.stopPropagation();

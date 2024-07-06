@@ -765,7 +765,7 @@ export const Canvas = ({
             if (canvasState.mode === CanvasMode.Moving) {
                 setIsPanning(true);
                 setStartPanPoint({ x: e.clientX, y: e.clientY });
-                document.body.style.cursor = 'url(/custom-cursors/grab.svg) 8 8, auto';
+                document.body.style.cursor = 'url(/custom-cursors/grab.svg) 12 12, auto';
                 return;
             }
 
@@ -780,7 +780,7 @@ export const Canvas = ({
         } else if (e.button === 2 || e.button === 1) {
             setIsRightClickPanning(true);
             setStartPanPoint({ x: e.clientX, y: e.clientY });
-            document.body.style.cursor = 'url(/custom-cursors/grab.svg) 8 8, auto';
+            document.body.style.cursor = 'url(/custom-cursors/grab.svg) 12 12, auto';
         }
 
         if (selectedLayersRef.current.length > 0) {
@@ -915,7 +915,7 @@ export const Canvas = ({
                         width: widthArrow,
                         height: heightArrow,
                         type: LayerType.Arrow,
-                        fill: { r: 0, g: 0, b: 0, a: 0 },
+                        fill: { r: 29, g: 29, b: 29, a: 1 },
                         startArrowHead: ArrowHead.None,
                         endArrowHead: ArrowHead.Triangle
                     });
@@ -928,7 +928,7 @@ export const Canvas = ({
                         width: widthArrow,
                         height: heightArrow,
                         type: LayerType.Line,
-                        fill: { r: 0, g: 0, b: 0, a: 0 },
+                        fill: { r: 29, g: 29, b: 29, a: 1 },
                     });
                     break;
             }
@@ -1548,7 +1548,7 @@ export const Canvas = ({
     useEffect(() => {
         // control the cursor
         if (rightClickPanning) {
-            document.body.style.cursor = 'url(/custom-cursors/grab.svg) 8 8, auto';
+            document.body.style.cursor = 'url(/custom-cursors/grab.svg) 12 12, auto';
             return;
         }
 
@@ -1574,7 +1574,7 @@ export const Canvas = ({
         } else if (canvasState.mode === CanvasMode.Moving) {
             document.body.style.cursor = 'url(/custom-cursors/hand.svg) 8 8, auto';
         } else if (canvasState.mode === CanvasMode.ArrowResizeHandler) {
-            document.body.style.cursor = 'url(/custom-cursors/grab.svg) 8 8, auto';
+            document.body.style.cursor = 'url(/custom-cursors/grab.svg) 12 12, auto';
         } else {
             document.body.style.cursor = 'default';
         }
@@ -1731,8 +1731,6 @@ export const Canvas = ({
                                 selectedLayers={selectedLayersRef.current}
                                 onResizeHandlePointerDown={onResizeHandlePointerDown}
                                 onArrowResizeHandlePointerDown={onArrowResizeHandlePointerDown}
-                                setCanvasState={setCanvasState}
-                                camera={camera}
                             />
                         )}
                         {canvasState.mode === CanvasMode.SelectionNet && canvasState.current != null && activeTouches < 2 && (
