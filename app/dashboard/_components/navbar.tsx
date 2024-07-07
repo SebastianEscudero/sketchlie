@@ -81,7 +81,7 @@ export const Navbar = ({
                         )}
                     </div>
                 )}
-                <div className="mx-2 flex flex-row space-x-4 items-center justify-center">
+                <div className="xs:mx-2 flex flex-row xs:space-x-4 items-center justify-center">
                     <NotificationsMenu 
                         setActiveOrganization={setActiveOrganization}
                     />
