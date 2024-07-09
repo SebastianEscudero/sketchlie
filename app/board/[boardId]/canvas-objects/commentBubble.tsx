@@ -153,6 +153,8 @@ export const CommentBubble = memo(({
         d={`M 0 ${0} L ${width} ${0} L ${width} ${height * 4 / 5} L ${width / 2.5} ${height * 4 / 5} L ${width / 5} ${height} L ${width / 5} ${height * 4 / 5} L 0 ${height * 4 / 5} Z`} fill={fillColor}
         stroke={selectionColor || colorToCss(outlineFill || fill)}
         strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <foreignObject
         x={foreignObjectX} // Adjust x position to center the foreignObject

@@ -155,8 +155,8 @@ export const Rectangle = memo(({
         fill={fillColor}
         stroke={selectionColor || colorToCss(outlineFill || fill)}
         strokeWidth="2"
-        rx="2"
-        ry="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <foreignObject
         x={foreignObjectX} // Adjust x position to center the foreignObject

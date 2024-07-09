@@ -153,6 +153,8 @@ export const BigArrowDown = memo(({
         d={`M ${width / 2} ${height} L 0 ${height / 2} L ${width / 4} ${height / 2} L ${width / 4} ${0} L ${width * 3 / 4} ${0} L ${width * 3 / 4} ${height / 2} L ${width} ${height / 2} Z`} fill={fillColor}
         stroke={selectionColor || colorToCss(outlineFill || fill)}
         strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <foreignObject
         x={foreignObjectX} // Adjust x position to center the foreignObject

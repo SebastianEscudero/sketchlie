@@ -154,6 +154,8 @@ export const BigArrowRight = memo(({
         fill={fillColor}
         stroke={selectionColor || colorToCss(outlineFill || fill)}
         strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <foreignObject
         x={foreignObjectX} // Adjust x position to center the foreignObject

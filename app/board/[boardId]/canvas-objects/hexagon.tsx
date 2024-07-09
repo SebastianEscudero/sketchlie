@@ -153,6 +153,8 @@ export const Hexagon = memo(({
         d={`M ${width * 0.5},${0} L ${width}, ${height * 0.25} L ${width}, ${height * 0.75} L ${width * 0.5}, ${height} L 0, ${height * 0.75} L 0, ${height * 0.25} Z`} fill={fillColor}
         stroke={selectionColor || colorToCss(outlineFill || fill)}
         strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <foreignObject
         x={foreignObjectX} // Adjust x position to center the foreignObject
