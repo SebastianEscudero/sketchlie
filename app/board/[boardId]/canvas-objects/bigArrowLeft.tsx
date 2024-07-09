@@ -131,8 +131,9 @@ export const BigArrowLeft = memo(({
       onPointerDown(e, id);
     }
   }
-
-  const divWidth = width * 0.75;
+  
+  const arrowHeadWidth = Math.min(height*0.8, width*0.7)
+  const divWidth = width - arrowHeadWidth/2;
   const divHeight = height * 0.50;
 
   // Calculate the position to center the foreignObject within the BigArrowLeft
@@ -150,7 +151,7 @@ export const BigArrowLeft = memo(({
       onTouchStart={(e) => handleTouchStart(e)}
     >
       <path
-        d={`M ${width / 2} ${height} L 0 ${height / 2} L ${width / 2} ${0} L ${width / 2} ${height / 4} L ${width} ${height / 4} L ${width} ${height * 3 / 4} L ${width / 2} ${height * 3 / 4} Z`} fill={fillColor}
+        d={`M ${arrowHeadWidth / 2} ${height} L 0 ${height / 2} L ${arrowHeadWidth / 2} ${0} L ${arrowHeadWidth / 2} ${height / 4} L ${width} ${height / 4} L ${width} ${height * 3 / 4} L ${arrowHeadWidth / 2} ${height * 3 / 4} Z`} fill={fillColor}
         stroke={selectionColor || colorToCss(outlineFill || fill)}
         strokeWidth="2"
         strokeLinecap="round"

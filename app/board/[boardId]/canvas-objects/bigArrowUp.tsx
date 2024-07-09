@@ -100,7 +100,7 @@ export const BigArrowUp = memo(({
         e.stopPropagation();
         BigArrowUpRef.current.focus();
       }
-  
+
       if (onPointerDown) {
         onPointerDown(e, id);
       }
@@ -131,12 +131,13 @@ export const BigArrowUp = memo(({
       onPointerDown(e, id);
     }
   }
+  const arrowHeadHeight = Math.min(height * 0.8, width * 0.7);
   const divWidth = width * 0.5;
-  const divHeight = height * 0.75;
+  const divHeight = height - arrowHeadHeight / 2;
 
   // Calculate the position to center the foreignObject within the BigArrowUp
   const foreignObjectX = (width - divWidth) / 2;
-  const foreignObjectY = (height - divHeight);
+  const foreignObjectY = arrowHeadHeight / 2;
 
   if (!fill) {
     return null;
@@ -149,7 +150,7 @@ export const BigArrowUp = memo(({
       onTouchStart={(e) => handleTouchStart(e)}
     >
       <path
-        d={`M ${width / 2} ${0} L 0 ${height / 2} L ${width / 4} ${height / 2} L ${width / 4} ${height} L ${width * 3 / 4} ${height} L ${width * 3 / 4} ${height / 2} L ${width} ${height / 2} Z`} fill={fillColor}
+        d={`M ${width / 2} ${0} L 0 ${arrowHeadHeight / 2} L ${width / 4} ${arrowHeadHeight / 2} L ${width / 4} ${height} L ${width * 3 / 4} ${height} L ${width * 3 / 4} ${arrowHeadHeight / 2} L ${width} ${arrowHeadHeight / 2} Z`} fill={fillColor}
         stroke={selectionColor || colorToCss(outlineFill || fill)}
         strokeWidth="2"
         strokeLinecap="round"
@@ -174,7 +175,7 @@ export const BigArrowUp = memo(({
               // Check if the pressed key is Enter
               if (e.key === 'Enter') {
                 e.preventDefault(); // Prevent the default Enter key behavior
-                
+
                 // Insert a new line at the current cursor position
                 document.execCommand('insertText', false, '\n');
               }

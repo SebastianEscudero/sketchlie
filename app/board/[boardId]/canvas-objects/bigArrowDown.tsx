@@ -132,17 +132,18 @@ export const BigArrowDown = memo(({
     }
   }
 
+  const arrowHeadHeight = Math.min(height * 0.8, width * 0.7);
   const divWidth = width * 0.5;
-  const divHeight = height * 0.75;
-
+  const divHeight = height - arrowHeadHeight / 2;
+  
   // Calculate the position to center the foreignObject within the BigArrowDown
   const foreignObjectX = (width - divWidth) / 2;
-  const foreignObjectY = 0;
-
+  const foreignObjectY = (height - divHeight - arrowHeadHeight/2);
+  
   if (!fill) {
     return null;
   }
-
+  
   return (
     <g
       transform={`translate(${x}, ${y})`}
@@ -150,17 +151,17 @@ export const BigArrowDown = memo(({
       onTouchStart={(e) => handleTouchStart(e)}
     >
       <path
-        d={`M ${width / 2} ${height} L 0 ${height / 2} L ${width / 4} ${height / 2} L ${width / 4} ${0} L ${width * 3 / 4} ${0} L ${width * 3 / 4} ${height / 2} L ${width} ${height / 2} Z`} fill={fillColor}
+        d={`M ${width / 2} ${height} L 0 ${height - arrowHeadHeight / 2} L ${width / 4} ${height - arrowHeadHeight / 2} L ${width / 4} ${0} L ${width * 3 / 4} ${0} L ${width * 3 / 4} ${height - arrowHeadHeight / 2} L ${width} ${height - arrowHeadHeight / 2} Z`} fill={fillColor}
         stroke={selectionColor || colorToCss(outlineFill || fill)}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <foreignObject
-        x={foreignObjectX} // Adjust x position to center the foreignObject
-        y={foreignObjectY} // Adjust y position to center the foreignObject
-        width={divWidth} // Adjust width to 80% of the BigArrowDown's width
-        height={divHeight} // Adjust height to 80% of the BigArrowDown's height
+        x={foreignObjectX}
+        y={foreignObjectY}
+        width={divWidth}
+        height={divHeight}
         onDragStart={(e) => e.preventDefault()}
       >
         <div
