@@ -738,6 +738,9 @@ export const Canvas = ({
                     if (intersectingStartLayer === intersectingEndLayer) {
                         newLayer.startConnectedLayerId = undefined;
                         newLayer.endConnectedLayerId = undefined;
+                    } else {
+                        newLayer.startConnectedLayerId = intersectingStartLayer;
+                        newLayer.endConnectedLayerId = intersectingEndLayer;
                     }
 
                     bounds = resizeArrowBounds(

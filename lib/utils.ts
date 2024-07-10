@@ -323,8 +323,8 @@ export function resizeArrowBounds(
     center: bounds.center,
   };
 
-  const end = { x: bounds.x + bounds.width, y: bounds.y + bounds.height };
-  const start = { x: bounds.x, y: bounds.y };
+  let end = { x: bounds.x + bounds.width, y: bounds.y + bounds.height };
+  let start = { x: bounds.x, y: bounds.y };
 
   if (handle === ArrowHandle.start) {
     result.x = point.x;
@@ -341,15 +341,29 @@ export function resizeArrowBounds(
       result.height = end.y - startPoint.y;
     }
 
+    if (newLayer.endConnectedLayerId && liveLayers[newLayer.endConnectedLayerId]) {
+      const endPoint = getClosestEndPoint(liveLayers[newLayer.endConnectedLayerId], point);
+      result.width = endPoint.x - result.x;
+      result.height = endPoint.y - result.y;
+    }
+
   } else if (handle === ArrowHandle.end) {
     result.width = point.x - bounds.x;
     result.height = point.y - bounds.y;
     
+    if (newLayer.startConnectedLayerId && liveLayers[newLayer.startConnectedLayerId]) {
+      const startPoint = getClosestEndPoint(liveLayers[newLayer.startConnectedLayerId], point);
+      result.x = startPoint.x;
+      result.y = startPoint.y;
+      result.width = point.x - startPoint.x;
+      result.height = point.y - startPoint.y;
+    }
+
     if (newLayer.endConnectedLayerId) {
       const endConnectedLayer = liveLayers[newLayer.endConnectedLayerId];
       const endPoint = getClosestPointOnBorder(endConnectedLayer, point, start, zoom);
-      result.width = endPoint.x - bounds.x;
-      result.height = endPoint.y - bounds.y;
+      result.width = endPoint.x - result.x;
+      result.height = endPoint.y - result.y;
     }
 
   } else if (handle === ArrowHandle.center) {
