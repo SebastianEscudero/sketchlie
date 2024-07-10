@@ -18,13 +18,11 @@ import { Line } from "../canvas-objects/line";
 
 interface PreviewLayerProps {
     layer: PreviewLayer;
-    liveLayers: Layers;
 };
 
 
 export const CurrentPreviewLayer = memo(({
     layer,
-    liveLayers,
 }: PreviewLayerProps) => {
 
     switch (layer.type) {
@@ -131,7 +129,6 @@ export const CurrentPreviewLayer = memo(({
                 <Arrow
                     id="ArrowPreview"
                     layer={layer}
-                    liveLayers={liveLayers}
                 />
             )
     }

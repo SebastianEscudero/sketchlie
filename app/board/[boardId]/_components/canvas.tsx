@@ -1835,7 +1835,6 @@ export const Canvas = ({
                         {currentPreviewLayer && (
                             <CurrentPreviewLayer
                                 layer={currentPreviewLayer}
-                                liveLayers={liveLayers}
                             />
                         )}
                         {!isMoving && activeTouches < 2 && canvasState.mode !== CanvasMode.ArrowResizeHandler && (
