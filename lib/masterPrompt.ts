@@ -95,7 +95,7 @@ export const generateFillTextsPrompt = `
 Analyze and modify the selected layers in this Sketchlie workspace:
 
 Task:
-1. For each layer with an empty 'value' (""), generate appropriate text content based on:
+1. For each layer with an empty 'value' ("" or " "), generate appropriate text content based on:
    - The layer's type
    - Its position relative to other layers
    - The overall theme of the diagram

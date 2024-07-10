@@ -323,8 +323,8 @@ export const PlantillaMapaConceptual = {
         },
         "y2a2pcobw10LJjBVmDDAY": {
             "center": {
-                "x": 914.2461700487086,
-                "y": 631.4235876304931
+                "x": 914.0446967826456,
+                "y": 630.5768767354125
             },
             "endArrowHead": "Triangle",
             "fill": {
@@ -333,10 +333,10 @@ export const PlantillaMapaConceptual = {
                 "b": 29,
                 "a": 1
             },
-            "height": 119.46325731467766,
+            "height": 117.76983552451645,
             "type": 16,
-            "width": 0.4784787805341466,
-            "x": 914.0069306584415,
+            "width": 0.14533820022541022,
+            "x": 913.9720276825329,
             "y": 571.6919589731543,
             "startConnectedLayerId": "3qzVpGWUSNuo3q1OVQAZ9",
             "endConnectedLayerId": "9kOezU12JUsI6efa1pWOX"
@@ -363,8 +363,8 @@ export const PlantillaMapaConceptual = {
         },
         "3vKksRx3Ir0D3CVJxXMfs": {
             "center": {
-                "x": 1243.293431655527,
-                "y": 636.1308603577661
+                "x": 1242.9485017296429,
+                "y": 633.0262537424703
             },
             "endArrowHead": "Triangle",
             "fill": {
@@ -373,10 +373,10 @@ export const PlantillaMapaConceptual = {
                 "b": 29,
                 "a": 1
             },
-            "height": 119.46325731467766,
+            "height": 113.2540440840861,
             "type": 16,
-            "width": 0.48611476546284393,
-            "x": 1243.0503742727956,
+            "width": 0.1426559178964908,
+            "x": 1242.8771737706948,
             "y": 576.3992317004272,
             "startConnectedLayerId": "uZjDWlqXJa20TycqhRQpa",
             "endConnectedLayerId": "0RQQAN20WM0LSeDUEtNgZ"
@@ -423,8 +423,8 @@ export const PlantillaMapaConceptual = {
             "type": 0,
             "value": "",
             "width": 158.45829195553745,
-            "x": 835.4164729821177,
-            "y": 691.155216287832,
+            "x": 834.851999052064,
+            "y": 689.4617944976708,
             "connectedArrows": [
                 "y2a2pcobw10LJjBVmDDAY"
             ]
@@ -447,8 +447,8 @@ export const PlantillaMapaConceptual = {
             "type": 0,
             "value": "",
             "width": 158.45829195553745,
-            "x": 1164.4701093457543,
-            "y": 695.8624890151049,
+            "x": 1163.9056354157005,
+            "y": 689.6532757845133,
             "connectedArrows": [
                 "3vKksRx3Ir0D3CVJxXMfs"
             ]

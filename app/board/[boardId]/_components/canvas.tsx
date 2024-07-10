@@ -706,9 +706,11 @@ export const Canvas = ({
                 if (newLayer.type === LayerType.Arrow) {
                     let intersectingStartLayer = newLayer.startConnectedLayerId
                     let intersectingEndLayer = newLayer.endConnectedLayerId
+                    let intersectingStartLayers: string[] = []
+                    let intersectingEndLayers: string[] = []
 
                     if (canvasState.handle === ArrowHandle.end) {
-                        intersectingEndLayer = findIntersectingLayerForConnection(liveLayerIds, liveLayers, point, zoom).filter(layerId => layerId !== id)[0] || undefined;
+                        intersectingEndLayers = findIntersectingLayerForConnection(liveLayerIds, liveLayers, point, zoom) || undefined;
                         if (intersectingEndLayer) {
                             newLayer.endConnectedLayerId = intersectingEndLayer;
                             const connectedLayer = liveLayers[intersectingEndLayer];
@@ -718,10 +720,10 @@ export const Canvas = ({
                             newLayer.endConnectedLayerId = undefined;
                         }
                         const start = { x: newLayer.x, y: newLayer.y };
-                        intersectingStartLayer = findIntersectingLayerForConnection(liveLayerIds, liveLayers, start, zoom).filter(layerId => layerId !== id)[0] || undefined;
+                        intersectingStartLayers = findIntersectingLayerForConnection(liveLayerIds, liveLayers, start, zoom) || undefined;
                     
                     } else if (canvasState.handle === ArrowHandle.start) {
-                        intersectingStartLayer = findIntersectingLayerForConnection(liveLayerIds, liveLayers, point, zoom).filter(layerId => layerId !== id)[0] || undefined;
+                        intersectingStartLayers = findIntersectingLayerForConnection(liveLayerIds, liveLayers, point, zoom) || undefined;
                         if (intersectingStartLayer) {
                             newLayer.startConnectedLayerId = intersectingStartLayer;
                             const connectedLayer = liveLayers[intersectingStartLayer];
@@ -731,9 +733,18 @@ export const Canvas = ({
                             newLayer.startConnectedLayerId = undefined;
                         }
                         const end = { x: newLayer.x + newLayer.width, y: newLayer.y + newLayer.height };
-                        intersectingEndLayer = findIntersectingLayerForConnection(liveLayerIds, liveLayers, end, zoom).filter(layerId => layerId !== id)[0] || undefined;
-
+                        intersectingEndLayers = findIntersectingLayerForConnection(liveLayerIds, liveLayers, end, zoom) || undefined;
                     }
+
+                    const filteredStartLayers = intersectingStartLayers.filter(layer => !intersectingEndLayers.includes(layer));
+                    const filteredEndLayers = intersectingEndLayers.filter(layer => !intersectingStartLayers.includes(layer));
+                    
+                    // Assigning the filtered results back
+                    intersectingStartLayers = filteredStartLayers;
+                    intersectingEndLayers = filteredEndLayers;
+
+                    intersectingStartLayer = intersectingStartLayers.pop();
+                    intersectingEndLayer = intersectingEndLayers.pop();
 
                     if (intersectingStartLayer === intersectingEndLayer) {
                         newLayer.startConnectedLayerId = undefined;
@@ -1014,11 +1025,18 @@ export const Canvas = ({
                     setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.Note, fill: { r: 252, g: 225, b: 156, a: 1 }, outlineFill: { r: 0, g: 0, b: 0, a: 0 } });
                     break;
                 case LayerType.Arrow:
-                    const intersectingStartLayer = findIntersectingLayerForConnection(liveLayerIds, liveLayers, startPanPoint, zoom)[0];
-                    const intersectingEndLayer = findIntersectingLayerForConnection(liveLayerIds, liveLayers, point, zoom)[0];
+                    let intersectingStartLayers: string[] = findIntersectingLayerForConnection(liveLayerIds, liveLayers, startPanPoint, zoom);
+                    let intersectingEndLayers: string[]= findIntersectingLayerForConnection(liveLayerIds, liveLayers, point, zoom);
 
-                    let startConnectedLayerId = intersectingStartLayer;
-                    let endConnectedLayerId = intersectingEndLayer;
+                    const filteredStartLayers = intersectingStartLayers.filter(layer => !intersectingEndLayers.includes(layer));
+                    const filteredEndLayers = intersectingEndLayers.filter(layer => !intersectingStartLayers.includes(layer));
+                    
+                    // Assigning the filtered results back
+                    const intersectingStartLayer = filteredStartLayers.pop();
+                    const intersectingEndLayer = filteredEndLayers.pop();
+
+                    let startConnectedLayerId: any = intersectingStartLayer;
+                    let endConnectedLayerId: any = intersectingEndLayer;
                     let start = startPanPoint;
                     let end = point;
 
