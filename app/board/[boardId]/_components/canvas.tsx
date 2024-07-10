@@ -352,7 +352,7 @@ export const Canvas = ({
                 newLayers[id] = newLayer;
 
                 // Update connected arrows
-                if (layer.type !== LayerType.Arrow && layer.type !== LayerType.Line && layer.type !== LayerType.Path) {
+                if (layer.type !== LayerType.Arrow && layer.type !== LayerType.Line && layer.type !== LayerType.Path && selectedLayersRef.current.length === 1) {
                     if (layer.connectedArrows) {
                         layer.connectedArrows.forEach(arrowId => {
                             const arrowLayer = newLayers[arrowId] as ArrowLayer;
@@ -703,10 +703,10 @@ export const Canvas = ({
                     bounds = resizeBox(initialBoundingBox, newBoundingBox, newLayer, canvasState.corner, singleLayer);
                 }
             } else if (canvasState.mode === CanvasMode.ArrowResizeHandler) {
-                let intersectingStartLayer
-                let intersectingEndLayer
-
                 if (newLayer.type === LayerType.Arrow) {
+                    let intersectingStartLayer = newLayer.startConnectedLayerId
+                    let intersectingEndLayer = newLayer.endConnectedLayerId
+
                     if (canvasState.handle === ArrowHandle.end) {
                         intersectingEndLayer = findIntersectingLayerForConnection(liveLayerIds, liveLayers, point, zoom).filter(layerId => layerId !== id)[0] || undefined;
                         if (intersectingEndLayer) {
@@ -734,6 +734,8 @@ export const Canvas = ({
                         intersectingEndLayer = findIntersectingLayerForConnection(liveLayerIds, liveLayers, end, zoom).filter(layerId => layerId !== id)[0] || undefined;
 
                     }
+
+                    console.log(intersectingStartLayer, intersectingEndLayer)
 
                     if (intersectingStartLayer === intersectingEndLayer) {
                         newLayer.startConnectedLayerId = undefined;
