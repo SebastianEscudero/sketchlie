@@ -23,11 +23,14 @@ export const PlantillaDiagramaDeFlujo = {
             "width": 150,
             "x": 359.0324880337952,
             "y": 429.8489224527294,
+            "connectedArrows": [
+                "wJ4cgBqr2kHVKagQfqXJd"
+            ]
         },
         "wJ4cgBqr2kHVKagQfqXJd": {
             "center": {
-                "x": 557.0324880337951,
-                "y": 475.8489224527294
+                "x": 555.5324880337951,
+                "y": 476.0735459395611
             },
             "endArrowHead": "Triangle",
             "fill": {
@@ -36,16 +39,18 @@ export const PlantillaDiagramaDeFlujo = {
                 "b": 29,
                 "a": 1
             },
-            "height": 0,
+            "height": -0.21078202246542332,
             "type": 16,
-            "width": 84,
-            "x": 511.03248803379506,
-            "y": 475.8489224527294,
+            "width": 92.99999999999989,
+            "x": 509.0324880337952,
+            "y": 476.1789369507938,
+            "startConnectedLayerId": "RhHvg4m66sZEWLhG6c0ix",
+            "endConnectedLayerId": "byBuNH8mFEGSRm08WkSeT"
         },
         "taLCqjggH7gSE2RI3Mulc": {
             "center": {
-                "x": 782.6213194369627,
-                "y": 474.837166078078
+                "x": 786.1584355308651,
+                "y": 475.2770076680644
             },
             "endArrowHead": "Triangle",
             "fill": {
@@ -54,11 +59,13 @@ export const PlantillaDiagramaDeFlujo = {
                 "b": 29,
                 "a": 1
             },
-            "height": -0.05242617044387998,
+            "height": -0.3576935445616982,
             "type": 16,
-            "width": 64.86200912177128,
-            "x": 750.1903148760771,
-            "y": 474.8633791632998,
+            "width": 68.25189499414,
+            "x": 752.0324880337951,
+            "y": 475.45585444034526,
+            "startConnectedLayerId": "byBuNH8mFEGSRm08WkSeT",
+            "endConnectedLayerId": "bZm863oHiKEzOGqLsq4Qc"
         },
         "byBuNH8mFEGSRm08WkSeT": {
             "fill": {
@@ -80,11 +87,15 @@ export const PlantillaDiagramaDeFlujo = {
             "width": 150,
             "x": 602.0324880337951,
             "y": 429.3489224527294,
+            "connectedArrows": [
+                "wJ4cgBqr2kHVKagQfqXJd",
+                "taLCqjggH7gSE2RI3Mulc"
+            ]
         },
         "wqasCzDYV0fn4GKxvn3XA": {
             "center": {
-                "x": 919.6997428999433,
-                "y": 259.3189800936787
+                "x": 917,
+                "y": 260
             },
             "endArrowHead": "Triangle",
             "fill": {
@@ -93,11 +104,13 @@ export const PlantillaDiagramaDeFlujo = {
                 "b": 29,
                 "a": 1
             },
-            "height": -125.20463410762721,
+            "height": -124.33383611068899,
             "type": 16,
-            "width": 273.77851937129003,
-            "x": 918.8003624167586,
-            "y": 384.2918985509115,
+            "width": 280.0365257325834,
+            "x": 918.0156688384018,
+            "y": 384.85377987218357,
+            "startConnectedLayerId": "bZm863oHiKEzOGqLsq4Qc",
+            "endConnectedLayerId": "aocXAaay67o3bYoqDuawC"
         },
         "aocXAaay67o3bYoqDuawC": {
             "fill": {
@@ -119,11 +132,15 @@ export const PlantillaDiagramaDeFlujo = {
             "width": 150,
             "x": 1198.0521945709852,
             "y": 214.15869301471287,
+            "connectedArrows": [
+                "wqasCzDYV0fn4GKxvn3XA",
+                "q3nYDyuRNYLBGhgNearVe"
+            ]
         },
         "q3nYDyuRNYLBGhgNearVe": {
             "center": {
-                "x": 1396.5521945709852,
-                "y": 260.6586930147129
+                "x": 1394.9209404580329,
+                "y": 260.6586930168204
             },
             "endArrowHead": "Triangle",
             "fill": {
@@ -132,11 +149,13 @@ export const PlantillaDiagramaDeFlujo = {
                 "b": 29,
                 "a": 1
             },
-            "height": 0,
+            "height": 4.215110038785497e-9,
             "type": 16,
-            "width": 84,
-            "x": 1350.5521945709852,
-            "y": 260.6586930147129,
+            "width": 93.73749177409513,
+            "x": 1348.0521945709852,
+            "y": 260.65869301471287,
+            "endConnectedLayerId": "gx4xmnR2CJ1O5akPNCQ5P",
+            "startConnectedLayerId": "aocXAaay67o3bYoqDuawC"
         },
         "gx4xmnR2CJ1O5akPNCQ5P": {
             "fill": {
@@ -158,11 +177,14 @@ export const PlantillaDiagramaDeFlujo = {
             "width": 149.7625082259051,
             "x": 1441.7896863450803,
             "y": 214.15869301471287,
+            "connectedArrows": [
+                "q3nYDyuRNYLBGhgNearVe"
+            ]
         },
         "uMt5BmmDC8KsFiti7Zwgk": {
             "center": {
-                "x": 1059.917965318557,
-                "y": 474.75984918658366
+                "x": 1061.033978342107,
+                "y": 476.1434739870162
             },
             "endArrowHead": "Triangle",
             "fill": {
@@ -171,11 +193,13 @@ export const PlantillaDiagramaDeFlujo = {
                 "b": 29,
                 "a": 1
             },
-            "height": 0.1829402908343809,
+            "height": 0.955710393231243,
             "type": 16,
-            "width": 85.12764987140895,
-            "x": 1017.3541403828526,
-            "y": 474.66837904116653,
+            "width": 87.64630898555026,
+            "x": 1017.2108238493319,
+            "y": 475.6656187904006,
+            "endConnectedLayerId": "zjVX9hyrHZOOxNVaurXMr",
+            "startConnectedLayerId": "bZm863oHiKEzOGqLsq4Qc"
         },
         "zjVX9hyrHZOOxNVaurXMr": {
             "fill": {
@@ -195,13 +219,17 @@ export const PlantillaDiagramaDeFlujo = {
             "type": 0,
             "value": "",
             "width": 150,
-            "x": 1106.8571328348821,
-            "y": 429.1154584147316,
+            "x": 1104.8571328348821,
+            "y": 431.1154584147316,
+            "connectedArrows": [
+                "1n2FEwkEtel5MofAm27GC",
+                "uMt5BmmDC8KsFiti7Zwgk"
+            ]
         },
         "1n2FEwkEtel5MofAm27GC": {
             "center": {
-                "x": 1179.8354636489066,
-                "y": 572.2738949045589
+                "x": 1180.1840886071514,
+                "y": 574.0792836786588
             },
             "fill": {
                 "r": 29,
@@ -209,11 +237,13 @@ export const PlantillaDiagramaDeFlujo = {
                 "b": 29,
                 "a": 1
             },
-            "height": 100.80040770712242,
+            "height": 99.92765052785433,
             "type": 16,
-            "width": 0.7029540477644787,
-            "x": 1179.4839866250245,
-            "y": 521.8736910509982,
+            "width": 0.6607183019675631,
+            "x": 1179.8537294561677,
+            "y": 524.1154584147316,
+            "startConnectedLayerId": "zjVX9hyrHZOOxNVaurXMr",
+            "endConnectedLayerId": "Gd58aJ1W4TDbLymkXSSol"
         },
         "Gd58aJ1W4TDbLymkXSSol": {
             "fill": {
@@ -235,11 +265,15 @@ export const PlantillaDiagramaDeFlujo = {
             "width": 150,
             "x": 1106.1327640439217,
             "y": 624.043108942586,
+            "connectedArrows": [
+                "dKRcErxQLCjphyiwbn5lc",
+                "1n2FEwkEtel5MofAm27GC"
+            ]
         },
         "dKRcErxQLCjphyiwbn5lc": {
             "center": {
-                "x": 1050.4616115218212,
-                "y": 668.5756433264977
+                "x": 1050.5787225176439,
+                "y": 669.8712031394632
             },
             "fill": {
                 "r": 29,
@@ -247,11 +281,13 @@ export const PlantillaDiagramaDeFlujo = {
                 "b": 29,
                 "a": 1
             },
-            "height": 0.2255215579675678,
+            "height": -0.21917502581379722,
             "type": 16,
-            "width": -109.61500146993217,
-            "x": 1105.2691122567871,
-            "y": 668.4628825475139,
+            "width": -111.10808305255568,
+            "x": 1106.1327640439217,
+            "y": 669.9807906523702,
+            "endConnectedLayerId": "hCEwanafQKsyD3liFhm7F",
+            "startConnectedLayerId": "Gd58aJ1W4TDbLymkXSSol"
         },
         "hCEwanafQKsyD3liFhm7F": {
             "fill": {
@@ -273,11 +309,15 @@ export const PlantillaDiagramaDeFlujo = {
             "width": 150,
             "x": 845.024680991366,
             "y": 623.1136684522368,
+            "connectedArrows": [
+                "xu0vAgjUMX8bfQ7Kn1hIt",
+                "dKRcErxQLCjphyiwbn5lc"
+            ]
         },
         "xu0vAgjUMX8bfQ7Kn1hIt": {
             "center": {
-                "x": 918.9375974246406,
-                "y": 594.5702796854354
+                "x": 919.4271111433582,
+                "y": 593.958721920305
             },
             "fill": {
                 "r": 29,
@@ -285,11 +325,13 @@ export const PlantillaDiagramaDeFlujo = {
                 "b": 29,
                 "a": 1
             },
-            "height": -59.02655674333414,
+            "height": -58.309893063863456,
             "type": 16,
-            "width": -0.631993975733053,
-            "x": 919.2535944125071,
-            "y": 624.0835580571023,
+            "width": -0.3326178089189398,
+            "x": 919.5934200478176,
+            "y": 623.1136684522368,
+            "endConnectedLayerId": "bZm863oHiKEzOGqLsq4Qc",
+            "startConnectedLayerId": "hCEwanafQKsyD3liFhm7F"
         },
         "bZm863oHiKEzOGqLsq4Qc": {
             "fill": {
@@ -311,6 +353,11 @@ export const PlantillaDiagramaDeFlujo = {
             "width": 196.92644082139682,
             "x": 820.2843830279351,
             "y": 384.85377987218357,
+            "connectedArrows": [
+                "taLCqjggH7gSE2RI3Mulc",
+                "xu0vAgjUMX8bfQ7Kn1hIt",
+                "wqasCzDYV0fn4GKxvn3XA"
+            ]
         }
     },
     "layerIds": [

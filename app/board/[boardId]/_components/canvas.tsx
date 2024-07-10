@@ -1543,8 +1543,6 @@ export const Canvas = ({
 
     }, [copiedLayerIds, copiedLayerIds, myPresence, setLiveLayers, setLiveLayerIds, setMyPresence, org, proModal, socket, boardId, performAction]);
 
-    console.log(liveLayerIds)
-
     useEffect(() => {
         const onPointerDown = (e: PointerEvent) => {
             const deepCopy = JSON.parse(JSON.stringify(liveLayers));

@@ -114,7 +114,7 @@ export const SketchlieAiDropdown = ({
             });
     
             const data = await response.json();
-    
+
             const updatedLayers = Object.entries(layers).reduce((acc: any, [id, layer]: [string, any]) => {
                 const updatedLayer = data.layers[id];
                 if (updatedLayer) {
