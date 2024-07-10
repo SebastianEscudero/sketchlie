@@ -321,6 +321,7 @@ export const Canvas = ({
 
         const newLayers = { ...liveLayers };
         const updatedLayers: any = [];
+        const updatedLayerIds: string[] = [...selectedLayersRef.current];
 
         const soleLayer = selectedLayersRef.current.length === 1
 
@@ -362,6 +363,7 @@ export const Canvas = ({
                                 const updatedArrow = updateArrowPosition(arrowLayer, id, newLayer, startConnectedLayerId, endConnectedLayerId, liveLayers);
                                 updatedLayers.push(updatedArrow);
                                 newLayers[arrowId] = updatedArrow;
+                                updatedLayerIds.push(arrowId);                            
                             }
                         });
                     }
@@ -370,7 +372,7 @@ export const Canvas = ({
         });
 
         if (socket && expired !== true) {
-            socket.emit('layer-update', selectedLayersRef.current, updatedLayers);
+            socket.emit('layer-update', updatedLayerIds, updatedLayers);
         }
 
         setLiveLayers(newLayers);
