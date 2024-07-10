@@ -331,9 +331,13 @@ export const SelectionTools = memo(({
       if (layer.type === LayerType.Arrow) {
           if (layer.startConnectedLayerId && idMap.has(layer.startConnectedLayerId)) {
               layer.startConnectedLayerId = idMap.get(layer.startConnectedLayerId);
+          } else {
+              layer.startConnectedLayerId = "";
           }
           if (layer.endConnectedLayerId && idMap.has(layer.endConnectedLayerId)) {
               layer.endConnectedLayerId = idMap.get(layer.endConnectedLayerId);
+          } else {
+              layer.endConnectedLayerId = "";
           }
       } else if (layer.type === LayerType.Rectangle && layer.connectedArrows) {
           layer.connectedArrows = layer.connectedArrows.map(arrowId => idMap.get(arrowId) || arrowId);

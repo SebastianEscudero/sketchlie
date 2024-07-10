@@ -735,8 +735,6 @@ export const Canvas = ({
 
                     }
 
-                    console.log(intersectingStartLayer, intersectingEndLayer)
-
                     if (intersectingStartLayer === intersectingEndLayer) {
                         newLayer.startConnectedLayerId = undefined;
                         newLayer.endConnectedLayerId = undefined;
@@ -1506,9 +1504,13 @@ export const Canvas = ({
             if (layer.type === LayerType.Arrow) {
                 if (layer.startConnectedLayerId && idMap.has(layer.startConnectedLayerId)) {
                     layer.startConnectedLayerId = idMap.get(layer.startConnectedLayerId);
+                } else {
+                    layer.startConnectedLayerId = "";
                 }
                 if (layer.endConnectedLayerId && idMap.has(layer.endConnectedLayerId)) {
                     layer.endConnectedLayerId = idMap.get(layer.endConnectedLayerId);
+                } else {
+                    layer.endConnectedLayerId = "";
                 }
             } else if (layer.type === LayerType.Rectangle && layer.connectedArrows) {
                 layer.connectedArrows = layer.connectedArrows.map(arrowId => idMap.get(arrowId) || arrowId);
@@ -1531,6 +1533,8 @@ export const Canvas = ({
         setMyPresence(newPresence);
 
     }, [copiedLayerIds, copiedLayerIds, myPresence, setLiveLayers, setLiveLayerIds, setMyPresence, org, proModal, socket, boardId, performAction]);
+
+    console.log(liveLayerIds)
 
     useEffect(() => {
         const onPointerDown = (e: PointerEvent) => {

@@ -12,7 +12,7 @@ import { useCurrentUser } from "@/hooks/use-current-user";
 import { toast } from "sonner";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ShowAllTemplates } from "@/app/dashboard/_components/show-all-templates";
-import { CanvasMode } from "@/types/canvas";
+import { CanvasMode, Layer, LayerType } from "@/types/canvas";
 import { InsertLayerCommand } from "@/lib/commands";
 
 interface InfoProps {
@@ -69,10 +69,15 @@ export const Info = ({
 
     const onChooseTemplate = async (templateName: string, templateLayerIds: any, templateLayers: any) => {
         try {
-          const newTemplateLayerIds = templateLayerIds.map(() => nanoid());
+          const idMap = new Map();
+          const newTemplateLayerIds = templateLayerIds.map((id: any) => {
+            const newId = nanoid();
+            idMap.set(id, newId);
+            return newId;
+          });
           const viewportCenterX = window.innerWidth / 2;
           const viewportCenterY = window.innerHeight / 2;
-    
+      
           // Calculate the center of the template
           let templateMinX = Infinity, templateMaxX = -Infinity, templateMinY = Infinity, templateMaxY = -Infinity;
           templateLayerIds.forEach((id: any) => {
@@ -84,33 +89,51 @@ export const Info = ({
           });
           const templateCenterX = (templateMinX + templateMaxX) / 2;
           const templateCenterY = (templateMinY + templateMaxY) / 2;
-    
+      
           // Calculate the adjustments needed to center the template
           let adjustX = ((viewportCenterX - camera.x) / zoom) - templateCenterX;
           let adjustY = ((viewportCenterY - camera.y) / zoom) - templateCenterY;
-    
+      
           const orderedLayers = templateLayerIds.map((id: any) => {
             const newLayer = {
               ...templateLayers[id],
               x: templateLayers[id].x + adjustX,
               y: templateLayers[id].y + adjustY,
             };
-    
+      
             if (newLayer.center) {
               newLayer.center = {
                 x: newLayer.center.x + adjustX,
                 y: newLayer.center.y + adjustY,
               };
             }
-    
+      
             return newLayer;
           });
-    
+      
+          // Update connected layer IDs using idMap
+          orderedLayers.forEach((layer: Layer) => {
+            if (layer.type === LayerType.Arrow) {
+              if (layer.startConnectedLayerId && idMap.has(layer.startConnectedLayerId)) {
+                layer.startConnectedLayerId = idMap.get(layer.startConnectedLayerId);
+              } else {
+                layer.startConnectedLayerId = "";
+              }
+              if (layer.endConnectedLayerId && idMap.has(layer.endConnectedLayerId)) {
+                layer.endConnectedLayerId = idMap.get(layer.endConnectedLayerId);
+              } else {
+                layer.endConnectedLayerId = "";
+              }
+            } else if (layer.type === LayerType.Rectangle && layer.connectedArrows) {
+              layer.connectedArrows = layer.connectedArrows.map((arrowId: string) => idMap.get(arrowId) || arrowId);
+            }
+          });
+      
           const command = new InsertLayerCommand(newTemplateLayerIds, orderedLayers, setLiveLayers, setLiveLayerIds, board._id, socket, org, proModal);
           performAction(command);
-
+      
           selectedLayersRef.current = newTemplateLayerIds;
-          
+      
           toast.success(`${templateName} inserted successfully!`);
         } catch (error) {
           toast.error("Unable to insert template. Please try again.");
