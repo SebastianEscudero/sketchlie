@@ -506,7 +506,7 @@ export const Canvas = ({
                     ? 30 / zoom // Increase stroke size for highlighter
                     : pathStrokeSize,
             pathStrokeColor: canvasState.mode === CanvasMode.Laser
-                ? { r: 243, g: 82, b: 35, a: 1 } // F35223 in RGB
+                ? { r: 243, g: 82, b: 35, a: 1 }
                 : canvasState.mode === CanvasMode.Highlighter
                     ? { ...pathColor, a: 0.7 } // Semi-transparent yellow
                     : pathColor,
