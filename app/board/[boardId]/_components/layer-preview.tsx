@@ -2,7 +2,7 @@
 
 import { memo } from "react";
 import { colorToCss } from "@/lib/utils";
-import { Layer, LayerType, UpdateLayerMutation } from "@/types/canvas";
+import { Layer, Layers, LayerType } from "@/types/canvas";
 import { Path } from "../canvas-objects/path";
 import { Note } from "../canvas-objects/note";
 import { Text } from "../canvas-objects/text";

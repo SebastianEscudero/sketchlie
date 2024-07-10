@@ -40,6 +40,8 @@ export type ArrowLayer = {
   fill: Color;
   startArrowHead: ArrowHead;
   endArrowHead: ArrowHead;
+  startConnectedLayerId?: string;
+  endConnectedLayerId?: string;
 };
 
 export type RectangleLayer = {
@@ -54,6 +56,7 @@ export type RectangleLayer = {
   value?: string;
   alignX?: "left" | "center" | "right";
   alignY?: "top" | "center" | "bottom";
+  connectedArrows?: string[];
 };
 
 export type EllipseLayer = {
@@ -68,6 +71,7 @@ export type EllipseLayer = {
   value?: string;
   alignX?: "left" | "center" | "right";
   alignY?: "top" | "center" | "bottom";
+  connectedArrows?: string[];
 };
 
 export type RhombusLayer = {
@@ -82,6 +86,7 @@ export type RhombusLayer = {
   value?: string;
   alignX?: "left" | "center" | "right";
   alignY?: "top" | "center" | "bottom";
+  connectedArrows?: string[];
 };
 
 export type TriangleLayer = {
@@ -96,6 +101,7 @@ export type TriangleLayer = {
   value?: string;
   alignX?: "left" | "center" | "right";
   alignY?: "top" | "center" | "bottom";
+  connectedArrows?: string[];
 };
 
 export type StarLayer = {
@@ -110,6 +116,7 @@ export type StarLayer = {
   value?: string;
   alignX?: "left" | "center" | "right";
   alignY?: "top" | "center" | "bottom";
+  connectedArrows?: string[];
 };
 
 export type HexagonLayer = {
@@ -124,6 +131,7 @@ export type HexagonLayer = {
   value?: string;
   alignX?: "left" | "center" | "right";
   alignY?: "top" | "center" | "bottom";
+  connectedArrows?: string[];
 };
 
 export type BigArrowLeftLayer = {
@@ -138,6 +146,7 @@ export type BigArrowLeftLayer = {
   value?: string;
   alignX?: "left" | "center" | "right";
   alignY?: "top" | "center" | "bottom";
+  connectedArrows?: string[];
 };
 
 export type BigArrowRightLayer = {
@@ -152,6 +161,7 @@ export type BigArrowRightLayer = {
   value?: string;
   alignX?: "left" | "center" | "right";
   alignY?: "top" | "center" | "bottom";
+  connectedArrows?: string[];
 };
 
 export type BigArrowDownLayer = {
@@ -166,6 +176,7 @@ export type BigArrowDownLayer = {
   value?: string;
   alignX?: "left" | "center" | "right";
   alignY?: "top" | "center" | "bottom";
+  connectedArrows?: string[];
 };
 
 export type BigArrowUpLayer = {
@@ -180,6 +191,7 @@ export type BigArrowUpLayer = {
   value?: string;
   alignX?: "left" | "center" | "right";
   alignY?: "top" | "center" | "bottom";
+  connectedArrows?: string[];
 };
 
 export type CommentBubbleLayer = {
@@ -194,6 +206,7 @@ export type CommentBubbleLayer = {
   value?: string;
   alignX?: "left" | "center" | "right";
   alignY?: "top" | "center" | "bottom";
+  connectedArrows?: string[];
 };
 
 export type LineLayer = {
@@ -204,6 +217,8 @@ export type LineLayer = {
   height: number;
   width: number;
   fill: Color;
+  startConnectedLayerId?: string;
+  endConnectedLayerId?: string;
 };
 
 export type PathLayer = {
@@ -225,6 +240,7 @@ export type ImageLayer = {
   height: number;
   src: string;
   opacity?: number;
+  connectedArrows?: string[];
 };
 
 export type TextLayer = {
@@ -239,6 +255,7 @@ export type TextLayer = {
   textFontSize: number;
   alignX?: "left" | "center" | "right";
   alignY?: "top" | "center" | "bottom";
+  connectedArrows?: string[];
 };
 
 export type NoteLayer = {
@@ -253,6 +270,7 @@ export type NoteLayer = {
   textFontSize: number;
   alignX?: "left" | "center" | "right";
   alignY?: "top" | "center" | "bottom";
+  connectedArrows?: string[];
 };
 
 

@@ -1,6 +1,5 @@
 import { colorToCss } from '@/lib/utils';
 import { ArrowHead, ArrowLayer } from '@/types/canvas';
-import React from 'react';
 
 interface ArrowProps {
   id: string;
@@ -15,10 +14,10 @@ export const Arrow = ({
   selectionColor,
   onPointerDown,
 }: ArrowProps) => {
-  const { fill, x, y, width, height, center, startArrowHead, endArrowHead } = layer;
+  const { fill, width, height, center, x, y, startArrowHead, endArrowHead } = layer;
 
-  const start = { x, y };
-  const end = { x: x + width, y: y + height };
+  let start = { x: x, y: y };
+  let end = { x: x + width, y: y + height };
 
   const fillColor = colorToCss(fill);
 
@@ -29,7 +28,7 @@ export const Arrow = ({
   if (center) {
     startAngle = Math.atan2(center.y - start.y, center.x - start.x) * (180 / Math.PI) - 180;
     endAngle = Math.atan2(end.y - center.y, end.x - center.x) * (180 / Math.PI);
-    pathData = `M ${x} ${y} L ${center.x} ${center.y} L ${end.x} ${end.y}`;
+    pathData = `M ${start.x} ${start.y} L ${center.x} ${center.y} L ${end.x} ${end.y}`;
   }
 
   const arrowheadPath = `M -6 -4 L 0 0 L -6 4`;

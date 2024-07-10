@@ -3,12 +3,14 @@ import { twMerge } from "tailwind-merge";
 
 import { 
   ArrowHandle,
+  ArrowLayer,
   Camera, 
   Color, 
   Layer, 
   LayerType, 
   PathLayer, 
   Point, 
+  RectangleLayer, 
   Side, 
   XYWH
 } from "@/types/canvas";
@@ -308,6 +310,9 @@ export function resizeArrowBounds(
   bounds: any, 
   point: Point,
   handle: ArrowHandle,
+  newLayer: any,
+  liveLayers: any,
+  zoom: number
 ): any {
 
   const result = {
@@ -318,15 +323,35 @@ export function resizeArrowBounds(
     center: bounds.center,
   };
 
+  const end = { x: bounds.x + bounds.width, y: bounds.y + bounds.height };
+  const start = { x: bounds.x, y: bounds.y };
+
   if (handle === ArrowHandle.start) {
-    const endPoint = { x: bounds.x + bounds.width, y: bounds.y + bounds.height };
     result.x = point.x;
     result.y = point.y;
-    result.width = endPoint.x - point.x;
-    result.height = endPoint.y - point.y;
+    result.width = end.x - point.x;
+    result.height = end.y - point.y;
+
+    if (newLayer.startConnectedLayerId) {
+      const startConnectedLayer = liveLayers[newLayer.startConnectedLayerId];
+      const startPoint = getClosestPointOnBorder(startConnectedLayer, point, end, zoom);
+      result.x = startPoint.x;
+      result.y = startPoint.y;
+      result.width = end.x - startPoint.x;
+      result.height = end.y - startPoint.y;
+    }
+
   } else if (handle === ArrowHandle.end) {
     result.width = point.x - bounds.x;
     result.height = point.y - bounds.y;
+    
+    if (newLayer.endConnectedLayerId) {
+      const endConnectedLayer = liveLayers[newLayer.endConnectedLayerId];
+      const endPoint = getClosestPointOnBorder(endConnectedLayer, point, start, zoom);
+      result.width = endPoint.x - bounds.x;
+      result.height = endPoint.y - bounds.y;
+    }
+
   } else if (handle === ArrowHandle.center) {
     result.center.x += point.x - result.center.x;
     result.center.y += point.y - result.center.y;
@@ -399,6 +424,32 @@ function lineIntersectsLine(a1: Point, a2: Point, b1: Point, b2: Point) {
   return (r > 0 && r < 1) && (s > 0 && s < 1);
 }
 
+export function findIntersectingLayerForConnection(
+  layerIds: readonly string[],
+  layers: { [key: string]: Layer },
+  point: Point,
+  zoom: number
+) {
+  const tolerance = Math.max(4, 4 / zoom);
+  // Create a small rectangle around the point
+  const rect = {
+    x: point.x - tolerance,
+    y: point.y - tolerance,
+    width: 2 * tolerance,
+    height: 2 * tolerance,
+  };
+
+  // Filter out ArrowLayer, LineLayer, and PathLayer before finding intersections
+  const filteredLayerIds = layerIds.filter(id => {
+    const layer = layers[id];
+    return layer.type !== LayerType.Arrow && layer.type !== LayerType.Line && layer.type !== LayerType.Path;
+  });
+
+  // Use the same logic as before to find intersecting layers, but with filtered IDs
+  const ids = findIntersectingLayersWithRectangle(filteredLayerIds, layers, { x: rect.x, y: rect.y }, { x: rect.x + rect.width, y: rect.y + rect.height });
+
+  return ids;
+}
 
 export function findIntersectingLayersWithRectangle(
   layerIds: readonly string[],
@@ -883,4 +934,142 @@ export async function bodyToString(body: Blob | ReadableStream | Readable): Prom
           body.on('error', reject);
       });
   }
+}
+
+export function getClosestPointOnBorder(connectedLayer: Layer, point: Point, oppositePoint: Point, zoom: number): Point {
+  let closestPoint: Point = getClosestEndPoint(connectedLayer, point);
+  let minDistance = Number.MAX_VALUE;
+
+  // Constants for hot zone calculation
+  const HOT_ZONE_BASE_SIZE = 0.4; // Base size for hot zone calculation
+
+  // Calculate base hot zone dimensions as 60% of layer's dimensions
+  const baseHotZoneWidth = connectedLayer.width * HOT_ZONE_BASE_SIZE;
+  const baseHotZoneHeight = connectedLayer.height * HOT_ZONE_BASE_SIZE;
+
+  // Adjust hot zone size based on zoom, ensuring it's not smaller than 60% of layer's dimensions
+  const adjustedHotZoneWidth = Math.max(baseHotZoneWidth, connectedLayer.width * HOT_ZONE_BASE_SIZE / zoom);
+  const adjustedHotZoneHeight = Math.max(baseHotZoneHeight, connectedLayer.height * HOT_ZONE_BASE_SIZE / zoom);
+
+  // Calculate the hot zone boundaries based on the adjusted dimensions
+  const centerX = connectedLayer.x + connectedLayer.width / 2;
+  const centerY = connectedLayer.y + connectedLayer.height / 2;
+  const hotZoneX = centerX - adjustedHotZoneWidth / 2;
+  const hotZoneY = centerY - adjustedHotZoneHeight / 2;
+
+  // Check if the point is within the adjusted hot zone
+  if (point.x > hotZoneX && point.x < hotZoneX + adjustedHotZoneWidth && point.y > hotZoneY && point.y < hotZoneY + adjustedHotZoneHeight) {
+    const closestPointToMiddle = getClosestEndPoint(connectedLayer, oppositePoint);
+    return closestPointToMiddle;
+  }
+
+  // Check for left or right border and calculate closest point
+  if (oppositePoint.x < connectedLayer.x) {
+    const distance = Math.abs(point.x - connectedLayer.x);
+    if (distance < minDistance) {
+      closestPoint = { x: connectedLayer.x, y: point.y };
+      minDistance = distance;
+    }
+  } else if (oppositePoint.x > connectedLayer.x + connectedLayer.width) {
+    const distance = Math.abs(point.x - (connectedLayer.x + connectedLayer.width));
+    if (distance < minDistance) {
+      closestPoint = { x: connectedLayer.x + connectedLayer.width, y: point.y };
+      minDistance = distance;
+    }
+  }
+
+  // Check for top or bottom border and calculate closest point
+  if (oppositePoint.y < connectedLayer.y) {
+    const distance = Math.abs(point.y - connectedLayer.y);
+    if (distance < minDistance) {
+      closestPoint = { x: point.x, y: connectedLayer.y };
+      minDistance = distance;
+    }
+  } else if (oppositePoint.y > connectedLayer.y + connectedLayer.height) {
+    const distance = Math.abs(point.y - (connectedLayer.y + connectedLayer.height));
+    if (distance < minDistance) {
+      closestPoint = { x: point.x, y: connectedLayer.y + connectedLayer.height };
+      minDistance = distance;
+    }
+  }
+
+  return closestPoint;
+}
+
+export function getClosestEndPoint(connectedLayer: Layer, point: Point): Point {
+  const direction = { x: connectedLayer.x + connectedLayer.width / 2 - point.x, y: connectedLayer.y + connectedLayer.height / 2 - point.y };
+
+  const magnitude = Math.sqrt(direction.x ** 2 + direction.y ** 2);
+  const normalizedDirection = { x: direction.x / magnitude, y: direction.y / magnitude };
+  
+  const potentialEndPoints = [
+    { x: connectedLayer.x, y: point.y + normalizedDirection.y * (connectedLayer.x - point.x) / normalizedDirection.x },
+    { x: connectedLayer.x + connectedLayer.width, y: point.y + normalizedDirection.y * (connectedLayer.x + connectedLayer.width - point.x) / normalizedDirection.x },
+    { y: connectedLayer.y, x: point.x + normalizedDirection.x * (connectedLayer.y - point.y) / normalizedDirection.y },
+    { y: connectedLayer.y + connectedLayer.height, x: point.x + normalizedDirection.x * (connectedLayer.y + connectedLayer.height - point.y) / normalizedDirection.y }
+  ];
+  
+  const validEndPoints = potentialEndPoints.filter(point => 
+    point.x >= connectedLayer.x && point.x <= connectedLayer.x + connectedLayer.width &&
+    point.y >= connectedLayer.y && point.y <= connectedLayer.y + connectedLayer.height
+  );
+  
+  let closestEndPoint = validEndPoints[0];
+  for (const endPoint of validEndPoints) {
+    if (Math.sqrt((endPoint.x - point.x) ** 2 + (endPoint.y - point.y) ** 2) < Math.sqrt((closestEndPoint.x - point.x) ** 2 + (closestEndPoint.y - point.y) ** 2)) {
+      closestEndPoint = endPoint;
+    }
+  }
+
+  return closestEndPoint;
+}
+
+export function updateArrowPosition(arrowLayer: ArrowLayer, connectedLayerId: string, newLayer: Layer, startConnectedLayerId: string, endConnectedLayerId: string, liveLayers: any) {
+  const updatedArrow = { ...arrowLayer };
+  let start = { x: arrowLayer.x, y: arrowLayer.y };
+  let end = { x: arrowLayer.x + arrowLayer.width, y: arrowLayer.y + arrowLayer.height };
+  let center = { x: (start.x + end.x) / 2, y: (start.y + end.y) / 2 };
+
+  if (connectedLayerId === startConnectedLayerId) {
+      const startPoint = getClosestEndPoint(newLayer, center);
+      updatedArrow.x = startPoint.x;
+      updatedArrow.y = startPoint.y;
+      updatedArrow.width = end.x - startPoint.x;
+      updatedArrow.height = end.y - startPoint.y;
+      start = startPoint;
+
+      if (endConnectedLayerId && liveLayers[endConnectedLayerId]) {
+        const endPoint = getClosestEndPoint(liveLayers[endConnectedLayerId], center);
+        updatedArrow.width = endPoint.x - updatedArrow.x;
+        updatedArrow.height = endPoint.y - updatedArrow.y;
+        end = endPoint;
+      }
+  } else if (connectedLayerId === endConnectedLayerId) {
+      if (startConnectedLayerId && liveLayers[startConnectedLayerId]) {
+        const startPoint = getClosestEndPoint(liveLayers[startConnectedLayerId], center);
+        updatedArrow.x = startPoint.x;
+        updatedArrow.y = startPoint.y;
+        start = startPoint;
+      }
+
+      const endPoint = getClosestEndPoint(newLayer, center);
+      updatedArrow.width = endPoint.x - updatedArrow.x;
+      updatedArrow.height = endPoint.y - updatedArrow.y;
+      end = endPoint;
+  }
+
+  updatedArrow.center = { x: (start.x + end.x) / 2, y: (start.y + end.y) / 2 };
+
+  return updatedArrow;
+};
+
+export function updatedLayersConnectedArrows(connectedLayer: any, id: string) {
+  connectedLayer.connectedArrows = connectedLayer.connectedArrows || [];
+  // Check if the arrow's ID is already in the connectedLayer's connectedArrows array
+  if (!connectedLayer.connectedArrows.includes(id)) {
+      // Add the arrow's ID to the connectedLayer's connectedArrows array
+      connectedLayer.connectedArrows.push(id);
+  }
+
+  return connectedLayer;
 }

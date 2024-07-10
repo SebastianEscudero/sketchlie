@@ -4,6 +4,7 @@ import { memo, useMemo } from "react";
 
 import { ArrowHandle, ArrowLayer, Layers, LayerType, Side, XYWH } from "@/types/canvas";
 import { useSelectionBounds } from "@/hooks/use-selection-bounds";
+import { getClosestEndPoint } from "@/lib/utils";
 
 interface SelectionBoxProps {
   zoom: number;
@@ -11,6 +12,7 @@ interface SelectionBoxProps {
   onArrowResizeHandlePointerDown: (handle: ArrowHandle, initialBounds: XYWH) => void;
   selectedLayers: string[];
   liveLayers: Layers;
+  setLiveLayers: (layers: Layers) => void;
 };
 
 const HANDLE_SIZE = 8;
@@ -22,6 +24,7 @@ export const SelectionBox = memo(({
   onArrowResizeHandlePointerDown,
   selectedLayers,
   liveLayers,
+  setLiveLayers,
 }: SelectionBoxProps) => {
 
   const handleRightClick = (event: React.MouseEvent) => {
@@ -57,13 +60,29 @@ export const SelectionBox = memo(({
     bounds.center = arrowLayer.center;
     const handleRadius = 5 / zoom;
     const strokeWidth = STROKE_WIDTH / zoom;
+    let start = { x: arrowLayer.x, y: arrowLayer.y };
+    let end = { x: arrowLayer.x + arrowLayer.width, y: arrowLayer.y + arrowLayer.height };
+
+    // if (arrowLayer.endConnectedLayerId && liveLayers) {
+    //   const endConnectedLayer = liveLayers[arrowLayer.endConnectedLayerId];
+    //   if (endConnectedLayer) {
+    //     end = getClosestEndPoint(endConnectedLayer, end);
+    //   }
+    // }
+  
+    // if (arrowLayer.startConnectedLayerId && liveLayers) {
+    //   const startConnectedLayer = liveLayers[arrowLayer.startConnectedLayerId];
+    //   if (startConnectedLayer) {
+    //     start = getClosestEndPoint(startConnectedLayer, start);
+    //   }
+    // }
 
     return (
       <>
         <circle
           className="fill-white stroke-blue-500 hover:cursor-hand"
-          cx={arrowLayer.x}
-          cy={arrowLayer.y}
+          cx={start.x}
+          cy={start.y}
           r={handleRadius}
           onClick={() => {
             document.body.style.cursor = "grab";
@@ -71,7 +90,10 @@ export const SelectionBox = memo(({
           strokeWidth={strokeWidth}
           onPointerDown={(e) => {
             e.stopPropagation();
+            e.preventDefault();
             onArrowResizeHandlePointerDown(ArrowHandle.start, bounds);
+            arrowLayer.startConnectedLayerId = undefined;
+            setLiveLayers({ ...liveLayers, [soleLayerId]: arrowLayer });
           }}
         />
         <circle
@@ -90,8 +112,8 @@ export const SelectionBox = memo(({
         />
         <circle
           className="fill-white stroke-blue-500 hover:cursor-hand"
-          cx={arrowLayer.x + arrowLayer.width}
-          cy={arrowLayer.y + arrowLayer.height}
+          cx={end.x}
+          cy={end.y}
           r={handleRadius}
           onClick={() => {
             document.body.style.cursor = "grab";
@@ -99,7 +121,10 @@ export const SelectionBox = memo(({
           strokeWidth={strokeWidth}
           onPointerDown={(e) => {
             e.stopPropagation();
+            e.preventDefault();
             onArrowResizeHandlePointerDown(ArrowHandle.end, bounds);
+            arrowLayer.endConnectedLayerId = undefined;
+            setLiveLayers({ ...liveLayers, [soleLayerId]: arrowLayer });
           }}
         />
       </>

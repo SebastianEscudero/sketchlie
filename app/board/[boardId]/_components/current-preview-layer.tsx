@@ -1,4 +1,4 @@
-import { LayerType, PreviewLayer } from "@/types/canvas";
+import { Layers, LayerType, PreviewLayer } from "@/types/canvas";
 import { memo } from "react";
 import { Rectangle } from "../canvas-objects/rectangle";
 import { Ellipse } from "../canvas-objects/ellipse";
@@ -18,11 +18,13 @@ import { Line } from "../canvas-objects/line";
 
 interface PreviewLayerProps {
     layer: PreviewLayer;
+    liveLayers: Layers;
 };
 
 
 export const CurrentPreviewLayer = memo(({
     layer,
+    liveLayers,
 }: PreviewLayerProps) => {
 
     switch (layer.type) {
@@ -56,35 +58,35 @@ export const CurrentPreviewLayer = memo(({
             );
         case LayerType.Star:
             return (
-                <Star   
+                <Star
                     id="StarPreview"
                     layer={layer}
                 />
             );
         case LayerType.Hexagon:
             return (
-                <Hexagon  
+                <Hexagon
                     id="HexagonPreview"
                     layer={layer}
                 />
             );
         case LayerType.BigArrowLeft:
             return (
-                <BigArrowLeft  
+                <BigArrowLeft
                     id="BigArrowLeftPreview"
                     layer={layer}
                 />
             );
         case LayerType.BigArrowRight:
             return (
-                <BigArrowRight 
+                <BigArrowRight
                     id="BigArrowRightPreview"
                     layer={layer}
                 />
             );
         case LayerType.BigArrowUp:
             return (
-                <BigArrowUp 
+                <BigArrowUp
                     id="BigArrowUpPreview"
                     layer={layer}
                 />
@@ -95,7 +97,7 @@ export const CurrentPreviewLayer = memo(({
                     id="BigArrowDownPreview"
                     layer={layer}
                 />
-        );
+            );
         case LayerType.CommentBubble:
             return (
                 <CommentBubble
@@ -129,6 +131,7 @@ export const CurrentPreviewLayer = memo(({
                 <Arrow
                     id="ArrowPreview"
                     layer={layer}
+                    liveLayers={liveLayers}
                 />
             )
     }

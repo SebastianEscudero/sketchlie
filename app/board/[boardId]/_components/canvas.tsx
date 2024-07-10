@@ -16,14 +16,21 @@ import {
     resizeBox,
     calculateBoundingBox,
     removeHighlightFromText,
+    findIntersectingLayerForConnection,
+    getClosestPointOnBorder,
+    updateArrowPosition,
+    updatedLayersConnectedArrows,
+    getClosestEndPoint,
 } from "@/lib/utils";
 
 import {
     ArrowHandle,
     ArrowHead,
+    ArrowLayer,
     Camera,
     CanvasMode,
     CanvasState,
+    Layer,
     Layers,
     LayerType,
     Point,
@@ -50,6 +57,7 @@ import { toast } from "sonner";
 import { ZoomToolbar } from "./zoom-toolbar";
 import { Command, DeleteLayerCommand, InsertLayerCommand, TranslateLayersCommand } from "@/lib/commands";
 import { SketchlieAiInput } from "./sketchlie-ai-input";
+import { ArrowConnectionOutlinePreview } from "./arrow-connection-outline-preview";
 
 const preventDefault = (e: any) => {
     if (e.scale !== 1) {
@@ -81,12 +89,12 @@ export const Canvas = ({
     const [initialLayers, setInitialLayers] = useState<Layers>({}); // used for undo/redo
     const [history, setHistory] = useState<Command[]>([]);
     const [redoStack, setRedoStack] = useState<Command[]>([]);
-    const mousePositionRef = useRef({ x: 0, y: 0 });
+    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
     const { liveLayers, liveLayerIds, User, otherUsers, setLiveLayers, setLiveLayerIds, org, socket, board, expired } = useRoom();
     const maxFileSize = org && getMaxImageSize(org) || 0;
     const [isDraggingOverCanvas, setIsDraggingOverCanvas] = useState(false);
     const selectedLayersRef = useRef<string[]>([]);
-    const [copiedLayers, setCopiedLayers] = useState<Map<string, any>>(new Map());
+    const [copiedLayerIds, setCopiedLayerIds] = useState<string[]>([]);
     const [pencilDraft, setPencilDraft] = useState<[number, number, number][]>([]);
     const [layerRef, setLayerRef] = useState<any>(null);
     const layersToDeleteEraserRef = useRef<Set<string>>(new Set());
@@ -139,7 +147,7 @@ export const Canvas = ({
         setHistory([...history, lastCommand]);
     };
 
-    const insertLayer = useCallback((layerType: LayerType, position: Point, width: number, height: number, center?: Point) => {
+    const insertLayer = useCallback((layerType: LayerType, position: Point, width: number, height: number, center?: Point, startConnectedLayerId?: string, endConnectedLayerId?: string) => {
         const layerId = nanoid();
 
         let layer;
@@ -195,7 +203,24 @@ export const Canvas = ({
                 fill: { r: 29, g: 29, b: 29, a: 1 },
                 startArrowHead: ArrowHead.None,
                 endArrowHead: ArrowHead.Triangle,
+                startConnectedLayerId: startConnectedLayerId,
+                endConnectedLayerId: endConnectedLayerId,
             };
+
+            if (startConnectedLayerId) {
+                const connectedLayer = liveLayers[startConnectedLayerId];
+                const updatedLayer = updatedLayersConnectedArrows(connectedLayer, layerId);
+                liveLayers[startConnectedLayerId] = updatedLayer;
+                setLiveLayers({ ...liveLayers });
+            }
+
+            if (endConnectedLayerId) {
+                const connectedLayer = liveLayers[endConnectedLayerId];
+                const updatedLayer = updatedLayersConnectedArrows(connectedLayer, layerId);
+                liveLayers[endConnectedLayerId] = updatedLayer;
+                setLiveLayers({ ...liveLayers });
+            }
+
         } else if (layerType === LayerType.Line) {
             layer = {
                 type: layerType,
@@ -297,6 +322,18 @@ export const Canvas = ({
         const newLayers = { ...liveLayers };
         const updatedLayers: any = [];
 
+        const soleLayer = selectedLayersRef.current.length === 1
+
+        if (soleLayer) {
+            const layer = newLayers[selectedLayersRef.current[0]];
+            if (layer.type === LayerType.Arrow) {
+                const updatedLayer = { ...layer };
+                updatedLayer.endConnectedLayerId = undefined;
+                updatedLayer.startConnectedLayerId = undefined;
+                newLayers[selectedLayersRef.current[0]] = updatedLayer;
+            }
+        }
+
         selectedLayersRef.current.forEach(id => {
             const layer = newLayers[id];
 
@@ -313,6 +350,22 @@ export const Canvas = ({
                 }
                 updatedLayers.push(newLayer);
                 newLayers[id] = newLayer;
+
+                // Update connected arrows
+                if (layer.type !== LayerType.Arrow && layer.type !== LayerType.Line && layer.type !== LayerType.Path) {
+                    if (layer.connectedArrows) {
+                        layer.connectedArrows.forEach(arrowId => {
+                            const arrowLayer = newLayers[arrowId] as ArrowLayer;
+                            if (arrowLayer) {
+                                const startConnectedLayerId = arrowLayer.startConnectedLayerId || "";
+                                const endConnectedLayerId = arrowLayer.endConnectedLayerId || "";
+                                const updatedArrow = updateArrowPosition(arrowLayer, id, newLayer, startConnectedLayerId, endConnectedLayerId, liveLayers);
+                                updatedLayers.push(updatedArrow);
+                                newLayers[arrowId] = updatedArrow;
+                            }
+                        });
+                    }
+                }
             }
         });
 
@@ -322,7 +375,7 @@ export const Canvas = ({
 
         setLiveLayers(newLayers);
         setCanvasState({ mode: CanvasMode.Translating, current: point });
-    }, [canvasState, selectedLayersRef.current, setCanvasState, setLiveLayers, socket, liveLayers]);
+    }, [canvasState, setCanvasState, setLiveLayers, socket, liveLayers, expired]);
 
     const unselectLayers = useCallback(() => {
         if (selectedLayersRef.current.length > 0) {
@@ -626,7 +679,7 @@ export const Canvas = ({
         setCanvasState({ mode: CanvasMode.Highlighter });
     }, [pencilDraft, liveLayers, setLiveLayers, setLiveLayerIds, myPresence, org, proModal, liveLayerIds, socket, board, zoom]);
 
-    const resizeSelectedLayer = useCallback((point: Point) => {
+    const resizeSelectedLayers = useCallback((point: Point) => {
         const initialBoundingBox = calculateBoundingBox(selectedLayersRef.current.map(id => liveLayers[id]));
         let bounds: any;
         let hasImageOrText = selectedLayersRef.current.some(id => liveLayers[id].type === LayerType.Image || liveLayers[id].type === LayerType.Text);
@@ -649,13 +702,39 @@ export const Canvas = ({
                 } else {
                     bounds = resizeBox(initialBoundingBox, newBoundingBox, newLayer, canvasState.corner, singleLayer);
                 }
-
             } else if (canvasState.mode === CanvasMode.ArrowResizeHandler) {
                 bounds = resizeArrowBounds(
                     canvasState.initialBounds,
                     point,
                     canvasState.handle,
+                    newLayer,
+                    liveLayers,
+                    zoom,
                 );
+
+                const intersectingLayer = findIntersectingLayerForConnection(liveLayerIds, liveLayers, point, zoom).filter(layerId => layerId !== id)[0] || undefined;
+
+                if (newLayer.type === LayerType.Arrow) {
+                    if (canvasState.handle === ArrowHandle.end) {
+                        if (intersectingLayer) {
+                            newLayer.endConnectedLayerId = intersectingLayer;
+                            const connectedLayer = liveLayers[intersectingLayer];
+                            const layerWithUpdatedArrows = updatedLayersConnectedArrows(connectedLayer, id)
+                            liveLayers[intersectingLayer] = layerWithUpdatedArrows;
+                        } else {
+                            newLayer.endConnectedLayerId = undefined;
+                        }
+                    } else if (canvasState.handle === ArrowHandle.start) {
+                        if (intersectingLayer) {
+                            newLayer.startConnectedLayerId = intersectingLayer;
+                            const connectedLayer = liveLayers[intersectingLayer];
+                            const layerWithUpdatedArrows = updatedLayersConnectedArrows(connectedLayer, id)
+                            liveLayers[intersectingLayer] = layerWithUpdatedArrows;
+                        } else {
+                            newLayer.startConnectedLayerId = undefined;
+                        }
+                    }
+                }
             }
 
             Object.assign(newLayer, bounds);
@@ -668,7 +747,7 @@ export const Canvas = ({
         })
         setLiveLayers({ ...liveLayers });
 
-    }, [canvasState, liveLayers, selectedLayersRef, layerRef]);
+    }, [canvasState, liveLayers, liveLayerIds, selectedLayersRef, layerRef, zoom]);
 
     const onResizeHandlePointerDown = useCallback((
         corner: Side,
@@ -822,6 +901,7 @@ export const Canvas = ({
             setStartPanPoint({ x: e.clientX, y: e.clientY });
         }
         const current = pointerEventToCanvasPoint(e, camera, zoom);
+        setMousePosition(current);
 
         const newPresence: Presence = {
             ...myPresence,
@@ -844,10 +924,10 @@ export const Canvas = ({
             setIsMoving(true);
             translateSelectedLayers(current);
         } else if (canvasState.mode === CanvasMode.Resizing) {
-            resizeSelectedLayer(current);
+            resizeSelectedLayers(current);
             removeHighlightFromText();
         } else if (canvasState.mode === CanvasMode.ArrowResizeHandler) {
-            resizeSelectedLayer(current);
+            resizeSelectedLayers(current);
         } else if (canvasState.mode === CanvasMode.Pencil && e.buttons === 1 || canvasState.mode === CanvasMode.Laser && e.buttons === 1 || canvasState.mode === CanvasMode.Highlighter && e.buttons === 1) {
             continueDrawing(current, e);
         } else if (
@@ -859,8 +939,8 @@ export const Canvas = ({
             (startPanPoint.x !== 0 || startPanPoint.y !== 0)
         ) {
             const point = pointerEventToCanvasPoint(e, camera, zoom);
-            const widthArrow = point.x - startPanPoint.x;
-            const heightArrow = point.y - startPanPoint.y;
+            let widthArrow = point.x - startPanPoint.x;
+            let heightArrow = point.y - startPanPoint.y;
             const x = Math.min(point.x, startPanPoint.x);
             const y = Math.min(point.y, startPanPoint.y);
             const width = Math.abs(point.x - startPanPoint.x);
@@ -908,16 +988,45 @@ export const Canvas = ({
                     setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.Note, fill: { r: 252, g: 225, b: 156, a: 1 }, outlineFill: { r: 0, g: 0, b: 0, a: 0 } });
                     break;
                 case LayerType.Arrow:
+                    const intersectingStartLayer = findIntersectingLayerForConnection(liveLayerIds, liveLayers, startPanPoint, zoom)[0];
+                    const intersectingEndLayer = findIntersectingLayerForConnection(liveLayerIds, liveLayers, point, zoom)[0];
+
+                    let startConnectedLayerId = intersectingStartLayer;
+                    let endConnectedLayerId = intersectingEndLayer;
+                    let start = startPanPoint;
+                    let end = point;
+
+                    if (startConnectedLayerId !== endConnectedLayerId) {
+                        if (intersectingStartLayer) {
+                            const startConnectedLayer = liveLayers[startConnectedLayerId];
+                            start = getClosestEndPoint(startConnectedLayer, point);
+                        }
+    
+                        if (intersectingEndLayer) {
+                            const endConnectedLayer = liveLayers[endConnectedLayerId];
+                            end = getClosestPointOnBorder(endConnectedLayer, end, start, zoom);
+                        }
+                    } else {
+                        startConnectedLayerId = "";
+                        endConnectedLayerId = "";
+                    }
+
+                    let center = { x: (start.x + end.x) / 2, y: (start.y + end.y) / 2 };
+                    widthArrow = end.x - start.x;
+                    heightArrow = end.y - start.y;
+
                     setCurrentPreviewLayer({
-                        x: startPanPoint.x,
-                        y: startPanPoint.y,
-                        center: { x: startPanPoint.x + widthArrow / 2, y: startPanPoint.y + heightArrow / 2 },
+                        x: start.x,
+                        y: start.y,
+                        center: center,
                         width: widthArrow,
                         height: heightArrow,
                         type: LayerType.Arrow,
                         fill: { r: 29, g: 29, b: 29, a: 1 },
                         startArrowHead: ArrowHead.None,
-                        endArrowHead: ArrowHead.Triangle
+                        endArrowHead: ArrowHead.Triangle,
+                        startConnectedLayerId: startConnectedLayerId,
+                        endConnectedLayerId: endConnectedLayerId,
                     });
                     break;
                 case LayerType.Line:
@@ -937,7 +1046,7 @@ export const Canvas = ({
         [continueDrawing,
             camera,
             canvasState,
-            resizeSelectedLayer,
+            resizeSelectedLayers,
             translateSelectedLayers,
             startMultiSelection,
             updateSelectionNet,
@@ -997,7 +1106,7 @@ export const Canvas = ({
         } else if (canvasState.mode === CanvasMode.Inserting && canvasState.layerType !== LayerType.Image) {
 
             if (e.button === 2 || e.button === 1) {
-                document.body.style.cursor = 'url(/custom-cursors/inserting.svg) 12 12, auto';
+                document.body.style.cursor = 'url(/custom-cursors/inserting.svg) 10 10, auto';
                 return;
             }
 
@@ -1007,7 +1116,7 @@ export const Canvas = ({
                 if (layerType === LayerType.Arrow && currentPreviewLayer.type === LayerType.Arrow
                     || layerType === LayerType.Line && currentPreviewLayer.type === LayerType.Line
                 ) {
-                    insertLayer(layerType, { x: currentPreviewLayer.x, y: currentPreviewLayer.y }, currentPreviewLayer.width, currentPreviewLayer.height, currentPreviewLayer.center)
+                    insertLayer(layerType, { x: currentPreviewLayer.x, y: currentPreviewLayer.y }, currentPreviewLayer.width, currentPreviewLayer.height, currentPreviewLayer.center, currentPreviewLayer.startConnectedLayerId, currentPreviewLayer.endConnectedLayerId)
                     setCurrentPreviewLayer(null);
                 } else {
                     insertLayer(layerType, { x: currentPreviewLayer.x, y: currentPreviewLayer.y }, currentPreviewLayer.width, currentPreviewLayer.height);
@@ -1192,13 +1301,13 @@ export const Canvas = ({
         setIsDraggingOverCanvas(true);
 
     }, [setIsDraggingOverCanvas]);
-    
+
     const onDragLeave = useCallback((event: React.DragEvent) => {
         event.preventDefault();
         setIsDraggingOverCanvas(false);
-        
+
     }, [setIsDraggingOverCanvas]);
-    
+
     const onDrop = useCallback((event: React.DragEvent) => {
         event.preventDefault();
         setIsDraggingOverCanvas(false);
@@ -1211,19 +1320,19 @@ export const Canvas = ({
                 toast.error('File type not accepted. Please upload an image file.');
                 continue;  // Skip if not an image
             }
-    
+
             // Check file size
             const fileSizeInMB = file.size / 1024 / 1024;
             if (fileSizeInMB > maxFileSize) {
                 toast.error(`File size has to be lower than ${maxFileSize}MB. Please try again.`);
                 return;
             }
-    
+
             const toastId = toast.loading("Image is being processed, please wait...");
             const formData = new FormData();
             formData.append('file', file);
             formData.append('userId', User.userId);
-    
+
             fetch('/api/aws-s3-images', {
                 method: 'POST',
                 body: formData
@@ -1233,7 +1342,7 @@ export const Canvas = ({
                         throw new Error('Network response was not ok');
                     }
                     const url = await res.text();
-    
+
                     const img = new Image();
                     const imgLoad = new Promise<{ url: string, dimensions: { width: number, height: number } }>((resolve) => {
                         img.onload = () => {
@@ -1243,7 +1352,7 @@ export const Canvas = ({
                     });
                     img.src = url;
                     const info = await imgLoad;
-    
+
                     // Insert the image into the canvas
                     insertImage(LayerType.Image, { x: x, y: y }, info);
                 })
@@ -1334,15 +1443,7 @@ export const Canvas = ({
     }, [zoom, pinchStartDist, camera, startPanPoint, canvasState]);
 
     const copySelectedLayers = useCallback(() => {
-        const copied = new Map();
-        for (const id of selectedLayersRef.current) {
-            const layer = liveLayers[id];
-            if (layer) {
-                const copiedLayer = JSON.parse(JSON.stringify(layer));
-                copied.set(id, copiedLayer);
-            }
-        }
-        setCopiedLayers(copied);
+        setCopiedLayerIds(selectedLayersRef.current);
     }, [liveLayers, selectedLayersRef]);
 
     const pasteCopiedLayers = useCallback((mousePosition: any) => {
@@ -1350,7 +1451,9 @@ export const Canvas = ({
         let minY = Infinity;
         let maxX = -Infinity;
         let maxY = -Infinity;
-        copiedLayers.forEach((layer) => {
+
+        copiedLayerIds.forEach((id) => {
+            const layer = liveLayers[id];
             minX = Math.min(minX, layer.x);
             minY = Math.min(minY, layer.y);
             maxX = Math.max(maxX, layer.x + layer.width);
@@ -1363,9 +1466,11 @@ export const Canvas = ({
         const offsetX = mousePosition.x - centerX;
         const offsetY = mousePosition.y - centerY;
 
-        const newIds: any = [];
-        const clonedLayers: any = [];
-        copiedLayers.forEach((layer) => {
+        const idMap = new Map();
+        const newLayers: Record<string, Layer> = {};
+        copiedLayerIds.forEach((id) => {
+            const layer = { ...liveLayers[id] };
+
             const newId = nanoid();
             const clonedLayer = JSON.parse(JSON.stringify(layer));
             clonedLayer.x = clonedLayer.x + offsetX;
@@ -1374,9 +1479,25 @@ export const Canvas = ({
                 clonedLayer.center.x += offsetX;
                 clonedLayer.center.y += offsetY;
             }
-            newIds.push(newId);
-            clonedLayers.push(clonedLayer);
+            idMap.set(id, newId);
+            newLayers[newId] = clonedLayer;
         });
+
+        Object.values(newLayers).forEach((layer) => {
+            if (layer.type === LayerType.Arrow) {
+                if (layer.startConnectedLayerId && idMap.has(layer.startConnectedLayerId)) {
+                    layer.startConnectedLayerId = idMap.get(layer.startConnectedLayerId);
+                }
+                if (layer.endConnectedLayerId && idMap.has(layer.endConnectedLayerId)) {
+                    layer.endConnectedLayerId = idMap.get(layer.endConnectedLayerId);
+                }
+            } else if (layer.type === LayerType.Rectangle && layer.connectedArrows) {
+                layer.connectedArrows = layer.connectedArrows.map(arrowId => idMap.get(arrowId) || arrowId);
+            }
+        });
+    
+        const newIds = Object.keys(newLayers);
+        const clonedLayers = Object.values(newLayers);
 
         const command = new InsertLayerCommand(newIds, clonedLayers, setLiveLayers, setLiveLayerIds, boardId, socket, org, proModal);
         performAction(command);
@@ -1390,7 +1511,7 @@ export const Canvas = ({
 
         setMyPresence(newPresence);
 
-    }, [copiedLayers, myPresence, setLiveLayers, setLiveLayerIds, setMyPresence, org, proModal, socket, board]);
+    }, [copiedLayerIds, copiedLayerIds, myPresence, setLiveLayers, setLiveLayerIds, setMyPresence, org, proModal, socket, boardId, performAction]);
 
     useEffect(() => {
         const onPointerDown = (e: PointerEvent) => {
@@ -1409,14 +1530,6 @@ export const Canvas = ({
     }, [liveLayers]);
 
     useEffect(() => {
-        const onMouseMove = (e: any) => {
-            if (e.buttons === 0) {
-                mousePositionRef.current = pointerEventToCanvasPoint(e, camera, zoom);
-            }
-        };
-
-        document.addEventListener('mousemove', onMouseMove);
-
         function onKeyDown(e: KeyboardEvent) {
 
             if (!e.key) {
@@ -1430,7 +1543,7 @@ export const Canvas = ({
                         if (
                             document.activeElement &&
                             document.activeElement.getAttribute('contentEditable') !== 'true' &&
-                            document.activeElement.tagName !== 'TEXTAREA' && 
+                            document.activeElement.tagName !== 'TEXTAREA' &&
                             document.activeElement.tagName !== 'INPUT'
                         ) {
                             // if we are not inside a content editable or textarea
@@ -1461,9 +1574,9 @@ export const Canvas = ({
                         break;
                     }
                     if (e.ctrlKey || e.metaKey) {
-                        if (copiedLayers.size > 0) {
+                        if (copiedLayerIds.length > 0) {
                             e.preventDefault();
-                            pasteCopiedLayers(mousePositionRef.current);
+                            pasteCopiedLayers(mousePosition);
                         }
                     }
                     break;
@@ -1503,9 +1616,8 @@ export const Canvas = ({
 
         return () => {
             document.removeEventListener("keydown", onKeyDown);
-            document.removeEventListener('mousemove', onMouseMove);
         }
-    }, [copySelectedLayers, pasteCopiedLayers, camera, zoom, liveLayers, selectedLayersRef.current, copiedLayers, liveLayerIds]);
+    }, [copySelectedLayers, pasteCopiedLayers, camera, zoom, liveLayers, selectedLayersRef.current, copiedLayerIds, liveLayerIds]);
 
 
     useEffect(() => { // for on layer pointer down to update refts
@@ -1557,7 +1669,7 @@ export const Canvas = ({
             if (canvasState.layerType === LayerType.Text) {
                 document.body.style.cursor = 'url(/custom-cursors/text-cursor.svg) 8 0, auto';
             } else {
-                document.body.style.cursor = 'url(/custom-cursors/inserting.svg) 12 12, auto';
+                document.body.style.cursor = 'url(/custom-cursors/inserting.svg) 10 10, auto';
             }
         } else if (canvasState.mode === CanvasMode.Pencil) {
             document.body.style.cursor = 'url(/custom-cursors/pencil.svg) 2 18, auto';
@@ -1579,6 +1691,7 @@ export const Canvas = ({
             document.body.style.cursor = 'default';
         }
     }, [canvasState.mode, canvasState, rightClickPanning]);
+
     return (
         <main
             className={`fixed h-full w-full touch-none overscroll-none ${isDraggingOverCanvas && 'bg-neutral-300 border-2 border-dashed border-custom-blue'}`}
@@ -1668,7 +1781,7 @@ export const Canvas = ({
                     canvasState={canvasState.mode}
                 />
             )}
-            <ZoomToolbar zoom={zoom} setZoom={setZoom} setCamera={setCamera} camera={camera}/>
+            <ZoomToolbar zoom={zoom} setZoom={setZoom} setCamera={setCamera} camera={camera} />
             {/* {isShowingAIInput && (
                 <SketchlieAiInput 
                     setLiveLayers={setLiveLayers}
@@ -1722,6 +1835,7 @@ export const Canvas = ({
                         {currentPreviewLayer && (
                             <CurrentPreviewLayer
                                 layer={currentPreviewLayer}
+                                liveLayers={liveLayers}
                             />
                         )}
                         {!isMoving && activeTouches < 2 && canvasState.mode !== CanvasMode.ArrowResizeHandler && (
@@ -1731,6 +1845,16 @@ export const Canvas = ({
                                 selectedLayers={selectedLayersRef.current}
                                 onResizeHandlePointerDown={onResizeHandlePointerDown}
                                 onArrowResizeHandlePointerDown={onArrowResizeHandlePointerDown}
+                                setLiveLayers={setLiveLayers}
+                            />
+                        )}
+                        {((canvasState.mode === CanvasMode.ArrowResizeHandler && selectedLayersRef.current.length === 1) || (currentPreviewLayer?.type === LayerType.Arrow)) && (
+                            <ArrowConnectionOutlinePreview 
+                                zoom={zoom}
+                                selectedArrow={currentPreviewLayer || liveLayers[selectedLayersRef.current[0]]}
+                                liveLayers={liveLayers}
+                                mousePosition={mousePosition}
+                                handle={canvasState.mode === CanvasMode.ArrowResizeHandler ? canvasState.handle : ArrowHandle.end}
                             />
                         )}
                         {canvasState.mode === CanvasMode.SelectionNet && canvasState.current != null && activeTouches < 2 && (

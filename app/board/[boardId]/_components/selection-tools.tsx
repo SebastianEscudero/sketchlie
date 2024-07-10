@@ -3,7 +3,7 @@
 import { memo, useCallback, useEffect, useState } from "react";
 import { BringToFront, Copy, SendToBack, Sparkles, Trash2, WandSparkles } from "lucide-react";
 import { Hint } from "@/components/hint";
-import { Camera, CanvasMode, Color, LayerType, Presence, SelectorType } from "@/types/canvas";
+import { Camera, CanvasMode, Color, Layer, LayerType, Presence, SelectorType } from "@/types/canvas";
 import { Button } from "@/components/ui/button";
 import { useSelectionBounds } from "@/hooks/use-selection-bounds";
 import { ColorPicker } from "../selection-tools/color-picker";
@@ -312,19 +312,36 @@ export const SelectionTools = memo(({
   
     const offsetX = maxX - minX + 10; // Offset by 10 units for visibility
   
-    const newIds: any = [];
-    const clonedLayers: any = [];
+    const idMap = new Map();
+    const newLayers: Record<string, Layer> = {};
     selectedLayersRef.current.forEach((id: string) => {
-      const layer = liveLayers[id];
-      const newId = nanoid();
-      const clonedLayer = JSON.parse(JSON.stringify(layer));
-      clonedLayer.x = clonedLayer.x + offsetX;
-      if (clonedLayer.type === LayerType.Arrow || clonedLayer.type === LayerType.Line) {
-        clonedLayer.center.x += offsetX;
-      }
-      newIds.push(newId);
-      clonedLayers.push(clonedLayer);
+        const layer = { ...liveLayers[id] };
+
+        const newId = nanoid();
+        const clonedLayer = JSON.parse(JSON.stringify(layer));
+        clonedLayer.x = clonedLayer.x + offsetX;
+        if (clonedLayer.type === LayerType.Arrow || clonedLayer.type === LayerType.Line) {
+            clonedLayer.center.x += offsetX;
+        }
+        idMap.set(id, newId);
+        newLayers[newId] = clonedLayer;
     });
+
+    Object.values(newLayers).forEach((layer) => {
+      if (layer.type === LayerType.Arrow) {
+          if (layer.startConnectedLayerId && idMap.has(layer.startConnectedLayerId)) {
+              layer.startConnectedLayerId = idMap.get(layer.startConnectedLayerId);
+          }
+          if (layer.endConnectedLayerId && idMap.has(layer.endConnectedLayerId)) {
+              layer.endConnectedLayerId = idMap.get(layer.endConnectedLayerId);
+          }
+      } else if (layer.type === LayerType.Rectangle && layer.connectedArrows) {
+          layer.connectedArrows = layer.connectedArrows.map(arrowId => idMap.get(arrowId) || arrowId);
+      }
+  });
+
+  const newIds = Object.keys(newLayers);
+  const clonedLayers = Object.values(newLayers);
   
     const command = new InsertLayerCommand(newIds, clonedLayers, setLiveLayers, setLiveLayerIds, boardId, socket, org, proModal);
     performAction(command);
@@ -473,7 +490,7 @@ export const SelectionTools = memo(({
           <SendToBack />
         </Button>
       </Hint>
-      {/* <SketchlieAiDropdown 
+      <SketchlieAiDropdown 
         title={board.title}
         liveLayers={liveLayers}
         setLiveLayers={setLiveLayers}
@@ -481,7 +498,7 @@ export const SelectionTools = memo(({
         boardId={boardId}
         socket={socket}
         performAction={performAction}
-      /> */}
+      />
       <div className="flex items-center pl-2 border-l border-neutral-200">
         <Hint label="Delete">
           <Button

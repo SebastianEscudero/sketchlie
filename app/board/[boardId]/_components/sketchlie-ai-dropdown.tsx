@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { TranslateLayersCommand } from "@/lib/commands"
 import { downloadTextAsPdf } from "@/lib/sketchlie-ai"
-import { Layers } from "@/types/canvas"
+import { Layers, LayerType } from "@/types/canvas"
 import { FileText, LoaderCircle, Sparkles, WandSparkles } from "lucide-react"
 import { useState } from "react"
 import { toast } from "sonner"
@@ -75,7 +75,7 @@ export const SketchlieAiDropdown = ({
 
     const fillTexts = async (layers: any, title: string) => {
         setIsFillTextsLoading(true);
-
+    
         const layerDetails = Object.entries(layers).reduce((obj: any, [id, layer]: [string, any]) => {
             obj[id] = {
                 x: layer.x,
@@ -83,6 +83,16 @@ export const SketchlieAiDropdown = ({
                 value: layer.value,
                 type: layer.type
             };
+
+            if (layer.type === LayerType.Arrow) {
+                // Check for startConnectedLayerId and endConnectedLayerId
+                if (layer.startConnectedLayerId) {
+                    obj[id].startConnectedLayerId = layer.startConnectedLayerId;
+                }
+                if (layer.endConnectedLayerId) {
+                    obj[id].endConnectedLayerId = layer.endConnectedLayerId;
+                }
+            }
             return obj;
         }, {});
 
