@@ -703,7 +703,7 @@ export const Canvas = ({
                     bounds = resizeBox(initialBoundingBox, newBoundingBox, newLayer, canvasState.corner, singleLayer);
                 }
             } else if (canvasState.mode === CanvasMode.ArrowResizeHandler) {
-                if (newLayer.type === LayerType.Arrow) {
+                if (newLayer.type === LayerType.Arrow || newLayer.type === LayerType.Line) {
                     let intersectingStartLayer = newLayer.startConnectedLayerId
                     let intersectingEndLayer = newLayer.endConnectedLayerId
 
