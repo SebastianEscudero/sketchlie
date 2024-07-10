@@ -703,37 +703,51 @@ export const Canvas = ({
                     bounds = resizeBox(initialBoundingBox, newBoundingBox, newLayer, canvasState.corner, singleLayer);
                 }
             } else if (canvasState.mode === CanvasMode.ArrowResizeHandler) {
-                bounds = resizeArrowBounds(
-                    canvasState.initialBounds,
-                    point,
-                    canvasState.handle,
-                    newLayer,
-                    liveLayers,
-                    zoom,
-                );
-
-                const intersectingLayer = findIntersectingLayerForConnection(liveLayerIds, liveLayers, point, zoom).filter(layerId => layerId !== id)[0] || undefined;
+                let intersectingStartLayer
+                let intersectingEndLayer
 
                 if (newLayer.type === LayerType.Arrow) {
                     if (canvasState.handle === ArrowHandle.end) {
-                        if (intersectingLayer) {
-                            newLayer.endConnectedLayerId = intersectingLayer;
-                            const connectedLayer = liveLayers[intersectingLayer];
+                        intersectingEndLayer = findIntersectingLayerForConnection(liveLayerIds, liveLayers, point, zoom).filter(layerId => layerId !== id)[0] || undefined;
+                        if (intersectingEndLayer) {
+                            newLayer.endConnectedLayerId = intersectingEndLayer;
+                            const connectedLayer = liveLayers[intersectingEndLayer];
                             const layerWithUpdatedArrows = updatedLayersConnectedArrows(connectedLayer, id)
-                            liveLayers[intersectingLayer] = layerWithUpdatedArrows;
+                            liveLayers[intersectingEndLayer] = layerWithUpdatedArrows;
                         } else {
                             newLayer.endConnectedLayerId = undefined;
                         }
+                        const start = { x: newLayer.x, y: newLayer.y };
+                        intersectingStartLayer = findIntersectingLayerForConnection(liveLayerIds, liveLayers, start, zoom).filter(layerId => layerId !== id)[0] || undefined;
+                    
                     } else if (canvasState.handle === ArrowHandle.start) {
-                        if (intersectingLayer) {
-                            newLayer.startConnectedLayerId = intersectingLayer;
-                            const connectedLayer = liveLayers[intersectingLayer];
+                        intersectingStartLayer = findIntersectingLayerForConnection(liveLayerIds, liveLayers, point, zoom).filter(layerId => layerId !== id)[0] || undefined;
+                        if (intersectingStartLayer) {
+                            newLayer.startConnectedLayerId = intersectingStartLayer;
+                            const connectedLayer = liveLayers[intersectingStartLayer];
                             const layerWithUpdatedArrows = updatedLayersConnectedArrows(connectedLayer, id)
-                            liveLayers[intersectingLayer] = layerWithUpdatedArrows;
+                            liveLayers[intersectingStartLayer] = layerWithUpdatedArrows;
                         } else {
                             newLayer.startConnectedLayerId = undefined;
                         }
+                        const end = { x: newLayer.x + newLayer.width, y: newLayer.y + newLayer.height };
+                        intersectingEndLayer = findIntersectingLayerForConnection(liveLayerIds, liveLayers, end, zoom).filter(layerId => layerId !== id)[0] || undefined;
+
                     }
+
+                    if (intersectingStartLayer === intersectingEndLayer) {
+                        newLayer.startConnectedLayerId = undefined;
+                        newLayer.endConnectedLayerId = undefined;
+                    }
+
+                    bounds = resizeArrowBounds(
+                        canvasState.initialBounds,
+                        point,
+                        canvasState.handle,
+                        newLayer,
+                        liveLayers,
+                        zoom,
+                    );
                 }
             }
 
