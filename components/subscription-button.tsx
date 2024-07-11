@@ -38,7 +38,7 @@ export const SubscriptionButton = ({
     }
 
     return (
-        <Button variant="auth" onClick={onClick} disabled={isLoading}> 
+        <Button variant="sketchlieBlue" onClick={onClick} disabled={isLoading}> 
             {isLoading ? <LoaderCircle className="animate-spin w-5 h-5 text-white"/> : <>Upgrade <Zap className="w-4 h-4 ml-2 fill-white"/></>}
         </Button>
     )

@@ -9,6 +9,7 @@ interface FooterProps {
   isFavorite: boolean;
   onClick: () => void;
   disabled: boolean;
+  theme: string;
 };
 
 export const Footer = ({
@@ -17,7 +18,8 @@ export const Footer = ({
   createdAtLabel,
   isFavorite,
   onClick,
-  disabled
+  disabled,
+  theme
 }: FooterProps) => {
   const handleClick = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -29,18 +31,19 @@ export const Footer = ({
   };
 
   return (
-    <div className="relative bg-zinc-100 p-3">
-      <p className="text-[13px] truncate max-w-[calc(100%-20px)]">
+    <div className={`relative ${theme === "dark" ? "bg-[#2C2C2C]" : "bg-zinc-100"} p-3`}>
+      <p className="text-[14px] truncate max-w-[calc(100%-20px)]" style={{ color: theme === "dark" ? "white" : "black" }}>
         {title}
       </p>
-      <p className="transition-opacity text-[11px] text-muted-foreground truncate">
+      <p className={`transition-opacity text-[11px] truncate ${theme === "dark" ? "text-zinc-300" : "text-muted-foreground"}`}>
         {authorLabel}, {createdAtLabel}
       </p>
       <button
         disabled={disabled}
         onClick={handleClick}
         className={cn(
-          "opacity-0 group-hover:opacity-100 transition absolute top-3 right-3 text-muted-foreground hover:text-blue-600",
+          "opacity-0 group-hover:opacity-100 transition absolute top-3 right-3",
+          theme === "dark" ? "text-white hover:text-blue-600" : "text-muted-foreground hover:text-blue-600",
           disabled && "cursor-not-allowed opacity-75"
         )}
       >

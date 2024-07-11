@@ -5,7 +5,6 @@ import { LogoSlider } from "@/components/logo-slider";
 import { FaqSection } from "@/components/faq-section";
 import { LandingVideo } from "@/components/landing-video";
 import { HowToCreate } from "@/components/how-to-create";
-import { VerMas } from "@/components/ver-mas";
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -19,7 +18,7 @@ import { PlatformYouCanTrust } from "@/components/platform-you-can-trust";
 import { BlogLinks } from "@/components/blog-links";
 
 export const metadata: Metadata = {
-    title: "Quiénes Somos | Sketchlie - Transformando Ideas en Planes Ejecutables",
+    title: "Quiénes Somos | Sketchlie",
     description: "Descubre la historia detrás de Sketchlie. Fundada por ingenieros y diseñadores expertos, nuestra misión es convertir ideas en planes de acción concretos a través de la colaboración visual.",
     keywords: ["Sketchlie", "quiénes somos", "colaboración visual", "gestión de proyectos", "innovación", "startup tecnológica"],
     alternates: {

@@ -19,7 +19,7 @@ export const InviteButton = ({
         activeOrganization !== null && activeOrganization !== "null" && (
             <Dialog>
                 <DialogTrigger asChild>
-                    <Button variant="auth">
+                    <Button variant="sketchlieBlue">
                         <UserPlus className="h-4 w-4 mr-2" />
                         Invite Members
                     </Button>

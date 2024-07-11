@@ -20,7 +20,7 @@ export const NotificationsMenu = ({
     return (
         <DropdownMenu>
             <DropdownMenuTrigger className="xs:flex hidden">
-                <Bell className="h-6 w-6 text-black lg:text-white" />
+                <Bell className="h-6 w-6 text-white" />
                 {invitations.length > 0 && (
                     <p className="absolute top-1 right-1 transform translate-x-1/2 -translate-y-1/2 bg-custom-blue text-white px-1 text-[10px] rounded-sm items-center animate-popup">{invitations.length}</p>
                 )}

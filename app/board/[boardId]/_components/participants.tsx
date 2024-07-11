@@ -60,7 +60,7 @@ export const Participants = ({
             {org && (
                 <Dialog>
                     <DialogTrigger asChild className="xs:ml-3">
-                        <Button variant="auth" className="h-8 w-24">
+                        <Button variant="sketchlieBlue" className="h-8 w-24">
                             <UserIcon className="h-4 w-4 mr-2" />
                             Invite
                         </Button>

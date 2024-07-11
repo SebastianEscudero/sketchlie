@@ -118,7 +118,7 @@ export const CreateOrganization = ({
                         <Button
                             disabled={isPending}
                             type="submit"
-                            variant="auth"
+                            variant="sketchlieBlue"
                         >
                             Create organization
                         </Button>) : (
@@ -126,7 +126,7 @@ export const CreateOrganization = ({
                             <Button
                                 disabled={isPending}
                                 type="submit"
-                                variant="auth"
+                                variant="sketchlieBlue"
                             >
                                 Create organization
                             </Button>

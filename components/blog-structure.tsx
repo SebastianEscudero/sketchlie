@@ -22,7 +22,7 @@ export const BlogStructure = ({
     alt
 }: BlogStructureProps) => {
     const imageElement = img && (
-        <div className="flex-1 w-full border border-[#837D7C] rounded-sm md:block hidden">
+        <div className="flex-1 w-full border border-[#837D7C] rounded-sm md:block hidden shadow-custom-1">
             <Image
                 src={img}
                 alt={alt}

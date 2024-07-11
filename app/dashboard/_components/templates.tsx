@@ -16,10 +16,12 @@ import { updateR2Bucket } from "@/lib/r2-bucket-functions";
 
 interface TemplateProps {
     org: any
+    theme: string;
 }
 
 export const Templates = ({
     org,
+    theme,
 }: TemplateProps) => {
 
     const user = useCurrentUser();
@@ -59,9 +61,9 @@ export const Templates = ({
     }
 
     return (
-        <div className="p-6">
-            <p className="text-gray-600 mt-2">Only <span className="font-bold">Admins</span> of the organization can choose a template</p>
-            <div className="flex mt-4 border rounded-md p-4 h-[170px] overflow-hidden bg-white shadow-custom-1">
+        <div className="p-6 ">
+            <p className={`${theme === "dark" ? "text-zinc-300" : "text-gray-600"} mt-2`}>Only <span className={`font-bold ${theme === "dark" ? "text-white" : ""}`}>Admins</span> of the organization can choose a template</p>
+            <div className={`flex mt-4 border ${theme === "dark" ? "border-[#2C2C2C]/30 bg-[#2C2C2C]" : "bg-white"} rounded-md p-4 h-[170px] overflow-hidden shadow-custom-1`}>
                 <div className="flex flex-wrap gap-x-5 gap-y-20">
                     {templates.map((template, index) => (
                         <div key={index} className="rounded-lg flex flex-col justify-between flex-1">
@@ -74,13 +76,13 @@ export const Templates = ({
                                 )}
                             >
                                 <Image
-                                    className="border rounded-md object-contain w-[130px] h-[101px] hover:border-custom-blue"
+                                    className="border rounded-md object-contain w-[130px] h-[101px] hover:border-blue-500"
                                     src={`${template.image}`}
                                     alt={template.name}
                                     width={500}
                                     height={500}
                                 />
-                                <h2 className="font-semibold pt-2 text-[12px] text-gray-700 hover:text-custom-blue">
+                                <h2 className={`font-semibold pt-2 text-[12px] ${theme === "dark" ? "text-white hover:text-blue-500" : "text-gray-700 hover:text-custom-blue"}`}>
                                     + {template.name}
                                 </h2>
                             </button>
@@ -90,7 +92,7 @@ export const Templates = ({
                 <Dialog>
                     <div className="rounded-lg flex flex-col justify-between ml-2 flex-1">
                         <DialogTrigger className="flex justify-center">
-                            <ChevronsDown className="h-6 w-6 text-custom-blue" />
+                            <ChevronsDown className="h-6 w-6 text-white" />
                         </DialogTrigger>
                     </div>
                     <DialogContent className="w-full max-w-[80%] max-h-[85%] xl:max-w-[50%] overflow-y-auto">

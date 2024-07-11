@@ -20,6 +20,7 @@ const badgeVariants = cva(
           "border-transparent bg-yellow-500 text-black hover:bg-yellow-600",
         new:
           "border-transparent bg-yellow-500 text-black text-md",
+        sketchlieBlue: "border-transparent bg-blue-600 text-white hover:bg-blue-800",
       },
     },
     defaultVariants: {

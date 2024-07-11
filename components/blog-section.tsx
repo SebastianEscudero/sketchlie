@@ -20,7 +20,7 @@ export const BlogSection = ({
     side = 'right',
 }: BlogSectionProps) => {
     const imageElement = img && (
-        <div className="flex-1 w-full border border-[#837D7C]">
+        <div className="flex-1 w-full border border-[#837D7C] shadow-custom-1">
             <Image
                 src={img}
                 alt={alt || 'Blog image'}

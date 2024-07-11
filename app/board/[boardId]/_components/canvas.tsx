@@ -1209,7 +1209,20 @@ export const Canvas = ({
             setJustChanged(changed);
 
             if (selectedLayersRef.current.length > 0 && changed === true) {
-                const command = new TranslateLayersCommand(selectedLayersRef.current, initialLayers, liveLayers, setLiveLayers, boardId, socket);
+                const updatedLayerIds: string[] = [...selectedLayersRef.current];
+                selectedLayersRef.current.forEach(id => {
+                    const layer = liveLayers[id];
+                    if (layer.type !== LayerType.Arrow && layer.type !== LayerType.Line && layer.type !== LayerType.Path && selectedLayersRef.current.length === 1) {
+                        if (layer.connectedArrows) {
+                            layer.connectedArrows.forEach(arrowId => {
+                                updatedLayerIds.push(arrowId);                            
+                            })
+                        };
+                    }
+                });
+
+
+                const command = new TranslateLayersCommand(updatedLayerIds, initialLayers, liveLayers, setLiveLayers, boardId, socket);
                 performAction(command);
             }
 

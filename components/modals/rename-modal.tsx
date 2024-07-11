@@ -88,7 +88,7 @@ export const RenameModal = () => {
                 Cancel
               </Button>
             </DialogClose>
-            <Button disabled={pending} type="submit" variant="auth">
+            <Button disabled={pending} type="submit" variant="sketchlieBlue">
               Confirm
             </Button>
           </div>

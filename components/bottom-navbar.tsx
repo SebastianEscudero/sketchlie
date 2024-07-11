@@ -185,7 +185,7 @@ export const BotNavbar = () => {
                         Sé parte de la comunidad que impulsa la innovación y la colaboración con Sketchlie. Regístrate ahora con tu correo electrónico laboral y comienza a transformar tus ideas en realidad.
                     </p>
                     <Link href={"/dashboard/"} title="Regístrate gratis">
-                        <Button variant="auth" className="text-lg p-6 mt-10">
+                        <Button variant="sketchlieBlue" className="text-lg p-6 mt-10">
                             Regístrate gratis
                         </Button>
                     </Link>
@@ -309,16 +309,16 @@ export const BotNavbar = () => {
             <div className="lg:text-lg text-lg mt-10 px-4 flex justify-center flex-col pb-10">
                 <Link
                     href="/dashboard/"
-                    className="flex justify-center"
+                    className="flex justify-center items-center"
                     title="Sketchlie"
                 >
                     <Image
                         src="/logo.svg"
-                        width={50}
-                        height={50}
+                        width={40}
+                        height={40}
                         alt="Logo"
                     />
-                    <p className="ml-2 hover:underline">
+                    <p className="ml-2 hover:underline font-semibold">
                         Sketchlie
                     </p>
                 </Link>

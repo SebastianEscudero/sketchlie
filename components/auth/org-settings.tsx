@@ -184,7 +184,7 @@ export const OrganizationSettings = ({
                                 <li key={orgUser.id} className="flex pb-3">
                                     <Avatar>
                                         <AvatarImage src={orgUser.image || ""} />
-                                        <AvatarFallback className="bg-custom-blue">
+                                        <AvatarFallback className="bg-blue-600">
                                             <User className="text-white" />
                                         </AvatarFallback>
                                     </Avatar>
@@ -192,7 +192,7 @@ export const OrganizationSettings = ({
                                         <p className="truncate xs:w-auto w-[140px] text-sm">
                                             {orgUser.name}
                                             {orgUser.id === user?.id && (
-                                                <span className="bg-[#D8E0FC] px-[4px] py-[2px] rounded-sm text-[12px] text-custom-blue ml-1">You</span>
+                                                <span className="bg-[#D8E0FC] px-[4px] py-[2px] rounded-sm text-[12px] text-blue-600 ml-1">You</span>
                                             )}
                                         </p>
                                         <p className="truncate text-[12px] xs:w-auto w-[140px] text-zinc-400">{orgUser.email}</p>
@@ -288,7 +288,7 @@ export const OrganizationSettings = ({
                                                     </FormControl>
                                                     <Button
                                                         type="submit"
-                                                        variant="auth"
+                                                        variant="sketchlieBlue"
                                                     >
                                                         Save Changes
                                                     </Button>
@@ -338,7 +338,7 @@ export const OrganizationSettings = ({
                                 <div className="flex md:flex-row flex-col justify-center">
                                     <Button
                                         onClick={onClick}
-                                        variant={activeOrg.subscriptionPlan !== "Gratis" ? "auth" : "premium"} className="mt-4 w-full"
+                                        variant={activeOrg.subscriptionPlan !== "Gratis" ? "sketchlieBlue" : "premium"} className="mt-4 w-full"
                                     >
                                         {activeOrg.subscriptionPlan !== "Gratis" ? "Pausar Subscripcion" : "Upgrade"}
                                         {activeOrg.subscriptionPlan === "Gratis" && <Zap className="w-4 h-4 ml-2 fill-white" />}
@@ -347,7 +347,7 @@ export const OrganizationSettings = ({
                                 {activeOrg.subscriptionPlan !== "Gratis" && (
                                     <p className="text-neutral-500 text-sm mt-2">
                                         You are currently on the {activeOrg.subscriptionPlan} plan, if you need any help please 
-                                        contact us at <a href="mailto:contact@sketchlie.com" className="text-custom-blue hover:underline">contact@sketchlie.com</a>
+                                        contact us at <a href="mailto:contact@sketchlie.com" className="text-blue-600 hover:underline">contact@sketchlie.com</a>
                                     </p>
                                 )}
                             </div>
@@ -359,7 +359,7 @@ export const OrganizationSettings = ({
 
                         <p>This action is permanent and irreversible.</p>
                         <div className="space-x-2 pt-2">
-                            <Button variant="auth" onClick={() => setSelectedSection("Settings")}>
+                            <Button variant="sketchlieBlue" onClick={() => setSelectedSection("Settings")}>
                                 Cancel
                             </Button>
                             <DialogClose>

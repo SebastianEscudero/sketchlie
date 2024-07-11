@@ -26,6 +26,7 @@ interface BoardCardProps {
   orgId: string;
   isFavorite: boolean;
   org: any;
+  theme: string;
 };
 
 export const BoardCard = ({
@@ -37,7 +38,8 @@ export const BoardCard = ({
   imageUrl,
   orgId,
   isFavorite,
-  org
+  org,
+  theme
 }: BoardCardProps) => {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -74,37 +76,13 @@ export const BoardCard = ({
   const handleClick = () => {
     setIsLoading(true);
   };
-
-  const [showActions, setShowActions] = useState(false);
-
-  const handleContextMenu = useCallback((e: React.MouseEvent) => {
-    e.preventDefault(); // Prevent the default context menu
-    setShowActions(true); // Show the actions
-  }, []);
-
-  const handleTouchStart = useCallback(() => {
-    setShowActions(false); // Reset state to ensure it shows up on long press
-    const timer = setTimeout(() => {
-      setShowActions(true); // Show the actions after a delay
-    }, 500); // 500ms for long press
-
-    const cancelLongPress = () => {
-      clearTimeout(timer);
-      window.removeEventListener('touchend', cancelLongPress);
-    };
-
-    window.addEventListener('touchend', cancelLongPress);
-  }, []);
-
   return (
     <Link href={`/board/${id}`}>
       <div
-        className={`group aspect-[100/127] border rounded-lg shadow-custom-1 flex flex-col justify-between overflow-hidden ${isLoading ? 'opacity-80 transition-opacity cursor-not-allowed' : ''}`}
+        className={`group aspect-[100/127] border rounded-lg shadow-custom-1 flex flex-col justify-between overflow-hidden ${theme === "dark" ? "bg-zinc-800 border-zinc-700" : "bg-amber-50"} ${isLoading ? 'opacity-80 transition-opacity cursor-not-allowed' : ''}`}
         onClick={handleClick}
-        onContextMenu={handleContextMenu}
-        onTouchStart={handleTouchStart}
       >
-        <div className="relative flex-1 bg-amber-50">
+        <div className={`relative flex-1 ${theme === "dark" ? "bg-white" : "bg-amber-50"}`}>
           <Image
             src={imageUrl}
             alt={title}
@@ -134,6 +112,7 @@ export const BoardCard = ({
           createdAtLabel={createdAtLabel}
           onClick={toggleFavorite}
           disabled={pendingFavorite || pendingUnfavorite}
+          theme={theme}
         />
       </div>
     </Link>

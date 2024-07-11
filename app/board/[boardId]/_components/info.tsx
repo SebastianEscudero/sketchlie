@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Hint } from "@/components/hint";
 import { useRenameModal } from "@/store/use-rename-modal";
-import { LayoutTemplate, Menu, Sparkles, Zap } from "lucide-react";
+import { ChevronsLeft, LayoutTemplate, Menu, Sparkles, Zap } from "lucide-react";
 import { Actions } from "@/components/actions";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { useCurrentUser } from "@/hooks/use-current-user";
@@ -219,7 +219,7 @@ export const Info = ({
                     size="icon"
                     onClick={() => proModal.onOpen(orgId)}
                 >
-                    <Zap className="h-5 w-5 fill-custom-blue text-custom-blue"/>
+                    <Zap className="h-5 w-5 fill-blue-600 text-blue-600"/>
                 </Button>
             </Hint>
             {/* <div className="text-neutral-300 px-1 md:flex hidden">

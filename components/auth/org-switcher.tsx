@@ -21,12 +21,14 @@ interface OrganizationSwitcherProps {
     activeOrganization: string | null;
     setActiveOrganization: (id: string) => void;
     plan: string;
+    theme: string;
 }
 
 export const OrganizationSwitcher = ({
     activeOrganization,
     setActiveOrganization,
-    plan
+    plan,
+    theme
 }: OrganizationSwitcherProps) => {
     const user = useCurrentUser();
     if (!user) return null;
@@ -46,36 +48,35 @@ export const OrganizationSwitcher = ({
     }
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger className="border border-zinc-200 rounded-lg p-[10px] flex items-center hover:bg-zinc-200 w-full outline-none">
-                {hasOrg && activeOrg ? (
-                    <div className="flex items-center truncate">
-                        <div className="aspect-square relative w-[36px] flex-shrink-0">
-                            <OrgImage
-                                height="36px"
-                                width="36px"
-                                letter={Initial}
-                                color={color}
-                                letterColor={letterColor}
-                            />
-                        </div>
-                        <div className="flex items-center truncate w-full sm:max-w-[150px] max-w-[200px]">
-                            <div className="flex flex-col text-left w-full font-medium">
-                                <p className="ml-3 text-sm truncate">{activeOrg.name}</p>
-                                <p className="ml-3 text-xs truncate flex flex-row items-center">{activeOrg.subscriptionPlan} - <User className="h-[11px] w-[11px] mx-1"/>{activeOrg.users.length}</p>
-                            </div>
-                            {invitations.length > 0 && (
-                                <p className="ml-2 bg-custom-blue text-white px-1 mt-0.5 text-[10px] rounded-sm items-center animate-popup">{invitations.length}</p>
-                            )}
-                        </div>
+            <DropdownMenuTrigger className={`border border-zinc-600 ${theme === "dark" ? "hover:bg-[#383838]" : "hover:bg-zinc-200"} rounded-lg p-[10px] flex items-center w-full outline-none`}>                {hasOrg && activeOrg ? (
+                <div className="flex items-center truncate">
+                    <div className="aspect-square relative w-[36px] flex-shrink-0">
+                        <OrgImage
+                            height="36px"
+                            width="36px"
+                            letter={Initial}
+                            color={color}
+                            letterColor={letterColor}
+                        />
                     </div>
-                ) : (
-                    <div className="flex items-center truncate pr-2">
-                        <p className="ml-3 text-sm truncate">No organization selected</p>
+                    <div className="flex items-center truncate w-full sm:max-w-[150px] max-w-[200px]">
+                        <div className="flex flex-col text-left w-full font-medium">
+                            <p className="ml-3 text-sm truncate">{activeOrg.name}</p>
+                            <p className="ml-3 text-xs truncate flex flex-row items-center">{activeOrg.subscriptionPlan} - <User className="h-[11px] w-[11px] mx-1" />{activeOrg.users.length}</p>
+                        </div>
                         {invitations.length > 0 && (
                             <p className="ml-2 bg-custom-blue text-white px-1 mt-0.5 text-[10px] rounded-sm items-center animate-popup">{invitations.length}</p>
                         )}
                     </div>
-                )}
+                </div>
+            ) : (
+                <div className="flex items-center truncate pr-2">
+                    <p className="ml-3 text-sm truncate">No organization selected</p>
+                    {invitations.length > 0 && (
+                        <p className="ml-2 bg-custom-blue text-white px-1 mt-0.5 text-[10px] rounded-sm items-center animate-popup">{invitations.length}</p>
+                    )}
+                </div>
+            )}
                 <ChevronsUpDown className="ml-auto text-zinc-400 flex-shrink-0" width={20} />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="rounded-lg drop-shadow-md w-[350px]">
@@ -91,7 +92,7 @@ export const OrganizationSwitcher = ({
                             />
                             <div className="ml-3 truncate w-[230px] font-medium">
                                 <p className="ml-3 text-sm truncate">{activeOrg.name}</p>
-                                <p className="ml-3 text-xs truncate flex flex-row items-center">{activeOrg.subscriptionPlan} - <User className="h-[11px] w-[11px] mx-1"/>{activeOrg.users.length}</p>
+                                <p className="ml-3 text-xs truncate flex flex-row items-center">{activeOrg.subscriptionPlan} - <User className="h-[11px] w-[11px] mx-1" />{activeOrg.users.length}</p>
                             </div>
                         </div>
                         <Dialog>
@@ -137,10 +138,10 @@ export const OrganizationSwitcher = ({
                                         color={color}
                                         letterColor={letterColor}
                                     />
-                                <div className="ml-3 truncate w-[230px] font-medium">
-                                    <p className="ml-3 text-sm truncate">{org.name}</p>
-                                    <p className="ml-3 text-xs truncate flex flex-row items-center">{org.subscriptionPlan} - <User className="h-[11px] w-[11px] mx-1"/>{org.users.length}</p>
-                                </div>
+                                    <div className="ml-3 truncate w-[230px] font-medium">
+                                        <p className="ml-3 text-sm truncate">{org.name}</p>
+                                        <p className="ml-3 text-xs truncate flex flex-row items-center">{org.subscriptionPlan} - <User className="h-[11px] w-[11px] mx-1" />{org.users.length}</p>
+                                    </div>
                                     <ArrowLeftRight className="h-4 w-4 ml-auto text-zinc-400" />
                                 </DropdownMenuItem>
                             );

@@ -117,7 +117,7 @@ export const OrganizationInvite = ({
                     <Button
                         disabled={isPending}
                         type="submit"
-                        variant="auth"
+                        variant="sketchlieBlue"
                         className="p-5 w-[180px]"
                     >
                         {isPending ? <LoaderCircle className="animate-spin w-5 h-5 text-white"/> : "Invite teammates"}

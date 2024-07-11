@@ -78,13 +78,13 @@ export const SettingsModal = () => {
           <div className="flex">
             <Avatar>
               <AvatarImage src={user?.image || ""} />
-              <AvatarFallback className="bg-custom-blue">
+              <AvatarFallback className="bg-blue-600">
                 <User className="text-white"/>
               </AvatarFallback>
             </Avatar>
             <div className="ml-2">
               <p className="truncate text-[14px]">
-                  {user?.name}<span className="bg-[#D8E0FC] px-[4px] py-[2px] rounded-sm text-[12px] text-custom-blue ml-1">You</span>
+                  {user?.name}<span className="bg-[#D8E0FC] px-[4px] py-[2px] rounded-sm text-[12px] text-blue-600 ml-1">You</span>
               </p>
               <p className="truncate text-[12px] text-zinc-400">{user?.email}</p>
             </div>
@@ -176,7 +176,7 @@ export const SettingsModal = () => {
               <Button
                 disabled={isPending}
                 type="submit"
-                variant="auth"
+                variant="sketchlieBlue"
               >
                 Save
               </Button>

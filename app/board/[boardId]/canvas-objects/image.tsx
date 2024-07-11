@@ -1,3 +1,4 @@
+import React from 'react';
 import { ImageLayer } from "@/types/canvas";
 
 interface ImageProps {
@@ -16,24 +17,37 @@ export const InsertImage = ({
   selectionColor,
 }: ImageProps) => {
   const { x, y, width, height, src, opacity } = layer;
+
   if (!isUploading) {
     return (
-      <image
-        crossOrigin="anonymous"
-        opacity={opacity ? opacity : 1}
-        id={id}
-        href={src}
-        x={x}
-        y={y}
-        width={width}
-        height={height}
-        onPointerDown={(e) => onPointerDown(e, id)}
-        stroke={selectionColor ? selectionColor : "none"}
-        strokeWidth={selectionColor ? "2" : "0"}
-      />
+      <>
+        {selectionColor && (
+          <rect
+            x={x}
+            y={y}
+            width={width}
+            height={height}
+            stroke={selectionColor}
+            strokeWidth="2"
+            fill="none"
+            strokeLinecap='round'
+            strokeLinejoin='round'
+          />
+        )}
+        <image
+          crossOrigin="anonymous"
+          opacity={opacity ? opacity : 1}
+          id={id}
+          href={src}
+          x={x}
+          y={y}
+          width={width}
+          height={height}
+          onPointerDown={(e) => onPointerDown(e, id)}
+        />
+      </>
     );
   } else {
     return null;
   }
 };
-

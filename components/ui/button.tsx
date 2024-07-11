@@ -14,8 +14,11 @@ const buttonVariants = cva(
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
           outline:
           "border border-black bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
+        dashboard: "hover:bg-[#383838] text-white hover:text-white",
+        dashboardActive:
+          "bg-[#383838]/70 text-white hover:bg-[#383838]",
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:text-accent-foreground hover:bg-accent-foreground/10",
         ghostDark: "hover:bg-accent-foreground/50",
         blog: "hover:bg-custom-blue hover:text-accent-foreground border border-black rounded-md hover:text-[#FFF] hover:border-none",
@@ -30,11 +33,12 @@ const buttonVariants = cva(
         starter: "bg-yellow-500 text-black hover:bg-yellow-600",
         business: "bg-[#1C1C1E] text-white hover:text-accent-foreground hover:bg-accent/90 border",
         icon: "hover:text-accent-foreground hover:bg-accent-foreground/10",
-        iconActive: "bg-custom-blue text-white fill-white",
+        iconActive: "bg-blue-600 text-white fill-white",
         magicAssist: "text-black hover:text-custom-blue",
         magicAssistActive: "text-custom-blue",
         aligned: "bg-white",
         alignedActive: "bg-accent/90 text-custom-blue",
+        sketchlieBlue: "bg-blue-600 text-white hover:bg-blue-800",
       },
       size: {
         default: "h-10 px-4 py-2",

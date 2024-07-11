@@ -15,9 +15,18 @@ import { useCurrentUser } from "@/hooks/use-current-user";
 import { LogoutButton } from "@/components/auth/logout-button";
 import { SettingsButton } from "./settings-button";
 import { LogOut, Settings, User } from "lucide-react";
+import { ThemeDropdownMenu } from "./theme-dropdown-menu";
 
 
-export const UserButton = () => {
+interface UserButtonProps {
+  theme: string;
+  setTheme: (theme: string) => void;
+}
+
+export const UserButton = ({
+  theme,
+  setTheme
+}: UserButtonProps) => {
   const user = useCurrentUser();
 
   return (
@@ -25,7 +34,7 @@ export const UserButton = () => {
       <DropdownMenuTrigger>
         <Avatar>
           <AvatarImage src={user?.image || ""} />
-          <AvatarFallback className="bg-custom-blue">
+          <AvatarFallback className="bg-blue-600">
             <User className="text-white" />
           </AvatarFallback>
         </Avatar>
@@ -35,7 +44,7 @@ export const UserButton = () => {
           <div className="flex flex-row mb-3 items-center p-5 pb-0">
             <Avatar>
               <AvatarImage src={user?.image || ""} />
-              <AvatarFallback className="bg-custom-blue">
+              <AvatarFallback className="bg-blue-600">
                 <User className="text-white" />
               </AvatarFallback>
             </Avatar>
@@ -48,16 +57,20 @@ export const UserButton = () => {
               </p>
             </div>
           </div>
+          <ThemeDropdownMenu 
+            theme={theme}
+            setTheme={setTheme}
+          />
           <SettingsButton>
             <DropdownMenuItem className="py-3 px-5 cursor-pointer">
               <Settings className="h-4 w-4 mr-2" />
-              <p className="ml-5">Manage account</p>
+              <p className="ml-5">Settings</p>
             </DropdownMenuItem>
           </SettingsButton>
           <LogoutButton>
             <DropdownMenuItem className="py-3 px-5 mb-5 cursor-pointer">
               <LogOut className="h-4 w-4 mr-2" />
-              <p className="ml-5">Sign out</p>
+              <p className="ml-5">Log out</p>
             </DropdownMenuItem>
           </LogoutButton>
         </div>
