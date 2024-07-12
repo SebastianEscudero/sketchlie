@@ -31,14 +31,13 @@ export const EmptyOrg = ({
     return (
         <div className="h-full flex flex-col">
             {user.organizations.length === 0 && (
-                <Dialog open={isOpen}>
                     <CreateOrganization
                         showCloseButton={false}
                         label="Start by creating an organization!"
                         activeOrganization={null}
                         setActiveOrganization={setActiveOrganization}
+                        isOpen={isOpen}
                     />
-                </Dialog>
             )}
             <div className="p-0">
                 <h2 className="text-3xl font-semibold">Choose a Template</h2>

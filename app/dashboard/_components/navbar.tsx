@@ -58,7 +58,6 @@ export const Navbar = ({
                     setActiveOrganization={setActiveOrganization}
                 />
                 <OrganizationSwitcher
-                    plan={plan}
                     setActiveOrganization={setActiveOrganization}
                     activeOrganization={activeOrganization}
                     theme={theme}

@@ -10,6 +10,7 @@ import { OrgSidebar } from "./_components/org-sidebar";
 import { Loading } from "@/components/auth/loading";
 import { useProModal } from "@/hooks/use-pro-modal";
 import Templates from "./_components/templates";
+import { EmptyOrgSidebar } from "./_components/empty-org-sidebar";
 
 const DashboardPage = () => {
   const searchParams = useSearchParams();
@@ -55,13 +56,17 @@ const DashboardPage = () => {
   return (
     <main className={`h-full ${theme === "dark" ? "bg-[#383838] text-white" : "bg-[#F9FAFB]"}`}>
       <div className="flex h-full">
-      {activeOrg && (
+      {activeOrg ? (
         <OrgSidebar
           setActiveOrganization={setActiveOrganization}
           activeOrganization={activeOrganization}
           theme={theme}
         />
-      )}
+      ) : (
+        <EmptyOrgSidebar 
+          theme={theme}
+        />
+      )} 
       <div className="h-full flex-1">
         <Navbar
           setActiveOrganization={setActiveOrganization}

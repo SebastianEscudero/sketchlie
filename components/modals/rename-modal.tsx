@@ -9,7 +9,6 @@ import {
   DialogDescription,
   DialogHeader,
   DialogClose,
-  DialogFooter,
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useRenameModal } from "@/store/use-rename-modal";

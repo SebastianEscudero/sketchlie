@@ -78,7 +78,6 @@ export const OrgSidebar = ({
                     activeOrg={activeOrg}
                 />
                 <OrganizationSwitcher
-                    plan={subscriptionPlan}
                     setActiveOrganization={setActiveOrganization}
                     activeOrganization={activeOrganization}
                     theme={theme}
