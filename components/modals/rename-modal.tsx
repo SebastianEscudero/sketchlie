@@ -11,31 +11,36 @@ import {
   DialogClose,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useRenameModal } from "@/store/use-rename-modal";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useApiMutation } from "@/hooks/use-api-mutation";
 import { api } from "@/convex/_generated/api";
 import { useCurrentUser } from "@/hooks/use-current-user";
 
-export const RenameModal = () => {
+interface RenameModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  id: string;
+  boardTitle: string;
+}
+
+export const RenameModal = ({
+  isOpen,
+  onClose,
+  id,
+  boardTitle
+}: RenameModalProps) => {
   const { 
     mutate, 
     pending
   } = useApiMutation(api.board.update);
 
-  const {
-    isOpen,
-    onClose,
-    initialValues,
-  } = useRenameModal();
-
   const user = useCurrentUser();
-  const [title, setTitle] = useState(initialValues.title);
+  const [title, setTitle] = useState(boardTitle);
 
   useEffect(() => {
-    setTitle(initialValues.title);
-  }, [initialValues.title]);
+    setTitle(boardTitle);
+  }, [boardTitle]);
 
   if (!user) {
     return null;
@@ -47,13 +52,13 @@ export const RenameModal = () => {
     e.preventDefault();
 
     mutate({
-      id: initialValues.id,
+      id: id,
       title,
       userId: user.id
     })
       .then(() => {
         toast.success("Board renamed");
-        localStorage.setItem('boardTitle', initialValues.title);
+        localStorage.setItem('boardTitle', title);
         window.dispatchEvent(new CustomEvent('boardTitleChanged'));
         onClose();
       })
@@ -62,7 +67,7 @@ export const RenameModal = () => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-[80%] sm:w-[60%] lg:w-[40%] xl:w-[30%] rounded-xl">
+      <DialogContent className="w-[80%] sm:w-[60%] lg:w-[40%] xl:w-[30%] rounded-xl" onClick={(e) => e.stopPropagation()}>
         <DialogHeader>
           <DialogTitle>
             Edit board title

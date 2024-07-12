@@ -21,6 +21,7 @@ import { ExportDropdownMenu } from "./ExportDropdownMenu";
 import { ImportDropdownMenu } from "./ImportDropdownmenu";
 import { BackgroundMenu } from "./background-menu";
 import { useEffect, useState } from "react";
+import { RenameModal } from "./modals/rename-modal";
 
 
 interface ActionsProps {
@@ -60,8 +61,8 @@ export const Actions = ({
   socket,
   selectedLayersRef,
 }: ActionsProps) => {
-  const { onOpen } = useRenameModal();
   const { mutate, pending } = useApiMutation(api.board.remove);
+  const [isRenameModalOpen, setIsRenameModalOpen] = useState(false);
 
   const onCopyLink = () => {
     navigator.clipboard.writeText(
@@ -105,60 +106,70 @@ export const Actions = ({
   };
 
   return (
-    <DropdownMenu>      
+    <DropdownMenu>
       <DropdownMenuTrigger asChild>
         {children}
       </DropdownMenuTrigger>
-      <DropdownMenuContent
-        onClick={(e) => e.stopPropagation()}
-        side={side}
-        sideOffset={sideOffset}
-        className="w-60"
-      >
-        <DropdownMenuItem
-          onClick={onCopyLink}
-          className="p-3 cursor-pointer"
+      {isRenameModalOpen ? (
+        <RenameModal
+          isOpen={isRenameModalOpen}
+          onClose={() => setIsRenameModalOpen(false)}
+          id={id}
+          boardTitle={title}
+        />
+      ) : (
+        <DropdownMenuContent
+          onClick={(e) => e.stopPropagation()}
+          side={side}
+          sideOffset={sideOffset}
+          className="w-60"
         >
-          <Link2 className="h-4 w-4 mr-2" />
-          Copy board link
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          disabled={usersRole !== "Admin"}
-          onClick={() => onOpen(id, title)}
-          className="p-3 cursor-pointer"
-        >
-          <Pencil className="h-4 w-4 mr-2" />
-          {usersRole === "Admin" ? "Rename" : "Rename (Admin)"}
-        </DropdownMenuItem>
-        <ConfirmModal
-          header="Delete board?"
-          description="This will delete the board and all of its contents."
-          disabled={pending}
-          onConfirm={onDelete}
-        >
-          <Button
-            disabled={usersRole !== "Admin"}
-            className="p-3 cursor-pointer w-full justify-start font-normal text-red-500 hover:text-red-700 bg-white hover:bg-accent"
+          <DropdownMenuItem
+            onClick={onCopyLink}
+            className="p-3 cursor-pointer"
           >
-            <Trash2 className="h-4 w-4 mr-2" />
-            {usersRole === "Admin" ? "Delete" : "Delete (Admin)"}
-          </Button>
-        </ConfirmModal>
-        {showImport &&
-          <ImportDropdownMenu
-            id={id}
-            usersRole={usersRole}
-            setLiveLayers={setLiveLayers}
-            setLiveLayerIds={setLiveLayerIds}
-            org={org}
-            performAction={performAction}
-            socket={socket}
-            selectedLayersRef={selectedLayersRef}
-          />
-        }
-        {showExport && <ExportDropdownMenu id={id} title={title} />}
-        {showGrid && <BackgroundMenu setBackground={setBackground} Background={Background} />}
-      </DropdownMenuContent>
+            <Link2 className="h-4 w-4 mr-2" />
+            Copy board link
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            disabled={usersRole !== "Admin"}
+            onClick={() => setIsRenameModalOpen(true)}
+            className="p-3 cursor-pointer"
+          >
+            <Pencil className="h-4 w-4 mr-2" />
+            {usersRole === "Admin" ? "Rename" : "Rename (Admin)"}
+          </DropdownMenuItem>
+          <ConfirmModal
+            header="Delete board?"
+            description="This will delete the board and all of its contents."
+            disabled={pending}
+            onConfirm={onDelete}
+          >
+            <Button
+              disabled={usersRole !== "Admin"}
+              className="p-3 cursor-pointer w-full justify-start font-normal text-red-500 hover:text-red-700 bg-white hover:bg-accent"
+            >
+              <Trash2 className="h-4 w-4 mr-2" />
+              {usersRole === "Admin" ? "Delete" : "Delete (Admin)"}
+            </Button>
+          </ConfirmModal>
+          {
+            showImport &&
+            <ImportDropdownMenu
+              id={id}
+              usersRole={usersRole}
+              setLiveLayers={setLiveLayers}
+              setLiveLayerIds={setLiveLayerIds}
+              org={org}
+              performAction={performAction}
+              socket={socket}
+              selectedLayersRef={selectedLayersRef}
+            />
+          }
+          {showExport && <ExportDropdownMenu id={id} title={title} />}
+          {showGrid && <BackgroundMenu setBackground={setBackground} Background={Background} />}
+        </DropdownMenuContent >
+      )}
     </DropdownMenu>
   );
 };
