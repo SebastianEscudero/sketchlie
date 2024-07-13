@@ -4,7 +4,6 @@ import { memo, useMemo } from "react";
 
 import { ArrowHandle, ArrowLayer, Layers, LayerType, Side, XYWH } from "@/types/canvas";
 import { useSelectionBounds } from "@/hooks/use-selection-bounds";
-import { getClosestEndPoint } from "@/lib/utils";
 
 interface SelectionBoxProps {
   zoom: number;
@@ -62,20 +61,6 @@ export const SelectionBox = memo(({
     const strokeWidth = STROKE_WIDTH / zoom;
     let start = { x: arrowLayer.x, y: arrowLayer.y };
     let end = { x: arrowLayer.x + arrowLayer.width, y: arrowLayer.y + arrowLayer.height };
-
-    // if (arrowLayer.endConnectedLayerId && liveLayers) {
-    //   const endConnectedLayer = liveLayers[arrowLayer.endConnectedLayerId];
-    //   if (endConnectedLayer) {
-    //     end = getClosestEndPoint(endConnectedLayer, end);
-    //   }
-    // }
-  
-    // if (arrowLayer.startConnectedLayerId && liveLayers) {
-    //   const startConnectedLayer = liveLayers[arrowLayer.startConnectedLayerId];
-    //   if (startConnectedLayer) {
-    //     start = getClosestEndPoint(startConnectedLayer, start);
-    //   }
-    // }
 
     return (
       <>

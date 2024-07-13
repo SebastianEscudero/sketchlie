@@ -738,22 +738,23 @@ export const Canvas = ({
                         intersectingEndLayers = findIntersectingLayerForConnection(liveLayerIds, liveLayers, end, zoom) || undefined;
                     }
 
-                    const filteredStartLayers = intersectingStartLayers.filter(layer => !intersectingEndLayers.includes(layer));
-                    const filteredEndLayers = intersectingEndLayers.filter(layer => !intersectingStartLayers.includes(layer));
-                    
-                    // Assigning the filtered results back
-                    intersectingStartLayers = filteredStartLayers;
-                    intersectingEndLayers = filteredEndLayers;
+                    if (canvasState.handle === ArrowHandle.start || canvasState.handle === ArrowHandle.end) {
+                        const filteredStartLayers = intersectingStartLayers.filter(layer => !intersectingEndLayers.includes(layer));
+                        const filteredEndLayers = intersectingEndLayers.filter(layer => !intersectingStartLayers.includes(layer));
+                        
+                        intersectingStartLayers = filteredStartLayers;
+                        intersectingEndLayers = filteredEndLayers;
 
-                    intersectingStartLayer = intersectingStartLayers.pop();
-                    intersectingEndLayer = intersectingEndLayers.pop();
+                        intersectingStartLayer = intersectingStartLayers.pop();
+                        intersectingEndLayer = intersectingEndLayers.pop();
 
-                    if (intersectingStartLayer === intersectingEndLayer) {
-                        newLayer.startConnectedLayerId = undefined;
-                        newLayer.endConnectedLayerId = undefined;
-                    } else {
-                        newLayer.startConnectedLayerId = intersectingStartLayer;
-                        newLayer.endConnectedLayerId = intersectingEndLayer;
+                        if (intersectingStartLayer === intersectingEndLayer) {
+                            newLayer.startConnectedLayerId = undefined;
+                            newLayer.endConnectedLayerId = undefined;
+                        } else {
+                            newLayer.startConnectedLayerId = intersectingStartLayer;
+                            newLayer.endConnectedLayerId = intersectingEndLayer;
+                        }
                     }
 
                     bounds = resizeArrowBounds(
