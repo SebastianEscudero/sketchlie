@@ -14,14 +14,13 @@ import {
 import { api } from "@/convex/_generated/api";
 import { useApiMutation } from "@/hooks/use-api-mutation";
 import { Button } from "@/components/ui/button";
-import { useRenameModal } from "@/store/use-rename-modal";
 import { useRouter } from "next/navigation";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { ExportDropdownMenu } from "./ExportDropdownMenu";
 import { ImportDropdownMenu } from "./ImportDropdownmenu";
 import { BackgroundMenu } from "./background-menu";
-import { useEffect, useState } from "react";
-import { RenameModal } from "./modals/rename-modal";
+import { useState } from "react";
+import { RenameBoardDialog } from "./modals/rename-modal";
 
 
 interface ActionsProps {
@@ -111,7 +110,7 @@ export const Actions = ({
         {children}
       </DropdownMenuTrigger>
       {isRenameModalOpen ? (
-        <RenameModal
+        <RenameBoardDialog
           isOpen={isRenameModalOpen}
           onClose={() => setIsRenameModalOpen(false)}
           id={id}

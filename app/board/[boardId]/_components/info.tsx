@@ -4,8 +4,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import { Hint } from "@/components/hint";
-import { useRenameModal } from "@/store/use-rename-modal";
-import { ChevronsLeft, LayoutTemplate, Menu, Sparkles, Zap } from "lucide-react";
+import { LayoutTemplate, Menu, Zap } from "lucide-react";
 import { Actions } from "@/components/actions";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { useCurrentUser } from "@/hooks/use-current-user";
@@ -14,6 +13,8 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ShowAllTemplates } from "@/app/dashboard/_components/show-all-templates";
 import { CanvasMode, Layer, LayerType } from "@/types/canvas";
 import { InsertLayerCommand } from "@/lib/commands";
+import { useState } from "react";
+import { RenameBoardDialog } from "@/components/modals/rename-modal";
 
 interface InfoProps {
     board: any;
@@ -60,12 +61,11 @@ export const Info = ({
     isShowingAIInput,
 }: InfoProps) => {
 
-    const { onOpen } = useRenameModal();
     const proModal = useProModal();
     const orgId = board.orgId;
     const user = useCurrentUser();
     const usersRole = org.users.find((u: any) => u.id === user?.id)?.role;
-
+    const [isRenameModalOpen, setIsRenameModalOpen] = useState(false);
 
     const onChooseTemplate = async (templateName: string, templateLayerIds: any, templateLayers: any) => {
         try {
@@ -162,13 +162,23 @@ export const Info = ({
             <div className="text-neutral-300 px-1 sm:flex hidden">
                 |
             </div>
-                <Hint label="Edit title" side="bottom" sideOffset={10}>
-                    <Button disabled={usersRole !== 'Admin'} variant="board" className="text-base px-2 sm:max-w-[100px] md:max-w-[400px] max-w-[80px] overflow-hidden relative sm:flex hidden" onClick={() => onOpen(board._id, board.title)}>
-                        <div className="w-full text-left truncate">
-                            {board.title}
-                        </div>
-                    </Button>
-                </Hint>
+            <Hint label="Edit title" side="bottom" sideOffset={10}>
+                <Button disabled={usersRole !== 'Admin'} variant="board" className="text-base px-2 sm:max-w-[100px] md:max-w-[400px] max-w-[80px] overflow-hidden relative sm:flex hidden" onClick={() => setIsRenameModalOpen(true)}>
+                    <div className="w-full text-left truncate">
+                        {board.title}
+                    </div>
+                </Button>
+            </Hint>
+
+            {isRenameModalOpen && (
+                <RenameBoardDialog
+                    isOpen={isRenameModalOpen}
+                    onClose={() => setIsRenameModalOpen(false)}
+                    boardTitle={board.title}
+                    id={board._id}
+                />
+            )}
+
             <TabSeparator />
             <Actions 
                 id={board._id} 

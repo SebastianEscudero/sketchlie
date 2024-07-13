@@ -17,19 +17,19 @@ import { useApiMutation } from "@/hooks/use-api-mutation";
 import { api } from "@/convex/_generated/api";
 import { useCurrentUser } from "@/hooks/use-current-user";
 
-interface RenameModalProps {
+interface RenameBoardDialogProps {
   isOpen: boolean;
   onClose: () => void;
   id: string;
   boardTitle: string;
 }
 
-export const RenameModal = ({
+export const RenameBoardDialog = ({
   isOpen,
   onClose,
   id,
   boardTitle
-}: RenameModalProps) => {
+}: RenameBoardDialogProps) => {
   const { 
     mutate, 
     pending

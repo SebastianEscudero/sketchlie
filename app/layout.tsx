@@ -3,7 +3,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ConvexClientProvider } from "@/providers/convex-client-provider";
 import { Toaster } from "@/components/ui/sonner"
-import { ModalProvider } from "@/providers/modal-provider";
 import { Suspense } from "react";
 import { Loading } from "@/components/auth/loading";
 import { ProModalProvider } from "@/providers/max-layers-provider";
@@ -44,7 +43,6 @@ export default function RootLayout({
           <Toaster />
           <ProModalProvider />
           <SettingsModalProvider />
-          <ModalProvider />
           {children}
         </ConvexClientProvider>
       </Suspense>
