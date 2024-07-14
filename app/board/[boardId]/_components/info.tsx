@@ -32,7 +32,6 @@ interface InfoProps {
     selectedLayersRef: any;
     setIsShowingAIInput: any;
     isShowingAIInput: any;
-    liveLayers?: Layers;
 }
 
 const TabSeparator = () => {
@@ -58,7 +57,6 @@ export const Info = ({
     zoom,
     setCanvasState,
     selectedLayersRef,
-    liveLayers,
     setIsShowingAIInput,
     isShowingAIInput,
 }: InfoProps) => {
@@ -198,7 +196,6 @@ export const Info = ({
                 performAction={performAction}
                 socket={socket}
                 selectedLayersRef={selectedLayersRef}
-                liveLayers={liveLayers}
             >
                 <div className="w-10 flex justify-center items-center">
                     <Hint label="Main menu" side="bottom" sideOffset={10}>

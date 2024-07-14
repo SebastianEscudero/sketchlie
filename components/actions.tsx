@@ -169,7 +169,7 @@ export const Actions = ({
             />
           }
           {showExport && <ExportDropdownMenu id={id} title={title} />}
-          {showGrid && <BackgroundMenu setBackground={setBackground} Background={Background} setLiveLayers={setLiveLayers} liveLayers={liveLayers}/>}
+          {showGrid && <BackgroundMenu setBackground={setBackground} Background={Background} />}
         </DropdownMenuContent >
       )}
     </DropdownMenu>
