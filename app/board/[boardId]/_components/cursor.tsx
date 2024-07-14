@@ -23,7 +23,7 @@ export const Cursor = memo(({
         return null;
     }
 
-    const cursor = otherUserPresence.cursor
+    const cursor = otherUserPresence.cursor;
     const name = otherUserName || "Teammate";
 
     if (!cursor) {
@@ -31,44 +31,35 @@ export const Cursor = memo(({
     }
 
     const { x, y } = cursor;
-
     return (
-        <g transform={`translate(${x}, ${y})`}>
-            <foreignObject
-                height={50 / zoom}
-                width={(name.length * 10 + 24) / zoom}
-                className="relative"
+        <foreignObject
+            height={50/zoom}
+            width={(name.length * 10 + 24)/zoom}
+            className="relative"
+            transform={`translate(${x}, ${y})`}
+        >
+            <MousePointer2
+                style={{
+                    fill: connectionIdToColor(connectionId),
+                    color: connectionIdToColor(connectionId),
+                    height: `${20/zoom}px`,
+                    width: `${20/zoom}px`,
+                }}
+            />
+            <div
+                className="truncate text-white font-semibold flex items-center justify-start text-sm absolute rounded-md px-2 py-[2px]"
+                style={{
+                        backgroundColor: connectionIdToColor(connectionId),
+                        scale: 1 / zoom,
+                        transformOrigin: "top left",
+                        top: `${20/zoom}px`, // Adjust for the height of the MousePointer2 plus padding
+                        left: `${20/zoom }px`, // Adjust for the width of the MousePointer2 plus padding
+                    }}
             >
-                <div className="flex">
-                    <MousePointer2
-                        style={{
-                            fill: connectionIdToColor(connectionId),
-                            color: connectionIdToColor(connectionId),
-                            height: `${20 / zoom}px`,
-                            width: `${20 / zoom}px`,
-                        }}
-                    />
-                    <div
-                        className="truncate text-white font-semibold inline-block"
-                        style={{ 
-                            backgroundColor: connectionIdToColor(connectionId) ,
-                            fontSize: `${12 / zoom}px`,
-                            lineHeight: `${12 / zoom}px`,
-                            paddingLeft: `${8 / zoom}px`,
-                            paddingRight: `${8 / zoom}px`,
-                            paddingTop: `${4 / zoom}px`,
-                            paddingBottom: `${4 / zoom}px`,
-                            borderRadius: `${4 / zoom}px`,
-                            marginTop: `${20 / zoom}px`,
-                            marginBottom: 0
-                        }}
-                    >
-                        {name}
-                    </div>
-                </div>
-            </foreignObject>
-        </g>
-    )
+                {name}
+            </div>
+        </foreignObject>
+    );
 });
 
 Cursor.displayName = "Cursor";
