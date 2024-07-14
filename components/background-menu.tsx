@@ -6,9 +6,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Check, ChevronRight, Eye } from "lucide-react";
 import { Button } from "./ui/button";
-import { MoonIcon, SunIcon } from "lucide-react";
-import { themeCheck, themeSwitch } from "@/lib/theme-utilts";
-import { useEffect, useState } from "react";
 
 interface BackgroundMenuProps {
     Background?: string;
@@ -20,20 +17,6 @@ export const BackgroundMenu = ({
     setBackground,
 }: BackgroundMenuProps) => {
     const options = ['none', 'grid', 'line'];
-    const [theme, setTheme] = useState("dark");
-    const themeColors = {
-        light: "#DAA520",
-        dark: "#4F76E8",
-    };
-
-    useEffect(() => {
-        setTheme(themeCheck());
-    }, [])
-
-    const onClick = () => {
-        const newTheme = themeSwitch();
-        setTheme(newTheme);
-    };
 
     return (
         <DropdownMenu>
@@ -63,14 +46,6 @@ export const BackgroundMenu = ({
                         )}
                     </Button>
                 ))}
-                <Button
-                    className="p-3 cursor-pointer w-full justify-start bg-white dark:bg-inherit hover:bg-accent dark:hover:bg-[#2C2C2C]"
-                    variant="ghost"
-                    onClick={onClick}
-                >
-                    Theme
-                    {theme === "dark" ? <MoonIcon className="ml-auto" fill={themeColors.dark} /> : <SunIcon className="ml-auto" fill={themeColors.light} />}
-                </Button>
             </DropdownMenuContent>
         </DropdownMenu>
     )

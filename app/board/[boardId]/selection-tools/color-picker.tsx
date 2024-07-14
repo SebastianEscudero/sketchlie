@@ -37,7 +37,7 @@ export const ColorPicker = ({
       <ColorButton color={colorButtonColor} onClick={() => setOpenSelector(openSelector === SelectorType.Color ? null : SelectorType.Color)} />
       {openSelector === SelectorType.Color && (
         <div
-          className={`p-3 pt-5 pb-2 origin-top-right absolute right-0 ${selectorPositionClass} w-[165px] translate-x-1/3 rounded-lg shadow-custom-1 bg-white dark:bg-[#383838]`}
+          className={`p-3 pt-5 pb-2 origin-top-right absolute right-0 ${selectorPositionClass} w-[165px] translate-x-1/3 rounded-lg shadow-custom-1 bg-white`}
         >
           <Slider
               defaultValue={[opacity || 1]}
@@ -89,7 +89,7 @@ export const ColorButton = ({
       onClick={() => onClick(color)}
     >
       <div
-        className="h-5 w-5 rounded-[50%] border dark:border-zinc-500 relative"
+        className="h-5 w-5 rounded-[50%] border border-zinc-300 relative"
         style={{ background: colorToCss(color) }}
       >
         {color.r === 0 && color.g === 0 && color.b === 0 && color.a === 0 && (

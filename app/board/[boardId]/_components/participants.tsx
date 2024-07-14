@@ -25,7 +25,7 @@ export const Participants = ({
     const hasMoreUsers = otherUsers && otherUsers.length > MAX_SHOWN_USERS;
 
     return (
-        <div className="absolute h-12 right-0 bg-white dark:bg-[#383838] rounded-bl-lg p-3 flex items-center shadow-custom-1 dark:shadow-custom-3">
+        <div className="absolute h-12 right-0 bg-white rounded-bl-lg p-3 flex items-center shadow-custom-1">
             <div className="hidden xs:flex gap-x-2">
                 {otherUsers && otherUsers.slice(0, MAX_SHOWN_USERS)
                     .map(({ userId, connectionId, information }) => {
