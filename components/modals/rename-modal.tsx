@@ -88,7 +88,7 @@ export const RenameBoardDialog = ({
           />
           <div className="flex sm:flex-row flex-col sm:space-x-2 sm:space-y-0 space-y-2">
             <DialogClose asChild>
-              <Button type="button" variant="ghost" className="border border-black">
+              <Button type="button" variant="secondary" className="border border-black">
                 Cancel
               </Button>
             </DialogClose>

@@ -41,7 +41,7 @@ export const EmptyOrg = ({
             )}
             <div className="p-0">
                 <h2 className="text-3xl font-semibold">Choose a Template</h2>
-                <div className="flex mt-8 border rounded-md p-4 h-[170px] overflow-hidden">
+                <div className="flex mt-8 border dark:border-zinc-500 rounded-md p-4 h-[170px] overflow-hidden">
                     <div className="flex flex-wrap gap-x-5 gap-y-20">
                         {templates.map((template, index) => (
                             <div key={index} className="rounded-lg flex flex-col justify-between flex-1">

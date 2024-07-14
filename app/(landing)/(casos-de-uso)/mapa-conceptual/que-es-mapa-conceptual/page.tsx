@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 
 const LandingPage = () => {
     return (
-        <div className="xl:mx-[5%] lg:mx-[4%] md:mx-[3%] mx-[3%]">
+        <div className="xl:mx-[5%] lg:mx-[4%] md:mx-[3%] mx-[3%] text-black">
             <div className="mt-[3%]">
                 <Breadcrumb>
                     <BreadcrumbList>
@@ -230,7 +230,7 @@ const LandingPage = () => {
                     <p className="mb-10">En resumen, los mapas conceptuales son herramientas poderosas para la organización y representación visual de ideas y conceptos. En <Link className="text-custom-blue hover:underline" href="/">Sketchlie</Link>, te ofrecemos una plataforma online para crear mapas conceptuales de manera colaborativa, facilitando la comunicación y el trabajo en equipo. ¡Únete a nuestra comunidad y descubre todo lo que puedes lograr con los mapas conceptuales online!</p>
                     <p className="mb-10">¿Listo para empezar? Regístrate ahora en Sketchlie y comienza a crear tus propios mapas conceptuales de forma rápida y sencilla. ¡Potencia tu creatividad y productividad con nuestras herramientas de colaboración online!</p>
                 </div>
-                <div className="lg:w-[30%] xl:ml-10 lg:ml-5 border border-black rounded-lg p-10 bg-white dark:bg-[#020817] lg:sticky lg:z-30 lg:top-24 lg:h-[50%] lg:mb-0 mb-10">
+                <div className="lg:w-[30%] xl:ml-10 lg:ml-5 border border-black rounded-lg p-10 bg-white lg:sticky lg:z-30 lg:top-24 lg:h-[50%] lg:mb-0 mb-10">
                     <h3 className="text-2xl mb-3">
                         Indice
                     </h3>

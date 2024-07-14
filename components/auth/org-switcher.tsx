@@ -48,7 +48,7 @@ export const OrganizationSwitcher = ({
 
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger className="border border-zinc-600 dark:hover:bg-[#0a101f] hover:bg-zinc-200 rounded-lg p-[10px] flex items-center w-full outline-none">
+            <DropdownMenuTrigger className="border dark:border-zinc-600 border-zinc-400 dark:hover:bg-[#383838] hover:bg-zinc-200 rounded-lg p-[10px] flex items-center w-full outline-none">
                 {hasOrg && activeOrg ? (
                     <div className="flex items-center truncate">
                         <div className="aspect-square relative w-[36px] flex-shrink-0">
@@ -111,11 +111,11 @@ export const OrganizationSwitcher = ({
                                     <p className="ml-3 text-xs truncate flex flex-row items-center">{activeOrg.subscriptionPlan} - <User className="h-[11px] w-[11px] mx-1" />{activeOrg.users.length}</p>
                                 </div>
                             </div>
-                            <DropdownMenuItem className="border-b py-3 px-8 text-[14px] hover:bg-slate-100 w-full">
-                                <button className="flex items-center" onClick={() => setIsSettingsDialogOpen(true)}>
+                            <DropdownMenuItem className="border-b py-3 px-8 text-[14px] hover:bg-slate-100 w-full hover:cursor-pointer" onClick={() => setIsSettingsDialogOpen(true)}>
+                                <div className="flex items-center">
                                     <Settings className="h-4 w-4 mr-2" />
                                     <p className="ml-5">Manage organization</p>
-                                </button>
+                                </div>
                             </DropdownMenuItem>
                         </>
                     )}
@@ -155,7 +155,7 @@ export const OrganizationSwitcher = ({
                             })}
                         </div>
                     )}
-                    <DropdownMenuItem className="py-3 px-8 text-[14px] hover:bg-slate-100 border-t">
+                    <DropdownMenuItem className="py-3 px-8 text-[14px] hover:bg-slate-100 dark:hover:bg-[#2C2C2C] border-t dark:border-zinc-200 rounded-none">
                         <button className="flex items-center" onClick={() => setIsCreateBoardDialogOpen(true)}>
                             <PlusIcon className="h-4 w-4 mr-2" />
                             <p className="ml-5">Create organization</p>

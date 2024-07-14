@@ -52,10 +52,10 @@ export const ExportDropdownMenu = ({ id, title }: ExportDropdownMenuProps) => {
                         {option.label}
                     </DropdownMenuItem>
                 ))}
-                <div className="border-t pt-1">
+                <div className="border-t dark:border-zinc-500 pt-1">
                     <Button
                         onClick={toggleTransparency}
-                        className="p-3 cursor-pointer w-full justify-start text-black dark:text-white font-normal bg-white dark:bg-inherit hover:bg-accent dark:hover:bg-slate-800"
+                        className="p-3 cursor-pointer w-full justify-start text-black dark:text-white font-normal bg-white dark:bg-inherit hover:bg-accent dark:hover:bg-[#2C2C2C]"
                         variant="ghost"
                     >
                         {isTransparent ? <ToggleRight className="mr-2" /> : <ToggleLeft className="mr-2 text-neutral-400" />} Transparent

@@ -21,7 +21,7 @@ export const ThemeDropdownMenu = () => {
 
     return (
         <Button
-            className="p-5 cursor-pointer w-full justify-start font-normal bg-white dark:bg-inherit hover:bg-accent dark:hover:bg-slate-800"
+            className="p-5 cursor-pointer w-full justify-start font-normal bg-white dark:bg-inherit hover:bg-accent dark:hover:bg-[#2C2C2C]"
             variant="ghost"
             onClick={onClick}
         >

@@ -103,7 +103,7 @@ export const Canvas = ({
         mode: CanvasMode.None,
     });
     const [camera, setCamera] = useState<Camera>({ x: 0, y: 0 });
-    const [zoom, setZoom] = useState(1);
+    const [zoom, setZoom] = useState(2);
     const zoomRef = useRef(zoom);
     const cameraRef = useRef(camera);
     const canvasStateRef = useRef(canvasState);
@@ -1154,7 +1154,7 @@ export const Canvas = ({
         } else if (canvasState.mode === CanvasMode.Inserting && canvasState.layerType !== LayerType.Image) {
 
             if (e.button === 2 || e.button === 1) {
-                setCursorWithFill('/custom-cursors/inserting.svg', document.documentElement.classList.contains("dark") ? '#ffffff' : '#ff0000', 10, 10);
+                setCursorWithFill('/custom-cursors/inserting.svg', document.documentElement.classList.contains("dark") ? '#ffffff' : '#000000', 10, 10);
             }
 
             const layerType = canvasState.layerType;
@@ -1731,9 +1731,9 @@ export const Canvas = ({
         if (canvasState.mode === CanvasMode.Inserting) {
             selectedLayersRef.current = [];
             if (canvasState.layerType === LayerType.Text) {
-                setCursorWithFill('/custom-cursors/text-cursor.svg', document.documentElement.classList.contains("dark") ? '#ffffff' : '#ff0000', 8, 0);
+                setCursorWithFill('/custom-cursors/text-cursor.svg', document.documentElement.classList.contains("dark") ? '#ffffff' : '#000000', 8, 0);
             } else {
-                setCursorWithFill('/custom-cursors/inserting.svg', document.documentElement.classList.contains("dark") ? '#ffffff' : '#ff0000', 10, 10);
+                setCursorWithFill('/custom-cursors/inserting.svg', document.documentElement.classList.contains("dark") ? '#ffffff' : '#000000', 10, 10);
             }
         } else if (canvasState.mode === CanvasMode.Pencil) {
             document.body.style.cursor = 'url(/custom-cursors/pencil.svg) 2 18, auto';
@@ -1758,7 +1758,7 @@ export const Canvas = ({
 
     return (
         <main
-            className={`bg-[#F9FAFB] dark:bg-[#101011] fixed h-full w-full touch-none overscroll-none ${isDraggingOverCanvas && 'bg-neutral-300 border-2 border-dashed border-custom-blue'}`}
+            className={`bg-[#F9FAFB] dark:bg-[#2C2C2C] fixed h-full w-full touch-none overscroll-none ${isDraggingOverCanvas && 'bg-neutral-200 border-2 border-dashed border-custom-blue'}`}
             style={{
                 backgroundImage: (background === 'grid') ? `
                 linear-gradient(0deg, ${document.documentElement.classList.contains("dark") ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'} 1px, transparent 1px),

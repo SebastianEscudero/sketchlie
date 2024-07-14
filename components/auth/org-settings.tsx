@@ -145,7 +145,7 @@ export const OrganizationSettings = ({
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogContent className="min-h-[500px] w-full md:w-auto md:max-w-full max-w-[90%]">
                 <div className="flex md:flex-row flex-col max-h-[700px]">
-                    <div className="md:w-1/3 w-full space-y-4 md:pr-4 md:pb-0 pb-4 md:border-r md:border-b-0 border-b">
+                    <div className="md:w-1/3 w-full space-y-4 md:pr-4 md:pb-0 pb-4 md:border-r dark:border-zinc-500 md:border-b-0 border-b">
                         <div className="flex mb-3 items-center pb-0">
                             <OrgImage
                                 width="35px"
@@ -163,14 +163,14 @@ export const OrganizationSettings = ({
                             <Button
                                 onClick={() => setSelectedSection('Members')}
                                 variant="ghost"
-                                className={`${selectedSection === 'Members' ? 'text-black border-2 border-blue-500 bg-accent text-accent-foreground' : 'text-zinc-400 bg-white'}flex items-center justify-start`}
+                                className={`${selectedSection === 'Members' ? 'text-black border-2 border-blue-500 bg-slate-100 dark:bg-[#383838] text-accent-foreground' : 'text-zinc-400 bg-white'}flex items-center justify-start`}
                             >
                                 <User className="w-4 h-4 mr-2" />Members
                             </Button>
                             <Button
                                 onClick={() => setSelectedSection('Settings')}
                                 variant="ghost"
-                                className={`${selectedSection === 'Settings' ? 'text-black border-2 border-blue-500 bg-accent text-accent-foreground' : 'text-zinc-400 bg-white'}flex items-center justify-start`}
+                                className={`${selectedSection === 'Settings' ? 'text-black border-2 border-blue-500 bg-slate-100 dark:bg-[#383838] text-accent-foreground' : 'text-zinc-400 bg-white'}flex items-center justify-start`}
                             >
                                 <Settings className="w-4 h-4 mr-2" />Settings
                             </Button>
@@ -252,9 +252,9 @@ export const OrganizationSettings = ({
                                                 <DropdownMenuTrigger className="pr-4">
                                                     <Ellipsis className="text-zinc-500 dark:text-zinc-100 w-4 h-4" />
                                                 </DropdownMenuTrigger>
-                                                <DropdownMenuContent align="end" className="rounded-xl shadow-xl">
-                                                    <DropdownMenuItem className="py-2 px-3">
-                                                        <p className="text-destructive" onClick={() => leaveOrganization(activeOrg.id, orgUser.id)
+                                                <DropdownMenuContent align="end" className="rounded-xl shadow-xl border p-0">
+                                                    <DropdownMenuItem className="py-2 px-3 hover:cursor-pointer">
+                                                        <p className="text-red-500" onClick={() => leaveOrganization(activeOrg.id, orgUser.id)
                                                             .then((result) => {
                                                                 if (result.isOrgDeleted) {
                                                                     setActiveOrganization("null");
@@ -316,7 +316,7 @@ export const OrganizationSettings = ({
                                     </Form>
                                 )}
                                 <div className="mt-4">
-                                    <p className="mt-4 pb-1 border-b">
+                                    <p className="mt-4 pb-1 border-b dark:border-zinc-500">
                                         Danger
                                     </p>
                                     <div className="flex md:flex-row flex-col justify-center">
@@ -326,7 +326,7 @@ export const OrganizationSettings = ({
                                             </Button>
                                         )}
                                         <Button
-                                            className="mt-4 bg-white border border-destructive text-destructive shadow-sm hover:bg-destructive/90 hover:text-white w-full md:ml-2"
+                                            className="mt-4 bg-white border border-red-500 text-red-500 shadow-sm hover:bg-red-500/90 hover:text-white w-full md:ml-2"
                                             onClick={() => leaveOrganization(activeOrg.id, user.id)
                                                 .then((result) => {
                                                     setActiveOrganization("null");
@@ -343,7 +343,7 @@ export const OrganizationSettings = ({
                                 </div>
                                 {usersRole === 'Admin' && (
                                     <div className="mt-4">
-                                        <p className="mt-4 pb-1 border-b">
+                                        <p className="mt-4 pb-1 border-b dark:border-zinc-500">
                                             Subscription
                                         </p>
                                         <div className="flex md:flex-row flex-col justify-center">
@@ -374,7 +374,7 @@ export const OrganizationSettings = ({
                                         Cancel
                                     </Button>
                                     <DialogClose>
-                                        <div className="bg-destructive text-white rounded-md py-2 px-4 cursor-pointer"
+                                        <div className="bg-red-500 text-white rounded-md py-2 px-4 cursor-pointer"
                                             onClick={onDelete}
                                         >
                                             Delete Organization

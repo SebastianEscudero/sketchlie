@@ -67,7 +67,7 @@ export const OrganizationInvite = ({
     return (
         <DialogHeader>
             <DialogTitle className="text-2xl truncate">Invite to {activeOrg.name}</DialogTitle>
-            <p className="text-gray-600 text-sm py-2">Email addresses</p>
+            <p className="text-gray-600 text-sm py-2 dark:text-gray-200">Email addresses</p>
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
@@ -95,18 +95,18 @@ export const OrganizationInvite = ({
                                     )}
                                 />
                                 <DropdownMenu>
-                                    <DropdownMenuTrigger className="border rounded-md p-2 flex flex-row items-center text-sm font-semibold w-[100px] h-[40px] justify-between">
+                                    <DropdownMenuTrigger className="border dark:border-zinc-500 rounded-md p-2 flex flex-row items-center text-sm font-semibold w-[100px] h-[40px] justify-between">
                                         {form.watch(`members.${index}.role`) || 'Member'}
                                         <ChevronDown className="w-4 h-4 ml-2" />
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent>
-                                        <DropdownMenuItem onSelect={() => form.setValue(`members.${index}.role`, 'Admin')}>
+                                        <DropdownMenuItem onSelect={() => form.setValue(`members.${index}.role`, 'Admin')} className="hover:cursor-pointer">
                                             Admin
                                         </DropdownMenuItem>
-                                        <DropdownMenuItem onSelect={() => form.setValue(`members.${index}.role`, 'Member')}>
+                                        <DropdownMenuItem onSelect={() => form.setValue(`members.${index}.role`, 'Member')} className="hover:cursor-pointer">
                                             Member
                                         </DropdownMenuItem>
-                                        <DropdownMenuItem onSelect={() => form.setValue(`members.${index}.role`, 'Guest')}>
+                                        <DropdownMenuItem onSelect={() => form.setValue(`members.${index}.role`, 'Guest')} className="hover:cursor-pointer">
                                             Guest
                                         </DropdownMenuItem>
                                     </DropdownMenuContent>

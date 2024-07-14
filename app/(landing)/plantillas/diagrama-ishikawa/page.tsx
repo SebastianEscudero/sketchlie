@@ -180,7 +180,7 @@ const LandingPage = () => {
                     <p className="mb-10">El diagrama de Ishikawa se convirtió en una herramienta fundamental en la gestión de la calidad y la resolución de problemas en todo el mundo. Su enfoque en identificar y visualizar las causas potenciales de un problema ha demostrado ser invaluable en una variedad de industrias y contextos, desde la fabricación hasta los servicios de salud y más allá.</p>
 
                 </div>
-                <div className="lg:w-[30%] xl:ml-10 lg:ml-5 border border-black rounded-lg p-10 bg-white dark:bg-[#020817] lg:sticky lg:z-30 lg:top-24 lg:h-[50%] lg:mb-0 mb-10">
+                <div className="lg:w-[30%] xl:ml-10 lg:ml-5 border border-black rounded-lg p-10 bg-white lg:sticky lg:z-30 lg:top-24 lg:h-[50%] lg:mb-0 mb-10">
                     <h3 className="text-3xl mb-3 font-roobert font-semibold">
                         Comienza con nuestra plantilla
                     </h3>

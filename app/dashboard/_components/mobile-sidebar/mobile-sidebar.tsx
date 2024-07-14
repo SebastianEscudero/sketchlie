@@ -20,7 +20,7 @@ export const MobileSidebar = ({
                     <Menu size={20} />
                 </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="h-full flex p-3 flex-col text-white w-[70px] bg-blue-950 border-r border-[#172554]">
+            <SheetContent side="left" className="h-full flex p-3 flex-col text-white w-[70px] dark:bg-[#2C2C2C] bg-gray-800 dark:border-zinc-500 border-r ">
                     <SheetClose>
                             <List
                                 activeOrganization={activeOrganization}

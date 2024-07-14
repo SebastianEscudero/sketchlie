@@ -29,7 +29,7 @@ export const HowToCreate = ({
 }: BlogSectionProps) => {
     return (
         <div className="pb-20">
-            <div className="flex flex-col px-10 bg-white dark:bg-[#020817] lg:py-10 pb-10 rounded-lg border border-black dark:border-white xl:mx-[10%] mx-[2%] text-[#1c1c1e] dark:text-white p-4">
+            <div className="flex flex-col px-10 bg-white lg:py-10 pb-10 rounded-lg border border-black xl:mx-[10%] mx-[2%] text-[#1c1c1e] p-4">
                 <h2 className="px-8 text-4xl xl:text-5xl text-center lg:text-left mt-8 mb-3 lg:w-1/2">
                     {title}
                 </h2>

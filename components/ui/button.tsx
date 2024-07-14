@@ -11,19 +11,19 @@ const buttonVariants = cva(
       variant: {
         default: "bg-primary text-primary-foreground hover:bg-primary/90",
         destructive:
-          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+          "bg-red-500 text-destructive-foreground hover:bg-red-500/90",
           outline:
-          "border border-black bg-background shadow-sm hover:bg-accent hover:text-accent-foreground dark:bg-white dark:border-white dark:text-black",
-        dashboard: "dark:hover:bg-[#0a101f] dark:text-white hover:bg-accent-foreground/10 hover:text-accent-foreground",
+          "border border-black bg-white hover:bg-gray-100",
+        dashboard: "dark:hover:bg-[#383838] dark:text-white hover:bg-accent-foreground/10 hover:text-accent-foreground",
         dashboardActive:
-          "bg-zinc-200 dark:bg-[#0a101f]/70 dark:text-white dark:hover:bg-[#0a101f]",
+          "bg-zinc-200 dark:bg-[#383838]/70 dark:text-white dark:hover:bg-[#383838]",
         secondary:
-        "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        "bg-white text-black",
         ghost: "hover:text-accent-foreground hover:bg-accent-foreground/10",
-        ghostDark: "hover:bg-accent-foreground/50",
+        ghostDark: "hover:bg-zinc-600",
         blog: "hover:bg-custom-blue hover:text-accent-foreground border border-black rounded-md hover:text-[#FFF] hover:border-none",
         landing: "hover:bg-[#FBFBFB] hover:text-accent-foreground border border-zinc-400 rounded-md bg-[#FFF]",
-        link: "text-primary underline-offset-4 hover:underline",
+        link: "text-black underline-offset-4 hover:underline",
         auth: "border-input bg-custom-blue text-white hover:bg-custom-blue-dark hover:text-white",
         board: "hover:bg-blue-500/20 hover:text-blue-800 dark:hover:text-blue-500",
         boardActive: "bg-blue-500/20 text-blue-800",
@@ -36,9 +36,10 @@ const buttonVariants = cva(
         iconActive: "bg-blue-600 text-white fill-white",
         magicAssist: "text-black hover:text-custom-blue",
         magicAssistActive: "text-custom-blue",
-        aligned: "bg-white dark:bg-[#1A1A1C]",
-        alignedActive: "bg-accent/90 text-custom-blue dark:bg-[#1A1A1C]",
+        aligned: "bg-white dark:bg-[#383838]",
+        alignedActive: "bg-accent/90 text-blue-500 dark:bg-[#383838]",
         sketchlieBlue: "bg-blue-600 text-white hover:bg-blue-800",
+        navbar: "text-black hover:bg-slate-100 rounded-lg"
       },
       size: {
         default: "h-10 px-4 py-2",

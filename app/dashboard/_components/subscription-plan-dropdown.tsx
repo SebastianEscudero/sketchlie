@@ -121,7 +121,7 @@ export const SubscriptionPlanDropdown = ({
         //         </DropdownMenuContent>
         //     </DropdownMenu>
         // </div>
-        <div className="flex flex-col outline-none w-full justify-center items-center space-y-2 dark:bg-[#0a101f] bg-zinc-100 rounded-lg shadow-custom-3 p-4 border" style={{ borderColor: color }}>
+        <div className="flex flex-col outline-none w-full justify-center items-center space-y-2 dark:bg-[#383838] bg-zinc-100 rounded-lg shadow-custom-3 p-4 border" style={{ borderColor: color }}>
             <Zap className="w-6 h-6" style={{ stroke: color, fill: color }} />
             <span className="text-[13px] font-medium text-center">Ready to go to the next level?</span>
             <Button

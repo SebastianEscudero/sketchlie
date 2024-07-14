@@ -20,18 +20,22 @@ export const ZoomToolbar = ({
 }: ZoomToolbarProps) => {
 
     const zoomToPercentage = (zoom: number) => {
-        if (zoom < 1) {
-            return Math.round(((zoom - 0.3) / (1 - 0.3)) * (100 - 10) + 10);
+        if (zoom < 2) {
+            // Adjust the formula to map zoom 2 to 100%
+            return Math.round(((zoom - 1) / (2 - 1)) * (100 - 50) + 50);
         } else {
-            return Math.round(((zoom - 1) / (10 - 1)) * (400 - 100) + 100);
+            // For zoom levels above 2, adjust the scale accordingly
+            return Math.round(((zoom - 2) / (10 - 2)) * (400 - 100) + 100);
         }
     };
-
+    
     const percentageToZoom = (percentage: number) => {
         if (percentage <= 100) {
-            return ((percentage - 10) / (100 - 10)) * (1 - 0.3) + 0.3;
+            // Adjust the formula to interpret 100% as zoom 2
+            return ((percentage - 50) / (100 - 50)) * (2 - 1) + 1;
         } else {
-            return ((percentage - 100) / (400 - 100)) * (10 - 1) + 1;
+            // For percentages above 100%, adjust the zoom level accordingly
+            return ((percentage - 100) / (400 - 100)) * (10 - 2) + 2;
         }
     };
 
@@ -70,13 +74,13 @@ export const ZoomToolbar = ({
     };
 
     const handleResetZoom = () => {
-        setZoomAndCamera(1); // 100% zoom
+        setZoomAndCamera(2); // 100% zoom
     };
 
     const zoomPercentage = zoomToPercentage(zoom);
 
     return (
-        <div className="absolute h-[52px] bottom-2 left-2 bg-white dark:bg-[#1A1A1C] rounded-lg py-2 items-center shadow-custom-3 sm:flex hidden">
+        <div className="absolute h-[52px] bottom-2 left-2 bg-white dark:bg-[#383838] rounded-lg py-2 items-center shadow-custom-3 sm:flex hidden">
             <Hint label="Zoom out" sideOffset={4}>
                 <Button onClick={handleZoomOut} className="ml-2 px-2" variant="board">
                     <Minus className="h-4 w-4" />

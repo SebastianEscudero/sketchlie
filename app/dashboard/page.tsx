@@ -48,7 +48,7 @@ const DashboardPage = () => {
   const activeOrg = user?.organizations.find(org => org.id === activeOrganization);
 
   return (
-    <main className="h-full dark:bg-[#0a101f] dark:text-white bg-[#F9FAFB]">
+    <main className="h-full dark:bg-[#383838] dark:text-white bg-[#F9FAFB]">
       <div className="flex h-full">
       {activeOrg ? (
         <OrgSidebar

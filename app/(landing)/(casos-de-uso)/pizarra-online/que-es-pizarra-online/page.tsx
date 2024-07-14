@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 
 const LandingPage = () => {
     return (
-        <div className="xl:mx-[5%] lg:mx-[4%] md:mx-[3%] mx-[3%]">
+        <div className="xl:mx-[5%] lg:mx-[4%] md:mx-[3%] mx-[3%] text-black">
             <div className="mt-[3%]">
                 <Breadcrumb>
                     <BreadcrumbList>
@@ -121,7 +121,7 @@ const LandingPage = () => {
                     <p className="mb-10">Ya sea que estés gestionando un equipo remoto, impartiendo clases online o planificando el próximo gran proyecto de tu empresa, una pizarra online es una herramienta indispensable en el toolkit de cualquier profesional moderno.</p>
                     <p className="mb-5">¿Listo para llevar tu colaboración al siguiente nivel? <Link className="text-custom-blue hover:underline" href="/dashboard/">Regístrate gratis en Sketchlie</Link> y comienza a experimentar el poder de las pizarras online hoy mismo.</p>
                 </div>
-                <div className="lg:w-[30%] xl:ml-10 lg:ml-5 border border-black rounded-lg p-10 bg-white dark:bg-[#020817] lg:sticky lg:z-30 lg:top-24 lg:h-[50%] lg:mb-0 mb-10">
+                <div className="lg:w-[30%] xl:ml-10 lg:ml-5 border border-black rounded-lg p-10 bg-white lg:sticky lg:z-30 lg:top-24 lg:h-[50%] lg:mb-0 mb-10">
                     <h3 className="text-2xl mb-3">
                         Índice
                     </h3>

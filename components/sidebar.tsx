@@ -86,7 +86,7 @@ const Sidebar = ({
     const pathname = usePathname();
 
     return (
-        <div className="space-y-4 py-4 flex flex-col h-full bg-white dark:bg-[#020817] overflow-y-auto">
+        <div className="space-y-4 py-4 flex flex-col h-full bg-white text-black overflow-y-auto">
             <div className="py-2 flex-1">
                 <div className="flex items-center pl-8">
                     <div className="mr-4">
@@ -112,8 +112,8 @@ const Sidebar = ({
                                         href="/quienes-somos/"
                                     >
                                         <Button
-                                            className='w-full justify-start my-[2px] text-[16px]'
-                                            variant={pathname === "/quienes-somos/" ? 'auth' : 'ghost'}
+                                            className='w-full justify-start my-[2px] text-[16px] font-medium'
+                                            variant={pathname === "/quienes-somos/" ? 'auth' : 'navbar'}
                                         >
                                             Descripcion de Sketchlie
                                         </Button>
@@ -131,8 +131,8 @@ const Sidebar = ({
                                             href={component.href}
                                         >
                                             <Button
-                                                className='w-full justify-start my-[2px] text-[16px]'
-                                                variant={pathname === component.href ? 'auth' : 'ghost'}
+                                                className='w-full justify-start my-[2px] text-[16px] font-medium'
+                                                variant={pathname === component.href ? 'auth' : 'navbar'}
                                             >
                                                 {component.title}
                                             </Button>
@@ -151,8 +151,8 @@ const Sidebar = ({
                                             href={component.href}
                                         >
                                             <Button
-                                                className='w-full justify-start my-[2px] text-[16px]'
-                                                variant={pathname === component.href ? 'auth' : 'ghost'}
+                                                className='w-full justify-start my-[2px] text-[16px] font-medium'
+                                                variant={pathname === component.href ? 'auth' : 'navbar'}
                                             >
                                                 {component.title}
                                             </Button>
@@ -170,7 +170,7 @@ const Sidebar = ({
                                 >
                                     <Button
                                         className='w-full justify-start gap-1 text-lg font-semibold'
-                                        variant={pathname === "/blog/" ? 'auth' : 'ghost'}
+                                        variant={pathname === "/blog/" ? 'auth' : 'navbar'}
                                     >
                                         Blog
                                     </Button>
@@ -186,7 +186,7 @@ const Sidebar = ({
                                 >
                                     <Button
                                         className='w-full justify-start gap-1 text-lg font-semibold'
-                                        variant={pathname === "/pricing/" ? 'auth' : 'ghost'}
+                                        variant={pathname === "/pricing/" ? 'auth' : 'navbar'}
                                     >
                                         Precios 
                                     </Button>

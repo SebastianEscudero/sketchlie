@@ -108,13 +108,13 @@ export function NavigationMenuLanding() {
                         <NavigationMenuTrigger>¿Qué es Sketchlie</NavigationMenuTrigger>
                         <NavigationMenuContent>
                             <div className="grid w-[400px] p-6 md:w-[500px] lg:w-[300px]">
-                                <p className="px-3 text-base mb-2 text-neutral-600 dark:text-white font-semibold">Producto</p>
+                                <p className="px-3 text-base mb-2 text-neutral-600 font-semibold">Producto</p>
                                 <NavigationMenuLink
                                     href="/quienes-somos/"
                                 >
                                     <Button
                                         className='w-full justify-start my-[3px] text-base'
-                                        variant={pathname === "/quienes-somos/" ? 'auth' : 'ghost'}
+                                        variant={pathname === "/quienes-somos/" ? 'auth' : 'navbar'}
                                     >
                                         Descripcion de Sketchlie
                                     </Button>
@@ -131,7 +131,7 @@ export function NavigationMenuLanding() {
                         <NavigationMenuContent>
                             <div className="grid w-[400px] p-6 md:w-[500px] md:grid-cols-2 lg:w-[600px] gap-x-2">
                                 <div>
-                                    <p className="px-3 text-base mb-2 text-neutral-600 dark:text-white font-semibold">Equipos</p>
+                                    <p className="px-3 text-base mb-2 text-neutral-600 font-semibold">Equipos</p>
                                     {porEquipo.map((component) => (
                                         <Link
                                             key={component.title}
@@ -140,7 +140,7 @@ export function NavigationMenuLanding() {
                                         >
                                             <Button
                                                 className='w-full justify-start my-[3px] text-base'
-                                                variant={pathname === component.href ? 'auth' : 'ghost'}
+                                                variant={pathname === component.href ? 'auth' : 'navbar'}
                                             >
                                                 {component.title}
                                             </Button>
@@ -148,7 +148,7 @@ export function NavigationMenuLanding() {
                                     ))}
                                 </div>
                                 <div>
-                                    <p className="px-3 text-base mb-2 text-neutral-600 dark:text-white font-semibold">Casos de uso</p>
+                                    <p className="px-3 text-base mb-2 text-neutral-600 font-semibold">Casos de uso</p>
                                     {porCasoDeUso.map((component) => (
                                         <Link
                                             key={component.title}
@@ -157,7 +157,7 @@ export function NavigationMenuLanding() {
                                         >
                                             <Button
                                                 className='w-full justify-start my-[3px] text-base'
-                                                variant={pathname === component.href ? 'auth' : 'ghost'}
+                                                variant={pathname === component.href ? 'auth' : 'navbar'}
                                             >
                                                 {component.title}
                                             </Button>
@@ -175,7 +175,7 @@ export function NavigationMenuLanding() {
                         <NavigationMenuTrigger>Recursos</NavigationMenuTrigger>
                         <NavigationMenuContent>
                             <div className="p-6 md:w-[500px] lg:w-[300px] flex flex-col">
-                                <p className="px-3 text-base mb-2 text-neutral-600 dark:text-white font-semibold">Recursos</p>
+                                <p className="px-3 text-base mb-2 text-neutral-600 font-semibold">Recursos</p>
                                 {Recursos.map((recurso) => (
                                     <Link
                                         key={recurso.title}
@@ -184,7 +184,7 @@ export function NavigationMenuLanding() {
                                     >
                                         <Button
                                             className='justify-start my-[3px] text-base mr-2 w-full'
-                                            variant={pathname === recurso.href ? 'auth' : 'ghost'}
+                                            variant={pathname === recurso.href ? 'auth' : 'navbar'}
                                         >
                                             {recurso.title}
                                         </Button>
@@ -201,7 +201,7 @@ export function NavigationMenuLanding() {
             >
                 <Button
                     className='justify-start my-[3px] text-base hidden lg:flex'
-                    variant={pathname === "/pricing/" ? 'auth' : 'ghost'}
+                    variant={pathname === "/pricing/" ? 'auth' : 'navbar'}
                 >
                     Precios
                 </Button>

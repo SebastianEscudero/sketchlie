@@ -43,7 +43,7 @@ const PricingPage = () => {
                     {plans.map((subscriptionPlan) => (
                         <Card
                             key={subscriptionPlan.label}
-                            className={`md:p-5 p-10 md:flex flex-col flex-1 border border-black ${subscriptionPlan.recommended && 'border-2 border-custom-blue w-full'}`}>
+                            className={`md:p-5 p-10 md:flex flex-col bg-white text-black flex-1 border border-black ${subscriptionPlan.recommended && 'border-2 border-custom-blue w-full'}`}>
                             <div className="h-[120px]">
                                 <div className="gap-x-4 font-semibold text-3xl mb-2 flex">
                                     {subscriptionPlan.recommended ?

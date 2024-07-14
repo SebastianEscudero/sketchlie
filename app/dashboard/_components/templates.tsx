@@ -61,7 +61,7 @@ export const Templates = ({
     return (
         <div className="p-6 ">
             <p className="dark:text-zinc-300 text-gray-600 mt-2">Only <span className="font-bold dark:text-white">Admins</span> of the organization can choose a template</p>
-            <div className="flex mt-4 border dark:border-[#020817]/30 dark:bg-[#020817] bg-white rounded-md p-4 h-[170px] overflow-hidden shadow-custom-1">
+            <div className="flex mt-4 border dark:border-zinc-500 dark:bg-[#2C2C2C] bg-white rounded-md p-4 h-[170px] overflow-hidden shadow-custom-1">
                 <div className="flex flex-wrap gap-x-5 gap-y-20">
                     {templates.map((template, index) => (
                         <div key={index} className="rounded-lg flex flex-col justify-between flex-1">

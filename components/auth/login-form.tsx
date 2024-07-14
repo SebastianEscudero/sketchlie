@@ -87,6 +87,7 @@ export const LoginForm = () => {
                         {...field}
                         disabled={isPending}
                         placeholder="john.doe@example.com"
+                        className="bg-white"
                         type="email"
                       />
                     </FormControl>
@@ -105,6 +106,7 @@ export const LoginForm = () => {
                         {...field}
                         disabled={isPending}
                         placeholder="******"
+                        className="bg-white"
                         type="password"
                       />
                     </FormControl>
@@ -114,7 +116,7 @@ export const LoginForm = () => {
                       asChild
                       className="px-0"
                     >
-                      <Link href="/auth/reset/">
+                      <Link href="/auth/reset/" className="text-black">
                         Forgot password?
                       </Link>
                     </Button>

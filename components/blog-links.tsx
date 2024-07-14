@@ -19,7 +19,7 @@ export const BlogLinks = ({
     isNew,
 }: BlogLinksProps) => {
     return(
-        <div className="flex flex-col w-auto border border-zinc-400 rounded-md mb-5 transform transition-all duration-150 hover:scale-102 hover:border-black dark:hover:border-zinc-300">
+        <div className="flex flex-col w-auto border border-zinc-400 rounded-md mb-5 transform transition-all duration-150 hover:scale-102 hover:border-black">
             <Link
                 href={blogHref}
                 className="flex"
@@ -33,13 +33,13 @@ export const BlogLinks = ({
                     height={1080}
                 />
             </Link>
-            <div className="flex-1 flex flex-col justify-between p-5 bg-white dark:bg-[#020817] rounded-b-md">
+            <div className="flex-1 flex flex-col justify-between p-5 bg-white rounded-b-md">
                 <div>
                     {isNew ? <Badge className="mb-3" variant="new">Reciente</Badge> : null} 
-                    <h2 className="mb-5 lg:text-2xl text-xl text-black dark:text-white">
+                    <h2 className="mb-5 lg:text-2xl text-xl text-black ">
                         {blogTitle}
                     </h2>
-                    <p>
+                    <p className="text-black">
                         {blogDescription}
                     </p>
                 </div>

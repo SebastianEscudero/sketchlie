@@ -37,7 +37,7 @@ export const ProModal = () => {
                         <div className="flex justify-center text-xl md:text-2xl items-center flex-wrap text-center">
                             <DialogTitle className="text-xl md:text-2xl flex flex-row items-center font-normal">Choose organization to upgrade:</DialogTitle>
                             <DropdownMenu>
-                                <DropdownMenuTrigger className="text-xl md:text-2xl flex flex-row items-center ml-3 text-blue-600">
+                                <DropdownMenuTrigger className="text-xl md:text-2xl flex flex-row items-center ml-3 text-blue-600 dark:text-blue-500">
                                     {activeOrg ? activeOrg.name : "Select organization"}
                                     <ChevronsDown className="ml-2" />
                                 </DropdownMenuTrigger>
@@ -45,7 +45,7 @@ export const ProModal = () => {
                                     <div className="flex flex-col gap-y-2">
                                         {organizations.map((organization) => (
                                             <DropdownMenuItem
-                                                className="w-[200px] truncate text-blue-600 hover:bg-accent hover:cursor-pointer"
+                                                className="w-[200px] truncate text-blue-600 dark:text-blue-500 hover:bg-accent hover:cursor-pointer"
                                                 key={organization.id}
                                                 onClick={() => {
                                                     setSelectedOrganization(organization.id)

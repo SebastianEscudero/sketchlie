@@ -109,7 +109,7 @@ const LandingPage = () => {
                     <h2 className="text-4xl md:text-5xl mb-10">6. Conclusión</h2>
                     <p className="mb-10">Los wireframes son una herramienta esencial en el proceso de diseño de cualquier proyecto web o móvil. Con <Link className="text-custom-blue hover:underline" href="/">Sketchlie</Link>, puedes llevar tus ideas desde conceptos iniciales hasta diseños detallados de forma colaborativa y eficiente. ¡Regístrate hoy en <Link className="text-custom-blue hover:underline" href="/">Sketchlie</Link> y comienza a dar vida a tus proyectos!</p>
                 </div>
-                <div className="lg:w-[30%] xl:ml-10 lg:ml-5 border border-black rounded-lg p-10 bg-white dark:bg-[#020817] lg:sticky lg:z-30 lg:top-24 lg:h-[50%] lg:mb-0 mb-10">
+                <div className="lg:w-[30%] xl:ml-10 lg:ml-5 border border-black rounded-lg p-10 bg-white lg:sticky lg:z-30 lg:top-24 lg:h-[50%] lg:mb-0 mb-10">
                     <h3 className="text-2xl mb-3">
                         Indice
                     </h3>

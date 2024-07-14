@@ -17,7 +17,7 @@ const font = Poppins({
 
 export const EmptyOrgSidebar = () => {
     return (
-        <div className="hidden lg:flex flex-col dark:bg-[#020817] space-y-2 shadow-custom-2 justify-between w-[240px] px-5 pt-5 select-none">
+        <div className="hidden lg:flex flex-col dark:bg-[#383838] space-y-2 shadow-custom-2 justify-between w-[240px] px-5 pt-5 select-none">
             <div className="flex flex-col space-y-4">
                 <div className="flex flex-row items-center">
                     <Link href="/">
@@ -38,7 +38,7 @@ export const EmptyOrgSidebar = () => {
                         </div>
                     </Link>
                 </div>
-                <div className="border border-zinc-600 h-[58px] dark:bg-[#0a101f] bg-zinc-200 rounded-lg flex items-center w-full outline-none">
+                <div className="border border-zinc-600 h-[58px] dark:bg-[#383838] bg-zinc-200 rounded-lg flex items-center w-full outline-none">
                     <Skeleton className="h-full w-full" />
                 </div>
                 <div className="w-full relative">
@@ -46,7 +46,7 @@ export const EmptyOrgSidebar = () => {
                         className="absolute top-1/2 left-3 transform -translate-y-1/2 text-muted-foreground h-4 w-4"
                     />
                     <Input
-                        className="w-full max-w-[516px] pl-9 dark:bg-[#0a101f] text-zinc-400"
+                        className="w-full max-w-[516px] pl-9 dark:bg-[#383838] text-zinc-400"
                         placeholder="Search boards"
                     />
                 </div>
