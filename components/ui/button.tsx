@@ -25,7 +25,7 @@ const buttonVariants = cva(
         landing: "hover:bg-[#FBFBFB] hover:text-accent-foreground border border-zinc-400 rounded-md bg-[#FFF]",
         link: "text-black underline-offset-4 hover:underline",
         auth: "border-input bg-custom-blue text-white hover:bg-custom-blue-dark hover:text-white",
-        board: "hover:bg-blue-500/20 hover:text-blue-800 dark:hover:text-blue-500 text-black",
+        board: "hover:bg-blue-500/20 hover:text-blue-800 text-black",
         boardActive: "bg-blue-500/20 text-blue-800",
         premium: "bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white border-0 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600",
         selectOrg: "text-custom-blue hover:bg-accent",
