@@ -1,7 +1,6 @@
 "use client"
 
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 import Link from "next/link";
 import { Hint } from "@/components/hint";
 import { ChevronsLeft, LayoutTemplate, Menu, Zap } from "lucide-react";
@@ -11,10 +10,11 @@ import { useCurrentUser } from "@/hooks/use-current-user";
 import { toast } from "sonner";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ShowAllTemplates } from "@/app/dashboard/_components/show-all-templates";
-import { CanvasMode, Layer, Layers, LayerType } from "@/types/canvas";
+import { CanvasMode, Layer, LayerType } from "@/types/canvas";
 import { InsertLayerCommand } from "@/lib/commands";
 import { useState } from "react";
 import { RenameBoardDialog } from "@/components/modals/rename-modal";
+import { KeyboardShortcutsDialog } from "./keyboard-shortcuts-dialog";
 
 interface InfoProps {
     board: any;
@@ -154,6 +154,12 @@ export const Info = ({
             <div className="text-neutral-300 px-1 sm:flex hidden">
                 |
             </div>
+            <KeyboardShortcutsDialog 
+                setCanvasState={setCanvasState}
+            />
+            <div className="text-neutral-300 px-1 sm:flex hidden">
+                |
+            </div>
             <Hint label="Edit title" side="bottom" sideOffset={10}>
                 <Button disabled={usersRole !== 'Admin'} variant="board" className="text-base px-2 sm:max-w-[100px] md:max-w-[400px] max-w-[80px] overflow-hidden relative sm:flex hidden" onClick={() => setIsRenameModalOpen(true)}>
                     <div className="w-full text-left truncate">
@@ -161,7 +167,6 @@ export const Info = ({
                     </div>
                 </Button>
             </Hint>
-
             {isRenameModalOpen && (
                 <RenameBoardDialog
                     isOpen={isRenameModalOpen}

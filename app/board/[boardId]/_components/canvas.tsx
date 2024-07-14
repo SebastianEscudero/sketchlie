@@ -1654,6 +1654,12 @@ export const Canvas = ({
                 setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Note });
             } else if (key === "t") {
                 setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Text });
+            } else if (key === "l") {
+                setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Line });
+            } else if (key === "r") {
+                setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Rectangle });
+            } else if (key === "o") {
+                setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Ellipse });
             }
         }
 
