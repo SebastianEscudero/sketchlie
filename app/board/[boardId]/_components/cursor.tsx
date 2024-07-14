@@ -52,8 +52,8 @@ export const Cursor = memo(({
                         backgroundColor: connectionIdToColor(connectionId),
                         scale: 1 / zoom,
                         transformOrigin: "top left",
-                        top: `${20/zoom}px`, // Adjust for the height of the MousePointer2 plus padding
-                        left: `${20/zoom }px`, // Adjust for the width of the MousePointer2 plus padding
+                        top: `${18/zoom}px`, // Adjust for the height of the MousePointer2 plus padding
+                        left: `${18/zoom }px`, // Adjust for the width of the MousePointer2 plus padding
                     }}
             >
                 {name}
