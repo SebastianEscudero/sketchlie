@@ -17,3 +17,17 @@ export const themeSwitch = () => {
     localStorage.setItem("theme", "dark");
     return "dark";
 }
+
+export function setCursorWithFill(svgUrl: any, fillColor: any, x: any, y: any) {
+    fetch(svgUrl)
+      .then(response => response.text())
+      .then(svgText => {
+        // Replace the fill color in the SVG text
+        const updatedSvgText = svgText.replace(/stroke="[^"]*"/g, `stroke="${fillColor}"`);
+        const svgBlob = new Blob([updatedSvgText], {type: 'image/svg+xml'});
+        const url = URL.createObjectURL(svgBlob);
+        // Set the cursor
+        document.body.style.cursor = `url(${url}) ${x} ${y}, auto`;
+      })
+      .catch(error => console.error('Error setting the cursor:', error));
+  }

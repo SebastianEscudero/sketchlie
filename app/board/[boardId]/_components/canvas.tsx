@@ -58,6 +58,7 @@ import { ZoomToolbar } from "./zoom-toolbar";
 import { Command, DeleteLayerCommand, InsertLayerCommand, TranslateLayersCommand } from "@/lib/commands";
 import { SketchlieAiInput } from "./sketchlie-ai-input";
 import { ArrowConnectionOutlinePreview } from "./arrow-connection-outline-preview";
+import { setCursorWithFill } from "@/lib/theme-utilts";
 
 const preventDefault = (e: any) => {
     if (e.scale !== 1) {
@@ -1153,8 +1154,7 @@ export const Canvas = ({
         } else if (canvasState.mode === CanvasMode.Inserting && canvasState.layerType !== LayerType.Image) {
 
             if (e.button === 2 || e.button === 1) {
-                document.body.style.cursor = 'url(/custom-cursors/inserting.svg) 10 10, auto';
-                return;
+                setCursorWithFill('/custom-cursors/inserting.svg', document.documentElement.classList.contains("dark") ? '#ffffff' : '#ff0000', 10, 10);
             }
 
             const layerType = canvasState.layerType;
@@ -1731,9 +1731,9 @@ export const Canvas = ({
         if (canvasState.mode === CanvasMode.Inserting) {
             selectedLayersRef.current = [];
             if (canvasState.layerType === LayerType.Text) {
-                document.body.style.cursor = 'url(/custom-cursors/text-cursor.svg) 8 0, auto';
+                setCursorWithFill('/custom-cursors/text-cursor.svg', document.documentElement.classList.contains("dark") ? '#ffffff' : '#ff0000', 8, 0);
             } else {
-                document.body.style.cursor = 'url(/custom-cursors/inserting.svg) 10 10, auto';
+                setCursorWithFill('/custom-cursors/inserting.svg', document.documentElement.classList.contains("dark") ? '#ffffff' : '#ff0000', 10, 10);
             }
         } else if (canvasState.mode === CanvasMode.Pencil) {
             document.body.style.cursor = 'url(/custom-cursors/pencil.svg) 2 18, auto';

@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 import { useConvex } from "convex/react";
 import { Loading } from "@/components/auth/loading";
 import { Layers } from "@/types/canvas";
+import { themeCheck } from "@/lib/theme-utilts";
 
 interface BoardIdPageProps {
   params: {
@@ -45,6 +46,7 @@ const BoardIdPage = ({
     };
 
     fetchBoard();
+    themeCheck();
 
     const fetchLayers = async () => {
       const response = await fetch(`/api/r2-bucket/${params.boardId}/`);
