@@ -21,6 +21,7 @@ import { ImportDropdownMenu } from "./ImportDropdownmenu";
 import { BackgroundMenu } from "./background-menu";
 import { useState } from "react";
 import { RenameBoardDialog } from "./modals/rename-modal";
+import { Layers } from "@/types/canvas";
 
 
 interface ActionsProps {
@@ -40,6 +41,7 @@ interface ActionsProps {
   setLiveLayerIds?: any;
   socket?: any;
   selectedLayersRef?: any;
+  liveLayers?: Layers;
 };
 
 export const Actions = ({
@@ -59,6 +61,7 @@ export const Actions = ({
   setLiveLayerIds,
   socket,
   selectedLayersRef,
+  liveLayers,
 }: ActionsProps) => {
   const { mutate, pending } = useApiMutation(api.board.remove);
   const [isRenameModalOpen, setIsRenameModalOpen] = useState(false);
@@ -166,7 +169,7 @@ export const Actions = ({
             />
           }
           {showExport && <ExportDropdownMenu id={id} title={title} />}
-          {showGrid && <BackgroundMenu setBackground={setBackground} Background={Background} />}
+          {showGrid && <BackgroundMenu setBackground={setBackground} Background={Background} setLiveLayers={setLiveLayers} liveLayers={liveLayers}/>}
         </DropdownMenuContent >
       )}
     </DropdownMenu>

@@ -1789,6 +1789,7 @@ export const Canvas = ({
                 selectedLayersRef={selectedLayersRef}
                 setIsShowingAIInput={setIsShowingAIInput}
                 isShowingAIInput={isShowingAIInput}
+                liveLayers={liveLayers}
             />
             <Participants
                 org={org}

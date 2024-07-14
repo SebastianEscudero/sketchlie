@@ -11,7 +11,7 @@ import { useCurrentUser } from "@/hooks/use-current-user";
 import { toast } from "sonner";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ShowAllTemplates } from "@/app/dashboard/_components/show-all-templates";
-import { CanvasMode, Layer, LayerType } from "@/types/canvas";
+import { CanvasMode, Layer, Layers, LayerType } from "@/types/canvas";
 import { InsertLayerCommand } from "@/lib/commands";
 import { useState } from "react";
 import { RenameBoardDialog } from "@/components/modals/rename-modal";
@@ -32,6 +32,7 @@ interface InfoProps {
     selectedLayersRef: any;
     setIsShowingAIInput: any;
     isShowingAIInput: any;
+    liveLayers?: Layers;
 }
 
 const TabSeparator = () => {
@@ -57,6 +58,7 @@ export const Info = ({
     zoom,
     setCanvasState,
     selectedLayersRef,
+    liveLayers,
     setIsShowingAIInput,
     isShowingAIInput,
 }: InfoProps) => {
@@ -196,6 +198,7 @@ export const Info = ({
                 performAction={performAction}
                 socket={socket}
                 selectedLayersRef={selectedLayersRef}
+                liveLayers={liveLayers}
             >
                 <div className="w-10 flex justify-center items-center">
                     <Hint label="Main menu" side="bottom" sideOffset={10}>

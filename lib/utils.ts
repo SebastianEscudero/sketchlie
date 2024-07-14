@@ -70,18 +70,7 @@ export function connectionIdToColor(connectionId: number): string {
 
 
 export function colorToCss(color: Color) {
-  const isDarkMode = document.documentElement.classList.contains("dark");
-
-  const darkColor = { r: 29, g: 29, b: 29, a: 1 };
-  const lightColor = { r: 255, g: 255, b: 255, a: 1 };
-
-  if (isDarkMode && color.r === darkColor.r && color.g === darkColor.g && color.b === darkColor.b && color.a === darkColor.a) {
-    return `rgba(${lightColor.r},${lightColor.g},${lightColor.b},${lightColor.a})`;
-  } else if (!isDarkMode && color.r === lightColor.r && color.g === lightColor.g && color.b === lightColor.b && color.a === lightColor.a) {
-    return `rgba(${darkColor.r},${darkColor.g},${darkColor.b},${darkColor.a})`;
-  } else {
-    return `rgba(${color.r},${color.g},${color.b},${color.a})`;
-  }
+  return `rgba(${color.r},${color.g},${color.b},${color.a})`;
 }
 
 export function resizeBounds(
