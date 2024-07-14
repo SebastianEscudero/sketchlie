@@ -113,7 +113,7 @@ export const Canvas = ({
     const [isUploading, setIsUploading] = useState(false);
     const [currentPreviewLayer, setCurrentPreviewLayer] = useState<PreviewLayer | null>(null);
     const [myPresence, setMyPresence] = useState<Presence | null>(null);
-    const [pathColor, setPathColor] = useState({ r: 29, g: 29, b: 29, a: 1 });
+    const [pathColor, setPathColor] = useState(document.documentElement.classList.contains("dark") ? { r: 255, g: 255, b: 255, a: 1 } : { r: 29, g: 29, b: 29, a: 1 });
     const [pathStrokeSize, setPathStrokeSize] = useState(4);
     const [pinchStartDist, setPinchStartDist] = useState<number | null>(null);
     const [activeTouches, setActiveTouches] = useState(0);
@@ -172,7 +172,7 @@ export const Canvas = ({
                 y: position.y,
                 height: height,
                 width: width,
-                fill: { r: 29, g: 29, b: 29, a: 1 },
+                fill: document.documentElement.classList.contains("dark") ? { r: 255, g: 255, b: 255, a: 1 } : { r: 29, g: 29, b: 29, a: 1 },
                 textFontSize: 12,
                 value: "",
                 outlineFill: null,
@@ -200,7 +200,7 @@ export const Canvas = ({
                 center: center,
                 height: height,
                 width: width,
-                fill: { r: 29, g: 29, b: 29, a: 1 },
+                fill: document.documentElement.classList.contains("dark") ? { r: 255, g: 255, b: 255, a: 1 } : { r: 29, g: 29, b: 29, a: 1 },
                 startArrowHead: ArrowHead.None,
                 endArrowHead: ArrowHead.Triangle,
                 startConnectedLayerId: startConnectedLayerId,
@@ -229,7 +229,7 @@ export const Canvas = ({
                 center: center,
                 height: height,
                 width: width,
-                fill: { r: 29, g: 29, b: 29, a: 1 },
+                fill: document.documentElement.classList.contains("dark") ? { r: 255, g: 255, b: 255, a: 1 } : { r: 29, g: 29, b: 29, a: 1 },
             };
         } else {
             if (width < 10 && height < 10) {
@@ -244,7 +244,7 @@ export const Canvas = ({
                 width: width,
                 fill: fillColor,
                 value: "",
-                outlineFill: { r: 29, g: 29, b: 29, a: 1 },
+                outlineFill: document.documentElement.classList.contains("dark") ? { r: 255, g: 255, b: 255, a: 1 } : { r: 29, g: 29, b: 29, a: 1 },
                 textFontSize: 12,
                 alignX: 'center',
                 alignY: 'center',
@@ -628,7 +628,7 @@ export const Canvas = ({
     //                 textFontSize: 12,
     //                 type: layerType,
     //                 fill: { r: 0, g: 0, b: 0, a: 0 },
-    //                 outlineFill: { r: 1, g: 1, b: 1, a: 1 },
+    //                 outlineFill: document.documentElement.classList.contains("dark") ? { r: 255, g: 255, b: 255, a: 1 } : { r: 29, g: 29, b: 29, a: 1 },
     //               });
     //               setStartPanPoint({ x: panX, y: panY });
     //             }
@@ -989,37 +989,37 @@ export const Canvas = ({
 
             switch (canvasState.layerType) {
                 case LayerType.Rectangle:
-                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.Rectangle, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
+                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.Rectangle, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: document.documentElement.classList.contains("dark") ? { r: 255, g: 255, b: 255, a: 1 } : { r: 29, g: 29, b: 29, a: 1 } });
                     break;
                 case LayerType.Triangle:
-                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.Triangle, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
+                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.Triangle, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: document.documentElement.classList.contains("dark") ? { r: 255, g: 255, b: 255, a: 1 } : { r: 29, g: 29, b: 29, a: 1 } });
                     break;
                 case LayerType.Star:
-                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.Star, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
+                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.Star, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: document.documentElement.classList.contains("dark") ? { r: 255, g: 255, b: 255, a: 1 } : { r: 29, g: 29, b: 29, a: 1 } });
                     break;
                 case LayerType.Hexagon:
-                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.Hexagon, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
+                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.Hexagon, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: document.documentElement.classList.contains("dark") ? { r: 255, g: 255, b: 255, a: 1 } : { r: 29, g: 29, b: 29, a: 1 } });
                     break;
                 case LayerType.BigArrowLeft:
-                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.BigArrowLeft, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
+                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.BigArrowLeft, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: document.documentElement.classList.contains("dark") ? { r: 255, g: 255, b: 255, a: 1 } : { r: 29, g: 29, b: 29, a: 1 } });
                     break;
                 case LayerType.BigArrowRight:
-                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.BigArrowRight, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
+                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.BigArrowRight, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: document.documentElement.classList.contains("dark") ? { r: 255, g: 255, b: 255, a: 1 } : { r: 29, g: 29, b: 29, a: 1 } });
                     break;
                 case LayerType.BigArrowUp:
-                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.BigArrowUp, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
+                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.BigArrowUp, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: document.documentElement.classList.contains("dark") ? { r: 255, g: 255, b: 255, a: 1 } : { r: 29, g: 29, b: 29, a: 1 } });
                     break;
                 case LayerType.BigArrowDown:
-                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.BigArrowDown, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
+                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.BigArrowDown, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: document.documentElement.classList.contains("dark") ? { r: 255, g: 255, b: 255, a: 1 } : { r: 29, g: 29, b: 29, a: 1 } });
                     break;
                 case LayerType.CommentBubble:
-                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.CommentBubble, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
+                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.CommentBubble, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: document.documentElement.classList.contains("dark") ? { r: 255, g: 255, b: 255, a: 1 } : { r: 29, g: 29, b: 29, a: 1 } });
                     break;
                 case LayerType.Rhombus:
-                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.Rhombus, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
+                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.Rhombus, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: document.documentElement.classList.contains("dark") ? { r: 255, g: 255, b: 255, a: 1 } : { r: 29, g: 29, b: 29, a: 1 } });
                     break;
                 case LayerType.Ellipse:
-                    setCurrentPreviewLayer({ x, y, width, height, type: LayerType.Ellipse, textFontSize: 12, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 1, g: 1, b: 1, a: 1 } });
+                    setCurrentPreviewLayer({ x, y, width, height, type: LayerType.Ellipse, textFontSize: 12, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: document.documentElement.classList.contains("dark") ? { r: 255, g: 255, b: 255, a: 1 } : { r: 29, g: 29, b: 29, a: 1 } });
                     break;
                 case LayerType.Text:
                     setCurrentPreviewLayer({ x, y, width, height: 18, textFontSize: 12, type: LayerType.Rectangle, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 75, g: 161, b: 241, a: 1 } });
@@ -1069,7 +1069,7 @@ export const Canvas = ({
                         width: widthArrow,
                         height: heightArrow,
                         type: LayerType.Arrow,
-                        fill: { r: 29, g: 29, b: 29, a: 1 },
+                        fill: document.documentElement.classList.contains("dark") ? { r: 255, g: 255, b: 255, a: 1 } : { r: 29, g: 29, b: 29, a: 1 },
                         startArrowHead: ArrowHead.None,
                         endArrowHead: ArrowHead.Triangle,
                         startConnectedLayerId: startConnectedLayerId,
@@ -1084,7 +1084,7 @@ export const Canvas = ({
                         width: widthArrow,
                         height: heightArrow,
                         type: LayerType.Line,
-                        fill: { r: 29, g: 29, b: 29, a: 1 },
+                        fill: document.documentElement.classList.contains("dark") ? { r: 255, g: 255, b: 255, a: 1 } : { r: 29, g: 29, b: 29, a: 1 },
                     });
                     break;
             }
@@ -1758,15 +1758,14 @@ export const Canvas = ({
 
     return (
         <main
-            className={`fixed h-full w-full touch-none overscroll-none ${isDraggingOverCanvas && 'bg-neutral-300 border-2 border-dashed border-custom-blue'}`}
+            className={`bg-[#F9FAFB] dark:bg-[#101011] fixed h-full w-full touch-none overscroll-none ${isDraggingOverCanvas && 'bg-neutral-300 border-2 border-dashed border-custom-blue'}`}
             style={{
                 backgroundImage: (background === 'grid') ? `
-            linear-gradient(0deg, rgba(0,0,0,0.05) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px)
-          ` : (background === 'line') ? `
-            linear-gradient(0deg, rgba(0,0,0,0.05) 1px, transparent 1px)
-          ` : 'none',
-                backgroundColor: '#F9FAFB',
+                linear-gradient(0deg, ${document.documentElement.classList.contains("dark") ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'} 1px, transparent 1px),
+                linear-gradient(90deg, ${document.documentElement.classList.contains("dark") ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'} 1px, transparent 1px)
+            ` : (background === 'line') ? `
+                linear-gradient(0deg, ${document.documentElement.classList.contains("dark") ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'} 1px, transparent 1px)
+            ` : 'none',
                 backgroundSize: (background === 'grid' || background === 'line') ? `${65 * zoom}px ${65 * zoom}px` : undefined,
                 backgroundPosition: (background === 'grid' || background === 'line') ? `${camera.x}px ${camera.y}px` : undefined,
                 WebkitOverflowScrolling: 'touch',

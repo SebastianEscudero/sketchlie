@@ -26,7 +26,6 @@ interface BoardCardProps {
   orgId: string;
   isFavorite: boolean;
   org: any;
-  theme: string;
 };
 
 export const BoardCard = ({
@@ -39,7 +38,6 @@ export const BoardCard = ({
   orgId,
   isFavorite,
   org,
-  theme
 }: BoardCardProps) => {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -79,10 +77,10 @@ export const BoardCard = ({
   return (
     <Link href={`/board/${id}`}>
       <div
-        className={`group aspect-[100/127] border rounded-lg shadow-custom-1 flex flex-col justify-between overflow-hidden ${theme === "dark" ? "bg-zinc-800 border-zinc-700" : "bg-amber-50"} ${isLoading ? 'opacity-80 transition-opacity cursor-not-allowed' : ''}`}
+        className={`group aspect-[100/127] border rounded-lg shadow-custom-1 flex flex-col justify-between overflow-hidden dark:bg-zinc-800 dark:border-zinc-700 bg-amber-50" ${isLoading ? 'opacity-80 transition-opacity cursor-not-allowed' : ''}`}
         onClick={handleClick}
       >
-        <div className={`relative flex-1 ${theme === "dark" ? "bg-white" : "bg-amber-50"}`}>
+        <div className="relative flex-1 dark:bg-white bg-amber-50">
           <Image
             src={imageUrl}
             alt={title}
@@ -112,7 +110,6 @@ export const BoardCard = ({
           createdAtLabel={createdAtLabel}
           onClick={toggleFavorite}
           disabled={pendingFavorite || pendingUnfavorite}
-          theme={theme}
         />
       </div>
     </Link>

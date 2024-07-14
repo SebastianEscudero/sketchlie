@@ -29,13 +29,13 @@ export const HowToCreate = ({
 }: BlogSectionProps) => {
     return (
         <div className="pb-20">
-            <div className="flex flex-col px-10 bg-[#FFF] lg:py-10 pb-10 rounded-lg border border-black xl:mx-[10%] mx-[2%] text-[#1c1c1e] p-4">
+            <div className="flex flex-col px-10 bg-white dark:bg-[#020817] lg:py-10 pb-10 rounded-lg border border-black dark:border-white xl:mx-[10%] mx-[2%] text-[#1c1c1e] dark:text-white p-4">
                 <h2 className="px-8 text-4xl xl:text-5xl text-center lg:text-left mt-8 mb-3 lg:w-1/2">
                     {title}
                 </h2>
                 <div className="flex flex-col-reverse lg:flex-row">
                     <div className="w-full lg:w-1/2 flex flex-col justify-center">
-                        <Accordion type="single" collapsible className="bg-white p-5 rounded-lg">
+                        <Accordion type="single" collapsible className= "p-5 rounded-lg">
                             {steps.map(item => (
                                 <AccordionItem value={item.trigger} key={item.trigger} className="w-full">
                                     <AccordionTrigger className="my-3 text-lg md:text-xl xl:text-2xl">

@@ -123,7 +123,7 @@ const LandingPage = () => {
 
                     <p className="mb-10">Al aprovechar las herramientas tecnológicas disponibles, como <strong><Link className="text-custom-blue hover:underline" href="/">Sketchlie</Link></strong>, las organizaciones pueden crear y mantener mapas de procesos actualizados y relevantes que impulsen la eficiencia y el éxito empresarial en la era digital.</p>
                 </div>
-                <div className="lg:w-[30%] xl:ml-10 lg:ml-5 border border-black rounded-lg p-10 bg-[#FFF] lg:sticky lg:z-30 lg:top-24 lg:h-[50%] lg:mb-0 mb-10">
+                <div className="lg:w-[30%] xl:ml-10 lg:ml-5 border border-black rounded-lg p-10 bg-white dark:bg-[#020817] lg:sticky lg:z-30 lg:top-24 lg:h-[50%] lg:mb-0 mb-10">
                     <h3 className="text-2xl mb-3">
                         Indice
                     </h3>

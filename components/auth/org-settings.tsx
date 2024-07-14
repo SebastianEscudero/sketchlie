@@ -207,7 +207,7 @@ export const OrganizationSettings = ({
                                                 <p className="truncate text-[12px] xs:w-auto w-[140px] text-zinc-400">{orgUser.email}</p>
                                             </div>
                                             <DropdownMenu>
-                                                <DropdownMenuTrigger className={`ml-auto mr-2 text-zinc-600 text-sm border rounded-md p-2 ${usersRole !== 'Admin' ? 'pointer-events-none' : ''}`}>
+                                                <DropdownMenuTrigger className={`ml-auto mr-2 text-zinc-600 dark:text-zinc-200 text-sm border border-zinc-600 dark:border-zinc-200 rounded-md p-2 ${usersRole !== 'Admin' ? 'pointer-events-none' : ''}`}>
                                                     {orgUser.role}
                                                 </DropdownMenuTrigger>
                                                 {usersRole === 'Admin' && orgUser.id !== user?.id && (
@@ -250,7 +250,7 @@ export const OrganizationSettings = ({
                                             </DropdownMenu>
                                             <DropdownMenu>
                                                 <DropdownMenuTrigger className="pr-4">
-                                                    <Ellipsis className="text-zinc-500 w-4 h-4" />
+                                                    <Ellipsis className="text-zinc-500 dark:text-zinc-100 w-4 h-4" />
                                                 </DropdownMenuTrigger>
                                                 <DropdownMenuContent align="end" className="rounded-xl shadow-xl">
                                                     <DropdownMenuItem className="py-2 px-3">

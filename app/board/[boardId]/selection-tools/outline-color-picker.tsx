@@ -38,7 +38,7 @@ export const OutlineColorPicker = ({
       <OutlineColorButton color={colorButtonColor} onClick={() => setOpenSelector(openSelector === SelectorType.OutlineColor ? null : SelectorType.OutlineColor)} />
       {openSelector === SelectorType.OutlineColor && (
         <div
-          className={`p-3 pt-5 pb-2 origin-top-right absolute right-0 ${selectorPositionClass} w-[165px] translate-x-1/3 rounded-lg shadow-custom-1 bg-white`}
+          className={`p-3 pt-5 pb-2 origin-top-right absolute right-0 ${selectorPositionClass} w-[165px] translate-x-1/3 rounded-lg shadow-custom-1 bg-white dark:bg-[#1A1A1C]`}
         >
           <Slider
             defaultValue={[opacity || 1]}

@@ -574,6 +574,9 @@ export function findIntersectingLayersWithRectangle(
 
 export function getContrastingTextColor(color: Color) {
   if (color.r === 0 && color.g === 0 && color.b === 0) {
+    if (document.documentElement.classList.contains("dark")) {
+      return "white";
+    }
     return "black";
   }
 

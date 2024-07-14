@@ -24,13 +24,11 @@ import { SketchlieButton } from "./sketchlie-button";
 interface OrgSidebarProps {
     activeOrganization: string | null;
     setActiveOrganization: (id: string) => void;
-    theme: string;
 }
 
 export const OrgSidebar = ({
     activeOrganization,
     setActiveOrganization,
-    theme
 }: OrgSidebarProps) => {
 
     const searchParams = useSearchParams();
@@ -72,7 +70,7 @@ export const OrgSidebar = ({
     }
 
     return (
-        <div className={`hidden lg:flex flex-col ${theme === "dark" ? "bg-[#2C2C2C] shadow-custom-2" : "space-y-2 shadow-custom-3"} justify-between w-[240px] px-5 pt-5 select-none`}>
+        <div className="hidden lg:flex flex-col dark:bg-[#020817] space-y-2 shadow-custom-2 justify-between w-[240px] px-5 pt-5 select-none">
             <div className="flex flex-col space-y-4">
                 <SketchlieButton 
                     activeOrg={activeOrg}
@@ -80,14 +78,11 @@ export const OrgSidebar = ({
                 <OrganizationSwitcher
                     setActiveOrganization={setActiveOrganization}
                     activeOrganization={activeOrganization}
-                    theme={theme}
                 />
-                <SearchInput 
-                    theme={theme}
-                />
+                <SearchInput />
                 <div className="space-y-1 w-full">
                     <Button
-                        variant={theme === "dark" ? (favorites ? "dashboard" : "dashboardActive") : (favorites ? "ghost" : "secondary")}
+                        variant={favorites ? "dashboard" : "dashboardActive"}
                         asChild
                         size="lg"
                         className="justify-start px-2 w-full"
@@ -98,7 +93,7 @@ export const OrgSidebar = ({
                         </Link>
                     </Button>
                     <Button
-                        variant={theme === "dark" ? (favorites ? "dashboardActive" : "dashboard") : (favorites ? "secondary" : "ghost")}
+                        variant={favorites ? "dashboardActive" : "dashboard"}
                         asChild
                         size="lg"
                         className="justify-start px-2 w-full"
@@ -115,7 +110,7 @@ export const OrgSidebar = ({
                         <div className="rounded-lg flex flex-col justify-between flex-1">
                             <DialogTrigger asChild className="flex justify-center">
                                 <Button
-                                    variant={(theme === "dark" ? "dashboard" : "ghost")}
+                                    variant="dashboard"
                                     className="justify-start px-2 w-full"
                                     size="lg"
                                 >
@@ -139,7 +134,6 @@ export const OrgSidebar = ({
                     <SubscriptionPlanDropdown
                         activeOrg={activeOrg}
                         subscriptionPlan={subscriptionPlan}
-                        theme={theme}
                     />
                 )}
             </div>

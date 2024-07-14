@@ -146,7 +146,7 @@ export const Actions = ({
           >
             <Button
               disabled={usersRole !== "Admin"}
-              className="p-3 cursor-pointer w-full justify-start font-normal text-red-500 hover:text-red-700 bg-white hover:bg-accent"
+              className="p-3 cursor-pointer w-full justify-start font-semibold text-red-500 bg-white dark:bg-inherit hover:bg-accent dark:hover:bg-slate-800"
             >
               <Trash2 className="h-4 w-4 mr-2" />
               {usersRole === "Admin" ? "Delete" : "Delete (Admin)"}

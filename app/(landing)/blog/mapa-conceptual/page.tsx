@@ -103,7 +103,7 @@ const LandingPage = () => {
                     <p className="mb-10">Como parte de nuestra misión de fomentar el aprendizaje y la creatividad, también ofrecemos una variedad de recursos educativos en nuestro <Link className="text-custom-blue hover:underline" href="/blog/">blog</Link>, donde puedes encontrar consejos, tutoriales y casos de estudio para sacar el máximo provecho de nuestras herramientas.</p>
                     <p className="mb-10">En resumen, en el mundo online de hoy, el mapa conceptual es más que una simple herramienta: es un faro de claridad en un mar de información. Con nuestro <Link className="text-custom-blue hover:underline" href="/blog/">blog</Link>, puedes navegar este mar con confianza, sabiendo que tienes las herramientas necesarias para dar forma a tus ideas y alcanzar tus objetivos.</p>
                 </div>
-                <div className="lg:w-[30%] xl:ml-10 lg:ml-5 border border-black rounded-lg p-10 bg-[#FFF] lg:sticky lg:z-30 lg:top-24 lg:h-[50%] lg:mb-0 mb-10">
+                <div className="lg:w-[30%] xl:ml-10 lg:ml-5 border border-black rounded-lg p-10 bg-white dark:bg-[#020817] lg:sticky lg:z-30 lg:top-24 lg:h-[50%] lg:mb-0 mb-10">
                     <h3 className="text-2xl mb-3">
                         Indice
                     </h3>

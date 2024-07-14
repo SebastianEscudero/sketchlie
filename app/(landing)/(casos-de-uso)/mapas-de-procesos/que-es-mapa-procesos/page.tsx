@@ -211,7 +211,7 @@ const LandingPage = () => {
                     <p className="mb-10">Con estos simples pasos, estarás en camino de utilizar un mapa de procesos de manera efectiva en Sketchlie, potenciando la productividad y la colaboración en tu equipo.</p>
 
                 </div>
-                <div className="lg:w-[30%] xl:ml-10 lg:ml-5 border border-black rounded-lg p-10 bg-[#FFF] lg:sticky lg:z-30 lg:top-24 lg:h-[50%] lg:mb-0 mb-10">
+                <div className="lg:w-[30%] xl:ml-10 lg:ml-5 border border-black rounded-lg p-10 bg-white dark:bg-[#020817] lg:sticky lg:z-30 lg:top-24 lg:h-[50%] lg:mb-0 mb-10">
                     <h3 className="text-2xl mb-3">
                         Indice
                     </h3>

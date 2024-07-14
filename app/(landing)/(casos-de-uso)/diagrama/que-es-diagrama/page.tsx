@@ -149,7 +149,7 @@ const LandingPage = () => {
                     <p className="mb-10">Esperamos que estas respuestas hayan sido útiles y te hayan brindado una mejor comprensión sobre el mundo de los diagramas. Recuerda que en Sketchlie estamos aquí para ayudarte en cada paso del camino. ¡Empieza a crear tus propios diagramas hoy mismo!</p>
 
                 </div>
-                <div className="lg:w-[30%] xl:ml-10 lg:ml-5 border border-black rounded-lg p-10 bg-[#FFF] lg:sticky lg:z-30 lg:top-24 lg:h-[50%] lg:mb-0 mb-10">
+                <div className="lg:w-[30%] xl:ml-10 lg:ml-5 border border-black rounded-lg p-10 bg-white dark:bg-[#020817] lg:sticky lg:z-30 lg:top-24 lg:h-[50%] lg:mb-0 mb-10">
                     <h3 className="text-2xl mb-3">
                         Indice
                     </h3>

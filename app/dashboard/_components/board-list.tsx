@@ -14,14 +14,12 @@ interface BoardListProps {
     search?: string;
     favorites?: string;
   };
-  theme: string;
 };
 
 export const BoardList = ({
   org,
   query,
   userId,
-  theme
 }: BoardListProps) => {
 
   const data = useQuery(api.boards.get, { 
@@ -74,7 +72,6 @@ export const BoardList = ({
             createdAt={board._creationTime}
             orgId={board.orgId}
             isFavorite={board.isFavorite}
-            theme={theme}
           />
         ))}
       </div>

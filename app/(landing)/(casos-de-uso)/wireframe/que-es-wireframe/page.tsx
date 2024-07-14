@@ -157,7 +157,7 @@ const LandingPage = () => {
                     <p className="mb-10">Descubre todos los beneficios de utilizar <Link className="text-custom-blue hover:underline" href="/wireframe/">wireframes</Link>  en Sketchlie y únete a nuestra comunidad de diseñadores y desarrolladores hoy mismo.</p>
 
                 </div>
-                <div className="lg:w-[30%] xl:ml-10 lg:ml-5 border border-black rounded-lg p-10 bg-[#FFF] lg:sticky lg:z-30 lg:top-24 lg:h-[50%] lg:mb-0 mb-10">
+                <div className="lg:w-[30%] xl:ml-10 lg:ml-5 border border-black rounded-lg p-10 bg-white dark:bg-[#020817] lg:sticky lg:z-30 lg:top-24 lg:h-[50%] lg:mb-0 mb-10">
                     <h3 className="text-2xl mb-3">
                         Indice
                     </h3>

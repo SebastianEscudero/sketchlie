@@ -108,7 +108,7 @@ export function NavigationMenuLanding() {
                         <NavigationMenuTrigger>¿Qué es Sketchlie</NavigationMenuTrigger>
                         <NavigationMenuContent>
                             <div className="grid w-[400px] p-6 md:w-[500px] lg:w-[300px]">
-                                <p className="px-3 text-base mb-2 text-neutral-600 font-semibold">Producto</p>
+                                <p className="px-3 text-base mb-2 text-neutral-600 dark:text-white font-semibold">Producto</p>
                                 <NavigationMenuLink
                                     href="/quienes-somos/"
                                 >
@@ -131,7 +131,7 @@ export function NavigationMenuLanding() {
                         <NavigationMenuContent>
                             <div className="grid w-[400px] p-6 md:w-[500px] md:grid-cols-2 lg:w-[600px] gap-x-2">
                                 <div>
-                                    <p className="px-3 text-base mb-2 text-neutral-600 font-semibold">Equipos</p>
+                                    <p className="px-3 text-base mb-2 text-neutral-600 dark:text-white font-semibold">Equipos</p>
                                     {porEquipo.map((component) => (
                                         <Link
                                             key={component.title}
@@ -148,7 +148,7 @@ export function NavigationMenuLanding() {
                                     ))}
                                 </div>
                                 <div>
-                                    <p className="px-3 text-base mb-2 text-neutral-600 font-semibold">Casos de uso</p>
+                                    <p className="px-3 text-base mb-2 text-neutral-600 dark:text-white font-semibold">Casos de uso</p>
                                     {porCasoDeUso.map((component) => (
                                         <Link
                                             key={component.title}
@@ -175,7 +175,7 @@ export function NavigationMenuLanding() {
                         <NavigationMenuTrigger>Recursos</NavigationMenuTrigger>
                         <NavigationMenuContent>
                             <div className="p-6 md:w-[500px] lg:w-[300px] flex flex-col">
-                                <p className="px-3 text-base mb-2 text-neutral-600 font-semibold">Recursos</p>
+                                <p className="px-3 text-base mb-2 text-neutral-600 dark:text-white font-semibold">Recursos</p>
                                 {Recursos.map((recurso) => (
                                     <Link
                                         key={recurso.title}

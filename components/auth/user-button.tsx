@@ -18,15 +18,7 @@ import { LogOut, Settings, User } from "lucide-react";
 import { ThemeDropdownMenu } from "./theme-dropdown-menu";
 
 
-interface UserButtonProps {
-  theme: string;
-  setTheme: (theme: string) => void;
-}
-
-export const UserButton = ({
-  theme,
-  setTheme
-}: UserButtonProps) => {
+export const UserButton = () => {
   const user = useCurrentUser();
 
   return (
@@ -57,10 +49,7 @@ export const UserButton = ({
               </p>
             </div>
           </div>
-          <ThemeDropdownMenu 
-            theme={theme}
-            setTheme={setTheme}
-          />
+          <ThemeDropdownMenu />
           <SettingsButton>
             <DropdownMenuItem className="py-3 px-5 cursor-pointer">
               <Settings className="h-4 w-4 mr-2" />

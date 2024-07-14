@@ -14,19 +14,19 @@ export const AuthNavbar = () => {
     const buttonText = pathname === "/auth/login/" ? "Sign Up" : "Login";
 
     return (
-        <nav className="py-3 bg-[#FFFFFF] border-b border-zinc-600 sticky top-0 z-50 xl:px-[10%] lg:px-[7%] md:px-[5%] px-[3%]">
+        <nav className="py-3 bg-white dark:bg-[#020817] shadow-custom-1 sticky top-0 z-50 h-[71px] xl:px-[10%] lg:px-[7%] md:px-[5%] px-[3%]">
             <div className="flex items-center justify-between xl:mx-[5%] lg:mx-[3%] md:mx-[2%] mx-[1%]">
                 <div className="flex items-center">
                     <Link href="/" className="flex items-center mr-3">
                         <div className="mr-4">
                             <Image
-                                width={65}
-                                height={65}
+                                height={50}
+                                width={50}
                                 alt="Logo"
                                 src="/logo.svg"    
                             />
                         </div>
-                        <p className="text-2xl font-bold text-[#38322C]">
+                        <p className="text-2xl font-bold text-[#38322C] dark:text-white font-roobert">
                             Sketchlie
                         </p>
                     </Link>

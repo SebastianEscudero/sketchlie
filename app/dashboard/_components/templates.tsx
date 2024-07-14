@@ -16,12 +16,10 @@ import { updateR2Bucket } from "@/lib/r2-bucket-functions";
 
 interface TemplateProps {
     org: any
-    theme: string;
 }
 
 export const Templates = ({
     org,
-    theme,
 }: TemplateProps) => {
 
     const user = useCurrentUser();
@@ -62,8 +60,8 @@ export const Templates = ({
 
     return (
         <div className="p-6 ">
-            <p className={`${theme === "dark" ? "text-zinc-300" : "text-gray-600"} mt-2`}>Only <span className={`font-bold ${theme === "dark" ? "text-white" : ""}`}>Admins</span> of the organization can choose a template</p>
-            <div className={`flex mt-4 border ${theme === "dark" ? "border-[#2C2C2C]/30 bg-[#2C2C2C]" : "bg-white"} rounded-md p-4 h-[170px] overflow-hidden shadow-custom-1`}>
+            <p className="dark:text-zinc-300 text-gray-600 mt-2">Only <span className="font-bold dark:text-white">Admins</span> of the organization can choose a template</p>
+            <div className="flex mt-4 border dark:border-[#020817]/30 dark:bg-[#020817] bg-white rounded-md p-4 h-[170px] overflow-hidden shadow-custom-1">
                 <div className="flex flex-wrap gap-x-5 gap-y-20">
                     {templates.map((template, index) => (
                         <div key={index} className="rounded-lg flex flex-col justify-between flex-1">
@@ -82,7 +80,7 @@ export const Templates = ({
                                     width={500}
                                     height={500}
                                 />
-                                <h2 className={`font-semibold pt-2 text-[12px] ${theme === "dark" ? "text-white hover:text-blue-500" : "text-gray-700 hover:text-custom-blue"}`}>
+                                <h2 className="font-semibold pt-2 text-[12px] dark:text-white dark:hover:text-blue-500 text-gray-700 hover:text-custom-blue">
                                     + {template.name}
                                 </h2>
                             </button>

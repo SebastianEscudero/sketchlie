@@ -143,7 +143,7 @@ export const Info = ({
     if (!board) return <InfoSkeleton />;
 
     return(
-        <div className="absolute bg-white rounded-br-lg px-1 h-12 flex items-center shadow-custom-1">
+        <div className="absolute bg-white dark:bg-[#1A1A1C]  rounded-br-lg px-1 h-12 flex items-center shadow-custom-1">
             <Hint label="Go to Dashboard" side="bottom" sideOffset={10}>
                 <Button asChild variant="board" className="px-2">
                     <Link href="/dashboard/">
@@ -153,7 +153,7 @@ export const Info = ({
                         height={40}
                         width={40}
                         />
-                        <span className="font-semibold text-xl ml-2 text-black sm:flex hidden">
+                        <span className="font-semibold text-xl ml-2 text-black dark:text-white sm:flex hidden">
                             Sketchlie
                         </span>
                     </Link>

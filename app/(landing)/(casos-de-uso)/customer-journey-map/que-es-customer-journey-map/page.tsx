@@ -304,7 +304,7 @@ const LandingPage = () => {
                     <h3 className="text-2xl mb-5">¿Necesito un customer journey map diferente para cada segmento de clientes?</h3>
                     <p className="mb-10">Idealmente, sí. Diferentes segmentos de clientes pueden tener necesidades, comportamientos y puntos de dolor distintos. Crear mapas separados para cada segmento importante te permitirá personalizar mejor tu enfoque y mejorar la experiencia para cada grupo de clientes.</p>
                 </div>
-                <div className="lg:w-[30%] xl:ml-10 lg:ml-5 border border-black rounded-lg p-10 bg-[#FFF] lg:sticky lg:z-30 lg:top-24 lg:h-[50%] lg:mb-0 mb-10">
+                <div className="lg:w-[30%] xl:ml-10 lg:ml-5 border border-black rounded-lg p-10 bg-white dark:bg-[#020817] lg:sticky lg:z-30 lg:top-24 lg:h-[50%] lg:mb-0 mb-10">
                     <h3 className="text-2xl mb-3">
                         Índice
                     </h3>

@@ -86,7 +86,7 @@ const Sidebar = ({
     const pathname = usePathname();
 
     return (
-        <div className="space-y-4 py-4 flex flex-col h-full bg-[#FFF] overflow-y-auto">
+        <div className="space-y-4 py-4 flex flex-col h-full bg-white dark:bg-[#020817] overflow-y-auto">
             <div className="py-2 flex-1">
                 <div className="flex items-center pl-8">
                     <div className="mr-4">

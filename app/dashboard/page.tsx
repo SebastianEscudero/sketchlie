@@ -11,6 +11,7 @@ import { Loading } from "@/components/auth/loading";
 import { useProModal } from "@/hooks/use-pro-modal";
 import Templates from "./_components/templates";
 import { EmptyOrgSidebar } from "./_components/empty-org-sidebar";
+import { themeCheck } from "@/lib/theme-utilts";
 
 const DashboardPage = () => {
   const searchParams = useSearchParams();
@@ -19,12 +20,12 @@ const DashboardPage = () => {
   const [activeOrganization, setActiveOrganization] = useState<string | null>(null);
   const user = useCurrentUser();
   const proModal = useProModal();
-  const [theme, setTheme] = useState("dark"); // Example state, replace with your theme state management
 
   useEffect(() => {
-    document.body.style.cursor = 'default';
-    setActiveOrganization(localStorage.getItem("activeOrganization"));
-    setTheme(localStorage.getItem("theme") || "dark");
+    themeCheck();
+    if (searchParams.get("openProModal")) {
+      proModal.onOpen(activeOrganization);
+    }
   }, []);
 
 
@@ -37,49 +38,34 @@ const DashboardPage = () => {
           setActiveOrganization(user.organizations[0].id);
         }
       }
-    }, 10); // 10 milliseconds = 0.01 seconds
+    }, 10);
 
-    // Clear the timer when the component unmounts
     return () => clearTimeout(timer);
   }, [activeOrganization, user]);
-
-  useEffect(() => {
-    if (searchParams.get("openProModal")) {
-      proModal.onOpen(activeOrganization);
-    }
-  }, []);
 
   if (!user) return <Loading />;
 
   const activeOrg = user?.organizations.find(org => org.id === activeOrganization);
 
   return (
-    <main className={`h-full ${theme === "dark" ? "bg-[#383838] text-white" : "bg-[#F9FAFB]"}`}>
+    <main className="h-full dark:bg-[#0a101f] dark:text-white bg-[#F9FAFB]">
       <div className="flex h-full">
       {activeOrg ? (
         <OrgSidebar
           setActiveOrganization={setActiveOrganization}
           activeOrganization={activeOrganization}
-          theme={theme}
         />
       ) : (
-        <EmptyOrgSidebar 
-          theme={theme}
-        />
+        <EmptyOrgSidebar />
       )} 
       <div className="h-full flex-1">
         <Navbar
           setActiveOrganization={setActiveOrganization}
           activeOrganization={activeOrganization}
           activeOrg={activeOrg}
-          theme={theme}
-          setTheme={setTheme}
         />
         {activeOrg && (
-          <Templates
-            org={activeOrg}
-            theme={theme}
-          />
+          <Templates org={activeOrg}/>
         )}
         <div className="flex-1 h-[calc(100%] p-6">
           {!activeOrg ? (
@@ -92,7 +78,6 @@ const DashboardPage = () => {
               userId={user.id}
               org={activeOrg}
               query={{ search, favorites }}
-              theme={theme}
             />
           )}
         </div>

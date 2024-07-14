@@ -60,25 +60,25 @@ const LandingPage = () => {
                     <p className="mb-10">En tu pizarra en línea, la barra de herramientas te proporciona acceso rápido a diversas funciones para trabajar en tu tablero online. Vamos a revisar cada herramienta:</p>
                     <ul style={{ listStyleType: 'disc' }}>
                         <li className="mb-10 ml-5">
-                            <strong><div className="flex flex-row items-center">Selección: <MousePointer2 className="ml-2 bg-white p-1 border border-black h-7 w-7"/></div> </strong> Esta herramienta te permite seleccionar y manipular objetos en tu tablero online. Haz clic en el botón de selección para activar esta herramienta. Puedes mover, redimensionar y manipular objetos una vez seleccionados.
+                            <strong><div className="flex flex-row items-center">Selección: <MousePointer2 className="ml-2 bg-white dark:bg-[#0a101f] p-1 border border-black h-7 w-7"/></div> </strong> Esta herramienta te permite seleccionar y manipular objetos en tu tablero online. Haz clic en el botón de selección para activar esta herramienta. Puedes mover, redimensionar y manipular objetos una vez seleccionados.
                         </li>
                         <li className="mb-10 ml-5">
-                            <strong><div className="flex flex-row items-center">Mover: <Hand className="ml-2 bg-white p-1 border border-black h-7 w-7"/></div> </strong> La herramienta de mover te permite desplazar objetos seleccionados por tu pizarra online. Selecciona la herramienta de mover y arrastra los objetos seleccionados para cambiar su posición en el pizarra online.
+                            <strong><div className="flex flex-row items-center">Mover: <Hand className="ml-2 bg-white dark:bg-[#0a101f] p-1 border border-black h-7 w-7"/></div> </strong> La herramienta de mover te permite desplazar objetos seleccionados por tu pizarra online. Selecciona la herramienta de mover y arrastra los objetos seleccionados para cambiar su posición en el pizarra online.
                         </li>
                         <li className="mb-10 ml-5">
-                            <strong><div className="flex flex-row items-center">Texto: <Type className="ml-2 bg-white p-1 border border-black h-7 w-7"/></div> </strong> Con esta herramienta puedes agregar texto a tu pizarra online. Selecciona la herramienta de texto y haz clic en el pizarra online para comenzar a escribir. Puedes editar el texto una vez insertado.
+                            <strong><div className="flex flex-row items-center">Texto: <Type className="ml-2 bg-white dark:bg-[#0a101f] p-1 border border-black h-7 w-7"/></div> </strong> Con esta herramienta puedes agregar texto a tu pizarra online. Selecciona la herramienta de texto y haz clic en el pizarra online para comenzar a escribir. Puedes editar el texto una vez insertado.
                         </li>
                         <li className="mb-10 ml-5">
-                            <strong><div className="flex flex-row items-center">Sticky Note: <StickyNote className="ml-2 bg-white p-1 border border-black h-7 w-7"/></div> </strong> La herramienta de nota adhesiva te permite agregar notas rápidas a tu pizarra online. Selecciona esta herramienta y haz clic en el tablero para crear una nota adhesiva que puedes mover y editar según necesites.
+                            <strong><div className="flex flex-row items-center">Sticky Note: <StickyNote className="ml-2 bg-white dark:bg-[#0a101f] p-1 border border-black h-7 w-7"/></div> </strong> La herramienta de nota adhesiva te permite agregar notas rápidas a tu pizarra online. Selecciona esta herramienta y haz clic en el tablero para crear una nota adhesiva que puedes mover y editar según necesites.
                         </li>
                         <li className="mb-10 ml-5">
-                            <strong><div className="flex flex-row items-center">Rectángulo: <Square className="ml-2 bg-white p-1 border border-black h-7 w-7"/></div> </strong> Utiliza esta herramienta para dibujar rectángulos en tu tablero. Selecciona la herramienta de rectángulo y arrastra en el pizarra para crear un rectángulo con las dimensiones deseadas.
+                            <strong><div className="flex flex-row items-center">Rectángulo: <Square className="ml-2 bg-white dark:bg-[#0a101f] p-1 border border-black h-7 w-7"/></div> </strong> Utiliza esta herramienta para dibujar rectángulos en tu tablero. Selecciona la herramienta de rectángulo y arrastra en el pizarra para crear un rectángulo con las dimensiones deseadas.
                         </li>
                         <li className="mb-10 ml-5">
-                            <strong><div className="flex flex-row items-center">Círculo: <Circle className="ml-2 bg-white p-1 border border-black h-7 w-7"/></div> </strong> La herramienta de elipse te permite dibujar elipses y círculos en tu pizarra. Selecciona esta herramienta y arrastra en el pizarra para crear una elipse o un círculo.
+                            <strong><div className="flex flex-row items-center">Círculo: <Circle className="ml-2 bg-white dark:bg-[#0a101f] p-1 border border-black h-7 w-7"/></div> </strong> La herramienta de elipse te permite dibujar elipses y círculos en tu pizarra. Selecciona esta herramienta y arrastra en el pizarra para crear una elipse o un círculo.
                         </li>
                         <li className="mb-10 ml-5">
-                            <strong><div className="flex flex-row items-center">Lápiz: <Pencil className="ml-2 bg-white p-1 border border-black h-7 w-7"/></div> </strong> Con la herramienta de lápiz, puedes dibujar trazos a mano alzada en tu tablero. Selecciona la herramienta de lápiz y dibuja libremente en el tablero para crear trazos personalizados.
+                            <strong><div className="flex flex-row items-center">Lápiz: <Pencil className="ml-2 bg-white dark:bg-[#0a101f] p-1 border border-black h-7 w-7"/></div> </strong> Con la herramienta de lápiz, puedes dibujar trazos a mano alzada en tu tablero. Selecciona la herramienta de lápiz y dibuja libremente en el tablero para crear trazos personalizados.
                         </li>
                     </ul>
                     <p className="mb-10">Estas herramientas de la barra de herramientas proporcionan funcionalidades esenciales para dibujar, agregar texto y manipular objetos en tu pizarra en línea. ¡Experimenta con ellas para dar vida a tus ideas creativas!</p>
@@ -87,22 +87,22 @@ const LandingPage = () => {
                     <p className="mb-10">En tu pizarra online, cuentas con un conjunto de herramientas de selección que te permiten manipular las capas en tu tablero. Veamos cada herramienta:</p>
                     <ul style={{ listStyleType: 'disc' }}>
                         <li className="mb-10 ml-5">
-                            <strong><div className="flex flex-row items-center">Bring to Front: <BringToFront className="ml-2 bg-white p-1 border border-black h-7 w-7"/></div> </strong> Esta herramienta trae los objetos o capas seleccionados al frente de tu tablero.
+                            <strong><div className="flex flex-row items-center">Bring to Front: <BringToFront className="ml-2 bg-white dark:bg-[#0a101f] p-1 border border-black h-7 w-7"/></div> </strong> Esta herramienta trae los objetos o capas seleccionados al frente de tu tablero.
                             Para usarla, selecciona el objeto o capa que deseas traer hacia adelante.
                             Luego, haz clic en el botón Bring to Front. Esto reorganizará las capas para que la seleccionada aparezca en la parte superior de todas las demás.
                         </li>
                         <li className="mb-10 ml-5">
-                            <strong><div className="flex flex-row items-center">Send to Back: <SendToBack className="ml-2 bg-white p-1 border border-black h-7 w-7"/></div> </strong> Por el contrario, la herramienta Send to Back envía los objetos o capas seleccionados al fondo de tu pizarra online.
+                            <strong><div className="flex flex-row items-center">Send to Back: <SendToBack className="ml-2 bg-white dark:bg-[#0a101f] p-1 border border-black h-7 w-7"/></div> </strong> Por el contrario, la herramienta Send to Back envía los objetos o capas seleccionados al fondo de tu pizarra online.
                             Selecciona el objeto o capa que deseas enviar hacia atrás.
                             Haz clic en el botón Enviar al Fondo para reorganizar las capas, colocando la seleccionada detrás de todas las demás.
                         </li>
                         <li className="mb-10 ml-5">
-                            <strong><div className="flex flex-row items-center">Selector de Color: <Palette className="ml-2 bg-white p-1 border border-black h-7 w-7"/></div> </strong> La herramienta de selector de color te permite cambiar el color de relleno de los objetos o capas seleccionados.
+                            <strong><div className="flex flex-row items-center">Selector de Color: <Palette className="ml-2 bg-white dark:bg-[#0a101f] p-1 border border-black h-7 w-7"/></div> </strong> La herramienta de selector de color te permite cambiar el color de relleno de los objetos o capas seleccionados.
                             Simplemente selecciona el objeto o capa cuyo color deseas cambiar.
                             Haz clic en la herramienta de selector de color y elige un nuevo color de la paleta. El color de relleno del objeto seleccionado se actualizará en consecuencia.
                         </li>
                         <li className="mb-10 ml-5">
-                            <strong><div className="flex flex-row items-center">Eliminar: <Trash2 className="ml-2 bg-white p-1 border border-black h-7 w-7"/></div> </strong> Por último, la herramienta de eliminar elimina los objetos o capas seleccionados de tu pizarra virtual.
+                            <strong><div className="flex flex-row items-center">Eliminar: <Trash2 className="ml-2 bg-white dark:bg-[#0a101f] p-1 border border-black h-7 w-7"/></div> </strong> Por último, la herramienta de eliminar elimina los objetos o capas seleccionados de tu pizarra virtual.
                             Selecciona el objeto o capa que deseas eliminar.
                             Haz clic en el botón de eliminar para eliminarlo por completo del pizarra virtual.
                         </li>
@@ -128,7 +128,7 @@ const LandingPage = () => {
                     <p className="mb-10">La pizarra virtual online ha revolucionado la forma en que colaboramos y compartimos ideas en la era digital. En Sketchlie, estamos comprometidos a proporcionar una plataforma que permita a individuos y equipos trabajar juntos de manera más eficiente y creativa, sin importar la distancia.</p>
                     <p className="mb-10">¡Únete a nosotros en este viaje hacia una colaboración sin límites! Descubre más sobre nuestra pizarra virtual y otras herramientas de colaboración en <Link className="text-custom-blue hover:underline" href="/">Sketchlie</Link>.</p>
                 </div>
-                <div className="lg:w-[30%] xl:ml-10 lg:ml-5 border border-black rounded-lg p-10 bg-[#FFF] lg:sticky lg:z-30 lg:top-24 lg:h-[50%] lg:mb-0 mb-10">
+                <div className="lg:w-[30%] xl:ml-10 lg:ml-5 border border-black rounded-lg p-10 bg-white dark:bg-[#020817] lg:sticky lg:z-30 lg:top-24 lg:h-[50%] lg:mb-0 mb-10">
                     <h3 className="text-2xl mb-3">
                         Indice
                     </h3>

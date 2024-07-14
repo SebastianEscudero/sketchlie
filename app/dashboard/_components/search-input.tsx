@@ -12,13 +12,8 @@ import {
 
 import { Input } from "@/components/ui/input";
 
-interface SearchInputProps {
-  theme: string;
-}
 
-export const SearchInput = ({
-  theme
-}: SearchInputProps) => {
+export const SearchInput = () => {
   const router = useRouter();
   const [value, setValue] = useState("");
   const debouncedValue = useDebounce(value, 500);
@@ -44,7 +39,7 @@ export const SearchInput = ({
         className="absolute top-1/2 left-3 transform -translate-y-1/2 text-muted-foreground h-4 w-4"
       />
       <Input
-        className={`w-full max-w-[516px] pl-9 ${theme === "dark" ? "bg-[#383838] text-zinc-400" : ""}`}
+        className="w-full max-w-[516px] pl-9 dark:bg-[#0a101f] text-zinc-400"
         placeholder="Search boards"
         onChange={handleChange}
         value={value}

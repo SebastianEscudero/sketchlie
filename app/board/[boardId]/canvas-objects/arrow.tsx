@@ -38,7 +38,7 @@ export const Arrow = ({
       {startArrowHead === ArrowHead.Triangle && (
         <path
           d={arrowheadPath}
-          stroke={selectionColor || (isTransparent ? "#000" : fillColor)}
+          stroke={selectionColor || (isTransparent ? "rgba(29, 29, 29, 1)" : fillColor)}
           fill="none"
           onPointerDown={onPointerDown ? (e) => onPointerDown(e, id) : undefined}
           transform={`translate(${start.x}, ${start.y}) rotate(${startAngle})`}
@@ -51,7 +51,7 @@ export const Arrow = ({
         onPointerDown={onPointerDown ? (e) => onPointerDown(e, id) : undefined}
         d={pathData}
         fill="none"
-        stroke={selectionColor || (isTransparent ? "#000" : fillColor)}
+        stroke={selectionColor || (isTransparent ? "rgba(29, 29, 29, 1)" : fillColor)}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -59,7 +59,7 @@ export const Arrow = ({
       {endArrowHead === ArrowHead.Triangle && (
         <path
           d={arrowheadPath}
-          stroke={selectionColor || (isTransparent ? "#000" : fillColor)}
+          stroke={selectionColor || (isTransparent ? "rgba(29, 29, 29, 1)" : fillColor)}
           fill="none"
           onPointerDown={onPointerDown ? (e) => onPointerDown(e, id) : undefined}
           transform={`translate(${end.x}, ${end.y}) rotate(${endAngle})`}

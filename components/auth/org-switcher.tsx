@@ -20,13 +20,11 @@ import { useState } from "react";
 interface OrganizationSwitcherProps {
     activeOrganization: string | null;
     setActiveOrganization: (id: string) => void;
-    theme: string;
 }
 
 export const OrganizationSwitcher = ({
     activeOrganization,
     setActiveOrganization,
-    theme
 }: OrganizationSwitcherProps) => {
     const [isSettingsDialogOpen, setIsSettingsDialogOpen] = useState(false);
     const [isCreateBoardDialogOpen, setIsCreateBoardDialogOpen] = useState(false);
@@ -50,7 +48,7 @@ export const OrganizationSwitcher = ({
 
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger className={`border border-zinc-600 ${theme === "dark" ? "hover:bg-[#383838]" : "hover:bg-zinc-200"} rounded-lg p-[10px] flex items-center w-full outline-none`}>
+            <DropdownMenuTrigger className="border border-zinc-600 dark:hover:bg-[#0a101f] hover:bg-zinc-200 rounded-lg p-[10px] flex items-center w-full outline-none">
                 {hasOrg && activeOrg ? (
                     <div className="flex items-center truncate">
                         <div className="aspect-square relative w-[36px] flex-shrink-0">

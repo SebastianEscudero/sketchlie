@@ -8,7 +8,7 @@ import { Button } from "./ui/button";
 
 export const LandingNavbar = () => {
     return (
-        <nav className="py-3 bg-white border-b shadow-custom-1 sticky top-0 z-50 h-[71px]">
+        <nav className="py-3 bg-white dark:bg-[#020817] shadow-custom-1 sticky top-0 z-50 h-[71px]">
             <div className="flex items-center justify-between xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] h-[40px]">
                 <div className="flex items-center">
                     <MobileSidebar />
@@ -22,7 +22,7 @@ export const LandingNavbar = () => {
                                 loading="lazy"
                             />
                         </div>
-                        <p className="text-2xl font-bold text-[#38322C] font-roobert">
+                        <p className="text-2xl font-bold text-[#38322C] dark:text-white font-roobert">
                             Sketchlie
                         </p>
                     </Link>

@@ -28,7 +28,7 @@ export const TemplateLink = ({
                 />
             </Link>
             <a href={href}>
-                <h2 className="mb-5 xl:text-2xl lg:text-xl md:text-lg text-xl text-black mt-2 ml-1 font-semibold hover:text-custom-blue">
+                <h2 className="mb-5 xl:text-2xl lg:text-xl md:text-lg text-xl text-black dark:text-white mt-2 ml-1 font-semibold hover:text-custom-blue">
                     Plantilla de {name}
                 </h2>
             </a>

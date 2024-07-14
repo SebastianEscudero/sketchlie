@@ -117,7 +117,7 @@ const LandingPage = () => {
                     <p className="mb-10">Las líneas de tiempo son herramientas poderosas que permiten visualizar y comprender eventos a lo largo del tiempo de manera clara y concisa. Ya sea en el aula, en el lugar de trabajo o en proyectos personales, su versatilidad las convierte en un recurso invaluable para estudiantes, profesionales y entusiastas por igual.</p>
                     <p className="mb-10">Incorporar líneas de tiempo en nuestra práctica diaria puede mejorar significativamente nuestra capacidad para analizar, planificar y comunicar ideas de manera efectiva. ¡Explora el fascinante mundo de las líneas de tiempo y descubre nuevas formas de visualizar el tiempo!</p>
                 </div>
-                <div className="lg:w-[30%] xl:ml-10 lg:ml-5 border border-black rounded-lg p-10 bg-[#FFF] lg:sticky lg:z-30 lg:top-24 lg:h-[50%] lg:mb-0 mb-10">
+                <div className="lg:w-[30%] xl:ml-10 lg:ml-5 border border-black rounded-lg p-10 bg-white dark:bg-[#020817] lg:sticky lg:z-30 lg:top-24 lg:h-[50%] lg:mb-0 mb-10">
                     <h3 className="text-2xl mb-3">
                         Indice
                     </h3>

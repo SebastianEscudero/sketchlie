@@ -17,16 +17,12 @@ interface NavbarProps {
     activeOrganization: string | null;
     setActiveOrganization: (id: string) => void;
     activeOrg: any
-    theme: string;
-    setTheme: (theme: string) => void;
 }
 
 export const Navbar = ({
     activeOrganization,
     setActiveOrganization,
     activeOrg,
-    theme,
-    setTheme
 }: NavbarProps) => {
     const user = useCurrentUser();
     const usersRole = activeOrg?.users.find((u: any) => u.id === user?.id)?.role;
@@ -41,7 +37,7 @@ export const Navbar = ({
     }
 
     return (
-        <div className={`flex flex-wrap items-center gap-x-2 gap-y-2 px-3 lg:py-0 py-3 justify-between shadow-custom-1 ${theme === 'dark' ? 'bg-[#2C2C2C]' : 'lg:bg-gray-800'}`}>
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-2 px-3 lg:py-0 py-3 justify-between shadow-custom-1 dark:bg-[#020817] lg:bg-gray-800">
             <div className="hidden lg:flex flex-row space-x-4 p-3 flex-1 overflow-hidden">
                 <NewOrgButton 
                     activeOrganization={activeOrganization}
@@ -60,7 +56,6 @@ export const Navbar = ({
                 <OrganizationSwitcher
                     setActiveOrganization={setActiveOrganization}
                     activeOrganization={activeOrganization}
-                    theme={theme}
                 />
             </div>
             <div className="flex items-center gap-x-2 justify-between md:w-auto w-full">
@@ -89,10 +84,7 @@ export const Navbar = ({
                     <NotificationsMenu 
                         setActiveOrganization={setActiveOrganization}
                     />
-                    <UserButton 
-                        theme={theme}
-                        setTheme={setTheme}
-                    />
+                    <UserButton />
                 </div>
             </div>
         </div>

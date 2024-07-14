@@ -99,7 +99,7 @@ export const ImportDropdownMenu = (
             <Button
                 disabled={usersRole !== "Admin"}
                 onClick={onImportClick}
-                className="p-3 cursor-pointer w-full justify-start text-black font-normal bg-white hover:bg-accent"
+                className="p-3 cursor-pointer w-full justify-start text-black dark:text-white font-normal bg-white dark:bg-inherit hover:bg-accent dark:hover:bg-slate-800"
             >
                 <Import className="h-4 w-4 mr-2" />
                 Import

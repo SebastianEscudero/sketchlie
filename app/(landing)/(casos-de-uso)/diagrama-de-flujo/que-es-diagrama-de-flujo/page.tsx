@@ -228,7 +228,7 @@ const LandingPage = () => {
                     </ul>
                     <p className="mb-10">Siguiendo estos consejos, puedes optimizar tus actividades relacionadas con diagramas de flujo y obtener mejores resultados en tu trabajo colaborativo. En Sketchlie, te ofrecemos las herramientas y funcionalidades necesarias para aplicar estos consejos y maximizar tu productividad en la creación y edición de diagramas de flujo.</p>
                 </div>
-                <div className="lg:w-[30%] xl:ml-10 lg:ml-5 border border-black rounded-lg p-10 bg-[#FFF] lg:sticky lg:z-30 lg:top-24 lg:h-[50%] lg:mb-0 mb-10">
+                <div className="lg:w-[30%] xl:ml-10 lg:ml-5 border border-black rounded-lg p-10 bg-white dark:bg-[#020817] lg:sticky lg:z-30 lg:top-24 lg:h-[50%] lg:mb-0 mb-10">
                     <h3 className="text-2xl mb-3">
                         Indice
                     </h3>

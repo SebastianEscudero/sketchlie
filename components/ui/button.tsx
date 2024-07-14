@@ -13,10 +13,10 @@ const buttonVariants = cva(
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
           outline:
-          "border border-black bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
-        dashboard: "hover:bg-[#383838] text-white hover:text-white",
+          "border border-black bg-background shadow-sm hover:bg-accent hover:text-accent-foreground dark:bg-white dark:border-white dark:text-black",
+        dashboard: "dark:hover:bg-[#0a101f] dark:text-white hover:bg-accent-foreground/10 hover:text-accent-foreground",
         dashboardActive:
-          "bg-[#383838]/70 text-white hover:bg-[#383838]",
+          "bg-zinc-200 dark:bg-[#0a101f]/70 dark:text-white dark:hover:bg-[#0a101f]",
         secondary:
         "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:text-accent-foreground hover:bg-accent-foreground/10",
@@ -24,8 +24,8 @@ const buttonVariants = cva(
         blog: "hover:bg-custom-blue hover:text-accent-foreground border border-black rounded-md hover:text-[#FFF] hover:border-none",
         landing: "hover:bg-[#FBFBFB] hover:text-accent-foreground border border-zinc-400 rounded-md bg-[#FFF]",
         link: "text-primary underline-offset-4 hover:underline",
-        board: "hover:bg-blue-500/20 hover:text-blue-800",
         auth: "border-input bg-custom-blue text-white hover:bg-custom-blue-dark hover:text-white",
+        board: "hover:bg-blue-500/20 hover:text-blue-800 dark:hover:text-blue-500",
         boardActive: "bg-blue-500/20 text-blue-800",
         premium: "bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white border-0 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600",
         selectOrg: "text-custom-blue hover:bg-accent",
@@ -36,8 +36,8 @@ const buttonVariants = cva(
         iconActive: "bg-blue-600 text-white fill-white",
         magicAssist: "text-black hover:text-custom-blue",
         magicAssistActive: "text-custom-blue",
-        aligned: "bg-white",
-        alignedActive: "bg-accent/90 text-custom-blue",
+        aligned: "bg-white dark:bg-[#1A1A1C]",
+        alignedActive: "bg-accent/90 text-custom-blue dark:bg-[#1A1A1C]",
         sketchlieBlue: "bg-blue-600 text-white hover:bg-blue-800",
       },
       size: {
