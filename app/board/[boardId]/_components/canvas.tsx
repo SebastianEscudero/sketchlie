@@ -1644,22 +1644,24 @@ export const Canvas = ({
                     performAction(command);
                     unselectLayers();
                 }
-            }  else if (key === "d") {
-                setCanvasState({ mode: CanvasMode.Pencil });
-            } else if (key === "e") {
-                setCanvasState({ mode: CanvasMode.Eraser });
-            } else if (key === "h") {
-                setCanvasState({ mode: CanvasMode.Moving });
-            } else if (key === "n") {
-                setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Note });
-            } else if (key === "t") {
-                setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Text });
-            } else if (key === "l") {
-                setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Line });
-            } else if (key === "r") {
-                setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Rectangle });
-            } else if (key === "o") {
-                setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Ellipse });
+            }  else if (!isInsideTextArea) {
+                if (key === "d") {
+                    setCanvasState({ mode: CanvasMode.Pencil });
+                } else if (key === "e") {
+                    setCanvasState({ mode: CanvasMode.Eraser });
+                } else if (key === "h") {
+                    setCanvasState({ mode: CanvasMode.Moving });
+                } else if (key === "n") {
+                    setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Note });
+                } else if (key === "t") {
+                    setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Text });
+                } else if (key === "l") {
+                    setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Line });
+                } else if (key === "r") {
+                    setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Rectangle });
+                } else if (key === "o") {
+                    setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Ellipse });
+                }
             }
         }
 
