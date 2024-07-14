@@ -21,6 +21,7 @@ import {
     updateArrowPosition,
     updatedLayersConnectedArrows,
     getClosestEndPoint,
+    checkIfTextarea,
 } from "@/lib/utils";
 
 import {
@@ -1599,17 +1600,12 @@ export const Canvas = ({
                 return;
             }
 
+            const isInsideTextArea = checkIfTextarea();
             switch (e.key.toLocaleLowerCase()) {
                 case "z": {
                     if (e.ctrlKey || e.metaKey) {
 
-                        if (
-                            document.activeElement &&
-                            document.activeElement.getAttribute('contentEditable') !== 'true' &&
-                            document.activeElement.tagName !== 'TEXTAREA' &&
-                            document.activeElement.tagName !== 'INPUT'
-                        ) {
-                            // if we are not inside a content editable or textarea
+                        if (!isInsideTextArea) {
                             if (e.shiftKey && redoStack.length > 0) {
                                 redo();
                                 return;
@@ -1629,49 +1625,27 @@ export const Canvas = ({
                     break;
                 }
                 case "v": {
-                    if (
-                        document.activeElement instanceof HTMLTextAreaElement ||
-                        document.activeElement instanceof HTMLInputElement ||
-                        (document.activeElement instanceof HTMLElement && document.activeElement.contentEditable === "true")
-                    ) {
-                        break;
+                    if (!isInsideTextArea && (e.ctrlKey || e.metaKey)) {
+                        e.preventDefault();
+                        pasteCopiedLayers(mousePosition);
                     }
-                    if (e.ctrlKey || e.metaKey) {
-                        if (copiedLayerIds.length > 0) {
-                            e.preventDefault();
-                            pasteCopiedLayers(mousePosition);
-                        }
-                    }
-                    break;
                 }
                 case "a": {
-                    if (e.ctrlKey || e.metaKey) {
-
-                        if (
-                            document.activeElement &&
-                            document.activeElement.getAttribute('contentEditable') !== 'true' &&
-                            document.activeElement.tagName !== 'TEXTAREA' &&
-                            document.activeElement.tagName !== 'INPUT'
-                        ) {
-                            // if we are not inside a content editable or textarea
+                    if (!isInsideTextArea) {
+                        if ((e.ctrlKey || e.metaKey)) {
                             selectedLayersRef.current = liveLayerIds;
+                        } else {
+                            setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Arrow });
                         }
                     }
                     break;
                 }
                 case "backspace":
-                    if (
-                        document.activeElement instanceof HTMLTextAreaElement ||
-                        document.activeElement instanceof HTMLInputElement ||
-                        (document.activeElement instanceof HTMLElement && document.activeElement.contentEditable === "true")
-                    ) {
-                        break;
-                    }
-                    if (selectedLayersRef.current.length > 0) {
+                    if (selectedLayersRef.current.length > 0 && !isInsideTextArea) {
                         const command = new DeleteLayerCommand(selectedLayersRef.current, liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, boardId, socket);
                         performAction(command);
                         unselectLayers();
-                    }
+                }
             }
         }
 
@@ -1757,14 +1731,15 @@ export const Canvas = ({
 
     return (
         <main
-            className={`bg-[#F9FAFB] fixed h-full w-full touch-none overscroll-none ${isDraggingOverCanvas && 'bg-neutral-200 border-2 border-dashed border-custom-blue'}`}
+            className={`fixed h-full w-full touch-none overscroll-none ${isDraggingOverCanvas && 'bg-neutral-300 border-2 border-dashed border-custom-blue'}`}
             style={{
                 backgroundImage: (background === 'grid') ? `
-                linear-gradient(0deg, 'rgba(0,0,0,0.05)' 1px, transparent 1px),
-                linear-gradient(90deg, 'rgba(0,0,0,0.05)' 1px, transparent 1px)
-            ` : (background === 'line') ? `
-                linear-gradient(0deg, 'rgba(0,0,0,0.05)' 1px, transparent 1px)
-            ` : 'none',
+            linear-gradient(0deg, rgba(0,0,0,0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px)
+          ` : (background === 'line') ? `
+            linear-gradient(0deg, rgba(0,0,0,0.05) 1px, transparent 1px)
+          ` : 'none',
+                backgroundColor: '#F9FAFB',
                 backgroundSize: (background === 'grid' || background === 'line') ? `${65 * zoom}px ${65 * zoom}px` : undefined,
                 backgroundPosition: (background === 'grid' || background === 'line') ? `${camera.x}px ${camera.y}px` : undefined,
                 WebkitOverflowScrolling: 'touch',
