@@ -17,7 +17,7 @@ const DashboardPage = () => {
   const searchParams = useSearchParams();
   const search = searchParams.get("search") || undefined;
   const favorites = searchParams.get("favorites") || undefined
-  const [activeOrganization, setActiveOrganization] = useState<string | null>(null);
+  const [activeOrganization, setActiveOrganization] = useState<string | null>(localStorage.getItem("activeOrganization") || null);
   const user = useCurrentUser();
   const proModal = useProModal();
 

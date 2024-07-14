@@ -6,13 +6,13 @@ import { DialogClose, DialogTitle } from "@/components/ui/dialog";
 interface ShowAllTemplatesProps {
     onClick: (templateName: string, templateLayerIds: any, templateLayers: any) => void;
     pending?: boolean;
-    usersRole: any;
+    usersRole?: string;
 }
 
 export const ShowAllTemplates = ({
     onClick,
     pending = false,
-    usersRole,
+    usersRole = "Admin",
 }: ShowAllTemplatesProps) => {
     return (
         <div className="p-2 flex flex-col justify-center items-center" onWheel={(e) => e.stopPropagation()}>

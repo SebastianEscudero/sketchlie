@@ -1102,3 +1102,14 @@ export function updatedLayersConnectedArrows(connectedLayer: any, id: string) {
 
   return connectedLayer;
 }
+
+export function checkIfTextarea() {
+  if (document.activeElement &&
+    document.activeElement.getAttribute('contentEditable') !== 'true' &&
+    document.activeElement.tagName !== 'TEXTAREA' &&
+    document.activeElement.tagName !== 'INPUT'
+  ) {
+    return false;
+  }
+  return true;
+}

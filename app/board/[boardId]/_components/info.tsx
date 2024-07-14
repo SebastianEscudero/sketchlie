@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import { Hint } from "@/components/hint";
-import { LayoutTemplate, Menu, Zap } from "lucide-react";
+import { ChevronsLeft, LayoutTemplate, Menu, Zap } from "lucide-react";
 import { Actions } from "@/components/actions";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { useCurrentUser } from "@/hooks/use-current-user";
@@ -147,15 +147,7 @@ export const Info = ({
             <Hint label="Go to Dashboard" side="bottom" sideOffset={10}>
                 <Button asChild variant="board" className="px-2">
                     <Link href="/dashboard/">
-                        <Image 
-                        src="/logo.svg"
-                        alt="Board logo"
-                        height={40}
-                        width={40}
-                        />
-                        <span className="font-semibold text-xl ml-2 sm:flex hidden">
-                            Sketchlie
-                        </span>
+                        <ChevronsLeft className="h-5 w-5" />
                     </Link>
                 </Button>
             </Hint>
@@ -216,7 +208,6 @@ export const Info = ({
                 </Hint>
                 <DialogContent className="w-full max-w-[80%] max-h-[85%] xl:max-w-[50%] overflow-y-auto">
                     <ShowAllTemplates
-                        usersRole={usersRole}
                         onClick={onChooseTemplate}
                     />
                 </DialogContent>

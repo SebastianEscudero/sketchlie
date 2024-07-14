@@ -124,11 +124,11 @@ export const Actions = ({
           onClick={(e) => e.stopPropagation()}
           side={side}
           sideOffset={sideOffset}
-          className="w-60"
+          className={`w-60 ${showExport ? 'dark:bg-white dark:border-slate-200' : ''}`}
         >
           <DropdownMenuItem
             onClick={onCopyLink}
-            className="p-3 cursor-pointer"
+            className={`p-3 cursor-pointer ${showExport ? 'dark:bg-white dark:hover:bg-slate-100 dark:text-black' : ''}`}
           >
             <Link2 className="h-4 w-4 mr-2" />
             Copy board link
@@ -136,7 +136,7 @@ export const Actions = ({
           <DropdownMenuItem
             disabled={usersRole !== "Admin"}
             onClick={() => setIsRenameModalOpen(true)}
-            className="p-3 cursor-pointer"
+            className={`p-3 cursor-pointer ${showExport ? 'dark:bg-white dark:hover:bg-slate-100 dark:text-black' : ''}`}
           >
             <Pencil className="h-4 w-4 mr-2" />
             {usersRole === "Admin" ? "Rename" : "Rename (Admin)"}
@@ -149,7 +149,7 @@ export const Actions = ({
           >
             <Button
               disabled={usersRole !== "Admin"}
-              className="p-3 cursor-pointer w-full justify-start font-semibold text-red-500 bg-white dark:bg-inherit hover:bg-accent dark:hover:bg-[#2C2C2C]"
+              className={`p-3 cursor-pointer w-full justify-start font-semibold text-red-500 bg-white ${showExport ? 'dark:bg-white dark:hover:bg-slate-100' : 'dark:bg-inherit hover:bg-accent dark:hover:bg-[#2C2C2C]'}`}
             >
               <Trash2 className="h-4 w-4 mr-2" />
               {usersRole === "Admin" ? "Delete" : "Delete (Admin)"}

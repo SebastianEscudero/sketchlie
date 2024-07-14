@@ -158,7 +158,7 @@ export const Toolbar = ({
           label={
             !isPenEraserSwitcherOpen
               ? selectedTool === CanvasMode.Pencil
-                ? "Pencil"
+                ? "Draw"
                 : selectedTool === CanvasMode.Eraser
                   ? "Eraser"
                   : selectedTool === CanvasMode.Highlighter

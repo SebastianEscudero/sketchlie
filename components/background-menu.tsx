@@ -21,7 +21,9 @@ export const BackgroundMenu = ({
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild className="h-[44px]">
-                <DropdownMenuItem className="p-3 cursor-pointer flex justify-between">
+                <DropdownMenuItem
+                    className="p-3 cursor-pointer dark:bg-white dark:hover:bg-slate-100 dark:text-black"
+                >
                     <div className="flex flex-row items-center">
                         <Eye className="h-4 w-4 mr-2" />
                         View
@@ -29,12 +31,12 @@ export const BackgroundMenu = ({
                     <ChevronRight className="h-4 w-4 ml-auto" />
                 </DropdownMenuItem>
             </DropdownMenuTrigger>
-            <DropdownMenuContent side="right" sideOffset={10} className="w-[140px]">
+            <DropdownMenuContent side="right" sideOffset={10} className="w-[140px] dark:bg-white dark:border-slate-200">
                 {options.map(option => (
                     <Button
                         key={option}
                         variant="ghost"
-                        className="p-3 cursor-pointer text-sm w-full justify-start"
+                        className="p-3 cursor-pointer w-full justify-start text-black font-normal dark:hover:text-black bg-white hover:bg-accent dark:hover:bg-slate-100"
                         onClick={() => {
                             setBackground && setBackground(option)
                             localStorage.setItem("background", option)

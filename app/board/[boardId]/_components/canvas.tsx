@@ -1601,51 +1601,59 @@ export const Canvas = ({
             }
 
             const isInsideTextArea = checkIfTextarea();
-            switch (e.key.toLocaleLowerCase()) {
-                case "z": {
-                    if (e.ctrlKey || e.metaKey) {
+            const key = e.key.toLocaleLowerCase()
+            if (key === "z") {
+                if (e.ctrlKey || e.metaKey) {
 
-                        if (!isInsideTextArea) {
-                            if (e.shiftKey && redoStack.length > 0) {
-                                redo();
-                                return;
-                            } else if (!e.shiftKey && history.length > 0) {
-                                undo();
-                                return;
-                            }
-                            e.preventDefault();
+                    if (!isInsideTextArea) {
+                        if (e.shiftKey && redoStack.length > 0) {
+                            redo();
+                            return;
+                        } else if (!e.shiftKey && history.length > 0) {
+                            undo();
+                            return;
                         }
+                        e.preventDefault();
                     }
-                    break;
                 }
-                case "c": {
+            } else if (key === "c") {
+                if (e.ctrlKey || e.metaKey) {
+                    copySelectedLayers();
+                }
+            } else if (key === "v") {
+                if (!isInsideTextArea) {
                     if (e.ctrlKey || e.metaKey) {
-                        copySelectedLayers();
-                    }
-                    break;
-                }
-                case "v": {
-                    if (!isInsideTextArea && (e.ctrlKey || e.metaKey)) {
                         e.preventDefault();
                         pasteCopiedLayers(mousePosition);
+                    } else {
+                        setCanvasState({ mode: CanvasMode.None });
+                    }
+                    
+                }
+            } else if (key === "a") {
+                if (!isInsideTextArea) {
+                    if ((e.ctrlKey || e.metaKey)) {
+                        selectedLayersRef.current = liveLayerIds;
+                    } else {
+                        setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Arrow });
                     }
                 }
-                case "a": {
-                    if (!isInsideTextArea) {
-                        if ((e.ctrlKey || e.metaKey)) {
-                            selectedLayersRef.current = liveLayerIds;
-                        } else {
-                            setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Arrow });
-                        }
-                    }
-                    break;
+            } else if (key === "backspace" || key === "delete") {
+                if (selectedLayersRef.current.length > 0 && !isInsideTextArea) {
+                    const command = new DeleteLayerCommand(selectedLayersRef.current, liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, boardId, socket);
+                    performAction(command);
+                    unselectLayers();
                 }
-                case "backspace":
-                    if (selectedLayersRef.current.length > 0 && !isInsideTextArea) {
-                        const command = new DeleteLayerCommand(selectedLayersRef.current, liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, boardId, socket);
-                        performAction(command);
-                        unselectLayers();
-                }
+            }  else if (key === "d") {
+                setCanvasState({ mode: CanvasMode.Pencil });
+            } else if (key === "e") {
+                setCanvasState({ mode: CanvasMode.Eraser });
+            } else if (key === "h") {
+                setCanvasState({ mode: CanvasMode.Moving });
+            } else if (key === "n") {
+                setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Note });
+            } else if (key === "t") {
+                setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Text });
             }
         }
 
