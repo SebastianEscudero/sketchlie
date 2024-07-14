@@ -69,7 +69,7 @@ export const ResetForm = () => {
                       {...field}
                       disabled={isPending}
                       placeholder="john.doe@example.com"
-                      className="bg-white"
+                      className="bg-white dark:bg-white"
                       type="email"
                     />
                   </FormControl>

@@ -93,7 +93,31 @@ export const OrganizationSettings = ({
         userId: user?.id,
     });
 
-    const onDelete = () => deleteOrganization(activeOrg.id)
+    const onLeave = () => {
+        if (user) {
+            const orgName = activeOrg.name;
+            leaveOrganization(activeOrg.id, user.id)
+            .then(() => {
+                if (user && user.organizations && user?.organizations?.length > 0) {
+                    const firstOrgId = user?.organizations[0].id;
+                    setActiveOrganization(firstOrgId);
+                    localStorage.setItem("activeOrganization", firstOrgId);
+                } else {
+                    setActiveOrganization(null);
+                    localStorage.setItem("activeOrganization", '');
+                }
+                update();
+                toast.success(`Left organization ${orgName} successfully`);
+            }).finally(() => {
+                setIsOpen(false)
+            });
+        }
+    }
+    
+
+    const onDelete = () => {
+        const orgName = activeOrg.name;
+        deleteOrganization(activeOrg.id)
         .then(() => {
             {
                 data?.map((board) => (
@@ -110,8 +134,9 @@ export const OrganizationSettings = ({
                 localStorage.setItem("activeOrganization", '');
             }
             update();
-            toast.success("Organization deleted successfully");
+            toast.success(`Organization ${orgName} deleted successfully`);
         })
+    }
 
     const onSubmit = (values: z.infer<typeof OrganizationSchema>) => {
         setLoading(true);
@@ -254,17 +279,7 @@ export const OrganizationSettings = ({
                                                 </DropdownMenuTrigger>
                                                 <DropdownMenuContent align="end" className="rounded-xl shadow-xl border p-0">
                                                     <DropdownMenuItem className="py-2 px-3 hover:cursor-pointer">
-                                                        <p className="text-red-500" onClick={() => leaveOrganization(activeOrg.id, orgUser.id)
-                                                            .then((result) => {
-                                                                if (result.isOrgDeleted) {
-                                                                    setActiveOrganization("null");
-                                                                    localStorage.setItem("activeOrganization", "null");
-                                                                } else {
-                                                                    toast.info("Removed succesfully");
-                                                                }
-                                                                update();
-                                                            })
-                                                        }>
+                                                        <p className="text-red-500" onClick={onLeave}>
                                                             {orgUser.id === user?.id ? "Leave Organization" : "Remove member"}
                                                         </p>
                                                     </DropdownMenuItem>
@@ -327,15 +342,7 @@ export const OrganizationSettings = ({
                                         )}
                                         <Button
                                             className="mt-4 bg-white border border-red-500 text-red-500 shadow-sm hover:bg-red-500/90 hover:text-white w-full md:ml-2"
-                                            onClick={() => leaveOrganization(activeOrg.id, user.id)
-                                                .then((result) => {
-                                                    setActiveOrganization("null");
-                                                    update();
-                                                    if (result.isOrgDeleted) {
-                                                        localStorage.setItem("activeOrganization", "null");
-                                                    }
-                                                })
-                                            }
+                                            onClick={onLeave}
                                         >
                                             <X className="h-4 w-4 mr-2" /> Leave Organization
                                         </Button>

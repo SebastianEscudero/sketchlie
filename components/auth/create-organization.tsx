@@ -72,7 +72,7 @@ export const CreateOrganization = ({
                             if (data.id) {
                                 setActiveOrganization(data.id);
                                 localStorage.setItem("activeOrganization", data.id)
-                                toast.success("Organization created successfully");
+                                toast.success(`Organization ${values.name} created successfully`);
                                 setIsOpen?.(false);
                             }
                         } else {
