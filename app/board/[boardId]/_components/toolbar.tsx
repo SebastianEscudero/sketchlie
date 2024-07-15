@@ -129,7 +129,7 @@ export const Toolbar = ({
           <Redo2 className="h-5 w-5 text-white" />
         </Button>
       </div>
-      <div className="bg-white text-black rounded-lg shadow-custom-3 p-1.5 flex gap-x-1 flex-row items-center">
+      <div className="bg-white dark:bg-[#383838] rounded-lg shadow-custom-3 p-1.5 flex gap-x-1 flex-row items-center">
         <ToolButton
           label="Select"
           icon={MousePointer2}
@@ -158,7 +158,7 @@ export const Toolbar = ({
           label={
             !isPenEraserSwitcherOpen
               ? selectedTool === CanvasMode.Pencil
-                ? "Draw"
+                ? "Pencil"
                 : selectedTool === CanvasMode.Eraser
                   ? "Eraser"
                   : selectedTool === CanvasMode.Highlighter
@@ -264,7 +264,7 @@ export const Toolbar = ({
           }
         />
       </div>
-      <div className="bg-white text-black rounded-md p-1.5 hidden md:flex flex-row items-center shadow-custom-3">
+      <div className="bg-white dark:bg-[#383838] rounded-md p-1.5 hidden md:flex flex-row items-center shadow-custom-3">
         <Hint label="Undo" sideOffset={14}>
           <Button disabled={!canUndo} onClick={undo} className="h-8 w-8 xs:h-10 xs:w-10 p-2" variant="ghost">
             <Undo2 className="h-5 w-5" />
@@ -278,13 +278,13 @@ export const Toolbar = ({
       </div>
 
       {isPenMenuOpen && (canvasState.mode === CanvasMode.Highlighter || canvasState.mode === CanvasMode.Pencil) && isPenEraserSwitcherOpen &&
-        <div className="p-3 pt-5 pb-2 absolute left-8 bottom-32 bg-white rounded-lg shadow-custom-1 w-[165px] flex flex-col items-center cursor-default">
+        <div className="p-3 pt-5 pb-2 absolute left-8 bottom-32 bg-white dark:bg-[#383838] rounded-lg shadow-custom-1 w-[165px] flex flex-col items-center cursor-default">
           <Slider
             defaultValue={[pathStrokeSize]}
             min={1}
             max={8}
             step={1}
-            className='w-[90%] cursor-pointer'
+            className='bg-white dark:bg-[#383838] w-[90%] cursor-pointer'
             onValueChange={handleStrokeSizeChange}
           />
           <div className="grid grid-cols-4 gap-x-1 pt-2" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
@@ -309,7 +309,7 @@ export const Toolbar = ({
       }
 
       {isShapesMenuOpen && canvasState.mode === CanvasMode.Inserting && canvasState.layerType !== LayerType.Image && canvasState.layerType !== LayerType.Text && canvasState.layerType !== LayerType.Arrow && canvasState.layerType !== LayerType.Note &&
-        <div className="absolute left-[60px] bottom-16 p-2 bg-white rounded-lg shadow-custom-1 grid grid-cols-4 grid-rows-3 gap-2 h-[144px] w-[160px] sm:w-[192px] items-center cursor-default">
+        <div className="absolute left-[60px] bottom-16 p-2 bg-white dark:bg-[#383838] rounded-lg shadow-custom-1 grid grid-cols-4 grid-rows-3 gap-2 h-[144px] w-[160px] sm:w-[192px] items-center cursor-default">
           <ToolButton
             icon={Square}
             onClick={() => setCanvasState({
@@ -445,7 +445,7 @@ export const Toolbar = ({
         </div>
       }
       {isPenEraserSwitcherOpen && (canvasState.mode === CanvasMode.Pencil || canvasState.mode === CanvasMode.Eraser || canvasState.mode === CanvasMode.Laser || canvasState.mode === CanvasMode.Highlighter) &&
-        <div className="absolute left-5 bottom-16 p-2 bg-white rounded-lg shadow-custom-1 flex flex-row space-x-1 items-center cursor-default">
+        <div className="absolute left-5 bottom-16 p-2 bg-white dark:bg-[#383838] rounded-lg shadow-custom-1 flex flex-row space-x-1 items-center cursor-default">
           {/* <Hint label="Magic Drawing" side="right" sideOffset={14}>
             <Button className="h-8 w-8 xs:h-10 xs:w-10 p-2" variant={magicPathAssist ? "magicAssistActive" : "magicAssist"} onClick={() => setMagicPathAssist(!magicPathAssist)}>
               <WandSparkles className="w-5 h-5"/>
@@ -501,6 +501,6 @@ export const Toolbar = ({
 
 export const ToolbarSkeleton = () => {
   return (
-    <div className="absolute top-[50%] -translate-y-[50%] left-2 flex flex-col gap-y-4 bg-white h-[360px] w-[52px] shadow-custom-1 rounded-md" />
+    <div className="absolute top-[50%] -translate-y-[50%] left-2 flex flex-col gap-y-4 bg-white dark:bg-[#383838] h-[360px] w-[52px] shadow-custom-1 rounded-md" />
   );
 };

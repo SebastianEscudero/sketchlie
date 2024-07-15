@@ -21,6 +21,7 @@ interface BigArrowUpProps {
   expired?: boolean;
   socket?: any;
   focused?: boolean;
+  forcedRender?: boolean;
 };
 
 const throttledUpdateLayer = throttle((boardId, layerId, layerUpdates) => {

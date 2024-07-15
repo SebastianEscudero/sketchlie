@@ -32,6 +32,7 @@ interface InfoProps {
     selectedLayersRef: any;
     setIsShowingAIInput: any;
     isShowingAIInput: any;
+    setForcedRender(forcedRender: boolean ): void;
 }
 
 const TabSeparator = () => {
@@ -57,6 +58,7 @@ export const Info = ({
     zoom,
     setCanvasState,
     selectedLayersRef,
+    setForcedRender,
     setIsShowingAIInput,
     isShowingAIInput,
 }: InfoProps) => {
@@ -145,7 +147,7 @@ export const Info = ({
     if (!board) return <InfoSkeleton />;
 
     return(
-        <div className="absolute bg-white rounded-br-lg px-1 h-12 flex items-center shadow-custom-1 text-black">
+        <div className="absolute bg-white dark:bg-[#383838] rounded-br-lg px-1 h-12 flex items-center shadow-custom-1 dark:shadow-custom-3">
             <Hint label="Go to Dashboard" side="bottom" sideOffset={10}>
                 <Button asChild variant="board" className="px-2">
                     <Link href="/dashboard/">
@@ -188,6 +190,7 @@ export const Info = ({
                 socket={socket}
                 selectedLayersRef={selectedLayersRef}
                 setCanvasState={setCanvasState}
+                setForcedRender={setForcedRender}
             >
                 <div className="w-10 flex justify-center items-center">
                     <Hint label="Main menu" side="bottom" sideOffset={10}>

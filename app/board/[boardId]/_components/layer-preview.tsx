@@ -33,6 +33,7 @@ interface LayerPreviewProps {
   socket: any;
   expired: boolean;
   boardId: string;
+  forcedRender?: boolean;
 };
 
 export const LayerPreview = memo(({
@@ -46,6 +47,7 @@ export const LayerPreview = memo(({
   socket,
   expired,
   boardId,
+  forcedRender,
 }: LayerPreviewProps) => {
 
   if (!layer) {
@@ -77,6 +79,7 @@ export const LayerPreview = memo(({
           socket={socket}
           expired={expired}
           focused={focused}
+          forcedRender={forcedRender}
         />
       );
     case LayerType.Text:
@@ -92,6 +95,7 @@ export const LayerPreview = memo(({
           expired={expired}
           focused={focused}
           boardId={boardId}
+          forcedRender={forcedRender}
         />
       );
     case LayerType.Ellipse:
@@ -105,6 +109,7 @@ export const LayerPreview = memo(({
           socket={socket}
           expired={expired}
           focused={focused}
+          forcedRender={forcedRender}
         />
       );
     case LayerType.Rectangle:
@@ -118,6 +123,7 @@ export const LayerPreview = memo(({
           socket={socket}
           expired={expired}
           focused={focused}
+          forcedRender={forcedRender}
         />
       );
     case LayerType.Rhombus:
@@ -131,6 +137,7 @@ export const LayerPreview = memo(({
           socket={socket}
           expired={expired}
           focused={focused}
+          forcedRender={forcedRender}
         />
       );
     case LayerType.Triangle:
@@ -144,6 +151,7 @@ export const LayerPreview = memo(({
           socket={socket}
           expired={expired}
           focused={focused}
+          forcedRender={forcedRender}
         />
       );
     case LayerType.Star:
@@ -157,6 +165,7 @@ export const LayerPreview = memo(({
           socket={socket}
           expired={expired}
           focused={focused}
+          forcedRender={forcedRender}
         />
       );
     case LayerType.Hexagon:
@@ -170,6 +179,7 @@ export const LayerPreview = memo(({
           socket={socket}
           expired={expired}
           focused={focused}
+          forcedRender={forcedRender}
         />
       );
     case LayerType.CommentBubble:
@@ -183,6 +193,7 @@ export const LayerPreview = memo(({
           socket={socket}
           expired={expired}
           focused={focused}
+          forcedRender={forcedRender}
         />
       );
     case LayerType.Line:
@@ -205,6 +216,7 @@ export const LayerPreview = memo(({
           socket={socket}
           expired={expired}
           focused={focused}
+          forcedRender={forcedRender}
         />
       );
     case LayerType.BigArrowRight:
@@ -218,6 +230,7 @@ export const LayerPreview = memo(({
           socket={socket}
           expired={expired}
           focused={focused}
+          forcedRender={forcedRender}
         />
       );
     case LayerType.BigArrowUp:
@@ -231,6 +244,7 @@ export const LayerPreview = memo(({
           socket={socket}
           expired={expired}
           focused={focused}
+          forcedRender={forcedRender}
         />
       );
     case LayerType.BigArrowDown:
@@ -244,6 +258,7 @@ export const LayerPreview = memo(({
           socket={socket}
           expired={expired}
           focused={focused}
+          forcedRender={forcedRender}
         />
       );
     case LayerType.Image:

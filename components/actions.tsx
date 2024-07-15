@@ -43,6 +43,7 @@ interface ActionsProps {
   selectedLayersRef?: any;
   liveLayers?: Layers;
   setCanvasState?: (state: any) => void;
+  setForcedRender?: (forcedRender: boolean) => void;
 };
 
 export const Actions = ({
@@ -61,6 +62,7 @@ export const Actions = ({
   socket,
   selectedLayersRef,
   setCanvasState,
+  setForcedRender,
 }: ActionsProps) => {
   const { mutate, pending } = useApiMutation(api.board.remove);
   const [isRenameModalOpen, setIsRenameModalOpen] = useState(false);
@@ -123,11 +125,11 @@ export const Actions = ({
           onClick={(e) => e.stopPropagation()}
           side={side}
           sideOffset={sideOffset}
-          className={`w-60 ${canvasActions ? 'dark:bg-white dark:border-slate-200' : ''}`}
+          className="w-60"
         >
           <DropdownMenuItem
             onClick={onCopyLink}
-            className={`p-3 cursor-pointer ${canvasActions ? 'dark:bg-white dark:hover:bg-slate-100 dark:text-black' : ''}`}
+            className="p-3 cursor-pointer"
           >
             <Link2 className="h-4 w-4 mr-2" />
             Copy board link
@@ -135,7 +137,7 @@ export const Actions = ({
           <DropdownMenuItem
             disabled={usersRole !== "Admin"}
             onClick={() => setIsRenameModalOpen(true)}
-            className={`p-3 cursor-pointer ${canvasActions ? 'dark:bg-white dark:hover:bg-slate-100 dark:text-black' : ''}`}
+            className="p-3 cursor-pointer"
           >
             <Pencil className="h-4 w-4 mr-2" />
             {usersRole === "Admin" ? "Rename" : "Rename (Admin)"}
@@ -148,7 +150,7 @@ export const Actions = ({
           >
             <Button
               disabled={usersRole !== "Admin"}
-              className={`p-3 cursor-pointer w-full justify-start font-semibold text-red-500 bg-white hover:bg-slate-100 ${canvasActions ? 'dark:bg-white dark:hover:bg-slate-100' : 'dark:bg-inherit hover:bg-accent dark:hover:bg-[#2C2C2C]'}`}
+              className="p-3 cursor-pointer w-full justify-start font-semibold text-red-500 bg-white dark:bg-inherit hover:bg-accent dark:hover:bg-[#2C2C2C]"
             >
               <Trash2 className="h-4 w-4 mr-2" />
               {usersRole === "Admin" ? "Delete" : "Delete (Admin)"}
@@ -167,7 +169,7 @@ export const Actions = ({
                 selectedLayersRef={selectedLayersRef}
               />
               <ExportDropdownMenu id={id} title={title} />
-              <BackgroundMenu setBackground={setBackground} Background={Background} />
+              <BackgroundMenu setBackground={setBackground} Background={Background} setForcedRender={setForcedRender}/>
               <HelpDropdownMenu setCanvasState={setCanvasState}/>
             </>
           }

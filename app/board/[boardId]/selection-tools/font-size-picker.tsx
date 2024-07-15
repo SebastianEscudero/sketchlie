@@ -103,7 +103,7 @@ export const FontSizePicker = ({
     const selectorPositionClass = expandUp ? 'bottom-[100%] mb-3' : 'top-[100%] mt-3';
 
     return (
-        <div className="relative inline-block text-left text-black">
+        <div className="relative inline-block text-left">
             <div className='flex flex-row items center justify-center'>
                 <div onClick={() => setOpenSelector(openSelector === SelectorType.FontSize ? null : SelectorType.FontSize)}>
                     <input
@@ -113,7 +113,7 @@ export const FontSizePicker = ({
                         onChange={handleInputChange}
                         onBlur={handleInputBlur}
                         onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.blur()}
-                        className='h-8 w-8 text-center text-sm'
+                        className='h-8 w-8 text-center text-sm dark:bg-[#383838]'
                     />
                 </div>
                 <div className='flex flex-col pl-3'>
@@ -123,7 +123,7 @@ export const FontSizePicker = ({
             </div>
             {openSelector === SelectorType.FontSize && (
                 <div
-                    className={`shadow-custom-1 rounded-lg absolute ${selectorPositionClass} right-3 w-[65px] bg-white ring-1 ring-black ring-opacity-5`}
+                    className={`shadow-custom-1 rounded-lg absolute ${selectorPositionClass} right-3 w-[65px] bg-white dark:bg-[#383838] ring-1 ring-black ring-opacity-5`}
                 >
                     <div className="py-5 px-3 grid grid-cols-1 gap-5 w-full text-sm" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                         {fontSizes.map(fontSize => (

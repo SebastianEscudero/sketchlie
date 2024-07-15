@@ -21,7 +21,7 @@ export const HelpDropdownMenu = ({
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild className="h-[44px]">
-                <DropdownMenuItem className="p-3 cursor-pointer flex justify-between dark:bg-white dark:hover:bg-slate-100 dark:text-black">
+                <DropdownMenuItem className="p-3 cursor-pointer flex justify-between">
                     <div className="flex flex-row items-center">
                         <CircleHelp className="h-4 w-4 mr-2" />
                         Help
@@ -37,17 +37,17 @@ export const HelpDropdownMenu = ({
                     setIsOpen={setIsKeyboardShortcutsDialogOpen}
                 />
             ) : (
-                <DropdownMenuContent side="right" sideOffset={8} className="w-[170px] dark:bg-white dark:border-slate-200">
+                <DropdownMenuContent side="right" sideOffset={8} className="w-[170px]">
                     <DropdownMenuItem
                         onClick={() => setIsKeyboardShortcutsDialogOpen(true)}
-                        className="p-3 cursor-pointer dark:bg-white dark:hover:bg-slate-100 dark:text-black"
+                        className="p-3 cursor-pointer"
                     >
                         Keyboard Shortcuts
                     </DropdownMenuItem>
                     <DropdownMenuItem
-                        className="cursor-pointer dark:bg-white dark:hover:bg-slate-100 dark:text-black p-0"
+                        className="cursor-pointer"
                     >
-                        <Link href="https://www.sketchlie.com/blog/pizarra-online-tutorial/" target="_blank" className="w-full h-full p-3">
+                        <Link href="https://www.sketchlie.com/blog/pizarra-online-tutorial/" target="_blank" className="w-full h-full p-1">
                             Tutorial
                         </Link>
                     </DropdownMenuItem>

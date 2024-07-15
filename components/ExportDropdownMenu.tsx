@@ -32,7 +32,7 @@ export const ExportDropdownMenu = ({ id, title }: ExportDropdownMenuProps) => {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild className="h-[44px]">
-                <DropdownMenuItem className="p-3 cursor-pointer flex justify-between dark:bg-white dark:hover:bg-slate-100 dark:text-black">
+                <DropdownMenuItem className="p-3 cursor-pointer flex justify-between">
                     <div className="flex flex-row items-center">
                         <ArrowUpFromLine className="h-4 w-4 mr-2" />
                         Export
@@ -40,20 +40,20 @@ export const ExportDropdownMenu = ({ id, title }: ExportDropdownMenuProps) => {
                     <ChevronRight className="h-4 w-4" />
                 </DropdownMenuItem>
             </DropdownMenuTrigger>
-            <DropdownMenuContent side="right" sideOffset={8} className="w-[140px] dark:bg-white dark:border-slate-200">
+            <DropdownMenuContent side="right" sideOffset={8} className="w-[140px]">
                 {exportOptions.map((option, index) => (
                     <DropdownMenuItem
                         key={index}
                         onClick={option.action}
-                        className="p-3 cursor-pointer dark:bg-white dark:hover:bg-slate-100 dark:text-black"
+                        className="p-3 cursor-pointer"
                     >
                         {option.label}
                     </DropdownMenuItem>
                 ))}
-                <div className="border-t border-zinc-300 pt-1">
+                <div className="border-t dark:border-zinc-500 pt-1">
                     <Button
                         onClick={toggleTransparency}
-                        className="p-3 cursor-pointer w-full justify-start text-black font-normal dark:hover:text-black bg-white hover:bg-accent dark:hover:bg-slate-100"
+                        className="p-3 cursor-pointer w-full justify-start text-black dark:text-white font-normal bg-white dark:bg-inherit hover:bg-accent dark:hover:bg-[#2C2C2C]"
                         variant="ghost"
                     >
                         {isTransparent ? <ToggleRight className="mr-2" /> : <ToggleLeft className="mr-2 text-neutral-400" />} Transparent

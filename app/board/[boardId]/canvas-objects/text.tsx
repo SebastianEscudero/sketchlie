@@ -22,6 +22,7 @@ interface TextProps {
     onRefChange?: (ref: React.RefObject<any>) => void;
     focused?: boolean;
     boardId?: string;
+    forcedRender?: boolean;
 };
 
 const throttledUpdateLayer = throttle((boardId, layerId, layerUpdates) => {

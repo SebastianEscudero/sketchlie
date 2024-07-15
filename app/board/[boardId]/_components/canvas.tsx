@@ -59,6 +59,7 @@ import { ZoomToolbar } from "./zoom-toolbar";
 import { Command, DeleteLayerCommand, InsertLayerCommand, TranslateLayersCommand } from "@/lib/commands";
 import { SketchlieAiInput } from "./sketchlie-ai-input";
 import { ArrowConnectionOutlinePreview } from "./arrow-connection-outline-preview";
+import { setCursorWithFill } from "@/lib/theme-utilts";
 
 const preventDefault = (e: any) => {
     if (e.scale !== 1) {
@@ -120,7 +121,8 @@ export const Canvas = ({
     const [activeTouches, setActiveTouches] = useState(0);
     const [magicPathAssist, setMagicPathAssist] = useState(false);
     const [layerWithAssistDraw, setLayerWithAssistDraw] = useState(false);
-    const [forceRender, setForceRender] = useState(false);
+    const [forceSelectionBoxRender, setForceSelectionBoxRender] = useState(false);
+    const [forceLayerPreviewRender, setForceLayerPreviewRender] = useState(false);
     const proModal = useProModal();
     const [background, setBackground] = useState(() => {
         const storedValue = localStorage.getItem('background');
@@ -365,7 +367,7 @@ export const Canvas = ({
                                 const updatedArrow = updateArrowPosition(arrowLayer, id, newLayer, startConnectedLayerId, endConnectedLayerId, liveLayers);
                                 updatedLayers.push(updatedArrow);
                                 newLayers[arrowId] = updatedArrow;
-                                updatedLayerIds.push(arrowId);                            
+                                updatedLayerIds.push(arrowId);
                             }
                         });
                     }
@@ -725,7 +727,7 @@ export const Canvas = ({
                         }
                         const start = { x: newLayer.x, y: newLayer.y };
                         intersectingStartLayers = findIntersectingLayerForConnection(liveLayerIds, liveLayers, start, zoom) || undefined;
-                    
+
                     } else if (canvasState.handle === ArrowHandle.start) {
                         intersectingStartLayers = findIntersectingLayerForConnection(liveLayerIds, liveLayers, point, zoom) || undefined;
                         if (intersectingStartLayer) {
@@ -743,7 +745,7 @@ export const Canvas = ({
                     if (canvasState.handle === ArrowHandle.start || canvasState.handle === ArrowHandle.end) {
                         const filteredStartLayers = intersectingStartLayers.filter(layer => !intersectingEndLayers.includes(layer));
                         const filteredEndLayers = intersectingEndLayers.filter(layer => !intersectingStartLayers.includes(layer));
-                        
+
                         intersectingStartLayers = filteredStartLayers;
                         intersectingEndLayers = filteredEndLayers;
 
@@ -1031,11 +1033,11 @@ export const Canvas = ({
                     break;
                 case LayerType.Arrow:
                     let intersectingStartLayers: string[] = findIntersectingLayerForConnection(liveLayerIds, liveLayers, startPanPoint, zoom);
-                    let intersectingEndLayers: string[]= findIntersectingLayerForConnection(liveLayerIds, liveLayers, point, zoom);
+                    let intersectingEndLayers: string[] = findIntersectingLayerForConnection(liveLayerIds, liveLayers, point, zoom);
 
                     const filteredStartLayers = intersectingStartLayers.filter(layer => !intersectingEndLayers.includes(layer));
                     const filteredEndLayers = intersectingEndLayers.filter(layer => !intersectingStartLayers.includes(layer));
-                    
+
                     // Assigning the filtered results back
                     const intersectingStartLayer = filteredStartLayers.pop();
                     const intersectingEndLayer = filteredEndLayers.pop();
@@ -1050,7 +1052,7 @@ export const Canvas = ({
                             const startConnectedLayer = liveLayers[startConnectedLayerId];
                             start = getClosestEndPoint(startConnectedLayer, point);
                         }
-    
+
                         if (intersectingEndLayer) {
                             const endConnectedLayer = liveLayers[endConnectedLayerId];
                             end = getClosestPointOnBorder(endConnectedLayer, end, start, zoom);
@@ -1155,7 +1157,7 @@ export const Canvas = ({
         } else if (canvasState.mode === CanvasMode.Inserting && canvasState.layerType !== LayerType.Image) {
 
             if (e.button === 2 || e.button === 1) {
-                document.body.style.cursor = 'url(/custom-cursors/inserting.svg) 10 10, auto';
+                setCursorWithFill('/custom-cursors/inserting.svg', document.documentElement.classList.contains("dark") ? '#ffffff' : '#000000', 10, 10);
             }
 
             const layerType = canvasState.layerType;
@@ -1217,7 +1219,7 @@ export const Canvas = ({
                     if (layer.type !== LayerType.Arrow && layer.type !== LayerType.Line && layer.type !== LayerType.Path && selectedLayersRef.current.length === 1) {
                         if (layer.connectedArrows) {
                             layer.connectedArrows.forEach(arrowId => {
-                                updatedLayerIds.push(arrowId);                            
+                                updatedLayerIds.push(arrowId);
                             })
                         };
                     }
@@ -1560,7 +1562,7 @@ export const Canvas = ({
                 layer.connectedArrows = layer.connectedArrows.map(arrowId => idMap.get(arrowId) || arrowId);
             }
         });
-    
+
         const newIds = Object.keys(newLayers);
         const clonedLayers = Object.values(newLayers);
 
@@ -1629,14 +1631,14 @@ export const Canvas = ({
                     } else {
                         setCanvasState({ mode: CanvasMode.None });
                     }
-                    
+
                 }
             } else if (key === "a") {
                 if (!isInsideTextArea) {
                     if ((e.ctrlKey || e.metaKey)) {
                         e.preventDefault();
                         selectedLayersRef.current = liveLayerIds;
-                        setForceRender(!forceRender);
+                        setForceSelectionBoxRender(!forceSelectionBoxRender);
                     } else {
                         setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Arrow });
                     }
@@ -1647,7 +1649,7 @@ export const Canvas = ({
                     performAction(command);
                     unselectLayers();
                 }
-            }  else if (!isInsideTextArea) {
+            } else if (!isInsideTextArea) {
                 if (key === "d") {
                     setCanvasState({ mode: CanvasMode.Pencil });
                 } else if (key === "e") {
@@ -1723,9 +1725,9 @@ export const Canvas = ({
         if (canvasState.mode === CanvasMode.Inserting) {
             selectedLayersRef.current = [];
             if (canvasState.layerType === LayerType.Text) {
-                document.body.style.cursor = 'url(/custom-cursors/text-cursor.svg) 8 0, auto';
+                setCursorWithFill('/custom-cursors/text-cursor.svg', document.documentElement.classList.contains("dark") ? '#ffffff' : '#000000', 8, 0);
             } else {
-                document.body.style.cursor = 'url(/custom-cursors/inserting.svg) 10 10, auto';
+                setCursorWithFill('/custom-cursors/inserting.svg', document.documentElement.classList.contains("dark") ? '#ffffff' : '#000000', 10, 10);
             }
         } else if (canvasState.mode === CanvasMode.Pencil) {
             document.body.style.cursor = 'url(/custom-cursors/pencil.svg) 2 18, auto';
@@ -1750,15 +1752,14 @@ export const Canvas = ({
 
     return (
         <main
-            className={`fixed h-full w-full touch-none overscroll-none ${isDraggingOverCanvas && 'bg-neutral-300 border-2 border-dashed border-custom-blue'}`}
+            className={`bg-[#F9FAFB] dark:bg-[#2C2C2C] fixed h-full w-full touch-none overscroll-none ${isDraggingOverCanvas && 'bg-neutral-200 border-2 border-dashed border-custom-blue'}`}
             style={{
                 backgroundImage: (background === 'grid') ? `
-            linear-gradient(0deg, rgba(0,0,0,0.05) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px)
-          ` : (background === 'line') ? `
-            linear-gradient(0deg, rgba(0,0,0,0.05) 1px, transparent 1px)
-          ` : 'none',
-                backgroundColor: '#F9FAFB',
+                linear-gradient(0deg, ${document.documentElement.classList.contains("dark") ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'} 1px, transparent 1px),
+                linear-gradient(90deg, ${document.documentElement.classList.contains("dark") ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'} 1px, transparent 1px)
+            ` : (background === 'line') ? `
+                linear-gradient(0deg, ${document.documentElement.classList.contains("dark") ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'} 1px, transparent 1px)
+            ` : 'none',
                 backgroundSize: (background === 'grid' || background === 'line') ? `${65 * zoom}px ${65 * zoom}px` : undefined,
                 backgroundPosition: (background === 'grid' || background === 'line') ? `${camera.x}px ${camera.y}px` : undefined,
                 WebkitOverflowScrolling: 'touch',
@@ -1782,6 +1783,7 @@ export const Canvas = ({
                 selectedLayersRef={selectedLayersRef}
                 setIsShowingAIInput={setIsShowingAIInput}
                 isShowingAIInput={isShowingAIInput}
+                setForcedRender={setForceLayerPreviewRender}
             />
             <Participants
                 org={org}
@@ -1885,6 +1887,7 @@ export const Canvas = ({
                                     socket={socket}
                                     expired={expired}
                                     boardId={boardId}
+                                    forcedRender={forceLayerPreviewRender}
                                 />
                             );
                         })}
@@ -1901,11 +1904,11 @@ export const Canvas = ({
                                 onResizeHandlePointerDown={onResizeHandlePointerDown}
                                 onArrowResizeHandlePointerDown={onArrowResizeHandlePointerDown}
                                 setLiveLayers={setLiveLayers}
-                                forceRender={forceRender}
+                                forceRender={forceSelectionBoxRender}
                             />
                         )}
                         {((canvasState.mode === CanvasMode.ArrowResizeHandler && selectedLayersRef.current.length === 1) || (currentPreviewLayer?.type === LayerType.Arrow)) && (
-                            <ArrowConnectionOutlinePreview 
+                            <ArrowConnectionOutlinePreview
                                 zoom={zoom}
                                 selectedArrow={currentPreviewLayer || liveLayers[selectedLayersRef.current[0]]}
                                 liveLayers={liveLayers}

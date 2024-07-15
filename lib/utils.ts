@@ -69,6 +69,18 @@ export function connectionIdToColor(connectionId: number): string {
 
 
 export function colorToCss(color: Color) {
+  if (color.r === 29 && color.g === 29 && color.b === 29) {
+    if (document.documentElement.classList.contains("dark")) {
+      return `rgba(${255},${255},${255},${color.a})`;
+    }
+  }
+
+  if (color.r === 255 && color.g === 255 && color.b === 255) {
+    if (document.documentElement.classList.contains("dark")) {
+      return `rgba(${29},${29},${29},${color.a})`;
+    }
+  }
+
   return `rgba(${color.r},${color.g},${color.b},${color.a})`;
 }
 
@@ -573,6 +585,9 @@ export function findIntersectingLayersWithRectangle(
 
 export function getContrastingTextColor(color: Color) {
   if (color.r === 0 && color.g === 0 && color.b === 0) {
+    if (document.documentElement.classList.contains("dark")) {
+      return "white";
+    }
     return "black";
   }
 
