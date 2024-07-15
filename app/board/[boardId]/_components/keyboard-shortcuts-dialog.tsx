@@ -6,10 +6,14 @@ import React from "react";
 import { CanvasMode } from "@/types/canvas";
 
 interface KeyboardShortcutsDialogProps {
-    setCanvasState(state: any): void;
+    isOpen: boolean;
+    setIsOpen: (isOpen: boolean) => void;
+    setCanvasState?: (state: any) => void;
 }
 
 export const KeyboardShortcutsDialog = ({
+    isOpen,
+    setIsOpen,
     setCanvasState
 }: KeyboardShortcutsDialogProps) => {
     const shortcuts = [
@@ -45,14 +49,7 @@ export const KeyboardShortcutsDialog = ({
     ];
 
     return (
-        <Dialog>
-            <Hint label="Keyboard shortcuts" side="bottom" sideOffset={10}>
-                <DialogTrigger className="justify-center items-center xs:flex hidden" onClick={() => setCanvasState({ mode: CanvasMode.None })}>
-                    <Button asChild className="h-8 w-8 xs:h-10 xs:w-10 p-2" variant="board">
-                        <CircleHelp className="h-5 w-5" />
-                    </Button>
-                </DialogTrigger>
-            </Hint>
+        <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogContent className="w-full max-w-[80%] md:max-w-[55%] max-h-[85%] xl:max-w-[30%] overflow-y-auto">
                 <DialogTitle>Keyboard shortcuts</DialogTitle>
                 <div className="flex flex-col md:flex-row justify-between md:space-x-10">

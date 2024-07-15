@@ -22,6 +22,8 @@ import { BackgroundMenu } from "./background-menu";
 import { useState } from "react";
 import { RenameBoardDialog } from "./modals/rename-modal";
 import { Layers } from "@/types/canvas";
+import { KeyboardShortcutsDialog } from "@/app/board/[boardId]/_components/keyboard-shortcuts-dialog";
+import { HelpDropdownMenu } from "./help-dropdown-menu";
 
 
 interface ActionsProps {
@@ -30,10 +32,8 @@ interface ActionsProps {
   sideOffset?: DropdownMenuContentProps["sideOffset"];
   id: string;
   title: string;
-  showGrid?: boolean;
-  showExport?: boolean;
-  showImport?: boolean;
   org: any;
+  canvasActions?: boolean;
   setBackground?: (background: string) => void;
   Background?: string;
   performAction?: any;
@@ -42,6 +42,7 @@ interface ActionsProps {
   socket?: any;
   selectedLayersRef?: any;
   liveLayers?: Layers;
+  setCanvasState?: (state: any) => void;
 };
 
 export const Actions = ({
@@ -50,9 +51,7 @@ export const Actions = ({
   sideOffset,
   id,
   title,
-  showGrid = false,
-  showExport = false,
-  showImport = false,
+  canvasActions = false,
   org,
   setBackground,
   Background,
@@ -61,7 +60,7 @@ export const Actions = ({
   setLiveLayerIds,
   socket,
   selectedLayersRef,
-  liveLayers,
+  setCanvasState,
 }: ActionsProps) => {
   const { mutate, pending } = useApiMutation(api.board.remove);
   const [isRenameModalOpen, setIsRenameModalOpen] = useState(false);
@@ -124,11 +123,11 @@ export const Actions = ({
           onClick={(e) => e.stopPropagation()}
           side={side}
           sideOffset={sideOffset}
-          className={`w-60 ${showExport ? 'dark:bg-white dark:border-slate-200' : ''}`}
+          className={`w-60 ${canvasActions ? 'dark:bg-white dark:border-slate-200' : ''}`}
         >
           <DropdownMenuItem
             onClick={onCopyLink}
-            className={`p-3 cursor-pointer ${showExport ? 'dark:bg-white dark:hover:bg-slate-100 dark:text-black' : ''}`}
+            className={`p-3 cursor-pointer ${canvasActions ? 'dark:bg-white dark:hover:bg-slate-100 dark:text-black' : ''}`}
           >
             <Link2 className="h-4 w-4 mr-2" />
             Copy board link
@@ -136,7 +135,7 @@ export const Actions = ({
           <DropdownMenuItem
             disabled={usersRole !== "Admin"}
             onClick={() => setIsRenameModalOpen(true)}
-            className={`p-3 cursor-pointer ${showExport ? 'dark:bg-white dark:hover:bg-slate-100 dark:text-black' : ''}`}
+            className={`p-3 cursor-pointer ${canvasActions ? 'dark:bg-white dark:hover:bg-slate-100 dark:text-black' : ''}`}
           >
             <Pencil className="h-4 w-4 mr-2" />
             {usersRole === "Admin" ? "Rename" : "Rename (Admin)"}
@@ -149,27 +148,29 @@ export const Actions = ({
           >
             <Button
               disabled={usersRole !== "Admin"}
-              className={`p-3 cursor-pointer w-full justify-start font-semibold text-red-500 bg-white hover:bg-slate-100 ${showExport ? 'dark:bg-white dark:hover:bg-slate-100' : 'dark:bg-inherit hover:bg-accent dark:hover:bg-[#2C2C2C]'}`}
+              className={`p-3 cursor-pointer w-full justify-start font-semibold text-red-500 bg-white hover:bg-slate-100 ${canvasActions ? 'dark:bg-white dark:hover:bg-slate-100' : 'dark:bg-inherit hover:bg-accent dark:hover:bg-[#2C2C2C]'}`}
             >
               <Trash2 className="h-4 w-4 mr-2" />
               {usersRole === "Admin" ? "Delete" : "Delete (Admin)"}
             </Button>
           </ConfirmModal>
-          {
-            showImport &&
-            <ImportDropdownMenu
-              id={id}
-              usersRole={usersRole}
-              setLiveLayers={setLiveLayers}
-              setLiveLayerIds={setLiveLayerIds}
-              org={org}
-              performAction={performAction}
-              socket={socket}
-              selectedLayersRef={selectedLayersRef}
-            />
+          {canvasActions &&
+            <>
+              <ImportDropdownMenu
+                id={id}
+                usersRole={usersRole}
+                setLiveLayers={setLiveLayers}
+                setLiveLayerIds={setLiveLayerIds}
+                org={org}
+                performAction={performAction}
+                socket={socket}
+                selectedLayersRef={selectedLayersRef}
+              />
+              <ExportDropdownMenu id={id} title={title} />
+              <BackgroundMenu setBackground={setBackground} Background={Background} />
+              <HelpDropdownMenu setCanvasState={setCanvasState}/>
+            </>
           }
-          {showExport && <ExportDropdownMenu id={id} title={title} />}
-          {showGrid && <BackgroundMenu setBackground={setBackground} Background={Background} />}
         </DropdownMenuContent >
       )}
     </DropdownMenu>

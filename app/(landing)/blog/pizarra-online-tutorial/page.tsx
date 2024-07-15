@@ -44,8 +44,8 @@ const LandingPage = () => {
                 Tutorial de la Pizarra Online de Sketchlie
             </h1>
             <Image
-                src="/placeholders/pizarra-online.png"
-                alt="Pizarra online"
+                src="/placeholders/modelo-canvas.png"
+                alt="Modelo Canvas"
                 width={1920}
                 height={1080}
                 className="rounded-2xl border border-black mt-[3%]"

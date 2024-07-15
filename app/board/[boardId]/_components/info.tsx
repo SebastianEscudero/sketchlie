@@ -156,12 +156,6 @@ export const Info = ({
             <div className="text-neutral-300 px-1 sm:flex hidden">
                 |
             </div>
-            <KeyboardShortcutsDialog 
-                setCanvasState={setCanvasState}
-            />
-            <div className="text-neutral-300 px-1 sm:flex hidden">
-                |
-            </div>
             <Hint label="Edit title" side="bottom" sideOffset={10}>
                 <Button disabled={usersRole !== 'Admin'} variant="board" className="text-base px-2 sm:max-w-[100px] md:max-w-[400px] max-w-[80px] overflow-hidden relative sm:flex hidden" onClick={() => setIsRenameModalOpen(true)}>
                     <div className="w-full text-left truncate">
@@ -185,9 +179,7 @@ export const Info = ({
                 side="bottom" 
                 sideOffset={10} 
                 org={org} 
-                showExport={true}
-                showGrid={true}
-                showImport={true}
+                canvasActions={true}
                 setBackground={setBackground}
                 Background={Background}
                 setLiveLayers={setLiveLayers}
@@ -195,6 +187,7 @@ export const Info = ({
                 performAction={performAction}
                 socket={socket}
                 selectedLayersRef={selectedLayersRef}
+                setCanvasState={setCanvasState}
             >
                 <div className="w-10 flex justify-center items-center">
                     <Hint label="Main menu" side="bottom" sideOffset={10}>
