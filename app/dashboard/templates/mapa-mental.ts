@@ -2,164 +2,294 @@ export const PlantillaMapaMental = {
   name: 'Mapa Mental',
   image: '/templates/mapa-mental.png',
   href: "/plantillas/mapa-mental/",
-  layers: {
-    "0wfZzvlJMd28Mf2JVgDP2": {
-      center: { x: 1053.9959752375937, y: 464.2584892603503 },
-      endArrowHead: "Triangle",
-      fill: { a: 1, b: 29, g: 29, r: 29 },
-      height: 105.80522647575737,
-      startArrowHead: "None",
-      type: 16,
-      width: 101.52409014436842,
-      x: 1003.2339301654096,
-      y: 411.3558760224716,
+  "layers": {
+    "OEAzfRAVhJRsCKw3cCkhp": {
+      "fill": {
+        "a": 1,
+        "b": 233,
+        "g": 101,
+        "r": 68
+      },
+      "height": 184.16562477566399,
+      "outlineFill": {
+        "a": 1,
+        "b": 29,
+        "g": 29,
+        "r": 29
+      },
+      "textFontSize": 23.39986761855491,
+      "type": 1,
+      "value": "Problema",
+      "width": 198.28539447206535,
+      "x": 363.2091052385483,
+      "y": 151.47558861085793
     },
-    "5BcRem1RTfnCxql295Uuh": {
-      center: { x: 746.4094612709405, y: 145.2875654513988 },
-      endArrowHead: "Triangle",
-      fill: { a: 1, b: 29, g: 29, r: 29 },
-      height: -107.50195237029968,
-      startArrowHead: "None",
-      type: 16,
-      width: -125.85594423839962,
-      x: 809.3374333901403,
-      y: 199.03854163654864,
+    "WhXsy5N11xnZHiONKcMrL": {
+      "center": {
+        "x": 301.96763745699354,
+        "y": 243.55359939920004
+      },
+      "endArrowHead": "Triangle",
+      "fill": {
+        "a": 1,
+        "b": 29,
+        "g": 29,
+        "r": 29
+      },
+      "height": -0.4501815735939386,
+      "startArrowHead": "None",
+      "type": 16,
+      "width": -122.5594984477944,
+      "x": 363.2473866808918,
+      "y": 243.7786901859962,
+      "startConnectedLayerId": "",
+      "endConnectedLayerId": ""
     },
-    D9T1YFyYoc8YNQWN4QbWb: {
-      fill: { a: 1, b: 0, g: 165, r: 255 },
-      height: 110.7939686340998,
-      outlineFill: { a: 1, b: 29, g: 29, r: 29 },
-      textFontSize: 18,
-      type: 1,
-      value: "Ejemplo",
-      width: 114.72696689154975,
-      x: 575.4802003840688,
-      y: 2.1540143734024326,
+    "d640S4wm5I4CHKTe8Q06g": {
+      "center": {
+        "x": 623.8195832855927,
+        "y": 245.25659256029428
+      },
+      "endArrowHead": "Triangle",
+      "fill": {
+        "a": 1,
+        "b": 29,
+        "g": 29,
+        "r": 29
+      },
+      "height": 0,
+      "startArrowHead": "None",
+      "type": 16,
+      "width": 121.54515635060011,
+      "x": 563.0470051102916,
+      "y": 245.25659256029428,
+      "startConnectedLayerId": "",
+      "endConnectedLayerId": ""
     },
-    IVvz2WWW9UTa4qaVswVte: {
-      fill: { a: 1, b: 0, g: 165, r: 255 },
-      height: 110.7939686340998,
-      outlineFill: { a: 1, b: 29, g: 29, r: 29 },
-      textFontSize: 18,
-      type: 1,
-      value: "Ejemplo",
-      width: 114.72696689154975,
-      x: 453.23676340629413,
-      y: 252.88991214380184,
+    "GEFd0P7O1M6MHZxt9lPpG": {
+      "center": {
+        "x": 357.1768092427196,
+        "y": 137.5792514374972
+      },
+      "endArrowHead": "Triangle",
+      "fill": {
+        "a": 1,
+        "b": 29,
+        "g": 29,
+        "r": 29
+      },
+      "height": -69.8758737278115,
+      "startArrowHead": "None",
+      "type": 16,
+      "width": -85.07521210215465,
+      "x": 399.71441529379734,
+      "y": 172.5171883014038,
+      "startConnectedLayerId": "",
+      "endConnectedLayerId": ""
     },
-    JD87KrqddGlzp9lpkzCln: {
-      fill: { a: 1, b: 0, g: 165, r: 255 },
-      height: 110.7939686340998,
-      outlineFill: { a: 1, b: 29, g: 29, r: 29 },
-      textFontSize: 18,
-      type: 1,
-      value: "Ejemplo",
-      width: 114.72696689154975,
-      x: 1111.3584718195923,
-      y: -4.065974009597483,
+    "S3J82e56qp3ESq5G49ioV": {
+      "center": {
+        "x": 568.9874835921225,
+        "y": 137.52889271651003
+      },
+      "endArrowHead": "Triangle",
+      "fill": {
+        "a": 1,
+        "b": 29,
+        "g": 29,
+        "r": 29
+      },
+      "height": -71.0654192133831,
+      "startArrowHead": "None",
+      "type": 16,
+      "width": 85.22435472291995,
+      "x": 526.3753062306637,
+      "y": 173.06160232320175,
+      "startConnectedLayerId": "",
+      "endConnectedLayerId": ""
     },
-    QDlAes6FfCWOZ2qWSu7Sz: {
-      center: { x: 664.7358189252818, y: 308.3259462154035 },
-      endArrowHead: "Triangle",
-      fill: { a: 1, b: 29, g: 29, r: 29 },
-      height: -0.6925909545116724,
-      startArrowHead: "None",
-      type: 16,
-      width: -181.30829205586258,
-      x: 755.3899649532132,
-      y: 308.6722416926593,
+    "y5dtJgwHgSi74b0k2PGxQ": {
+      "center": {
+        "x": 357.9740995955522,
+        "y": 344.90917897354433
+      },
+      "endArrowHead": "Triangle",
+      "fill": {
+        "a": 1,
+        "b": 29,
+        "g": 29,
+        "r": 29
+      },
+      "height": 68.77300813566517,
+      "startArrowHead": "None",
+      "type": 16,
+      "width": -72.76172625069927,
+      "x": 394.35496272090035,
+      "y": 310.52267490571086,
+      "startConnectedLayerId": "",
+      "endConnectedLayerId": ""
     },
-    XSNF2yEUz38Mxu5wqQP1Y: {
-      center: { x: 747.5889320910362, y: 464.2584892603503 },
-      endArrowHead: "Triangle",
-      fill: { a: 1, b: 29, g: 29, r: 29 },
-      height: 105.80522647575737,
-      startArrowHead: "None",
-      type: 16,
-      width: -107.63999918920979,
-      x: 801.4089316856412,
-      y: 411.3558760224716,
+    "JtWomn1Vno5J43EBhGEjH": {
+      "center": {
+        "x": 565.0969680705548,
+        "y": 344.90917897354433
+      },
+      "endArrowHead": "Triangle",
+      "fill": {
+        "a": 1,
+        "b": 29,
+        "g": 29,
+        "r": 29
+      },
+      "height": 68.77300813566517,
+      "startArrowHead": "None",
+      "type": 16,
+      "width": 68.6275372591828,
+      "x": 530.7831994409639,
+      "y": 310.52267490571086,
+      "startConnectedLayerId": "",
+      "endConnectedLayerId": ""
     },
-    dmJufDTbIKo3JwT9r9UjK: {
-      center: { x: 1059.75140613741, y: 145.21009005772967 },
-      endArrowHead: "Triangle",
-      fill: { a: 1, b: 29, g: 29, r: 29 },
-      height: -109.33203270146471,
-      startArrowHead: "None",
-      type: 16,
-      width: 126.07657825033789,
-      x: 996.7131170122411,
-      y: 199.87610640846202,
+    "f5LGZssFLLe67ZY2mBIl5": {
+      "fill": {
+        "a": 1,
+        "b": 0,
+        "g": 165,
+        "r": 255
+      },
+      "height": 72.01567219367388,
+      "outlineFill": {
+        "a": 1,
+        "b": 29,
+        "g": 29,
+        "r": 29
+      },
+      "textFontSize": 11.699933809277455,
+      "type": 1,
+      "value": "Ejemplo",
+      "width": 77.55232461366289,
+      "x": 241.6332549639514,
+      "y": 44.54296957642093
     },
-    fNftpTg7KvPRqAWaXeMVH: {
-      center: { x: 1140.867227197125, y: 310.94595051623145 },
-      endArrowHead: "Triangle",
-      fill: { a: 1, b: 29, g: 29, r: 29 },
-      height: 0,
-      startArrowHead: "None",
-      type: 16,
-      width: 179.80772591833897,
-      x: 1050.9633642379554,
-      y: 310.94595051623145,
+    "vmp6w4GDLJwBgCKzbQOaR": {
+      "fill": {
+        "a": 1,
+        "b": 0,
+        "g": 165,
+        "r": 255
+      },
+      "height": 72.01567219367388,
+      "outlineFill": {
+        "a": 1,
+        "b": 29,
+        "g": 29,
+        "r": 29
+      },
+      "textFontSize": 11.699933809277455,
+      "type": 1,
+      "value": "Ejemplo",
+      "width": 77.55232461366289,
+      "x": 603.872463284182,
+      "y": 40.5
     },
-    mxJrhwTzwjsDxDQgzttnF: {
-      fill: { a: 1, b: 0, g: 165, r: 255 },
-      height: 110.7939686340998,
-      outlineFill: { a: 1, b: 29, g: 29, r: 29 },
-      textFontSize: 18,
-      type: 1,
-      value: "Ejemplo",
-      width: 114.72696689154975,
-      x: 594.8247006744937,
-      y: 505.91280003975106,
+    "kpBzPoQWTBjsRN5gyGT5p": {
+      "fill": {
+        "a": 1,
+        "b": 0,
+        "g": 165,
+        "r": 255
+      },
+      "height": 72.01567219367388,
+      "outlineFill": {
+        "a": 1,
+        "b": 29,
+        "g": 29,
+        "r": 29
+      },
+      "textFontSize": 11.699933809277455,
+      "type": 1,
+      "value": "Ejemplo",
+      "width": 77.55232461366289,
+      "x": 159,
+      "y": 207.52038110550004
     },
-    qWXVaVHeWMPuMU9rq21WL: {
-      fill: { a: 1, b: 0, g: 165, r: 255 },
-      height: 110.7939686340998,
-      outlineFill: { a: 1, b: 29, g: 29, r: 29 },
-      textFontSize: 18,
-      type: 1,
-      value: "Ejemplo",
-      width: 114.72696689154975,
-      x: 1093.0044799514922,
-      y: 503.290801201451,
+    "Jd1YQEpx6TbRySaF1JjFz": {
+      "fill": {
+        "a": 1,
+        "b": 0,
+        "g": 165,
+        "r": 255
+      },
+      "height": 72.01567219367388,
+      "outlineFill": {
+        "a": 1,
+        "b": 29,
+        "g": 29,
+        "r": 29
+      },
+      "textFontSize": 11.699933809277455,
+      "type": 1,
+      "value": "Ejemplo",
+      "width": 77.55232461366289,
+      "x": 688.9476753863371,
+      "y": 209.22467070861856
     },
-    xvtTrEWJX9zMGah9nmrjQ: {
-      fill: { a: 1, b: 233, g: 101, r: 68 },
-      height: 283.3333333333333,
-      outlineFill: { a: 1, b: 29, g: 29, r: 29 },
-      textFontSize: 36,
-      type: 1,
-      value: "Problema",
-      width: 293.33333333333326,
-      x: 755.3333333333335,
-      y: 166.66666666666663,
+    "U70beqgvnszhVsGKj1rp3": {
+      "fill": {
+        "a": 1,
+        "b": 0,
+        "g": 165,
+        "r": 255
+      },
+      "height": 72.01567219367388,
+      "outlineFill": {
+        "a": 1,
+        "b": 29,
+        "g": 29,
+        "r": 29
+      },
+      "textFontSize": 11.699933809277455,
+      "type": 1,
+      "value": "Ejemplo",
+      "width": 77.55232461366289,
+      "x": 591.4656615192824,
+      "y": 370.280038203208
     },
-    z4VGGfv1YURINYreAK7aV: {
-      fill: { a: 1, b: 0, g: 165, r: 255 },
-      height: 110.7939686340998,
-      outlineFill: { a: 1, b: 29, g: 29, r: 29 },
-      textFontSize: 18,
-      type: 1,
-      value: "Ejemplo",
-      width: 114.72696689154975,
-      x: 1237.214416057992,
-      y: 255.51191098210182,
-    },
+    "GegiMrbGnp4b9jbAZpwEz": {
+      "fill": {
+        "a": 1,
+        "b": 0,
+        "g": 165,
+        "r": 255
+      },
+      "height": 72.01567219367388,
+      "outlineFill": {
+        "a": 1,
+        "b": 29,
+        "g": 29,
+        "r": 29
+      },
+      "textFontSize": 11.699933809277455,
+      "type": 1,
+      "value": "Ejemplo",
+      "width": 77.55232461366289,
+      "x": 254.7096136149234,
+      "y": 371.9843278063261
+    }
   },
-  layerIds: [
-    "xvtTrEWJX9zMGah9nmrjQ",
-    "QDlAes6FfCWOZ2qWSu7Sz",
-    "fNftpTg7KvPRqAWaXeMVH",
-    "5BcRem1RTfnCxql295Uuh",
-    "dmJufDTbIKo3JwT9r9UjK",
-    "XSNF2yEUz38Mxu5wqQP1Y",
-    "0wfZzvlJMd28Mf2JVgDP2",
-    "D9T1YFyYoc8YNQWN4QbWb",
-    "JD87KrqddGlzp9lpkzCln",
-    "IVvz2WWW9UTa4qaVswVte",
-    "z4VGGfv1YURINYreAK7aV",
-    "qWXVaVHeWMPuMU9rq21WL",
-    "mxJrhwTzwjsDxDQgzttnF",
+  "layerIds": [
+    "OEAzfRAVhJRsCKw3cCkhp",
+    "WhXsy5N11xnZHiONKcMrL",
+    "d640S4wm5I4CHKTe8Q06g",
+    "S3J82e56qp3ESq5G49ioV",
+    "y5dtJgwHgSi74b0k2PGxQ",
+    "JtWomn1Vno5J43EBhGEjH",
+    "f5LGZssFLLe67ZY2mBIl5",
+    "kpBzPoQWTBjsRN5gyGT5p",
+    "Jd1YQEpx6TbRySaF1JjFz",
+    "U70beqgvnszhVsGKj1rp3",
+    "GEFd0P7O1M6MHZxt9lPpG",
+    "GegiMrbGnp4b9jbAZpwEz",
+    "vmp6w4GDLJwBgCKzbQOaR"
   ]
 };

@@ -22,6 +22,9 @@ export const KeyboardShortcutsDialog = ({
                 { key: "Ctrl + C", description: "Copy layers" },
                 { key: "Ctrl + V", description: "Paste layers" },
                 { key: "Ctrl + A", description: "Select all" },
+                { key: "Scroll Up", description: "Zoom In" },
+                { key: "Scroll Down", description: "Zoom Out" },
+                { key: "Right Click", description: "Move" },
             ],
         },
         {

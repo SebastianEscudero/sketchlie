@@ -120,6 +120,7 @@ export const Canvas = ({
     const [activeTouches, setActiveTouches] = useState(0);
     const [magicPathAssist, setMagicPathAssist] = useState(false);
     const [layerWithAssistDraw, setLayerWithAssistDraw] = useState(false);
+    const [forceRender, setForceRender] = useState(false);
     const proModal = useProModal();
     const [background, setBackground] = useState(() => {
         const storedValue = localStorage.getItem('background');
@@ -1633,7 +1634,9 @@ export const Canvas = ({
             } else if (key === "a") {
                 if (!isInsideTextArea) {
                     if ((e.ctrlKey || e.metaKey)) {
+                        e.preventDefault();
                         selectedLayersRef.current = liveLayerIds;
+                        setForceRender(!forceRender);
                     } else {
                         setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Arrow });
                     }
@@ -1898,6 +1901,7 @@ export const Canvas = ({
                                 onResizeHandlePointerDown={onResizeHandlePointerDown}
                                 onArrowResizeHandlePointerDown={onArrowResizeHandlePointerDown}
                                 setLiveLayers={setLiveLayers}
+                                forceRender={forceRender}
                             />
                         )}
                         {((canvasState.mode === CanvasMode.ArrowResizeHandler && selectedLayersRef.current.length === 1) || (currentPreviewLayer?.type === LayerType.Arrow)) && (

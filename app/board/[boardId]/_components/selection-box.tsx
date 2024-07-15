@@ -12,6 +12,7 @@ interface SelectionBoxProps {
   selectedLayers: string[];
   liveLayers: Layers;
   setLiveLayers: (layers: Layers) => void;
+  forceRender?: boolean;
 };
 
 const HANDLE_SIZE = 8;

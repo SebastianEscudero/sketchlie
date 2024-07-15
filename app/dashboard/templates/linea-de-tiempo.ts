@@ -2,259 +2,464 @@ export const PlantillaLineaDeTiempo = {
   name: 'Linea de tiempo',
   image: '/templates/linea-de-tiempo.png',
   href: "/plantillas/linea-de-tiempo/",
-  layers: {
-    "2bzdKp8yFGGV6ZgRmaapf": {
-      fill: { a: 1, b: 233, g: 101, r: 68 },
-      height: 168.84258929370614,
-      outlineFill: { a: 1, b: 29, g: 29, r: 29 },
-      textFontSize: 36,
-      type: 1,
-      value: "Evento",
-      width: 175.3933742446128,
-      x: 926.6066257553873,
-      y: 113.15741070629385,
+  "layers": {
+    "Q8sI4lMRvCEkYQKfbzsel": {
+      "center": {
+        "x": 461.072579404747,
+        "y": 258.2384445825172
+      },
+      "endArrowHead": "Triangle",
+      "fill": {
+        "a": 1,
+        "b": 29,
+        "g": 29,
+        "r": 29
+      },
+      "height": 0.22168860499430945,
+      "startArrowHead": "Triangle",
+      "type": 16,
+      "width": 824.6816105789103,
+      "x": 48.73177411529139,
+      "y": 258.1276002800198,
+      "startConnectedLayerId": "",
+      "endConnectedLayerId": ""
     },
-    "9NAArRho97pBuuvuImzbj": {
-      fill: { a: 1, b: 29, g: 29, r: 29 },
-      height: 87,
-      textFontSize: 56,
-      type: 13,
-      value: "Q1",
-      width: 63.5,
-      x: 226.5,
-      y: 411,
+    "tapS7Wo0pghppJUThNEbR": {
+      "center": {
+        "x": 125.4280991767778,
+        "y": 197.60001840128575
+      },
+      "endArrowHead": "None",
+      "fill": {
+        "a": 1,
+        "b": 241,
+        "g": 161,
+        "r": 75
+      },
+      "height": -114.34282387327553,
+      "startArrowHead": "None",
+      "type": 16,
+      "width": -0.23696807575524304,
+      "x": 125.54658321465543,
+      "y": 254.77143033792353,
+      "startConnectedLayerId": "VTvSQnR6JkVnUcJyqpwmR",
+      "endConnectedLayerId": "pYKC20oogQkJs72JAhMM7"
     },
-    CUtBnplg3UegDCjwGptRz: {
-      center: { x: 354.2987072163829, y: 393.05187592578886 },
-      endArrowHead: "None",
-      fill: { a: 1, b: 241, g: 161, r: 75 },
-      height: -223.26562415433744,
-      startArrowHead: "None",
-      type: 16,
-      width: -0.5024821636054071,
-      x: 354.5499482981856,
-      y: 504.6846880029576,
+    "pYKC20oogQkJs72JAhMM7": {
+      "fill": {
+        "a": 1,
+        "b": 241,
+        "g": 161,
+        "r": 75
+      },
+      "height": 65.40729915948432,
+      "outlineFill": {
+        "a": 1,
+        "b": 29,
+        "g": 29,
+        "r": 29
+      },
+      "textFontSize": 14,
+      "type": 0,
+      "value": "Actividad",
+      "width": 136.58583059774685,
+      "x": 56.95117561070544,
+      "y": 75.02130730516369,
+      "connectedArrows": [
+        "tapS7Wo0pghppJUThNEbR"
+      ]
     },
-    EqqwttlCtHj2FaWVIlHfS: {
-      fill: { a: 1, b: 42, g: 142, r: 252 },
-      height: 123.41999999999999,
-      outlineFill: { a: 1, b: 29, g: 29, r: 29 },
-      textFontSize: 36,
-      type: 0,
-      value: "Actividad",
-      width: 257.73,
-      x: 408.0508896532735,
-      y: 654.357995529043,
+    "zzQ1kFotDPMpgemDTGZSP": {
+      "fill": {
+        "a": 1,
+        "b": 42,
+        "g": 142,
+        "r": 252
+      },
+      "height": 65.40729915948432,
+      "outlineFill": {
+        "a": 1,
+        "b": 29,
+        "g": 29,
+        "r": 29
+      },
+      "textFontSize": 14,
+      "type": 0,
+      "value": "Actividad",
+      "width": 136.58583059774685,
+      "x": 153.89836462576284,
+      "y": 337.3130656035446,
+      "connectedArrows": [
+        "XSa12Db1QRox1UirOsps7"
+      ]
     },
-    FSEaTEuJPU2QHwioHuN5P: {
-      fill: { a: 1, b: 99, g: 202, r: 68 },
-      height: 168.84258929370614,
-      outlineFill: { a: 1, b: 29, g: 29, r: 29 },
-      textFontSize: 36,
-      type: 1,
-      value: "Evento",
-      width: 175.3933742446128,
-      x: 1665.3033128776938,
-      y: 115.57870535314692,
+    "XSa12Db1QRox1UirOsps7": {
+      "center": {
+        "x": 222.06579430843095,
+        "y": 299.2976984231474
+      },
+      "endArrowHead": "None",
+      "fill": {
+        "a": 1,
+        "b": 42,
+        "g": 142,
+        "r": 252
+      },
+      "height": -76.03073436079438,
+      "startArrowHead": "None",
+      "type": 16,
+      "width": -0.11056057410164044,
+      "x": 222.1210745954818,
+      "y": 337.3130656035446,
+      "startConnectedLayerId": "zzQ1kFotDPMpgemDTGZSP",
+      "endConnectedLayerId": "IFlwUndXfZrkPNsP6D5tk"
     },
-    GdzD2ErLPHkCkiD9AB7Yd: {
-      fill: { a: 1, b: 99, g: 202, r: 68 },
-      height: 12.571428571428555,
-      outlineFill: { a: 1, b: 29, g: 29, r: 29 },
-      textFontSize: 0,
-      type: 1,
-      width: 12,
-      x: 1748.16137053719,
-      y: 499.709086834542,
+    "cOGF1D5dKJkcBhsZxlG9D": {
+      "center": {
+        "x": 475.50142143956236,
+        "y": 197.69298857271286
+      },
+      "endArrowHead": "None",
+      "fill": {
+        "a": 1,
+        "b": 233,
+        "g": 101,
+        "r": 68
+      },
+      "height": -115.42733593986122,
+      "startArrowHead": "None",
+      "type": 16,
+      "width": -0.39690023637086824,
+      "x": 475.6998715577478,
+      "y": 255.40665654264347,
+      "startConnectedLayerId": "I4eWX9EmFCFbBbJZiPfaP",
+      "endConnectedLayerId": "c0go7kOiYtrUC4zchBp7Z"
     },
-    Jnj5OJljjH2VyIj6z3c2A: {
-      fill: { a: 1, b: 241, g: 161, r: 75 },
-      height: 12.571428571428555,
-      outlineFill: { a: 1, b: 29, g: 29, r: 29 },
-      textFontSize: 0,
-      type: 1,
-      width: 12,
-      x: 1479.0197606879644,
-      y: 498.04338549413507,
+    "c0go7kOiYtrUC4zchBp7Z": {
+      "fill": {
+        "a": 1,
+        "b": 233,
+        "g": 101,
+        "r": 68
+      },
+      "height": 89.47932060278227,
+      "outlineFill": {
+        "a": 1,
+        "b": 29,
+        "g": 29,
+        "r": 29
+      },
+      "textFontSize": 14,
+      "type": 1,
+      "value": "Evento",
+      "width": 92.9509552731225,
+      "x": 428.7106329947277,
+      "y": 50.5,
+      "connectedArrows": [
+        "cOGF1D5dKJkcBhsZxlG9D"
+      ]
     },
-    K99ycMqcamYHstLUXO1ba: {
-      center: { x: 1753.501550872806, y: 390.6483988625657 },
-      endArrowHead: "None",
-      fill: { a: 1, b: 99, g: 202, r: 68 },
-      height: -221.30117618023178,
-      startArrowHead: "None",
-      type: 16,
-      width: -0.7104798915113406,
-      x: 1753.8567908185619,
-      y: 507.0052203648999,
+    "VTvSQnR6JkVnUcJyqpwmR": {
+      "fill": {
+        "a": 1,
+        "b": 241,
+        "g": 161,
+        "r": 75
+      },
+      "height": 6.66231720493856,
+      "outlineFill": {
+        "a": 1,
+        "b": 29,
+        "g": 29,
+        "r": 29
+      },
+      "textFontSize": 0,
+      "type": 1,
+      "width": 6.359484604714098,
+      "x": 122.37374452213871,
+      "y": 254.77143033792353
     },
-    PCscdEXATw1HWmSOaZKj6: {
-      fill: { a: 1, b: 241, g: 161, r: 75 },
-      height: 123.41999999999999,
-      outlineFill: { a: 1, b: 29, g: 29, r: 29 },
-      textFontSize: 36,
-      type: 0,
-      value: "Actividad",
-      width: 257.73,
-      x: 1357.0804177859231,
-      y: 653.7958579887854,
+    "IFlwUndXfZrkPNsP6D5tk": {
+      "fill": {
+        "a": 1,
+        "b": 42,
+        "g": 142,
+        "r": 252
+      },
+      "height": 6.66231720493856,
+      "outlineFill": {
+        "a": 1,
+        "b": 29,
+        "g": 29,
+        "r": 29
+      },
+      "textFontSize": 0,
+      "type": 1,
+      "width": 6.359484604714098,
+      "x": 218.8259276936351,
+      "y": 254.62001403781164
     },
-    PgC1QVc34t7J16DkezKoh: {
-      fill: { a: 1, b: 29, g: 29, r: 29 },
-      height: 87,
-      textFontSize: 56,
-      type: 13,
-      value: "Q3",
-      width: 74.75,
-      x: 1197.625,
-      y: 412.5,
+    "I4eWX9EmFCFbBbJZiPfaP": {
+      "fill": {
+        "a": 1,
+        "b": 233,
+        "g": 101,
+        "r": 68
+      },
+      "height": 6.66231720493856,
+      "outlineFill": {
+        "a": 1,
+        "b": 29,
+        "g": 29,
+        "r": 29
+      },
+      "textFontSize": 0,
+      "type": 1,
+      "width": 6.359484604714098,
+      "x": 472.53158354068586,
+      "y": 255.40665654264347
     },
-    UghOI8PR1xYFl4JSjHFz1: {
-      fill: { a: 1, b: 42, g: 142, r: 252 },
-      height: 12.571428571428555,
-      outlineFill: { a: 1, b: 29, g: 29, r: 29 },
-      textFontSize: 0,
-      type: 1,
-      width: 12,
-      x: 530.5656538586824,
-      y: 498.3207251418762,
+    "JvUBGlUAnyKcb2Nw1lSfy": {
+      "fill": {
+        "a": 1,
+        "b": 241,
+        "g": 161,
+        "r": 75
+      },
+      "height": 65.40729915948432,
+      "outlineFill": {
+        "a": 1,
+        "b": 29,
+        "g": 29,
+        "r": 29
+      },
+      "textFontSize": 14,
+      "type": 0,
+      "value": "Actividad",
+      "width": 136.58583059774685,
+      "x": 656.8432540906506,
+      "y": 337.0151568507943,
+      "connectedArrows": [
+        "nTGTJckOtWUWGwkDkl4UT"
+      ]
     },
-    bTbVp6p3PbyAQBQv1BRY0: {
-      fill: { a: 1, b: 29, g: 29, r: 29 },
-      height: 43,
-      textFontSize: 27.935922385932894,
-      type: 13,
-      width: 219.32000000000005,
-      x: 429.4269999999999,
-      y: 795.4330000000002,
+    "nTGTJckOtWUWGwkDkl4UT": {
+      "center": {
+        "x": 724.8177870724328,
+        "y": 299.07525499593527
+      },
+      "endArrowHead": "None",
+      "fill": {
+        "a": 1,
+        "b": 241,
+        "g": 161,
+        "r": 75
+      },
+      "height": -75.87980370971809,
+      "startArrowHead": "None",
+      "type": 16,
+      "width": -0.31655826675330445,
+      "x": 724.9760662058095,
+      "y": 337.0151568507943,
+      "startConnectedLayerId": "JvUBGlUAnyKcb2Nw1lSfy",
+      "endConnectedLayerId": "1E9PBuiLZZnr5IQ8bxlpM"
     },
-    bZ4mWwQC9sO8j8MqaecpF: {
-      fill: { a: 1, b: 233, g: 101, r: 68 },
-      height: 12.571428571428555,
-      outlineFill: { a: 1, b: 29, g: 29, r: 29 },
-      textFontSize: 0,
-      type: 1,
-      width: 12,
-      x: 1009.294365287254,
-      y: 499.8050765704477,
+    "1E9PBuiLZZnr5IQ8bxlpM": {
+      "fill": {
+        "a": 1,
+        "b": 241,
+        "g": 161,
+        "r": 75
+      },
+      "height": 6.66231720493856,
+      "outlineFill": {
+        "a": 1,
+        "b": 29,
+        "g": 29,
+        "r": 29
+      },
+      "textFontSize": 0,
+      "type": 1,
+      "width": 6.359484604714098,
+      "x": 721.4658685818582,
+      "y": 254.47303593613768
     },
-    jDngK9NQeI0Z8dEJyiFtk: {
-      fill: { a: 1, b: 29, g: 29, r: 29 },
-      height: 87,
-      textFontSize: 56,
-      type: 13,
-      value: "Q4",
-      width: 74.75,
-      x: 1652.625,
-      y: 411.5,
+    "XWfJOg7z6Vdw59sCZ1sF4": {
+      "center": {
+        "x": 867.0268370544215,
+        "y": 198.30914443864788
+      },
+      "endArrowHead": "None",
+      "fill": {
+        "a": 1,
+        "b": 99,
+        "g": 202,
+        "r": 68
+      },
+      "height": -114.09328333337433,
+      "startArrowHead": "None",
+      "type": 16,
+      "width": -0.4766988844041862,
+      "x": 867.2651864966236,
+      "y": 255.35578610533503,
+      "startConnectedLayerId": "k2E65NQ0TOvPYa0Qb50PJ",
+      "endConnectedLayerId": "kYifywoXG3Olw1xj1chlu"
     },
-    jlP1xJ3BFI8QE62JGNBU2: {
-      fill: { a: 1, b: 241, g: 161, r: 75 },
-      height: 12.571428571428555,
-      outlineFill: { a: 1, b: 29, g: 29, r: 29 },
-      textFontSize: 0,
-      type: 1,
-      width: 12,
-      x: 348.56565385868225,
-      y: 498.6064394275905,
+    "k2E65NQ0TOvPYa0Qb50PJ": {
+      "fill": {
+        "a": 1,
+        "b": 99,
+        "g": 202,
+        "r": 68
+      },
+      "height": 6.66231720493856,
+      "outlineFill": {
+        "a": 1,
+        "b": 29,
+        "g": 29,
+        "r": 29
+      },
+      "textFontSize": 0,
+      "type": 1,
+      "width": 6.359484604714098,
+      "x": 864.0993622755346,
+      "y": 255.35578610533503
     },
-    lNyyeU0hZqVYqGAcCESmw: {
-      fill: { a: 1, b: 29, g: 29, r: 29 },
-      height: 43,
-      textFontSize: 27.935922385932894,
-      type: 13,
-      width: 219.32000000000005,
-      x: 1382.4569999999999,
-      y: 795.0330000000002,
+    "FJdhtq9yxSxF1acX7MNau": {
+      "fill": {
+        "a": 1,
+        "b": 29,
+        "g": 29,
+        "r": 29
+      },
+      "height": 22.78815316689214,
+      "textFontSize": 14.80483902765233,
+      "type": 13,
+      "width": 116.23018029215795,
+      "x": 165.226785013986,
+      "y": 412.07675885712973
     },
-    nHVUvHPHtYhzZ824BU6YZ: {
-      fill: { a: 1, b: 241, g: 161, r: 75 },
-      height: 123.41999999999999,
-      outlineFill: { a: 1, b: 29, g: 29, r: 29 },
-      textFontSize: 36,
-      type: 0,
-      value: "Actividad",
-      width: 257.73,
-      x: 225.11684067101476,
-      y: 159.42777787470243,
+    "9rcNZg7ijsHwkvG63aQd4": {
+      "fill": {
+        "a": 1,
+        "b": 29,
+        "g": 29,
+        "r": 29
+      },
+      "height": 22.78815316689214,
+      "textFontSize": 14.80483902765233,
+      "type": 13,
+      "width": 116.23018029215795,
+      "x": 670.2917527498752,
+      "y": 411.8647760369715
     },
-    qh0HE15jYqUJTR5WOQ3nI: {
-      center: { x: 1485.1271122279109, y: 578.8050997502019 },
-      endArrowHead: "None",
-      fill: { a: 1, b: 241, g: 161, r: 75 },
-      height: -149.50747146223324,
-      startArrowHead: "None",
-      type: 16,
-      width: -0.41515456508909665,
-      x: 1485.3346895104553,
-      y: 655.4602640527471,
+    "R3ndZ336klLbv7JQQb1YL": {
+      "fill": {
+        "a": 1,
+        "b": 29,
+        "g": 29,
+        "r": 29
+      },
+      "height": 46.106263384177,
+      "textFontSize": 29.677594821999037,
+      "type": 13,
+      "value": "Q1",
+      "width": 33.65227269994537,
+      "x": 57.68419064891815,
+      "y": 208.34378010345924
     },
-    r8vbThY6oYis4dHhljFuT: {
-      center: { x: 1014.7464171692192, y: 392.571100823203 },
-      endArrowHead: "None",
-      fill: { a: 1, b: 233, g: 101, r: 68 },
-      height: -221.30117618023178,
-      startArrowHead: "None",
-      type: 16,
-      width: -0.7104798915113406,
-      x: 1015.1016571149748,
-      y: 503.22168891331887,
+    "l2bGK3Sd1ZXmtwSpiIh53": {
+      "fill": {
+        "a": 1,
+        "b": 29,
+        "g": 29,
+        "r": 29
+      },
+      "height": 45,
+      "textFontSize": 29.57627322194696,
+      "type": 13,
+      "value": "Q2",
+      "width": 43.47904327393819,
+      "x": 313.5209567260618,
+      "y": 209.66867272944086
     },
-    s2sfK1Ay37zAJt8HW8gWt: {
-      center: { x: 987.6718505430009, y: 505.14850588754786 },
-      endArrowHead: "Triangle",
-      fill: { a: 1, b: 29, g: 29, r: 29 },
-      height: 0.41831428571424567,
-      startArrowHead: "Triangle",
-      type: 16,
-      width: 1556.1291428571428,
-      x: 209.60727911442947,
-      y: 504.93934874469073,
+    "nCZlycnUlh5jVD4xHI8Sa": {
+      "fill": {
+        "a": 1,
+        "b": 29,
+        "g": 29,
+        "r": 29
+      },
+      "height": 46,
+      "textFontSize": 30.087371935074344,
+      "type": 13,
+      "value": "Q3",
+      "width": 41.16126878833591,
+      "x": 572.3387312116641,
+      "y": 209.13871567904758
     },
-    sseUUXsUFQ2PKTKSMwoLT: {
-      center: { x: 536.6730053986287, y: 580.9838679693717 },
-      endArrowHead: "None",
-      fill: { a: 1, b: 42, g: 142, r: 252 },
-      height: -149.50747146223324,
-      startArrowHead: "None",
-      type: 16,
-      width: -0.41515456508909665,
-      x: 536.8805826811732,
-      y: 655.7376037004883,
+    "ljo8XkNzstj3MF3pP4vw1": {
+      "fill": {
+        "a": 1,
+        "b": 29,
+        "g": 29,
+        "r": 29
+      },
+      "height": 46.106263384177,
+      "textFontSize": 29.677594821999037,
+      "type": 13,
+      "value": "Q4",
+      "width": 39.614289516864844,
+      "x": 813.4691891404085,
+      "y": 208.6087586286551
     },
-    vd9f4vq8wy4xLA6cuIMky: {
-      fill: { a: 1, b: 29, g: 29, r: 29 },
-      height: 87,
-      textFontSize: 56,
-      type: 13,
-      value: "Q2",
-      width: 74.75,
-      x: 709.25,
-      y: 413.5,
-    },
+    "kYifywoXG3Olw1xj1chlu": {
+      "fill": {
+        "a": 1,
+        "b": 99,
+        "g": 202,
+        "r": 68
+      },
+      "height": 89.47932060278227,
+      "outlineFill": {
+        "a": 1,
+        "b": 29,
+        "g": 29,
+        "r": 29
+      },
+      "textFontSize": 14,
+      "type": 1,
+      "value": "Evento",
+      "width": 92.9509552731225,
+      "x": 820.1881504370277,
+      "y": 51.78318216917843,
+      "connectedArrows": [
+        "XWfJOg7z6Vdw59sCZ1sF4"
+      ]
+    }
   },
-  layerIds: [
-    "s2sfK1Ay37zAJt8HW8gWt",
-    "CUtBnplg3UegDCjwGptRz",
-    "nHVUvHPHtYhzZ824BU6YZ",
-    "EqqwttlCtHj2FaWVIlHfS",
-    "sseUUXsUFQ2PKTKSMwoLT",
-    "r8vbThY6oYis4dHhljFuT",
-    "2bzdKp8yFGGV6ZgRmaapf",
-    "jlP1xJ3BFI8QE62JGNBU2",
-    "UghOI8PR1xYFl4JSjHFz1",
-    "bZ4mWwQC9sO8j8MqaecpF",
-    "PCscdEXATw1HWmSOaZKj6",
-    "qh0HE15jYqUJTR5WOQ3nI",
-    "Jnj5OJljjH2VyIj6z3c2A",
-    "K99ycMqcamYHstLUXO1ba",
-    "GdzD2ErLPHkCkiD9AB7Yd",
-    "bTbVp6p3PbyAQBQv1BRY0",
-    "lNyyeU0hZqVYqGAcCESmw",
-    "9NAArRho97pBuuvuImzbj",
-    "vd9f4vq8wy4xLA6cuIMky",
-    "PgC1QVc34t7J16DkezKoh",
-    "jDngK9NQeI0Z8dEJyiFtk",
-    "FSEaTEuJPU2QHwioHuN5P",
+  "layerIds": [
+    "Q8sI4lMRvCEkYQKfbzsel",
+    "tapS7Wo0pghppJUThNEbR",
+    "pYKC20oogQkJs72JAhMM7",
+    "zzQ1kFotDPMpgemDTGZSP",
+    "XSa12Db1QRox1UirOsps7",
+    "cOGF1D5dKJkcBhsZxlG9D",
+    "c0go7kOiYtrUC4zchBp7Z",
+    "VTvSQnR6JkVnUcJyqpwmR",
+    "IFlwUndXfZrkPNsP6D5tk",
+    "I4eWX9EmFCFbBbJZiPfaP",
+    "JvUBGlUAnyKcb2Nw1lSfy",
+    "nTGTJckOtWUWGwkDkl4UT",
+    "1E9PBuiLZZnr5IQ8bxlpM",
+    "XWfJOg7z6Vdw59sCZ1sF4",
+    "k2E65NQ0TOvPYa0Qb50PJ",
+    "FJdhtq9yxSxF1acX7MNau",
+    "9rcNZg7ijsHwkvG63aQd4",
+    "R3ndZ336klLbv7JQQb1YL",
+    "l2bGK3Sd1ZXmtwSpiIh53",
+    "nCZlycnUlh5jVD4xHI8Sa",
+    "ljo8XkNzstj3MF3pP4vw1",
+    "kYifywoXG3Olw1xj1chlu"
   ]
 };

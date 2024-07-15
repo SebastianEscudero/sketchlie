@@ -2,235 +2,415 @@ export const PlantillaLluviaDeIdeas = {
   name: 'Lluvia de Ideas',
   image: '/templates/lluvia-de-ideas.png',
   href: "/plantillas/lluvia-de-ideas/",
-  layers: {
-    "94Q0omcqnYFQ6xInSE4u6": {
-      fill: { a: 1, b: 0, g: 165, r: 255 },
-      height: 80,
-      outlineFill: { a: 0, b: 0, g: 0, r: 0 },
-      textFontSize: 12,
-      type: 14,
-      width: 80,
-      value : "",
-      x: 529.6715604584917,
-      y: 306.36805382090745,
+  "layers": {
+    "J2S2nokdQKckj7Z7nxgu5": {
+      "alignX": "center",
+      "alignY": "center",
+      "fill": {
+        "a": 1,
+        "b": 255,
+        "g": 255,
+        "r": 255
+      },
+      "height": 386.4477918082796,
+      "outlineFill": {
+        "a": 1,
+        "b": 29,
+        "g": 29,
+        "r": 29
+      },
+      "textFontSize": 5.920326318641651,
+      "type": 0,
+      "width": 624.4913551914595,
+      "x": 164.9047763227714,
+      "y": 49.72094422242213
     },
-    "9jhT0xuV50nK7wueQAWoJ": {
-      fill: { a: 1, b: 0, g: 165, r: 255 },
-      height: 80,
-      outlineFill: { a: 0, b: 0, g: 0, r: 0 },
-      textFontSize: 12,
-      type: 14,
-      width: 80,
-      value : "",
-      x: 529.5451692774034,
-      y: 611.3599738649814,
+    "VVSuM17ecxueYWlKYm6Ng": {
+      "alignX": "left",
+      "alignY": "top",
+      "fill": {
+        "a": 1,
+        "b": 156,
+        "g": 225,
+        "r": 252
+      },
+      "height": 146.52807638638055,
+      "outlineFill": {
+        "a": 1,
+        "b": 29,
+        "g": 29,
+        "r": 29
+      },
+      "textFontSize": 11.840652637283302,
+      "type": 0,
+      "value": "John",
+      "width": 266.7154623121424,
+      "x": 203.3189260844306,
+      "y": 117.38188795770193
     },
-    AWFaoMambHDUgadxnorL3: {
-      alignX: "center",
-      alignY: "center",
-      fill: { a: 1, b: 255, g: 255, r: 255 },
-      height: 783.2969421123643,
-      outlineFill: { a: 1, b: 29, g: 29, r: 29 },
-      textFontSize: 12,
-      type: 0,
-      width: 1159,
-      x: 331.7067799999996,
-      y: 70.85699788763583,
+    "MhyXGR2lwTiAiVBuLVdEH": {
+      "fill": {
+        "a": 1,
+        "b": 0,
+        "g": 165,
+        "r": 255
+      },
+      "height": 39.468842124277685,
+      "outlineFill": {
+        "a": 0,
+        "b": 0,
+        "g": 0,
+        "r": 0
+      },
+      "textFontSize": 5.920326318641651,
+      "type": 14,
+      "width": 43.10552926256841,
+      "value": "",
+      "x": 271.57198428541494,
+      "y": 165.9128027868248
     },
-    AsxOnp85wVzdNTLuWqKxK: {
-      fill: { a: 1, b: 0, g: 165, r: 255 },
-      height: 80,
-      outlineFill: { a: 0, b: 0, g: 0, r: 0 },
-      textFontSize: 12,
-      type: 14,
-      width: 80,
-      value : "",
-      x: 710.8021031377492,
-      y: 306.9107134173312,
+    "9oVlEg5qmKEEp4koRVmIr": {
+      "fill": {
+        "a": 1,
+        "b": 0,
+        "g": 165,
+        "r": 255
+      },
+      "height": 39.468842124277685,
+      "outlineFill": {
+        "a": 0,
+        "b": 0,
+        "g": 0,
+        "r": 0
+      },
+      "textFontSize": 5.920326318641651,
+      "type": 14,
+      "width": 43.10552926256841,
+      "value": "",
+      "x": 369.1685831329851,
+      "y": 166.1805296110557
     },
-    BkA5cyRlWbrpNvrZRcC2a: {
-      fill: { a: 1, b: 0, g: 165, r: 255 },
-      height: 80,
-      outlineFill: { a: 0, b: 0, g: 0, r: 0 },
-      textFontSize: 12,
-      type: 14,
-      width: 80,
-      value : "",
-      x: 1218.066390437718,
-      y: 307.1675221920211,
+    "ovdQLKc0wrCZoWiKWW78g": {
+      "fill": {
+        "a": 1,
+        "b": 0,
+        "g": 165,
+        "r": 255
+      },
+      "height": 39.468842124277685,
+      "outlineFill": {
+        "a": 0,
+        "b": 0,
+        "g": 0,
+        "r": 0
+      },
+      "textFontSize": 5.920326318641651,
+      "type": 14,
+      "width": 43.10552926256841,
+      "value": "",
+      "x": 320.0598828235519,
+      "y": 166.0596401103292
     },
-    MkCEZAT8koFxu6OMmlDCm: {
-      alignX: "center",
-      alignY: "center",
-      fill: { a: 1, b: 29, g: 29, r: 29 },
-      height: 69.25193000000003,
-      outlineFill: { a: 1, b: 29, g: 29, r: 29 },
-      textFontSize: 36,
-      type: 0,
-      value: "Lluvia de Ideas",
-      width: 314.0494500000002,
-      x: 734.3935250001429,
-      y: 107.89872788763584,
+    "3iChRD8hYWaiOCQvU9HIA": {
+      "alignX": "left",
+      "alignY": "top",
+      "fill": {
+        "a": 1,
+        "b": 156,
+        "g": 225,
+        "r": 252
+      },
+      "height": 146.52807638638055,
+      "outlineFill": {
+        "a": 1,
+        "b": 29,
+        "g": 29,
+        "r": 29
+      },
+      "textFontSize": 11.840652637283302,
+      "type": 0,
+      "value": "Sofia",
+      "width": 266.7154623121424,
+      "x": 203.250824099994,
+      "y": 267.8528622252002
     },
-    Se5Fzkpb9hX3BflQrtLKk: {
-      fill: { a: 1, b: 0, g: 165, r: 255 },
-      height: 80,
-      outlineFill: { a: 0, b: 0, g: 0, r: 0 },
-      textFontSize: 12,
-      type: 14,
-      width: 80,
-      value : "",
-      x: 1036.8094565773722,
-      y: 611.6167826396713,
+    "k4HitAIzFbykFZ60S23qg": {
+      "fill": {
+        "a": 1,
+        "b": 0,
+        "g": 165,
+        "r": 255
+      },
+      "height": 39.468842124277685,
+      "outlineFill": {
+        "a": 0,
+        "b": 0,
+        "g": 0,
+        "r": 0
+      },
+      "textFontSize": 5.920326318641651,
+      "type": 14,
+      "width": 43.10552926256841,
+      "value": "",
+      "x": 271.50388230097826,
+      "y": 316.38377705432293
     },
-    TZbSeQrs0DsKHvgmBxX54: {
-      alignX: "left",
-      alignY: "top",
-      fill: { a: 1, b: 156, g: 225, r: 252 },
-      height: 297,
-      outlineFill: { a: 1, b: 29, g: 29, r: 29 },
-      textFontSize: 24,
-      type: 0,
-      value: "Tyrese",
-      width: 495,
-      x: 910.1378961188806,
-      y: 513.2487288187639,
+    "UOIlRY1Gw7IrejwEX0B0F": {
+      "fill": {
+        "a": 1,
+        "b": 0,
+        "g": 165,
+        "r": 255
+      },
+      "height": 39.468842124277685,
+      "outlineFill": {
+        "a": 0,
+        "b": 0,
+        "g": 0,
+        "r": 0
+      },
+      "textFontSize": 5.920326318641651,
+      "type": 14,
+      "width": 43.10552926256841,
+      "value": "",
+      "x": 369.1004811485482,
+      "y": 316.6515038785543
     },
-    UhTJUW3AHyIBdb1wVlL8d: {
-      alignX: "left",
-      alignY: "top",
-      fill: { a: 1, b: 156, g: 225, r: 252 },
-      height: 297,
-      outlineFill: { a: 1, b: 29, g: 29, r: 29 },
-      textFontSize: 24,
-      type: 0,
-      value: "Sofia",
-      width: 495,
-      x: 402.87360881891163,
-      y: 512.9919200440739,
+    "xowGvfyuZUcljmnGfRXOT": {
+      "fill": {
+        "a": 1,
+        "b": 0,
+        "g": 165,
+        "r": 255
+      },
+      "height": 39.468842124277685,
+      "outlineFill": {
+        "a": 0,
+        "b": 0,
+        "g": 0,
+        "r": 0
+      },
+      "textFontSize": 5.920326318641651,
+      "type": 14,
+      "width": 43.10552926256841,
+      "value": "",
+      "x": 319.9917808391152,
+      "y": 316.5306143778272
     },
-    WviozHBd6l0AA1J5XE6T5: {
-      alignX: "left",
-      alignY: "top",
-      fill: { a: 1, b: 156, g: 225, r: 252 },
-      height: 297,
-      outlineFill: { a: 1, b: 29, g: 29, r: 29 },
-      textFontSize: 24,
-      type: 0,
-      value: "John",
-      width: 495,
-      x: 403,
-      y: 208,
+    "9l6TKhodTmGSKFjXr4nQQ": {
+      "alignX": "left",
+      "alignY": "top",
+      "fill": {
+        "a": 1,
+        "b": 156,
+        "g": 225,
+        "r": 252
+      },
+      "height": 146.52807638638055,
+      "outlineFill": {
+        "a": 1,
+        "b": 29,
+        "g": 29,
+        "r": 29
+      },
+      "textFontSize": 11.840652637283302,
+      "type": 0,
+      "value": "Sebastian",
+      "width": 266.7154623121424,
+      "x": 476.3821779477428,
+      "y": 117.49242194717888
     },
-    daa0ARJl8C66jClUPkUhi: {
-      alignX: "left",
-      alignY: "top",
-      fill: { a: 1, b: 156, g: 225, r: 252 },
-      height: 297,
-      outlineFill: { a: 1, b: 29, g: 29, r: 29 },
-      textFontSize: 24,
-      type: 0,
-      value: "Sebastian",
-      width: 495,
-      x: 909.7809286367959,
-      y: 208.22404303451106,
+    "uUyl3TOC9jwHVkosp4nBW": {
+      "fill": {
+        "a": 1,
+        "b": 0,
+        "g": 165,
+        "r": 255
+      },
+      "height": 39.468842124277685,
+      "outlineFill": {
+        "a": 0,
+        "b": 0,
+        "g": 0,
+        "r": 0
+      },
+      "textFontSize": 5.920326318641651,
+      "type": 14,
+      "width": 43.10552926256841,
+      "value": "",
+      "x": 544.8956790362229,
+      "y": 166.03950209912938
     },
-    i5qIPZyfFcQtkAchzwHJu: {
-      fill: { a: 1, b: 0, g: 165, r: 255 },
-      height: 80,
-      outlineFill: { a: 0, b: 0, g: 0, r: 0 },
-      textFontSize: 12,
-      type: 14,
-      width: 80,
-      value : "",
-      x: 619.5343643855914,
-      y: 611.6576006826962,
+    "EDxydxNjIlPkjZvDw1q0F": {
+      "fill": {
+        "a": 1,
+        "b": 0,
+        "g": 165,
+        "r": 255
+      },
+      "height": 39.468842124277685,
+      "outlineFill": {
+        "a": 0,
+        "b": 0,
+        "g": 0,
+        "r": 0
+      },
+      "textFontSize": 5.920326318641651,
+      "type": 14,
+      "width": 43.10552926256841,
+      "value": "",
+      "x": 642.4922778837924,
+      "y": 166.30722892336053
     },
-    isuZpFZDEMuphmjgUAiUE: {
-      fill: { a: 1, b: 0, g: 165, r: 255 },
-      height: 80,
-      outlineFill: { a: 0, b: 0, g: 0, r: 0 },
-      textFontSize: 12,
-      type: 14,
-      width: 80,
-      value : "",
-      x: 1217.9399992566296,
-      y: 612.1594422360951,
+    "yxaiOctdgatgJaO5GhUeA": {
+      "fill": {
+        "a": 1,
+        "b": 0,
+        "g": 165,
+        "r": 255
+      },
+      "height": 39.468842124277685,
+      "outlineFill": {
+        "a": 0,
+        "b": 0,
+        "g": 0,
+        "r": 0
+      },
+      "textFontSize": 5.920326318641651,
+      "type": 14,
+      "width": 43.10552926256841,
+      "value": "",
+      "x": 593.383577574359,
+      "y": 166.18633942263358
     },
-    nMzCfT0Y97Up8uHgxcEdw: {
-      fill: { a: 1, b: 0, g: 165, r: 255 },
-      height: 80,
-      outlineFill: { a: 0, b: 0, g: 0, r: 0 },
-      textFontSize: 12,
-      type: 14,
-      width: 80,
-      value : "",
-      x: 1126.9250428666483,
-      y: 306.9224894133122,
+    "Jn9ipUniDqAAm5gVKDmAF": {
+      "alignX": "left",
+      "alignY": "top",
+      "fill": {
+        "a": 1,
+        "b": 156,
+        "g": 225,
+        "r": 252
+      },
+      "height": 146.52807638638055,
+      "outlineFill": {
+        "a": 1,
+        "b": 29,
+        "g": 29,
+        "r": 29
+      },
+      "textFontSize": 11.840652637283302,
+      "type": 0,
+      "value": "Tyrese",
+      "width": 266.7154623121424,
+      "x": 476.57451885080263,
+      "y": 267.979561537505
     },
-    norNSrF99muDt8UXc0kN4: {
-      fill: { a: 1, b: 0, g: 165, r: 255 },
-      height: 80,
-      outlineFill: { a: 0, b: 0, g: 0, r: 0 },
-      textFontSize: 12,
-      type: 14,
-      width: 80,
-      value : "",
-      x: 1036.9358477584606,
-      y: 306.6248625955974,
+    "fc1C3jrEKkTCMe8hdbSb8": {
+      "fill": {
+        "a": 1,
+        "b": 0,
+        "g": 165,
+        "r": 255
+      },
+      "height": 39.468842124277685,
+      "outlineFill": {
+        "a": 0,
+        "b": 0,
+        "g": 0,
+        "r": 0
+      },
+      "textFontSize": 5.920326318641651,
+      "type": 14,
+      "width": 43.10552926256841,
+      "value": "",
+      "x": 544.327577051786,
+      "y": 316.51047636662696
     },
-    qDQD1eWpfFGbjtlZFPxsB: {
-      fill: { a: 1, b: 0, g: 165, r: 255 },
-      height: 80,
-      outlineFill: { a: 0, b: 0, g: 0, r: 0 },
-      textFontSize: 12,
-      type: 14,
-      width: 80,
-      value : "",
-      x: 619.6607555666798,
-      y: 306.66568063862223,
+    "izx9yjOk7rk27qnKqsLLn": {
+      "fill": {
+        "a": 1,
+        "b": 0,
+        "g": 165,
+        "r": 255
+      },
+      "height": 39.468842124277685,
+      "outlineFill": {
+        "a": 0,
+        "b": 0,
+        "g": 0,
+        "r": 0
+      },
+      "textFontSize": 5.920326318641651,
+      "type": 14,
+      "width": 43.10552926256841,
+      "value": "",
+      "x": 642.4241758993552,
+      "y": 316.778203190858
     },
-    t5ZBWcKbrnIaUIQMhvr0o: {
-      fill: { a: 1, b: 0, g: 165, r: 255 },
-      height: 80,
-      outlineFill: { a: 0, b: 0, g: 0, r: 0 },
-      textFontSize: 12,
-      type: 14,
-      width: 80,
-      value : "",
-      x: 1126.79865168556,
-      y: 611.9144094573861,
+    "ea3tzPG6CRjY8LcUt1eRE": {
+      "fill": {
+        "a": 1,
+        "b": 0,
+        "g": 165,
+        "r": 255
+      },
+      "height": 39.468842124277685,
+      "outlineFill": {
+        "a": 0,
+        "b": 0,
+        "g": 0,
+        "r": 0
+      },
+      "textFontSize": 5.920326318641651,
+      "type": 14,
+      "width": 43.10552926256841,
+      "value": "",
+      "x": 593.3154755899222,
+      "y": 316.6573136901319
     },
-    vlI1TDN5yWENL0xUyszvp: {
-      fill: { a: 1, b: 0, g: 165, r: 255 },
-      height: 80,
-      outlineFill: { a: 0, b: 0, g: 0, r: 0 },
-      textFontSize: 12,
-      type: 14,
-      width: 80,
-      value : "",
-      x: 710.6757119566608,
-      y: 611.9026334614051,
-    },
+    "rr5FwFZQ1gOvvkvwllswa": {
+      "alignX": "center",
+      "alignY": "center",
+      "fill": {
+        "a": 1,
+        "b": 29,
+        "g": 29,
+        "r": 29
+      },
+      "height": 34.16616864964408,
+      "outlineFill": {
+        "a": 1,
+        "b": 29,
+        "g": 29,
+        "r": 29
+      },
+      "textFontSize": 17.76097895592494,
+      "type": 0,
+      "value": "Lluvia de Ideas",
+      "width": 169.2158469608567,
+      "x": 381.8800922009224,
+      "y": 67.99587163967365
+    }
   },
-  layerIds: [
-    "AWFaoMambHDUgadxnorL3",
-    "WviozHBd6l0AA1J5XE6T5",
-    "94Q0omcqnYFQ6xInSE4u6",
-    "AsxOnp85wVzdNTLuWqKxK",
-    "qDQD1eWpfFGbjtlZFPxsB",
-    "UhTJUW3AHyIBdb1wVlL8d",
-    "9jhT0xuV50nK7wueQAWoJ",
-    "vlI1TDN5yWENL0xUyszvp",
-    "i5qIPZyfFcQtkAchzwHJu",
-    "daa0ARJl8C66jClUPkUhi",
-    "norNSrF99muDt8UXc0kN4",
-    "BkA5cyRlWbrpNvrZRcC2a",
-    "nMzCfT0Y97Up8uHgxcEdw",
-    "TZbSeQrs0DsKHvgmBxX54",
-    "Se5Fzkpb9hX3BflQrtLKk",
-    "isuZpFZDEMuphmjgUAiUE",
-    "t5ZBWcKbrnIaUIQMhvr0o",
-    "MkCEZAT8koFxu6OMmlDCm",
+  "layerIds": [
+    "J2S2nokdQKckj7Z7nxgu5",
+    "VVSuM17ecxueYWlKYm6Ng",
+    "MhyXGR2lwTiAiVBuLVdEH",
+    "9oVlEg5qmKEEp4koRVmIr",
+    "ovdQLKc0wrCZoWiKWW78g",
+    "3iChRD8hYWaiOCQvU9HIA",
+    "k4HitAIzFbykFZ60S23qg",
+    "UOIlRY1Gw7IrejwEX0B0F",
+    "xowGvfyuZUcljmnGfRXOT",
+    "9l6TKhodTmGSKFjXr4nQQ",
+    "uUyl3TOC9jwHVkosp4nBW",
+    "EDxydxNjIlPkjZvDw1q0F",
+    "yxaiOctdgatgJaO5GhUeA",
+    "Jn9ipUniDqAAm5gVKDmAF",
+    "fc1C3jrEKkTCMe8hdbSb8",
+    "izx9yjOk7rk27qnKqsLLn",
+    "ea3tzPG6CRjY8LcUt1eRE",
+    "rr5FwFZQ1gOvvkvwllswa"
   ]
 };
