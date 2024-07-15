@@ -3,30 +3,10 @@ export const PlantillaMapaConceptual = {
   image: '/templates/mapa-conceptual.png',
   href: "/plantillas/mapa-conceptual/",
   "layers": {
-        "YXbXes0NUtFVG3wF0Pm4t": {
-            "type": 16,
-            "x": 422.1365275647243,
-            "y": 573.8934082838396,
+        "yf86SWrborKElXwD7vGNn": {
             "center": {
-                "x": 442.88336158243976,
-                "y": 519.3779931165997
-            },
-            "height": -109.03083033447979,
-            "width": 41.49366803543086,
-            "fill": {
-                "r": 29,
-                "g": 29,
-                "b": 29,
-                "a": 1
-            },
-            "startArrowHead": "None",
-            "endArrowHead": "Triangle",
-            "endConnectedLayerId": "3cxpKx8waNI0qnClY3nvH"
-        },
-        "1bHrObiTmeL8NpiTBznPU": {
-            "center": {
-                "x": 1241.8952997335193,
-                "y": 173.09156765086834
+                "x": 646.262903101657,
+                "y": 40.73658199624235
             },
             "endArrowHead": "Triangle",
             "fill": {
@@ -35,18 +15,18 @@ export const PlantillaMapaConceptual = {
                 "b": 29,
                 "a": 1
             },
-            "height": 124.71030237012681,
+            "height": 82.96401011893946,
             "type": 16,
-            "width": 248.2707816813953,
-            "x": 994.2203540604222,
-            "y": 173.4980202393912,
-            "startConnectedLayerId": "FdVgmyKFfQsdAX4CTCXbC",
-            "endConnectedLayerId": "vZony8N0U6wChUzAgJp6I"
+            "width": 147.28381370574553,
+            "x": 499.33256232192946,
+            "y": 41.006976149942886,
+            "startConnectedLayerId": "O84LYV56HcY87nHYysfhD",
+            "endConnectedLayerId": "onxxdPh8iHv3tUqdYjuMQ"
         },
-        "yAeG0EiH7x1YMfshumLcc": {
+        "freELETb8vcOyDRxIOObj": {
             "center": {
-                "x": 914.4446816434969,
-                "y": 432.2955953367907
+                "x": 452.00655321634247,
+                "y": 213.17306211944398
             },
             "endArrowHead": "Triangle",
             "fill": {
@@ -55,18 +35,18 @@ export const PlantillaMapaConceptual = {
                 "b": 29,
                 "a": 1
             },
-            "height": 118.79272727272718,
+            "height": 79.02732043950014,
             "type": 16,
-            "width": -0.562785348629177,
-            "x": 914.7260743178115,
-            "y": 372.89923170042715,
-            "startConnectedLayerId": "PmNyPBFk602mfva4zbLvG",
-            "endConnectedLayerId": "3qzVpGWUSNuo3q1OVQAZ9"
+            "width": -0.33386599857809474,
+            "x": 452.1734862156335,
+            "y": 173.6594018996938,
+            "startConnectedLayerId": "osPFF4DsLQ0aP48uNB722",
+            "endConnectedLayerId": "uuCG2oebkdzdc63TkZG4J"
         },
-        "YFvOon1RSUwEiyIyyR7Qg": {
+        "mzzW9XVpDlUySD71J4y33": {
             "center": {
-                "x": 588,
-                "y": 173
+                "x": 258.3469636714325,
+                "y": 40.67566626298857
             },
             "endArrowHead": "Triangle",
             "fill": {
@@ -75,18 +55,18 @@ export const PlantillaMapaConceptual = {
                 "b": 29,
                 "a": 1
             },
-            "height": 118.89609070498256,
+            "height": 79.09608336186176,
             "type": 16,
-            "width": -246.84296108709555,
-            "x": 835.7620621048848,
-            "y": 173.47586826817184,
-            "endConnectedLayerId": "51uVyywTc8WM5oU5YPkZF",
-            "startConnectedLayerId": "FdVgmyKFfQsdAX4CTCXbC"
+            "width": -146.43677539945833,
+            "x": 405.3289852821624,
+            "y": 40.99223946556705,
+            "endConnectedLayerId": "eZm2G9N2ZBeikThrGYNqQ",
+            "startConnectedLayerId": "O84LYV56HcY87nHYysfhD"
         },
-        "mEXwBASJAeMRy0iVGQD2Q": {
+        "4Xzrm0wBAujwNd3d9RaAr": {
             "center": {
-                "x": 590.0514987847953,
-                "y": 431.58045224547186
+                "x": 259.5639919612362,
+                "y": 212.69731041700044
             },
             "endArrowHead": "Triangle",
             "fill": {
@@ -95,18 +75,18 @@ export const PlantillaMapaConceptual = {
                 "b": 29,
                 "a": 1
             },
-            "height": 118.41698654463494,
+            "height": 78.77735746952007,
             "type": 16,
-            "width": 0.7465836101823129,
-            "x": 589.6782069797041,
-            "y": 372.3719589731544,
-            "startConnectedLayerId": "51uVyywTc8WM5oU5YPkZF",
-            "endConnectedLayerId": "N7rpSzk37lP4MGKaCMQeq"
+            "width": 0.44290222398770174,
+            "x": 259.3425408492408,
+            "y": 173.30863168224093,
+            "startConnectedLayerId": "eZm2G9N2ZBeikThrGYNqQ",
+            "endConnectedLayerId": "OziRw2CFnlSKT0bK7jeNF"
         },
-        "2Sz7TN3Rl8KqTdpAgO03l": {
+        "6vIXQJmfPi6a2nVAiFz88": {
             "center": {
-                "x": 1242.508786792347,
-                "y": 437.30377715497264
+                "x": 646.6268473123782,
+                "y": 216.50477440900335
             },
             "endArrowHead": "Triangle",
             "fill": {
@@ -115,18 +95,18 @@ export const PlantillaMapaConceptual = {
                 "b": 29,
                 "a": 1
             },
-            "height": 118.1909090909092,
+            "height": 78.62695857061536,
             "type": 16,
-            "width": 0.12469111091672858,
-            "x": 1242.4464412368886,
-            "y": 378.208322609518,
-            "startConnectedLayerId": "vZony8N0U6wChUzAgJp6I",
-            "endConnectedLayerId": "uZjDWlqXJa20TycqhRQpa"
+            "width": 0.07397158145894762,
+            "x": 646.589861521649,
+            "y": 177.19129512369508,
+            "startConnectedLayerId": "onxxdPh8iHv3tUqdYjuMQ",
+            "endConnectedLayerId": "ujNzwg6geMpfkag8brBD2"
         },
-        "m6wNWA7tEHWCnZShF7aeA": {
+        "GtzLJzt6rCvVyuPkfJxnk": {
             "center": {
-                "x": 915.1043343651891,
-                "y": 253.26363636363635
+                "x": 452.3978846807788,
+                "y": 94.07136022652669
             },
             "endArrowHead": "Triangle",
             "fill": {
@@ -135,196 +115,196 @@ export const PlantillaMapaConceptual = {
                 "b": 29,
                 "a": 1
             },
-            "height": 79.27119067358166,
+            "height": 52.73546563670914,
             "type": 16,
-            "width": -0.10431185648644714,
-            "x": 915.1564902934323,
-            "y": 213.6280410268455,
-            "startConnectedLayerId": "FdVgmyKFfQsdAX4CTCXbC",
-            "endConnectedLayerId": "PmNyPBFk602mfva4zbLvG"
+            "width": -0.061881820865115664,
+            "x": 452.42882559120983,
+            "y": 67.70362740817197,
+            "startConnectedLayerId": "O84LYV56HcY87nHYysfhD",
+            "endConnectedLayerId": "osPFF4DsLQ0aP48uNB722"
         },
-        "FdVgmyKFfQsdAX4CTCXbC": {
+        "O84LYV56HcY87nHYysfhD": {
             "fill": {
                 "r": 68,
                 "g": 101,
                 "b": 233,
                 "a": 1
             },
-            "height": 80,
+            "height": 53.22030885481232,
             "outlineFill": {
                 "r": 29,
                 "g": 29,
                 "b": 29,
                 "a": 1
             },
-            "textFontSize": 36,
+            "textFontSize": 23.949138984665563,
             "type": 0,
             "value": "Title",
-            "width": 158.45829195553745,
-            "x": 835.7620621048848,
-            "y": 133.6280410268455,
+            "width": 94.00357703976641,
+            "x": 405.3289852821624,
+            "y": 14.48331855335988,
             "connectedArrows": [
-                "YFvOon1RSUwEiyIyyR7Qg",
-                "1bHrObiTmeL8NpiTBznPU",
-                "m6wNWA7tEHWCnZShF7aeA"
+                "mzzW9XVpDlUySD71J4y33",
+                "yf86SWrborKElXwD7vGNn",
+                "GtzLJzt6rCvVyuPkfJxnk"
             ]
         },
-        "51uVyywTc8WM5oU5YPkZF": {
+        "eZm2G9N2ZBeikThrGYNqQ": {
             "fill": {
                 "a": 1,
                 "b": 42,
                 "g": 142,
                 "r": 252
             },
-            "height": 80,
+            "height": 53.22030885481232,
             "outlineFill": {
                 "r": 29,
                 "g": 29,
                 "b": 29,
                 "a": 1
             },
-            "textFontSize": 18,
+            "textFontSize": 11.974569492332781,
             "type": 0,
             "value": "",
-            "width": 158.45829195553745,
-            "x": 509.9979339073175,
-            "y": 292.3719589731544,
+            "width": 94.00357703976641,
+            "x": 212.07312631831155,
+            "y": 120.08832282742873,
             "connectedArrows": [
-                "YFvOon1RSUwEiyIyyR7Qg",
-                "mEXwBASJAeMRy0iVGQD2Q",
+                "mzzW9XVpDlUySD71J4y33",
+                "4Xzrm0wBAujwNd3d9RaAr",
                 "dfKbK17XkSGzAr3KhX8Ys"
             ]
         },
-        "PmNyPBFk602mfva4zbLvG": {
+        "osPFF4DsLQ0aP48uNB722": {
             "fill": {
                 "a": 1,
                 "b": 42,
                 "g": 142,
                 "r": 252
             },
-            "height": 80,
+            "height": 53.22030885481232,
             "outlineFill": {
                 "r": 29,
                 "g": 29,
                 "b": 29,
                 "a": 1
             },
-            "textFontSize": 18,
+            "textFontSize": 11.974569492332781,
             "type": 0,
             "value": "",
-            "width": 158.45829195553745,
-            "x": 835.5524793618631,
-            "y": 292.89923170042715,
+            "width": 94.00357703976641,
+            "x": 405.204652706782,
+            "y": 120.43909304488125,
             "connectedArrows": [
-                "m6wNWA7tEHWCnZShF7aeA",
-                "yAeG0EiH7x1YMfshumLcc",
+                "GtzLJzt6rCvVyuPkfJxnk",
+                "freELETb8vcOyDRxIOObj",
                 "dfKbK17XkSGzAr3KhX8Ys"
             ]
         },
-        "vZony8N0U6wChUzAgJp6I": {
+        "onxxdPh8iHv3tUqdYjuMQ": {
             "fill": {
                 "a": 1,
                 "b": 42,
                 "g": 142,
                 "r": 252
             },
-            "height": 80,
+            "height": 53.22030885481232,
             "outlineFill": {
                 "r": 29,
                 "g": 29,
                 "b": 29,
                 "a": 1
             },
-            "textFontSize": 18,
+            "textFontSize": 11.974569492332781,
             "type": 0,
             "value": "",
-            "width": 158.45829195553745,
-            "x": 1163.452479361863,
-            "y": 298.208322609518,
+            "width": 94.00357703976641,
+            "x": 599.7275932922313,
+            "y": 123.97098626888243,
             "connectedArrows": [
-                "1bHrObiTmeL8NpiTBznPU",
-                "2Sz7TN3Rl8KqTdpAgO03l"
+                "yf86SWrborKElXwD7vGNn",
+                "6vIXQJmfPi6a2nVAiFz88"
             ]
         },
-        "N7rpSzk37lP4MGKaCMQeq": {
+        "OziRw2CFnlSKT0bK7jeNF": {
             "fill": {
                 "a": 1,
                 "b": 42,
                 "g": 142,
                 "r": 252
             },
-            "height": 80,
+            "height": 53.22030885481232,
             "outlineFill": {
                 "r": 29,
                 "g": 29,
                 "b": 29,
                 "a": 1
             },
-            "textFontSize": 18,
+            "textFontSize": 11.974569492332781,
             "type": 0,
             "value": "",
-            "width": 158.45829195553745,
-            "x": 511.2488935412223,
-            "y": 490.78894551778933,
+            "width": 94.00357703976641,
+            "x": 212.8152438740882,
+            "y": 252.08598915176208,
             "connectedArrows": [
-                "mEXwBASJAeMRy0iVGQD2Q",
-                "DJHolE2MogKLpD5CFVNR9"
+                "4Xzrm0wBAujwNd3d9RaAr",
+                "K3ct1WxElV8MRCvYfziDp"
             ]
         },
-        "3qzVpGWUSNuo3q1OVQAZ9": {
+        "uuCG2oebkdzdc63TkZG4J": {
             "fill": {
                 "a": 1,
                 "b": 42,
                 "g": 142,
                 "r": 252
             },
-            "height": 80,
+            "height": 53.22030885481232,
             "outlineFill": {
                 "r": 29,
                 "g": 29,
                 "b": 29,
                 "a": 1
             },
-            "textFontSize": 18,
+            "textFontSize": 11.974569492332781,
             "type": 0,
             "value": "",
-            "width": 158.45829195553745,
-            "x": 834.6079339073177,
-            "y": 491.6919589731543,
+            "width": 94.00357703976641,
+            "x": 404.6443118731895,
+            "y": 252.6867223391937,
             "connectedArrows": [
-                "yAeG0EiH7x1YMfshumLcc",
-                "y2a2pcobw10LJjBVmDDAY"
+                "freELETb8vcOyDRxIOObj",
+                "YYTLtVrEkueTZ6HUHwWwA"
             ]
         },
-        "uZjDWlqXJa20TycqhRQpa": {
+        "ujNzwg6geMpfkag8brBD2": {
             "fill": {
                 "a": 1,
                 "b": 42,
                 "g": 142,
                 "r": 252
             },
-            "height": 80,
+            "height": 53.22030885481232,
             "outlineFill": {
                 "r": 29,
                 "g": 29,
                 "b": 29,
                 "a": 1
             },
-            "textFontSize": 18,
+            "textFontSize": 11.974569492332781,
             "type": 0,
             "value": "",
-            "width": 158.45829195553745,
-            "x": 1163.6615702709546,
-            "y": 496.3992317004272,
+            "width": 94.00357703976641,
+            "x": 599.8516340927405,
+            "y": 255.81825369431027,
             "connectedArrows": [
-                "2Sz7TN3Rl8KqTdpAgO03l",
-                "3vKksRx3Ir0D3CVJxXMfs"
+                "6vIXQJmfPi6a2nVAiFz88",
+                "4cRmN4HKRs8vlyww1DqtB"
             ]
         },
-        "y2a2pcobw10LJjBVmDDAY": {
+        "YYTLtVrEkueTZ6HUHwWwA": {
             "center": {
-                "x": 914.0446967826456,
-                "y": 630.5768767354125
+                "x": 451.76926675302286,
+                "y": 345.0804500714763
             },
             "endArrowHead": "Triangle",
             "fill": {
@@ -333,18 +313,18 @@ export const PlantillaMapaConceptual = {
                 "b": 29,
                 "a": 1
             },
-            "height": 117.76983552451645,
+            "height": 78.3468377549401,
             "type": 16,
-            "width": 0.14533820022541022,
-            "x": 913.9720276825329,
-            "y": 571.6919589731543,
-            "startConnectedLayerId": "3qzVpGWUSNuo3q1OVQAZ9",
-            "endConnectedLayerId": "9kOezU12JUsI6efa1pWOX"
+            "width": 0.08622023204405045,
+            "x": 451.72615663700014,
+            "y": 305.9070311940062,
+            "startConnectedLayerId": "uuCG2oebkdzdc63TkZG4J",
+            "endConnectedLayerId": "pC5oycHpySPG2XkoBGDPb"
         },
-        "DJHolE2MogKLpD5CFVNR9": {
+        "K3ct1WxElV8MRCvYfziDp": {
             "center": {
-                "x": 590.8993925116933,
-                "y": 630.5205741751281
+                "x": 260.0669952581604,
+                "y": 345.04299457588104
             },
             "endArrowHead": "Triangle",
             "fill": {
@@ -353,18 +333,18 @@ export const PlantillaMapaConceptual = {
                 "b": 29,
                 "a": 1
             },
-            "height": 119.46325731467766,
+            "height": 79.47339313861312,
             "type": 16,
-            "width": 0.4637897844371537,
-            "x": 590.6674976194748,
-            "y": 570.7889455177893,
-            "startConnectedLayerId": "N7rpSzk37lP4MGKaCMQeq",
-            "endConnectedLayerId": "Us2N4HuOL7RO1dxVE7av0"
+            "width": 0.27513800757001666,
+            "x": 259.92942625437337,
+            "y": 305.3062980065747,
+            "startConnectedLayerId": "OziRw2CFnlSKT0bK7jeNF",
+            "endConnectedLayerId": "390lNbQLDqNetDmM4t1pn"
         },
-        "3vKksRx3Ir0D3CVJxXMfs": {
+        "4cRmN4HKRs8vlyww1DqtB": {
             "center": {
-                "x": 1242.9485017296429,
-                "y": 633.0262537424703
+                "x": 646.8877031910664,
+                "y": 346.7099075816941
             },
             "endArrowHead": "Triangle",
             "fill": {
@@ -373,106 +353,107 @@ export const PlantillaMapaConceptual = {
                 "b": 29,
                 "a": 1
             },
-            "height": 113.2540440840861,
+            "height": 75.34269006514502,
             "type": 16,
-            "width": 0.1426559178964908,
-            "x": 1242.8771737706948,
-            "y": 576.3992317004272,
-            "startConnectedLayerId": "uZjDWlqXJa20TycqhRQpa",
-            "endConnectedLayerId": "0RQQAN20WM0LSeDUEtNgZ"
+            "width": 0.08462899860061698,
+            "x": 646.8453886917646,
+            "y": 309.03856254912216,
+            "startConnectedLayerId": "ujNzwg6geMpfkag8brBD2",
+            "endConnectedLayerId": "XenUbUm9KZNVjhSmWPj2C"
         },
-        "Us2N4HuOL7RO1dxVE7av0": {
+        "390lNbQLDqNetDmM4t1pn": {
             "fill": {
                 "a": 1,
                 "b": 42,
                 "g": 142,
                 "r": 252
             },
-            "height": 80,
+            "height": 53.22030885481232,
             "outlineFill": {
                 "r": 29,
                 "g": 29,
                 "b": 29,
                 "a": 1
             },
-            "textFontSize": 18,
+            "textFontSize": 11.974569492332781,
             "type": 0,
             "value": "",
-            "width": 158.45829195553745,
-            "x": 512.0574326160221,
-            "y": 690.252202832467,
+            "width": 94.00357703976641,
+            "x": 213.29490047186582,
+            "y": 384.77969114518766,
             "connectedArrows": [
-                "DJHolE2MogKLpD5CFVNR9"
+                "K3ct1WxElV8MRCvYfziDp"
             ]
         },
-        "9kOezU12JUsI6efa1pWOX": {
+        "pC5oycHpySPG2XkoBGDPb": {
             "fill": {
                 "a": 1,
                 "b": 42,
                 "g": 142,
                 "r": 252
             },
-            "height": 80,
+            "height": 53.22030885481232,
             "outlineFill": {
                 "r": 29,
                 "g": 29,
                 "b": 29,
                 "a": 1
             },
-            "textFontSize": 18,
+            "textFontSize": 11.974569492332781,
             "type": 0,
             "value": "",
-            "width": 158.45829195553745,
-            "x": 834.851999052064,
-            "y": 689.4617944976708,
+            "width": 94.00357703976641,
+            "x": 404.7891007406786,
+            "y": 384.25386894894615,
             "connectedArrows": [
-                "y2a2pcobw10LJjBVmDDAY"
+                "YYTLtVrEkueTZ6HUHwWwA"
             ]
         },
-        "0RQQAN20WM0LSeDUEtNgZ": {
+        "XenUbUm9KZNVjhSmWPj2C": {
             "fill": {
                 "a": 1,
                 "b": 42,
                 "g": 142,
                 "r": 252
             },
-            "height": 80,
+            "height": 53.22030885481232,
             "outlineFill": {
                 "r": 29,
                 "g": 29,
                 "b": 29,
                 "a": 1
             },
-            "textFontSize": 18,
+            "textFontSize": 11.974569492332781,
             "type": 0,
             "value": "",
-            "width": 158.45829195553745,
-            "x": 1163.9056354157005,
-            "y": 689.6532757845133,
+            "width": 94.00357703976641,
+            "x": 599.9964229602335,
+            "y": 384.38125261426813,
             "connectedArrows": [
-                "3vKksRx3Ir0D3CVJxXMfs"
+                "4cRmN4HKRs8vlyww1DqtB"
             ]
-        }
+        },
+        "dfKbK17XkSGzAr3KhX8Ys": null
     },
     "layerIds": [
-        "1bHrObiTmeL8NpiTBznPU",
-        "yAeG0EiH7x1YMfshumLcc",
-        "YFvOon1RSUwEiyIyyR7Qg",
-        "mEXwBASJAeMRy0iVGQD2Q",
-        "2Sz7TN3Rl8KqTdpAgO03l",
-        "m6wNWA7tEHWCnZShF7aeA",
-        "FdVgmyKFfQsdAX4CTCXbC",
-        "51uVyywTc8WM5oU5YPkZF",
-        "PmNyPBFk602mfva4zbLvG",
-        "vZony8N0U6wChUzAgJp6I",
-        "N7rpSzk37lP4MGKaCMQeq",
-        "3qzVpGWUSNuo3q1OVQAZ9",
-        "uZjDWlqXJa20TycqhRQpa",
-        "y2a2pcobw10LJjBVmDDAY",
-        "DJHolE2MogKLpD5CFVNR9",
-        "3vKksRx3Ir0D3CVJxXMfs",
-        "Us2N4HuOL7RO1dxVE7av0",
-        "9kOezU12JUsI6efa1pWOX",
-        "0RQQAN20WM0LSeDUEtNgZ"
+        "yf86SWrborKElXwD7vGNn",
+        "freELETb8vcOyDRxIOObj",
+        "mzzW9XVpDlUySD71J4y33",
+        "4Xzrm0wBAujwNd3d9RaAr",
+        "6vIXQJmfPi6a2nVAiFz88",
+        "GtzLJzt6rCvVyuPkfJxnk",
+        "O84LYV56HcY87nHYysfhD",
+        "eZm2G9N2ZBeikThrGYNqQ",
+        "osPFF4DsLQ0aP48uNB722",
+        "onxxdPh8iHv3tUqdYjuMQ",
+        "OziRw2CFnlSKT0bK7jeNF",
+        "uuCG2oebkdzdc63TkZG4J",
+        "ujNzwg6geMpfkag8brBD2",
+        "YYTLtVrEkueTZ6HUHwWwA",
+        "K3ct1WxElV8MRCvYfziDp",
+        "4cRmN4HKRs8vlyww1DqtB",
+        "390lNbQLDqNetDmM4t1pn",
+        "pC5oycHpySPG2XkoBGDPb",
+        "XenUbUm9KZNVjhSmWPj2C"
     ]
 };

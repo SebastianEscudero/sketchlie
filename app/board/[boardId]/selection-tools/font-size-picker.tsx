@@ -13,6 +13,7 @@ interface FontSizePickerProps {
     openSelector: SelectorType | null;
     setOpenSelector: (Selector: SelectorType | null) => void;
     expandUp: boolean;
+    layers: any;
 };
 
 const fontSizes = [10, 12, 14, 18, 24, 36, 48, 56, 64, 80, 144];
@@ -25,10 +26,15 @@ export const FontSizePicker = ({
     boardId,
     openSelector,
     setOpenSelector,
-    expandUp = false
+    expandUp = false,
+    layers
 }: FontSizePickerProps) => {
-    const [inputFontSize, setInputFontSize] = useState(liveLayers[selectedLayers[0]].textFontSize || 12);
-    
+    const [inputFontSize, setInputFontSize] = useState(layers[0].textFontSize || 12);
+
+    useEffect(() => {
+        setInputFontSize(layers[0].textFontSize || 12);
+    }, [layers])
+
     const handleFontSizeChange = (fontSize: number) => {
         const newLayers = { ...liveLayers };
         const updatedIds: any = [];

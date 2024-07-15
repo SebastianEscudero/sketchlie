@@ -433,6 +433,7 @@ export const SelectionTools = memo(({
           openSelector={openSelector}
           setOpenSelector={setOpenSelector}
           expandUp={position + 50 + 460 > window.innerHeight}
+          layers={layers}
         />
       )}
       {hasText && (

@@ -30,7 +30,7 @@ export const Footer = ({
 
   return (
     <div className="relative dark:bg-[#2C2C2C] bg-zinc-100 p-3">
-      <p className="text-[14px] truncate max-w-[calc(100%-20px)] text-black dark:text-white">
+      <p className="text-[13px] truncate max-w-[calc(100%-20px)] text-black dark:text-white">
         {title}
       </p>
       <p className="transition-opacity text-[11px] truncate dark:text-zinc-300 text-muted-foreground">
