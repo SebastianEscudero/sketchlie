@@ -87,7 +87,6 @@ export const Canvas = ({
     const [isPenMenuOpen, setIsPenMenuOpen] = useState(false);
     const [isShapesMenuOpen, setIsShapesMenuOpen] = useState(false);
     const [isPenEraserSwitcherOpen, setIsPenEraserSwitcherOpen] = useState(false);
-    const [selectedTool, setSelectedTool] = useState(CanvasMode.None);
     const [initialLayers, setInitialLayers] = useState<Layers>({}); // used for undo/redo
     const [history, setHistory] = useState<Command[]>([]);
     const [redoStack, setRedoStack] = useState<Command[]>([]);
@@ -1620,8 +1619,12 @@ export const Canvas = ({
                     }
                 }
             } else if (key === "c") {
-                if (e.ctrlKey || e.metaKey) {
-                    copySelectedLayers();
+                if (!isInsideTextArea) {
+                    if (e.ctrlKey || e.metaKey) {
+                        copySelectedLayers();
+                    } else {
+                        setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Ellipse });
+                    }
                 }
             } else if (key === "v") {
                 if (!isInsideTextArea) {
@@ -1664,8 +1667,8 @@ export const Canvas = ({
                     setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Line });
                 } else if (key === "r") {
                     setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Rectangle });
-                } else if (key === "o") {
-                    setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Ellipse });
+                } else if (key === "k") {
+                    setCanvasState({ mode: CanvasMode.Laser });
                 }
             }
         }
@@ -1812,8 +1815,6 @@ export const Canvas = ({
                     setIsShapesMenuOpen={setIsShapesMenuOpen}
                     isPenEraserSwitcherOpen={isPenEraserSwitcherOpen}
                     setIsPenEraserSwitcherOpen={setIsPenEraserSwitcherOpen}
-                    selectedTool={selectedTool}
-                    setSelectedTool={setSelectedTool}
                     setMagicPathAssist={setMagicPathAssist}
                     magicPathAssist={magicPathAssist}
                     isPlacingLayer={currentPreviewLayer !== null}

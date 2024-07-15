@@ -14,7 +14,6 @@ import {
   MousePointer2,
   MoveUpRight,
   Pen,
-  Pencil,
   Redo2,
   Shapes,
   Square,
@@ -59,8 +58,6 @@ interface ToolbarProps {
   setIsShapesMenuOpen: Dispatch<SetStateAction<boolean>>;
   isPenEraserSwitcherOpen: boolean;
   setIsPenEraserSwitcherOpen: Dispatch<SetStateAction<boolean>>;
-  selectedTool: CanvasMode;
-  setSelectedTool: Dispatch<SetStateAction<CanvasMode>>;
   pathColor: Color;
   magicPathAssist: boolean;
   setMagicPathAssist: Dispatch<SetStateAction<boolean>>;
@@ -87,8 +84,6 @@ export const Toolbar = ({
   setIsShapesMenuOpen,
   isPenEraserSwitcherOpen,
   setIsPenEraserSwitcherOpen,
-  selectedTool,
-  setSelectedTool,
   pathColor,
   isPlacingLayer,
   magicPathAssist,
@@ -157,33 +152,28 @@ export const Toolbar = ({
         <ToolButton
           label={
             !isPenEraserSwitcherOpen
-              ? selectedTool === CanvasMode.Pencil
-                ? "Pencil"
-                : selectedTool === CanvasMode.Eraser
+              ? canvasState.mode === CanvasMode.Laser
+                ? "Laser"
+                : canvasState.mode === CanvasMode.Eraser
                   ? "Eraser"
-                  : selectedTool === CanvasMode.Highlighter
+                  : canvasState.mode === CanvasMode.Highlighter
                     ? "Highlighter"
-                    : "Laser"
+                    : "Pencil"
               : undefined
           }
           icon={
-            selectedTool === CanvasMode.Laser
+            canvasState.mode === CanvasMode.Laser
               ? LaserIcon
-              : selectedTool === CanvasMode.Eraser
+              : canvasState.mode === CanvasMode.Eraser
                 ? Eraser
-                : selectedTool === CanvasMode.Highlighter
+                : canvasState.mode === CanvasMode.Highlighter
                   ? Highlighter
                   : Pen
           }
           onClick={() => {
-            if (selectedTool === CanvasMode.None) {
-              setSelectedTool(CanvasMode.Pencil);
+            if (canvasState.mode === CanvasMode.None) {
               setCanvasState({
                 mode: CanvasMode.Pencil,
-              });
-            } else {
-              setCanvasState({
-                mode: selectedTool,
               });
             }
             setIsPenEraserSwitcherOpen(!isPenEraserSwitcherOpen);
@@ -454,44 +444,40 @@ export const Toolbar = ({
           <ToolButton
             icon={Pen}
             onClick={() => {
-              setSelectedTool(CanvasMode.Pencil);
               setCanvasState({
                 mode: CanvasMode.Pencil,
               });
               setIsPenMenuOpen(!isPenMenuOpen);
             }}
-            isActive={selectedTool === CanvasMode.Pencil}
+            isActive={canvasState.mode === CanvasMode.Pencil}
           />
           <ToolButton
             icon={Eraser}
             onClick={() => {
-              setSelectedTool(CanvasMode.Eraser);
               setCanvasState({
                 mode: CanvasMode.Eraser,
               });
             }}
-            isActive={selectedTool === CanvasMode.Eraser}
+            isActive={canvasState.mode === CanvasMode.Eraser}
           />
           <ToolButton
             icon={Highlighter}
             onClick={() => {
-              setSelectedTool(CanvasMode.Highlighter);
               setCanvasState({
                 mode: CanvasMode.Highlighter,
               });
               setIsPenMenuOpen(!isPenMenuOpen);
             }}
-            isActive={selectedTool === CanvasMode.Highlighter}
+            isActive={canvasState.mode === CanvasMode.Highlighter}
           />
           <ToolButton
             icon={LaserIcon}
             onClick={() => {
-              setSelectedTool(CanvasMode.Laser);
               setCanvasState({
                 mode: CanvasMode.Laser,
               });
             }}
-            isActive={selectedTool === CanvasMode.Laser}
+            isActive={canvasState.mode === CanvasMode.Laser}
           />
         </div>
       }

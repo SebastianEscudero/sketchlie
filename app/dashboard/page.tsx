@@ -17,8 +17,8 @@ const DashboardPage = () => {
   const searchParams = useSearchParams();
   const search = searchParams.get("search") || undefined;
   const favorites = searchParams.get("favorites") || undefined
-  const [activeOrganization, setActiveOrganization] = useState<string | null>(localStorage.getItem("activeOrganization") || null);
   const user = useCurrentUser();
+  const [activeOrganization, setActiveOrganization] = useState<string | null>(localStorage.getItem("activeOrganization") || user?.organizations[0].id);
   const proModal = useProModal();
 
   useEffect(() => {
