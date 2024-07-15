@@ -124,8 +124,10 @@ export const Info = ({
               } else {
                 layer.endConnectedLayerId = "";
               }
-            } else if (layer.type === LayerType.Rectangle && layer.connectedArrows) {
-              layer.connectedArrows = layer.connectedArrows.map((arrowId: string) => idMap.get(arrowId) || arrowId);
+            } else if (layer.type !== LayerType.Image && layer.type !== LayerType.Path && layer.type !== LayerType.Line) {
+                if (layer.connectedArrows) {
+                    layer.connectedArrows = layer.connectedArrows.map((arrowId: string) => idMap.get(arrowId) || arrowId);
+                }
             }
           });
       
