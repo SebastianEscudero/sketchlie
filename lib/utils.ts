@@ -1,19 +1,20 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
-import { 
+import {
   ArrowHandle,
   ArrowLayer,
-  Camera, 
-  Color, 
-  Layer, 
-  LayerType, 
-  PathLayer, 
-  Point, 
-  Side, 
+  Camera,
+  Color,
+  Layer,
+  LayerType,
+  PathLayer,
+  Point,
+  Side,
   XYWH
 } from "@/types/canvas";
 import { Readable } from "stream";
+import { toast } from "sonner";
 
 const COLORS = [
   "#DC2626", // Red
@@ -109,12 +110,12 @@ export function resizeBounds(
   }
 
   if (corner === Side.Top) {
-      result.y = Math.min(point.y, bounds.y + bounds.height);
-      result.height = Math.abs(bounds.y + bounds.height - point.y);
-      if (maintainAspectRatio) {
-        result.width = result.height * aspectRatio;
-      }
+    result.y = Math.min(point.y, bounds.y + bounds.height);
+    result.height = Math.abs(bounds.y + bounds.height - point.y);
+    if (maintainAspectRatio) {
+      result.width = result.height * aspectRatio;
     }
+  }
 
   if (corner === Side.Left) {
     result.x = Math.min(point.x, bounds.x + bounds.width);
@@ -182,7 +183,7 @@ export function resizeBounds(
       result.height = oldHeight;
     }
     result.y = bounds.y + bounds.height - result.height;
-  
+
     if (result.width < 0) {
       result.width = Math.abs(result.width);
       result.x -= result.width;
@@ -212,7 +213,7 @@ export function resizeBounds(
       result.height = oldHeight;
     }
     result.x = bounds.x + bounds.width - result.width;
-  
+
     if (result.width < 0) {
       result.width = Math.abs(result.width);
       result.x -= result.width;
@@ -223,7 +224,7 @@ export function resizeBounds(
       result.y -= result.height;
     }
   }
-  
+
   if (corner === Side.Bottom + Side.Right) {
     const oldWidth = point.x - bounds.x;
     const oldHeight = point.y - bounds.y;
@@ -241,12 +242,12 @@ export function resizeBounds(
       result.width = oldWidth;
       result.height = oldHeight;
     }
-  
+
     if (result.width < 0) {
       result.width = Math.abs(result.width);
       result.x -= result.width;
     }
-  
+
     if (result.height < 0) {
       result.height = Math.abs(result.height);
       result.y -= result.height;
@@ -286,12 +287,12 @@ export function resizePathLayer(
 
     result.width = Math.abs(newWidth);
   }
-  
+
   if ((corner & Side.Right) === Side.Right) {
     result.x = newWidth < 0 ? point.x : bounds.x;
     result.width = Math.abs(newWidth);
   }
-  
+
   if ((corner & Side.Top) === Side.Top) {
     result.y = newHeight < 0 ? point.y : bounds.y + bounds.height - newHeight;
 
@@ -301,7 +302,7 @@ export function resizePathLayer(
 
     result.height = Math.abs(newHeight);
   }
-  
+
   if ((corner & Side.Bottom) === Side.Bottom) {
     result.y = newHeight < 0 ? point.y : bounds.y;
     result.height = Math.abs(newHeight);
@@ -318,7 +319,7 @@ export function resizePathLayer(
 };
 
 export function resizeArrowBounds(
-  bounds: any, 
+  bounds: any,
   point: Point,
   handle: ArrowHandle,
   newLayer: any,
@@ -362,7 +363,7 @@ export function resizeArrowBounds(
   } else if (handle === ArrowHandle.end) {
     result.width = point.x - bounds.x;
     result.height = point.y - bounds.y;
-    
+
     if (newLayer.startConnectedLayerId && liveLayers[newLayer.startConnectedLayerId]) {
       const startPoint = getClosestEndPoint(liveLayers[newLayer.startConnectedLayerId], center);
       result.x = startPoint.x;
@@ -430,7 +431,7 @@ export function findIntersectingLayersWithPoint(
   point: Point,
   zoom: number
 ) {
-  const tolerance = Math.max(4, 4/zoom);
+  const tolerance = Math.max(4, 4 / zoom);
   // Create a small rectangle around the point
   const rect = {
     x: point.x - tolerance,
@@ -516,7 +517,7 @@ export function findIntersectingLayersWithRectangle(
 
     if (layer.type === LayerType.Arrow && layer.center || layer.type === LayerType.Line && layer.center) {
       const { x, y, center, width, height } = layer;
-      
+
       const start = { x, y };
       const mid = { x: center.x, y: center.y };
       const end = { x: x + width, y: y + height };
@@ -550,11 +551,11 @@ export function findIntersectingLayersWithRectangle(
         ids.push(layerId);
       }
 
-     } else if (layer.type === LayerType.Path) {
+    } else if (layer.type === LayerType.Path) {
       for (const pathPoint of layer.points) {
         const pointX = pathPoint[0] + layer.x;
         const pointY = pathPoint[1] + layer.y;
-    
+
         // Check if the point is inside the rectangle
         if (
           pointX >= rect.x &&
@@ -571,7 +572,7 @@ export function findIntersectingLayersWithRectangle(
 
       if (
         rect.x + rect.width > x &&
-        rect.x < x + width && 
+        rect.x < x + width &&
         rect.y + rect.height > y &&
         rect.y < y + height
       ) {
@@ -641,7 +642,7 @@ export function penPointsToPathLayer(
 };
 
 function toDomPrecision(v: number) {
-	return Math.round(v * 1e4) / 1e4
+  return Math.round(v * 1e4) / 1e4
 }
 
 function average(A: number[], B: number[]): string {
@@ -676,7 +677,7 @@ export function getSvgPathFromPoints(points: number[][], closed = false): string
 }
 export const NAME = "Sketchlie";
 
-export function checkIfPathIsEllipse(pencilDraft: number[][], tolerance: number): {isEllipse: boolean, ellipseCheck: number} {
+export function checkIfPathIsEllipse(pencilDraft: number[][], tolerance: number): { isEllipse: boolean, ellipseCheck: number } {
   const [minX, minY, maxX, maxY] = pencilDraft.reduce(
     ([minX, minY, maxX, maxY], [x, y]) => [
       Math.min(minX, x),
@@ -700,10 +701,10 @@ export function checkIfPathIsEllipse(pencilDraft: number[][], tolerance: number)
 
   const maxDeviation = Math.max(...distancesToCenter.map(d => Math.abs(d - 1)));
 
-  return {isEllipse: maxDeviation < tolerance, ellipseCheck: maxDeviation};
+  return { isEllipse: maxDeviation < tolerance, ellipseCheck: maxDeviation };
 }
 
-export function checkIfPathIsRectangle(pencilDraft: number[][], tolerance: number): {isRectangle: boolean, RectangleCheck: number} {
+export function checkIfPathIsRectangle(pencilDraft: number[][], tolerance: number): { isRectangle: boolean, RectangleCheck: number } {
   const [minX, minY, maxX, maxY] = pencilDraft.reduce(
     ([minX, minY, maxX, maxY], [x, y]) => [
       Math.min(minX, x),
@@ -721,12 +722,12 @@ export function checkIfPathIsRectangle(pencilDraft: number[][], tolerance: numbe
     return sum + (x1 * y2 - x2 * y1);
   }, 0) / 2);
 
-  const ratio = Math.abs(pathArea/boundingBoxArea);
+  const ratio = Math.abs(pathArea / boundingBoxArea);
 
-  return {isRectangle: ratio > tolerance, RectangleCheck: ratio};
+  return { isRectangle: ratio > tolerance, RectangleCheck: ratio };
 }
 
-export function checkIfPathIsLine(pencilDraft: number[][], tolerance: number): {isLine: boolean, lineCheck: number} {
+export function checkIfPathIsLine(pencilDraft: number[][], tolerance: number): { isLine: boolean, lineCheck: number } {
   const [[x1, y1], [x2, y2]] = [pencilDraft[0], pencilDraft[pencilDraft.length - 1]];
 
   const lineLength = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
@@ -738,10 +739,10 @@ export function checkIfPathIsLine(pencilDraft: number[][], tolerance: number): {
 
   const maxDeviation = Math.max(...distancesToLine);
 
-  return {isLine: maxDeviation < tolerance, lineCheck: maxDeviation};
+  return { isLine: maxDeviation < tolerance, lineCheck: maxDeviation };
 }
 
-export function checkIfPathIsTriangle(pencilDraft: number[][]): {isTriangle: boolean, triangleCheck: number} {
+export function checkIfPathIsTriangle(pencilDraft: number[][]): { isTriangle: boolean, triangleCheck: number } {
   // Convex Hull algorithm (Gift wrapping aka Jarvis march algorithm)
   const points = [...pencilDraft];
   const convexHull = [];
@@ -763,15 +764,15 @@ export function checkIfPathIsTriangle(pencilDraft: number[][]): {isTriangle: boo
   }
 
   // If there are three points on the convex hull, it's a triangle
-  return {isTriangle: convexHull.length <= 10, triangleCheck: convexHull.length};
+  return { isTriangle: convexHull.length <= 10, triangleCheck: convexHull.length };
 }
 
 export function getShapeType(pencilDraft: number[][], circleTolerance: number, rectangleTolerance: number, lineTolerance: number, triangleTolerance: number): any {
-  const {isEllipse, ellipseCheck} = checkIfPathIsEllipse(pencilDraft, circleTolerance);
-  const {isRectangle, RectangleCheck} = checkIfPathIsRectangle(pencilDraft, rectangleTolerance);
-  const {isLine, lineCheck} = checkIfPathIsLine(pencilDraft, lineTolerance);
-  const {isTriangle, triangleCheck} = checkIfPathIsTriangle(pencilDraft);
-  
+  const { isEllipse, ellipseCheck } = checkIfPathIsEllipse(pencilDraft, circleTolerance);
+  const { isRectangle, RectangleCheck } = checkIfPathIsRectangle(pencilDraft, rectangleTolerance);
+  const { isLine, lineCheck } = checkIfPathIsLine(pencilDraft, lineTolerance);
+  const { isTriangle, triangleCheck } = checkIfPathIsTriangle(pencilDraft);
+
   if (isEllipse) {
     return LayerType.Ellipse;
   } else if (isRectangle) {
@@ -792,7 +793,7 @@ export function calculateBoundingBox(layers: Layer[]): any | null {
   if (!first) {
     return null;
   }
-  
+
   if (layers.length === 1) {
     let minX = first.x;
     let maxX = first.x + first.width;
@@ -837,28 +838,28 @@ export function calculateBoundingBox(layers: Layer[]): any | null {
   let maxX = -Infinity;
   let minY = Infinity;
   let maxY = -Infinity;
-  
+
   for (const layer of layers) {
     let x1 = layer.x;
     let x2 = layer.x + layer.width;
     let y1 = layer.y;
     let y2 = layer.y + layer.height;
-  
+
     if (layer.type === LayerType.Arrow && layer.center || layer.type === LayerType.Line && layer.center) {
       const end = { x: layer.x + layer.width, y: layer.y + layer.height };
-  
+
       x1 = Math.min(x1, layer.x, layer.center.x, end.x);
       x2 = Math.max(x2, layer.x, layer.center.x, end.x);
       y1 = Math.min(y1, layer.y, layer.center.y, end.y);
       y2 = Math.max(y2, layer.y, layer.center.y, end.y);
     }
-  
+
     minX = Math.min(minX, x1);
     maxX = Math.max(maxX, x2);
     minY = Math.min(minY, y1);
     maxY = Math.max(maxY, y2);
   }
-  
+
   return {
     x: minX,
     y: minY,
@@ -912,12 +913,12 @@ export function resizeBox(
     newLayer.type !== LayerType.Line &&
     newLayer.type !== LayerType.Arrow
   ) {
-      if (!singleLayer) {
-        textFontSize = newLayer.textFontSize * scaleY;
-      } else {
-        textFontSize = newLayer.textFontSize;
-      }
-  } 
+    if (!singleLayer) {
+      textFontSize = newLayer.textFontSize * scaleY;
+    } else {
+      textFontSize = newLayer.textFontSize;
+    }
+  }
 
   let points;
 
@@ -960,23 +961,23 @@ export function removeHighlightFromText() {
 
 export async function bodyToString(body: Blob | ReadableStream | Readable): Promise<string> {
   if (body instanceof ReadableStream || body instanceof Blob) {
-      // Browser environment
-      const reader = body instanceof ReadableStream ? body.getReader() : body.stream().getReader();
-      let chunks = '';
-      let result;
-      while (!(result = await reader.read()).done) {
-          const chunk = result.value;
-          chunks += new TextDecoder().decode(chunk);
-      }
-      return chunks;
+    // Browser environment
+    const reader = body instanceof ReadableStream ? body.getReader() : body.stream().getReader();
+    let chunks = '';
+    let result;
+    while (!(result = await reader.read()).done) {
+      const chunk = result.value;
+      chunks += new TextDecoder().decode(chunk);
+    }
+    return chunks;
   } else {
-      // Node.js environment, assuming body is a Readable stream
-      return new Promise((resolve, reject) => {
-          const chunks: Buffer[] = [];
-          body.on('data', (chunk) => chunks.push(chunk));
-          body.on('end', () => resolve(Buffer.concat(chunks).toString('utf-8')));
-          body.on('error', reject);
-      });
+    // Node.js environment, assuming body is a Readable stream
+    return new Promise((resolve, reject) => {
+      const chunks: Buffer[] = [];
+      body.on('data', (chunk) => chunks.push(chunk));
+      body.on('end', () => resolve(Buffer.concat(chunks).toString('utf-8')));
+      body.on('error', reject);
+    });
   }
 }
 
@@ -1045,19 +1046,19 @@ export function getClosestEndPoint(connectedLayer: Layer, point: Point): Point {
 
   const magnitude = Math.sqrt(direction.x ** 2 + direction.y ** 2);
   const normalizedDirection = { x: direction.x / magnitude, y: direction.y / magnitude };
-  
+
   const potentialEndPoints = [
     { x: connectedLayer.x, y: point.y + normalizedDirection.y * (connectedLayer.x - point.x) / normalizedDirection.x },
     { x: connectedLayer.x + connectedLayer.width, y: point.y + normalizedDirection.y * (connectedLayer.x + connectedLayer.width - point.x) / normalizedDirection.x },
     { y: connectedLayer.y, x: point.x + normalizedDirection.x * (connectedLayer.y - point.y) / normalizedDirection.y },
     { y: connectedLayer.y + connectedLayer.height, x: point.x + normalizedDirection.x * (connectedLayer.y + connectedLayer.height - point.y) / normalizedDirection.y }
   ];
-  
-  const validEndPoints = potentialEndPoints.filter(point => 
+
+  const validEndPoints = potentialEndPoints.filter(point =>
     point.x >= connectedLayer.x && point.x <= connectedLayer.x + connectedLayer.width &&
     point.y >= connectedLayer.y && point.y <= connectedLayer.y + connectedLayer.height
   );
-  
+
   let closestEndPoint = validEndPoints[0];
   for (const endPoint of validEndPoints) {
     if (Math.sqrt((endPoint.x - point.x) ** 2 + (endPoint.y - point.y) ** 2) < Math.sqrt((closestEndPoint.x - point.x) ** 2 + (closestEndPoint.y - point.y) ** 2)) {
@@ -1075,31 +1076,31 @@ export function updateArrowPosition(arrowLayer: ArrowLayer, connectedLayerId: st
   let center = { x: (start.x + end.x) / 2, y: (start.y + end.y) / 2 };
 
   if (connectedLayerId === startConnectedLayerId) {
-      const startPoint = getClosestEndPoint(newLayer, center);
-      updatedArrow.x = startPoint.x;
-      updatedArrow.y = startPoint.y;
-      updatedArrow.width = end.x - startPoint.x;
-      updatedArrow.height = end.y - startPoint.y;
-      start = startPoint;
+    const startPoint = getClosestEndPoint(newLayer, center);
+    updatedArrow.x = startPoint.x;
+    updatedArrow.y = startPoint.y;
+    updatedArrow.width = end.x - startPoint.x;
+    updatedArrow.height = end.y - startPoint.y;
+    start = startPoint;
 
-      if (endConnectedLayerId && liveLayers[endConnectedLayerId]) {
-        const endPoint = getClosestEndPoint(liveLayers[endConnectedLayerId], center);
-        updatedArrow.width = endPoint.x - updatedArrow.x;
-        updatedArrow.height = endPoint.y - updatedArrow.y;
-        end = endPoint;
-      }
-  } else if (connectedLayerId === endConnectedLayerId) {
-      if (startConnectedLayerId && liveLayers[startConnectedLayerId]) {
-        const startPoint = getClosestEndPoint(liveLayers[startConnectedLayerId], center);
-        updatedArrow.x = startPoint.x;
-        updatedArrow.y = startPoint.y;
-        start = startPoint;
-      }
-
-      const endPoint = getClosestEndPoint(newLayer, center);
+    if (endConnectedLayerId && liveLayers[endConnectedLayerId]) {
+      const endPoint = getClosestEndPoint(liveLayers[endConnectedLayerId], center);
       updatedArrow.width = endPoint.x - updatedArrow.x;
       updatedArrow.height = endPoint.y - updatedArrow.y;
       end = endPoint;
+    }
+  } else if (connectedLayerId === endConnectedLayerId) {
+    if (startConnectedLayerId && liveLayers[startConnectedLayerId]) {
+      const startPoint = getClosestEndPoint(liveLayers[startConnectedLayerId], center);
+      updatedArrow.x = startPoint.x;
+      updatedArrow.y = startPoint.y;
+      start = startPoint;
+    }
+
+    const endPoint = getClosestEndPoint(newLayer, center);
+    updatedArrow.width = endPoint.x - updatedArrow.x;
+    updatedArrow.height = endPoint.y - updatedArrow.y;
+    end = endPoint;
   }
 
   updatedArrow.center = { x: (start.x + end.x) / 2, y: (start.y + end.y) / 2 };
@@ -1111,8 +1112,8 @@ export function updatedLayersConnectedArrows(connectedLayer: any, id: string) {
   connectedLayer.connectedArrows = connectedLayer.connectedArrows || [];
   // Check if the arrow's ID is already in the connectedLayer's connectedArrows array
   if (!connectedLayer.connectedArrows.includes(id)) {
-      // Add the arrow's ID to the connectedLayer's connectedArrows array
-      connectedLayer.connectedArrows.push(id);
+    // Add the arrow's ID to the connectedLayer's connectedArrows array
+    connectedLayer.connectedArrows.push(id);
   }
 
   return connectedLayer;
@@ -1128,3 +1129,60 @@ export function checkIfTextarea() {
   }
   return true;
 }
+
+export const getUsersCurrency = () => {
+  return new Promise((resolve, reject) => {
+    const success = async (position: any) => {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+      const geoApiUrl = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=es`;
+
+      try {
+        const response = await fetch(geoApiUrl);
+        const data = await response.json();
+        const countryCode = data.countryCode;
+
+        // Mapping of country codes to currencies
+        const currencyMap: any = {
+          AR: 'ARS', // Argentine peso
+          BR: 'BRL', // Brazilian real
+          CL: 'CLP', // Chilean peso
+          MX: 'MXN', // Mexican peso
+          CO: 'COP', // Colombian peso
+          PE: 'PEN', // Peruvian sol
+          UY: 'UYU', // Uruguayan peso
+        };
+
+        const currency = currencyMap[countryCode] || 'MXN';
+        resolve(currency);
+      } catch (error) {
+        reject('Failed to fetch currency');
+      }
+    };
+
+    const error = () => {
+      toast.info('Pedimos permiso para acceder a tu ubicación para mostrarte la moneda de tu país');
+      reject('Permission denied');
+    };
+
+    navigator.geolocation.getCurrentPosition(success, error);
+  });
+};
+
+export const getPrice = async (price: any, currency: any) => {
+  if (currency === "ARS") {
+    return price
+  } else if (currency === "BRL") {
+    return price * 0.006
+  } else if (currency === "CLP") {
+    return price
+  } else if (currency === "MXN") {
+    return price * 0.02
+  } else if (currency === "COP") {
+    return price * 4.3
+  } else if (currency === "PEN") {
+    return price * 0.004
+  } else if (currency === "UYU") {
+    return price * 0.044
+  }
+};

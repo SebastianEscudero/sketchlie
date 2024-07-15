@@ -1,5 +1,6 @@
 import { currentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { getPrice, getUsersCurrency } from "@/lib/utils";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -11,15 +12,18 @@ export async function POST(req: NextRequest) {
             return new NextResponse("Unauthorized no log in", {status: 401})
         }
 
-        const { organization, plan } = await req.json();
+        const { organization, plan, currency } = await req.json();
         const organizationId = organization.id;
         const organizationMembers = organization.users.length;
+        const price = await getPrice(plan.price*organizationMembers, currency) || plan.price*organizationMembers;
+
         const OrganizationSubscription = await db.organizationSubscription.findUnique({
             where: {
                 organizationId: organizationId
             },
             select: {
-                subscriptionId: true
+                subscriptionId: true,
+                status: true
             }
         })
 
@@ -32,7 +36,7 @@ export async function POST(req: NextRequest) {
         const response = await fetch('https://api.mercadopago.com/preapproval_plan', {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${process.env.MERCADO_PAGO_API_KEY}`,
+                'Authorization': `Bearer ${process.env.MERCADO_PAGO_API_KEY_TEST}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
@@ -44,8 +48,8 @@ export async function POST(req: NextRequest) {
                     "frequency": 1,
                     "frequency_type": "months",
                     "start_date": new Date().toISOString(),
-                    "transaction_amount": plan.price*organizationMembers,
-                    "currency_id": "CLP"
+                    "transaction_amount": price,
+                    "currency_id": currency,
                 },
                 "back_url": `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/`,
                 "status": "active",
@@ -60,4 +64,39 @@ export async function POST(req: NextRequest) {
             console.log("[MERCADOPAGO_ERROR]", error);
             return new NextResponse("Internal error", {status: 500});
         }
+}
+
+export async function GET(req: NextRequest) {
+    const url = new URL(req.url);
+
+    const subscriptionId = url.searchParams.get("subscriptionId");
+
+    if (!subscriptionId) {
+        return new NextResponse("Subscription ID is required", {status: 400});
+    }
+
+    const mercadopagoUrl = `https://api.mercadopago.com/preapproval/${subscriptionId}`;
+
+    try {
+        const response = await fetch(mercadopagoUrl, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${process.env.MERCADO_PAGO_API_KEY_TEST}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        console.log(data);
+
+        return new NextResponse(JSON.stringify(data), {status: 200});
+    } catch (error) {
+        // console.log('Error fetching MercadoPago subscription');
+        return new NextResponse("Error fetching subscription information", {status: 500});
+    }
 }

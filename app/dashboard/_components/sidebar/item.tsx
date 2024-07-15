@@ -19,6 +19,7 @@ export const Item = ({ id, name, activeOrganization, setActiveOrganization, plan
     const { color, letterColor } = getPlanColor(plan);
     const onClick = () => {
         setActiveOrganization(id);
+        localStorage.setItem("activeOrganization", id);
     };
 
     return (

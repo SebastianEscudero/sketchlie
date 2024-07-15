@@ -155,8 +155,8 @@ export const OrganizationSwitcher = ({
                             })}
                         </div>
                     )}
-                    <DropdownMenuItem className="py-3 px-8 text-[14px] hover:bg-slate-100 dark:hover:bg-[#2C2C2C] border-t dark:border-zinc-200 rounded-none">
-                        <button className="flex items-center" onClick={() => setIsCreateBoardDialogOpen(true)}>
+                    <DropdownMenuItem className="py-3 px-8 text-[14px] hover:bg-slate-100 dark:hover:bg-[#2C2C2C] border-t dark:border-zinc-200 rounded-none" onClick={() => setIsCreateBoardDialogOpen(true)}>
+                        <button className="flex items-center">
                             <PlusIcon className="h-4 w-4 mr-2" />
                             <p className="ml-5">Create organization</p>
                         </button>

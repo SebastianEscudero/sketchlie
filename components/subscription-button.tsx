@@ -6,6 +6,7 @@ import axios from "axios";
 import { toast } from "sonner";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { useState } from "react";
+import { getUsersCurrency } from "@/lib/utils";
 
 interface SubscriptionButtonProps {
     selectedOrganization: any;
@@ -28,7 +29,8 @@ export const SubscriptionButton = ({
         }
         setIsLoading(true);
         try {
-            const { data } = await axios.post("/api/mercadoPago", { organization: activeOrg, plan});
+            const usersCurrency = await getUsersCurrency();
+            const { data } = await axios.post("/api/mercadoPago", { organization: activeOrg, plan, currency: usersCurrency });
             window.location.href = data.init_point;
         } catch (error) {
             console.error("Mercado Pago", error);

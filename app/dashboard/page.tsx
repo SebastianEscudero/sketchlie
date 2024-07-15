@@ -18,7 +18,7 @@ const DashboardPage = () => {
   const search = searchParams.get("search") || undefined;
   const favorites = searchParams.get("favorites") || undefined
   const user = useCurrentUser();
-  const [activeOrganization, setActiveOrganization] = useState<string | null>(localStorage.getItem("activeOrganization") || user?.organizations[0].id);
+  const [activeOrganization, setActiveOrganization] = useState<string | null>(null);
   const proModal = useProModal();
 
   useEffect(() => {
@@ -26,8 +26,15 @@ const DashboardPage = () => {
     if (searchParams.get("openProModal")) {
       proModal.onOpen(activeOrganization);
     }
-  }, []);
 
+    const activeLocalStorageOrganization = localStorage.getItem("activeOrganization");
+
+    if (user?.organizations.find(org => org.id === activeLocalStorageOrganization)) {
+      setActiveOrganization(localStorage.getItem("activeOrganization"));
+    } else {
+      setActiveOrganization(user?.organizations[0].id);
+    }
+  }, [user?.organizations]);
 
   useEffect(() => {
     const timer = setTimeout(() => {

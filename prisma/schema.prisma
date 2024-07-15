@@ -76,25 +76,26 @@ model PasswordResetToken {
 }
 
 model OrganizationInvitation {
-  id             String       @id @default(cuid())
-  email          String
-  organizationId String
-  createdAt      DateTime     @default(now())
-  status         String       @default("PENDING")
-  role           Role?
-  subscriptionPlan SubscriptionType
-  user           User         @relation(fields: [email], references: [email])
-  organization   Organization @relation(fields: [organizationId], references: [id])
+  id               String           @id @default(cuid())
+  email            String
+  organizationId   String
+  createdAt        DateTime         @default(now())
+  status           String           @default("PENDING")
+  role             Role?
+  subscriptionPlan SubscriptionType @default(Gratis)
+  user             User             @relation(fields: [email], references: [email])
+  organization     Organization     @relation(fields: [organizationId], references: [id])
 
   @@unique([email, organizationId])
 }
 
 model OrganizationSubscription {
-  id                          String       @id @default(cuid())
-  organizationId              String       @unique
-  subscriptionId              String
-  mercadoPagoCurrentPeriodEnd DateTime?    @map("mercado_pago_current_period_end")
-  organization                Organization @relation(fields: [organizationId], references: [id])
+  subscriptionId              String       @id(map: "PK_OrganizationSubscription") @db.VarChar(255)
+  payerId                     String       @db.VarChar(255)
+  status                      String       @db.VarChar(255)
+  mercadoPagoCurrentPeriodEnd DateTime?    @db.Timestamp(6)
+  organizationId              String       @unique @db.VarChar(255)
+  organization                Organization @relation(fields: [organizationId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_OrganizationSubscription_Organization")
 }
 
 enum SubscriptionType {

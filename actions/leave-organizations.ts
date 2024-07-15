@@ -1,5 +1,6 @@
 "use server";
 
+import { update } from "@/auth";
 import { db } from "@/lib/db";
 
 export const leaveOrganization = async (orgId: string, userId: string) => {
@@ -33,7 +34,7 @@ export const leaveOrganization = async (orgId: string, userId: string) => {
                 id: orgId
             }
         });
-        return { success: "Organization deleted as it has no more members" };
+        return { success: "Organization deleted as it has no more members", isOrgDeleted: true };
     }
 
     await db.organizationUser.delete({
@@ -45,5 +46,5 @@ export const leaveOrganization = async (orgId: string, userId: string) => {
         }
     });
 
-    return { success: "User left the organization" };
+    return { success: "User left the organization", isOrgDeleted: false };
 };

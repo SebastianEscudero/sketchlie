@@ -33,6 +33,10 @@ export const SubscriptionPlanDropdown = ({
         ({ color, letterColor } = getPlanColor(subscriptionPlan || "Gratis"));
     }
 
+    if (subscriptionPlan === "Business") {
+        return;
+    }
+
     return (
         // <div className="flex items-center">
         //     <DropdownMenu>
