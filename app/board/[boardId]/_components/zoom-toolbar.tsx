@@ -9,7 +9,6 @@ interface ZoomToolbarProps {
     setCamera: (camera: { x: number, y: number }) => void;
 }
 
-const PREDEFINED_ZOOMS = [0.3, 0.5, 0.75, 1, 2, 4, 7, 10];
 const PREDEFINED_PERCENTAGES = [10, 25, 50, 100, 150, 200, 300, 400];
 
 export const ZoomToolbar = ({
@@ -19,23 +18,21 @@ export const ZoomToolbar = ({
     setCamera
 }: ZoomToolbarProps) => {
 
+    const baseZoom = 1;
+
     const zoomToPercentage = (zoom: number) => {
-        if (zoom < 2) {
-            // Adjust the formula to map zoom 2 to 100%
-            return Math.round(((zoom - 1) / (2 - 1)) * (100 - 50) + 50);
+        if (zoom < baseZoom) {
+            return Math.round(((zoom - 0.3) / (baseZoom - 0.3)) * (100 - 10) + 10);
         } else {
-            // For zoom levels above 2, adjust the scale accordingly
-            return Math.round(((zoom - 2) / (10 - 2)) * (400 - 100) + 100);
+            return Math.round(((zoom - baseZoom) / (10 - baseZoom)) * (400 - 100) + 100);
         }
     };
-    
+
     const percentageToZoom = (percentage: number) => {
         if (percentage <= 100) {
-            // Adjust the formula to interpret 100% as zoom 2
-            return ((percentage - 50) / (100 - 50)) * (2 - 1) + 1;
+            return ((percentage - 10) / (100 - 10)) * (baseZoom - 0.3) + 0.3;
         } else {
-            // For percentages above 100%, adjust the zoom level accordingly
-            return ((percentage - 100) / (400 - 100)) * (10 - 2) + 2;
+            return ((percentage - 100) / (400 - 100)) * (10 - baseZoom) + baseZoom;
         }
     };
 
@@ -74,13 +71,13 @@ export const ZoomToolbar = ({
     };
 
     const handleResetZoom = () => {
-        setZoomAndCamera(2); // 100% zoom
+        setZoomAndCamera(baseZoom); // 100% zoom
     };
 
     const zoomPercentage = zoomToPercentage(zoom);
 
     return (
-        <div className="absolute h-[52px] bottom-2 left-2 bg-white text-black rounded-lg py-2 items-center shadow-custom-3 sm:flex hidden">
+        <div className="absolute h-[52px] bottom-2 left-2 bg-white rounded-lg py-2 items-center shadow-custom-3 sm:flex hidden">
             <Hint label="Zoom out" sideOffset={4}>
                 <Button onClick={handleZoomOut} className="ml-2 px-2" variant="board">
                     <Minus className="h-4 w-4" />

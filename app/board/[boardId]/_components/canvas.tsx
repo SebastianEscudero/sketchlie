@@ -103,7 +103,7 @@ export const Canvas = ({
         mode: CanvasMode.None,
     });
     const [camera, setCamera] = useState<Camera>({ x: 0, y: 0 });
-    const [zoom, setZoom] = useState(2);
+    const [zoom, setZoom] = useState(1);
     const zoomRef = useRef(zoom);
     const cameraRef = useRef(camera);
     const canvasStateRef = useRef(canvasState);
@@ -115,7 +115,7 @@ export const Canvas = ({
     const [currentPreviewLayer, setCurrentPreviewLayer] = useState<PreviewLayer | null>(null);
     const [myPresence, setMyPresence] = useState<Presence | null>(null);
     const [pathColor, setPathColor] = useState({ r: 29, g: 29, b: 29, a: 1 });
-    const [pathStrokeSize, setPathStrokeSize] = useState(4);
+    const [pathStrokeSize, setPathStrokeSize] = useState(5);
     const [pinchStartDist, setPinchStartDist] = useState<number | null>(null);
     const [activeTouches, setActiveTouches] = useState(0);
     const [magicPathAssist, setMagicPathAssist] = useState(false);
