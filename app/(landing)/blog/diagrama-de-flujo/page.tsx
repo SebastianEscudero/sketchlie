@@ -38,16 +38,19 @@ const LandingPage = () => {
             </BreadcrumbList>
             </Breadcrumb>
            </div>
-         <h1 className="xl:text-6xl lg:text-5xl md:text-4xl text-3xl mt-[3%] lg:pr-20" style={{lineHeight: "1.2"}}>
-            Diagrama de Flujo: Herramienta Esencial para la Colaboración Online
-         </h1>
-           <Image
-                src="/placeholders/diagrama-de-flujo.png"
-                alt="Mapa conceptual"
-                width={1920}
-                height={1080}
-                className="rounded-2xl border border-black mt-[3%]" 
-           />
+           <div className="md:flex mt-10 items-center justify-between">
+                <h1 className="lg:text-6xl md:text-5xl text-4xl md:px-5 md:text-left text-center" style={{ lineHeight: "1.2" }}>
+                    Diagrama de Flujo: Herramienta Esencial para la Colaboración Online
+                </h1>
+                <Image
+                    src="/placeholders/diagrama-de-flujo.png"
+                    alt="Diagrama de Flujo"
+                    width={1920}
+                    height={1080}
+                    className="rounded-2xl border border-black md:max-w-[60%] md:mt-0 mt-10"
+                    loading="eager"
+                />
+            </div>
            <div className="flex flex-col-reverse lg:flex-row justify-between mt-[3%]">
                 <div className="lg:max-w-[70%] text-xl">
                     <p className="mb-10">

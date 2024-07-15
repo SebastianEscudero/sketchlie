@@ -39,16 +39,19 @@ const LandingPage = () => {
                     </BreadcrumbList>
                 </Breadcrumb>
             </div>
-            <h1 className="xl:text-6xl lg:text-5xl md:text-4xl text-3xl mt-[3%] lg:pr-20" style={{ lineHeight: "1.2" }}>
-                La Herramienta Perfecta para Diseñar Online
-            </h1>
-            <Image
-                src="/placeholders/improve-performance.png"
-                alt="Mapa conceptual"
-                width={1920}
-                height={1080}
-                className="rounded-2xl border border-black mt-[3%]"
-            />
+            <div className="md:flex mt-10 items-center justify-between">
+                <h1 className="lg:text-6xl md:text-5xl text-4xl md:px-5 md:text-left text-center" style={{ lineHeight: "1.2" }}>
+                    La Herramienta Perfecta para Diseñar Online
+                </h1>
+                <Image
+                    src="/placeholders/improve-performance.png"
+                    alt="Mapa conceptual"
+                    width={1920}
+                    height={1080}
+                    className="rounded-2xl border border-black md:max-w-[60%] md:mt-0 mt-10"
+                    loading="eager"
+                />
+            </div>
             <div className="flex flex-col-reverse lg:flex-row justify-between mt-[3%]">
                 <div className="lg:max-w-[70%] text-xl">
                     <p className="mb-10">¿Estás buscando una forma eficiente de llevar tus ideas al mundo digital? ¡No busques más! Con <Link className="text-custom-blue hover:underline" href="/">Sketchlie</Link>, puedes diseñar online de manera colaborativa, permitiendo que tu equipo colabore y cree juntos desde cualquier lugar del mundo.</p>

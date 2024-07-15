@@ -5,7 +5,7 @@ import {
     BreadcrumbList,
     BreadcrumbPage,
     BreadcrumbSeparator,
-  } from "@/components/ui/breadcrumb"
+} from "@/components/ui/breadcrumb"
 import Image from "next/image";
 import Link from "next/link";
 import { BlogLinks } from "@/components/blog-links";
@@ -21,36 +21,39 @@ export const metadata: Metadata = {
 
 
 const LandingPage = () => {
-    return ( 
+    return (
         <div className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[3%]">
-           <div className="mt-[3%]">
-           <Breadcrumb>
-            <BreadcrumbList>
-                <BreadcrumbItem>
-                <Link href="/" title="Home">Home</Link>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator />
-                <BreadcrumbItem>
-                <Link href="/blog/">Blog</Link>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator />
-                <BreadcrumbItem>
-                <BreadcrumbPage>Wireframes Online: La Herramienta Esencial para Visualizar tus Ideas</BreadcrumbPage>
-                </BreadcrumbItem>
-            </BreadcrumbList>
-            </Breadcrumb>
-           </div>
-         <h1 className="xl:text-6xl lg:text-5xl md:text-4xl text-3xl mt-[3%] lg:pr-20" style={{lineHeight: "1.2"}}>
-            Wireframes Online: La Herramienta Esencial para Visualizar tus Ideas
-         </h1>
-           <Image
-                src="/placeholders/wireframe.png"
-                alt="Mapa conceptual"
-                width={1920}
-                height={1080}
-                className="rounded-2xl border border-black mt-[3%]" 
-           />
-           <div className="flex flex-col-reverse lg:flex-row justify-between mt-[3%]">
+            <div className="mt-[3%]">
+                <Breadcrumb>
+                    <BreadcrumbList>
+                        <BreadcrumbItem>
+                            <Link href="/" title="Home">Home</Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbSeparator />
+                        <BreadcrumbItem>
+                            <Link href="/blog/">Blog</Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbSeparator />
+                        <BreadcrumbItem>
+                            <BreadcrumbPage>Wireframes Online: La Herramienta Esencial para Visualizar tus Ideas</BreadcrumbPage>
+                        </BreadcrumbItem>
+                    </BreadcrumbList>
+                </Breadcrumb>
+            </div>
+            <div className="md:flex mt-10 items-center justify-between">
+                <h1 className="lg:text-6xl md:text-5xl text-4xl md:px-5 md:text-left text-center" style={{ lineHeight: "1.2" }}>
+                    Wireframes Online: La Herramienta Esencial para Visualizar tus Ideas
+                </h1>
+                <Image
+                    src="/placeholders/wireframe.png"
+                    alt="Mapa conceptual"
+                    width={1920}
+                    height={1080}
+                    className="rounded-2xl border border-black md:max-w-[60%] md:mt-0 mt-10"
+                    loading="eager"
+                />
+            </div>
+            <div className="flex flex-col-reverse lg:flex-row justify-between mt-[3%]">
                 <div className="lg:max-w-[70%] text-xl">
                     <p className="mb-10">Los wireframes son la columna vertebral de cualquier proyecto de diseño. Son esquemas visuales que representan la estructura y funcionalidad básica de una página web o aplicación. En Sketchlie, entendemos la importancia de crear <Link className="text-custom-blue hover:underline" href="/wireframe/">wireframes</Link> sólidos y eficientes para dar vida a tus ideas de forma colaborativa y efectiva.</p>
                     <div id="1" className="h-[80px] mt-[-80px]"></div>
@@ -134,14 +137,14 @@ const LandingPage = () => {
                         </li>
                     </ul>
                 </div>
-           </div>
-           <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-5 md:my-20 my-5">
-                <BlogLinks blogTitle="Mapa Conceptual Online" blogImage="/placeholders/mapa-conceptual-online.png" blogHref="/mapa-conceptual/" blogDescription="Descubre cómo desatar tu creatividad y potenciar la colaboración en tiempo real con Sketchlie."/>
-                <BlogLinks blogTitle="Mapa de Procesos" blogImage="/placeholders/mapa-de-procesos.png" blogHref="/mapas-de-procesos" blogDescription="El mapa de procesos ayuda a los equipos a mapear y implementar mejoras. Registrate hoy con una 3 espacios de trabajo gratuitos para empezar a utilizar la mejor herramienta de mapa de procesos."/>
-                <BlogLinks blogTitle="Mapas Mentales" blogImage="/placeholders/mapa-mental.png" blogHref="/mapa-mental-online/" blogDescription="Explora nuestras herramientas para simplificar la creación de mapas mentales. Organiza tus ideas de manera jerárquica y potencia tu creatividad con nuestro intuitivo creador de mapas mentales."/>
             </div>
-        </div>    
-     );
+            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-5 md:my-20 my-5">
+                <BlogLinks blogTitle="Mapa Conceptual Online" blogImage="/placeholders/mapa-conceptual-online.png" blogHref="/mapa-conceptual/" blogDescription="Descubre cómo desatar tu creatividad y potenciar la colaboración en tiempo real con Sketchlie." />
+                <BlogLinks blogTitle="Mapa de Procesos" blogImage="/placeholders/mapa-de-procesos.png" blogHref="/mapas-de-procesos" blogDescription="El mapa de procesos ayuda a los equipos a mapear y implementar mejoras. Registrate hoy con una 3 espacios de trabajo gratuitos para empezar a utilizar la mejor herramienta de mapa de procesos." />
+                <BlogLinks blogTitle="Mapas Mentales" blogImage="/placeholders/mapa-mental.png" blogHref="/mapa-mental-online/" blogDescription="Explora nuestras herramientas para simplificar la creación de mapas mentales. Organiza tus ideas de manera jerárquica y potencia tu creatividad con nuestro intuitivo creador de mapas mentales." />
+            </div>
+        </div>
+    );
 }
- 
+
 export default LandingPage;

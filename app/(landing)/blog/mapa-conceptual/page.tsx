@@ -39,16 +39,19 @@ const LandingPage = () => {
             </BreadcrumbList>
             </Breadcrumb>
            </div>
-         <h1 className="xl:text-6xl lg:text-5xl md:text-4xl text-3xl mt-[3%] lg:pr-20" style={{lineHeight: "1.2"}}>
-             Mapa Conceptual y su Importancia en el Mundo Online
-         </h1>
-           <Image
-                src="/placeholders/mapa-conceptual-online.png"
-                alt="Mapa conceptual"
-                width={1920}
-                height={1080}
-                className="rounded-2xl border border-black mt-[3%]" 
-           />
+           <div className="md:flex mt-10 items-center justify-between">
+                <h1 className="lg:text-6xl md:text-5xl text-4xl md:px-5 md:text-left text-center" style={{ lineHeight: "1.2" }}>
+                    Mapa Conceptual y su Importancia en el Mundo Online
+                </h1>
+                <Image
+                    src="/placeholders/mapa-conceptual.png"
+                    alt="Mapa Conceptual"
+                    width={1920}
+                    height={1080}
+                    className="rounded-2xl border border-black md:max-w-[60%] md:mt-0 mt-10"
+                    loading="eager"
+                />
+            </div>
            <div className="flex flex-col-reverse lg:flex-row justify-between mt-[3%]">
                 <div className="lg:max-w-[70%] text-xl">
                     <p className="mb-10">En el vasto universo de la educación y la organización de ideas, el mapa conceptual emerge como una herramienta fundamental. En el contexto digital de hoy en día, donde la información fluye a velocidades vertiginosas, la capacidad de estructurar y visualizar conceptos es más crucial que nunca.</p>
