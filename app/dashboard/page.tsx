@@ -31,8 +31,10 @@ const DashboardPage = () => {
 
     if (user?.organizations.find(org => org.id === activeLocalStorageOrganization)) {
       setActiveOrganization(localStorage.getItem("activeOrganization"));
-    } else {
+    } else if (user?.organizations && user?.organizations.length > 0 && user?.organizations[0].id) {
       setActiveOrganization(user?.organizations[0].id);
+    } else {
+      setActiveOrganization(null);
     }
   }, [user?.organizations]);
 

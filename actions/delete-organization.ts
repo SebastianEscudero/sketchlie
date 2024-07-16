@@ -13,8 +13,22 @@ export const deleteOrganization = async (orgId: string) => {
         return { error: "Organization not found" };
     }
 
-    // Delete OrganizationUser records associated with the organization
+    // Delete OrganizationUser records
     await db.organizationUser.deleteMany({
+        where: {
+            organizationId: orgId
+        }
+    });
+
+    // Delete OrganizationSubscription records
+    await db.organizationSubscription.deleteMany({
+        where: {
+            organizationId: orgId
+        }
+    });
+
+    // Delete OrganizationInvitation records
+    await db.organizationInvitation.deleteMany({
         where: {
             organizationId: orgId
         }
