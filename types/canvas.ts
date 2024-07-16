@@ -42,6 +42,7 @@ export type ArrowLayer = {
   endArrowHead: ArrowHead;
   startConnectedLayerId?: string;
   endConnectedLayerId?: string;
+  centerEdited?: boolean;
 };
 
 export type RectangleLayer = {
@@ -219,6 +220,7 @@ export type LineLayer = {
   fill: Color;
   startConnectedLayerId?: string;
   endConnectedLayerId?: string;
+  centerEdited?: boolean;
 };
 
 export type PathLayer = {

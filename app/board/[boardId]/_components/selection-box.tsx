@@ -58,6 +58,7 @@ export const SelectionBox = memo(({
   if (isArrowLayer && soleLayerId && selectedLayers.length === 1) {
     const arrowLayer = liveLayers[soleLayerId] as ArrowLayer;
     bounds.center = arrowLayer.center;
+    bounds.centerEdited = arrowLayer.centerEdited;
     const handleRadius = 5 / zoom;
     const strokeWidth = STROKE_WIDTH / zoom;
     let start = { x: arrowLayer.x, y: arrowLayer.y };

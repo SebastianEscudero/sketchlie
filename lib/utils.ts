@@ -333,6 +333,7 @@ export function resizeArrowBounds(
     width: bounds.width,
     height: bounds.height,
     center: bounds.center,
+    centerEdited: bounds.centerEdited,
   };
 
   let end = { x: bounds.x + bounds.width, y: bounds.y + bounds.height };
@@ -347,7 +348,7 @@ export function resizeArrowBounds(
 
     if (newLayer.startConnectedLayerId) {
       const startConnectedLayer = liveLayers[newLayer.startConnectedLayerId];
-      const startPoint = getClosestPointOnBorder(startConnectedLayer, point, end, zoom);
+      const startPoint = getClosestPointOnBorder(startConnectedLayer, point, center, zoom);
       result.x = startPoint.x;
       result.y = startPoint.y;
       result.width = end.x - startPoint.x;
@@ -374,12 +375,13 @@ export function resizeArrowBounds(
 
     if (newLayer.endConnectedLayerId) {
       const endConnectedLayer = liveLayers[newLayer.endConnectedLayerId];
-      const endPoint = getClosestPointOnBorder(endConnectedLayer, point, start, zoom);
+      const endPoint = getClosestPointOnBorder(endConnectedLayer, point, center, zoom);
       result.width = endPoint.x - result.x;
       result.height = endPoint.y - result.y;
     }
 
   } else if (handle === ArrowHandle.center) {
+    result.centerEdited = true;
     result.center.x += point.x - result.center.x;
     result.center.y += point.y - result.center.y;
 
@@ -400,8 +402,10 @@ export function resizeArrowBounds(
   }
 
   if (handle === ArrowHandle.start || handle === ArrowHandle.end) {
-    result.center.x = result.x + result.width / 2;
-    result.center.y = result.y + result.height / 2;
+    if (result.centerEdited !== true) {
+      result.center.x = result.x + result.width / 2;
+      result.center.y = result.y + result.height / 2;
+    }
   }
 
   return result;
@@ -1073,7 +1077,7 @@ export function updateArrowPosition(arrowLayer: ArrowLayer, connectedLayerId: st
   const updatedArrow = { ...arrowLayer };
   let start = { x: arrowLayer.x, y: arrowLayer.y };
   let end = { x: arrowLayer.x + arrowLayer.width, y: arrowLayer.y + arrowLayer.height };
-  let center = { x: (start.x + end.x) / 2, y: (start.y + end.y) / 2 };
+  let center = arrowLayer.center || { x: (start.x + end.x) / 2, y: (start.y + end.y) / 2 };
 
   if (connectedLayerId === startConnectedLayerId) {
     const startPoint = getClosestEndPoint(newLayer, center);
@@ -1083,14 +1087,14 @@ export function updateArrowPosition(arrowLayer: ArrowLayer, connectedLayerId: st
     updatedArrow.height = end.y - startPoint.y;
     start = startPoint;
 
-    if (endConnectedLayerId && liveLayers[endConnectedLayerId]) {
+    if (endConnectedLayerId && liveLayers[endConnectedLayerId] && arrowLayer.centerEdited !== true) {
       const endPoint = getClosestEndPoint(liveLayers[endConnectedLayerId], center);
       updatedArrow.width = endPoint.x - updatedArrow.x;
       updatedArrow.height = endPoint.y - updatedArrow.y;
       end = endPoint;
     }
   } else if (connectedLayerId === endConnectedLayerId) {
-    if (startConnectedLayerId && liveLayers[startConnectedLayerId]) {
+    if (startConnectedLayerId && liveLayers[startConnectedLayerId] && arrowLayer.centerEdited !== true) {
       const startPoint = getClosestEndPoint(liveLayers[startConnectedLayerId], center);
       updatedArrow.x = startPoint.x;
       updatedArrow.y = startPoint.y;
@@ -1103,7 +1107,9 @@ export function updateArrowPosition(arrowLayer: ArrowLayer, connectedLayerId: st
     end = endPoint;
   }
 
-  updatedArrow.center = { x: (start.x + end.x) / 2, y: (start.y + end.y) / 2 };
+  if (arrowLayer.centerEdited !== true) {
+    updatedArrow.center = { x: (start.x + end.x) / 2, y: (start.y + end.y) / 2 };
+  }
 
   return updatedArrow;
 };
