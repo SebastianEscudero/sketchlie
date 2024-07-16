@@ -1125,7 +1125,7 @@ export const Canvas = ({
                 mode: CanvasMode.None,
             });
         } else if (canvasState.mode === CanvasMode.Pencil) {
-            document.body.style.cursor = 'url(/custom-cursors/pencil.svg) 2 18, auto';
+            document.body.style.cursor = 'url(/custom-cursors/pencil.svg) 1 16, auto';
             insertPath();
         } else if (canvasState.mode === CanvasMode.Highlighter) {
             document.body.style.cursor = 'url(/custom-cursors/highlighter.svg) 2 18, auto';
@@ -1606,8 +1606,8 @@ export const Canvas = ({
             const key = e.key.toLocaleLowerCase()
             if (key === "z") {
                 if (e.ctrlKey || e.metaKey) {
-
                     if (!isInsideTextArea) {
+                        e.preventDefault();
                         if (e.shiftKey && redoStack.length > 0) {
                             redo();
                             return;
@@ -1615,7 +1615,6 @@ export const Canvas = ({
                             undo();
                             return;
                         }
-                        e.preventDefault();
                     }
                 }
             } else if (key === "c") {
@@ -1733,7 +1732,7 @@ export const Canvas = ({
                 setCursorWithFill('/custom-cursors/inserting.svg', document.documentElement.classList.contains("dark") ? '#ffffff' : '#000000', 10, 10);
             }
         } else if (canvasState.mode === CanvasMode.Pencil) {
-            document.body.style.cursor = 'url(/custom-cursors/pencil.svg) 2 18, auto';
+            document.body.style.cursor = 'url(/custom-cursors/pencil.svg) 1 16, auto';
             selectedLayersRef.current = [];
         } else if (canvasState.mode === CanvasMode.Highlighter) {
             document.body.style.cursor = 'url(/custom-cursors/highlighter.svg) 2 18, auto';

@@ -171,11 +171,9 @@ export const Toolbar = ({
                   : Pen
           }
           onClick={() => {
-            if (canvasState.mode === CanvasMode.None) {
-              setCanvasState({
-                mode: CanvasMode.Pencil,
-              });
-            }
+            setCanvasState({
+              mode: CanvasMode.Pencil,
+            });
             setIsPenEraserSwitcherOpen(!isPenEraserSwitcherOpen);
           }}
           isActive={
