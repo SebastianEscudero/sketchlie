@@ -80,7 +80,7 @@ export const OrganizationSwitcher = ({
                 )}
                 <ChevronsUpDown className="ml-auto text-zinc-400 flex-shrink-0" width={20} />
             </DropdownMenuTrigger>
-            {isSettingsDialogOpen ? (
+            {isSettingsDialogOpen && activeOrg ? (
                 <OrganizationSettings
                     isOpen={isSettingsDialogOpen}
                     setIsOpen={setIsSettingsDialogOpen}

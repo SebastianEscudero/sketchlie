@@ -66,19 +66,6 @@ export const OrganizationSettings = ({
     const activeOrg = user?.organizations.find(org => org.id === activeOrganization);
     const usersRole = activeOrg?.users.find((u: any) => u.id === user?.id)?.role;
     const Initial = activeOrg?.name.charAt(0).toUpperCase();
-    const [planStatus, setPlanStatus] = useState("approved");
-
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         if (activeOrg) {
-    //             const { data } = await axios.get("/api/mercadoPago", { params: { subscriptionId: activeOrg.subscription.subscriptionId } });
-    //             const status = data
-    //             setPlanStatus(status);
-    //         }
-    //     };
-    //     fetchData();
-    // }, [activeOrg])
-
     let color = "#000000"; // default color
     let letterColor = "#FFFFFF"; // default letter color
 
@@ -272,13 +259,20 @@ export const OrganizationSettings = ({
                                                     <DropdownMenuItem className="py-2 px-3 hover:cursor-pointer">
                                                         <p className="text-red-500" onClick={() => leaveOrganization(activeOrg.id, orgUser.id)
                                                             .then((result) => {
-                                                                if (result.isOrgDeleted) {
-                                                                    setActiveOrganization("null");
-                                                                    localStorage.setItem("activeOrganization", "null");
+                                                                if (user && user.organizations && user?.organizations?.length > 0) {
+                                                                    const firstOrgId = user?.organizations[0].id;
+                                                                    setActiveOrganization(firstOrgId);
+                                                                    localStorage.setItem("activeOrganization", firstOrgId);
                                                                 } else {
-                                                                    toast.info("Removed succesfully");
+                                                                    setActiveOrganization(null);
+                                                                    localStorage.setItem("activeOrganization", '');
                                                                 }
                                                                 update();
+                                                                if (result.isOrgDeleted) {
+                                                                    toast.success("Organization deleted successfully");
+                                                                } else {
+                                                                    toast.success("User removed successfully");
+                                                                }
                                                             })
                                                         }>
                                                             {orgUser.id === user?.id ? "Leave Organization" : "Remove member"}
@@ -345,10 +339,19 @@ export const OrganizationSettings = ({
                                             className="mt-4 bg-white border border-red-500 text-red-500 shadow-sm hover:bg-red-500/90 hover:text-white w-full md:ml-2"
                                             onClick={() => leaveOrganization(activeOrg.id, user.id)
                                                 .then((result) => {
-                                                    setActiveOrganization("null");
+                                                    if (user && user.organizations && user?.organizations?.length > 0) {
+                                                        const firstOrgId = user?.organizations[0].id;
+                                                        setActiveOrganization(firstOrgId);
+                                                        localStorage.setItem("activeOrganization", firstOrgId);
+                                                    } else {
+                                                        setActiveOrganization(null);
+                                                        localStorage.setItem("activeOrganization", '');
+                                                    }
                                                     update();
                                                     if (result.isOrgDeleted) {
-                                                        localStorage.setItem("activeOrganization", "null");
+                                                        toast.success("Organization deleted successfully");
+                                                    } else {
+                                                        toast.success("User removed successfully");
                                                     }
                                                 })
                                             }
@@ -365,10 +368,10 @@ export const OrganizationSettings = ({
                                         <div className="flex md:flex-row flex-col justify-center">
                                             <Button
                                                 onClick={onClick}
-                                                variant={activeOrg.subscriptionPlan !== "Gratis" && planStatus === "approved" ? "sketchlieBlue" : "premium"}
+                                                variant={activeOrg.subscriptionPlan !== "Gratis" ? "sketchlieBlue" : "premium"}
                                                 className="mt-4 w-full"
                                             >
-                                                {activeOrg.subscriptionPlan !== "Gratis" && planStatus === "approved" ? "Pausar Subscripcion" : "Upgrade"}
+                                                {activeOrg.subscriptionPlan !== "Gratis" ? "Pausar Subscripcion" : "Upgrade"}
                                                 {activeOrg.subscriptionPlan === "Gratis" && <Zap className="w-4 h-4 ml-2 fill-white" />}
                                             </Button>
                                         </div>
