@@ -356,7 +356,7 @@ export const Canvas = ({
                 newLayers[id] = newLayer;
 
                 // Update connected arrows
-                if (layer.type !== LayerType.Arrow && layer.type !== LayerType.Line && layer.type !== LayerType.Path && selectedLayersRef.current.length === 1) {
+                if (layer.type !== LayerType.Arrow && layer.type !== LayerType.Line && selectedLayersRef.current.length === 1) {
                     if (layer.connectedArrows) {
                         layer.connectedArrows.forEach(arrowId => {
                             const arrowLayer = newLayers[arrowId] as ArrowLayer;
@@ -1022,7 +1022,7 @@ export const Canvas = ({
                     setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.Rhombus, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 29, g: 29, b: 29, a: 1 } });
                     break;
                 case LayerType.Ellipse:
-                    setCurrentPreviewLayer({ x, y, width, height, type: LayerType.Ellipse, textFontSize: 12, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 29, g: 29, b: 29, a: 1 } });
+                    setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.Ellipse, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 29, g: 29, b: 29, a: 1 } });
                     break;
                 case LayerType.Text:
                     setCurrentPreviewLayer({ x, y, width, height: 18, textFontSize: 12, type: LayerType.Rectangle, fill: { r: 0, g: 0, b: 0, a: 0 }, outlineFill: { r: 75, g: 161, b: 241, a: 1 } });
@@ -1075,7 +1075,7 @@ export const Canvas = ({
                         fill: { r: 29, g: 29, b: 29, a: 1 },
                         startArrowHead: ArrowHead.None,
                         endArrowHead: ArrowHead.Triangle,
-                        startConnectedLayerId: startConnectedLayerId,
+                        startConnectedLayerId: (currentPreviewLayer as ArrowLayer)?.startConnectedLayerId || startConnectedLayerId,
                         endConnectedLayerId: endConnectedLayerId,
                     });
                     break;
@@ -1557,7 +1557,7 @@ export const Canvas = ({
                 } else {
                     layer.endConnectedLayerId = "";
                 }
-            } else if (layer.type === LayerType.Rectangle && layer.connectedArrows) {
+            } else if (layer.type !== LayerType.Line && layer.connectedArrows) {
                 layer.connectedArrows = layer.connectedArrows.map(arrowId => idMap.get(arrowId) || arrowId);
             }
         });
@@ -1905,6 +1905,10 @@ export const Canvas = ({
                                 onArrowResizeHandlePointerDown={onArrowResizeHandlePointerDown}
                                 setLiveLayers={setLiveLayers}
                                 forceRender={forceSelectionBoxRender}
+                                setCurrentPreviewLayer={setCurrentPreviewLayer}
+                                mousePosition={mousePosition}
+                                setCanvasState={setCanvasState}
+                                setStartPanPoint={setStartPanPoint}
                             />
                         )}
                         {((canvasState.mode === CanvasMode.ArrowResizeHandler && selectedLayersRef.current.length === 1) || (currentPreviewLayer?.type === LayerType.Arrow)) && (

@@ -18,6 +18,7 @@ const config = {
       cursor: {
         hand: 'url(/custom-cursors/hand.svg) 12 12, auto',
         grab: 'url(/custom-cursors/grab.svg) 12 12, auto',
+        inserting: 'url(/custom-cursors/inserting.svg) 10 10, auto',
       },
       backgroundImage: theme => ({
         'hero-background': "url(/hero-bg.png)",

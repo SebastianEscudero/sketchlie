@@ -232,6 +232,7 @@ export type PathLayer = {
   fill: Color;
   points: number[][];
   strokeSize?: number;
+  connectedArrows?: string[];
 };
 
 export type ImageLayer = {

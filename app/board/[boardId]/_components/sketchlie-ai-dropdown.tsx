@@ -85,7 +85,6 @@ export const SketchlieAiDropdown = ({
             };
 
             if (layer.type === LayerType.Arrow) {
-                // Check for startConnectedLayerId and endConnectedLayerId
                 if (layer.startConnectedLayerId) {
                     obj[id].startConnectedLayerId = layer.startConnectedLayerId;
                 }

@@ -337,7 +337,6 @@ export function resizeArrowBounds(
   };
 
   let end = { x: bounds.x + bounds.width, y: bounds.y + bounds.height };
-  let start = { x: bounds.x, y: bounds.y };
   let center = { x: bounds.center.x, y: bounds.center.y };
 
   if (handle === ArrowHandle.start) {
@@ -389,8 +388,8 @@ export function resizeArrowBounds(
       const startPoint = getClosestEndPoint(liveLayers[newLayer.startConnectedLayerId], point);
       result.x = startPoint.x;
       result.y = startPoint.y;
-      result.width = point.x - startPoint.x;
-      result.height = point.y - startPoint.y;
+      result.width = end.x - startPoint.x;
+      result.height = end.y - startPoint.y;
     }
 
     if (newLayer.endConnectedLayerId && liveLayers[newLayer.endConnectedLayerId]) {
@@ -398,7 +397,6 @@ export function resizeArrowBounds(
       result.width = endPoint.x - result.x;
       result.height = endPoint.y - result.y;
     }
-
   }
 
   if (handle === ArrowHandle.start || handle === ArrowHandle.end) {
@@ -488,13 +486,26 @@ export function findIntersectingLayerForConnection(
   // Filter out ArrowLayer, LineLayer, and PathLayer before finding intersections
   const filteredLayerIds = layerIds.filter(id => {
     const layer = layers[id];
-    return layer.type !== LayerType.Arrow && layer.type !== LayerType.Line && layer.type !== LayerType.Path;
+    return layer.type !== LayerType.Arrow && layer.type !== LayerType.Line;
   });
 
   // Use the same logic as before to find intersecting layers, but with filtered IDs
-  const ids = findIntersectingLayersWithRectangle(filteredLayerIds, layers, { x: rect.x, y: rect.y }, { x: rect.x + rect.width, y: rect.y + rect.height });
+  const ids = [];
 
-  return ids;
+  for (const layerId of filteredLayerIds) {
+  const layer = layers[layerId];
+  const { x, y, height, width } = layer;
+
+    if (
+      rect.x + rect.width > x &&
+      rect.x < x + width &&
+      rect.y + rect.height > y &&
+      rect.y < y + height
+    ) {
+      ids.push(layerId);
+    }
+  }
+  return ids
 }
 
 export function findIntersectingLayersWithRectangle(

@@ -339,7 +339,7 @@ export const SelectionTools = memo(({
           } else {
               layer.endConnectedLayerId = "";
           }
-      } else if (layer.type === LayerType.Rectangle && layer.connectedArrows) {
+      } else if (layer.type !== LayerType.Line && layer.connectedArrows) {
           layer.connectedArrows = layer.connectedArrows.map(arrowId => idMap.get(arrowId) || arrowId);
       }
   });
@@ -495,7 +495,7 @@ export const SelectionTools = memo(({
           <SendToBack />
         </Button>
       </Hint>
-      {/* <SketchlieAiDropdown 
+      <SketchlieAiDropdown 
         title={board.title}
         liveLayers={liveLayers}
         setLiveLayers={setLiveLayers}
@@ -503,7 +503,7 @@ export const SelectionTools = memo(({
         boardId={boardId}
         socket={socket}
         performAction={performAction}
-      /> */}
+      />
       <div className="flex items-center pl-2 border-l border-neutral-200">
         <Hint label="Delete">
           <Button

@@ -126,7 +126,7 @@ export const Info = ({
               } else {
                 layer.endConnectedLayerId = "";
               }
-            } else if (layer.type !== LayerType.Image && layer.type !== LayerType.Path && layer.type !== LayerType.Line) {
+            } else if (layer.type !== LayerType.Image && layer.type && layer.type !== LayerType.Line) {
                 if (layer.connectedArrows) {
                     layer.connectedArrows = layer.connectedArrows.map((arrowId: string) => idMap.get(arrowId) || arrowId);
                 }
