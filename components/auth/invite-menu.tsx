@@ -51,7 +51,7 @@ export const InviteMenu = ({
                                 Reject
                             </Button>
                         </DropdownMenuItem>
-                        <DropdownMenuItem className="border p-0 rounded-md dark:border-zinc-200">
+                        <DropdownMenuItem className="border p-0 rounded-md">
                             <Button
                                 onClick={() => {
                                     acceptInvite(invitation.organization.id, invitation.id)
