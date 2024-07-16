@@ -474,7 +474,7 @@ export function findIntersectingLayerForConnection(
   point: Point,
   zoom: number
 ) {
-  const tolerance = Math.max(4, 4 / zoom);
+  const tolerance = Math.max(4, 4 / zoom) + 5;
   // Create a small rectangle around the point
   const rect = {
     x: point.x - tolerance,
@@ -1000,8 +1000,8 @@ export function getClosestPointOnBorder(connectedLayer: Layer, point: Point, opp
   let closestPoint: Point = getClosestEndPoint(connectedLayer, point);
   let minDistance = Number.MAX_VALUE;
 
-  // Constants for hot zone calculation
   const HOT_ZONE_BASE_SIZE = 0.4; // Base size for hot zone calculation
+  const offset = 5;
 
   // Calculate base hot zone dimensions as 60% of layer's dimensions
   const baseHotZoneWidth = connectedLayer.width * HOT_ZONE_BASE_SIZE;
@@ -1023,32 +1023,32 @@ export function getClosestPointOnBorder(connectedLayer: Layer, point: Point, opp
     return closestPointToMiddle;
   }
 
-  // Check for left or right border and calculate closest point
+  // Check for left or right border and calculate closest point with offset
   if (oppositePoint.x < connectedLayer.x) {
     const distance = Math.abs(point.x - connectedLayer.x);
     if (distance < minDistance) {
-      closestPoint = { x: connectedLayer.x, y: point.y };
+      closestPoint = { x: connectedLayer.x - offset, y: point.y };
       minDistance = distance;
     }
   } else if (oppositePoint.x > connectedLayer.x + connectedLayer.width) {
     const distance = Math.abs(point.x - (connectedLayer.x + connectedLayer.width));
     if (distance < minDistance) {
-      closestPoint = { x: connectedLayer.x + connectedLayer.width, y: point.y };
+      closestPoint = { x: connectedLayer.x + connectedLayer.width + offset, y: point.y };
       minDistance = distance;
     }
   }
 
-  // Check for top or bottom border and calculate closest point
+  // Check for top or bottom border and calculate closest point with offset
   if (oppositePoint.y < connectedLayer.y) {
     const distance = Math.abs(point.y - connectedLayer.y);
     if (distance < minDistance) {
-      closestPoint = { x: point.x, y: connectedLayer.y };
+      closestPoint = { x: point.x, y: connectedLayer.y - offset };
       minDistance = distance;
     }
   } else if (oppositePoint.y > connectedLayer.y + connectedLayer.height) {
     const distance = Math.abs(point.y - (connectedLayer.y + connectedLayer.height));
     if (distance < minDistance) {
-      closestPoint = { x: point.x, y: connectedLayer.y + connectedLayer.height };
+      closestPoint = { x: point.x, y: connectedLayer.y + connectedLayer.height + offset };
       minDistance = distance;
     }
   }
@@ -1058,6 +1058,7 @@ export function getClosestPointOnBorder(connectedLayer: Layer, point: Point, opp
 
 export function getClosestEndPoint(connectedLayer: Layer, point: Point): Point {
   const direction = { x: connectedLayer.x + connectedLayer.width / 2 - point.x, y: connectedLayer.y + connectedLayer.height / 2 - point.y };
+  const offset = -5;
 
   const magnitude = Math.sqrt(direction.x ** 2 + direction.y ** 2);
   const normalizedDirection = { x: direction.x / magnitude, y: direction.y / magnitude };
@@ -1080,6 +1081,10 @@ export function getClosestEndPoint(connectedLayer: Layer, point: Point): Point {
       closestEndPoint = endPoint;
     }
   }
+
+  // Adjust the closest endpoint by the offset along the normalized direction
+  closestEndPoint.x += normalizedDirection.x * offset;
+  closestEndPoint.y += normalizedDirection.y * offset;
 
   return closestEndPoint;
 }

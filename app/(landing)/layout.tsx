@@ -9,7 +9,7 @@ const LandingLayout = ({
 }) => {
 
     return ( 
-        <main className= "bg-[#F9FAFB] font-sans">
+        <main className= "bg-[#F0F0F0] font-sans">
             <div className="mx-auto h-full">
                 <LandingNavbar />
                 {children}
