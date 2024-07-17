@@ -34,6 +34,7 @@ export const KeyboardShortcutsDialog = ({
         {
             section: "Tools",
             commands: [
+                { key: "S", description: "Select" },
                 { key: "D", description: "Draw" },
                 { key: "E", description: "Eraser" },
                 { key: "H", description: "Move" },
@@ -42,7 +43,6 @@ export const KeyboardShortcutsDialog = ({
                 { key: "N", description: "Note" },
                 { key: "A", description: "Arrow" },
                 { key: "T", description: "Text" },
-                { key: "V", description: "Select" },
                 { key: "L", description: "Line" },
                 { key: "K", description: "Laser" },
             ],

@@ -60,6 +60,7 @@ import { Command, DeleteLayerCommand, InsertLayerCommand, TranslateLayersCommand
 import { SketchlieAiInput } from "./sketchlie-ai-input";
 import { ArrowConnectionOutlinePreview } from "./arrow-connection-outline-preview";
 import { setCursorWithFill } from "@/lib/theme-utilts";
+import { ArrowPostInsertMenu } from "./arrow-post-insert-menu";
 
 const preventDefault = (e: any) => {
     if (e.scale !== 1) {
@@ -81,6 +82,7 @@ interface CanvasProps {
 export const Canvas = ({
     boardId
 }: CanvasProps) => {
+    const [IsArrowPostInsertMenuOpen, setIsArrowPostInsertMenuOpen] = useState(false);
     const [isShowingAIInput, setIsShowingAIInput] = useState(false);
     const [isMoving, setIsMoving] = useState(false);
     const [justChanged, setJustChanged] = useState(false);
@@ -215,6 +217,7 @@ export const Canvas = ({
                 const updatedLayer = updatedLayersConnectedArrows(connectedLayer, layerId);
                 liveLayers[startConnectedLayerId] = updatedLayer;
                 setLiveLayers({ ...liveLayers });
+                setIsArrowPostInsertMenuOpen(true);
             }
 
             if (endConnectedLayerId) {
@@ -1583,6 +1586,7 @@ export const Canvas = ({
         const onPointerDown = (e: PointerEvent) => {
             const deepCopy = JSON.parse(JSON.stringify(liveLayers));
             setInitialLayers(deepCopy);
+            setIsArrowPostInsertMenuOpen(false);
             if (e.buttons === 2 || e.buttons === 4) {
                 setStartPanPoint({ x: e.clientX, y: e.clientY });
             }
@@ -1630,10 +1634,7 @@ export const Canvas = ({
                     if (e.ctrlKey || e.metaKey) {
                         e.preventDefault();
                         pasteCopiedLayers(mousePosition);
-                    } else {
-                        setCanvasState({ mode: CanvasMode.None });
                     }
-
                 }
             } else if (key === "a") {
                 if (!isInsideTextArea) {
@@ -1652,7 +1653,9 @@ export const Canvas = ({
                     unselectLayers();
                 }
             } else if (!isInsideTextArea) {
-                if (key === "d") {
+                if (key === "s") {
+                    setCanvasState({ mode: CanvasMode.None })
+                } else if (key === "d") {
                     setCanvasState({ mode: CanvasMode.Pencil });
                 } else if (key === "e") {
                     setCanvasState({ mode: CanvasMode.Eraser });
@@ -1819,7 +1822,7 @@ export const Canvas = ({
                     isPlacingLayer={currentPreviewLayer !== null}
                 />
             )}
-            {!isMoving && canvasState.mode !== CanvasMode.Resizing && canvasState.mode !== CanvasMode.ArrowResizeHandler && canvasState.mode !== CanvasMode.SelectionNet && activeTouches < 2 && (
+            {!IsArrowPostInsertMenuOpen && !isMoving && canvasState.mode !== CanvasMode.Resizing && canvasState.mode !== CanvasMode.ArrowResizeHandler && canvasState.mode !== CanvasMode.SelectionNet && activeTouches < 2 && (
                 <SelectionTools
                     board={board}
                     boardId={boardId}
@@ -1837,6 +1840,22 @@ export const Canvas = ({
                     myPresence={myPresence}
                     setMyPresence={setMyPresence}
                     canvasState={canvasState.mode}
+                />
+            )}
+            {liveLayers[selectedLayersRef.current[0]] && IsArrowPostInsertMenuOpen && (
+                <ArrowPostInsertMenu
+                    selectedLayersRef={selectedLayersRef}
+                    liveLayers={liveLayers}
+                    zoom={zoom}
+                    camera={camera}
+                    setLiveLayers={setLiveLayers}
+                    setLiveLayerIds={setLiveLayerIds}
+                    boardId={boardId}
+                    socket={socket}
+                    org={org}
+                    proModal={proModal}
+                    performAction={performAction}
+                    setIsArrowPostInsertMenuOpen={setIsArrowPostInsertMenuOpen}
                 />
             )}
             <ZoomToolbar zoom={zoom} setZoom={setZoom} setCamera={setCamera} camera={camera} />
