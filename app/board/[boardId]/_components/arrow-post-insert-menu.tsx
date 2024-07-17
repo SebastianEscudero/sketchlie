@@ -109,9 +109,15 @@ export const ArrowPostInsertMenu = ({
                     endConnectedLayerId: layerId,
                 },
             };
+
+            if (socket) {
+                socket.emit('layer-update', [arrowId], [{...prevLiveLayers[arrowId], endConnectedLayerId: layerId}]);
+            }
+
             return updatedLayers;
         });
         selectedLayersRef.current = [layerId];
+
         setIsArrowPostInsertMenuOpen(false);
     }, [socket, org, proModal, setLiveLayers, setLiveLayerIds, boardId, liveLayers, arrowId, performAction]);
 
