@@ -182,7 +182,7 @@ export const SelectionBox = memo(({
             cy={bounds.y - offset / zoom}
             r={sideHandleSize}
             className="fill-white stroke-blue-500 hover:cursor-hand"
-            onPointerDown={(e) => arrowPreviewHandle(e, { x: bounds.x + bounds.width / 2, y: bounds.y - offset / zoom }, mousePosition)}
+            onPointerDown={(e) => arrowPreviewHandle(e, { x: bounds.x + bounds.width / 2, y: bounds.y }, mousePosition)}
             strokeWidth={strokeWidth}
           />
           {/* Middle Bottom Handle */}
@@ -191,7 +191,7 @@ export const SelectionBox = memo(({
             cy={bounds.y + bounds.height + offset / zoom}
             r={sideHandleSize}
             className="fill-white stroke-blue-500 hover:cursor-hand"
-            onPointerDown={(e) => arrowPreviewHandle(e, { x: bounds.x + bounds.width / 2, y: bounds.y + bounds.height + offset / zoom }, mousePosition)}
+            onPointerDown={(e) => arrowPreviewHandle(e, { x: bounds.x + bounds.width / 2, y: bounds.y + bounds.height }, mousePosition)}
             strokeWidth={strokeWidth}
           />
           {/* Middle Left Handle */}
@@ -200,7 +200,7 @@ export const SelectionBox = memo(({
             cy={bounds.y + bounds.height / 2}
             r={sideHandleSize}
             className="fill-white stroke-blue-500 hover:cursor-hand"
-            onPointerDown={(e) => arrowPreviewHandle(e, { x: bounds.x - offset / zoom, y: bounds.y + bounds.height / 2 }, mousePosition)}
+            onPointerDown={(e) => arrowPreviewHandle(e, { x: bounds.x, y: bounds.y + bounds.height / 2 }, mousePosition)}
             strokeWidth={strokeWidth}
           />
           {/* Middle Right Handle */}
@@ -209,7 +209,7 @@ export const SelectionBox = memo(({
             cy={bounds.y + bounds.height / 2}
             r={sideHandleSize}
             className="fill-white stroke-blue-500 hover:cursor-hand"
-            onPointerDown={(e) => arrowPreviewHandle(e, { x: bounds.x + bounds.width + offset / zoom, y: bounds.y + bounds.height / 2 }, mousePosition)}
+            onPointerDown={(e) => arrowPreviewHandle(e, { x: bounds.x + bounds.width, y: bounds.y + bounds.height / 2 }, mousePosition)}
             strokeWidth={strokeWidth}
           />
         </>
