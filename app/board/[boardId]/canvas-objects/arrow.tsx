@@ -1,12 +1,14 @@
 import { useRoom } from '@/components/room';
 import { colorToCss, getArrowHeadAngle, getArrowPath } from '@/lib/utils';
-import { ArrowHead, ArrowLayer, ArrowType } from '@/types/canvas';
+import { ArrowHead, ArrowLayer, ArrowType, Layer } from '@/types/canvas';
 
 interface ArrowProps {
   id: string;
   layer: ArrowLayer;
   onPointerDown?: (e: React.PointerEvent, id: string) => void;
   selectionColor?: string;
+  startConnectedLayer?: Layer;
+  endConnectedLayer?: Layer;
 };
 
 export const Arrow = ({
@@ -14,14 +16,10 @@ export const Arrow = ({
   layer,
   selectionColor,
   onPointerDown,
+  startConnectedLayer,
+  endConnectedLayer,
 }: ArrowProps) => {
   const { fill, width, height, center, x, y, startArrowHead, endArrowHead } = layer;
-  const { liveLayers } = useRoom();
-
-  const startConnectedLayer = liveLayers[layer.startConnectedLayerId as string];
-  const endConnectedLayer = liveLayers[layer.endConnectedLayerId as string];
-
-
 
   let start = { x: x, y: y };
   let end = { x: x + width, y: y + height };
