@@ -1,5 +1,6 @@
-import { colorToCss } from '@/lib/utils';
-import { ArrowHead, ArrowLayer } from '@/types/canvas';
+import { useRoom } from '@/components/room';
+import { colorToCss, getArrowHeadAngle, getArrowPath } from '@/lib/utils';
+import { ArrowHead, ArrowLayer, ArrowType } from '@/types/canvas';
 
 interface ArrowProps {
   id: string;
@@ -15,6 +16,12 @@ export const Arrow = ({
   onPointerDown,
 }: ArrowProps) => {
   const { fill, width, height, center, x, y, startArrowHead, endArrowHead } = layer;
+  const { liveLayers } = useRoom();
+
+  const startConnectedLayer = liveLayers[layer.startConnectedLayerId as string];
+  const endConnectedLayer = liveLayers[layer.endConnectedLayerId as string];
+
+
 
   let start = { x: x, y: y };
   let end = { x: x + width, y: y + height };
@@ -26,9 +33,8 @@ export const Arrow = ({
   let pathData;
   let startAngle, endAngle;
   if (center) {
-    startAngle = Math.atan2(center.y - start.y, center.x - start.x) * (180 / Math.PI) - 180;
-    endAngle = Math.atan2(end.y - center.y, end.x - center.x) * (180 / Math.PI);
-    pathData = `M ${start.x} ${start.y} L ${center.x} ${center.y} L ${end.x} ${end.y}`;
+    ({ startAngle, endAngle } = getArrowHeadAngle(start, center, end, layer.arrowType || ArrowType.Straight, startConnectedLayer, endConnectedLayer));
+    pathData = getArrowPath(layer.arrowType || ArrowType.Straight, start, center, end, startConnectedLayer, endConnectedLayer);
   }
 
   const arrowheadPath = `M -6 -4 L 0 0 L -6 4`;

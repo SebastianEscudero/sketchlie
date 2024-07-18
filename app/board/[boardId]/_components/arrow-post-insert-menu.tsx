@@ -2,7 +2,7 @@
 
 import { useSelectionBounds } from "@/hooks/use-selection-bounds";
 import { useCallback, useEffect, useState } from "react";
-import { Layers, LayerType, Point } from "@/types/canvas";
+import { ArrowType, Layers, LayerType, Point } from "@/types/canvas";
 import {
     ArrowBigDown,
     ArrowBigLeft,
@@ -76,6 +76,18 @@ export const ArrowPostInsertMenu = ({
 
         if (arrowLayer.width < 0) {
             x -= 90
+        }
+
+        if (arrowLayer.arrowType === ArrowType.Diagram) {
+            const isHorizontal = Math.abs(arrowLayer.width) >= Math.abs(arrowLayer.height);
+            if (!isHorizontal) {
+              if (arrowLayer.height > 0) {
+                y = arrowLayer.y + arrowLayer.height + 5;
+              } else {
+                y = arrowLayer.y + arrowLayer.height - 90;
+              }
+              x = arrowLayer.x + arrowLayer.width - 40;
+            }
         }
 
         const layerId = nanoid();

@@ -43,6 +43,7 @@ export type ArrowLayer = {
   startConnectedLayerId?: string;
   endConnectedLayerId?: string;
   centerEdited?: boolean;
+  arrowType?: ArrowType;
 };
 
 export type RectangleLayer = {
@@ -221,6 +222,7 @@ export type LineLayer = {
   startConnectedLayerId?: string;
   endConnectedLayerId?: string;
   centerEdited?: boolean;
+  arrowType?: ArrowType;
 };
 
 export type PathLayer = {
@@ -404,6 +406,12 @@ export enum ArrowHead {
   Triangle = "Triangle",
 }
 
+export enum ArrowType {
+  Straight,
+  Curved,
+  Diagram,
+}
+
 export type PreviewLayer = RectangleLayer | EllipseLayer | RhombusLayer | 
 TriangleLayer | StarLayer | HexagonLayer | BigArrowDownLayer | BigArrowLeftLayer | LineLayer
 | BigArrowRightLayer | BigArrowUpLayer | CommentBubbleLayer | TextLayer | NoteLayer | ArrowLayer;
@@ -413,5 +421,6 @@ export enum SelectorType {
   OutlineColor,
   ArrowHead,
   TextJustify,
-  FontSize
+  FontSize,
+  ArrowType
 };

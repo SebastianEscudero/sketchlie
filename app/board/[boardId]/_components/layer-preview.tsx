@@ -34,6 +34,8 @@ interface LayerPreviewProps {
   expired: boolean;
   boardId: string;
   forcedRender?: boolean;
+  startConnectedLayer?: Layer;
+  endConnectedLayer?: Layer;
 };
 
 export const LayerPreview = memo(({
@@ -48,6 +50,8 @@ export const LayerPreview = memo(({
   expired,
   boardId,
   forcedRender,
+  startConnectedLayer,
+  endConnectedLayer,
 }: LayerPreviewProps) => {
 
   if (!layer) {
@@ -278,6 +282,8 @@ export const LayerPreview = memo(({
           layer={layer}
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
+          startConnectedLayer={startConnectedLayer}
+          endConnectedLayer={endConnectedLayer}
         />
       );
     default:

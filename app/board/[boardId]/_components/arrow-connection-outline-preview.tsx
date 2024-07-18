@@ -1,7 +1,7 @@
 "use client";
 
 import { useSelectionBounds } from "@/hooks/use-selection-bounds";
-import { ArrowHandle } from "@/types/canvas";
+import { ArrowHandle, ArrowType } from "@/types/canvas";
 import { memo } from "react";
 
 interface ArrowConnectionOutlinePreviewProps {
@@ -36,7 +36,12 @@ export const ArrowConnectionOutlinePreview = memo(({
     const centerX = bounds.x + bounds.width / 2;
     const centerY = bounds.y + bounds.height / 2;
 
-    const HOT_ZONE_BASE_SIZE = 0.4; // Base size for hot zone calculation
+    let HOT_ZONE_BASE_SIZE = 0.4;
+
+    if (selectedArrow.arrowType === ArrowType.Diagram) {
+        HOT_ZONE_BASE_SIZE = 1;
+    }
+
     const X_BASE_SIZE = 6; // Base size for X drawing
     const MAX_X_SIZE = Math.min(bounds.width, bounds.height) * 0.4;
 

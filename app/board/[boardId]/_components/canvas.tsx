@@ -22,12 +22,14 @@ import {
     updatedLayersConnectedArrows,
     getClosestEndPoint,
     checkIfTextarea,
+    findIntersectingLayersWithPath,
 } from "@/lib/utils";
 
 import {
     ArrowHandle,
     ArrowHead,
     ArrowLayer,
+    ArrowType,
     Camera,
     CanvasMode,
     CanvasState,
@@ -61,6 +63,7 @@ import { SketchlieAiInput } from "./sketchlie-ai-input";
 import { ArrowConnectionOutlinePreview } from "./arrow-connection-outline-preview";
 import { setCursorWithFill } from "@/lib/theme-utilts";
 import { ArrowPostInsertMenu } from "./arrow-post-insert-menu";
+import { EraserTrail } from "./eraser-trail";
 
 const preventDefault = (e: any) => {
     if (e.scale !== 1) {
@@ -82,6 +85,7 @@ interface CanvasProps {
 export const Canvas = ({
     boardId
 }: CanvasProps) => {
+    const [erasePath, setErasePath] = useState<[number, number][]>([]);
     const [IsArrowPostInsertMenuOpen, setIsArrowPostInsertMenuOpen] = useState(false);
     const [isShowingAIInput, setIsShowingAIInput] = useState(false);
     const [isMoving, setIsMoving] = useState(false);
@@ -152,7 +156,7 @@ export const Canvas = ({
         setHistory([...history, lastCommand]);
     };
 
-    const insertLayer = useCallback((layerType: LayerType, position: Point, width: number, height: number, center?: Point, startConnectedLayerId?: string, endConnectedLayerId?: string) => {
+    const insertLayer = useCallback((layerType: LayerType, position: Point, width: number, height: number, center?: Point, startConnectedLayerId?: string, endConnectedLayerId?: string, arrowType?: ArrowType) => {
         const layerId = nanoid();
 
         let layer;
@@ -210,9 +214,10 @@ export const Canvas = ({
                 endArrowHead: ArrowHead.Triangle,
                 startConnectedLayerId: startConnectedLayerId,
                 endConnectedLayerId: endConnectedLayerId,
+                arrowType: arrowType || ArrowType.Straight,
             };
 
-            if (startConnectedLayerId) {
+            if (startConnectedLayerId && !endConnectedLayerId) {
                 const connectedLayer = liveLayers[startConnectedLayerId];
                 const updatedLayer = updatedLayersConnectedArrows(connectedLayer, layerId);
                 liveLayers[startConnectedLayerId] = updatedLayer;
@@ -423,37 +428,28 @@ export const Canvas = ({
     }, [liveLayers, liveLayerIds, setMyPresence, myPresence]);
 
     const EraserDeleteLayers = useCallback((current: Point) => {
-        const ids = findIntersectingLayersWithPoint(
+
+        const currentTuple: [number, number] = [current.x, current.y];
+        setErasePath(erasePath.length === 0 ? [currentTuple] : [...erasePath, currentTuple]);
+
+        const ids = findIntersectingLayersWithPath(
             liveLayerIds,
             liveLayers,
-            current,
-            zoom
+            erasePath,
         );
 
-        if (ids.length > 0) {
-            setLiveLayers(prevLiveLayers => {
-                let newLiveLayers;
-                for (const id of ids) {
-                    const isLayerDeleted = layersToDeleteEraserRef.current.has(id);
-                    if (!isLayerDeleted) {
-                        if (!newLiveLayers) {
-                            newLiveLayers = { ...prevLiveLayers };
-                        }
-                        const layer = newLiveLayers[id];
-                        newLiveLayers[id] = {
-                            ...layer,
-                            ...('fill' in layer && layer.fill ? { fill: { ...layer.fill, a: layer.fill.a / 4 } } : {}),
-                            ...('outlineFill' in layer && layer.outlineFill ? { outlineFill: { ...layer.outlineFill, a: layer.outlineFill.a / 4 } } : {}),
-                            ...('opacity' in layer && layer.opacity ? { opacity: layer.opacity / 4 } : {})
-                        };
-                        layersToDeleteEraserRef.current.add(id);
-                    }
-                }
-                return newLiveLayers || prevLiveLayers;
-            });
+        const unprocessedIds = ids.filter(id => !layersToDeleteEraserRef.current.has(id));
+
+        if (unprocessedIds.length > 0) {
+            const newLiveLayers = { ...liveLayers };
+            for (const id of unprocessedIds) {
+                delete newLiveLayers[id];
+                layersToDeleteEraserRef.current.add(id);
+            }
+            setLiveLayers(newLiveLayers);
         }
 
-    }, [liveLayerIds, liveLayers, setLiveLayers, zoom]);
+    }, [liveLayerIds, liveLayers, setLiveLayers, zoom, setErasePath, erasePath]);
 
     const startMultiSelection = useCallback((
         current: Point,
@@ -1052,12 +1048,12 @@ export const Canvas = ({
                     if (startConnectedLayerId !== endConnectedLayerId) {
                         if (intersectingStartLayer) {
                             const startConnectedLayer = liveLayers[startConnectedLayerId];
-                            start = getClosestEndPoint(startConnectedLayer, point);
+                            start = getClosestEndPoint(liveLayers[startConnectedLayerId], liveLayers[endConnectedLayerId], startConnectedLayer, point, (currentPreviewLayer as ArrowLayer)?.arrowType || ArrowType.Straight, (currentPreviewLayer as ArrowLayer))
                         }
 
                         if (intersectingEndLayer) {
                             const endConnectedLayer = liveLayers[endConnectedLayerId];
-                            end = getClosestPointOnBorder(endConnectedLayer, end, start, zoom);
+                            end = getClosestPointOnBorder(liveLayers[startConnectedLayerId], liveLayers[endConnectedLayerId], endConnectedLayer, end, start, zoom, (currentPreviewLayer as ArrowLayer)?.arrowType || ArrowType.Straight, (currentPreviewLayer as ArrowLayer))
                         }
                     } else {
                         startConnectedLayerId = "";
@@ -1080,6 +1076,7 @@ export const Canvas = ({
                         endArrowHead: ArrowHead.Triangle,
                         startConnectedLayerId: (currentPreviewLayer as ArrowLayer)?.startConnectedLayerId || startConnectedLayerId,
                         endConnectedLayerId: endConnectedLayerId,
+                        arrowType: (currentPreviewLayer as ArrowLayer)?.arrowType || ArrowType.Straight,
                     });
                     break;
                 case LayerType.Line:
@@ -1145,6 +1142,7 @@ export const Canvas = ({
                 socket.emit('presence', newPresence, User.userId);
             }
         } else if (canvasState.mode === CanvasMode.Eraser) {
+            setErasePath([]);
             document.body.style.cursor = 'url(/custom-cursors/eraser.svg) 8 8, auto';
             if (layersToDeleteEraserRef.current.size > 0) {
                 const command = new DeleteLayerCommand(Array.from(layersToDeleteEraserRef.current), initialLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, boardId, socket);
@@ -1168,7 +1166,7 @@ export const Canvas = ({
                 if (layerType === LayerType.Arrow && currentPreviewLayer.type === LayerType.Arrow
                     || layerType === LayerType.Line && currentPreviewLayer.type === LayerType.Line
                 ) {
-                    insertLayer(layerType, { x: currentPreviewLayer.x, y: currentPreviewLayer.y }, currentPreviewLayer.width, currentPreviewLayer.height, currentPreviewLayer.center, currentPreviewLayer.startConnectedLayerId, currentPreviewLayer.endConnectedLayerId)
+                    insertLayer(layerType, { x: currentPreviewLayer.x, y: currentPreviewLayer.y }, currentPreviewLayer.width, currentPreviewLayer.height, currentPreviewLayer.center, currentPreviewLayer.startConnectedLayerId, currentPreviewLayer.endConnectedLayerId, currentPreviewLayer.arrowType)
                     setCurrentPreviewLayer(null);
                 } else {
                     insertLayer(layerType, { x: currentPreviewLayer.x, y: currentPreviewLayer.y }, currentPreviewLayer.width, currentPreviewLayer.height);
@@ -1616,6 +1614,7 @@ export const Canvas = ({
                             redo();
                             return;
                         } else if (!e.shiftKey && history.length > 0) {
+                            selectedLayersRef.current = [];
                             undo();
                             return;
                         }
@@ -1891,14 +1890,27 @@ export const Canvas = ({
                             transformOrigin: 'top left',
                         }}
                     >
-                        {liveLayerIds.map((layerId: any) => {
+                        {liveLayerIds.map((layerId: string) => {
                             const isFocused = selectedLayersRef.current.length === 1 && selectedLayersRef.current[0] === layerId && !justChanged;
+                            let layer = liveLayers[layerId];
+                            let startConnectedLayer;
+                            let endConnectedLayer;
+
+                            if (layer && layer.type === LayerType.Arrow) {
+                                if (layer.startConnectedLayerId) {
+                                    startConnectedLayer = liveLayers[layer.startConnectedLayerId]
+                                }
+
+                                if (layer.endConnectedLayerId) {
+                                    endConnectedLayer = liveLayers[layer.endConnectedLayerId]
+                                }
+                            }
                             return (
                                 <LayerPreview
                                     selectionColor={layerIdsToColorSelection[layerId]}
                                     onLayerPointerDown={onLayerPointerDown}
                                     focused={isFocused}
-                                    layer={liveLayers[layerId]}
+                                    layer={layer}
                                     setLiveLayers={setLiveLayers}
                                     key={layerId}
                                     id={layerId}
@@ -1907,14 +1919,11 @@ export const Canvas = ({
                                     expired={expired}
                                     boardId={boardId}
                                     forcedRender={forceLayerPreviewRender}
+                                    startConnectedLayer={startConnectedLayer}
+                                    endConnectedLayer={endConnectedLayer}
                                 />
                             );
                         })}
-                        {currentPreviewLayer && (
-                            <CurrentPreviewLayer
-                                layer={currentPreviewLayer}
-                            />
-                        )}
                         {!isMoving && activeTouches < 2 && canvasState.mode !== CanvasMode.ArrowResizeHandler && (
                             <SelectionBox
                                 zoom={zoom}
@@ -1930,6 +1939,11 @@ export const Canvas = ({
                                 setStartPanPoint={setStartPanPoint}
                             />
                         )}
+                        {currentPreviewLayer && (
+                            <CurrentPreviewLayer
+                                layer={currentPreviewLayer}
+                            />
+                        )}
                         {((canvasState.mode === CanvasMode.ArrowResizeHandler && selectedLayersRef.current.length === 1) || (currentPreviewLayer?.type === LayerType.Arrow)) && (
                             <ArrowConnectionOutlinePreview
                                 zoom={zoom}
@@ -1938,6 +1952,9 @@ export const Canvas = ({
                                 mousePosition={mousePosition}
                                 handle={canvasState.mode === CanvasMode.ArrowResizeHandler ? canvasState.handle : ArrowHandle.end}
                             />
+                        )}
+                        {(canvasState.mode === CanvasMode.Eraser) && erasePath.length > 0 && (
+                            <EraserTrail mousePosition={mousePosition} zoom={zoom} />
                         )}
                         {canvasState.mode === CanvasMode.SelectionNet && canvasState.current != null && activeTouches < 2 && (
                             <rect

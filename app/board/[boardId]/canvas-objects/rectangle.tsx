@@ -55,7 +55,6 @@ export const Rectangle = memo(({
     }
   }, [focused])
 
-
   const updateValue = useCallback((newValue: string) => {
     if (layer && layer.type === LayerType.Rectangle) {
       const RectangleLayer = layer as RectangleLayer;

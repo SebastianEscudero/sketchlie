@@ -2,7 +2,7 @@
 
 import { memo, useMemo } from "react";
 
-import { ArrowHandle, ArrowHead, ArrowLayer, CanvasMode, Layers, LayerType, Point, Side, XYWH } from "@/types/canvas";
+import { ArrowHandle, ArrowHead, ArrowLayer, ArrowType, CanvasMode, Layers, LayerType, Point, Side, XYWH } from "@/types/canvas";
 import { useSelectionBounds } from "@/hooks/use-selection-bounds";
 
 interface SelectionBoxProps {
@@ -152,6 +152,7 @@ export const SelectionBox = memo(({
       startArrowHead: ArrowHead.None,
       endArrowHead: ArrowHead.Triangle,
       startConnectedLayerId: soleLayerId,
+      arrowType: ArrowType.Diagram
     });
 
     setCanvasState({
