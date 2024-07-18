@@ -214,7 +214,7 @@ export const BotNavbar = () => {
                 <nav className="flex flex-col">
                     <h3 className="font-bold mb-2">Contenido Informativo</h3>
                     {queEs.map((component, index) => (
-                        <Link key={index} title={component.title} href={component.href}><Button variant={pathname === component.href ? 'secondary' : 'ghostDark'} className="my-1 text-lg">¿Qué es un {component.title}</Button></Link>
+                        <Link key={index} title={component.title} href={component.href}><Button variant={pathname === component.href ? 'secondary' : 'ghostDark'} className="my-1 text-lg">¿Qué es un {component.title}?</Button></Link>
                     ))}
                 </nav>
             </div>

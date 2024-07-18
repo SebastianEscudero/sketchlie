@@ -115,7 +115,7 @@ const Sidebar = ({
                                             className='w-full justify-start my-[2px] text-[16px] font-medium'
                                             variant={pathname === "/quienes-somos/" ? 'auth' : 'navbar'}
                                         >
-                                            Descripcion de Sketchlie
+                                            Descripción de Sketchlie
                                         </Button>
                                     </Link>
                                 </SheetClose>
