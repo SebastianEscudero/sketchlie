@@ -71,11 +71,11 @@ export const ArrowPostInsertMenu = ({
 
     const insertLayer = useCallback(async (layerType: LayerType) => {
 
-        let x = arrowLayer.x + arrowLayer.width + 5
-        let y = arrowLayer.y + arrowLayer.height - 30
+        let x = arrowLayer.x + arrowLayer.width
+        let y = arrowLayer.y + arrowLayer.height - 40
 
         if (arrowLayer.width < 0) {
-            x -= 90
+            x -= 80;
         }
 
         if (arrowLayer.arrowType === ArrowType.Diagram) {
@@ -84,7 +84,7 @@ export const ArrowPostInsertMenu = ({
               if (arrowLayer.height > 0) {
                 y = arrowLayer.y + arrowLayer.height + 5;
               } else {
-                y = arrowLayer.y + arrowLayer.height - 90;
+                y = arrowLayer.y + arrowLayer.height - 80;
               }
               x = arrowLayer.x + arrowLayer.width - 40;
             }
