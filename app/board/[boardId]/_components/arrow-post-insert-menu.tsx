@@ -2,7 +2,7 @@
 
 import { useSelectionBounds } from "@/hooks/use-selection-bounds";
 import { useCallback, useEffect, useState } from "react";
-import { ArrowType, Layers, LayerType, Point } from "@/types/canvas";
+import { ArrowOrientation, ArrowType, Layers, LayerType, Point } from "@/types/canvas";
 import {
     ArrowBigDown,
     ArrowBigLeft,
@@ -71,22 +71,31 @@ export const ArrowPostInsertMenu = ({
 
     const insertLayer = useCallback(async (layerType: LayerType) => {
 
-        let x = arrowLayer.x + arrowLayer.width
+        let x = arrowLayer.x + arrowLayer.width + 5;
         let y = arrowLayer.y + arrowLayer.height - 40
 
         if (arrowLayer.width < 0) {
-            x -= 80;
+            x -= 90;
         }
 
         if (arrowLayer.arrowType === ArrowType.Diagram) {
-            const isHorizontal = Math.abs(arrowLayer.width) >= Math.abs(arrowLayer.height);
-            if (!isHorizontal) {
+            if (arrowLayer.orientation === ArrowOrientation.Vertical) {
               if (arrowLayer.height > 0) {
                 y = arrowLayer.y + arrowLayer.height + 5;
               } else {
-                y = arrowLayer.y + arrowLayer.height - 80;
+                y = arrowLayer.y + arrowLayer.height - 85;
               }
               x = arrowLayer.x + arrowLayer.width - 40;
+            }
+        } else {
+            const isHorizontal = Math.abs(arrowLayer.width) > Math.abs(arrowLayer.height);
+            if (!isHorizontal) {
+                if (arrowLayer.height > 0) {
+                    y = arrowLayer.y + arrowLayer.height + 5;
+                  } else {
+                    y = arrowLayer.y + arrowLayer.height - 85;
+                  }
+                  x = arrowLayer.x + arrowLayer.width - 40;
             }
         }
 

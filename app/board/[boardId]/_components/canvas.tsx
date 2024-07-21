@@ -29,6 +29,7 @@ import {
     ArrowHandle,
     ArrowHead,
     ArrowLayer,
+    ArrowOrientation,
     ArrowType,
     Camera,
     CanvasMode,
@@ -156,7 +157,7 @@ export const Canvas = ({
         setHistory([...history, lastCommand]);
     };
 
-    const insertLayer = useCallback((layerType: LayerType, position: Point, width: number, height: number, center?: Point, startConnectedLayerId?: string, endConnectedLayerId?: string, arrowType?: ArrowType) => {
+    const insertLayer = useCallback((layerType: LayerType, position: Point, width: number, height: number, center?: Point, startConnectedLayerId?: string, endConnectedLayerId?: string, arrowType?: ArrowType, orientation?: ArrowOrientation) => {
         const layerId = nanoid();
 
         let layer;
@@ -215,6 +216,7 @@ export const Canvas = ({
                 startConnectedLayerId: startConnectedLayerId,
                 endConnectedLayerId: endConnectedLayerId,
                 arrowType: arrowType || ArrowType.Straight,
+                orientation: orientation
             };
 
             if (startConnectedLayerId && !endConnectedLayerId) {
@@ -1047,13 +1049,24 @@ export const Canvas = ({
 
                     if (startConnectedLayerId !== endConnectedLayerId) {
                         if (intersectingStartLayer) {
+
+                            if ((currentPreviewLayer as ArrowLayer).orientation === ArrowOrientation.Horizontal) {
+                                if (end.x >= liveLayers[startConnectedLayerId].x && end.x <= liveLayers[startConnectedLayerId].x + liveLayers[startConnectedLayerId].width) {
+                                  (currentPreviewLayer as ArrowLayer).orientation = ArrowOrientation.Vertical;
+                                }
+                              } else if ((currentPreviewLayer as ArrowLayer).orientation === ArrowOrientation.Vertical) {
+                                if (end.y >= liveLayers[startConnectedLayerId].y && end.y <= liveLayers[startConnectedLayerId].y + liveLayers[startConnectedLayerId].height) {
+                                  (currentPreviewLayer as ArrowLayer).orientation = ArrowOrientation.Horizontal;
+                                }
+                              }
+
                             const startConnectedLayer = liveLayers[startConnectedLayerId];
-                            start = getClosestEndPoint(liveLayers[startConnectedLayerId], liveLayers[endConnectedLayerId], startConnectedLayer, point, (currentPreviewLayer as ArrowLayer)?.arrowType || ArrowType.Straight, (currentPreviewLayer as ArrowLayer))
+                            start = getClosestEndPoint(startConnectedLayer, point, (currentPreviewLayer as ArrowLayer)?.arrowType || ArrowType.Straight, (currentPreviewLayer as ArrowLayer))
                         }
 
                         if (intersectingEndLayer) {
                             const endConnectedLayer = liveLayers[endConnectedLayerId];
-                            end = getClosestPointOnBorder(liveLayers[startConnectedLayerId], liveLayers[endConnectedLayerId], endConnectedLayer, end, start, zoom, (currentPreviewLayer as ArrowLayer)?.arrowType || ArrowType.Straight, (currentPreviewLayer as ArrowLayer))
+                            end = getClosestPointOnBorder(endConnectedLayer, end, start, zoom, (currentPreviewLayer as ArrowLayer)?.arrowType || ArrowType.Straight, (currentPreviewLayer as ArrowLayer))
                         }
                     } else {
                         startConnectedLayerId = "";
@@ -1077,6 +1090,7 @@ export const Canvas = ({
                         startConnectedLayerId: (currentPreviewLayer as ArrowLayer)?.startConnectedLayerId || startConnectedLayerId,
                         endConnectedLayerId: endConnectedLayerId,
                         arrowType: (currentPreviewLayer as ArrowLayer)?.arrowType || ArrowType.Straight,
+                        orientation: (currentPreviewLayer as ArrowLayer)?.orientation,
                     });
                     break;
                 case LayerType.Line:
@@ -1166,7 +1180,7 @@ export const Canvas = ({
                 if (layerType === LayerType.Arrow && currentPreviewLayer.type === LayerType.Arrow
                     || layerType === LayerType.Line && currentPreviewLayer.type === LayerType.Line
                 ) {
-                    insertLayer(layerType, { x: currentPreviewLayer.x, y: currentPreviewLayer.y }, currentPreviewLayer.width, currentPreviewLayer.height, currentPreviewLayer.center, currentPreviewLayer.startConnectedLayerId, currentPreviewLayer.endConnectedLayerId, currentPreviewLayer.arrowType)
+                    insertLayer(layerType, { x: currentPreviewLayer.x, y: currentPreviewLayer.y }, currentPreviewLayer.width, currentPreviewLayer.height, currentPreviewLayer.center, currentPreviewLayer.startConnectedLayerId, currentPreviewLayer.endConnectedLayerId, currentPreviewLayer.arrowType, currentPreviewLayer.orientation)
                     setCurrentPreviewLayer(null);
                 } else {
                     insertLayer(layerType, { x: currentPreviewLayer.x, y: currentPreviewLayer.y }, currentPreviewLayer.width, currentPreviewLayer.height);
@@ -1919,8 +1933,6 @@ export const Canvas = ({
                                     expired={expired}
                                     boardId={boardId}
                                     forcedRender={forceLayerPreviewRender}
-                                    startConnectedLayer={startConnectedLayer}
-                                    endConnectedLayer={endConnectedLayer}
                                 />
                             );
                         })}

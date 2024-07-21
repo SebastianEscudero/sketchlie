@@ -44,6 +44,7 @@ export type ArrowLayer = {
   endConnectedLayerId?: string;
   centerEdited?: boolean;
   arrowType?: ArrowType;
+  orientation?: ArrowOrientation;
 };
 
 export type RectangleLayer = {
@@ -223,6 +224,7 @@ export type LineLayer = {
   endConnectedLayerId?: string;
   centerEdited?: boolean;
   arrowType?: ArrowType;
+  orientation?: ArrowOrientation;
 };
 
 export type PathLayer = {
@@ -410,6 +412,11 @@ export enum ArrowType {
   Straight,
   Curved,
   Diagram,
+}
+
+export enum ArrowOrientation {
+  Horizontal,
+  Vertical,
 }
 
 export type PreviewLayer = RectangleLayer | EllipseLayer | RhombusLayer | 

@@ -4,6 +4,7 @@ import { twMerge } from "tailwind-merge";
 import {
   ArrowHandle,
   ArrowLayer,
+  ArrowOrientation,
   ArrowType,
   Camera,
   Color,
@@ -335,6 +336,7 @@ export function resizeArrowBounds(
     height: bounds.height,
     center: bounds.center,
     centerEdited: bounds.centerEdited,
+    orientation: newLayer.orientation
   };
 
   let end = { x: bounds.x + bounds.width, y: bounds.y + bounds.height };
@@ -348,7 +350,7 @@ export function resizeArrowBounds(
 
     if (newLayer.startConnectedLayerId) {
       const startConnectedLayer = liveLayers[newLayer.startConnectedLayerId];
-      const startPoint = getClosestPointOnBorder(liveLayers[newLayer.startConnectedLayerId], liveLayers[newLayer.endConnectedLayerId], startConnectedLayer, point, center, zoom, newLayer.arrowType, newLayer);
+      const startPoint = getClosestPointOnBorder(startConnectedLayer, point, center, zoom, newLayer.arrowType, newLayer);
       result.x = startPoint.x;
       result.y = startPoint.y;
       result.width = end.x - startPoint.x;
@@ -356,7 +358,18 @@ export function resizeArrowBounds(
     }
 
     if (newLayer.endConnectedLayerId && liveLayers[newLayer.endConnectedLayerId]) {
-      const endPoint = getClosestEndPoint(liveLayers[newLayer.startConnectedLayerId], liveLayers[newLayer.endConnectedLayerId], liveLayers[newLayer.endConnectedLayerId], center, newLayer.arrowType, newLayer);
+
+      if (newLayer.orientation === ArrowOrientation.Horizontal) {
+        if (point.x >= liveLayers[newLayer.endConnectedLayerId].x && point.x <= liveLayers[newLayer.endConnectedLayerId].x + liveLayers[newLayer.endConnectedLayerId].width) {
+          result.orientation = ArrowOrientation.Vertical;
+        }
+      } else if (newLayer.orientation === ArrowOrientation.Vertical) {
+        if (point.y >= liveLayers[newLayer.endConnectedLayerId].y && point.y <= liveLayers[newLayer.endConnectedLayerId].y + liveLayers[newLayer.endConnectedLayerId].height) {
+          result.orientation = ArrowOrientation.Horizontal;
+        }
+      }
+
+      const endPoint = getClosestEndPoint(liveLayers[newLayer.endConnectedLayerId], center, newLayer.arrowType, newLayer);
       result.width = endPoint.x - result.x;
       result.height = endPoint.y - result.y;
     }
@@ -366,7 +379,17 @@ export function resizeArrowBounds(
     result.height = point.y - bounds.y;
 
     if (newLayer.startConnectedLayerId && liveLayers[newLayer.startConnectedLayerId]) {
-      const startPoint = getClosestEndPoint(liveLayers[newLayer.startConnectedLayerId], liveLayers[newLayer.endConnectedLayerId], liveLayers[newLayer.startConnectedLayerId], center, newLayer.arrowType, newLayer);
+      if (newLayer.orientation === ArrowOrientation.Horizontal) {
+        if (point.x >= liveLayers[newLayer.startConnectedLayerId].x && point.x <= liveLayers[newLayer.startConnectedLayerId].x + liveLayers[newLayer.startConnectedLayerId].width) {
+          result.orientation = ArrowOrientation.Vertical;
+        }
+      } else if (newLayer.orientation === ArrowOrientation.Vertical) {
+        if (point.y >= liveLayers[newLayer.startConnectedLayerId].y && point.y <= liveLayers[newLayer.startConnectedLayerId].y + liveLayers[newLayer.startConnectedLayerId].height) {
+          result.orientation = ArrowOrientation.Horizontal;
+        }
+      }
+
+      const startPoint = getClosestEndPoint(liveLayers[newLayer.startConnectedLayerId], center, newLayer.arrowType, newLayer);
       result.x = startPoint.x;
       result.y = startPoint.y;
       result.width = point.x - startPoint.x;
@@ -375,7 +398,7 @@ export function resizeArrowBounds(
 
     if (newLayer.endConnectedLayerId) {
       const endConnectedLayer = liveLayers[newLayer.endConnectedLayerId];
-      const endPoint = getClosestPointOnBorder(liveLayers[newLayer.startConnectedLayerId], liveLayers[newLayer.endConnectedLayerId], endConnectedLayer, point, center, zoom, newLayer.arrowType, newLayer);
+      const endPoint = getClosestPointOnBorder(endConnectedLayer, point, center, zoom, newLayer.arrowType, newLayer);
       result.width = endPoint.x - result.x;
       result.height = endPoint.y - result.y;
     }
@@ -386,7 +409,7 @@ export function resizeArrowBounds(
     result.center.y += point.y - result.center.y;
 
     if (newLayer.startConnectedLayerId && liveLayers[newLayer.startConnectedLayerId]) {
-      const startPoint = getClosestEndPoint(liveLayers[newLayer.startConnectedLayerId], liveLayers[newLayer.endConnectedLayerId], liveLayers[newLayer.startConnectedLayerId], point, newLayer.arrowType, newLayer);
+      const startPoint = getClosestEndPoint(liveLayers[newLayer.startConnectedLayerId], point, newLayer.arrowType, newLayer);
       result.x = startPoint.x;
       result.y = startPoint.y;
       result.width = end.x - startPoint.x;
@@ -394,7 +417,7 @@ export function resizeArrowBounds(
     }
 
     if (newLayer.endConnectedLayerId && liveLayers[newLayer.endConnectedLayerId]) {
-      const endPoint = getClosestEndPoint(liveLayers[newLayer.startConnectedLayerId], liveLayers[newLayer.endConnectedLayerId], liveLayers[newLayer.endConnectedLayerId], point, newLayer.arrowType, newLayer);
+      const endPoint = getClosestEndPoint(liveLayers[newLayer.endConnectedLayerId], point, newLayer.arrowType, newLayer);
       result.width = endPoint.x - result.x;
       result.height = endPoint.y - result.y;
     }
@@ -419,39 +442,13 @@ export function resizeArrowBounds(
   return result;
 }
 
-export function getArrowPath(type: ArrowType, start: Point, center: Point, end: Point, startConnectedLayer?: Layer, endConnectedLayer?: Layer): any {
+export function getArrowPath(type: ArrowType, start: Point, center: Point, end: Point, orientation?: ArrowOrientation): any {
   let pathData;
 
   if (type === ArrowType.Straight) {
     pathData = `M ${start.x} ${start.y} L ${center.x} ${center.y} L ${end.x} ${end.y}`;
   } else if (type === ArrowType.Diagram) {
-    let isHorizontal;
-
-    if (startConnectedLayer && endConnectedLayer) {
-      // Calculate the center points of both connected layers
-      const startCenterX = startConnectedLayer.x + startConnectedLayer.width / 2;
-      const startCenterY = startConnectedLayer.y + startConnectedLayer.height / 2;
-      const endCenterX = endConnectedLayer.x + endConnectedLayer.width / 2;
-      const endCenterY = endConnectedLayer.y + endConnectedLayer.height / 2;
-
-      // Determine isHorizontal based on the width and height of the box made by both connected layers' centers
-      const boxWidth = Math.abs(endCenterX - startCenterX);
-      const boxHeight = Math.abs(endCenterY - startCenterY);
-      isHorizontal = boxWidth > boxHeight;
-    } else if (startConnectedLayer || endConnectedLayer) {
-      // Use the center of the connected layer if available, otherwise use the arrow's start/end point
-      const connectedCenterX = startConnectedLayer ? startConnectedLayer.x + startConnectedLayer.width / 2 : endConnectedLayer ? endConnectedLayer.x + endConnectedLayer.width / 2 : center.x;
-      const connectedCenterY = startConnectedLayer ? startConnectedLayer.y + startConnectedLayer.height / 2 : endConnectedLayer ? endConnectedLayer.y + endConnectedLayer.height / 2 : center.y;
-
-      const comparativeWidth = Math.abs(connectedCenterX - center.x);
-      const comparativeHeight = Math.abs(connectedCenterY - center.y);
-      isHorizontal = comparativeWidth > comparativeHeight;
-    } else {
-      // Fallback to original isHorizontal calculation
-      isHorizontal = Math.abs(end.x - start.x) > Math.abs(end.y - start.y);
-    }
-
-    if (isHorizontal) {
+    if (orientation === ArrowOrientation.Horizontal) {
       // Horizontal then vertical
       pathData = `M ${start.x} ${start.y} `;
       pathData += `L ${center.x} ${start.y} `;
@@ -486,38 +483,13 @@ export function getArrowPath(type: ArrowType, start: Point, center: Point, end: 
   return pathData;
 }
 
-export function getArrowHeadAngle(start: Point, center: Point, end: Point, type: ArrowType, startConnectedLayer?: Layer, endConnectedLayer?: Layer): { startAngle: number, endAngle: number } {
+export function getArrowHeadAngle(start: Point, center: Point, end: Point, type: ArrowType, orientation?: ArrowOrientation): { startAngle: number, endAngle: number } {
   let startAngle, endAngle;
 
   if (type === ArrowType.Diagram) {
-    let isHorizontal = Math.abs(end.x - start.x) > Math.abs(end.y - start.y);
     startAngle = Math.atan2(center.y - start.y, center.x - start.x) * (180 / Math.PI) - 180;
 
-    if (startConnectedLayer && endConnectedLayer) {
-      // Calculate the center points of both connected layers
-      const startCenterX = startConnectedLayer.x + startConnectedLayer.width / 2;
-      const startCenterY = startConnectedLayer.y + startConnectedLayer.height / 2;
-      const endCenterX = endConnectedLayer.x + endConnectedLayer.width / 2;
-      const endCenterY = endConnectedLayer.y + endConnectedLayer.height / 2;
-
-      // Determine isHorizontal based on the width and height of the box made by both connected layers' centers
-      const boxWidth = Math.abs(endCenterX - startCenterX);
-      const boxHeight = Math.abs(endCenterY - startCenterY);
-      isHorizontal = boxWidth > boxHeight;
-    } else if (startConnectedLayer || endConnectedLayer) {
-      // Use the center of the connected layer if available, otherwise use the arrow's start/end point
-      const connectedCenterX = startConnectedLayer ? startConnectedLayer.x + startConnectedLayer.width / 2 : endConnectedLayer ? endConnectedLayer.x + endConnectedLayer.width / 2 : center.x;
-      const connectedCenterY = startConnectedLayer ? startConnectedLayer.y + startConnectedLayer.height / 2 : endConnectedLayer ? endConnectedLayer.y + endConnectedLayer.height / 2 : center.y;
-
-      const comparativeWidth = Math.abs(connectedCenterX - center.x);
-      const comparativeHeight = Math.abs(connectedCenterY - center.y);
-      isHorizontal = comparativeWidth > comparativeHeight;
-    } else {
-      // Fallback to original isHorizontal calculation
-      isHorizontal = Math.abs(end.x - start.x) > Math.abs(end.y - start.y);
-    }
-
-    if (isHorizontal) {
+    if (orientation === ArrowOrientation.Horizontal) {
       startAngle = (start.x > center.x) ? 0 : 180;
       endAngle = (end.x > center.x) ? 0 : 180;
     } else {
@@ -1171,8 +1143,8 @@ export async function bodyToString(body: Blob | ReadableStream | Readable): Prom
   }
 }
 
-export function getClosestPointOnBorder(startConnectedLayer: Layer, endConnectedLayer: Layer, connectedLayer: Layer, point: Point, oppositePoint: Point, zoom: number, arrowType: ArrowType, arrowLayer: ArrowLayer): Point {
-  let closestPoint: Point = getClosestEndPoint(startConnectedLayer, endConnectedLayer, connectedLayer, point, arrowType, arrowLayer);
+export function getClosestPointOnBorder(connectedLayer: Layer, point: Point, oppositePoint: Point, zoom: number, arrowType: ArrowType, arrowLayer: ArrowLayer): Point {
+  let closestPoint: Point = getClosestEndPoint(connectedLayer, point, arrowType, arrowLayer);
   let minDistance = Number.MAX_VALUE;
 
   let HOT_ZONE_BASE_SIZE = 0.4; // Base size for hot zone calculation
@@ -1199,7 +1171,7 @@ export function getClosestPointOnBorder(startConnectedLayer: Layer, endConnected
 
   // Check if the point is within the adjusted hot zone
   if (point.x > hotZoneX && point.x < hotZoneX + adjustedHotZoneWidth && point.y > hotZoneY && point.y < hotZoneY + adjustedHotZoneHeight) {
-    const closestPointToMiddle = getClosestEndPoint(startConnectedLayer, endConnectedLayer, connectedLayer, oppositePoint, arrowType, arrowLayer);
+    const closestPointToMiddle = getClosestEndPoint(connectedLayer, oppositePoint, arrowType, arrowLayer);
     return closestPointToMiddle;
   }
 
@@ -1236,37 +1208,9 @@ export function getClosestPointOnBorder(startConnectedLayer: Layer, endConnected
   return closestPoint;
 }
 
-export function getClosestEndPoint(startConnectedLayer: Layer, endConnectedLayer: Layer, connectedLayer: Layer, point: Point, arrowType: ArrowType, arrowLayer: ArrowLayer): Point {
+export function getClosestEndPoint(connectedLayer: Layer, point: Point, arrowType: ArrowType, arrowLayer: ArrowLayer): Point {
   if (arrowType === ArrowType.Diagram) {
-    const center = arrowLayer.center || { x: arrowLayer.x + arrowLayer.width / 2, y: arrowLayer.y + arrowLayer.height / 2 };
-    const start = { x: arrowLayer.x, y: arrowLayer.y };
-    const end = { x: arrowLayer.x + arrowLayer.width, y: arrowLayer.y + arrowLayer.height };
-    let isHorizontal;
-
-    if (startConnectedLayer && endConnectedLayer) {
-      // Calculate the center points of both connected layers
-      const startCenterX = startConnectedLayer.x + startConnectedLayer.width / 2;
-      const startCenterY = startConnectedLayer.y + startConnectedLayer.height / 2;
-      const endCenterX = endConnectedLayer.x + endConnectedLayer.width / 2;
-      const endCenterY = endConnectedLayer.y + endConnectedLayer.height / 2;
-
-      // Determine isHorizontal based on the width and height of the box made by both connected layers' centers
-      const boxWidth = Math.abs(endCenterX - startCenterX);
-      const boxHeight = Math.abs(endCenterY - startCenterY);
-      isHorizontal = boxWidth > boxHeight;
-    } else if (startConnectedLayer || endConnectedLayer) {
-      // Use the center of the connected layer if available, otherwise use the arrow's start/end point
-      const connectedCenterX = startConnectedLayer ? startConnectedLayer.x + startConnectedLayer.width / 2 : endConnectedLayer ? endConnectedLayer.x + endConnectedLayer.width / 2 : center.x;
-      const connectedCenterY = startConnectedLayer ? startConnectedLayer.y + startConnectedLayer.height / 2 : endConnectedLayer ? endConnectedLayer.y + endConnectedLayer.height / 2 : center.y;
-
-      const comparativeWidth = Math.abs(connectedCenterX - center.x);
-      const comparativeHeight = Math.abs(connectedCenterY - center.y);
-      isHorizontal = comparativeWidth > comparativeHeight;
-    } else {
-      // Fallback to original isHorizontal calculation
-      isHorizontal = Math.abs(end.x - start.x) > Math.abs(end.y - start.y);
-    }
-
+    
     // Calculate the middle points of each border
     let middlePoints = [
       { x: connectedLayer.x + connectedLayer.width / 2, y: connectedLayer.y }, // Top middle
@@ -1275,7 +1219,7 @@ export function getClosestEndPoint(startConnectedLayer: Layer, endConnectedLayer
       { x: connectedLayer.x + connectedLayer.width, y: connectedLayer.y + connectedLayer.height / 2 } // Right middle
     ];
 
-    if (isHorizontal) {
+    if (arrowLayer.orientation === ArrowOrientation.Horizontal) {
       middlePoints = [
         middlePoints[2],
         middlePoints[3]
@@ -1298,6 +1242,26 @@ export function getClosestEndPoint(startConnectedLayer: Layer, endConnectedLayer
       }
     }
 
+    // Assuming the closestMiddlePoint has been found for ArrowType.Diagram
+
+    // Calculate the direction vector from the closestMiddlePoint to the center of the connectedLayer
+    const directionFromPointToCenter = {
+      x: (connectedLayer.x + connectedLayer.width / 2) - closestMiddlePoint.x,
+      y: (connectedLayer.y + connectedLayer.height / 2) - closestMiddlePoint.y,
+    };
+
+    // Normalize this direction vector
+    const magnitude = Math.sqrt(directionFromPointToCenter.x ** 2 + directionFromPointToCenter.y ** 2);
+    const normalizedDirection = {
+      x: directionFromPointToCenter.x / magnitude,
+      y: directionFromPointToCenter.y / magnitude,
+    };
+
+    // Move the closestMiddlePoint 5 units away from the center in the opposite direction
+    closestMiddlePoint.x -= normalizedDirection.x * 5;
+    closestMiddlePoint.y -= normalizedDirection.y * 5;
+
+    // Return the adjusted closestMiddlePoint
     return closestMiddlePoint;
   } else {
     // Existing logic for other arrow types
@@ -1341,7 +1305,7 @@ export function updateArrowPosition(arrowLayer: ArrowLayer, connectedLayerId: st
   let center = arrowLayer.center || { x: (start.x + end.x) / 2, y: (start.y + end.y) / 2 };
 
   if (connectedLayerId === startConnectedLayerId) {
-    const startPoint = getClosestEndPoint(liveLayers[startConnectedLayerId], liveLayers[endConnectedLayerId], newLayer, center, arrowLayer.arrowType || ArrowType.Straight, arrowLayer);
+    const startPoint = getClosestEndPoint(newLayer, center, arrowLayer.arrowType || ArrowType.Straight, arrowLayer);
     updatedArrow.x = startPoint.x;
     updatedArrow.y = startPoint.y;
     updatedArrow.width = end.x - startPoint.x;
@@ -1349,22 +1313,44 @@ export function updateArrowPosition(arrowLayer: ArrowLayer, connectedLayerId: st
     start = startPoint;
 
     if (endConnectedLayerId && liveLayers[endConnectedLayerId]) {
+      if (arrowLayer.orientation === ArrowOrientation.Horizontal) {
+        if (start.x >= liveLayers[endConnectedLayerId].x && start.x <= liveLayers[endConnectedLayerId].x + liveLayers[endConnectedLayerId].width) {
+          arrowLayer.orientation = ArrowOrientation.Vertical;
+        }
+      } else if (arrowLayer.orientation === ArrowOrientation.Vertical) {
+        if (start.y >= liveLayers[endConnectedLayerId].y && start.y <= liveLayers[endConnectedLayerId].y + liveLayers[endConnectedLayerId].height) {
+          arrowLayer.orientation = ArrowOrientation.Horizontal;
+        }
+      }
+
       if ((arrowLayer.arrowType !== ArrowType.Diagram && arrowLayer.centerEdited !== true) || arrowLayer.arrowType === ArrowType.Diagram) {
-        const endPoint = getClosestEndPoint(liveLayers[startConnectedLayerId], liveLayers[endConnectedLayerId], liveLayers[endConnectedLayerId], center, arrowLayer.arrowType || ArrowType.Straight, arrowLayer);
+        const endPoint = getClosestEndPoint(liveLayers[endConnectedLayerId], center, arrowLayer.arrowType || ArrowType.Straight, arrowLayer);
         updatedArrow.width = endPoint.x - updatedArrow.x;
         updatedArrow.height = endPoint.y - updatedArrow.y;
         end = endPoint;
       }
     }
   } else if (connectedLayerId === endConnectedLayerId) {
-    if ((arrowLayer.arrowType !== ArrowType.Diagram && arrowLayer.centerEdited !== true) || arrowLayer.arrowType === ArrowType.Diagram) {
-      const startPoint = getClosestEndPoint(liveLayers[startConnectedLayerId], liveLayers[endConnectedLayerId], liveLayers[startConnectedLayerId], center, arrowLayer.arrowType || ArrowType.Straight, arrowLayer);
-      updatedArrow.x = startPoint.x;
-      updatedArrow.y = startPoint.y;
-      start = startPoint;
+    if (startConnectedLayerId && liveLayers[startConnectedLayerId]) {
+      if (arrowLayer.orientation === ArrowOrientation.Horizontal) {
+        if (end.x >= liveLayers[startConnectedLayerId].x && end.x <= liveLayers[startConnectedLayerId].x + liveLayers[startConnectedLayerId].width) {
+          arrowLayer.orientation = ArrowOrientation.Vertical;
+        }
+      } else if (arrowLayer.orientation === ArrowOrientation.Vertical) {
+        if (end.y >= liveLayers[startConnectedLayerId].y && end.y <= liveLayers[startConnectedLayerId].y + liveLayers[startConnectedLayerId].height) {
+          arrowLayer.orientation = ArrowOrientation.Horizontal;
+        }
+      }
+
+      if ((arrowLayer.arrowType !== ArrowType.Diagram && arrowLayer.centerEdited !== true) || arrowLayer.arrowType === ArrowType.Diagram) {
+        const startPoint = getClosestEndPoint(liveLayers[startConnectedLayerId], center, arrowLayer.arrowType || ArrowType.Straight, arrowLayer);
+        updatedArrow.x = startPoint.x;
+        updatedArrow.y = startPoint.y;
+        start = startPoint;
+      }
     }
 
-    const endPoint = getClosestEndPoint(liveLayers[startConnectedLayerId], liveLayers[endConnectedLayerId], newLayer, center, arrowLayer.arrowType || ArrowType.Straight, arrowLayer);
+    const endPoint = getClosestEndPoint(newLayer, center, arrowLayer.arrowType || ArrowType.Straight, arrowLayer);
     updatedArrow.width = endPoint.x - updatedArrow.x;
     updatedArrow.height = endPoint.y - updatedArrow.y;
     end = endPoint;

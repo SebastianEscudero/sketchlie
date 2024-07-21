@@ -16,10 +16,8 @@ export const Arrow = ({
   layer,
   selectionColor,
   onPointerDown,
-  startConnectedLayer,
-  endConnectedLayer,
 }: ArrowProps) => {
-  const { fill, width, height, center, x, y, startArrowHead, endArrowHead } = layer;
+  const { fill, width, height, center, x, y, startArrowHead, endArrowHead, orientation } = layer;
 
   let start = { x: x, y: y };
   let end = { x: x + width, y: y + height };
@@ -31,8 +29,8 @@ export const Arrow = ({
   let pathData;
   let startAngle, endAngle;
   if (center) {
-    ({ startAngle, endAngle } = getArrowHeadAngle(start, center, end, layer.arrowType || ArrowType.Straight, startConnectedLayer, endConnectedLayer));
-    pathData = getArrowPath(layer.arrowType || ArrowType.Straight, start, center, end, startConnectedLayer, endConnectedLayer);
+    ({ startAngle, endAngle } = getArrowHeadAngle(start, center, end, layer.arrowType || ArrowType.Straight, orientation));
+    pathData = getArrowPath(layer.arrowType || ArrowType.Straight, start, center, end, orientation);
   }
 
   const arrowheadPath = `M -6 -4 L 0 0 L -6 4`;

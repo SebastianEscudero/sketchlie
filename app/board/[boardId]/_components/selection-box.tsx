@@ -2,7 +2,7 @@
 
 import { memo, useMemo } from "react";
 
-import { ArrowHandle, ArrowHead, ArrowLayer, ArrowType, CanvasMode, Layers, LayerType, Point, Side, XYWH } from "@/types/canvas";
+import { ArrowHandle, ArrowHead, ArrowLayer, ArrowOrientation, ArrowType, CanvasMode, Layers, LayerType, Point, Side, XYWH } from "@/types/canvas";
 import { useSelectionBounds } from "@/hooks/use-selection-bounds";
 
 interface SelectionBoxProps {
@@ -132,7 +132,7 @@ export const SelectionBox = memo(({
   const sideHandleSize = 5 / zoom;
   const offset = 12;
 
-  const arrowPreviewHandle = (e: any, startPoint: Point, endPoint: Point) => {
+  const arrowPreviewHandle = (e: any, startPoint: Point, endPoint: Point, orientation: ArrowOrientation) => {
     e.stopPropagation();
 
     let start = startPoint;
@@ -152,7 +152,8 @@ export const SelectionBox = memo(({
       startArrowHead: ArrowHead.None,
       endArrowHead: ArrowHead.Triangle,
       startConnectedLayerId: soleLayerId,
-      arrowType: ArrowType.Diagram
+      arrowType: ArrowType.Diagram,
+      orientation: orientation,
     });
 
     setCanvasState({
@@ -183,7 +184,7 @@ export const SelectionBox = memo(({
             cy={bounds.y - offset / zoom}
             r={sideHandleSize}
             className="fill-white stroke-blue-500 hover:cursor-hand"
-            onPointerDown={(e) => arrowPreviewHandle(e, { x: bounds.x + bounds.width / 2, y: bounds.y }, mousePosition)}
+            onPointerDown={(e) => arrowPreviewHandle(e, { x: bounds.x + bounds.width / 2, y: bounds.y }, mousePosition, ArrowOrientation.Vertical)}
             strokeWidth={strokeWidth}
           />
           {/* Middle Bottom Handle */}
@@ -192,7 +193,7 @@ export const SelectionBox = memo(({
             cy={bounds.y + bounds.height + offset / zoom}
             r={sideHandleSize}
             className="fill-white stroke-blue-500 hover:cursor-hand"
-            onPointerDown={(e) => arrowPreviewHandle(e, { x: bounds.x + bounds.width / 2, y: bounds.y + bounds.height }, mousePosition)}
+            onPointerDown={(e) => arrowPreviewHandle(e, { x: bounds.x + bounds.width / 2, y: bounds.y + bounds.height }, mousePosition, ArrowOrientation.Vertical)}
             strokeWidth={strokeWidth}
           />
           {/* Middle Left Handle */}
@@ -201,7 +202,7 @@ export const SelectionBox = memo(({
             cy={bounds.y + bounds.height / 2}
             r={sideHandleSize}
             className="fill-white stroke-blue-500 hover:cursor-hand"
-            onPointerDown={(e) => arrowPreviewHandle(e, { x: bounds.x, y: bounds.y + bounds.height / 2 }, mousePosition)}
+            onPointerDown={(e) => arrowPreviewHandle(e, { x: bounds.x, y: bounds.y + bounds.height / 2 }, mousePosition, ArrowOrientation.Horizontal)}
             strokeWidth={strokeWidth}
           />
           {/* Middle Right Handle */}
@@ -210,7 +211,7 @@ export const SelectionBox = memo(({
             cy={bounds.y + bounds.height / 2}
             r={sideHandleSize}
             className="fill-white stroke-blue-500 hover:cursor-hand"
-            onPointerDown={(e) => arrowPreviewHandle(e, { x: bounds.x + bounds.width, y: bounds.y + bounds.height / 2 }, mousePosition)}
+            onPointerDown={(e) => arrowPreviewHandle(e, { x: bounds.x + bounds.width, y: bounds.y + bounds.height / 2 }, mousePosition, ArrowOrientation.Horizontal)}
             strokeWidth={strokeWidth}
           />
         </>
