@@ -1324,14 +1324,14 @@ export function getClosestEndPoint(connectedLayer: Layer, point: Point, arrowTyp
 
 export function updateArrowPosition(arrowLayer: ArrowLayer, connectedLayerId: string, newLayer: Layer, startConnectedLayerId: string, endConnectedLayerId: string, liveLayers: any) {
   const updatedArrow = { ...arrowLayer };
-  let start = { x: arrowLayer.x, y: arrowLayer.y };
-  let end = { x: arrowLayer.x + arrowLayer.width, y: arrowLayer.y + arrowLayer.height };
-  let center = arrowLayer.center || { x: (start.x + end.x) / 2, y: (start.y + end.y) / 2 };
+  let start = { x: updatedArrow.x, y: updatedArrow.y };
+  let end = { x: updatedArrow.x + updatedArrow.width, y: updatedArrow.y + updatedArrow.height };
+  let center = updatedArrow.center || { x: (start.x + end.x) / 2, y: (start.y + end.y) / 2 };
   const startConnectedLayer = liveLayers[startConnectedLayerId];
   const endConnectedLayer = liveLayers[endConnectedLayerId];
 
   if (connectedLayerId === startConnectedLayerId) {
-    const startPoint = getClosestEndPoint(newLayer, center, arrowLayer.arrowType || ArrowType.Straight, arrowLayer);
+    const startPoint = getClosestEndPoint(newLayer, center, updatedArrow.arrowType || ArrowType.Straight, updatedArrow);
     updatedArrow.x = startPoint.x;
     updatedArrow.y = startPoint.y;
     updatedArrow.width = end.x - startPoint.x;
@@ -1339,91 +1339,91 @@ export function updateArrowPosition(arrowLayer: ArrowLayer, connectedLayerId: st
     start = startPoint;
 
     if (endConnectedLayerId && endConnectedLayer) {
-      if (arrowLayer.orientation === ArrowOrientation.Horizontal) {
+      if (updatedArrow.orientation === ArrowOrientation.Horizontal) {
         const intersects = (
           startConnectedLayer.x < endConnectedLayer.x + endConnectedLayer.width &&
           startConnectedLayer.x + startConnectedLayer.width > endConnectedLayer.x
         );
   
         if (intersects) {
-          arrowLayer.orientation = ArrowOrientation.Vertical;
+          updatedArrow.orientation = ArrowOrientation.Vertical;
         }
-      } else if (arrowLayer.orientation === ArrowOrientation.Vertical) {
+      } else if (updatedArrow.orientation === ArrowOrientation.Vertical) {
         const intersects = (
           startConnectedLayer.y < endConnectedLayer.y + endConnectedLayer.height &&
           startConnectedLayer.y + startConnectedLayer.height > endConnectedLayer.y
         );
 
         if (intersects) {
-          arrowLayer.orientation = ArrowOrientation.Horizontal
+          updatedArrow.orientation = ArrowOrientation.Horizontal
         };
       }
 
-      if ((arrowLayer.arrowType !== ArrowType.Diagram && arrowLayer.centerEdited !== true) || arrowLayer.arrowType === ArrowType.Diagram) {
-        const endPoint = getClosestEndPoint(endConnectedLayer, center, arrowLayer.arrowType || ArrowType.Straight, arrowLayer);
+      if ((updatedArrow.arrowType !== ArrowType.Diagram && updatedArrow.centerEdited !== true) || updatedArrow.arrowType === ArrowType.Diagram) {
+        const endPoint = getClosestEndPoint(endConnectedLayer, center, updatedArrow.arrowType || ArrowType.Straight, updatedArrow);
         updatedArrow.width = endPoint.x - updatedArrow.x;
         updatedArrow.height = endPoint.y - updatedArrow.y;
         end = endPoint;
       }
     } else {
-      if (arrowLayer.orientation === ArrowOrientation.Horizontal) {
+      if (updatedArrow.orientation === ArrowOrientation.Horizontal) {
         if (end.x >= startConnectedLayer.x && end.x <= startConnectedLayer.x + startConnectedLayer.width) {
-          arrowLayer.orientation = ArrowOrientation.Vertical;
+          updatedArrow.orientation = ArrowOrientation.Vertical;
         }
-      } else if (arrowLayer.orientation === ArrowOrientation.Vertical) {
+      } else if (updatedArrow.orientation === ArrowOrientation.Vertical) {
         if (end.y >= startConnectedLayer.y && end.y <= startConnectedLayer.y + startConnectedLayer.height) {
-          arrowLayer.orientation = ArrowOrientation.Horizontal;
+          updatedArrow.orientation = ArrowOrientation.Horizontal;
         }
       }
     }
   } else if (connectedLayerId === endConnectedLayerId) {
     if (startConnectedLayerId && startConnectedLayer) {
-      if (arrowLayer.orientation === ArrowOrientation.Horizontal) {
+      if (updatedArrow.orientation === ArrowOrientation.Horizontal) {
         const intersects = (
           endConnectedLayer.x < startConnectedLayer.x + startConnectedLayer.width &&
           endConnectedLayer.x + endConnectedLayer.width > startConnectedLayer.x
         );
 
         if (intersects) {
-          arrowLayer.orientation = ArrowOrientation.Vertical;
+          updatedArrow.orientation = ArrowOrientation.Vertical;
         }
 
-      } else if (arrowLayer.orientation === ArrowOrientation.Vertical) {
+      } else if (updatedArrow.orientation === ArrowOrientation.Vertical) {
         const intersects = (
           endConnectedLayer.y < startConnectedLayer.y + startConnectedLayer.height &&
           endConnectedLayer.y + endConnectedLayer.height > startConnectedLayer.y
         )
 
         if (intersects) {
-          arrowLayer.orientation = ArrowOrientation.Horizontal;
+          updatedArrow.orientation = ArrowOrientation.Horizontal;
         }
       }
 
-      if ((arrowLayer.arrowType !== ArrowType.Diagram && arrowLayer.centerEdited !== true) || arrowLayer.arrowType === ArrowType.Diagram) {
-        const startPoint = getClosestEndPoint(startConnectedLayer, center, arrowLayer.arrowType || ArrowType.Straight, arrowLayer);
+      if ((updatedArrow.arrowType !== ArrowType.Diagram && updatedArrow.centerEdited !== true) || updatedArrow.arrowType === ArrowType.Diagram) {
+        const startPoint = getClosestEndPoint(startConnectedLayer, center, updatedArrow.arrowType || ArrowType.Straight, updatedArrow);
         updatedArrow.x = startPoint.x;
         updatedArrow.y = startPoint.y;
         start = startPoint;
       }
     } else {
-      if (arrowLayer.orientation === ArrowOrientation.Horizontal) {
+      if (updatedArrow.orientation === ArrowOrientation.Horizontal) {
         if (start.x >= endConnectedLayer.x && start.x <= endConnectedLayer.x + endConnectedLayer.width) {
-          arrowLayer.orientation = ArrowOrientation.Vertical;
+          updatedArrow.orientation = ArrowOrientation.Vertical;
         }
-      } else if (arrowLayer.orientation === ArrowOrientation.Vertical) {
+      } else if (updatedArrow.orientation === ArrowOrientation.Vertical) {
         if (start.y >= endConnectedLayer.y && start.y <= endConnectedLayer.y + endConnectedLayer.height) {
-          arrowLayer.orientation = ArrowOrientation.Horizontal;
+          updatedArrow.orientation = ArrowOrientation.Horizontal;
         }
       }
     }
 
-    const endPoint = getClosestEndPoint(newLayer, center, arrowLayer.arrowType || ArrowType.Straight, arrowLayer);
+    const endPoint = getClosestEndPoint(newLayer, center, updatedArrow.arrowType || ArrowType.Straight, updatedArrow);
     updatedArrow.width = endPoint.x - updatedArrow.x;
     updatedArrow.height = endPoint.y - updatedArrow.y;
     end = endPoint;
   }
 
-  if (arrowLayer.centerEdited !== true || updatedArrow.arrowType === ArrowType.Diagram) {
+  if (updatedArrow.centerEdited !== true || updatedArrow.arrowType === ArrowType.Diagram) {
     updatedArrow.center = { x: (start.x + end.x) / 2, y: (start.y + end.y) / 2 };
   }
 
