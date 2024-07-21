@@ -423,12 +423,13 @@ export function resizeArrowBounds(
     }
 
     if (newLayer.arrowType === ArrowType.Diagram) {
-      const isHorizontal = Math.abs(result.width) >= Math.abs(result.height);
-      if (isHorizontal) {
-        result.center.y = result.y + result.height / 2;
-      } else {
-        result.center.x = result.x + result.width / 2;
-      }
+        if (newLayer.orientation === ArrowOrientation.Horizontal) {
+          result.center.x = point.x;
+          result.center.y = bounds.y + bounds.height / 2;
+        } else {
+          result.center.y = point.y;
+          result.center.x = bounds.x + bounds.width / 2;
+        }
     }
   }
 
@@ -757,6 +758,21 @@ export function findIntersectingLayersWithRectangle(
 
 export function getContrastingTextColor(color: Color) {
   if (color.r === 0 && color.g === 0 && color.b === 0) {
+    if (document.documentElement.classList.contains("dark")) {
+      return "white";
+    }
+    return "black";
+  }
+
+  if (color.r === 29 && color.g === 29 && color.b === 29) {
+    console.log('color', color)
+    if (document.documentElement.classList.contains("dark")) {
+      return "black";
+    }
+    return "white";
+  }
+
+  if (color.r === 255 && color.g === 255 && color.b === 255) {
     if (document.documentElement.classList.contains("dark")) {
       return "white";
     }
