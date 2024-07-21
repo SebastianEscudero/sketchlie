@@ -439,6 +439,15 @@ export function resizeArrowBounds(
     }
   }
 
+  if (!newLayer.startConnectedLayerId && !newLayer.endConnectedLayerId && newLayer.arrowType === ArrowType.Diagram) {
+    const isHorizontal = Math.abs(result.width) >= Math.abs(result.height);
+    if (isHorizontal) {
+      result.orientation = ArrowOrientation.Horizontal;
+    } else {
+      result.orientation = ArrowOrientation.Vertical;
+    }
+  }
+
   return result;
 }
 
