@@ -152,7 +152,6 @@ export const SelectionBox = memo(({
       startArrowHead: ArrowHead.None,
       endArrowHead: ArrowHead.Triangle,
       startConnectedLayerId: soleLayerId,
-      arrowType: ArrowType.Diagram,
       orientation: orientation,
     });
 

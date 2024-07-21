@@ -91,6 +91,8 @@ export const Canvas = ({
     const [isShowingAIInput, setIsShowingAIInput] = useState(false);
     const [isMoving, setIsMoving] = useState(false);
     const [justChanged, setJustChanged] = useState(false);
+    const [arrowTypeInserting, setArrowTypeInserting] = useState<ArrowType>(ArrowType.Straight);
+    const [isArrowsMenuOpen, setIsArrowsMenuOpen] = useState(false);
     const [isPenMenuOpen, setIsPenMenuOpen] = useState(false);
     const [isShapesMenuOpen, setIsShapesMenuOpen] = useState(false);
     const [isPenEraserSwitcherOpen, setIsPenEraserSwitcherOpen] = useState(false);
@@ -125,7 +127,6 @@ export const Canvas = ({
     const [pathStrokeSize, setPathStrokeSize] = useState(5);
     const [pinchStartDist, setPinchStartDist] = useState<number | null>(null);
     const [activeTouches, setActiveTouches] = useState(0);
-    const [magicPathAssist, setMagicPathAssist] = useState(false);
     const [layerWithAssistDraw, setLayerWithAssistDraw] = useState(false);
     const [forceSelectionBoxRender, setForceSelectionBoxRender] = useState(false);
     const [forceLayerPreviewRender, setForceLayerPreviewRender] = useState(false);
@@ -215,7 +216,7 @@ export const Canvas = ({
                 endArrowHead: ArrowHead.Triangle,
                 startConnectedLayerId: startConnectedLayerId,
                 endConnectedLayerId: endConnectedLayerId,
-                arrowType: arrowType || ArrowType.Straight,
+                arrowType: arrowTypeInserting,
                 orientation: orientation
             };
 
@@ -559,92 +560,6 @@ export const Canvas = ({
 
         setCanvasState({ mode: CanvasMode.Pencil });
     }, [pencilDraft, liveLayers, setLiveLayers, setLiveLayerIds, myPresence, org, proModal, liveLayerIds, socket, board, activeTouches]);
-
-    // useEffect(() => {
-    //     if (pencilDraft === null || magicPathAssist === false || pencilDraft.length === 0) {
-    //         return;
-    //     }
-
-    //     const timeoutId = setTimeout(() => {
-
-    //         if (pencilDraft[0] && pencilDraft[0].length < 2) {
-    //             return;
-    //         }
-
-    //         const minX = Math.min(...pencilDraft.map(point => point[0]));
-    //         const maxX = Math.max(...pencilDraft.map(point => point[0]));
-    //         const minY = Math.min(...pencilDraft.map(point => point[1]));
-    //         const maxY = Math.max(...pencilDraft.map(point => point[1]));
-    //         const CircleTolerance = 0.30;
-    //         const RectangleTolerance = 0.80;
-    //         const LineTolerance = 20;
-    //         const triangleTolerance = 0.80;
-
-    //         const layerType = getShapeType(pencilDraft, CircleTolerance, RectangleTolerance, LineTolerance, triangleTolerance);
-
-    //         if (layerType !== LayerType.Path) {
-
-    //             let panX = minX;
-    //             let panY = minY;
-    //             let startX = minX
-    //             let startY = minY;
-
-    //             if (Math.abs(mousePositionRef.current.x - minX) < Math.abs(mousePositionRef.current.x - maxX)) {
-    //               panX = maxX
-    //             } else {
-    //                 startX = maxX
-    //             }
-
-    //             if (Math.abs(mousePositionRef.current.y - minY) < Math.abs(mousePositionRef.current.y - maxY)) {
-    //               panY = maxY
-    //             } else {
-    //                 startY = maxY
-    //             }
-
-    //             setPencilDraft([]);
-
-    //             if (layerType === LayerType.Line) {
-
-    //               const width =  panX - startX
-    //               const height = panY - startY
-
-    //               setCurrentPreviewLayer({
-    //                 type: LayerType.Line,
-    //                 x: startX,
-    //                 y: startY,
-    //                 center: { x: (minX + maxX) / 2, y: (minY + maxY) / 2 },
-    //                 height,
-    //                 width,
-    //                 fill: { r: 0, g: 0, b: 0, a: 0 },
-    //               });
-
-    //               setStartPanPoint({ x: startX, y: startY });
-    //             } else {
-
-    //               const width = Math.abs(maxX - minX);
-    //               const height = Math.abs(maxY - minY);
-
-    //               setCurrentPreviewLayer({
-    //                 x: Math.min(minX, maxX),
-    //                 y: Math.min(minY, maxY),
-    //                 width,
-    //                 height,
-    //                 textFontSize: 12,
-    //                 type: layerType,
-    //                 fill: { r: 0, g: 0, b: 0, a: 0 },
-    //                 outlineFill: { r: 29, g: 29, b: 29, a: 1 },
-    //               });
-    //               setStartPanPoint({ x: panX, y: panY });
-    //             }
-
-    //             setCanvasState({ mode: CanvasMode.Inserting, layerType: layerType });
-    //             setIsPanning(true);
-    //             setLayerWithAssistDraw(true);
-    //           }
-    //     }, 1000);
-
-    //     return () => clearTimeout(timeoutId);
-    // }, [pencilDraft, setPencilDraft, zoom, magicPathAssist]);
 
     const insertHighlight = useCallback(() => {
 
@@ -1077,6 +992,15 @@ export const Canvas = ({
                     widthArrow = end.x - start.x;
                     heightArrow = end.y - start.y;
 
+                    if (!startConnectedLayerId && !endConnectedLayerId && (currentPreviewLayer as ArrowLayer)?.arrowType === ArrowType.Diagram) {
+                        const isHorizontal = Math.abs((currentPreviewLayer as ArrowLayer).width) >= Math.abs((currentPreviewLayer as ArrowLayer).height);
+                        if (isHorizontal) {
+                            (currentPreviewLayer as ArrowLayer).orientation = ArrowOrientation.Horizontal;
+                        } else {
+                            (currentPreviewLayer as ArrowLayer).orientation = ArrowOrientation.Vertical;
+                        }
+                    }
+
                     setCurrentPreviewLayer({
                         x: start.x,
                         y: start.y,
@@ -1089,8 +1013,8 @@ export const Canvas = ({
                         endArrowHead: ArrowHead.Triangle,
                         startConnectedLayerId: (currentPreviewLayer as ArrowLayer)?.startConnectedLayerId || startConnectedLayerId,
                         endConnectedLayerId: endConnectedLayerId,
-                        arrowType: (currentPreviewLayer as ArrowLayer)?.arrowType || ArrowType.Straight,
-                        orientation: (currentPreviewLayer as ArrowLayer)?.orientation,
+                        arrowType: arrowTypeInserting,
+                        orientation: (currentPreviewLayer as ArrowLayer)?.orientation || ArrowOrientation.Horizontal,
                     });
                     break;
                 case LayerType.Line:
@@ -1824,14 +1748,16 @@ export const Canvas = ({
                     redo={redo}
                     canUndo={history.length > 0}
                     canRedo={redoStack.length > 0}
+                    arrowTypeInserting={arrowTypeInserting}
+                    setArrowTypeInserting={setArrowTypeInserting}
+                    isArrowsMenuOpen={isArrowsMenuOpen}
+                    setIsArrowsMenuOpen={setIsArrowsMenuOpen}
                     isPenMenuOpen={isPenMenuOpen}
                     setIsPenMenuOpen={setIsPenMenuOpen}
                     isShapesMenuOpen={isShapesMenuOpen}
                     setIsShapesMenuOpen={setIsShapesMenuOpen}
                     isPenEraserSwitcherOpen={isPenEraserSwitcherOpen}
                     setIsPenEraserSwitcherOpen={setIsPenEraserSwitcherOpen}
-                    setMagicPathAssist={setMagicPathAssist}
-                    magicPathAssist={magicPathAssist}
                     isPlacingLayer={currentPreviewLayer !== null}
                 />
             )}

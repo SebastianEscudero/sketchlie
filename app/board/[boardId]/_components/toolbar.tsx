@@ -1,42 +1,31 @@
 import {
-  ArrowBigDown,
-  ArrowBigLeft,
-  ArrowBigRight,
-  ArrowBigUp,
-  Circle,
-  Diamond,
   Eraser,
   Hand,
-  Hexagon,
   Highlighter,
   Image,
-  MessageSquare,
   MousePointer2,
   MoveUpRight,
   Pen,
+  Redo,
   Redo2,
   Shapes,
-  Square,
-  Star,
   StickyNote,
-  Triangle,
+  TrendingUp,
   Type,
   Undo2,
-  WandSparkles,
 } from "lucide-react";
 
-import { CanvasMode, CanvasState, Color, LayerType } from "@/types/canvas";
-
+import { ArrowType, CanvasMode, CanvasState, Color, LayerType } from "@/types/canvas";
 import { ToolButton } from "./tool-button";
-
 import { ImageButton } from "./image-button";
 import { Dispatch, SetStateAction, useEffect } from "react";
-import { ColorButton } from "../selection-tools/color-picker";
-import { Slider } from "@/components/ui/slider";
 import { LaserIcon } from "@/public/custom-cursors/laser";
-import { LineIcon } from "@/public/custom-cursors/line";
 import { Button } from "@/components/ui/button";
 import { Hint } from "@/components/hint";
+import { PenMenu } from "./pen-menu";
+import { ShapesMenu } from "./shapes-menu";
+import { PenEraserMenu } from "./pen-eraser-laser-menu";
+import { ArrowMenu } from "./arrow-menu";
 
 interface ToolbarProps {
   isUploading: boolean;
@@ -52,6 +41,10 @@ interface ToolbarProps {
   redo: () => void;
   canUndo: boolean;
   canRedo: boolean;
+  arrowTypeInserting: ArrowType;
+  setArrowTypeInserting: (type: ArrowType) => void;
+  isArrowsMenuOpen: boolean;
+  setIsArrowsMenuOpen: Dispatch<SetStateAction<boolean>>;
   isPenMenuOpen: boolean;
   setIsPenMenuOpen: Dispatch<SetStateAction<boolean>>;
   isShapesMenuOpen: boolean;
@@ -59,8 +52,6 @@ interface ToolbarProps {
   isPenEraserSwitcherOpen: boolean;
   setIsPenEraserSwitcherOpen: Dispatch<SetStateAction<boolean>>;
   pathColor: Color;
-  magicPathAssist: boolean;
-  setMagicPathAssist: Dispatch<SetStateAction<boolean>>;
   isPlacingLayer: boolean;
 }
 
@@ -78,6 +69,10 @@ export const Toolbar = ({
   redo,
   canUndo,
   canRedo,
+  arrowTypeInserting,
+  setArrowTypeInserting,
+  isArrowsMenuOpen,
+  setIsArrowsMenuOpen,
   isPenMenuOpen,
   setIsPenMenuOpen,
   isShapesMenuOpen,
@@ -86,8 +81,6 @@ export const Toolbar = ({
   setIsPenEraserSwitcherOpen,
   pathColor,
   isPlacingLayer,
-  magicPathAssist,
-  setMagicPathAssist,
 }: ToolbarProps) => {
   const onPathColorChange = (color: any) => {
     setPathColor(color);
@@ -110,6 +103,16 @@ export const Toolbar = ({
         setIsShapesMenuOpen(false);
       }
     }
+
+    if (canvasState.mode !== CanvasMode.Inserting || isPlacingLayer) {
+      setIsArrowsMenuOpen(false);
+    } else {
+      if (canvasState.layerType !== LayerType.Arrow) {
+        setIsArrowsMenuOpen(false
+        );
+      }
+    }
+
   }, [canvasState, isPlacingLayer]);
 
 
@@ -199,18 +202,21 @@ export const Toolbar = ({
             canvasState.mode === CanvasMode.Inserting && canvasState.layerType !== LayerType.Image && canvasState.layerType !== LayerType.Text && canvasState.layerType !== LayerType.Arrow && canvasState.layerType !== LayerType.Note
           }
         />
-        <ToolButton
-          label="Arrow"
-          icon={MoveUpRight}
-          onClick={() => setCanvasState({
-            mode: CanvasMode.Inserting,
-            layerType: LayerType.Arrow,
-          })}
-          isActive={
-            canvasState.mode === CanvasMode.Inserting &&
-            canvasState.layerType === LayerType.Arrow
-          }
-        />
+<ToolButton
+  label={!isArrowsMenuOpen ? (arrowTypeInserting === ArrowType.Straight ? "Straight" : arrowTypeInserting === ArrowType.Curved ? "Curved" : "Diagram") : undefined}
+  icon={arrowTypeInserting === ArrowType.Straight ? MoveUpRight : arrowTypeInserting === ArrowType.Curved ? Redo : TrendingUp}
+  onClick={() => {
+    setCanvasState({
+      mode: CanvasMode.Inserting,
+      layerType: LayerType.Arrow,
+    });
+    setIsArrowsMenuOpen(!isArrowsMenuOpen);
+  }}
+  isActive={
+    canvasState.mode === CanvasMode.Inserting &&
+    canvasState.layerType === LayerType.Arrow
+  }
+/>
         <ToolButton
           label="Note"
           icon={StickyNote}
@@ -266,218 +272,34 @@ export const Toolbar = ({
       </div>
 
       {isPenMenuOpen && (canvasState.mode === CanvasMode.Highlighter || canvasState.mode === CanvasMode.Pencil) && isPenEraserSwitcherOpen &&
-        <div className="p-3 pt-5 pb-2 absolute left-8 bottom-32 bg-white dark:bg-[#383838] rounded-lg shadow-custom-1 w-[165px] flex flex-col items-center cursor-default">
-          <Slider
-            defaultValue={[pathStrokeSize]}
-            min={1}
-            max={8}
-            step={1}
-            className='bg-white dark:bg-[#383838] w-[90%] cursor-pointer'
-            onValueChange={handleStrokeSizeChange}
-          />
-          <div className="grid grid-cols-4 gap-x-1 pt-2" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-            <ColorButton color={{ r: 0, g: 0, b: 0, a: 0 }} onClick={onPathColorChange} selectedColor={pathColor} />
-            <ColorButton color={{ r: 255, g: 255, b: 255, a: 1 }} onClick={onPathColorChange} selectedColor={pathColor} />
-            <ColorButton color={{ r: 29, g: 29, b: 29, a: 1 }} onClick={onPathColorChange} selectedColor={pathColor} />
-            <ColorButton color={{ r: 159, g: 168, b: 178, a: 1 }} onClick={onPathColorChange} selectedColor={pathColor} />
-            <ColorButton color={{ r: 255, g: 240, b: 0, a: 1 }} onClick={onPathColorChange} selectedColor={pathColor} />
-            <ColorButton color={{ r: 252, g: 225, b: 156, a: 1 }} onClick={onPathColorChange} selectedColor={pathColor} />
-            <ColorButton color={{ r: 225, g: 133, b: 244, a: 1 }} onClick={onPathColorChange} selectedColor={pathColor} />
-            <ColorButton color={{ r: 174, g: 62, b: 201, a: 1 }} onClick={onPathColorChange} selectedColor={pathColor} />
-            <ColorButton color={{ r: 68, g: 101, b: 233, a: 1 }} onClick={onPathColorChange} selectedColor={pathColor} />
-            <ColorButton color={{ r: 75, g: 161, b: 241, a: 1 }} onClick={onPathColorChange} selectedColor={pathColor} />
-            <ColorButton color={{ r: 255, g: 165, b: 0, a: 1 }} onClick={onPathColorChange} selectedColor={pathColor} />
-            <ColorButton color={{ a: 1, b: 42, g: 142, r: 252 }} onClick={onPathColorChange} selectedColor={pathColor} />
-            <ColorButton color={{ r: 7, g: 147, b: 104, a: 1 }} onClick={onPathColorChange} selectedColor={pathColor} />
-            <ColorButton color={{ a: 1, b: 99, g: 202, r: 68 }} onClick={onPathColorChange} selectedColor={pathColor} />
-            <ColorButton color={{ r: 248, g: 119, b: 119, a: 1 }} onClick={onPathColorChange} selectedColor={pathColor} />
-            <ColorButton color={{ r: 224, g: 49, b: 49, a: 1 }} onClick={onPathColorChange} selectedColor={pathColor} />
-          </div>
-        </div>
+        <PenMenu
+          pathColor={pathColor}
+          pathStrokeSize={pathStrokeSize}
+          onPathColorChange={onPathColorChange}
+          handleStrokeSizeChange={handleStrokeSizeChange}
+        />
       }
 
       {isShapesMenuOpen && canvasState.mode === CanvasMode.Inserting && canvasState.layerType !== LayerType.Image && canvasState.layerType !== LayerType.Text && canvasState.layerType !== LayerType.Arrow && canvasState.layerType !== LayerType.Note &&
-        <div className="absolute left-[60px] bottom-16 p-2 bg-white dark:bg-[#383838] rounded-lg shadow-custom-1 grid grid-cols-4 grid-rows-3 gap-2 h-[144px] w-[160px] sm:w-[192px] items-center cursor-default">
-          <ToolButton
-            icon={Square}
-            onClick={() => setCanvasState({
-              mode: CanvasMode.Inserting,
-              layerType: LayerType.Rectangle,
-            })}
-            isActive={
-              canvasState.mode === CanvasMode.Inserting &&
-              canvasState.layerType === LayerType.Rectangle
-            }
-          />
-          <ToolButton
-            icon={Circle}
-            onClick={() => setCanvasState({
-              mode: CanvasMode.Inserting,
-              layerType: LayerType.Ellipse,
-            })}
-            isActive={
-              canvasState.mode === CanvasMode.Inserting &&
-              canvasState.layerType === LayerType.Ellipse
-            }
-          />
-          <ToolButton
-            icon={Diamond}
-            onClick={() => setCanvasState({
-              mode: CanvasMode.Inserting,
-              layerType: LayerType.Rhombus,
-            })}
-            isActive={
-              canvasState.mode === CanvasMode.Inserting &&
-              canvasState.layerType === LayerType.Rhombus
-            }
-          />
-          <ToolButton
-            icon={Triangle}
-            onClick={() => setCanvasState({
-              mode: CanvasMode.Inserting,
-              layerType: LayerType.Triangle,
-            })}
-            isActive={
-              canvasState.mode === CanvasMode.Inserting &&
-              canvasState.layerType === LayerType.Triangle
-            }
-          />
-          <ToolButton
-            icon={Star}
-            onClick={() => setCanvasState({
-              mode: CanvasMode.Inserting,
-              layerType: LayerType.Star,
-            })}
-            isActive={
-              canvasState.mode === CanvasMode.Inserting &&
-              canvasState.layerType === LayerType.Star
-            }
-          />
-          <ToolButton
-            icon={Hexagon}
-            onClick={() => setCanvasState({
-              mode: CanvasMode.Inserting,
-              layerType: LayerType.Hexagon,
-            })}
-            isActive={
-              canvasState.mode === CanvasMode.Inserting &&
-              canvasState.layerType === LayerType.Hexagon
-            }
-          />
-          <ToolButton
-            icon={LineIcon}
-            onClick={() => setCanvasState({
-              mode: CanvasMode.Inserting,
-              layerType: LayerType.Line,
-            })}
-            isActive={
-              canvasState.mode === CanvasMode.Inserting &&
-              canvasState.layerType === LayerType.Line
-            }
-          />
-          <ToolButton
-            icon={MessageSquare}
-            onClick={() => setCanvasState({
-              mode: CanvasMode.Inserting,
-              layerType: LayerType.CommentBubble,
-            })}
-            isActive={
-              canvasState.mode === CanvasMode.Inserting &&
-              canvasState.layerType === LayerType.CommentBubble
-            }
-          />
-          <ToolButton
-            icon={ArrowBigLeft}
-            onClick={() => setCanvasState({
-              mode: CanvasMode.Inserting,
-              layerType: LayerType.BigArrowLeft,
-            })}
-            isActive={
-              canvasState.mode === CanvasMode.Inserting &&
-              canvasState.layerType === LayerType.BigArrowLeft
-            }
-          />
-          <ToolButton
-            icon={ArrowBigUp}
-            onClick={() => setCanvasState({
-              mode: CanvasMode.Inserting,
-              layerType: LayerType.BigArrowUp,
-            })}
-            isActive={
-              canvasState.mode === CanvasMode.Inserting &&
-              canvasState.layerType === LayerType.BigArrowUp
-            }
-          />
-          <ToolButton
-            icon={ArrowBigDown}
-            onClick={() => setCanvasState({
-              mode: CanvasMode.Inserting,
-              layerType: LayerType.BigArrowDown,
-            })}
-            isActive={
-              canvasState.mode === CanvasMode.Inserting &&
-              canvasState.layerType === LayerType.BigArrowDown
-            }
-          />
-          <ToolButton
-            icon={ArrowBigRight}
-            onClick={() => setCanvasState({
-              mode: CanvasMode.Inserting,
-              layerType: LayerType.BigArrowRight,
-            })}
-            isActive={
-              canvasState.mode === CanvasMode.Inserting &&
-              canvasState.layerType === LayerType.BigArrowRight
-            }
-          />
-        </div>
+        <ShapesMenu
+          setCanvasState={setCanvasState}
+          canvasState={canvasState}
+        />
       }
       {isPenEraserSwitcherOpen && (canvasState.mode === CanvasMode.Pencil || canvasState.mode === CanvasMode.Eraser || canvasState.mode === CanvasMode.Laser || canvasState.mode === CanvasMode.Highlighter) &&
-        <div className="absolute left-5 bottom-16 p-2 bg-white dark:bg-[#383838] rounded-lg shadow-custom-1 flex flex-row space-x-1 items-center cursor-default">
-          {/* <Hint label="Magic Drawing" side="right" sideOffset={14}>
-            <Button className="h-8 w-8 xs:h-10 xs:w-10 p-2" variant={magicPathAssist ? "magicAssistActive" : "magicAssist"} onClick={() => setMagicPathAssist(!magicPathAssist)}>
-              <WandSparkles className="w-5 h-5"/>
-            </Button>
-          </Hint> */}
-          <ToolButton
-            icon={Pen}
-            onClick={() => {
-              setCanvasState({
-                mode: CanvasMode.Pencil,
-              });
-              setIsPenMenuOpen(!isPenMenuOpen);
-            }}
-            isActive={canvasState.mode === CanvasMode.Pencil}
-          />
-          <ToolButton
-            icon={Eraser}
-            onClick={() => {
-              setCanvasState({
-                mode: CanvasMode.Eraser,
-              });
-            }}
-            isActive={canvasState.mode === CanvasMode.Eraser}
-          />
-          <ToolButton
-            icon={Highlighter}
-            onClick={() => {
-              setCanvasState({
-                mode: CanvasMode.Highlighter,
-              });
-              setIsPenMenuOpen(!isPenMenuOpen);
-            }}
-            isActive={canvasState.mode === CanvasMode.Highlighter}
-          />
-          <ToolButton
-            icon={LaserIcon}
-            onClick={() => {
-              setCanvasState({
-                mode: CanvasMode.Laser,
-              });
-            }}
-            isActive={canvasState.mode === CanvasMode.Laser}
-          />
-        </div>
+        <PenEraserMenu
+          setCanvasState={setCanvasState}
+          canvasState={canvasState}
+          setIsPenMenuOpen={setIsPenMenuOpen}
+          isPenMenuOpen={isPenMenuOpen}
+        />
+      }
+      {isArrowsMenuOpen && canvasState.mode === CanvasMode.Inserting && canvasState.layerType === LayerType.Arrow && 
+        <ArrowMenu
+          setCanvasState={setCanvasState}
+          arrowTypeInserting={arrowTypeInserting}
+          setArrowTypeInserting={setArrowTypeInserting}
+        />
       }
     </div>
   );
