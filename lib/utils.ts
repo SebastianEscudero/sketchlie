@@ -765,7 +765,6 @@ export function getContrastingTextColor(color: Color) {
   }
 
   if (color.r === 29 && color.g === 29 && color.b === 29) {
-    console.log('color', color)
     if (document.documentElement.classList.contains("dark")) {
       return "black";
     }
@@ -1162,7 +1161,7 @@ export async function bodyToString(body: Blob | ReadableStream | Readable): Prom
     return new Promise((resolve, reject) => {
       const chunks: Buffer[] = [];
       body.on('data', (chunk) => chunks.push(chunk));
-      body.on('end', () => resolve(Buffer.concat(chunks).toString('utf-8')));
+      body.on('end', () => resolve(Buffer.concat(chunks as any).toString('utf-8')));
       body.on('error', reject);
     });
   }
@@ -1328,6 +1327,8 @@ export function updateArrowPosition(arrowLayer: ArrowLayer, connectedLayerId: st
   let start = { x: arrowLayer.x, y: arrowLayer.y };
   let end = { x: arrowLayer.x + arrowLayer.width, y: arrowLayer.y + arrowLayer.height };
   let center = arrowLayer.center || { x: (start.x + end.x) / 2, y: (start.y + end.y) / 2 };
+  const startConnectedLayer = liveLayers[startConnectedLayerId];
+  const endConnectedLayer = liveLayers[endConnectedLayerId];
 
   if (connectedLayerId === startConnectedLayerId) {
     const startPoint = getClosestEndPoint(newLayer, center, arrowLayer.arrowType || ArrowType.Straight, arrowLayer);
@@ -1337,59 +1338,80 @@ export function updateArrowPosition(arrowLayer: ArrowLayer, connectedLayerId: st
     updatedArrow.height = end.y - startPoint.y;
     start = startPoint;
 
-    if (endConnectedLayerId && liveLayers[endConnectedLayerId]) {
+    if (endConnectedLayerId && endConnectedLayer) {
       if (arrowLayer.orientation === ArrowOrientation.Horizontal) {
-        if (start.x >= liveLayers[endConnectedLayerId].x && start.x <= liveLayers[endConnectedLayerId].x + liveLayers[endConnectedLayerId].width) {
+        const intersects = (
+          startConnectedLayer.x < endConnectedLayer.x + endConnectedLayer.width &&
+          startConnectedLayer.x + startConnectedLayer.width > endConnectedLayer.x
+        );
+  
+        if (intersects) {
           arrowLayer.orientation = ArrowOrientation.Vertical;
         }
       } else if (arrowLayer.orientation === ArrowOrientation.Vertical) {
-        if (start.y >= liveLayers[endConnectedLayerId].y && start.y <= liveLayers[endConnectedLayerId].y + liveLayers[endConnectedLayerId].height) {
-          arrowLayer.orientation = ArrowOrientation.Horizontal;
-        }
+        const intersects = (
+          startConnectedLayer.y < endConnectedLayer.y + endConnectedLayer.height &&
+          startConnectedLayer.y + startConnectedLayer.height > endConnectedLayer.y
+        );
+
+        if (intersects) {
+          arrowLayer.orientation = ArrowOrientation.Horizontal
+        };
       }
 
       if ((arrowLayer.arrowType !== ArrowType.Diagram && arrowLayer.centerEdited !== true) || arrowLayer.arrowType === ArrowType.Diagram) {
-        const endPoint = getClosestEndPoint(liveLayers[endConnectedLayerId], center, arrowLayer.arrowType || ArrowType.Straight, arrowLayer);
+        const endPoint = getClosestEndPoint(endConnectedLayer, center, arrowLayer.arrowType || ArrowType.Straight, arrowLayer);
         updatedArrow.width = endPoint.x - updatedArrow.x;
         updatedArrow.height = endPoint.y - updatedArrow.y;
         end = endPoint;
       }
     } else {
       if (arrowLayer.orientation === ArrowOrientation.Horizontal) {
-        if (end.x >= liveLayers[startConnectedLayerId].x && end.x <= liveLayers[startConnectedLayerId].x + liveLayers[startConnectedLayerId].width) {
+        if (end.x >= startConnectedLayer.x && end.x <= startConnectedLayer.x + startConnectedLayer.width) {
           arrowLayer.orientation = ArrowOrientation.Vertical;
         }
       } else if (arrowLayer.orientation === ArrowOrientation.Vertical) {
-        if (end.y >= liveLayers[startConnectedLayerId].y && end.y <= liveLayers[startConnectedLayerId].y + liveLayers[startConnectedLayerId].height) {
+        if (end.y >= startConnectedLayer.y && end.y <= startConnectedLayer.y + startConnectedLayer.height) {
           arrowLayer.orientation = ArrowOrientation.Horizontal;
         }
       }
     }
   } else if (connectedLayerId === endConnectedLayerId) {
-    if (startConnectedLayerId && liveLayers[startConnectedLayerId]) {
+    if (startConnectedLayerId && startConnectedLayer) {
       if (arrowLayer.orientation === ArrowOrientation.Horizontal) {
-        if (end.x >= liveLayers[startConnectedLayerId].x && end.x <= liveLayers[startConnectedLayerId].x + liveLayers[startConnectedLayerId].width) {
+        const intersects = (
+          endConnectedLayer.x < startConnectedLayer.x + startConnectedLayer.width &&
+          endConnectedLayer.x + endConnectedLayer.width > startConnectedLayer.x
+        );
+
+        if (intersects) {
           arrowLayer.orientation = ArrowOrientation.Vertical;
         }
+
       } else if (arrowLayer.orientation === ArrowOrientation.Vertical) {
-        if (end.y >= liveLayers[startConnectedLayerId].y && end.y <= liveLayers[startConnectedLayerId].y + liveLayers[startConnectedLayerId].height) {
+        const intersects = (
+          endConnectedLayer.y < startConnectedLayer.y + startConnectedLayer.height &&
+          endConnectedLayer.y + endConnectedLayer.height > startConnectedLayer.y
+        )
+
+        if (intersects) {
           arrowLayer.orientation = ArrowOrientation.Horizontal;
         }
       }
 
       if ((arrowLayer.arrowType !== ArrowType.Diagram && arrowLayer.centerEdited !== true) || arrowLayer.arrowType === ArrowType.Diagram) {
-        const startPoint = getClosestEndPoint(liveLayers[startConnectedLayerId], center, arrowLayer.arrowType || ArrowType.Straight, arrowLayer);
+        const startPoint = getClosestEndPoint(startConnectedLayer, center, arrowLayer.arrowType || ArrowType.Straight, arrowLayer);
         updatedArrow.x = startPoint.x;
         updatedArrow.y = startPoint.y;
         start = startPoint;
       }
     } else {
       if (arrowLayer.orientation === ArrowOrientation.Horizontal) {
-        if (start.x >= liveLayers[endConnectedLayerId].x && start.x <= liveLayers[endConnectedLayerId].x + liveLayers[endConnectedLayerId].width) {
+        if (start.x >= endConnectedLayer.x && start.x <= endConnectedLayer.x + endConnectedLayer.width) {
           arrowLayer.orientation = ArrowOrientation.Vertical;
         }
       } else if (arrowLayer.orientation === ArrowOrientation.Vertical) {
-        if (start.y >= liveLayers[endConnectedLayerId].y && start.y <= liveLayers[endConnectedLayerId].y + liveLayers[endConnectedLayerId].height) {
+        if (start.y >= endConnectedLayer.y && start.y <= endConnectedLayer.y + endConnectedLayer.height) {
           arrowLayer.orientation = ArrowOrientation.Horizontal;
         }
       }
