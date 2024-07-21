@@ -1338,6 +1338,16 @@ export function updateArrowPosition(arrowLayer: ArrowLayer, connectedLayerId: st
         updatedArrow.height = endPoint.y - updatedArrow.y;
         end = endPoint;
       }
+    } else {
+      if (arrowLayer.orientation === ArrowOrientation.Horizontal) {
+        if (end.x >= liveLayers[startConnectedLayerId].x && end.x <= liveLayers[startConnectedLayerId].x + liveLayers[startConnectedLayerId].width) {
+          arrowLayer.orientation = ArrowOrientation.Vertical;
+        }
+      } else if (arrowLayer.orientation === ArrowOrientation.Vertical) {
+        if (end.y >= liveLayers[startConnectedLayerId].y && end.y <= liveLayers[startConnectedLayerId].y + liveLayers[startConnectedLayerId].height) {
+          arrowLayer.orientation = ArrowOrientation.Horizontal;
+        }
+      }
     }
   } else if (connectedLayerId === endConnectedLayerId) {
     if (startConnectedLayerId && liveLayers[startConnectedLayerId]) {
@@ -1356,6 +1366,16 @@ export function updateArrowPosition(arrowLayer: ArrowLayer, connectedLayerId: st
         updatedArrow.x = startPoint.x;
         updatedArrow.y = startPoint.y;
         start = startPoint;
+      }
+    } else {
+      if (arrowLayer.orientation === ArrowOrientation.Horizontal) {
+        if (start.x >= liveLayers[endConnectedLayerId].x && start.x <= liveLayers[endConnectedLayerId].x + liveLayers[endConnectedLayerId].width) {
+          arrowLayer.orientation = ArrowOrientation.Vertical;
+        }
+      } else if (arrowLayer.orientation === ArrowOrientation.Vertical) {
+        if (start.y >= liveLayers[endConnectedLayerId].y && start.y <= liveLayers[endConnectedLayerId].y + liveLayers[endConnectedLayerId].height) {
+          arrowLayer.orientation = ArrowOrientation.Horizontal;
+        }
       }
     }
 
