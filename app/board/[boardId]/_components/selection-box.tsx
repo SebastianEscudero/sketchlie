@@ -17,6 +17,7 @@ interface SelectionBoxProps {
   mousePosition: Point;
   setCanvasState: (state: any) => void;
   setStartPanPoint: (point: Point) => void;
+  setArrowTypeInserting: (arrowType: ArrowType) => void;
 };
 
 const HANDLE_SIZE = 8;
@@ -33,6 +34,7 @@ export const SelectionBox = memo(({
   mousePosition,
   setCanvasState,
   setStartPanPoint,
+  setArrowTypeInserting,
 }: SelectionBoxProps) => {
 
   const handleRightClick = (event: React.MouseEvent) => {
@@ -133,6 +135,7 @@ export const SelectionBox = memo(({
   const offset = 12;
 
   const arrowPreviewHandle = (e: any, startPoint: Point, endPoint: Point, orientation: ArrowOrientation) => {
+    setArrowTypeInserting(ArrowType.Diagram)
     e.stopPropagation();
 
     let start = startPoint;

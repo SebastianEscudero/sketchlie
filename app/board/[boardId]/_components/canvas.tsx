@@ -1833,18 +1833,6 @@ export const Canvas = ({
                         {liveLayerIds.map((layerId: string) => {
                             const isFocused = selectedLayersRef.current.length === 1 && selectedLayersRef.current[0] === layerId && !justChanged;
                             let layer = liveLayers[layerId];
-                            let startConnectedLayer;
-                            let endConnectedLayer;
-
-                            if (layer && layer.type === LayerType.Arrow) {
-                                if (layer.startConnectedLayerId) {
-                                    startConnectedLayer = liveLayers[layer.startConnectedLayerId]
-                                }
-
-                                if (layer.endConnectedLayerId) {
-                                    endConnectedLayer = liveLayers[layer.endConnectedLayerId]
-                                }
-                            }
                             return (
                                 <LayerPreview
                                     selectionColor={layerIdsToColorSelection[layerId]}
@@ -1875,6 +1863,7 @@ export const Canvas = ({
                                 mousePosition={mousePosition}
                                 setCanvasState={setCanvasState}
                                 setStartPanPoint={setStartPanPoint}
+                                setArrowTypeInserting={setArrowTypeInserting}
                             />
                         )}
                         {currentPreviewLayer && (
