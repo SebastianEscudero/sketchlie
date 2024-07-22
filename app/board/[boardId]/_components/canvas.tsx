@@ -1711,7 +1711,9 @@ export const Canvas = ({
 
         const newVisibleLayers = liveLayerIds.filter((layerId: string) => {
             const layer = liveLayers[layerId];
-            return isLayerVisible(layer, visibleRect);
+            if (layer) {
+                return isLayerVisible(layer, visibleRect);  
+            }
         });
 
         setVisibleLayers(newVisibleLayers);
