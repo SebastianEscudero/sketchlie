@@ -23,6 +23,7 @@ import {
     getClosestEndPoint,
     checkIfTextarea,
     findIntersectingLayersWithPath,
+    isLayerVisible,
 } from "@/lib/utils";
 
 import {
@@ -1692,6 +1693,33 @@ export const Canvas = ({
         }
     }, [canvasState.mode, canvasState, rightClickPanning]);
 
+    const svgRef = useRef(null);
+    const [visibleLayers, setVisibleLayers] = useState<string[]>([]);
+
+    useEffect(() => {
+        const updateVisibleLayers = () => {
+        if (!svgRef.current) return;
+
+        const svg = svgRef.current as SVGSVGElement;
+        const viewBox = svg.viewBox.baseVal;
+        const visibleRect = {
+            x: -camera.x / zoom,
+            y: -camera.y / zoom,
+            width: viewBox.width / zoom,
+            height: viewBox.height / zoom
+        };
+
+        const newVisibleLayers = liveLayerIds.filter((layerId: string) => {
+            const layer = liveLayers[layerId];
+            return isLayerVisible(layer, visibleRect);
+        });
+
+        setVisibleLayers(newVisibleLayers);
+        };
+
+        updateVisibleLayers();
+    }, [liveLayerIds, liveLayers, camera, zoom]);
+
     return (
         <main
             className={`bg-[#F9FAFB] dark:bg-[#2C2C2C] fixed h-full w-full touch-none overscroll-none ${isDraggingOverCanvas && 'bg-neutral-200 border-2 border-dashed border-custom-blue'}`}
@@ -1811,7 +1839,9 @@ export const Canvas = ({
             )} */}
             <div id="canvas">
                 <svg
+                    ref={svgRef}
                     className="h-[100vh] w-[100vw]"
+                    viewBox={`0 0 ${window.innerWidth} ${window.innerHeight}`}
                     onWheel={onWheel}
                     onDragOver={onDragOver}
                     onDrop={onDrop}
@@ -1830,7 +1860,7 @@ export const Canvas = ({
                             transformOrigin: 'top left',
                         }}
                     >
-                        {liveLayerIds.map((layerId: string) => {
+                        {visibleLayers.map((layerId: string) => {
                             const isFocused = selectedLayersRef.current.length === 1 && selectedLayersRef.current[0] === layerId && !justChanged;
                             let layer = liveLayers[layerId];
                             return (
