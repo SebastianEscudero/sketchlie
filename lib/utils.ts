@@ -1508,3 +1508,15 @@ export const getPrice = async (price: any, currency: any) => {
     return price * 0.044
   }
 };
+
+export const isLayerVisible = (layer: Layer, visibleRect: any) => {
+  // Implement visibility check based on layer bounds and visible rectangle
+  // Return true if visible, false otherwise
+  // This is a simplified example and should be adapted to your layer structure
+  return (
+    layer.x < visibleRect.x + visibleRect.width &&
+    layer.x + layer.width > visibleRect.x &&
+    layer.y < visibleRect.y + visibleRect.height &&
+    layer.y + layer.height > visibleRect.y
+  );
+};
