@@ -24,6 +24,7 @@ import {
     checkIfTextarea,
     findIntersectingLayersWithPath,
     isLayerVisible,
+    applyStraightnessAssist,
 } from "@/lib/utils";
 
 import {
@@ -958,6 +959,7 @@ export const Canvas = ({
                     // Assigning the filtered results back
                     const intersectingStartLayer = filteredStartLayers.pop();
                     const intersectingEndLayer = filteredEndLayers.pop();
+                    const STRAIGHTNESS_THRESHOLD = 6/zoom;
 
                     let startConnectedLayerId: any = intersectingStartLayer;
                     let endConnectedLayerId: any = intersectingEndLayer;
@@ -975,10 +977,11 @@ export const Canvas = ({
                                 if (end.y >= liveLayers[startConnectedLayerId].y && end.y <= liveLayers[startConnectedLayerId].y + liveLayers[startConnectedLayerId].height) {
                                   (currentPreviewLayer as ArrowLayer).orientation = ArrowOrientation.Horizontal;
                                 }
-                              }
+                            }
 
                             const startConnectedLayer = liveLayers[startConnectedLayerId];
                             start = getClosestEndPoint(startConnectedLayer, point, (currentPreviewLayer as ArrowLayer)?.arrowType || ArrowType.Straight, (currentPreviewLayer as ArrowLayer))
+                            end = applyStraightnessAssist(point, start, STRAIGHTNESS_THRESHOLD);
                         }
 
                         if (intersectingEndLayer) {
@@ -1735,7 +1738,7 @@ export const Canvas = ({
 
     return (
         <main
-            className={`bg-[#F9FAFB] dark:bg-[#2C2C2C] fixed h-full w-full touch-none overscroll-none ${isDraggingOverCanvas && 'bg-neutral-200 border-2 border-dashed border-custom-blue'}`}
+            className={`bg-[#F9FAFB] dark:bg-[#101011] fixed h-full w-full touch-none overscroll-none ${isDraggingOverCanvas && 'bg-neutral-200 border-2 border-dashed border-custom-blue'}`}
             style={{
                 backgroundImage: (background === 'grid') ? `
                 linear-gradient(0deg, ${document.documentElement.classList.contains("dark") ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'} 1px, transparent 1px),
