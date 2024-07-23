@@ -376,7 +376,7 @@ export const Canvas = ({
                             if (arrowLayer) {
                                 const startConnectedLayerId = arrowLayer.startConnectedLayerId || "";
                                 const endConnectedLayerId = arrowLayer.endConnectedLayerId || "";
-                                const updatedArrow = updateArrowPosition(arrowLayer, id, newLayer, startConnectedLayerId, endConnectedLayerId, liveLayers);
+                                const updatedArrow = updateArrowPosition(arrowLayer, id, newLayer, startConnectedLayerId, endConnectedLayerId, liveLayers, zoom);
                                 updatedLayers.push(updatedArrow);
                                 newLayers[arrowId] = updatedArrow;
                                 updatedLayerIds.push(arrowId);
@@ -1580,6 +1580,16 @@ export const Canvas = ({
                     if ((e.ctrlKey || e.metaKey)) {
                         e.preventDefault();
                         selectedLayersRef.current = liveLayerIds;
+
+                        if (socket) {
+                            const newPresence: Presence = {
+                                ...myPresence,
+                                selection: liveLayerIds
+                            };
+                            socket.emit('presence', newPresence, User.userId);
+                            setMyPresence(newPresence);
+                        }
+
                         setForceSelectionBoxRender(!forceSelectionBoxRender);
                     } else {
                         setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Arrow });
@@ -1619,7 +1629,7 @@ export const Canvas = ({
         return () => {
             document.removeEventListener("keydown", onKeyDown);
         }
-    }, [copySelectedLayers, pasteCopiedLayers, camera, zoom, liveLayers, selectedLayersRef.current, copiedLayerIds, liveLayerIds]);
+    }, [copySelectedLayers, pasteCopiedLayers, camera, zoom, liveLayers, selectedLayersRef.current, copiedLayerIds, liveLayerIds, myPresence, socket]);
 
 
     useEffect(() => { // for on layer pointer down to update refts
