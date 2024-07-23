@@ -1510,13 +1510,17 @@ export const getPrice = async (price: any, currency: any) => {
 };
 
 export const isLayerVisible = (layer: Layer, visibleRect: any) => {
-  // Implement visibility check based on layer bounds and visible rectangle
-  // Return true if visible, false otherwise
-  // This is a simplified example and should be adapted to your layer structure
+  // Calculate the effective bounds of the layer, considering negative width or height
+  const effectiveX = layer.width < 0 ? layer.x + layer.width : layer.x;
+  const effectiveY = layer.height < 0 ? layer.y + layer.height : layer.y;
+  const effectiveWidth = Math.abs(layer.width);
+  const effectiveHeight = Math.abs(layer.height);
+
+  // Check visibility based on effective bounds
   return (
-    layer.x < visibleRect.x + visibleRect.width &&
-    layer.x + layer.width > visibleRect.x &&
-    layer.y < visibleRect.y + visibleRect.height &&
-    layer.y + layer.height > visibleRect.y
+    effectiveX < visibleRect.x + visibleRect.width &&
+    effectiveX + effectiveWidth > visibleRect.x &&
+    effectiveY < visibleRect.y + visibleRect.height &&
+    effectiveY + effectiveHeight > visibleRect.y
   );
 };
