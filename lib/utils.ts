@@ -328,7 +328,6 @@ export function resizeArrowBounds(
   liveLayers: any,
   zoom: number
 ): any {
-
   const result = {
     x: bounds.x,
     y: bounds.y,
@@ -341,8 +340,10 @@ export function resizeArrowBounds(
 
   let end = { x: bounds.x + bounds.width, y: bounds.y + bounds.height };
   let center = { x: bounds.center.x, y: bounds.center.y };
+  const STRAIGHTNESS_THRESHOLD = 6 / zoom;
 
   if (handle === ArrowHandle.start) {
+    point = applyStraightnessAssist(point, end, STRAIGHTNESS_THRESHOLD);
     result.x = point.x;
     result.y = point.y;
     result.width = end.x - point.x;
@@ -350,7 +351,8 @@ export function resizeArrowBounds(
 
     if (newLayer.startConnectedLayerId) {
       const startConnectedLayer = liveLayers[newLayer.startConnectedLayerId];
-      const startPoint = getClosestPointOnBorder(startConnectedLayer, point, center, zoom, newLayer.arrowType, newLayer);
+      let startPoint = getClosestPointOnBorder(startConnectedLayer, point, center, zoom, newLayer.arrowType, newLayer);
+      startPoint = applyStraightnessAssist(startPoint, end, STRAIGHTNESS_THRESHOLD);
       result.x = startPoint.x;
       result.y = startPoint.y;
       result.width = end.x - startPoint.x;
@@ -369,12 +371,14 @@ export function resizeArrowBounds(
         }
       }
 
-      const endPoint = getClosestEndPoint(liveLayers[newLayer.endConnectedLayerId], center, newLayer.arrowType, newLayer);
+      let endPoint = getClosestEndPoint(liveLayers[newLayer.endConnectedLayerId], center, newLayer.arrowType, newLayer);
+      endPoint = applyStraightnessAssist(endPoint, { x: result.x, y: result.y }, STRAIGHTNESS_THRESHOLD);
       result.width = endPoint.x - result.x;
       result.height = endPoint.y - result.y;
     }
 
   } else if (handle === ArrowHandle.end) {
+    point = applyStraightnessAssist(point, { x: bounds.x, y: bounds.y }, STRAIGHTNESS_THRESHOLD);
     result.width = point.x - bounds.x;
     result.height = point.y - bounds.y;
 
@@ -389,7 +393,8 @@ export function resizeArrowBounds(
         }
       }
 
-      const startPoint = getClosestEndPoint(liveLayers[newLayer.startConnectedLayerId], center, newLayer.arrowType, newLayer);
+      let startPoint = getClosestEndPoint(liveLayers[newLayer.startConnectedLayerId], center, newLayer.arrowType, newLayer);
+      startPoint = applyStraightnessAssist(startPoint, point, STRAIGHTNESS_THRESHOLD);
       result.x = startPoint.x;
       result.y = startPoint.y;
       result.width = point.x - startPoint.x;
@@ -398,7 +403,8 @@ export function resizeArrowBounds(
 
     if (newLayer.endConnectedLayerId) {
       const endConnectedLayer = liveLayers[newLayer.endConnectedLayerId];
-      const endPoint = getClosestPointOnBorder(endConnectedLayer, point, center, zoom, newLayer.arrowType, newLayer);
+      let endPoint = getClosestPointOnBorder(endConnectedLayer, point, center, zoom, newLayer.arrowType, newLayer);
+      endPoint = applyStraightnessAssist(endPoint, { x: result.x, y: result.y }, STRAIGHTNESS_THRESHOLD);
       result.width = endPoint.x - result.x;
       result.height = endPoint.y - result.y;
     }
@@ -1322,21 +1328,37 @@ export function getClosestEndPoint(connectedLayer: Layer, point: Point, arrowTyp
   }
 }
 
-export function updateArrowPosition(arrowLayer: ArrowLayer, connectedLayerId: string, newLayer: Layer, startConnectedLayerId: string, endConnectedLayerId: string, liveLayers: any) {
+export function applyStraightnessAssist(point: Point, referencePoint: Point, threshold: number): Point {
+  const adjustedPoint = { ...point };
+  
+  if (Math.abs(point.x - referencePoint.x) < threshold) {
+    adjustedPoint.x = referencePoint.x;
+  }
+  if (Math.abs(point.y - referencePoint.y) < threshold) {
+    adjustedPoint.y = referencePoint.y;
+  }
+  
+  return adjustedPoint;
+}
+
+export function updateArrowPosition(arrowLayer: ArrowLayer, connectedLayerId: string, newLayer: Layer, startConnectedLayerId: string, endConnectedLayerId: string, liveLayers: any, zoom: number) {
   const updatedArrow = { ...arrowLayer };
   let start = { x: updatedArrow.x, y: updatedArrow.y };
   let end = { x: updatedArrow.x + updatedArrow.width, y: updatedArrow.y + updatedArrow.height };
   let center = updatedArrow.center || { x: (start.x + end.x) / 2, y: (start.y + end.y) / 2 };
   const startConnectedLayer = liveLayers[startConnectedLayerId];
   const endConnectedLayer = liveLayers[endConnectedLayerId];
+  const STRAIGHTNESS_THRESHOLD = 4/zoom;
 
   if (connectedLayerId === startConnectedLayerId) {
     const startPoint = getClosestEndPoint(newLayer, center, updatedArrow.arrowType || ArrowType.Straight, updatedArrow);
-    updatedArrow.x = startPoint.x;
-    updatedArrow.y = startPoint.y;
-    updatedArrow.width = end.x - startPoint.x;
-    updatedArrow.height = end.y - startPoint.y;
-    start = startPoint;
+    const adjustedStartPoint = applyStraightnessAssist(startPoint, end, STRAIGHTNESS_THRESHOLD);
+
+    updatedArrow.x = adjustedStartPoint.x;
+    updatedArrow.y = adjustedStartPoint.y;
+    updatedArrow.width = end.x - adjustedStartPoint.x;
+    updatedArrow.height = end.y - adjustedStartPoint.y;
+    start = { x: updatedArrow.x, y: updatedArrow.y };
 
     if (endConnectedLayerId && endConnectedLayer) {
       if (updatedArrow.orientation === ArrowOrientation.Horizontal) {
@@ -1355,15 +1377,17 @@ export function updateArrowPosition(arrowLayer: ArrowLayer, connectedLayerId: st
         );
 
         if (intersects) {
-          updatedArrow.orientation = ArrowOrientation.Horizontal
-        };
+          updatedArrow.orientation = ArrowOrientation.Horizontal;
+        }
       }
 
       if ((updatedArrow.arrowType !== ArrowType.Diagram && updatedArrow.centerEdited !== true) || updatedArrow.arrowType === ArrowType.Diagram) {
         const endPoint = getClosestEndPoint(endConnectedLayer, center, updatedArrow.arrowType || ArrowType.Straight, updatedArrow);
-        updatedArrow.width = endPoint.x - updatedArrow.x;
-        updatedArrow.height = endPoint.y - updatedArrow.y;
-        end = endPoint;
+        const adjustedEndPoint = applyStraightnessAssist(endPoint, start, STRAIGHTNESS_THRESHOLD);
+        
+        updatedArrow.width = adjustedEndPoint.x - updatedArrow.x;
+        updatedArrow.height = adjustedEndPoint.y - updatedArrow.y;
+        end = adjustedEndPoint;
       }
     } else {
       if (updatedArrow.orientation === ArrowOrientation.Horizontal) {
@@ -1387,12 +1411,11 @@ export function updateArrowPosition(arrowLayer: ArrowLayer, connectedLayerId: st
         if (intersects) {
           updatedArrow.orientation = ArrowOrientation.Vertical;
         }
-
       } else if (updatedArrow.orientation === ArrowOrientation.Vertical) {
         const intersects = (
           endConnectedLayer.y < startConnectedLayer.y + startConnectedLayer.height &&
           endConnectedLayer.y + endConnectedLayer.height > startConnectedLayer.y
-        )
+        );
 
         if (intersects) {
           updatedArrow.orientation = ArrowOrientation.Horizontal;
@@ -1400,10 +1423,14 @@ export function updateArrowPosition(arrowLayer: ArrowLayer, connectedLayerId: st
       }
 
       if ((updatedArrow.arrowType !== ArrowType.Diagram && updatedArrow.centerEdited !== true) || updatedArrow.arrowType === ArrowType.Diagram) {
-        const startPoint = getClosestEndPoint(startConnectedLayer, center, updatedArrow.arrowType || ArrowType.Straight, updatedArrow);
-        updatedArrow.x = startPoint.x;
-        updatedArrow.y = startPoint.y;
-        start = startPoint;
+        if ((updatedArrow.arrowType !== ArrowType.Diagram && updatedArrow.centerEdited !== true) || updatedArrow.arrowType === ArrowType.Diagram) {
+          const startPoint = getClosestEndPoint(startConnectedLayer, center, updatedArrow.arrowType || ArrowType.Straight, updatedArrow);
+          const adjustedStartPoint = applyStraightnessAssist(startPoint, end, STRAIGHTNESS_THRESHOLD);
+          
+          updatedArrow.x = adjustedStartPoint.x;
+          updatedArrow.y = adjustedStartPoint.y;
+          start = adjustedStartPoint;
+        }
       }
     } else {
       if (updatedArrow.orientation === ArrowOrientation.Horizontal) {
@@ -1416,11 +1443,12 @@ export function updateArrowPosition(arrowLayer: ArrowLayer, connectedLayerId: st
         }
       }
     }
-
     const endPoint = getClosestEndPoint(newLayer, center, updatedArrow.arrowType || ArrowType.Straight, updatedArrow);
-    updatedArrow.width = endPoint.x - updatedArrow.x;
-    updatedArrow.height = endPoint.y - updatedArrow.y;
-    end = endPoint;
+    const adjustedEndPoint = applyStraightnessAssist(endPoint, start, STRAIGHTNESS_THRESHOLD);
+    
+    updatedArrow.width = adjustedEndPoint.x - updatedArrow.x;
+    updatedArrow.height = adjustedEndPoint.y - updatedArrow.y;
+    end = adjustedEndPoint;
   }
 
   if (updatedArrow.centerEdited !== true || updatedArrow.arrowType === ArrowType.Diagram) {

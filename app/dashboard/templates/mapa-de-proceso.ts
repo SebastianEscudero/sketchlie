@@ -72,10 +72,10 @@ export const PlantillaMapaDeProceso = {
             },
             "endArrowHead": "None",
             "fill": {
-                "a": 1,
-                "b": 0,
-                "g": 0,
-                "r": 0
+                "r": 29,
+                "g": 29,
+                "b": 29,
+                "a": 1
             },
             "height": -260.5123336650307,
             "startArrowHead": "None",
@@ -93,10 +93,10 @@ export const PlantillaMapaDeProceso = {
             },
             "endArrowHead": "Triangle",
             "fill": {
-                "a": 1,
-                "b": 0,
-                "g": 0,
-                "r": 0
+                "r": 29,
+                "g": 29,
+                "b": 29,
+                "a": 1
             },
             "height": 54.75065846178623,
             "startArrowHead": "None",
@@ -114,10 +114,10 @@ export const PlantillaMapaDeProceso = {
             },
             "endArrowHead": "Triangle",
             "fill": {
-                "a": 1,
-                "b": 0,
-                "g": 0,
-                "r": 0
+                "r": 29,
+                "g": 29,
+                "b": 29,
+                "a": 1
             },
             "height": -0.0037144556051202926,
             "startArrowHead": "None",
@@ -135,10 +135,10 @@ export const PlantillaMapaDeProceso = {
             },
             "endArrowHead": "None",
             "fill": {
-                "a": 1,
-                "b": 0,
-                "g": 0,
-                "r": 0
+                "r": 29,
+                "g": 29,
+                "b": 29,
+                "a": 1
             },
             "height": 63.89916842184374,
             "startArrowHead": "None",
@@ -156,10 +156,10 @@ export const PlantillaMapaDeProceso = {
             },
             "endArrowHead": "None",
             "fill": {
-                "a": 1,
-                "b": 0,
-                "g": 0,
-                "r": 0
+                "r": 29,
+                "g": 29,
+                "b": 29,
+                "a": 1
             },
             "height": -77.48023338194776,
             "startArrowHead": "None",
@@ -177,10 +177,10 @@ export const PlantillaMapaDeProceso = {
             },
             "endArrowHead": "Triangle",
             "fill": {
-                "a": 1,
-                "b": 0,
-                "g": 0,
-                "r": 0
+                "r": 29,
+                "g": 29,
+                "b": 29,
+                "a": 1
             },
             "height": 0.07502047699017567,
             "startArrowHead": "None",
@@ -198,10 +198,10 @@ export const PlantillaMapaDeProceso = {
             },
             "endArrowHead": "Triangle",
             "fill": {
-                "a": 1,
-                "b": 0,
-                "g": 0,
-                "r": 0
+                "r": 29,
+                "g": 29,
+                "b": 29,
+                "a": 1
             },
             "height": 156.97663406627484,
             "startArrowHead": "None",
@@ -219,10 +219,10 @@ export const PlantillaMapaDeProceso = {
             },
             "endArrowHead": "Triangle",
             "fill": {
-                "a": 1,
-                "b": 0,
-                "g": 0,
-                "r": 0
+                "r": 29,
+                "g": 29,
+                "b": 29,
+                "a": 1
             },
             "height": -1.7104099152839467,
             "startArrowHead": "None",
