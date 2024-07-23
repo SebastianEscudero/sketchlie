@@ -16,8 +16,8 @@ export const exportToPdf = async (title: string, isTransparent: boolean) => {
     });
 
     await domToPng(screenShot, {
-      quality: 1,
-      scale: 3,
+      quality: 0.8,
+      scale: 1,
       backgroundColor: isTransparent ? 'transparent' : (document.documentElement.classList.contains("dark") ? '#2C2C2C' : '#F4F4F4'),
     }).then((dataUrl) => {
       const pdf = new jsPDF({
