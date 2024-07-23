@@ -186,7 +186,7 @@ export const Canvas = ({
                 height: height,
                 width: width,
                 fill: { r: 29, g: 29, b: 29, a: 1 },
-                textFontSize: Math.min(width, height) * ratio,
+                textFontSize: 12,
                 value: "",
                 outlineFill: null,
                 alignX: 'left',
