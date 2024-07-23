@@ -18,7 +18,7 @@ export const exportToPdf = async (title: string, isTransparent: boolean) => {
     await domToPng(screenShot, {
       quality: 1,
       scale: 3,
-      backgroundColor: isTransparent ? 'transparent' : '#F4F4F4',
+      backgroundColor: isTransparent ? 'transparent' : (document.documentElement.classList.contains("dark") ? '#2C2C2C' : '#F4F4F4'),
     }).then((dataUrl) => {
       const pdf = new jsPDF({
         orientation: "landscape",
@@ -56,7 +56,7 @@ export const exportToPNG = async (title: string, isTransparent: boolean) => {
     await domToPng(screenShot, {
       quality: 1,
       scale: 3,
-      backgroundColor: isTransparent ? 'transparent' : '#F4F4F4',
+      backgroundColor: isTransparent ? 'transparent' : (document.documentElement.classList.contains("dark") ? '#2C2C2C' : '#F4F4F4'),
     }).then((dataUrl) => {
       var anchor = document.createElement("a");
       anchor.setAttribute("href", dataUrl);
@@ -91,7 +91,7 @@ export const exportToJPG = async (title: string, isTransparent: boolean) => {
     await domToJpeg(screenShot, {
       quality: 1,
       scale: 3,
-      backgroundColor: isTransparent ? 'transparent' : '#F4F4F4',
+      backgroundColor: isTransparent ? 'transparent' : (document.documentElement.classList.contains("dark") ? '#2C2C2C' : '#F4F4F4'),
     }).then((dataUrl) => {
       var anchor = document.createElement("a");
       anchor.setAttribute("href", dataUrl);
@@ -126,7 +126,7 @@ export const exportToSVG = async (title: string, isTransparent: boolean) => {
     await domToSvg(screenShot, {
       quality: 1,
       scale: 3,
-      backgroundColor: isTransparent ? 'transparent' : '#F4F4F4',
+      backgroundColor: isTransparent ? 'transparent' : (document.documentElement.classList.contains("dark") ? '#2C2C2C' : '#F4F4F4'),
     }).then((dataUrl) => {
       var anchor = document.createElement("a");
       anchor.setAttribute("href", dataUrl);
