@@ -161,6 +161,7 @@ export const Canvas = ({
 
     const insertLayer = useCallback((layerType: LayerType, position: Point, width: number, height: number, center?: Point, startConnectedLayerId?: string, endConnectedLayerId?: string, arrowType?: ArrowType, orientation?: ArrowOrientation) => {
         const layerId = nanoid();
+        const ratio = 12/80;
 
         let layer;
         let fillColor = { r: 0, g: 0, b: 0, a: 0 }
@@ -185,7 +186,7 @@ export const Canvas = ({
                 height: height,
                 width: width,
                 fill: { r: 29, g: 29, b: 29, a: 1 },
-                textFontSize: 12,
+                textFontSize: Math.min(width, height) * ratio,
                 value: "",
                 outlineFill: null,
                 alignX: 'left',
@@ -200,7 +201,7 @@ export const Canvas = ({
                 fill: fillColor,
                 value: "",
                 outlineFill: { r: 0, g: 0, b: 0, a: 0 },
-                textFontSize: 12,
+                textFontSize: Math.min(width, height) * ratio,
                 alignX: 'center',
                 alignY: 'center',
             };
@@ -260,7 +261,7 @@ export const Canvas = ({
                 fill: fillColor,
                 value: "",
                 outlineFill: { r: 29, g: 29, b: 29, a: 1 },
-                textFontSize: 12,
+                textFontSize: Math.min(width, height) * ratio,
                 alignX: 'center',
                 alignY: 'center',
             };
