@@ -92,37 +92,50 @@ Important Notes:
 Provide a thoughtful, concise analysis that not only summarizes the content but also offers deeper insights into its significance and potential implications.`
 
 export const generateFillTextsPrompt = `
-Analyze and modify the selected layers in this Sketchlie workspace:
+Generate relevant and complementary text ONLY for empty layers in this Sketchlie workspace:
 
 Task:
-1. For each layer with an empty 'value' ("" or " "), generate appropriate text content based on:
-   - The layer's type
-   - Its position relative to other layers
-   - The overall theme of the diagram
-   - The content of nearby non-empty layers
+1. ONLY for layers that meet ALL of the following criteria:
+   - Have a 'value' property
+   - The 'value' is EXACTLY "" (empty string) or " " (single space)
+   Generate informative and complementary text content based on:
+   - The specific examples already present in other layers
+   - Maintaining the same level of specificity as existing entries
+   - Ensuring consistency in the type of information provided
 
 Guidelines for Generating Text:
-- Ensure the generated text is relevant to the diagram's theme and context.
-- Keep the text concise, typically no more than a short phrase or sentence.
-- Maintain consistency with the style and tone of existing text in the diagram.
-- Avoid repetition of content already present in other layers.
+- MANDATORY: Use ONLY the language of the existing non-empty values in the workspace.
+- Provide specific examples that are at the same level of detail as existing entries.
+- Ensure new content is of the same type (e.g., if existing entries are animal species, provide another animal species).
+- Avoid broader categories, classifications, or generalizations.
+- Keep the text concise, typically a single word or short phrase.
+- Maintain consistency with the style and specificity of existing text in the diagram.
 
-Important Notes:
-- Only modify layers with empty 'value' properties.
-- Ensure generated content is plausible and fits coherently within the diagram.
-- If the overall theme or context is unclear, use general terms related to the non-empty layers.
-- If no layers need modification, return an empty object.
+Critical Rules:
+- NEVER modify layers that don't have a 'value' property.
+- NEVER modify layers that already have content in their 'value' property (except for "" or " ").
+- ONLY generate content for layers where the 'value' is EXACTLY "" or " ".
+- Do not touch or modify any other layers under any circumstances.
 
-Output valid JSON with 'layers' as the only top-level key:
+Content Generation Strategy:
+- Identify the type and specificity of existing entries (e.g., specific animal species, individual names, etc.).
+- Provide another example that matches this exact type and level of specificity.
+- Ensure the new entry logically fits within the overall theme or category indicated by the top-level entry.
+- Do not introduce new categories or classifications that are not at the same level as existing entries.
+
+Output valid JSON with 'layers' as the only top-level key. Only include layers that were modified:
 
 {
    "layers": {
       "layerId1": {
-         "value": "generated text 1"
-      },
-      "layerId2": {
-         "value": "generated text 2"
+         "value": "generated text (specific example matching existing entries)"
       }
    }
 }
+
+FINAL CHECKS: 
+1. Verify that ALL generated text is in the SAME LANGUAGE as the non-empty values.
+2. Ensure the generated content is at the same level of specificity as existing entries.
+3. Confirm that the generated content is of the same type (e.g., species, individual, etc.) as existing entries.
+4. Double-check that NO layers without a 'value' property or with existing content have been modified.
 `;

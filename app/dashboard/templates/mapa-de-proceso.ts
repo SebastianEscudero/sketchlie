@@ -3,7 +3,7 @@ export const PlantillaMapaDeProceso = {
     image: '/templates/mapa-de-proceso.png',
     href: "/plantillas/mapa-de-proceso/",
     "layers": {
-        "Jm4T32STCYtc0efURZwtB": {
+        "wHze0Ei6N398eKDekoIDV": {
             "fill": {
                 "a": 1,
                 "b": 255,
@@ -20,13 +20,13 @@ export const PlantillaMapaDeProceso = {
             "textFontSize": 0,
             "type": 0,
             "width": 820.874026973954,
-            "x": 10.124383758293675,
-            "y": 98.58423425412019
+            "x": 529.9584700738068,
+            "y": 361.96765955932466
         },
-        "gZMEfrc5qMf1JFXMHhs2Y": {
+        "I2oKcxYAReswqeTqOiImC": {
             "center": {
-                "x": 421.0166551376609,
-                "y": 187.72281402418068
+                "x": 940.8507414531741,
+                "y": 451.1062393293852
             },
             "endArrowHead": "None",
             "fill": {
@@ -39,15 +39,15 @@ export const PlantillaMapaDeProceso = {
             "startArrowHead": "None",
             "type": 16,
             "width": 820.874026973954,
-            "x": 10.579641650684607,
-            "y": 187.72281402418068,
+            "x": 530.4137279661977,
+            "y": 451.1062393293852,
             "startConnectedLayerId": "",
             "endConnectedLayerId": ""
         },
-        "HJ59b5E7F0GyXQ2Un3rjI": {
+        "x9t6vCwFjM4AdXHdto1gt": {
             "center": {
-                "x": 420.36604363520985,
-                "y": 278.02503525396855
+                "x": 940.2001299507228,
+                "y": 541.408460559173
             },
             "endArrowHead": "None",
             "fill": {
@@ -60,15 +60,15 @@ export const PlantillaMapaDeProceso = {
             "startArrowHead": "None",
             "type": 16,
             "width": 820.874026973954,
-            "x": 9.929030148232641,
-            "y": 278.02503525396855,
+            "x": 529.7631164637457,
+            "y": 541.408460559173,
             "startConnectedLayerId": "",
             "endConnectedLayerId": ""
         },
-        "D4I8ZLrqS3K13MsDFqPja": {
+        "gIHdBiLEza9MVlmP0HYsF": {
             "center": {
-                "x": 118.46132325626468,
-                "y": 229.6297707762805
+                "x": 638.2954095717778,
+                "y": 493.013196081485
             },
             "endArrowHead": "None",
             "fill": {
@@ -81,15 +81,15 @@ export const PlantillaMapaDeProceso = {
             "startArrowHead": "None",
             "type": 16,
             "width": -0.06278367474601047,
-            "x": 118.49271509363757,
-            "y": 359.88593760879576,
+            "x": 638.3268014091507,
+            "y": 623.2693629140002,
             "startConnectedLayerId": "",
             "endConnectedLayerId": ""
         },
-        "vFvmQ9rAfc0l7ApeEmNSV": {
+        "B1Jbx6te2qDaWqz9uRvAy": {
             "center": {
-                "x": 192.5792472387208,
-                "y": 190.08732131694182
+                "x": 712.4133335542339,
+                "y": 453.4707466221463
             },
             "endArrowHead": "Triangle",
             "fill": {
@@ -102,15 +102,15 @@ export const PlantillaMapaDeProceso = {
             "startArrowHead": "None",
             "type": 16,
             "width": -0.6172450651414465,
-            "x": 192.88786977129152,
-            "y": 162.7119920860487,
-            "startConnectedLayerId": "rqONSnhTXUoCwRvQsu9j3",
-            "endConnectedLayerId": "NsLjW0UHy5FoK606Ie3qA"
+            "x": 712.7219560868047,
+            "y": 426.09541739125314,
+            "startConnectedLayerId": "5ftNQt7ad2bFGJKDFEMVp",
+            "endConnectedLayerId": "kCquyYLcJYxcN3pJytuB5"
         },
-        "XsdbJhLVB84Yekp82LzwK": {
+        "frBdvck4zwJx0IEwaMln2": {
             "center": {
-                "x": 271.5985247307294,
-                "y": 239.25939427791684
+                "x": 791.4326110462425,
+                "y": 502.64281958312125
             },
             "endArrowHead": "Triangle",
             "fill": {
@@ -123,15 +123,15 @@ export const PlantillaMapaDeProceso = {
             "startArrowHead": "None",
             "type": 16,
             "width": 74.97718168001143,
-            "x": 234.1099338907237,
-            "y": 239.26125150571937,
-            "startConnectedLayerId": "NsLjW0UHy5FoK606Ie3qA",
-            "endConnectedLayerId": "V1zY9VvH2lDUpK35GRfbF"
+            "x": 753.9440202062368,
+            "y": 502.64467681092395,
+            "startConnectedLayerId": "kCquyYLcJYxcN3pJytuB5",
+            "endConnectedLayerId": "2jWn01HlgFGqxuSlTXgXT"
         },
-        "Mk5CatrgGM3hbbTQpFWoe": {
+        "mIVlngmFrvVvpfAwsZ6OF": {
             "center": {
-                "x": 348.5,
-                "y": 322
+                "x": 868.3340863155131,
+                "y": 585.3834253052045
             },
             "endArrowHead": "None",
             "fill": {
@@ -144,15 +144,15 @@ export const PlantillaMapaDeProceso = {
             "startArrowHead": "None",
             "type": 16,
             "width": 80.27570502217043,
-            "x": 347.80632763703716,
-            "y": 258.7078061589083,
-            "startConnectedLayerId": "V1zY9VvH2lDUpK35GRfbF",
-            "endConnectedLayerId": "qRpMoUDJqyXzoT9vQHlSE"
+            "x": 867.6404139525503,
+            "y": 522.0912314641126,
+            "startConnectedLayerId": "2jWn01HlgFGqxuSlTXgXT",
+            "endConnectedLayerId": "7F9c5c02GssNVLqwCG1qD"
         },
-        "MZkNEd5G1EQuDWVSZWaGA": {
+        "sWmWmulEzNsbkwVb2wz1I": {
             "center": {
-                "x": 346.5,
-                "y": 142
+                "x": 866.3340863155131,
+                "y": 405.38342530520447
             },
             "endArrowHead": "None",
             "fill": {
@@ -165,15 +165,15 @@ export const PlantillaMapaDeProceso = {
             "startArrowHead": "None",
             "type": 16,
             "width": 74.49122847457647,
-            "x": 347.3688477355612,
-            "y": 219.29588421623635,
-            "startConnectedLayerId": "V1zY9VvH2lDUpK35GRfbF",
-            "endConnectedLayerId": "9YxqHn25osgNtyBixJna5"
+            "x": 867.2029340510743,
+            "y": 482.6793095214408,
+            "startConnectedLayerId": "2jWn01HlgFGqxuSlTXgXT",
+            "endConnectedLayerId": "fauFMOWRolfD7PvEBZgQr"
         },
-        "awHkmgad17C2yWzZ8ZeoG": {
+        "lpipJSiaULPPwEQKpQ68D": {
             "center": {
-                "x": 540.2258857091616,
-                "y": 141.5776786322304
+                "x": 1060.0599720246742,
+                "y": 404.96110393743487
             },
             "endArrowHead": "Triangle",
             "fill": {
@@ -186,15 +186,15 @@ export const PlantillaMapaDeProceso = {
             "startArrowHead": "None",
             "type": 16,
             "width": 68.69973611867567,
-            "x": 505.8760176498238,
-            "y": 141.5401683937353,
-            "startConnectedLayerId": "9YxqHn25osgNtyBixJna5",
-            "endConnectedLayerId": "rh3Znbo9iaXDiNYnIREui"
+            "x": 1025.7101039653367,
+            "y": 404.9235936989398,
+            "startConnectedLayerId": "fauFMOWRolfD7PvEBZgQr",
+            "endConnectedLayerId": "4StI62XCpIdWpLvWb7CDN"
         },
-        "6k9dTbF1Ynr2O13Ker0Rn": {
+        "p2t32f31WjQ99HdTJYp1V": {
             "center": {
-                "x": 723.5,
-                "y": 142
+                "x": 1243.3340863155126,
+                "y": 405.38342530520447
             },
             "endArrowHead": "Triangle",
             "fill": {
@@ -207,15 +207,15 @@ export const PlantillaMapaDeProceso = {
             "startArrowHead": "None",
             "type": 16,
             "width": 65.85293021599057,
-            "x": 658.5916952081856,
-            "y": 141.92693943174308,
-            "startConnectedLayerId": "rh3Znbo9iaXDiNYnIREui",
-            "endConnectedLayerId": "QQh4DS08pUeUU8cn0yCIf"
+            "x": 1178.4257815236983,
+            "y": 405.3103647369476,
+            "startConnectedLayerId": "4StI62XCpIdWpLvWb7CDN",
+            "endConnectedLayerId": "MGIBuUEe10Q7HSsbhtFRQ"
         },
-        "VZ6t5tU3rJMQTtI0cbtrf": {
+        "hegybMqzvliRl1CRq1JLO": {
             "center": {
-                "x": 599.0844719753305,
-                "y": 321.68119089607126
+                "x": 1118.918558290843,
+                "y": 585.0646162012757
             },
             "endArrowHead": "Triangle",
             "fill": {
@@ -228,42 +228,42 @@ export const PlantillaMapaDeProceso = {
             "startArrowHead": "None",
             "type": 16,
             "width": 173.97299575287366,
-            "x": 512.0979740988937,
-            "y": 322.53639585371326,
-            "startConnectedLayerId": "qRpMoUDJqyXzoT9vQHlSE",
-            "endConnectedLayerId": "QQh4DS08pUeUU8cn0yCIf"
+            "x": 1031.9320604144064,
+            "y": 585.9198211589177,
+            "startConnectedLayerId": "7F9c5c02GssNVLqwCG1qD",
+            "endConnectedLayerId": "MGIBuUEe10Q7HSsbhtFRQ"
         },
-        "gNHb2hAvIMytp1FmK9XJB": {
+        "SiEUesLuhEknu8gkW6YiI": {
             "fill": null,
             "height": 42.42243033457129,
             "src": "https://sketchlie.s3.us-east-2.amazonaws.com/user.svg",
             "type": 15,
             "opacity": 1,
             "width": 42.422430334571175,
-            "x": 44.51758591834172,
-            "y": 117.01876346656178
+            "x": 564.3516722338549,
+            "y": 380.40218877176625
         },
-        "P10DhaITcbVM3SsiehQda": {
+        "zXHK5wiHkWCZfCWktg0u5": {
             "fill": null,
             "height": 37.47314679553793,
             "src": "https://sketchlie.s3.us-east-2.amazonaws.com/cog.svg",
             "type": 15,
             "opacity": 1,
             "width": 37.473146795537886,
-            "x": 47.34574794064662,
-            "y": 204.6917861580091
+            "x": 567.1798342561597,
+            "y": 468.0752114632136
         },
-        "RXQVss0Po6roDaljrFXYb": {
+        "7EFW5vdJtKPd1Q2st6Ldz": {
             "fill": null,
             "height": 33.937944267657,
             "src": "https://sketchlie.s3.us-east-2.amazonaws.com/briefcase-business.svg",
             "type": 15,
             "opacity": 1,
             "width": 33.93794426765696,
-            "x": 50.173909962951086,
-            "y": 295.19297087176096
+            "x": 570.0079962784641,
+            "y": 558.5763961769654
         },
-        "YloyBIVLHTvKtZZd6yZg0": {
+        "yqDQbMGijLSNnc6uiNH7N": {
             "fill": {
                 "r": 29,
                 "g": 29,
@@ -275,10 +275,10 @@ export const PlantillaMapaDeProceso = {
             "type": 13,
             "value": "Usuario",
             "width": 56.209720193306836,
-            "x": 37.09366060979144,
-            "y": 161.56231531786185
+            "x": 556.9277469253045,
+            "y": 424.9457406230663
         },
-        "A3wKVc9CNgQ5polpYV3rZ": {
+        "nwWfcBoUHCJcAP6R9pEyx": {
             "fill": {
                 "r": 29,
                 "g": 29,
@@ -290,10 +290,10 @@ export const PlantillaMapaDeProceso = {
             "type": 13,
             "value": "Software",
             "width": 66.28504739776751,
-            "x": 33.381697955516984,
-            "y": 247.46773674536854
+            "x": 553.2157842710301,
+            "y": 510.85116205057295
         },
-        "lWv8Sk5wewXYtDU6ggvKH": {
+        "7yjowk1rVt81vXfcWBIr2": {
             "fill": {
                 "r": 29,
                 "g": 29,
@@ -305,10 +305,10 @@ export const PlantillaMapaDeProceso = {
             "type": 13,
             "value": "Ventas",
             "width": 56.209720193306836,
-            "x": 40.45210301127881,
-            "y": 330.1914758977822
+            "x": 560.2861893267919,
+            "y": 593.5749012029866
         },
-        "NX6wUtur8Y2I0e2H3v8Z6": {
+        "G6Ef6ESB5Cd5dUV9O2lOY": {
             "fill": {
                 "r": 29,
                 "g": 29,
@@ -320,10 +320,10 @@ export const PlantillaMapaDeProceso = {
             "type": 13,
             "value": "Mapa de Procesos",
             "width": 268.67539211895087,
-            "x": 289.9355876468696,
-            "y": 16.614062391204243
+            "x": 809.7696739623827,
+            "y": 279.9974876964087
         },
-        "rqONSnhTXUoCwRvQsu9j3": {
+        "5ftNQt7ad2bFGJKDFEMVp": {
             "fill": {
                 "a": 1,
                 "b": 42,
@@ -340,13 +340,14 @@ export const PlantillaMapaDeProceso = {
             "textFontSize": 8.48448606691425,
             "type": 0,
             "width": 84.01594143968612,
-            "x": 151.19520598695516,
-            "y": 119.66439778285988,
+            "x": 671.0292923024683,
+            "y": 383.0478230880643,
             "connectedArrows": [
-                "vFvmQ9rAfc0l7ApeEmNSV"
-            ]
+                "B1Jbx6te2qDaWqz9uRvAy"
+            ],
+            "value": ""
         },
-        "NsLjW0UHy5FoK606Ie3qA": {
+        "kCquyYLcJYxcN3pJytuB5": {
             "fill": {
                 "a": 1,
                 "b": 42,
@@ -363,14 +364,15 @@ export const PlantillaMapaDeProceso = {
             "textFontSize": 8.48448606691425,
             "type": 0,
             "width": 84.01594143968612,
-            "x": 150.0939924510376,
-            "y": 217.46265054783493,
+            "x": 669.9280787665507,
+            "y": 480.8460758530394,
             "connectedArrows": [
-                "vFvmQ9rAfc0l7ApeEmNSV",
-                "XsdbJhLVB84Yekp82LzwK"
-            ]
+                "B1Jbx6te2qDaWqz9uRvAy",
+                "frBdvck4zwJx0IEwaMln2"
+            ],
+            "value": ""
         },
-        "9YxqHn25osgNtyBixJna5": {
+        "fauFMOWRolfD7PvEBZgQr": {
             "fill": {
                 "r": 68,
                 "g": 101,
@@ -387,14 +389,15 @@ export const PlantillaMapaDeProceso = {
             "textFontSize": 8.48448606691425,
             "type": 0,
             "width": 84.01594143968612,
-            "x": 421.86007621013766,
-            "y": 120.18909191884143,
+            "x": 941.6941625256509,
+            "y": 383.5725172240459,
             "connectedArrows": [
-                "MZkNEd5G1EQuDWVSZWaGA",
-                "awHkmgad17C2yWzZ8ZeoG"
-            ]
+                "sWmWmulEzNsbkwVb2wz1I",
+                "lpipJSiaULPPwEQKpQ68D"
+            ],
+            "value": ""
         },
-        "rh3Znbo9iaXDiNYnIREui": {
+        "4StI62XCpIdWpLvWb7CDN": {
             "fill": {
                 "a": 1,
                 "b": 42,
@@ -411,14 +414,15 @@ export const PlantillaMapaDeProceso = {
             "textFontSize": 8.48448606691425,
             "type": 0,
             "width": 84.01594143968612,
-            "x": 574.5757537684995,
-            "y": 120.35585825044006,
+            "x": 1094.409840084012,
+            "y": 383.73928355564453,
             "connectedArrows": [
-                "awHkmgad17C2yWzZ8ZeoG",
-                "6k9dTbF1Ynr2O13Ker0Rn"
-            ]
+                "lpipJSiaULPPwEQKpQ68D",
+                "p2t32f31WjQ99HdTJYp1V"
+            ],
+            "value": ""
         },
-        "qRpMoUDJqyXzoT9vQHlSE": {
+        "7F9c5c02GssNVLqwCG1qD": {
             "fill": {
                 "r": 68,
                 "g": 101,
@@ -435,14 +439,15 @@ export const PlantillaMapaDeProceso = {
             "textFontSize": 8.48448606691425,
             "type": 0,
             "width": 84.01594143968612,
-            "x": 428.0820326592076,
-            "y": 301.4035734980179,
+            "x": 947.9161189747206,
+            "y": 564.7869988032224,
             "connectedArrows": [
-                "VZ6t5tU3rJMQTtI0cbtrf",
-                "Mk5CatrgGM3hbbTQpFWoe"
-            ]
+                "hegybMqzvliRl1CRq1JLO",
+                "mIVlngmFrvVvpfAwsZ6OF"
+            ],
+            "value": ""
         },
-        "QQh4DS08pUeUU8cn0yCIf": {
+        "MGIBuUEe10Q7HSsbhtFRQ": {
             "fill": {
                 "a": 1,
                 "b": 35,
@@ -459,14 +464,15 @@ export const PlantillaMapaDeProceso = {
             "textFontSize": 8.48448606691425,
             "type": 0,
             "width": 77.00647574586431,
-            "x": 686.0709698517674,
-            "y": 298.9035734980179,
+            "x": 1205.9050561672802,
+            "y": 562.2869988032224,
             "connectedArrows": [
-                "6k9dTbF1Ynr2O13Ker0Rn",
-                "VZ6t5tU3rJMQTtI0cbtrf"
-            ]
+                "p2t32f31WjQ99HdTJYp1V",
+                "hegybMqzvliRl1CRq1JLO"
+            ],
+            "value": ""
         },
-        "V1zY9VvH2lDUpK35GRfbF": {
+        "2jWn01HlgFGqxuSlTXgXT": {
             "fill": {
                 "a": 1,
                 "b": 42,
@@ -483,40 +489,41 @@ export const PlantillaMapaDeProceso = {
             "textFontSize": 8.48448606691425,
             "type": 0,
             "width": 77.00647574586424,
-            "x": 309.08711557073514,
-            "y": 219.29588421623635,
+            "x": 828.9212018862482,
+            "y": 482.6793095214408,
             "connectedArrows": [
-                "XsdbJhLVB84Yekp82LzwK",
-                "MZkNEd5G1EQuDWVSZWaGA",
-                "Mk5CatrgGM3hbbTQpFWoe"
-            ]
+                "frBdvck4zwJx0IEwaMln2",
+                "sWmWmulEzNsbkwVb2wz1I",
+                "mIVlngmFrvVvpfAwsZ6OF"
+            ],
+            "value": ""
         }
     },
     "layerIds": [
-        "Jm4T32STCYtc0efURZwtB",
-        "gZMEfrc5qMf1JFXMHhs2Y",
-        "HJ59b5E7F0GyXQ2Un3rjI",
-        "D4I8ZLrqS3K13MsDFqPja",
-        "vFvmQ9rAfc0l7ApeEmNSV",
-        "XsdbJhLVB84Yekp82LzwK",
-        "Mk5CatrgGM3hbbTQpFWoe",
-        "MZkNEd5G1EQuDWVSZWaGA",
-        "awHkmgad17C2yWzZ8ZeoG",
-        "6k9dTbF1Ynr2O13Ker0Rn",
-        "VZ6t5tU3rJMQTtI0cbtrf",
-        "gNHb2hAvIMytp1FmK9XJB",
-        "P10DhaITcbVM3SsiehQda",
-        "RXQVss0Po6roDaljrFXYb",
-        "YloyBIVLHTvKtZZd6yZg0",
-        "A3wKVc9CNgQ5polpYV3rZ",
-        "lWv8Sk5wewXYtDU6ggvKH",
-        "NX6wUtur8Y2I0e2H3v8Z6",
-        "rqONSnhTXUoCwRvQsu9j3",
-        "NsLjW0UHy5FoK606Ie3qA",
-        "9YxqHn25osgNtyBixJna5",
-        "rh3Znbo9iaXDiNYnIREui",
-        "qRpMoUDJqyXzoT9vQHlSE",
-        "QQh4DS08pUeUU8cn0yCIf",
-        "V1zY9VvH2lDUpK35GRfbF"
+        "wHze0Ei6N398eKDekoIDV",
+        "I2oKcxYAReswqeTqOiImC",
+        "x9t6vCwFjM4AdXHdto1gt",
+        "gIHdBiLEza9MVlmP0HYsF",
+        "B1Jbx6te2qDaWqz9uRvAy",
+        "frBdvck4zwJx0IEwaMln2",
+        "mIVlngmFrvVvpfAwsZ6OF",
+        "sWmWmulEzNsbkwVb2wz1I",
+        "lpipJSiaULPPwEQKpQ68D",
+        "p2t32f31WjQ99HdTJYp1V",
+        "hegybMqzvliRl1CRq1JLO",
+        "SiEUesLuhEknu8gkW6YiI",
+        "zXHK5wiHkWCZfCWktg0u5",
+        "7EFW5vdJtKPd1Q2st6Ldz",
+        "yqDQbMGijLSNnc6uiNH7N",
+        "nwWfcBoUHCJcAP6R9pEyx",
+        "7yjowk1rVt81vXfcWBIr2",
+        "G6Ef6ESB5Cd5dUV9O2lOY",
+        "5ftNQt7ad2bFGJKDFEMVp",
+        "kCquyYLcJYxcN3pJytuB5",
+        "fauFMOWRolfD7PvEBZgQr",
+        "4StI62XCpIdWpLvWb7CDN",
+        "7F9c5c02GssNVLqwCG1qD",
+        "MGIBuUEe10Q7HSsbhtFRQ",
+        "2jWn01HlgFGqxuSlTXgXT"
     ]
 };

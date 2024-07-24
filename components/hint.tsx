@@ -28,7 +28,7 @@ export const Hint = ({
                 <TooltipTrigger asChild>
                     {children}
                 </TooltipTrigger>
-                <TooltipContent className="text-white bg-black border-black max-w-[225px]" side={side} align={align} sideOffset={sideOffset} alignOffset={alignOffset}>
+                <TooltipContent className="text-white dark:text-black bg-black dark:bg-white border-black dark:border-white max-w-[225px]" side={side} align={align} sideOffset={sideOffset} alignOffset={alignOffset}>
                     <p className="font-semibold">
                         {label}
                     </p>

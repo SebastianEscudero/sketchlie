@@ -39,7 +39,8 @@ const buttonVariants = cva(
         aligned: "bg-white dark:bg-[#383838] dark:hover:bg-[#2C2C2C]",
         alignedActive: "bg-accent/90 text-blue-500 dark:bg-[#383838] dark:hover:bg-[#2C2C2C]",
         sketchlieBlue: "bg-blue-600 text-white hover:bg-blue-800",
-        navbar: "text-black hover:bg-slate-100 rounded-lg"
+        navbar: "text-black hover:bg-slate-100 rounded-lg",
+        sketchify: "hover:bg-blue-500/20 hover:text-blue-800 text-purple-700 dark:text-purple-600 p-2 fill-purple-700 dark:fill-purple-600 hover:text-purple-600",
       },
       size: {
         default: "h-10 px-4 py-2",

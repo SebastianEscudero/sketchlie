@@ -14,7 +14,6 @@ import { CanvasMode, Layer, LayerType } from "@/types/canvas";
 import { InsertLayerCommand } from "@/lib/commands";
 import { useState } from "react";
 import { RenameBoardDialog } from "@/components/modals/rename-modal";
-import { KeyboardShortcutsDialog } from "./keyboard-shortcuts-dialog";
 
 interface InfoProps {
     board: any;

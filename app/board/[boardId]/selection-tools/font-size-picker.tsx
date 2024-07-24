@@ -16,7 +16,7 @@ interface FontSizePickerProps {
     layers: any;
 };
 
-const fontSizes = [10, 12, 14, 18, 24, 36, 48, 56, 64, 80, 144];
+const fontSizes = [1, 2, 4, 6, 8, 10, 12, 14, 18, 24, 36, 48, 56, 64, 80, 144];
 
 export const FontSizePicker = ({
     selectedLayers,
@@ -80,8 +80,8 @@ export const FontSizePicker = ({
         if (!isNaN(fontSize)) {
             if (fontSize > 144) {
                 fontSize = 144;
-            } else if (fontSize < 10) {
-                fontSize = 10
+            } else if (fontSize < 1) {
+                fontSize = 1
             }
             handleFontSizeChange(fontSize);
         }
@@ -123,10 +123,10 @@ export const FontSizePicker = ({
             </div>
             {openSelector === SelectorType.FontSize && (
                 <div
-                    className={`shadow-custom-1 rounded-lg absolute ${selectorPositionClass} right-3 w-[65px] bg-white dark:bg-[#383838] ring-1 ring-black ring-opacity-5`}
+                    className={`shadow-custom-1 rounded-lg absolute ${selectorPositionClass} right-5 w-[45px] bg-white dark:bg-[#383838] ring-1 ring-black ring-opacity-5`}
                 >
-                    <div className="py-5 px-3 grid grid-cols-1 gap-5 w-full text-sm" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                        {fontSizes.map(fontSize => (
+                    <div className="py-4 grid grid-cols-1 gap-5 w-full text-xs" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                        {fontSizes.slice(5).map(fontSize => (
                             <button key={fontSize} onClick={() => handleFontSizeChange(fontSize)}>
                                 {fontSize}
                             </button>

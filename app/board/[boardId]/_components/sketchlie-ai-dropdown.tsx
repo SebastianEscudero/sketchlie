@@ -91,6 +91,8 @@ export const SketchlieAiDropdown = ({
                 if (layer.endConnectedLayerId) {
                     obj[id].endConnectedLayerId = layer.endConnectedLayerId;
                 }
+            } else {
+                obj[id].connectedArrows = layer.connectedArrows;
             }
             return obj;
         }, {});
@@ -136,23 +138,23 @@ export const SketchlieAiDropdown = ({
     return (
         <DropdownMenu>
             <DropdownMenuTrigger>
-                <div className="flex items-center pl-2 border-l border-neutral-200">
+                <div className="flex items-center pl-2 border-l border-neutral-200 dark:border-neutral-600">
                     <Hint label="Sketchify">
                         <Button
                             asChild
-                            variant="board"
+                            variant="sketchify"
                             size="icon"
                         >
-                            <Sparkles className="text-purple-700 p-2 fill-purple-700 hover:text-purple-700" />
+                            <Sparkles />
                         </Button>
                     </Hint>
                 </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent sideOffset={8}>
                 <div className="p-2">
-                    <div className="text-purple-700 text-base font-bold pl-3 flex flex-row items-center">
+                    <div className="text-purple-700 dark:text-purple-500 text-base font-bold pl-3 flex flex-row items-center">
                         Sketchify
-                        <Sparkles className="h-4 w-4 ml-2 fill-purple-700" />
+                        <Sparkles className="h-4 w-4 ml-2 fill-purple-700 dark:fill-purple-500" />
                     </div>
                     <div className="flex flex-col">
                         <Button
@@ -164,7 +166,7 @@ export const SketchlieAiDropdown = ({
                         >
                             <div className="flex items-center">
                                 {isSummaryLoading ? 'Generating summary...' : 'Generate summary'}
-                                {isSummaryLoading ? <LoaderCircle className="animate-spin h-5 w-5 text-purple-700 ml-2"/> : <FileText className="h-5 w-5 ml-2 text-purple-700" />}
+                                {isSummaryLoading ? <LoaderCircle className="animate-spin h-5 w-5 text-purple-700 dark:text-purple-500 ml-2"/> : <FileText className="h-5 w-5 ml-2 text-purple-700 dark:text-purple-500" />}
                             </div>
                         </Button>
                         <Button
@@ -176,7 +178,7 @@ export const SketchlieAiDropdown = ({
                         >
                             <div className="flex items-center">
                                 {isFillTextsLoading ? 'Generating text...' : 'Generate text'}
-                                {isFillTextsLoading ? <LoaderCircle className="animate-spin h-5 w-5 text-purple-700 ml-2"/> : <WandSparkles className="h-5 w-5 ml-2 text-purple-700" />}
+                                {isFillTextsLoading ? <LoaderCircle className="animate-spin h-5 w-5 text-purple-700 dark:text-purple-500 ml-2"/> : <WandSparkles className="h-5 w-5 ml-2 text-purple-700 dark:text-purple-500" />}
                             </div>
                         </Button>
                     </div>
