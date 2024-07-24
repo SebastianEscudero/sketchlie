@@ -959,7 +959,7 @@ export const Canvas = ({
                     // Assigning the filtered results back
                     const intersectingStartLayer = filteredStartLayers.pop();
                     const intersectingEndLayer = filteredEndLayers.pop();
-                    const STRAIGHTNESS_THRESHOLD = 6/zoom;
+                    const STRAIGHTNESS_THRESHOLD = 4/zoom;
 
                     let startConnectedLayerId: any = intersectingStartLayer;
                     let endConnectedLayerId: any = intersectingEndLayer;
@@ -981,7 +981,7 @@ export const Canvas = ({
 
                             const startConnectedLayer = liveLayers[startConnectedLayerId];
                             start = getClosestEndPoint(startConnectedLayer, point, (currentPreviewLayer as ArrowLayer)?.arrowType || ArrowType.Straight, (currentPreviewLayer as ArrowLayer))
-                            end = applyStraightnessAssist(point, start, STRAIGHTNESS_THRESHOLD);
+                            end = applyStraightnessAssist(point, start, STRAIGHTNESS_THRESHOLD, (currentPreviewLayer as ArrowLayer)?.arrowType || ArrowType.Straight);
                         }
 
                         if (intersectingEndLayer) {

@@ -340,10 +340,10 @@ export function resizeArrowBounds(
 
   let end = { x: bounds.x + bounds.width, y: bounds.y + bounds.height };
   let center = { x: bounds.center.x, y: bounds.center.y };
-  const STRAIGHTNESS_THRESHOLD = 6 / zoom;
+  const STRAIGHTNESS_THRESHOLD = 4/zoom;
 
   if (handle === ArrowHandle.start) {
-    point = applyStraightnessAssist(point, end, STRAIGHTNESS_THRESHOLD);
+    point = applyStraightnessAssist(point, end, STRAIGHTNESS_THRESHOLD, newLayer.arrowType || ArrowType.Straight);
     result.x = point.x;
     result.y = point.y;
     result.width = end.x - point.x;
@@ -352,7 +352,7 @@ export function resizeArrowBounds(
     if (newLayer.startConnectedLayerId) {
       const startConnectedLayer = liveLayers[newLayer.startConnectedLayerId];
       let startPoint = getClosestPointOnBorder(startConnectedLayer, point, center, zoom, newLayer.arrowType, newLayer);
-      startPoint = applyStraightnessAssist(startPoint, end, STRAIGHTNESS_THRESHOLD);
+      startPoint = applyStraightnessAssist(startPoint, end, STRAIGHTNESS_THRESHOLD, newLayer.arrowType || ArrowType.Straight);
       result.x = startPoint.x;
       result.y = startPoint.y;
       result.width = end.x - startPoint.x;
@@ -372,13 +372,14 @@ export function resizeArrowBounds(
       }
 
       let endPoint = getClosestEndPoint(liveLayers[newLayer.endConnectedLayerId], center, newLayer.arrowType, newLayer);
-      endPoint = applyStraightnessAssist(endPoint, { x: result.x, y: result.y }, STRAIGHTNESS_THRESHOLD);
-      result.width = endPoint.x - result.x;
-      result.height = endPoint.y - result.y;
+      endPoint = applyStraightnessAssist(endPoint, point, STRAIGHTNESS_THRESHOLD, newLayer.arrowType || ArrowType.Straight);
+      console.log('hi')
+      result.width = endPoint.x - point.x;
+      result.height = endPoint.y - point.y;
     }
 
   } else if (handle === ArrowHandle.end) {
-    point = applyStraightnessAssist(point, { x: bounds.x, y: bounds.y }, STRAIGHTNESS_THRESHOLD);
+    point = applyStraightnessAssist(point, result, STRAIGHTNESS_THRESHOLD, newLayer.arrowType || ArrowType.Straight);
     result.width = point.x - bounds.x;
     result.height = point.y - bounds.y;
 
@@ -393,18 +394,17 @@ export function resizeArrowBounds(
         }
       }
 
-      let startPoint = getClosestEndPoint(liveLayers[newLayer.startConnectedLayerId], center, newLayer.arrowType, newLayer);
-      startPoint = applyStraightnessAssist(startPoint, point, STRAIGHTNESS_THRESHOLD);
+      const startPoint = getClosestEndPoint(liveLayers[newLayer.startConnectedLayerId], center, newLayer.arrowType, newLayer);
+      const adjustedStartPoint = applyStraightnessAssist(startPoint, point, STRAIGHTNESS_THRESHOLD, newLayer.arrowType || ArrowType.Straight);
       result.x = startPoint.x;
       result.y = startPoint.y;
-      result.width = point.x - startPoint.x;
-      result.height = point.y - startPoint.y;
+      result.width = point.x - adjustedStartPoint.x;
+      result.height = point.y - adjustedStartPoint.y;
     }
 
     if (newLayer.endConnectedLayerId) {
       const endConnectedLayer = liveLayers[newLayer.endConnectedLayerId];
       let endPoint = getClosestPointOnBorder(endConnectedLayer, point, center, zoom, newLayer.arrowType, newLayer);
-      endPoint = applyStraightnessAssist(endPoint, { x: result.x, y: result.y }, STRAIGHTNESS_THRESHOLD);
       result.width = endPoint.x - result.x;
       result.height = endPoint.y - result.y;
     }
@@ -1328,14 +1328,16 @@ export function getClosestEndPoint(connectedLayer: Layer, point: Point, arrowTyp
   }
 }
 
-export function applyStraightnessAssist(point: Point, referencePoint: Point, threshold: number): Point {
+export function applyStraightnessAssist(point: Point, referencePoint: Point, threshold: number, arrowType: ArrowType): Point {
   const adjustedPoint = { ...point };
   
-  if (Math.abs(point.x - referencePoint.x) < threshold) {
-    adjustedPoint.x = referencePoint.x;
-  }
-  if (Math.abs(point.y - referencePoint.y) < threshold) {
-    adjustedPoint.y = referencePoint.y;
+  if (arrowType === ArrowType.Diagram) {
+    if (Math.abs(point.x - referencePoint.x) < threshold) {
+      adjustedPoint.x = referencePoint.x;
+    }
+    if (Math.abs(point.y - referencePoint.y) < threshold) {
+      adjustedPoint.y = referencePoint.y;
+    }
   }
   
   return adjustedPoint;
@@ -1352,7 +1354,7 @@ export function updateArrowPosition(arrowLayer: ArrowLayer, connectedLayerId: st
 
   if (connectedLayerId === startConnectedLayerId) {
     const startPoint = getClosestEndPoint(newLayer, center, updatedArrow.arrowType || ArrowType.Straight, updatedArrow);
-    const adjustedStartPoint = applyStraightnessAssist(startPoint, end, STRAIGHTNESS_THRESHOLD);
+    const adjustedStartPoint = applyStraightnessAssist(startPoint, end, STRAIGHTNESS_THRESHOLD, updatedArrow.arrowType || ArrowType.Straight);
 
     updatedArrow.x = adjustedStartPoint.x;
     updatedArrow.y = adjustedStartPoint.y;
@@ -1383,7 +1385,7 @@ export function updateArrowPosition(arrowLayer: ArrowLayer, connectedLayerId: st
 
       if ((updatedArrow.arrowType !== ArrowType.Diagram && updatedArrow.centerEdited !== true) || updatedArrow.arrowType === ArrowType.Diagram) {
         const endPoint = getClosestEndPoint(endConnectedLayer, center, updatedArrow.arrowType || ArrowType.Straight, updatedArrow);
-        const adjustedEndPoint = applyStraightnessAssist(endPoint, start, STRAIGHTNESS_THRESHOLD);
+        const adjustedEndPoint = applyStraightnessAssist(endPoint, start, STRAIGHTNESS_THRESHOLD, updatedArrow.arrowType || ArrowType.Straight);
         
         updatedArrow.width = adjustedEndPoint.x - updatedArrow.x;
         updatedArrow.height = adjustedEndPoint.y - updatedArrow.y;
@@ -1425,7 +1427,7 @@ export function updateArrowPosition(arrowLayer: ArrowLayer, connectedLayerId: st
       if ((updatedArrow.arrowType !== ArrowType.Diagram && updatedArrow.centerEdited !== true) || updatedArrow.arrowType === ArrowType.Diagram) {
         if ((updatedArrow.arrowType !== ArrowType.Diagram && updatedArrow.centerEdited !== true) || updatedArrow.arrowType === ArrowType.Diagram) {
           const startPoint = getClosestEndPoint(startConnectedLayer, center, updatedArrow.arrowType || ArrowType.Straight, updatedArrow);
-          const adjustedStartPoint = applyStraightnessAssist(startPoint, end, STRAIGHTNESS_THRESHOLD);
+          const adjustedStartPoint = applyStraightnessAssist(startPoint, end, STRAIGHTNESS_THRESHOLD, updatedArrow.arrowType || ArrowType.Straight);
           
           updatedArrow.x = adjustedStartPoint.x;
           updatedArrow.y = adjustedStartPoint.y;
@@ -1444,7 +1446,7 @@ export function updateArrowPosition(arrowLayer: ArrowLayer, connectedLayerId: st
       }
     }
     const endPoint = getClosestEndPoint(newLayer, center, updatedArrow.arrowType || ArrowType.Straight, updatedArrow);
-    const adjustedEndPoint = applyStraightnessAssist(endPoint, start, STRAIGHTNESS_THRESHOLD);
+    const adjustedEndPoint = applyStraightnessAssist(endPoint, start, STRAIGHTNESS_THRESHOLD, updatedArrow.arrowType || ArrowType.Straight);
     
     updatedArrow.width = adjustedEndPoint.x - updatedArrow.x;
     updatedArrow.height = adjustedEndPoint.y - updatedArrow.y;
