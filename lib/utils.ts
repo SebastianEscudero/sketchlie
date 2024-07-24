@@ -372,10 +372,9 @@ export function resizeArrowBounds(
       }
 
       let endPoint = getClosestEndPoint(liveLayers[newLayer.endConnectedLayerId], center, newLayer.arrowType, newLayer);
-      endPoint = applyStraightnessAssist(endPoint, point, STRAIGHTNESS_THRESHOLD, newLayer.arrowType || ArrowType.Straight);
-      console.log('hi')
-      result.width = endPoint.x - point.x;
-      result.height = endPoint.y - point.y;
+      endPoint = applyStraightnessAssist(endPoint, { x: result.x, y: result.y }, STRAIGHTNESS_THRESHOLD, newLayer.arrowType || ArrowType.Straight);
+      result.width = endPoint.x - result.x;
+      result.height = endPoint.y - result.y;
     }
 
   } else if (handle === ArrowHandle.end) {
