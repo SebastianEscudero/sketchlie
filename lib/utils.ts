@@ -372,9 +372,8 @@ export function resizeArrowBounds(
       }
 
       const endPoint = getClosestEndPoint(liveLayers[newLayer.endConnectedLayerId], center, newLayer.arrowType, newLayer);
-      const adjustedEndPoint = applyStraightnessAssist(endPoint, point, STRAIGHTNESS_THRESHOLD, newLayer.arrowType || ArrowType.Straight);
-      result.width = adjustedEndPoint.x - result.x;
-      result.height = adjustedEndPoint.y - result.y;
+      result.width = endPoint.x - result.x;
+      result.height = endPoint.y - result.y;
     }
 
   } else if (handle === ArrowHandle.end) {
