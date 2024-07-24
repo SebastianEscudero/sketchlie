@@ -371,10 +371,10 @@ export function resizeArrowBounds(
         }
       }
 
-      let endPoint = getClosestEndPoint(liveLayers[newLayer.endConnectedLayerId], center, newLayer.arrowType, newLayer);
-      endPoint = applyStraightnessAssist(endPoint, { x: result.x, y: result.y }, STRAIGHTNESS_THRESHOLD, newLayer.arrowType || ArrowType.Straight);
-      result.width = endPoint.x - result.x;
-      result.height = endPoint.y - result.y;
+      const endPoint = getClosestEndPoint(liveLayers[newLayer.endConnectedLayerId], center, newLayer.arrowType, newLayer);
+      const adjustedEndPoint = applyStraightnessAssist(endPoint, point, STRAIGHTNESS_THRESHOLD, newLayer.arrowType || ArrowType.Straight);
+      result.width = adjustedEndPoint.x - result.x;
+      result.height = adjustedEndPoint.y - result.y;
     }
 
   } else if (handle === ArrowHandle.end) {
@@ -1332,9 +1332,11 @@ export function applyStraightnessAssist(point: Point, referencePoint: Point, thr
   
   if (arrowType === ArrowType.Diagram) {
     if (Math.abs(point.x - referencePoint.x) < threshold) {
+      console.log('x')
       adjustedPoint.x = referencePoint.x;
     }
     if (Math.abs(point.y - referencePoint.y) < threshold) {
+      console.log('y')
       adjustedPoint.y = referencePoint.y;
     }
   }
