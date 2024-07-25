@@ -392,6 +392,7 @@ export type User = {
   connectionId: number;
   presence: Presence | null;
   information: {
+      role: string;
       name?: string;
       picture?: string;
     };

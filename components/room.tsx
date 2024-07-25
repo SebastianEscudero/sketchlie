@@ -47,10 +47,6 @@ export const Room = React.memo(({ children, roomId, fallback, userInfo, board, l
     expired = now > expiration;
   }
 
-  if (role === 'Guest') {
-    expired = true;
-  }
-
   const [socket, setSocket] = useState<Socket | null>(null);
   const [liveLayers, setLiveLayers] = useState<Layers>({});
   const [liveLayerIds, setLiveLayerIds] = useState<string[]>([]);
@@ -59,10 +55,15 @@ export const Room = React.memo(({ children, roomId, fallback, userInfo, board, l
     connectionId: Math.floor(Math.random() * 1000000), // Add this line
     presence: null,
     information: {
+      role: role,
       name: userInfo.name || "Teammate",
       picture: userInfo.image || undefined,
     }
   });
+
+  if (User.information.role === "Guest") {
+    expired = true;
+  }
 
   const [otherUsers, setOtherUsers] = useState<User[]>([]);
 
@@ -80,7 +81,7 @@ export const Room = React.memo(({ children, roomId, fallback, userInfo, board, l
       setOtherUsers(users.filter(user => user.userId !== User.userId));
     });
 
-    socket.emit('register', User.userId, User.connectionId, User.information.name, User.information.picture);
+    socket.emit('register', User.userId, User.connectionId, User.information.name, User.information.picture, User.information.role);
 
     return () => {
       socket.off('users');
@@ -139,7 +140,30 @@ export const Room = React.memo(({ children, roomId, fallback, userInfo, board, l
       setLiveLayerIds(newLayerIds);
     });
 
+    newSocket.on('role-update', (updatedUserId: string, newRole: string) => {
+      if (updatedUserId === User.userId) {
+        // If the updated user is the current user
+        setUser(prevUser => ({
+          ...prevUser,
+          information: { ...prevUser.information, role: newRole }
+        }));
+      } else {
+        // If the updated user is one of the other users
+        setOtherUsers(prevUsers => 
+          prevUsers.map(user => 
+            user.userId === updatedUserId 
+              ? { ...user, information: { ...user.information, role: newRole } }
+              : user
+          )
+        );
+      }
+    });
+
     return () => {
+      newSocket.off('layer-update');
+      newSocket.off('layer-delete');
+      newSocket.off('layer-send');
+      newSocket.off('role-update');
       newSocket.close();
     };
   }, [roomId]);

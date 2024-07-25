@@ -770,6 +770,10 @@ export const Canvas = ({
         e: React.PointerEvent,
     ) => {
 
+        if (expired) {
+            return;
+        }
+
         const point = pointerEventToCanvasPoint(e, camera, zoom);
         if (point && selectedLayersRef.current.length > 0) {
             const bounds = calculateBoundingBox(selectedLayersRef.current.map(id => liveLayers[id]));
@@ -789,7 +793,7 @@ export const Canvas = ({
             return;
         }
 
-        if (e.button === 0 && expired !== true && !isPanning) {
+        if (e.button === 0 && !isPanning) {
             if (canvasState.mode === CanvasMode.Eraser) {
                 setIsPenEraserSwitcherOpen(false);
                 setIsPenMenuOpen(false);
@@ -825,7 +829,7 @@ export const Canvas = ({
         }
 
         if (selectedLayersRef.current.length > 0) {
-            if (socket && expired !== true) {
+            if (socket) {
                 socket.emit('layer-update', selectedLayersRef.current, liveLayers);
             }
         }
@@ -872,7 +876,7 @@ export const Canvas = ({
 
         setMyPresence(newPresence);
 
-        if (socket && expired !== true) {
+        if (socket) {
             socket.emit('presence', myPresence, User.userId);
         }
 
@@ -1202,7 +1206,7 @@ export const Canvas = ({
                 selection: [],
                 pencilDraft: null,
             };
-            if (socket && expired !== true) {
+            if (socket) {
                 socket.emit('presence', newPresence, User.userId);
             }
         }
@@ -1242,7 +1246,7 @@ export const Canvas = ({
         setPencilDraft([]);
         setMyPresence(newPresence);
 
-        if (socket && expired !== true) {
+        if (socket) {
             socket.emit('presence', newPresence, User.userId);
         }
     }, [setMyPresence, myPresence, socket, User.userId]);
@@ -1283,7 +1287,7 @@ export const Canvas = ({
             socket.emit('presence', newPresence, User.userId);
         }
 
-    }, [selectedLayersRef]);
+    }, [selectedLayersRef, expired]);
 
     const layerIdsToColorSelection = useMemo(() => {
         const layerIdsToColorSelection: Record<string, string> = {};
@@ -1770,11 +1774,14 @@ export const Canvas = ({
                 setIsShowingAIInput={setIsShowingAIInput}
                 isShowingAIInput={isShowingAIInput}
                 setForcedRender={setForceLayerPreviewRender}
+                expired={expired}
             />
             <Participants
                 org={org}
                 otherUsers={otherUsers}
                 User={User}
+                socket={socket}
+                expired={expired}
             />
             {expired !== true && (
                 <Toolbar

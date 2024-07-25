@@ -44,6 +44,7 @@ interface ActionsProps {
   liveLayers?: Layers;
   setCanvasState?: (state: any) => void;
   setForcedRender?: (forcedRender: boolean) => void;
+  expired?: boolean;
 };
 
 export const Actions = ({
@@ -63,6 +64,7 @@ export const Actions = ({
   selectedLayersRef,
   setCanvasState,
   setForcedRender,
+  expired,
 }: ActionsProps) => {
   const { mutate, pending } = useApiMutation(api.board.remove);
   const [isRenameModalOpen, setIsRenameModalOpen] = useState(false);
@@ -135,7 +137,7 @@ export const Actions = ({
             Copy board link
           </DropdownMenuItem>
           <DropdownMenuItem
-            disabled={usersRole !== "Admin"}
+            disabled={expired !== undefined ? expired : usersRole !== "Admin"}
             onClick={() => setIsRenameModalOpen(true)}
             className="p-3 cursor-pointer"
           >
@@ -149,7 +151,7 @@ export const Actions = ({
             onConfirm={onDelete}
           >
             <Button
-              disabled={usersRole !== "Admin"}
+              disabled={expired !== undefined ? expired : usersRole !== "Admin"}
               className="p-3 cursor-pointer w-full justify-start font-semibold text-red-500 bg-white dark:bg-inherit hover:bg-accent dark:hover:bg-[#2C2C2C]"
             >
               <Trash2 className="h-4 w-4 mr-2" />
@@ -167,6 +169,7 @@ export const Actions = ({
                 performAction={performAction}
                 socket={socket}
                 selectedLayersRef={selectedLayersRef}
+                expired={expired}
               />
               <ExportDropdownMenu id={id} title={title} />
               <BackgroundMenu setBackground={setBackground} Background={Background} setForcedRender={setForcedRender}/>
