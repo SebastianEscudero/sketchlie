@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { InsertLayerCommand } from "@/lib/commands";
+import { User } from "@/types/canvas";
 interface ImportDropdownMenuProps {
     id: string;
     usersRole: string;
@@ -22,7 +23,7 @@ interface ImportDropdownMenuProps {
     org: any
     socket: any;
     selectedLayersRef: any;
-    expired?: boolean;
+    User?: User;
 }
 
 interface ImportData {
@@ -40,7 +41,7 @@ export const ImportDropdownMenu = (
         socket,
         org,
         selectedLayersRef,
-        expired
+        User,
     }: ImportDropdownMenuProps) => {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
@@ -99,7 +100,7 @@ export const ImportDropdownMenu = (
                 onChange={handleFileChange}
             />
             <Button
-                disabled={expired !== undefined ? expired : usersRole !== "Admin"}
+                disabled={User !== undefined ? User.information.role !== "Admin" : usersRole !== "Admin"}
                 onClick={onImportClick}
                 className="p-3 cursor-pointer w-full justify-start text-black dark:text-white font-normal bg-white dark:bg-inherit hover:bg-accent dark:hover:bg-[#2C2C2C]"
             >

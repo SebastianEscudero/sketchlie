@@ -1774,7 +1774,7 @@ export const Canvas = ({
                 setIsShowingAIInput={setIsShowingAIInput}
                 isShowingAIInput={isShowingAIInput}
                 setForcedRender={setForceLayerPreviewRender}
-                expired={expired}
+                User={User}
             />
             <Participants
                 org={org}

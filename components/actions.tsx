@@ -21,7 +21,7 @@ import { ImportDropdownMenu } from "./ImportDropdownmenu";
 import { BackgroundMenu } from "./background-menu";
 import { useState } from "react";
 import { RenameBoardDialog } from "./modals/rename-modal";
-import { Layers } from "@/types/canvas";
+import { Layers, User } from "@/types/canvas";
 import { KeyboardShortcutsDialog } from "@/app/board/[boardId]/_components/keyboard-shortcuts-dialog";
 import { HelpDropdownMenu } from "./help-dropdown-menu";
 
@@ -44,7 +44,7 @@ interface ActionsProps {
   liveLayers?: Layers;
   setCanvasState?: (state: any) => void;
   setForcedRender?: (forcedRender: boolean) => void;
-  expired?: boolean;
+  User?: User;
 };
 
 export const Actions = ({
@@ -64,7 +64,7 @@ export const Actions = ({
   selectedLayersRef,
   setCanvasState,
   setForcedRender,
-  expired,
+  User,
 }: ActionsProps) => {
   const { mutate, pending } = useApiMutation(api.board.remove);
   const [isRenameModalOpen, setIsRenameModalOpen] = useState(false);
@@ -137,7 +137,7 @@ export const Actions = ({
             Copy board link
           </DropdownMenuItem>
           <DropdownMenuItem
-            disabled={expired !== undefined ? expired : usersRole !== "Admin"}
+            disabled={User !== undefined ? User.information.role !== "Admin" : usersRole !== "Admin"}
             onClick={() => setIsRenameModalOpen(true)}
             className="p-3 cursor-pointer"
           >
@@ -151,7 +151,7 @@ export const Actions = ({
             onConfirm={onDelete}
           >
             <Button
-              disabled={expired !== undefined ? expired : usersRole !== "Admin"}
+              disabled={User !== undefined ? User.information.role !== "Admin" : usersRole !== "Admin"}
               className="p-3 cursor-pointer w-full justify-start font-semibold text-red-500 bg-white dark:bg-inherit hover:bg-accent dark:hover:bg-[#2C2C2C]"
             >
               <Trash2 className="h-4 w-4 mr-2" />
@@ -169,7 +169,7 @@ export const Actions = ({
                 performAction={performAction}
                 socket={socket}
                 selectedLayersRef={selectedLayersRef}
-                expired={expired}
+                User={User}
               />
               <ExportDropdownMenu id={id} title={title} />
               <BackgroundMenu setBackground={setBackground} Background={Background} setForcedRender={setForcedRender}/>

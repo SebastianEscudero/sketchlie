@@ -10,7 +10,7 @@ import { useCurrentUser } from "@/hooks/use-current-user";
 import { toast } from "sonner";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ShowAllTemplates } from "@/app/dashboard/_components/show-all-templates";
-import { CanvasMode, Layer, LayerType } from "@/types/canvas";
+import { CanvasMode, Layer, LayerType, User } from "@/types/canvas";
 import { InsertLayerCommand } from "@/lib/commands";
 import { useState } from "react";
 import { RenameBoardDialog } from "@/components/modals/rename-modal";
@@ -32,7 +32,7 @@ interface InfoProps {
     setIsShowingAIInput: any;
     isShowingAIInput: any;
     setForcedRender(forcedRender: boolean): void;
-    expired: boolean;
+    User: User;
 }
 
 const TabSeparator = () => {
@@ -59,7 +59,7 @@ export const Info = ({
     setCanvasState,
     selectedLayersRef,
     setForcedRender,
-    expired,
+    User,
     setIsShowingAIInput,
     isShowingAIInput,
 }: InfoProps) => {
@@ -158,7 +158,7 @@ export const Info = ({
                 |
             </div>
             <Hint label="Edit title" side="bottom" sideOffset={10}>
-                <Button disabled={expired} variant="board" className="text-base px-2 sm:max-w-[100px] md:max-w-[400px] max-w-[80px] overflow-hidden relative sm:flex hidden" onClick={() => setIsRenameModalOpen(true)}>
+                <Button disabled={User.information.role !== "Admin"} variant="board" className="text-base px-2 sm:max-w-[100px] md:max-w-[400px] max-w-[80px] overflow-hidden relative sm:flex hidden" onClick={() => setIsRenameModalOpen(true)}>
                     <div className="w-full text-left truncate">
                         {board.title}
                     </div>
@@ -190,7 +190,7 @@ export const Info = ({
                 selectedLayersRef={selectedLayersRef}
                 setCanvasState={setCanvasState}
                 setForcedRender={setForcedRender}
-                expired={expired}
+                User={User}
             >
                 <div className="w-10 flex justify-center items-center">
                     <Hint label="Main menu" side="bottom" sideOffset={10}>
@@ -201,25 +201,34 @@ export const Info = ({
                 </div>
             </Actions>
             <TabSeparator />
-            {expired !== true && (
+            {User.information.role !== "Guest" && (
                 <>
-                    <Dialog>
-                        <Hint label="Templates" side="bottom" sideOffset={10}>
-                            <DialogTrigger className="justify-center items-center xs:flex hidden" onClick={() => setCanvasState({ mode: CanvasMode.None })}>
-                                <Button asChild className="h-8 w-8 xs:h-10 xs:w-10 p-2" variant="board">
-                                    <LayoutTemplate className="h-5 w-5" />
-                                </Button>
-                            </DialogTrigger>
-                        </Hint>
-                        <DialogContent className="w-full max-w-[80%] max-h-[85%] xl:max-w-[50%] overflow-y-auto">
-                            <ShowAllTemplates
-                                onClick={onChooseTemplate}
-                            />
-                        </DialogContent>
-                    </Dialog>
-                    <div className="text-neutral-300 px-1 xs:flex hidden">
-                        |
-                    </div>
+                    {(() => {
+                        if (org.subscription) {
+                            const now = new Date().getTime();
+                            const expiration = new Date(org.subscription.mercadoPagoCurrentPeriodEnd).getTime();
+                            if (now > expiration) {
+                                return null; // Don't show the templates if the subscription is expired
+                            }
+                        }
+                        return (
+                            <>
+                                <Dialog>
+                                    <Hint label="Templates" side="bottom" sideOffset={10}>
+                                        <DialogTrigger className="justify-center items-center xs:flex hidden" onClick={() => setCanvasState({ mode: CanvasMode.None })}>
+                                            <Button asChild className="h-8 w-8 xs:h-10 xs:w-10 p-2" variant="board">
+                                                <LayoutTemplate className="h-5 w-5" />
+                                            </Button>
+                                        </DialogTrigger>
+                                    </Hint>
+                                    <DialogContent className="w-full max-w-[80%] max-h-[85%] xl:max-w-[50%] overflow-y-auto">
+                                        <ShowAllTemplates onClick={onChooseTemplate} />
+                                    </DialogContent>
+                                </Dialog>
+                                <div className="text-neutral-300 px-1 xs:flex hidden">|</div>
+                            </>
+                        );
+                    })()}
                 </>
             )}
             <Hint label="Upgrade" side="bottom" sideOffset={10}>
