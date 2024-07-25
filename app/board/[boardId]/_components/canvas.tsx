@@ -981,6 +981,7 @@ export const Canvas = ({
 
                             const startConnectedLayer = liveLayers[startConnectedLayerId];
                             start = getClosestEndPoint(startConnectedLayer, point, (currentPreviewLayer as ArrowLayer)?.arrowType || ArrowType.Straight, (currentPreviewLayer as ArrowLayer))
+                            end = applyStraightnessAssist(point, start, STRAIGHTNESS_THRESHOLD, (currentPreviewLayer as ArrowLayer)?.arrowType || ArrowType.Straight);
                         }
 
                         if (intersectingEndLayer) {
@@ -991,8 +992,6 @@ export const Canvas = ({
                         startConnectedLayerId = "";
                         endConnectedLayerId = "";
                     }
-
-                    end = applyStraightnessAssist(point, start, STRAIGHTNESS_THRESHOLD, (currentPreviewLayer as ArrowLayer)?.arrowType || ArrowType.Straight);
 
                     let center = { x: (start.x + end.x) / 2, y: (start.y + end.y) / 2 };
                     widthArrow = end.x - start.x;
