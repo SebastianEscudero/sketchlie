@@ -25,6 +25,7 @@ import {
     findIntersectingLayersWithPath,
     isLayerVisible,
     applyStraightnessAssist,
+    SketchlieCopilot,
 } from "@/lib/utils";
 
 import {
@@ -67,6 +68,7 @@ import { ArrowConnectionOutlinePreview } from "./arrow-connection-outline-previe
 import { setCursorWithFill } from "@/lib/theme-utilts";
 import { ArrowPostInsertMenu } from "./arrow-post-insert-menu";
 import { EraserTrail } from "./eraser-trail";
+import { CurrentSuggestedLayer } from "./current-suggested-layer";
 
 const preventDefault = (e: any) => {
     if (e.scale !== 1) {
@@ -132,6 +134,8 @@ export const Canvas = ({
     const [layerWithAssistDraw, setLayerWithAssistDraw] = useState(false);
     const [forceSelectionBoxRender, setForceSelectionBoxRender] = useState(false);
     const [forceLayerPreviewRender, setForceLayerPreviewRender] = useState(false);
+    const [suggestedLayers, setSuggestedLayers] = useState<Layers>({});
+    const [lastSelectedLayerId, setLastSelectedLayerId] = useState<string | null>(null);
     const proModal = useProModal();
     const [background, setBackground] = useState(() => {
         const storedValue = localStorage.getItem('background');
@@ -140,10 +144,23 @@ export const Canvas = ({
 
     useDisableScrollBounce();
 
-    const performAction = (command: Command) => {
+    const performAction = async (command: Command) => {
         command.execute(liveLayerIds, liveLayers);
         setHistory([...history, command]);
         setRedoStack([]); // clear redo stack when new action is performed
+        // if (lastSelectedLayerId) {
+        //     const suggestedLayer = liveLayers[lastSelectedLayerId];
+        //     if (suggestedLayer) {
+        //         const updatedLayer: any = { ...suggestedLayer };
+        //         setSuggestedLayers(updatedLayer);
+        //     }
+        // }
+        // const data = await SketchlieCopilot(liveLayers, visibleLayers, board.title);
+        // if (data) {
+        //     const layerId = data.layerId
+        //     const layer = data.layer[layerId]
+        //     setSuggestedLayers({ ...layer });
+        // }
     };
 
     const undo = () => {
@@ -1282,6 +1299,7 @@ export const Canvas = ({
         setMyPresence(newPresence);
 
         selectedLayersRef.current = [layerId];
+        setLastSelectedLayerId(layerId);
 
         if (socket) {
             socket.emit('presence', newPresence, User.userId);
@@ -1602,6 +1620,14 @@ export const Canvas = ({
                         setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Arrow });
                     }
                 }
+            // } else if (key === "tab") {
+            //     if (!isInsideTextArea) {
+            //         e.preventDefault();
+            //         const layerId = nanoid();
+            //         const command = new InsertLayerCommand([layerId], [suggestedLayers], setLiveLayers, setLiveLayerIds, boardId, socket, org, proModal);
+            //         performAction(command);
+            //         setSuggestedLayers({});
+            //     }
             } else if (key === "backspace" || key === "delete") {
                 if (selectedLayersRef.current.length > 0 && !isInsideTextArea) {
                     const command = new DeleteLayerCommand(selectedLayersRef.current, liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, boardId, socket);
@@ -1922,6 +1948,11 @@ export const Canvas = ({
                         {currentPreviewLayer && (
                             <CurrentPreviewLayer
                                 layer={currentPreviewLayer}
+                            />
+                        )}
+                        {suggestedLayers && (
+                            <CurrentSuggestedLayer 
+                                layer={suggestedLayers}
                             />
                         )}
                         {((canvasState.mode === CanvasMode.ArrowResizeHandler && selectedLayersRef.current.length === 1) || (currentPreviewLayer?.type === LayerType.Arrow)) && (

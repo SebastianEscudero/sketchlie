@@ -1,5 +1,5 @@
 import Groq from "groq-sdk";
-import { generateFillTextsPrompt, generateLayersPrompt, generateSummaryPrompt } from "./masterPrompt";
+import { generateCopilotSuggestions, generateFillTextsPrompt, generateLayersPrompt, generateSummaryPrompt } from "./masterPrompt";
 import jsPDF from "jspdf";
 
 export async function groqGenerateLayers(userInput: string, userId: string) {
@@ -52,6 +52,28 @@ export async function groqFillTexts(selectedLayers: any, title: string, userId: 
             {
                 role: "system",
                 content: generateFillTextsPrompt,
+            },
+            {
+                role: "user",
+                content: content,
+            },
+        ],
+        temperature: 0.2,
+        model: "llama3-8b-8192",
+        user: userId,
+        stream: false,
+        response_format: { type: "json_object"},
+    });
+}
+
+export async function groqSketchlieCopilot(selectedLayers: any, title: string, userId: string) {
+    const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+    const content = `Selected Layers: ${selectedLayers} Board Title: ${title}`
+    return groq.chat.completions.create({
+        messages: [
+            {
+                role: "system",
+                content: generateCopilotSuggestions,
             },
             {
                 role: "user",

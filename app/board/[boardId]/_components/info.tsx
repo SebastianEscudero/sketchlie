@@ -191,6 +191,7 @@ export const Info = ({
                 setCanvasState={setCanvasState}
                 setForcedRender={setForcedRender}
                 User={User}
+                isPrivate={board.private}
             >
                 <div className="w-10 flex justify-center items-center">
                     <Hint label="Main menu" side="bottom" sideOffset={10}>

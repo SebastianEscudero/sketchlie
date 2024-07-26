@@ -9,6 +9,7 @@ import {
   Camera,
   Color,
   Layer,
+  Layers,
   LayerType,
   PathLayer,
   Point,
@@ -340,7 +341,7 @@ export function resizeArrowBounds(
 
   let end = { x: bounds.x + bounds.width, y: bounds.y + bounds.height };
   let center = { x: bounds.center.x, y: bounds.center.y };
-  const STRAIGHTNESS_THRESHOLD = 4/zoom;
+  const STRAIGHTNESS_THRESHOLD = 4 / zoom;
 
   if (handle === ArrowHandle.start) {
     point = applyStraightnessAssist(point, end, STRAIGHTNESS_THRESHOLD, newLayer.arrowType || ArrowType.Straight);
@@ -427,13 +428,13 @@ export function resizeArrowBounds(
     }
 
     if (newLayer.arrowType === ArrowType.Diagram) {
-        if (newLayer.orientation === ArrowOrientation.Horizontal) {
-          result.center.x = point.x;
-          result.center.y = bounds.y + bounds.height / 2;
-        } else {
-          result.center.y = point.y;
-          result.center.x = bounds.x + bounds.width / 2;
-        }
+      if (newLayer.orientation === ArrowOrientation.Horizontal) {
+        result.center.x = point.x;
+        result.center.y = bounds.y + bounds.height / 2;
+      } else {
+        result.center.y = point.y;
+        result.center.x = bounds.x + bounds.width / 2;
+      }
     }
   }
 
@@ -478,7 +479,7 @@ export function getArrowPath(type: ArrowType, start: Point, center: Point, end: 
   } else if (type === ArrowType.Curved) {
     // Directly involve the center point in the calculation of the control points
     // Create control points that are aligned with the center point but placed further out
-    const test =1.335; // Magic number to make the control points look good
+    const test = 1.335; // Magic number to make the control points look good
     const CP1 = {
       x: start.x + (center.x - start.x) * test, // Extend past the center for the first control point
       y: start.y + (center.y - start.y) * test
@@ -493,7 +494,7 @@ export function getArrowPath(type: ArrowType, start: Point, center: Point, end: 
   } else {
     pathData = `M ${start.x} ${start.y} L ${center.x} ${center.y} L ${end.x} ${end.y}`;
   }
-  
+
   return pathData;
 }
 
@@ -521,7 +522,7 @@ export function getArrowHeadAngle(start: Point, center: Point, end: Point, type:
       x: end.x + (center.x - end.x) * test, // Extend past the center for the second control point
       y: end.y + (center.y - end.y) * test
     };
-  
+
     // Calculate the angle for the arrowhead at the start and end points
     // For the start angle, consider the direction from start towards CP1
     startAngle = Math.atan2(CP2.y - start.y, CP2.x - start.x) * (180 / Math.PI) - 180;
@@ -654,8 +655,8 @@ export function findIntersectingLayerForConnection(
   const ids = [];
 
   for (const layerId of filteredLayerIds) {
-  const layer = layers[layerId];
-  const { x, y, height, width } = layer;
+    const layer = layers[layerId];
+    const { x, y, height, width } = layer;
 
     if (
       rect.x + rect.width > x &&
@@ -1238,7 +1239,7 @@ export function getClosestPointOnBorder(connectedLayer: Layer, point: Point, opp
 
 export function getClosestEndPoint(connectedLayer: Layer, point: Point, arrowType: ArrowType, arrowLayer: ArrowLayer): Point {
   if (arrowType === ArrowType.Diagram) {
-    
+
     // Calculate the middle points of each border
     let middlePoints = [
       { x: connectedLayer.x + connectedLayer.width / 2, y: connectedLayer.y }, // Top middle
@@ -1328,18 +1329,16 @@ export function getClosestEndPoint(connectedLayer: Layer, point: Point, arrowTyp
 
 export function applyStraightnessAssist(point: Point, referencePoint: Point, threshold: number, arrowType: ArrowType): Point {
   const adjustedPoint = { ...point };
-  
+
   if (arrowType === ArrowType.Diagram) {
     if (Math.abs(point.x - referencePoint.x) < threshold) {
-      console.log('x')
       adjustedPoint.x = referencePoint.x;
     }
     if (Math.abs(point.y - referencePoint.y) < threshold) {
-      console.log('y')
       adjustedPoint.y = referencePoint.y;
     }
   }
-  
+
   return adjustedPoint;
 }
 
@@ -1350,7 +1349,7 @@ export function updateArrowPosition(arrowLayer: ArrowLayer, connectedLayerId: st
   let center = updatedArrow.center || { x: (start.x + end.x) / 2, y: (start.y + end.y) / 2 };
   const startConnectedLayer = liveLayers[startConnectedLayerId];
   const endConnectedLayer = liveLayers[endConnectedLayerId];
-  const STRAIGHTNESS_THRESHOLD = 4/zoom;
+  const STRAIGHTNESS_THRESHOLD = 4 / zoom;
 
   if (connectedLayerId === startConnectedLayerId) {
     const startPoint = getClosestEndPoint(newLayer, center, updatedArrow.arrowType || ArrowType.Straight, updatedArrow);
@@ -1368,7 +1367,7 @@ export function updateArrowPosition(arrowLayer: ArrowLayer, connectedLayerId: st
           startConnectedLayer.x < endConnectedLayer.x + endConnectedLayer.width &&
           startConnectedLayer.x + startConnectedLayer.width > endConnectedLayer.x
         );
-  
+
         if (intersects) {
           updatedArrow.orientation = ArrowOrientation.Vertical;
         }
@@ -1386,7 +1385,7 @@ export function updateArrowPosition(arrowLayer: ArrowLayer, connectedLayerId: st
       if ((updatedArrow.arrowType !== ArrowType.Diagram && updatedArrow.centerEdited !== true) || updatedArrow.arrowType === ArrowType.Diagram) {
         const endPoint = getClosestEndPoint(endConnectedLayer, center, updatedArrow.arrowType || ArrowType.Straight, updatedArrow);
         const adjustedEndPoint = applyStraightnessAssist(endPoint, start, STRAIGHTNESS_THRESHOLD, updatedArrow.arrowType || ArrowType.Straight);
-        
+
         updatedArrow.width = adjustedEndPoint.x - updatedArrow.x;
         updatedArrow.height = adjustedEndPoint.y - updatedArrow.y;
         end = adjustedEndPoint;
@@ -1428,7 +1427,7 @@ export function updateArrowPosition(arrowLayer: ArrowLayer, connectedLayerId: st
         if ((updatedArrow.arrowType !== ArrowType.Diagram && updatedArrow.centerEdited !== true) || updatedArrow.arrowType === ArrowType.Diagram) {
           const startPoint = getClosestEndPoint(startConnectedLayer, center, updatedArrow.arrowType || ArrowType.Straight, updatedArrow);
           const adjustedStartPoint = applyStraightnessAssist(startPoint, end, STRAIGHTNESS_THRESHOLD, updatedArrow.arrowType || ArrowType.Straight);
-          
+
           updatedArrow.x = adjustedStartPoint.x;
           updatedArrow.y = adjustedStartPoint.y;
           start = adjustedStartPoint;
@@ -1447,7 +1446,7 @@ export function updateArrowPosition(arrowLayer: ArrowLayer, connectedLayerId: st
     }
     const endPoint = getClosestEndPoint(newLayer, center, updatedArrow.arrowType || ArrowType.Straight, updatedArrow);
     const adjustedEndPoint = applyStraightnessAssist(endPoint, start, STRAIGHTNESS_THRESHOLD, updatedArrow.arrowType || ArrowType.Straight);
-    
+
     updatedArrow.width = adjustedEndPoint.x - updatedArrow.x;
     updatedArrow.height = adjustedEndPoint.y - updatedArrow.y;
     end = adjustedEndPoint;
@@ -1554,3 +1553,50 @@ export const isLayerVisible = (layer: Layer, visibleRect: any) => {
     effectiveY + effectiveHeight > visibleRect.y
   );
 };
+
+export async function SketchlieCopilot(liveLayers: Layers, visibleLayers: string[], title: string) {
+  const layers = visibleLayers.reduce((obj: any, id: string) => {
+    obj[id] = liveLayers[id];
+    return obj;
+  }, {});
+
+  const layerDetails = Object.entries(layers).reduce((obj: any, [id, layer]: [string, any]) => {
+    obj[id] = {
+      x: layer.x,
+      y: layer.y,
+      value: layer.value,
+      type: layer.type
+    };
+
+    if (layer.type === LayerType.Arrow) {
+      if (layer.startConnectedLayerId) {
+        obj[id].startConnectedLayerId = layer.startConnectedLayerId;
+      }
+      if (layer.endConnectedLayerId) {
+        obj[id].endConnectedLayerId = layer.endConnectedLayerId;
+      }
+    } else {
+      obj[id].connectedArrows = layer.connectedArrows;
+    }
+    return obj;
+  }, {});
+
+  const selectedLayers = JSON.stringify(layerDetails);
+
+  const response = await fetch("/api/groq", {
+    method: "POST",
+    body: JSON.stringify(
+      {
+        selectedLayers: selectedLayers,
+        title: title,
+        type: "copilot"
+      }
+    ),
+    headers: {
+      "Content-Type": "application/json",
+    }
+  });
+
+  const data = await response.json();
+  return data;
+}

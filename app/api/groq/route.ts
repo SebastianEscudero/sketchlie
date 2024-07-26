@@ -1,5 +1,5 @@
 import { currentUser } from "@/lib/auth";
-import { groqFillTexts, groqGenerateLayers, groqGenerateSummary } from "@/lib/sketchlie-ai";
+import { groqFillTexts, groqGenerateLayers, groqGenerateSummary, groqSketchlieCopilot } from "@/lib/sketchlie-ai";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -31,6 +31,11 @@ export async function POST(req: NextRequest) {
             const selectedLayers = body.selectedLayers;
             const title = body.title;
             const chatCompletion = await groqFillTexts(selectedLayers, title, userId);
+            return new NextResponse(chatCompletion.choices[0]?.message?.content || "", {status: 200});
+        } else if (body.type === "copilot") {
+            const layers = body.selectedLayers;
+            const title = body.title;
+            const chatCompletion = await groqSketchlieCopilot(layers, title, userId);
             return new NextResponse(chatCompletion.choices[0]?.message?.content || "", {status: 200});
         } else {
             return new NextResponse("Invalid type", {status: 400});

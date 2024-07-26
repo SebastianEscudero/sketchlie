@@ -1,7 +1,7 @@
 "use client";
 
 import { toast } from "sonner";
-import { Link2, Pencil, Trash2 } from "lucide-react";
+import { Link2, LockKeyhole, LockKeyholeOpen, Pencil, Trash2 } from "lucide-react";
 import { DropdownMenuContentProps } from "@radix-ui/react-dropdown-menu";
 
 import { ConfirmModal } from "@/components/confirm-modal";
@@ -24,6 +24,7 @@ import { RenameBoardDialog } from "./modals/rename-modal";
 import { Layers, User } from "@/types/canvas";
 import { KeyboardShortcutsDialog } from "@/app/board/[boardId]/_components/keyboard-shortcuts-dialog";
 import { HelpDropdownMenu } from "./help-dropdown-menu";
+import { PrivateBoardDialog } from "./private-board-dialog";
 
 
 interface ActionsProps {
@@ -45,6 +46,7 @@ interface ActionsProps {
   setCanvasState?: (state: any) => void;
   setForcedRender?: (forcedRender: boolean) => void;
   User?: User;
+  isPrivate: boolean;
 };
 
 export const Actions = ({
@@ -65,9 +67,11 @@ export const Actions = ({
   setCanvasState,
   setForcedRender,
   User,
+  isPrivate
 }: ActionsProps) => {
   const { mutate, pending } = useApiMutation(api.board.remove);
   const [isRenameModalOpen, setIsRenameModalOpen] = useState(false);
+  const [isPrivateModalOpen, setIsPrivateModalOpen] = useState(false);
 
   const onCopyLink = () => {
     navigator.clipboard.writeText(
@@ -122,6 +126,13 @@ export const Actions = ({
           id={id}
           boardTitle={title}
         />
+      ) : isPrivateModalOpen ? (
+        <PrivateBoardDialog
+          isOpen={isPrivateModalOpen}
+          setIsOpen={setIsPrivateModalOpen}
+          isPrivate={isPrivate}
+          boardId={id}
+        />
       ) : (
         <DropdownMenuContent
           onClick={(e) => e.stopPropagation()}
@@ -135,6 +146,17 @@ export const Actions = ({
           >
             <Link2 className="h-4 w-4 mr-2" />
             Copy board link
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            disabled={User !== undefined ? User.information.role !== "Admin" : usersRole !== "Admin"}
+            onClick={() => setIsPrivateModalOpen(true)}
+            className="p-3 cursor-pointer"
+          >
+            {isPrivate ? <LockKeyholeOpen className="h-4 w-4 mr-2" /> : <LockKeyhole className="h-4 w-4 mr-2" />}
+            {isPrivate ? "Make Public" : "Make Private"}
+            {(User?.information.role !== "Admin" && usersRole !== "Admin") &&
+              <span className="ml-2 text-xs text-gray-500">(Admin)</span>
+            }
           </DropdownMenuItem>
           <DropdownMenuItem
             disabled={User !== undefined ? User.information.role !== "Admin" : usersRole !== "Admin"}
@@ -172,8 +194,8 @@ export const Actions = ({
                 User={User}
               />
               <ExportDropdownMenu id={id} title={title} />
-              <BackgroundMenu setBackground={setBackground} Background={Background} setForcedRender={setForcedRender}/>
-              <HelpDropdownMenu setCanvasState={setCanvasState}/>
+              <BackgroundMenu setBackground={setBackground} Background={Background} setForcedRender={setForcedRender} />
+              <HelpDropdownMenu setCanvasState={setCanvasState} />
             </>
           }
         </DropdownMenuContent >

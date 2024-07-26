@@ -8,6 +8,7 @@ export default defineSchema({
     authorId: v.string(),
     authorName: v.string(),
     imageUrl: v.string(),
+    private: v.optional(v.boolean())
   })
     .index("by_org", ["orgId"])
     .searchIndex("search_title", {

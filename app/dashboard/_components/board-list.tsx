@@ -72,6 +72,7 @@ export const BoardList = ({
             createdAt={board._creationTime}
             orgId={board.orgId}
             isFavorite={board.isFavorite}
+            isPrivate={board.private}
           />
         ))}
       </div>

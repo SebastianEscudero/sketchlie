@@ -50,3 +50,53 @@ export const acceptInvite = async (
 
   return { success: "Invitation Accepted!" }
 }
+
+export const addUserToOrganization = async (organizationId: string, userId: string, role: any, orgId: string) => {
+  try {
+    if (!userId) {
+      return { error: "Unauthorized" };
+    }
+
+    const dbUser = await getUserById(userId);
+
+    if (!dbUser) {
+      return { error: "Unauthorized" };
+    }
+
+    // Check if the user is already part of the organization
+    const existingEntry = await db.organizationUser.findUnique({
+      where: {
+        userId_organizationId: {
+          userId,
+          organizationId,
+        },
+      },
+    });
+
+    if (existingEntry) {
+      const existingOrg = await db.organization.findUnique({
+        where: { id: organizationId },
+        include: { users: true, subscription: true }
+      });
+      return { error: "User is already part of the organization", org: existingOrg };
+    }
+
+    await db.organizationUser.create({
+      data: {
+        userId: userId,
+        organizationId: organizationId,
+        role: role,
+      },
+    });
+
+    const updatedOrg = await db.organization.findUnique({
+      where: { id: orgId },
+      include: { users: true, subscription: true }
+    });
+
+    return { success: "User added to organization", org: updatedOrg };
+  } catch (error) {
+    console.error('Error adding user to organization:', error);
+    return { error: 'Error adding user to organization' };
+  }
+};

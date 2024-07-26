@@ -14,7 +14,7 @@ import { useApiMutation } from "@/hooks/use-api-mutation";
 import { Footer } from "./footer";
 import { Overlay } from "./overlay";
 import { useCurrentUser } from "@/hooks/use-current-user";
-import { useState, useCallback } from "react";
+import { useState } from "react";
 
 interface BoardCardProps {
   id: string;
@@ -26,6 +26,7 @@ interface BoardCardProps {
   orgId: string;
   isFavorite: boolean;
   org: any;
+  isPrivate: boolean;
 };
 
 export const BoardCard = ({
@@ -38,6 +39,7 @@ export const BoardCard = ({
   orgId,
   isFavorite,
   org,
+  isPrivate,
 }: BoardCardProps) => {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -93,6 +95,7 @@ export const BoardCard = ({
             id={id}
             title={title}
             side="right"
+            isPrivate={isPrivate}
           >
             <button
               className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity px-3 py-2 outline-none"

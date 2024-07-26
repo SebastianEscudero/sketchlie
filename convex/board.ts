@@ -21,11 +21,13 @@ export const create = mutation({
     userName: v.optional(v.string()),
     orgId: v.string(),
     title: v.string(),
+    private: v.optional(v.boolean())
   },
   handler: async (ctx, args) => {
 
     const userId = args.userId as string
     const userName = args.userName as string
+    const isPrivate = true;
 
     const randomImage = images[Math.floor(Math.random() * images.length)];
 
@@ -39,6 +41,7 @@ export const create = mutation({
       authorId: userId,
       authorName: userName!,
       imageUrl: randomImage,
+      private: isPrivate
     });
 
     return board;
@@ -195,103 +198,34 @@ export const get = query({
   },
 });
 
-// export const addLayer = mutation({
-//   args: {
-//     board: v.any(),
-//     layer: v.any(),
-//     layerId: v.any(),
-//   },
-//   handler: async (ctx, args) => {
-//     const board = args.board;
-//     if (!board) {
-//       throw new Error("Board not found");
-//     }
+export const togglePrivate = mutation({
+  args: { 
+    id: v.id("boards"),
+    userId: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const userId = args.userId as string;
 
-//     // Ensure layerId and layer are arrays
-//     const layerIds = Array.isArray(args.layerId) ? args.layerId : [args.layerId];
-//     const layers = Array.isArray(args.layer) ? args.layer : [args.layer];
+    if (!userId) {
+      throw new Error("Unauthorized");
+    }
 
-//     layerIds.forEach((layerId, index) => {
-//       board.layers[layerId] = layers[index];
-//       board.layerIds.push(layerId);
-//     });
+    const board = await ctx.db.get(args.id);
 
-//     // Only update the necessary fields
-//     await ctx.db.patch(board._id, { layers: board.layers, layerIds: board.layerIds });
-//     return board;
-//   },
-// });
+    if (!board) {
+      throw new Error("Board not found");
+    }
 
-// export const deleteLayer = mutation({
-//   args: {
-//     board: v.any(),
-//     layerId: v.any(),
-//   },
-//   handler: async (ctx, args) => {
-//     const board = args.board
-//     if (!board) {
-//       throw new Error("Board not found");
-//     }
+    // Check if the user is the author of the board
+    if (board.authorId !== userId) {
+      throw new Error("Only the board author can change privacy settings");
+    }
 
-//     // Ensure layerId is an array
-//     const layerIds = Array.isArray(args.layerId) ? args.layerId : [args.layerId];
+    // Toggle the private status
+    const updatedBoard = await ctx.db.patch(args.id, {
+      private: !board.private,
+    });
 
-//     layerIds.forEach((layerId) => {
-//       if (!board.layers[layerId]) {
-//         throw new Error(`Layer ${layerId} not found`);
-//       }
-//       delete board.layers[layerId];
-//       const layerIndex = board.layerIds.indexOf(layerId);
-//       if (layerIndex !== -1) {
-//         board.layerIds.splice(layerIndex, 1);
-//       }
-//     });
-
-//     await ctx.db.patch(board._id, board);
-//     return board;
-//   },
-// });
-
-// export const updateLayer = mutation({
-//   args: {
-//     board: v.any(),
-//     layerId: v.any(),
-//     layerUpdates: v.any(),
-//   },
-//   handler: async (ctx, args) => {
-//     const board = args.board;
-//     if (!board) {
-//       throw new Error("Board not found");
-//     }
-
-//     // Ensure layerId and layerUpdates are arrays
-//     const layerIds = Array.isArray(args.layerId) ? args.layerId : [args.layerId];
-//     const layersUpdates = Array.isArray(args.layerUpdates) ? args.layerUpdates : [args.layerUpdates];
-
-//     layerIds.forEach((layerId, index) => {
-//       if (!board.layers[layerId]) {
-//         throw new Error(`Layer ${layerId} not found`);
-//       }
-//       board.layers[layerId] = { ...board.layers[layerId], ...layersUpdates[index] };
-//     });
-
-//     await ctx.db.patch(board._id, { layers: board.layers });
-//     return board;
-//   },
-// });
-
-// export const updateLayerIds = mutation({
-//   args: {
-//     board: v.any(),
-//     layerIds: v.array(v.string()),
-//   },
-//   handler: async (ctx, args) => {
-//     const board = args.board;
-//     if (!board) {
-//       throw new Error("Board not found");
-//     }
-//     board.layerIds = args.layerIds;
-//     await ctx.db.patch(board._id, { layerIds: board.layerIds });
-//     return board;
-//   },
-// });
+    return updatedBoard;
+  },
+});

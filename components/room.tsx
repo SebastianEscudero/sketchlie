@@ -1,6 +1,10 @@
 import { Layers, User } from "@/types/canvas";
 import React, { createContext, ReactNode, Suspense, useContext, useEffect, useState } from "react";
 import io, { Socket } from "socket.io-client";
+import { NotPartOfOrg } from "./auth/board-not-part-of-org-loading";
+import { db } from "@/lib/db";
+import { addUserToOrganization } from "@/actions/accept-invite";
+import { useCurrentUser } from "@/hooks/use-current-user";
 
 interface RoomContextValue {
   roomId: string;
@@ -28,87 +32,129 @@ interface RoomProps {
   children: ReactNode;
   roomId: string;
   fallback: NonNullable<ReactNode> | null;
-  userInfo: any;
   board: any;
   layers: Layers;
   layerIds: string[];
 }
 
-export const Room = React.memo(({ children, roomId, fallback, userInfo, board, layers, layerIds }: RoomProps) => {
+const defaultRole = "Member";
 
-  const orgId = board?.orgId;
-  const org = userInfo.organizations.find((org: any) => org.id === orgId);
-  const role = org.users.find((user: any) => user.id === userInfo.id).role
-
-  let expired = false
-  if (org.subscription) {
-    const now = new Date().getTime();
-    const expiration = new Date(org.subscription.mercadoPagoCurrentPeriodEnd).getTime();
-    expired = now > expiration;
-  }
-
+export const Room = React.memo(({ children, roomId, fallback, board, layers, layerIds }: RoomProps) => {
+  const userInfo = useCurrentUser();
+  const [org, setOrg] = useState<any>(null);
+  const [isUserPartOfOrg, setIsUserPartOfOrg] = useState<boolean>(false);
+  const [role, setRole] = useState<string>("Guest");
+  const [expired, setExpired] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [socket, setSocket] = useState<Socket | null>(null);
   const [liveLayers, setLiveLayers] = useState<Layers>({});
   const [liveLayerIds, setLiveLayerIds] = useState<string[]>([]);
-  const [User, setUser] = useState<User>({
-    userId: userInfo.id,
-    connectionId: Math.floor(Math.random() * 1000000), // Add this line
-    presence: null,
-    information: {
-      role: role,
-      name: userInfo.name || "Teammate",
-      picture: userInfo.image || undefined,
-    }
-  });
-
-  if (User.information.role === "Guest") {
-    expired = true;
-  }
-
+  const [User, setUser] = useState<User>({} as User);
   const [otherUsers, setOtherUsers] = useState<User[]>([]);
 
+  useEffect(() => {
+    if (!userInfo || !board) return;
+
+    const checkOrganizationAccess = async () => {
+      const foundOrg = userInfo.organizations.find((org: any) => org.id === board?.orgId);
+      
+      if (foundOrg) {
+        setOrg(foundOrg);
+        const userRole = foundOrg.users.find((user: any) => user.id === userInfo.id)?.role || "Guest";
+        setRole(userRole);
+        setIsUserPartOfOrg(true);
+
+        if (foundOrg.subscription) {
+          const now = new Date().getTime();
+          const expiration = new Date(foundOrg.subscription.mercadoPagoCurrentPeriodEnd).getTime();
+          setExpired(now > expiration);
+        }
+      } else if (!board.private) {
+        // If the user is not part of the org but the board is public, add them to the org
+        try {
+          await addUserToOrganization(board.orgId, userInfo.id, defaultRole, board.orgId)
+          .then(({ org }) => {
+            setOrg(org);
+            setRole("Guest");
+            setIsUserPartOfOrg(true);
+
+            if (org?.subscription) {
+              const now = new Date().getTime();
+              const expiration = org.subscription.mercadoPagoCurrentPeriodEnd
+                ? new Date(org.subscription.mercadoPagoCurrentPeriodEnd).getTime()
+                : 0; // or some other default value
+              setExpired(now > expiration);
+            }
+          });
+
+        } catch (error) {
+          console.error("Error adding user to organization:", error);
+          setIsUserPartOfOrg(false);
+          setExpired(true);
+        }
+      } else {
+        setIsUserPartOfOrg(false);
+        setExpired(true);
+      }
+      setIsLoading(false);
+    };
+
+    checkOrganizationAccess();
+  }, [userInfo, board]);
+  
   useEffect(() => {
     if (layers && layerIds) {
       setLiveLayers(layers);
       setLiveLayerIds(layerIds);
     }
+
+    if (userInfo) {
+      setUser({
+        userId: userInfo.id,
+        connectionId: Math.floor(Math.random() * 1000000),
+        presence: null,
+        information: {
+            role: role,
+            name: userInfo.name || "Teammate",
+            picture: userInfo.image || undefined,
+          }
+      });
+    }
   }, []);
 
   useEffect(() => {
-    if (!socket) return;
-
-    socket.on('users', (users: User[]) => {
-      setOtherUsers(users.filter(user => user.userId !== User.userId));
-    });
-
-    socket.emit('register', User.userId, User.connectionId, User.information.name, User.information.picture, User.information.role);
-
-    return () => {
-      socket.off('users');
-    };
-  }, [socket, User]);
+    setUser(prevUser => ({
+      ...prevUser,
+      information: { ...prevUser.information, role }
+    }));
+  }, [role]);
 
   useEffect(() => {
+    if (!isUserPartOfOrg || isLoading) return;
+
     const newSocket = io('https://sketchlie-server-little-resonance-2329.fly.dev', {
       query: { roomId }
     });
     setSocket(newSocket);
 
+    newSocket.on('users', (users: User[]) => {
+      setOtherUsers(users.filter(user => user.userId !== User.userId));
+    });
+
     newSocket.on('layer-update', (layerIds, layers) => {
-      // Ensure layerIds and layers are arrays
       layerIds = Array.isArray(layerIds) ? layerIds : [layerIds];
       layers = Array.isArray(layers) ? layers : [layers];
     
       setLiveLayers(prevLayers => {
-        let newLayers = { ...prevLayers };
-        layerIds.forEach((layerId: string, index: any) => {
+        const newLayers = { ...prevLayers };
+        layerIds.forEach((layerId: string, index: number) => {
           newLayers[layerId] = { ...newLayers[layerId], ...layers[index] };
         });
         return newLayers;
       });
     
       setLiveLayerIds(prevLayerIds => {
-        let newLayerIds = [...prevLayerIds];
+        const newLayerIds = [...prevLayerIds];
         layerIds.forEach((layerId: string) => {
           if (!newLayerIds.includes(layerId)) {
             newLayerIds.push(layerId);
@@ -119,7 +165,6 @@ export const Room = React.memo(({ children, roomId, fallback, userInfo, board, l
     });
 
     newSocket.on('layer-delete', (layerId) => {
-      // Ensure layerId is an array
       layerId = Array.isArray(layerId) ? layerId : [layerId];
     
       setLiveLayers(layers => {
@@ -130,10 +175,7 @@ export const Room = React.memo(({ children, roomId, fallback, userInfo, board, l
         return newLayers;
       });
     
-      setLiveLayerIds(layerIds => {
-        const newLayerIds = layerIds.filter(id => !layerId.includes(id));
-        return newLayerIds;
-      });
+      setLiveLayerIds(layerIds => layerIds.filter(id => !layerId.includes(id)));
     });
 
     newSocket.on('layer-send', (newLayerIds) => {
@@ -142,13 +184,8 @@ export const Room = React.memo(({ children, roomId, fallback, userInfo, board, l
 
     newSocket.on('role-update', (updatedUserId: string, newRole: string) => {
       if (updatedUserId === User.userId) {
-        // If the updated user is the current user
-        setUser(prevUser => ({
-          ...prevUser,
-          information: { ...prevUser.information, role: newRole }
-        }));
+        setRole(newRole);
       } else {
-        // If the updated user is one of the other users
         setOtherUsers(prevUsers => 
           prevUsers.map(user => 
             user.userId === updatedUserId 
@@ -159,14 +196,25 @@ export const Room = React.memo(({ children, roomId, fallback, userInfo, board, l
       }
     });
 
+    newSocket.emit('register', User.userId, User.connectionId, User.information.name, User.information.picture, User.information.role);
+
     return () => {
+      newSocket.off('users');
       newSocket.off('layer-update');
       newSocket.off('layer-delete');
       newSocket.off('layer-send');
       newSocket.off('role-update');
       newSocket.close();
     };
-  }, [roomId]);
+  }, [isUserPartOfOrg, isLoading, roomId, User]);
+
+  if (isLoading) {
+    return <NotPartOfOrg label="Joining organization..."/>;
+  }
+
+  if (!isUserPartOfOrg) {
+    return <NotPartOfOrg label="You are not part of this organization"/>;
+  }
 
   return (
     <RoomContext.Provider value={{ roomId, socket, expired }}>
