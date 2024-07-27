@@ -155,7 +155,7 @@ export const Actions = ({
             {isPrivate ? <LockKeyholeOpen className="h-4 w-4 mr-2" /> : <LockKeyhole className="h-4 w-4 mr-2" />}
             {isPrivate ? "Make Public" : "Make Private"}
             {(User?.information.role !== "Admin" && usersRole !== "Admin") &&
-              <span className="ml-2 text-xs text-gray-500">(Admin)</span>
+              <span className="text-sm ml-2">(Admin)</span>
             }
           </DropdownMenuItem>
           <DropdownMenuItem

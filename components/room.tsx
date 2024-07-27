@@ -53,6 +53,14 @@ export const Room = React.memo(({ children, roomId, fallback, board, layers, lay
   const [otherUsers, setOtherUsers] = useState<User[]>([]);
 
   useEffect(() => {
+    if (role === "Guest") {
+      setExpired(true);
+    } else {
+      setExpired(false);
+    }
+  }, [role])
+
+  useEffect(() => {
     if (!userInfo || !board) return;
 
     const checkOrganizationAccess = async () => {
