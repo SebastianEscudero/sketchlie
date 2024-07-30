@@ -28,7 +28,6 @@ const COLORS = [
   "#3AB624", // Emerald
   "#2E5ADA", // Dark Blue
   "#6D2AC2", // Purple
-  "#000000", // Black
   "#CCB800", // Yellow
   "#E185F4", // Light Purple
   "#AE3EC9", // Dark Purple
