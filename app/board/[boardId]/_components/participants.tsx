@@ -13,7 +13,7 @@ const MAX_SHOWN_USERS = 5;
 
 interface ParticipantsProps {
     otherUsers: User[] | null;
-    User: User
+    User: User;
     org: any;
     socket: any;
     expired: boolean;
@@ -45,8 +45,8 @@ export const Participants = ({
                                 borderColor={connectionIdToColor(connectionId)}
                                 key={userId}
                                 src={information?.picture}
-                                name={information?.name}
-                                fallback={information?.name?.[0] || "T"}
+                                name={information?.name?.toUpperCase()}
+                                fallback={information?.name?.[0]?.toUpperCase() || "T"}
                             />
                         );
 
@@ -56,14 +56,14 @@ export const Participants = ({
                     <UserAvatar
                         borderColor={connectionIdToColor(User.connectionId)}
                         src={User.information?.picture}
-                        name={`${User.information?.name} (You)`}
-                        fallback={User.information?.name?.[0] || "T"}
+                        name={`${User.information?.name?.toUpperCase()} (YOU)`}
+                        fallback={User.information?.name?.[0]?.toUpperCase() || "T"}
                     />
                 )}
 
                 {hasMoreUsers && (
                     <UserAvatar
-                        name={`${otherUsers.length - MAX_SHOWN_USERS} more`}
+                        name={`${otherUsers.length - MAX_SHOWN_USERS} MORE`}
                         fallback={`+${otherUsers.length - MAX_SHOWN_USERS}`}
                     />
                 )}

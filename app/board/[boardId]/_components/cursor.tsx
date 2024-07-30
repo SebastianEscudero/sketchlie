@@ -31,32 +31,32 @@ export const Cursor = memo(({
     }
 
     const { x, y } = cursor;
+    const color = connectionIdToColor(connectionId);
+
     return (
         <foreignObject
-            height={50/zoom}
-            width={(name.length * 10 + 24)/zoom}
-            className="relative"
-            transform={`translate(${x}, ${y})`}
+            height={50}
+            width={name.length * 10 + 24}
+            className="relative overflow-visible"
+            transform={`translate(${x}, ${y}) scale(${1/zoom})`}
         >
-            <MousePointer2
-                style={{
-                    fill: connectionIdToColor(connectionId),
-                    color: connectionIdToColor(connectionId),
-                    height: `${20/zoom}px`,
-                    width: `${20/zoom}px`,
-                }}
-            />
-            <div
-                className="truncate text-white font-semibold flex items-center justify-start text-sm absolute rounded-md px-2 py-[2px]"
-                style={{
-                        backgroundColor: connectionIdToColor(connectionId),
-                        scale: 1 / zoom,
-                        transformOrigin: "top left",
-                        top: `${18/zoom}px`, // Adjust for the height of the MousePointer2 plus padding
-                        left: `${18/zoom }px`, // Adjust for the width of the MousePointer2 plus padding
+            <div className="flex flex-col items-start max-w-[400px] truncate">
+                <MousePointer2
+                    style={{
+                        fill: color,
+                        color: color,
+                        height: 20,
+                        width: 20,
                     }}
-            >
-                {name}
+                />
+                <span
+                    className="text-white font-semibold truncate text-sm rounded-md px-2 py-[2px] ml-5 max-w-[350px]"
+                    style={{
+                        backgroundColor: color,
+                    }}
+                >
+                    {name}
+                </span>
             </div>
         </foreignObject>
     );
