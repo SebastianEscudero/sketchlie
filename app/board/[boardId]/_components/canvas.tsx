@@ -531,22 +531,15 @@ export const Canvas = ({
         ) {
             return;
         }
-
-        setPencilDraft(pencilDraft.length === 1 &&
-            pencilDraft[0][0] === point.x &&
-            pencilDraft[0][1] === point.y
-            ? pencilDraft
-            : [...pencilDraft, [point.x, point.y, e.pressure]]);
-
-
+    
+        const newPoint: [number, number, number] = [point.x, point.y, e.pressure];
+        const smoothedPoints = smoothLastPoint([...pencilDraft, newPoint]);
+        setPencilDraft(smoothedPoints);
+    
         const newPresence: Presence = {
             ...myPresence,
             cursor: point,
-            pencilDraft: pencilDraft.length === 1 &&
-                pencilDraft[0][0] === point.x &&
-                pencilDraft[0][1] === point.y
-                ? pencilDraft
-                : [...pencilDraft, [point.x, point.y, e.pressure]],
+            pencilDraft: smoothedPoints,
             pathStrokeSize: canvasState.mode === CanvasMode.Laser
                 ? 5 / zoom
                 : canvasState.mode === CanvasMode.Highlighter
@@ -563,6 +556,27 @@ export const Canvas = ({
 
     }, [canvasState.mode, pencilDraft, myPresence, setMyPresence, pathColor, pathStrokeSize, zoom, expired]);
 
+    const smoothLastPoint = (points: [number, number, number][]): [number, number, number][] => {
+        if (points.length < 3) return points;
+    
+        const smoothFactor = 0.314159;
+    
+        const lastIndex = points.length - 1;
+        const penultimateIndex = lastIndex - 1;
+    
+        const prev = points[penultimateIndex - 1];
+        const current = points[penultimateIndex];
+        const next = points[lastIndex];
+    
+        points[penultimateIndex] = [
+            current[0] + (prev[0] + next[0] - 2 * current[0]) * smoothFactor,
+            current[1] + (prev[1] + next[1] - 2 * current[1]) * smoothFactor,
+            current[2]
+        ];
+    
+        return points;
+    };
+    
     const insertPath = useCallback(() => {
         if (
             pencilDraft.length === 0 ||
