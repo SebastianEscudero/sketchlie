@@ -58,8 +58,8 @@ export const UsersDialogBoard = ({
                                 <UserAvatar
                                     borderColor={connectionIdToColor(user.connectionId)}
                                     src={user.information?.picture}
-                                    name={user.information?.name}
-                                    fallback={user.information?.name?.[0] || "T"}
+                                    name={user.information?.name?.toUpperCase()}
+                                    fallback={user.information?.name?.[0]?.toUpperCase() || "T"}
                                 />
                                 <div className="ml-2">
                                     <p className="truncate xs:w-auto w-[140px] text-sm font-semibold">

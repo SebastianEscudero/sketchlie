@@ -1810,32 +1810,32 @@ export const Canvas = ({
                 expired={expired}
             />
             {expired !== true && (
-                <Toolbar
-                    pathColor={pathColor}
-                    pathStrokeSize={pathStrokeSize}
-                    setPathColor={setPathColor}
-                    setPathStrokeSize={setPathStrokeSize}
-                    isUploading={isUploading}
-                    setIsUploading={setIsUploading}
-                    setSelectedImage={setSelectedImage}
-                    canvasState={canvasState}
-                    setCanvasState={setCanvasState}
-                    org={org}
-                    undo={undo}
-                    redo={redo}
-                    canUndo={history.length > 0}
-                    canRedo={redoStack.length > 0}
-                    arrowTypeInserting={arrowTypeInserting}
-                    setArrowTypeInserting={setArrowTypeInserting}
-                    isArrowsMenuOpen={isArrowsMenuOpen}
-                    setIsArrowsMenuOpen={setIsArrowsMenuOpen}
-                    isPenMenuOpen={isPenMenuOpen}
-                    setIsPenMenuOpen={setIsPenMenuOpen}
-                    isShapesMenuOpen={isShapesMenuOpen}
-                    setIsShapesMenuOpen={setIsShapesMenuOpen}
-                    isPenEraserSwitcherOpen={isPenEraserSwitcherOpen}
-                    setIsPenEraserSwitcherOpen={setIsPenEraserSwitcherOpen}
-                    isPlacingLayer={currentPreviewLayer !== null}
+            <Toolbar
+                pathColor={pathColor}
+                pathStrokeSize={pathStrokeSize}
+                setPathColor={setPathColor}
+                setPathStrokeSize={setPathStrokeSize}
+                isUploading={isUploading}
+                setIsUploading={setIsUploading}
+                setSelectedImage={setSelectedImage}
+                canvasState={canvasState}
+                setCanvasState={setCanvasState}
+                org={org}
+                undo={undo}
+                redo={redo}
+                canUndo={history.length > 0}
+                canRedo={redoStack.length > 0}
+                arrowTypeInserting={arrowTypeInserting}
+                setArrowTypeInserting={setArrowTypeInserting}
+                isArrowsMenuOpen={isArrowsMenuOpen}
+                setIsArrowsMenuOpen={setIsArrowsMenuOpen}
+                isPenMenuOpen={isPenMenuOpen}
+                setIsPenMenuOpen={setIsPenMenuOpen}
+                isShapesMenuOpen={isShapesMenuOpen}
+                setIsShapesMenuOpen={setIsShapesMenuOpen}
+                isPenEraserSwitcherOpen={isPenEraserSwitcherOpen}
+                setIsPenEraserSwitcherOpen={setIsPenEraserSwitcherOpen}
+                isPlacingLayer={currentPreviewLayer !== null}
                 />
             )}
             {!IsArrowPostInsertMenuOpen && !isMoving && canvasState.mode !== CanvasMode.Resizing && canvasState.mode !== CanvasMode.ArrowResizeHandler && canvasState.mode !== CanvasMode.SelectionNet && activeTouches < 2 && (

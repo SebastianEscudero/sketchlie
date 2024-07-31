@@ -53,6 +53,7 @@ interface ToolbarProps {
   setIsPenEraserSwitcherOpen: Dispatch<SetStateAction<boolean>>;
   pathColor: Color;
   isPlacingLayer: boolean;
+  expired: boolean;
 }
 
 export const Toolbar = ({
@@ -81,6 +82,7 @@ export const Toolbar = ({
   setIsPenEraserSwitcherOpen,
   pathColor,
   isPlacingLayer,
+  expired,
 }: ToolbarProps) => {
   const onPathColorChange = (color: any) => {
     setPathColor(color);
@@ -115,7 +117,9 @@ export const Toolbar = ({
 
   }, [canvasState, isPlacingLayer]);
 
-
+  if (expired) {
+    return null;
+  }
 
   return (
     <div className="absolute bottom-2 left-[50%] translate-x-[-50%] flex md:flex-row flex-col gap-x-4">

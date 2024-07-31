@@ -75,7 +75,9 @@ export const Room = React.memo(({ children, roomId, fallback, board, layers, lay
         if (foundOrg.subscription) {
           const now = new Date().getTime();
           const expiration = new Date(foundOrg.subscription.mercadoPagoCurrentPeriodEnd).getTime();
-          setExpired(now > expiration);
+          if (userRole !== "Guest") {
+            setExpired(now > expiration);
+          }
         }
       } else if (!board.private) {
         // If the user is not part of the org but the board is public, add them to the org
