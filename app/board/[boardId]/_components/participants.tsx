@@ -68,7 +68,7 @@ export const Participants = ({
                     />
                 )}
             </div>
-            {org && expired !== true && User.information.role !== "Guest" && (
+            {org && expired !== true && User.information.role === "Admin" && (
                 <Dialog>
                     <DialogTrigger asChild className="xs:ml-3">
                         <Button variant="sketchlieBlue" className="h-8 w-24">
