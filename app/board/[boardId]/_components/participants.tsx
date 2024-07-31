@@ -45,7 +45,7 @@ export const Participants = ({
                                 borderColor={connectionIdToColor(connectionId)}
                                 key={userId}
                                 src={information?.picture}
-                                name={information?.name?.toUpperCase()}
+                                name={information?.name}
                                 fallback={information?.name?.[0]?.toUpperCase() || "T"}
                             />
                         );
@@ -56,14 +56,14 @@ export const Participants = ({
                     <UserAvatar
                         borderColor={connectionIdToColor(User.connectionId)}
                         src={User.information?.picture}
-                        name={`${User.information?.name?.toUpperCase()} (YOU)`}
+                        name={`${User.information?.name} (You)`}
                         fallback={User.information?.name?.[0]?.toUpperCase() || "T"}
                     />
                 )}
 
                 {hasMoreUsers && (
                     <UserAvatar
-                        name={`${otherUsers.length - MAX_SHOWN_USERS} MORE`}
+                        name={`${otherUsers.length - MAX_SHOWN_USERS} more`}
                         fallback={`+${otherUsers.length - MAX_SHOWN_USERS}`}
                     />
                 )}

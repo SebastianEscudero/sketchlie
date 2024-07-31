@@ -69,6 +69,7 @@ import { setCursorWithFill } from "@/lib/theme-utilts";
 import { ArrowPostInsertMenu } from "./arrow-post-insert-menu";
 import { EraserTrail } from "./eraser-trail";
 import { CurrentSuggestedLayer } from "./current-suggested-layer";
+import { set, throttle } from "lodash";
 
 const preventDefault = (e: any) => {
     if (e.scale !== 1) {
@@ -135,7 +136,7 @@ export const Canvas = ({
     const [forceSelectionBoxRender, setForceSelectionBoxRender] = useState(false);
     const [forceLayerPreviewRender, setForceLayerPreviewRender] = useState(false);
     const [suggestedLayers, setSuggestedLayers] = useState<Layers>({});
-    const [lastSelectedLayerId, setLastSelectedLayerId] = useState<string | null>(null);
+    const [suggestedLayerIds, setSuggestedLayerIds] = useState<string[]>([]);
     const proModal = useProModal();
     const [background, setBackground] = useState(() => {
         const storedValue = localStorage.getItem('background');
@@ -144,42 +145,51 @@ export const Canvas = ({
 
     useDisableScrollBounce();
 
-    const performAction = async (command: Command) => {
+    // const throttledSketchlieCopilot = throttle(
+    //     (liveLayers, visibleLayers, title) => SketchlieCopilot(liveLayers, visibleLayers, title),
+    //     1000
+    // );
+
+    const performAction = useCallback(async (command: Command) => {
         command.execute(liveLayerIds, liveLayers);
         setHistory([...history, command]);
         setRedoStack([]); // clear redo stack when new action is performed
-        // if (lastSelectedLayerId) {
-        //     const suggestedLayer = liveLayers[lastSelectedLayerId];
-        //     if (suggestedLayer) {
-        //         const updatedLayer: any = { ...suggestedLayer };
-        //         setSuggestedLayers(updatedLayer);
-        //     }
-        // }
-        // const data = await SketchlieCopilot(liveLayers, visibleLayers, board.title);
+    
+        // const data = await throttledSketchlieCopilot(liveLayers, visibleLayers, board.title);
+        // console.log(data);
+    
         // if (data) {
-        //     const layerId = data.layerId
-        //     const layer = data.layer[layerId]
+        //     const layerId = data.layerId[0];
+        //     const layer = data.layer;
+        //     console.log(layer);
         //     setSuggestedLayers({ ...layer });
+        //     setSuggestedLayerIds([layerId]);
         // }
-    };
-
-    const undo = () => {
+    }, [liveLayerIds, liveLayers, history]);
+    
+    const undo = useCallback(() => {
         const lastCommand = history[history.length - 1];
         lastCommand.undo(liveLayerIds, liveLayers);
         setHistory(history.slice(0, -1));
         setRedoStack([...redoStack, lastCommand]);
-    };
-
-    const redo = () => {
+    }, [history, liveLayerIds, liveLayers, redoStack]);
+    
+    const redo = useCallback(() => {
         const lastCommand = redoStack[redoStack.length - 1];
         lastCommand.execute(liveLayerIds, liveLayers);
         setRedoStack(redoStack.slice(0, -1));
         setHistory([...history, lastCommand]);
-    };
+    }, [redoStack, liveLayerIds, liveLayers, history]);
 
     const insertLayer = useCallback((layerType: LayerType, position: Point, width: number, height: number, center?: Point, startConnectedLayerId?: string, endConnectedLayerId?: string, arrowType?: ArrowType, orientation?: ArrowOrientation) => {
+
+        if (expired) {
+            setCanvasState({ mode: CanvasMode.None });
+            return;
+        }
+
         const layerId = nanoid();
-        const ratio = 12/80;
+        const ratio = 12 / 80;
 
         let layer;
         let fillColor = { r: 0, g: 0, b: 0, a: 0 }
@@ -300,7 +310,7 @@ export const Canvas = ({
 
         }
 
-    }, [myPresence, socket, org, proModal, User.userId, setLiveLayers, setLiveLayerIds, board, layerWithAssistDraw]);
+    }, [socket, org, proModal, setLiveLayers, setLiveLayerIds, boardId, arrowTypeInserting, liveLayers, performAction, layerWithAssistDraw, expired]);
 
     const insertImage = useCallback((
         layerType: LayerType.Image,
@@ -341,9 +351,20 @@ export const Canvas = ({
         const command = new InsertLayerCommand([layerId], [layer], setLiveLayers, setLiveLayerIds, boardId, socket, org, proModal);
         performAction(command);
         setCanvasState({ mode: CanvasMode.None });
-    }, [myPresence, socket, org, proModal, User.userId, setLiveLayers, setLiveLayerIds, board, zoom]);
+    }, [socket, org, proModal, setLiveLayers, setLiveLayerIds, boardId, performAction, zoom]);
 
     const translateSelectedLayers = useCallback((point: Point) => {
+
+        if (expired) {
+            selectedLayersRef.current = [];
+            const newPresence: Presence = {
+                ...myPresence,
+                selection: []
+            };
+            setMyPresence(newPresence);
+            return;
+        }
+
         if (canvasState.mode !== CanvasMode.Translating) {
             return;
         }
@@ -405,13 +426,13 @@ export const Canvas = ({
             }
         });
 
-        if (socket && expired !== true) {
+        if (socket) {
             socket.emit('layer-update', updatedLayerIds, updatedLayers);
         }
 
         setLiveLayers(newLayers);
         setCanvasState({ mode: CanvasMode.Translating, current: point });
-    }, [canvasState, setCanvasState, setLiveLayers, socket, liveLayers, expired]);
+    }, [canvasState, setCanvasState, setLiveLayers, socket, liveLayers, expired, zoom, setMyPresence, myPresence]);
 
     const unselectLayers = useCallback(() => {
         if (selectedLayersRef.current.length > 0) {
@@ -423,7 +444,7 @@ export const Canvas = ({
 
             setMyPresence(newPresence);
         }
-    }, [selectedLayersRef.current, setMyPresence, myPresence]);
+    }, [setMyPresence, myPresence]);
 
     const updateSelectionNet = useCallback((current: Point, origin: Point) => {
         setCanvasState({
@@ -472,7 +493,7 @@ export const Canvas = ({
             setLiveLayers(newLiveLayers);
         }
 
-    }, [liveLayerIds, liveLayers, setLiveLayers, zoom, setErasePath, erasePath]);
+    }, [liveLayerIds, liveLayers, setLiveLayers, setErasePath, erasePath]);
 
     const startMultiSelection = useCallback((
         current: Point,
@@ -505,7 +526,8 @@ export const Canvas = ({
     const continueDrawing = useCallback((point: Point, e: React.PointerEvent) => {
         if (
             (canvasState.mode !== CanvasMode.Pencil && canvasState.mode !== CanvasMode.Laser && canvasState.mode !== CanvasMode.Highlighter) ||
-            pencilDraft.length === 0
+            pencilDraft.length === 0 ||
+            expired
         ) {
             return;
         }
@@ -539,16 +561,21 @@ export const Canvas = ({
 
         setMyPresence(newPresence);
 
-    }, [canvasState.mode, pencilDraft, myPresence, setMyPresence, pathColor, pathStrokeSize, zoom]);
+    }, [canvasState.mode, pencilDraft, myPresence, setMyPresence, pathColor, pathStrokeSize, zoom, expired]);
 
     const insertPath = useCallback(() => {
-
         if (
             pencilDraft.length === 0 ||
             (pencilDraft[0] && pencilDraft[0].length < 2) ||
-            activeTouches > 1
+            activeTouches > 1 ||
+            expired
         ) {
             setPencilDraft([]);
+            const newPresence: Presence = {
+                ...myPresence,
+                pencilDraft: null,
+            };
+            setMyPresence(newPresence);
             return;
         }
 
@@ -579,18 +606,24 @@ export const Canvas = ({
         setMyPresence(newPresence);
 
         setCanvasState({ mode: CanvasMode.Pencil });
-    }, [pencilDraft, liveLayers, setLiveLayers, setLiveLayerIds, myPresence, org, proModal, liveLayerIds, socket, board, activeTouches]);
+    }, [expired, pencilDraft, liveLayers, setLiveLayers, setLiveLayerIds, myPresence, org, proModal, socket, boardId, pathColor, performAction, pathStrokeSize, activeTouches]);
 
     const insertHighlight = useCallback(() => {
-
         if (
             pencilDraft.length === 0 ||
             (pencilDraft[0] && pencilDraft[0].length < 2) ||
-            activeTouches > 1
+            activeTouches > 1 ||
+            expired
         ) {
             setPencilDraft([]);
+            const newPresence: Presence = {
+                ...myPresence,
+                pencilDraft: null,
+            };
+            setMyPresence(newPresence);
             return;
         }
+
 
         const id = nanoid();
         liveLayers[id] = penPointsToPathLayer(pencilDraft, { ...pathColor, a: 0.7 }, 30 / zoom);
@@ -618,9 +651,20 @@ export const Canvas = ({
         setMyPresence(newPresence);
         setPencilDraft([]);
         setCanvasState({ mode: CanvasMode.Highlighter });
-    }, [pencilDraft, liveLayers, setLiveLayers, setLiveLayerIds, myPresence, org, proModal, liveLayerIds, socket, board, zoom]);
+    }, [expired, pencilDraft, liveLayers, setLiveLayers, setLiveLayerIds, myPresence, org, proModal, socket, zoom, activeTouches, boardId, pathColor, performAction]);
 
     const resizeSelectedLayers = useCallback((point: Point) => {
+
+        if (expired) {
+            selectedLayersRef.current = [];
+            const newPresence: Presence = {
+                ...myPresence,
+                selection: []
+            };
+            setMyPresence(newPresence);
+            return;
+        }
+
         const initialBoundingBox = calculateBoundingBox(selectedLayersRef.current.map(id => liveLayers[id]));
         let bounds: any;
         let hasImageOrText = selectedLayersRef.current.some(id => liveLayers[id].type === LayerType.Image || liveLayers[id].type === LayerType.Text);
@@ -719,14 +763,14 @@ export const Canvas = ({
             Object.assign(newLayer, bounds);
             liveLayers[id] = newLayer;
 
-            if (socket && expired !== true) {
+            if (socket) {
                 socket.emit('layer-update', [id], [newLayer]);
             }
 
         })
         setLiveLayers({ ...liveLayers });
 
-    }, [canvasState, liveLayers, liveLayerIds, selectedLayersRef, layerRef, zoom]);
+    }, [canvasState, liveLayers, liveLayerIds, selectedLayersRef, layerRef, zoom, expired, socket, setLiveLayers, setMyPresence, myPresence]);
 
     const onResizeHandlePointerDown = useCallback((
         corner: Side,
@@ -850,7 +894,7 @@ export const Canvas = ({
                 socket.emit('layer-update', selectedLayersRef.current, liveLayers);
             }
         }
-    }, [camera, canvasState.mode, setCanvasState, startDrawing, setIsPanning, setIsRightClickPanning, zoom, activeTouches, expired, isPanning, unselectLayers, liveLayers, myPresence]);
+    }, [camera, canvasState.mode, setCanvasState, startDrawing, setIsPanning, setIsRightClickPanning, zoom, activeTouches, expired, isPanning, unselectLayers, liveLayers, socket]);
 
     const onPointerMove = useCallback((e: React.PointerEvent) => {
         e.preventDefault();
@@ -980,7 +1024,7 @@ export const Canvas = ({
                     // Assigning the filtered results back
                     const intersectingStartLayer = filteredStartLayers.pop();
                     const intersectingEndLayer = filteredEndLayers.pop();
-                    const STRAIGHTNESS_THRESHOLD = 4/zoom;
+                    const STRAIGHTNESS_THRESHOLD = 4 / zoom;
 
                     let startConnectedLayerId: any = intersectingStartLayer;
                     let endConnectedLayerId: any = intersectingEndLayer;
@@ -992,11 +1036,11 @@ export const Canvas = ({
 
                             if ((currentPreviewLayer as ArrowLayer).orientation === ArrowOrientation.Horizontal) {
                                 if (end.x >= liveLayers[startConnectedLayerId].x && end.x <= liveLayers[startConnectedLayerId].x + liveLayers[startConnectedLayerId].width) {
-                                  (currentPreviewLayer as ArrowLayer).orientation = ArrowOrientation.Vertical;
+                                    (currentPreviewLayer as ArrowLayer).orientation = ArrowOrientation.Vertical;
                                 }
-                              } else if ((currentPreviewLayer as ArrowLayer).orientation === ArrowOrientation.Vertical) {
+                            } else if ((currentPreviewLayer as ArrowLayer).orientation === ArrowOrientation.Vertical) {
                                 if (end.y >= liveLayers[startConnectedLayerId].y && end.y <= liveLayers[startConnectedLayerId].y + liveLayers[startConnectedLayerId].height) {
-                                  (currentPreviewLayer as ArrowLayer).orientation = ArrowOrientation.Horizontal;
+                                    (currentPreviewLayer as ArrowLayer).orientation = ArrowOrientation.Horizontal;
                                 }
                             }
 
@@ -1073,7 +1117,11 @@ export const Canvas = ({
             startPanPoint,
             socket,
             activeTouches,
-            expired
+            EraserDeleteLayers,
+            arrowTypeInserting,
+            currentPreviewLayer,
+            liveLayerIds,
+            liveLayers
         ]);
 
     const onPointerUp = useCallback((e: React.PointerEvent) => {
@@ -1232,7 +1280,6 @@ export const Canvas = ({
             setCanvasState,
             canvasState,
             insertLayer,
-            unselectLayers,
             insertPath,
             setIsPanning,
             selectedImage,
@@ -1240,17 +1287,21 @@ export const Canvas = ({
             insertImage,
             selectedLayersRef,
             liveLayers,
-            board,
             camera,
             zoom,
             currentPreviewLayer,
             isPanning,
             initialLayers,
-            history,
-            layerRef,
-            layersToDeleteEraserRef.current,
             socket,
-            myPresence
+            myPresence,
+            User.userId,
+            boardId,
+            expired,
+            insertHighlight,
+            liveLayerIds,
+            performAction,
+            setLiveLayerIds,
+            setLiveLayers,
         ]);
 
     const onPointerLeave = useCallback(() => {
@@ -1299,13 +1350,12 @@ export const Canvas = ({
         setMyPresence(newPresence);
 
         selectedLayersRef.current = [layerId];
-        setLastSelectedLayerId(layerId);
 
         if (socket) {
             socket.emit('presence', newPresence, User.userId);
         }
 
-    }, [selectedLayersRef, expired]);
+    }, [selectedLayersRef, expired, socket, User.userId]);
 
     const layerIdsToColorSelection = useMemo(() => {
         const layerIdsToColorSelection: Record<string, string> = {};
@@ -1326,18 +1376,30 @@ export const Canvas = ({
 
     const onDragOver = useCallback((event: React.DragEvent) => {
         event.preventDefault();
+        if (expired) {
+            return;
+        }
+
         setIsDraggingOverCanvas(true);
 
-    }, [setIsDraggingOverCanvas]);
+    }, [setIsDraggingOverCanvas, expired]);
 
     const onDragLeave = useCallback((event: React.DragEvent) => {
         event.preventDefault();
+        if (expired) {
+            return;
+        }
+
         setIsDraggingOverCanvas(false);
 
-    }, [setIsDraggingOverCanvas]);
+    }, [setIsDraggingOverCanvas, expired]);
 
     const onDrop = useCallback((event: React.DragEvent) => {
         event.preventDefault();
+        if (expired) {
+            return;
+        }
+
         setIsDraggingOverCanvas(false);
         let x = (Math.round(event.clientX) - camera.x) / zoom;
         let y = (Math.round(event.clientY) - camera.y) / zoom;
@@ -1392,7 +1454,7 @@ export const Canvas = ({
                     toast.success("Image uploaded successfully, you can now add it to the board.")
                 });
         }
-    }, [setIsDraggingOverCanvas, camera, zoom, maxFileSize, User.userId, insertImage]);
+    }, [setIsDraggingOverCanvas, camera, zoom, maxFileSize, User.userId, insertImage, expired]);
 
     const onTouchDown = useCallback((e: React.TouchEvent) => {
         setIsMoving(false);
@@ -1472,7 +1534,7 @@ export const Canvas = ({
 
     const copySelectedLayers = useCallback(() => {
         setCopiedLayerIds(selectedLayersRef.current);
-    }, [liveLayers, selectedLayersRef]);
+    }, [selectedLayersRef]);
 
     const pasteCopiedLayers = useCallback((mousePosition: any) => {
         let minX = Infinity;
@@ -1543,7 +1605,7 @@ export const Canvas = ({
 
         setMyPresence(newPresence);
 
-    }, [copiedLayerIds, copiedLayerIds, myPresence, setLiveLayers, setLiveLayerIds, setMyPresence, org, proModal, socket, boardId, performAction]);
+    }, [copiedLayerIds, myPresence, setLiveLayers, setLiveLayerIds, setMyPresence, org, proModal, socket, boardId, performAction, liveLayers]);
 
     useEffect(() => {
         const onPointerDown = (e: PointerEvent) => {
@@ -1565,7 +1627,7 @@ export const Canvas = ({
     useEffect(() => {
         function onKeyDown(e: KeyboardEvent) {
 
-            if (!e.key) {
+            if (!e.key || expired) {
                 return;
             }
 
@@ -1620,14 +1682,19 @@ export const Canvas = ({
                         setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Arrow });
                     }
                 }
-            // } else if (key === "tab") {
-            //     if (!isInsideTextArea) {
-            //         e.preventDefault();
-            //         const layerId = nanoid();
-            //         const command = new InsertLayerCommand([layerId], [suggestedLayers], setLiveLayers, setLiveLayerIds, boardId, socket, org, proModal);
-            //         performAction(command);
-            //         setSuggestedLayers({});
-            //     }
+                } else if (key === "tab") {
+                    if (expired) {
+                        e.preventDefault();
+                        return;
+                    }
+                    // if (!isInsideTextArea) {
+                    //     e.preventDefault();
+                    //     const layerId = nanoid();
+                    //     const command = new InsertLayerCommand([layerId], [suggestedLayers], setLiveLayers, setLiveLayerIds, boardId, socket, org, proModal);
+                    //     performAction(command);
+                    //     selectedLayersRef.current = [layerId];
+                    //     setSuggestedLayers({});
+                    // }
             } else if (key === "backspace" || key === "delete") {
                 if (selectedLayersRef.current.length > 0 && !isInsideTextArea) {
                     const command = new DeleteLayerCommand(selectedLayersRef.current, liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, boardId, socket);
@@ -1662,10 +1729,11 @@ export const Canvas = ({
         return () => {
             document.removeEventListener("keydown", onKeyDown);
         }
-    }, [copySelectedLayers, pasteCopiedLayers, camera, zoom, liveLayers, selectedLayersRef.current, copiedLayerIds, liveLayerIds, myPresence, socket]);
+    }, [copySelectedLayers, pasteCopiedLayers, camera, zoom, liveLayers, copiedLayerIds, liveLayerIds, myPresence, socket, User.userId, forceSelectionBoxRender,
+        boardId, history.length, mousePosition, performAction, redo, redoStack.length, setLiveLayerIds, setLiveLayers, undo, unselectLayers, expired]);
 
 
-    useEffect(() => { // for on layer pointer down to update refts
+    useEffect(() => {
         canvasStateRef.current = canvasState;
         zoomRef.current = zoom;
         cameraRef.current = camera;
@@ -1703,7 +1771,6 @@ export const Canvas = ({
     }, []);
 
     useEffect(() => {
-        // control the cursor
         if (rightClickPanning) {
             document.body.style.cursor = 'url(/custom-cursors/grab.svg) 12 12, auto';
             return;
@@ -1742,25 +1809,25 @@ export const Canvas = ({
 
     useEffect(() => {
         const updateVisibleLayers = () => {
-        if (!svgRef.current) return;
+            if (!svgRef.current) return;
 
-        const svg = svgRef.current as SVGSVGElement;
-        const viewBox = svg.viewBox.baseVal;
-        const visibleRect = {
-            x: -camera.x / zoom,
-            y: -camera.y / zoom,
-            width: viewBox.width / zoom,
-            height: viewBox.height / zoom
-        };
+            const svg = svgRef.current as SVGSVGElement;
+            const viewBox = svg.viewBox.baseVal;
+            const visibleRect = {
+                x: -camera.x / zoom,
+                y: -camera.y / zoom,
+                width: viewBox.width / zoom,
+                height: viewBox.height / zoom
+            };
 
-        const newVisibleLayers = liveLayerIds.filter((layerId: string) => {
-            const layer = liveLayers[layerId];
-            if (layer) {
-                return isLayerVisible(layer, visibleRect);  
-            }
-        });
+            const newVisibleLayers = liveLayerIds.filter((layerId: string) => {
+                const layer = liveLayers[layerId];
+                if (layer) {
+                    return isLayerVisible(layer, visibleRect);
+                }
+            });
 
-        setVisibleLayers(newVisibleLayers);
+            setVisibleLayers(newVisibleLayers);
         };
 
         updateVisibleLayers();
@@ -1809,7 +1876,6 @@ export const Canvas = ({
                 socket={socket}
                 expired={expired}
             />
-            {expired !== true && (
             <Toolbar
                 pathColor={pathColor}
                 pathStrokeSize={pathStrokeSize}
@@ -1836,8 +1902,8 @@ export const Canvas = ({
                 isPenEraserSwitcherOpen={isPenEraserSwitcherOpen}
                 setIsPenEraserSwitcherOpen={setIsPenEraserSwitcherOpen}
                 isPlacingLayer={currentPreviewLayer !== null}
-                />
-            )}
+                expired={expired}
+            />
             {!IsArrowPostInsertMenuOpen && !isMoving && canvasState.mode !== CanvasMode.Resizing && canvasState.mode !== CanvasMode.ArrowResizeHandler && canvasState.mode !== CanvasMode.SelectionNet && activeTouches < 2 && (
                 <SelectionTools
                     board={board}
@@ -1951,7 +2017,7 @@ export const Canvas = ({
                             />
                         )}
                         {suggestedLayers && (
-                            <CurrentSuggestedLayer 
+                            <CurrentSuggestedLayer
                                 layer={suggestedLayers}
                             />
                         )}

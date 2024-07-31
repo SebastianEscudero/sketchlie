@@ -20,25 +20,25 @@ import { Readable } from "stream";
 import { toast } from "sonner";
 
 const COLORS = [
-  "#DC2626", // Red
-  "#D97706", // Amber
-  "#059669", // Teal
-  "#7C3AED", // Violet
-  "#DB2777",  // Pink
-  "#3AB624", // Emerald
-  "#2E5ADA", // Dark Blue
-  "#6D2AC2", // Purple
-  "#CCB800", // Yellow
-  "#E185F4", // Light Purple
-  "#AE3EC9", // Dark Purple
-  "#4465E9", // Blue
-  "#4BA1F1", // Light Blue
-  "#FFA500", // Orange
-  "#E16919", // Dark Orange
-  "#079368", // Dark Green
-  "#4DB05E", // Green
-  "#F87777", // Light Red
-  "#E03131", // Dark Red
+  "#FF3B30", // Bright Red
+  "#FF9500", // Orange
+  "#FFCC00", // Yellow
+  "#34C759", // Green
+  "#00C7BE", // Teal
+  "#007AFF", // Blue
+  "#5856D6", // Indigo
+  "#AF52DE", // Purple
+  "#FF2D55", // Pink
+  "#A2845E", // Brown
+  "#8E8E93", // Gray
+  "#5AC8FA", // Light Blue
+  "#FF6B22", // Vermilion
+  "#C7C729", // Lime
+  "#28CD41", // Emerald
+  "#59ADC4", // Steel Blue
+  "#4B0082", // Indigo
+  "#8B4513", // Saddle Brown
+  "#FF1493", // Deep Pink
 ];
 
 export function cn(...inputs: ClassValue[]) {
