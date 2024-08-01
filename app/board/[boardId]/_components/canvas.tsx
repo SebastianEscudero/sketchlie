@@ -260,9 +260,16 @@ export const Canvas = ({
             }
 
             if (endConnectedLayerId) {
-                const connectedLayer = liveLayers[endConnectedLayerId];
-                const updatedLayer = updatedLayersConnectedArrows(connectedLayer, layerId);
-                liveLayers[endConnectedLayerId] = updatedLayer;
+                const endLayer = liveLayers[endConnectedLayerId];
+                const updatedEndLayer = updatedLayersConnectedArrows(endLayer, layerId);
+                liveLayers[endConnectedLayerId] = updatedEndLayer;
+
+                if (startConnectedLayerId) {
+                    const startLayer = liveLayers[startConnectedLayerId];
+                    const updatedStartLayer = updatedLayersConnectedArrows(startLayer, layerId);
+                    liveLayers[startConnectedLayerId] = updatedStartLayer;
+                }
+
                 setLiveLayers({ ...liveLayers });
             }
 
