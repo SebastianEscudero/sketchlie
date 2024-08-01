@@ -70,6 +70,7 @@ import { ArrowPostInsertMenu } from "./arrow-post-insert-menu";
 import { EraserTrail } from "./eraser-trail";
 import { CurrentSuggestedLayer } from "./current-suggested-layer";
 import { set, throttle } from "lodash";
+import { smoothLastPoint } from "@/lib/smooth-points";
 
 const preventDefault = (e: any) => {
     if (e.scale !== 1) {
@@ -532,21 +533,15 @@ export const Canvas = ({
             return;
         }
 
-        setPencilDraft(pencilDraft.length === 1 &&
-            pencilDraft[0][0] === point.x &&
-            pencilDraft[0][1] === point.y
-            ? pencilDraft
-            : [...pencilDraft, [point.x, point.y, e.pressure]]);
+        const newPoint: [number, number, number] = [point.x, point.y, e.pressure];
+        const smoothedPoints = smoothLastPoint([...pencilDraft, newPoint]);
+        setPencilDraft(smoothedPoints);
 
 
         const newPresence: Presence = {
             ...myPresence,
             cursor: point,
-            pencilDraft: pencilDraft.length === 1 &&
-                pencilDraft[0][0] === point.x &&
-                pencilDraft[0][1] === point.y
-                ? pencilDraft
-                : [...pencilDraft, [point.x, point.y, e.pressure]],
+            pencilDraft: smoothedPoints,
             pathStrokeSize: canvasState.mode === CanvasMode.Laser
                 ? 5 / zoom
                 : canvasState.mode === CanvasMode.Highlighter
