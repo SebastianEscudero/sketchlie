@@ -1,15 +1,16 @@
 import { Layers, User } from "@/types/canvas";
 import React, { createContext, ReactNode, Suspense, useContext, useEffect, useState } from "react";
-import io, { Socket } from "socket.io-client";
+import { Socket } from "socket.io-client";
 import { NotPartOfOrg } from "./auth/board-not-part-of-org-loading";
-import { db } from "@/lib/db";
 import { addUserToOrganization } from "@/actions/accept-invite";
 import { useCurrentUser } from "@/hooks/use-current-user";
+import useWebSocket from "@/app/board/[boardId]/_components/use-websocket";
 
 interface RoomContextValue {
   roomId: string;
   socket: Socket | null;
   expired: boolean;
+  isConnected: boolean;
 }
 
 interface LayerContextValue {
@@ -26,7 +27,7 @@ interface LayerContextValue {
 }
 
 const LayerContext = createContext<LayerContextValue | undefined>(undefined);
-const RoomContext = createContext<RoomContextValue>({ roomId: "", socket: null, expired: false});
+const RoomContext = createContext<RoomContextValue>({ roomId: "", socket: null, expired: false, isConnected: false });
 
 interface RoomProps {
   children: ReactNode;
@@ -46,7 +47,6 @@ export const Room = React.memo(({ children, roomId, fallback, board, layers, lay
   const [role, setRole] = useState<string>("Guest");
   const [expired, setExpired] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [socket, setSocket] = useState<Socket | null>(null);
   const [liveLayers, setLiveLayers] = useState<Layers>({});
   const [liveLayerIds, setLiveLayerIds] = useState<string[]>([]);
   const [User, setUser] = useState<User>({} as User);
@@ -58,7 +58,7 @@ export const Room = React.memo(({ children, roomId, fallback, board, layers, lay
     } else {
       setExpired(false);
     }
-  }, [role])
+  }, [role]);
 
   useEffect(() => {
     if (!userInfo || !board) return;
@@ -80,7 +80,6 @@ export const Room = React.memo(({ children, roomId, fallback, board, layers, lay
           }
         }
       } else if (!board.private) {
-        // If the user is not part of the org but the board is public, add them to the org
         try {
           await addUserToOrganization(board.orgId, userInfo.id, defaultRole, board.orgId)
           .then(({ org }) => {
@@ -92,11 +91,10 @@ export const Room = React.memo(({ children, roomId, fallback, board, layers, lay
               const now = new Date().getTime();
               const expiration = org.subscription.mercadoPagoCurrentPeriodEnd
                 ? new Date(org.subscription.mercadoPagoCurrentPeriodEnd).getTime()
-                : 0; // or some other default value
+                : 0;
               setExpired(now > expiration);
             }
           });
-
         } catch (error) {
           console.error("Error adding user to organization:", error);
           setIsUserPartOfOrg(false);
@@ -139,19 +137,20 @@ export const Room = React.memo(({ children, roomId, fallback, board, layers, lay
     }));
   }, [role]);
 
+  const { socket, isConnected } = useWebSocket(
+    'https://sketchlie-server-little-resonance-2329.fly.dev',
+    roomId,
+    User
+  );
+
   useEffect(() => {
-    if (!isUserPartOfOrg || isLoading) return;
+    if (!socket) return;
 
-    const newSocket = io('https://sketchlie-server-little-resonance-2329.fly.dev', {
-      query: { roomId }
-    });
-    setSocket(newSocket);
-
-    newSocket.on('users', (users: User[]) => {
+    socket.on('users', (users: User[]) => {
       setOtherUsers(users.filter(user => user.userId !== User.userId));
     });
 
-    newSocket.on('layer-update', (layerIds, layers) => {
+    socket.on('layer-update', (layerIds, layers) => {
       layerIds = Array.isArray(layerIds) ? layerIds : [layerIds];
       layers = Array.isArray(layers) ? layers : [layers];
     
@@ -174,7 +173,7 @@ export const Room = React.memo(({ children, roomId, fallback, board, layers, lay
       });
     });
 
-    newSocket.on('layer-delete', (layerId) => {
+    socket.on('layer-delete', (layerId) => {
       layerId = Array.isArray(layerId) ? layerId : [layerId];
     
       setLiveLayers(layers => {
@@ -188,11 +187,11 @@ export const Room = React.memo(({ children, roomId, fallback, board, layers, lay
       setLiveLayerIds(layerIds => layerIds.filter(id => !layerId.includes(id)));
     });
 
-    newSocket.on('layer-send', (newLayerIds) => {
+    socket.on('layer-send', (newLayerIds) => {
       setLiveLayerIds(newLayerIds);
     });
 
-    newSocket.on('role-update', (updatedUserId: string, newRole: string) => {
+    socket.on('role-update', (updatedUserId: string, newRole: string) => {
       if (updatedUserId === User.userId) {
         setRole(newRole);
       } else {
@@ -206,17 +205,14 @@ export const Room = React.memo(({ children, roomId, fallback, board, layers, lay
       }
     });
 
-    newSocket.emit('register', User.userId, User.connectionId, User.information.name, User.information.picture, User.information.role);
-
     return () => {
-      newSocket.off('users');
-      newSocket.off('layer-update');
-      newSocket.off('layer-delete');
-      newSocket.off('layer-send');
-      newSocket.off('role-update');
-      newSocket.close();
+      socket.off('users');
+      socket.off('layer-update');
+      socket.off('layer-delete');
+      socket.off('layer-send');
+      socket.off('role-update');
     };
-  }, [isUserPartOfOrg, isLoading, roomId, User]);
+  }, [socket, User]);
 
   if (isLoading) {
     return <NotPartOfOrg label="Joining organization..."/>;
@@ -226,8 +222,12 @@ export const Room = React.memo(({ children, roomId, fallback, board, layers, lay
     return <NotPartOfOrg label="You are not part of this organization"/>;
   }
 
+  if (!isConnected) {
+    return <NotPartOfOrg label="Connecting to room..."/>;
+  }
+
   return (
-    <RoomContext.Provider value={{ roomId, socket, expired }}>
+    <RoomContext.Provider value={{ roomId, socket, expired, isConnected }}>
       <LayerContext.Provider value={{ liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, User, setUser, otherUsers, setOtherUsers, org, board }}>
         <Suspense fallback={fallback}>
           {children}

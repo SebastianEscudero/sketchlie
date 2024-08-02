@@ -70,6 +70,7 @@ import { ArrowPostInsertMenu } from "./arrow-post-insert-menu";
 import { EraserTrail } from "./eraser-trail";
 import { CurrentSuggestedLayer } from "./current-suggested-layer";
 import { set, throttle } from "lodash";
+import { smoothLastPoint } from "@/lib/smooth-points";
 
 const preventDefault = (e: any) => {
     if (e.scale !== 1) {
@@ -259,9 +260,16 @@ export const Canvas = ({
             }
 
             if (endConnectedLayerId) {
-                const connectedLayer = liveLayers[endConnectedLayerId];
-                const updatedLayer = updatedLayersConnectedArrows(connectedLayer, layerId);
-                liveLayers[endConnectedLayerId] = updatedLayer;
+                const endLayer = liveLayers[endConnectedLayerId];
+                const updatedEndLayer = updatedLayersConnectedArrows(endLayer, layerId);
+                liveLayers[endConnectedLayerId] = updatedEndLayer;
+
+                if (startConnectedLayerId) {
+                    const startLayer = liveLayers[startConnectedLayerId];
+                    const updatedStartLayer = updatedLayersConnectedArrows(startLayer, layerId);
+                    liveLayers[startConnectedLayerId] = updatedStartLayer;
+                }
+
                 setLiveLayers({ ...liveLayers });
             }
 
@@ -531,11 +539,12 @@ export const Canvas = ({
         ) {
             return;
         }
-    
+
         const newPoint: [number, number, number] = [point.x, point.y, e.pressure];
         const smoothedPoints = smoothLastPoint([...pencilDraft, newPoint]);
         setPencilDraft(smoothedPoints);
-    
+
+
         const newPresence: Presence = {
             ...myPresence,
             cursor: point,
@@ -556,27 +565,7 @@ export const Canvas = ({
 
     }, [canvasState.mode, pencilDraft, myPresence, setMyPresence, pathColor, pathStrokeSize, zoom, expired]);
 
-    const smoothLastPoint = (points: [number, number, number][]): [number, number, number][] => {
-        if (points.length < 3) return points;
-    
-        const smoothFactor = 0.314159;
-    
-        const lastIndex = points.length - 1;
-        const penultimateIndex = lastIndex - 1;
-    
-        const prev = points[penultimateIndex - 1];
-        const current = points[penultimateIndex];
-        const next = points[lastIndex];
-    
-        points[penultimateIndex] = [
-            current[0] + (prev[0] + next[0] - 2 * current[0]) * smoothFactor,
-            current[1] + (prev[1] + next[1] - 2 * current[1]) * smoothFactor,
-            current[2]
-        ];
-    
-        return points;
-    };
-    
+   
     const insertPath = useCallback(() => {
         if (
             pencilDraft.length === 0 ||
