@@ -672,10 +672,13 @@ export const Canvas = ({
         let hasImageOrText = selectedLayersRef.current.some(id => liveLayers[id].type === LayerType.Image || liveLayers[id].type === LayerType.Text);
         let mantainAspectRatio = hasImageOrText
         let singleLayer = selectedLayersRef.current.length === 1
-
+      
+        const updatedLayerIds: string[] = [...selectedLayersRef.current];
+        const updatedLayers: { [key: string]: Layer } = {};
+      
         selectedLayersRef.current.forEach(id => {
             const newLayer = { ...liveLayers[id] };
-
+        
             if (canvasState.mode === CanvasMode.Resizing) {
                 const newBoundingBox = resizeBounds(
                     canvasState.initialBounds,
@@ -683,7 +686,7 @@ export const Canvas = ({
                     point,
                     mantainAspectRatio
                 );
-
+        
                 if (newLayer.type === LayerType.Text) {
                     bounds = resizeBox(initialBoundingBox, newBoundingBox, newLayer, canvasState.corner, singleLayer, layerRef);
                 } else {
@@ -695,34 +698,36 @@ export const Canvas = ({
                     let intersectingEndLayer = newLayer.endConnectedLayerId
                     let intersectingStartLayers: string[] = []
                     let intersectingEndLayers: string[] = []
-
+            
                     if (canvasState.handle === ArrowHandle.end) {
                         intersectingEndLayers = findIntersectingLayerForConnection(liveLayerIds, liveLayers, point, zoom) || undefined;
                         if (intersectingEndLayer) {
                             newLayer.endConnectedLayerId = intersectingEndLayer;
                             const connectedLayer = liveLayers[intersectingEndLayer];
                             const layerWithUpdatedArrows = updatedLayersConnectedArrows(connectedLayer, id)
-                            liveLayers[intersectingEndLayer] = layerWithUpdatedArrows;
+                            updatedLayers[intersectingEndLayer] = layerWithUpdatedArrows;
+                            updatedLayerIds.push(intersectingEndLayer);
                         } else {
                             newLayer.endConnectedLayerId = undefined;
                         }
                         const start = { x: newLayer.x, y: newLayer.y };
                         intersectingStartLayers = findIntersectingLayerForConnection(liveLayerIds, liveLayers, start, zoom) || undefined;
-
+            
                     } else if (canvasState.handle === ArrowHandle.start) {
                         intersectingStartLayers = findIntersectingLayerForConnection(liveLayerIds, liveLayers, point, zoom) || undefined;
                         if (intersectingStartLayer) {
                             newLayer.startConnectedLayerId = intersectingStartLayer;
                             const connectedLayer = liveLayers[intersectingStartLayer];
                             const layerWithUpdatedArrows = updatedLayersConnectedArrows(connectedLayer, id)
-                            liveLayers[intersectingStartLayer] = layerWithUpdatedArrows;
+                            updatedLayers[intersectingStartLayer] = layerWithUpdatedArrows;
+                            updatedLayerIds.push(intersectingStartLayer);
                         } else {
                             newLayer.startConnectedLayerId = undefined;
                         }
                         const end = { x: newLayer.x + newLayer.width, y: newLayer.y + newLayer.height };
                         intersectingEndLayers = findIntersectingLayerForConnection(liveLayerIds, liveLayers, end, zoom) || undefined;
                     }
-
+            
                     if (canvasState.handle === ArrowHandle.start || canvasState.handle === ArrowHandle.end) {
                         const filteredStartLayers = intersectingStartLayers.filter(layer => !intersectingEndLayers.includes(layer));
                         const filteredEndLayers = intersectingEndLayers.filter(layer => !intersectingStartLayers.includes(layer));
@@ -761,16 +766,33 @@ export const Canvas = ({
                     );
                 }
             }
-
+        
             Object.assign(newLayer, bounds);
-            liveLayers[id] = newLayer;
-
-            if (socket) {
-                socket.emit('layer-update', [id], [newLayer]);
+            updatedLayers[id] = newLayer;
+        
+            // Update connected arrows
+            if (newLayer.type !== LayerType.Arrow && newLayer.type !== LayerType.Line && newLayer.connectedArrows) {
+                newLayer.connectedArrows.forEach(arrowId => {
+                if (!updatedLayerIds.includes(arrowId)) {
+                    const arrowLayer = liveLayers[arrowId] as ArrowLayer;
+                    if (arrowLayer) {
+                    const startConnectedLayerId = arrowLayer.startConnectedLayerId || "";
+                    const endConnectedLayerId = arrowLayer.endConnectedLayerId || "";
+                    const updatedArrow = updateArrowPosition(arrowLayer, id, newLayer, startConnectedLayerId, endConnectedLayerId, liveLayers, zoom);
+                    updatedLayers[arrowId] = updatedArrow;
+                    updatedLayerIds.push(arrowId);
+                    }
+                }
+                });
             }
-
-        })
-        setLiveLayers({ ...liveLayers });
+        });
+        
+        // Update liveLayers with the new layers
+        setLiveLayers({ ...liveLayers, ...updatedLayers });
+        
+        if (socket) {
+            socket.emit('layer-update', updatedLayerIds, Object.values(updatedLayers));
+        }
 
     }, [canvasState, liveLayers, liveLayerIds, selectedLayersRef, layerRef, zoom, expired, socket, setLiveLayers, setMyPresence, myPresence]);
 
