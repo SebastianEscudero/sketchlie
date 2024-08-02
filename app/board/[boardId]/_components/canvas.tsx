@@ -565,7 +565,6 @@ export const Canvas = ({
 
     }, [canvasState.mode, pencilDraft, myPresence, setMyPresence, pathColor, pathStrokeSize, zoom, expired]);
 
-   
     const insertPath = useCallback(() => {
         if (
             pencilDraft.length === 0 ||
@@ -819,6 +818,14 @@ export const Canvas = ({
 
             setZoom(newZoom);
             setCamera({ x: newX, y: newY });
+        } else if (e.shiftKey) {
+            // Panning horizontally
+            const newCameraPosition = {
+                y: camera.y - e.deltaX,
+                x: camera.x - e.deltaY,
+            };
+
+            setCamera(newCameraPosition);
         } else {
             // Panning
             const newCameraPosition = {
