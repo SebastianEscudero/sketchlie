@@ -28,20 +28,6 @@ export const getUserById = async (id: string) => {
             }
           }
         },
-        invitations: {
-          select: {
-            id: true,
-            email: true,
-            status: true,
-            organization: { 
-              select: {
-                id: true,
-                name: true,
-                subscriptionPlan: true,
-              }
-            }
-          }
-        },
       },
     });
 
@@ -50,3 +36,18 @@ export const getUserById = async (id: string) => {
     return null;
   }
 };
+
+export const getInvitationsByEmail = async (email: string) => {
+  try {
+    const invitations = await db.organizationInvitation.findMany({
+      where: { email },
+      include: {
+        organization: true,
+      },
+    });
+
+    return invitations;
+  } catch {
+    return null;
+  }
+}

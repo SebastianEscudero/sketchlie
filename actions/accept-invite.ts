@@ -25,13 +25,12 @@ export const acceptInvite = async (
     where: { id: invitationId },
     select: {
       subscriptionPlan: true,
-      status: true,
       role: true,
     }
   });
 
   // Check if the invitation exists and is still pending
-  if (!invitation || invitation.status !== "PENDING") {
+  if (!invitation) {
     return { error: "Invalid invitation" };
   }
 

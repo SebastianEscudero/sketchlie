@@ -21,22 +21,19 @@ export const invite = async (
 
   for (const member of validMembers.members) {
     if (member.email) {
+
       const isRegistered = await db.user.findUnique({
         where: { email: member.email },
       });
 
-      if (!isRegistered) {
-        return { error: "The user has to be registered before joining an organization" }
-      }
-
       const isMember = await db.organizationUser.findFirst({
         where: {
-          userId: isRegistered.id,
+          userId: isRegistered?.id,
           organizationId: activeOrg.id,
         },
       });
 
-      if (isMember) {
+      if (isMember && isRegistered) {
         return { error: "The user is already a member of this organization" }
       }
 
@@ -49,34 +46,22 @@ export const invite = async (
         },
       });
 
-      if (existingInvitation && existingInvitation.status === 'PENDING') {
+      if (existingInvitation) {
         pendingEmails.push(member.email);
       } else {
-        await sendOrganizationInvite(member.email, activeOrg.name, user);
         const newInvitation = await db.organizationInvitation.create({
           data: {
             email: member.email,
             organizationId: activeOrg.id,
-            status: 'PENDING',
             role: member.role,
             subscriptionPlan: activeOrg.subscriptionPlan,
           },
         });
 
-        await db.user.update({
-          where: { email: member.email },
-          data: {
-            invitations: {
-              connect: { id: newInvitation.id },
-            },
-          },
-        });
-        update({
-          user: {
-            ...user,
-            invitations: [...user.invitations, newInvitation],
-          },
-        });
+        const invitationId = newInvitation.id;
+
+        // send email
+        await sendOrganizationInvite(member.email, activeOrg.name, activeOrg.id, invitationId, user);
       }
     }
   }

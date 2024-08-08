@@ -6,6 +6,7 @@ import { ChevronRight, Import, MoreHorizontal } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { BoardCard } from './board-card';
 import { FolderActions } from '@/components/folder-actions';
+import React from 'react';
 
 interface FolderListProps {
   folders: any[];
@@ -55,7 +56,7 @@ export const FolderList = ({ folders, groupedBoards, org, query, onToggleFolder,
   return (
     <>
       {folders.map((folder) => (
-        <>
+        <React.Fragment key={folder._id}>
           <div
             key={folder._id}
             className=" shadow-custom-1 border dark:border-zinc-700 group aspect-[100/127] rounded-lg flex flex-col items-center justify-center cursor-pointer"
@@ -144,7 +145,7 @@ export const FolderList = ({ folders, groupedBoards, org, query, onToggleFolder,
               />
             ))
           )}
-        </>
+        </React.Fragment>
       ))}
     </>
   );

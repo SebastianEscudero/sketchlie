@@ -25,7 +25,7 @@ export const rejectInvite = async (
   });
 
   // Check if the invitation exists and is still pending
-  if (!invitation || invitation.status !== "PENDING") {
+  if (!invitation) {
     return { error: "Invalid invitation" };
   }
 

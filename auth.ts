@@ -3,7 +3,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 
 import { db } from "@/lib/db";
 import authConfig from "@/auth.config";
-import { getUserById } from "@/data/user";
+import { getInvitationsByEmail, getUserById } from "@/data/user";
 import { getAccountByUserId } from "./data/account";
 
 export const {
@@ -63,10 +63,16 @@ export const {
         existingUser.id
       );
 
+      if (!existingUser.email) return token;
+
+      const existingUsersInvitations = await getInvitationsByEmail(
+        existingUser.email
+      )
+
       token.isOAuth = !!existingAccount;
       token.name = existingUser.name;
       token.email = existingUser.email;
-      token.invitations = existingUser.invitations;
+      token.invitations = existingUsersInvitations;
       token.organizations = await Promise.all(existingUser.organizations.map(async (org) => ({
         id: org.organization.id,
         name: org.organization.name,

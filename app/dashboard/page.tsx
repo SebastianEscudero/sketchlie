@@ -16,10 +16,15 @@ import { useApiMutation } from "@/hooks/use-api-mutation";
 import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { acceptInvite } from "@/actions/accept-invite";
+import { useSession } from "next-auth/react";
 
 const DashboardPage = () => {
+  const { update } = useSession();
   const searchParams = useSearchParams();
   const search = searchParams.get("search") || undefined;
+  const organizationId = searchParams.get("org") || undefined;
+  const invitationId = searchParams.get("invitationId") || undefined
   const favorites = searchParams.get("favorites") || undefined
   const user = useCurrentUser();
   const [activeOrganization, setActiveOrganization] = useState<string | null>(null);
@@ -29,6 +34,14 @@ const DashboardPage = () => {
     themeCheck();
     if (searchParams.get("openProModal")) {
       proModal.onOpen(activeOrganization);
+    }
+
+    if (organizationId && invitationId) {
+      acceptInvite(organizationId, invitationId).then(() => {
+        setActiveOrganization(organizationId);
+        localStorage.setItem("activeOrganization", organizationId);
+        update({ event: "session" });
+      });
     }
 
     const activeLocalStorageOrganization = localStorage.getItem("activeOrganization");

@@ -37,10 +37,12 @@ export const sendVerificationEmail = async (
 
 export const sendOrganizationInvite = async (
   email: string, 
-  activeOrgName: any,
+  activeOrgName: string,
+  activeOrgId: string,
+  invitationId: string,
   user: any
 ) => {
-  const dashboardLink = `${domain}/dashboard`;
+  const dashboardLink = `${domain}/dashboard/?org=${activeOrgId}&invitationId=${invitationId}`;
 
   await resend.emails.send({
     from: "Sketchlie <invitations@sketchlie.com>",
