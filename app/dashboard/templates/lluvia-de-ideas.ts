@@ -1,5 +1,5 @@
 export const PlantillaLluviaDeIdeas = {
-  name: 'Lluvia de Ideas',
+  name: 'Brainstorming',
   image: '/templates/lluvia-de-ideas.png',
   href: "/plantillas/lluvia-de-ideas/",
   "layers": {

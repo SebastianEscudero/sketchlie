@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { subscriptionPlans } from "@/lib/subscriptionPlans";
+import { ScrollArea } from "./ui/scroll-area";
 
 const paidPlans = subscriptionPlans.filter(plan => plan.label !== "Gratis");
 
@@ -64,7 +65,8 @@ export const ProModal = () => {
                             </DropdownMenu>
                         </div>
                     </DialogHeader>
-                    <div className="gap-4 text-zinc-900 font-medium flex flex-col md:flex-row max-h-[700px] pt-4 text-sm md:text-base ">
+                    <ScrollArea>
+                        <div className="flex flex-col md:flex-row max-h-[700px] md:pt-4 text-sm md:text-base gap-4 text-zinc-900 font-medium md:pr-0 pr-4">
                         {paidPlans.map((subscriptionPlan) => (
                             <Card
                                 key={subscriptionPlan.label}
@@ -105,7 +107,8 @@ export const ProModal = () => {
                                 />
                             </Card>
                         ))}
-                    </div>
+                        </div>
+                    </ScrollArea>
                 </DialogContent>
             </Dialog>
         </div>

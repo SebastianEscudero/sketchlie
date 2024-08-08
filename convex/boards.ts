@@ -1,7 +1,7 @@
 import { v } from "convex/values";
 import { getAllOrThrow } from "convex-helpers/server/relationships";
 
-import { query } from "./_generated/server";
+import { mutation, query } from "./_generated/server";
 
 export const get = query({
   args: {
@@ -75,5 +75,19 @@ export const get = query({
     const boardsWithFavoriteBoolean = Promise.all(boardsWithFavoriteRelation);
 
     return boardsWithFavoriteBoolean;
+  },
+});
+
+export const updateFolder = mutation({
+  args: {
+    boardId: v.id("boards"),
+    folderId: v.optional(v.id("folders")),
+  },
+  handler: async (ctx, args) => {
+    const { boardId, folderId } = args;
+
+    await ctx.db.patch(boardId, { folderId });
+
+    return { success: true };
   },
 });

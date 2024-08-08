@@ -12,6 +12,10 @@ import { useProModal } from "@/hooks/use-pro-modal";
 import Templates from "./_components/templates";
 import { EmptyOrgSidebar } from "./_components/empty-org-sidebar";
 import { themeCheck } from "@/lib/theme-utilts";
+import { useApiMutation } from "@/hooks/use-api-mutation";
+import { api } from "@/convex/_generated/api";
+import { toast } from "sonner";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const DashboardPage = () => {
   const searchParams = useSearchParams();
@@ -52,46 +56,74 @@ const DashboardPage = () => {
     return () => clearTimeout(timer);
   }, [activeOrganization, user]);
 
-  if (!user) return <Loading />;
-
   const activeOrg = user?.organizations.find(org => org.id === activeOrganization);
+  const { mutate: updateBoardFolder } = useApiMutation(api.boards.updateFolder);
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const data = e.dataTransfer.getData('text/plain');
+    const { id: boardId, folderId: sourceFolderId } = JSON.parse(data);
+
+    if (!sourceFolderId) {
+      return;
+    }
+
+    updateBoardFolder({
+      boardId: boardId,
+      folderId: undefined,
+    }).then(() => {
+      toast.success('Board moved outside of the folder');
+    });
+  };
+
+  if (!user) return <Loading />;
 
   return (
     <main className="h-full dark:bg-[#383838] dark:text-white bg-[#F9FAFB]">
       <div className="flex h-full">
-      {activeOrg ? (
-        <OrgSidebar
-          setActiveOrganization={setActiveOrganization}
-          activeOrganization={activeOrganization}
-        />
-      ) : (
-        <EmptyOrgSidebar />
-      )} 
-      <div className="h-full flex-1">
-        <Navbar
-          setActiveOrganization={setActiveOrganization}
-          activeOrganization={activeOrganization}
-          activeOrg={activeOrg}
-        />
-        {activeOrg && (
-          <Templates org={activeOrg}/>
+        {activeOrg ? (
+          <OrgSidebar
+            setActiveOrganization={setActiveOrganization}
+            activeOrganization={activeOrganization}
+          />
+        ) : (
+          <EmptyOrgSidebar />
         )}
-        <div className="flex-1 h-[calc(100%] p-6">
-          {!activeOrg ? (
-            <EmptyOrg
-              setActiveOrganization={setActiveOrganization}
-              user={user}
-            />
-          ) : (
-            <BoardList
-              userId={user.id}
-              org={activeOrg}
-              query={{ search, favorites }}
-            />
+        <ScrollArea
+          onDragOver={handleDragOver}
+          onDrop={handleDrop}
+          className="h-full flex-1 flex flex-col"
+        >
+          <Navbar
+            setActiveOrganization={setActiveOrganization}
+            activeOrganization={activeOrganization}
+            activeOrg={activeOrg}
+          />
+          {activeOrg && (
+            <Templates org={activeOrg} />
           )}
-        </div>
+          <div className="flex-1 h-[calc(100%-64px)] p-6">
+            {!activeOrg ? (
+              <EmptyOrg
+                setActiveOrganization={setActiveOrganization}
+                user={user}
+              />
+            ) : (
+              <BoardList
+                userId={user.id}
+                org={activeOrg}
+                query={{ search, favorites }}
+              />
+            )}
+          </div>
+        </ScrollArea>
       </div>
-    </div>
     </main>
   );
 };

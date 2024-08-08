@@ -1,5 +1,5 @@
 export const PlantillaModeloCanvas = {
-    name: 'Modelo Canvas',
+    name: 'Model Canvas',
     image: '/templates/modelo-canvas.png',
     href: "/plantillas/modelo-canvas/",
     "layers": {

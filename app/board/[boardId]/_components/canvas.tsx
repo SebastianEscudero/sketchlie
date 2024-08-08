@@ -2005,6 +2005,7 @@ export const Canvas = ({
                         style={{
                             transform: `translate(${camera.x}px, ${camera.y}px) scale(${zoom})`,
                             transformOrigin: 'top left',
+                            willChange: 'transform',
                         }}
                     >
                         {visibleLayers.map((layerId: string) => {

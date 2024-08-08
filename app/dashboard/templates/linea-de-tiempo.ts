@@ -1,5 +1,5 @@
 export const PlantillaLineaDeTiempo = {
-  name: 'Linea de tiempo',
+  name: 'Timeline',
   image: '/templates/linea-de-tiempo.png',
   href: "/plantillas/linea-de-tiempo/",
   "layers": {

@@ -48,6 +48,7 @@ import { getPlanColor } from "@/lib/orgUtils";
 import { OrgImage } from "./org-image";
 import { Dialog, DialogContent } from "../ui/dialog";
 import axios from "axios";
+import { ScrollArea } from "../ui/scroll-area";
 
 interface OrganizationSettingsProps {
     activeOrganization: string | null;
@@ -189,100 +190,102 @@ export const OrganizationSettings = ({
                             {selectedSection}
                         </DialogTitle>
                         {selectedSection === 'Members' ? (
-                            <ul className="pt-4 overflow-y-auto max-h-[330px] md:max-h-[380px]">
-                                {activeOrg.users
-                                    .sort((a: any, b: any) => (a.id === user?.id ? -1 : b.id === user?.id ? 1 : 0))
-                                    .map((orgUser: any) => (
-                                        <li key={orgUser.id} className="flex pb-3">
-                                            <Avatar>
-                                                <AvatarImage src={orgUser.image || ""} />
-                                                <AvatarFallback className="bg-blue-600">
-                                                    <User className="text-white" />
-                                                </AvatarFallback>
-                                            </Avatar>
-                                            <div className="ml-2">
-                                                <p className="truncate xs:w-auto w-[140px] text-sm">
-                                                    {orgUser.name}
-                                                    {orgUser.id === user?.id && (
-                                                        <span className="bg-[#D8E0FC] px-[4px] py-[2px] rounded-sm text-[12px] text-blue-600 ml-1">You</span>
-                                                    )}
-                                                </p>
-                                                <p className="truncate text-[12px] xs:w-auto w-[140px] text-zinc-400">{orgUser.email}</p>
-                                            </div>
-                                            <DropdownMenu>
-                                                <DropdownMenuTrigger className={`ml-auto mr-2 text-zinc-600 dark:text-zinc-200 text-sm border border-zinc-600 dark:border-zinc-200 rounded-md p-2 ${usersRole !== 'Admin' ? 'pointer-events-none' : ''}`}>
-                                                    {orgUser.role}
-                                                </DropdownMenuTrigger>
-                                                {usersRole === 'Admin' && orgUser.id !== user?.id && (
-                                                    <DropdownMenuContent>
-                                                        <DropdownMenuItem onClick={async () => {
-                                                            const result = await editUserRole(activeOrg.id, orgUser.id, 'Admin');
-                                                            if (result.success) {
-                                                                toast.success(result.success);
-                                                            } else {
-                                                                toast.error(result.error);
-                                                            }
-                                                            update();
-                                                        }}>
-                                                            Admin
-                                                        </DropdownMenuItem>
-                                                        <DropdownMenuItem onClick={async () => {
-                                                            const result = await editUserRole(activeOrg.id, orgUser.id, 'Member');
-                                                            if (result.success) {
-                                                                toast.success(result.success);
-                                                            } else {
-                                                                toast.error(result.error);
-                                                            }
-                                                            update();
-                                                        }}>
-                                                            Member
-                                                        </DropdownMenuItem>
-                                                        <DropdownMenuItem onClick={async () => {
-                                                            const result = await editUserRole(activeOrg.id, orgUser.id, 'Guest');
-                                                            if (result.success) {
-                                                                toast.success(result.success);
-                                                            } else {
-                                                                toast.error(result.error);
-                                                            }
-                                                            update();
-                                                        }}>
-                                                            Guest
-                                                        </DropdownMenuItem>
-                                                    </DropdownMenuContent>
-                                                )}
-                                            </DropdownMenu>
-                                            <DropdownMenu>
-                                                <DropdownMenuTrigger className="pr-4">
-                                                    <Ellipsis className="text-zinc-500 dark:text-zinc-100 w-4 h-4" />
-                                                </DropdownMenuTrigger>
-                                                <DropdownMenuContent align="end" className="rounded-xl shadow-xl border p-0">
-                                                    <DropdownMenuItem className="py-2 px-3 hover:cursor-pointer">
-                                                        <p className="text-red-500" onClick={() => leaveOrganization(activeOrg.id, orgUser.id)
-                                                            .then((result) => {
-                                                                if (user && user.organizations && user?.organizations?.length > 0) {
-                                                                    const firstOrgId = user?.organizations[0].id;
-                                                                    setActiveOrganization(firstOrgId);
-                                                                    localStorage.setItem("activeOrganization", firstOrgId);
+                            <ScrollArea className="pt-4 max-h-[330px] md:max-h-[380px]">
+                                <ul className="overflow-y-auto">
+                                    {activeOrg.users
+                                        .sort((a: any, b: any) => (a.id === user?.id ? -1 : b.id === user?.id ? 1 : 0))
+                                        .map((orgUser: any) => (
+                                            <li key={orgUser.id} className="flex pb-3">
+                                                <Avatar>
+                                                    <AvatarImage src={orgUser.image || ""} />
+                                                    <AvatarFallback className="bg-blue-600">
+                                                        <User className="text-white" />
+                                                    </AvatarFallback>
+                                                </Avatar>
+                                                <div className="ml-2">
+                                                    <p className="truncate xs:w-auto w-[140px] text-sm">
+                                                        {orgUser.name}
+                                                        {orgUser.id === user?.id && (
+                                                            <span className="bg-[#D8E0FC] px-[4px] py-[2px] rounded-sm text-[12px] text-blue-600 ml-1">You</span>
+                                                        )}
+                                                    </p>
+                                                    <p className="truncate text-[12px] xs:w-auto w-[140px] text-zinc-400">{orgUser.email}</p>
+                                                </div>
+                                                <DropdownMenu>
+                                                    <DropdownMenuTrigger className={`ml-auto mr-2 w-[80px] text-zinc-600 dark:text-zinc-200 text-sm border border-zinc-600 dark:border-zinc-200 rounded-md p-2 ${usersRole !== 'Admin' ? 'pointer-events-none' : ''}`}>
+                                                        {orgUser.role}
+                                                    </DropdownMenuTrigger>
+                                                    {usersRole === 'Admin' && orgUser.id !== user?.id && (
+                                                        <DropdownMenuContent>
+                                                            <DropdownMenuItem onClick={async () => {
+                                                                const result = await editUserRole(activeOrg.id, orgUser.id, 'Admin');
+                                                                if (result.success) {
+                                                                    toast.success(result.success);
                                                                 } else {
-                                                                    setActiveOrganization(null);
-                                                                    localStorage.setItem("activeOrganization", '');
+                                                                    toast.error(result.error);
                                                                 }
                                                                 update();
-                                                                if (result.isOrgDeleted) {
-                                                                    toast.success("Organization deleted successfully");
+                                                            }}>
+                                                                Admin
+                                                            </DropdownMenuItem>
+                                                            <DropdownMenuItem onClick={async () => {
+                                                                const result = await editUserRole(activeOrg.id, orgUser.id, 'Member');
+                                                                if (result.success) {
+                                                                    toast.success(result.success);
                                                                 } else {
-                                                                    toast.success("User removed successfully");
+                                                                    toast.error(result.error);
                                                                 }
-                                                            })
-                                                        }>
-                                                            {orgUser.id === user?.id ? "Leave Organization" : "Remove member"}
-                                                        </p>
-                                                    </DropdownMenuItem>
-                                                </DropdownMenuContent>
-                                            </DropdownMenu>
-                                        </li>
-                                    ))}
-                            </ul>
+                                                                update();
+                                                            }}>
+                                                                Member
+                                                            </DropdownMenuItem>
+                                                            <DropdownMenuItem onClick={async () => {
+                                                                const result = await editUserRole(activeOrg.id, orgUser.id, 'Guest');
+                                                                if (result.success) {
+                                                                    toast.success(result.success);
+                                                                } else {
+                                                                    toast.error(result.error);
+                                                                }
+                                                                update();
+                                                            }}>
+                                                                Guest
+                                                            </DropdownMenuItem>
+                                                        </DropdownMenuContent>
+                                                    )}
+                                                </DropdownMenu>
+                                                <DropdownMenu>
+                                                    <DropdownMenuTrigger className="pr-4">
+                                                        <Ellipsis className="text-zinc-500 dark:text-zinc-100 w-4 h-4" />
+                                                    </DropdownMenuTrigger>
+                                                    <DropdownMenuContent align="end" className="rounded-xl shadow-xl border p-0">
+                                                        <DropdownMenuItem className="py-2 px-3 hover:cursor-pointer">
+                                                            <p className="text-red-500" onClick={() => leaveOrganization(activeOrg.id, orgUser.id)
+                                                                .then((result) => {
+                                                                    if (user && user.organizations && user?.organizations?.length > 0) {
+                                                                        const firstOrgId = user?.organizations[0].id;
+                                                                        setActiveOrganization(firstOrgId);
+                                                                        localStorage.setItem("activeOrganization", firstOrgId);
+                                                                    } else {
+                                                                        setActiveOrganization(null);
+                                                                        localStorage.setItem("activeOrganization", '');
+                                                                    }
+                                                                    update();
+                                                                    if (result.isOrgDeleted) {
+                                                                        toast.success("Organization deleted successfully");
+                                                                    } else {
+                                                                        toast.success("User removed successfully");
+                                                                    }
+                                                                })
+                                                            }>
+                                                                {orgUser.id === user?.id ? "Leave Organization" : "Remove member"}
+                                                            </p>
+                                                        </DropdownMenuItem>
+                                                    </DropdownMenuContent>
+                                                </DropdownMenu>
+                                            </li>
+                                        ))}
+                                </ul>
+                            </ScrollArea>
                         ) : selectedSection === "Settings" ? (
                             <div>
                                 {usersRole === 'Admin' && (

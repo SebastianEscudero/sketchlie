@@ -76,11 +76,25 @@ export const BoardCard = ({
   const handleClick = () => {
     setIsLoading(true);
   };
+
+  const handleDragStart = (event: any) => {
+    const target = event.target;
+    const rect = target.getBoundingClientRect();
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+  
+    // Set the drag image to the center of the board element
+    event.dataTransfer.setDragImage(target, centerX, centerY);
+    event.dataTransfer.setData('text/plain', JSON.stringify({ id: id, folderId: undefined }));
+  };
+
   return (
     <Link href={`/board/${id}`}>
       <div
         className={`group aspect-[100/127] border rounded-lg shadow-custom-1 flex flex-col justify-between overflow-hidden dark:bg-zinc-800 dark:border-zinc-700 bg-amber-50" ${isLoading ? 'opacity-80 transition-opacity cursor-not-allowed' : ''}`}
         onClick={handleClick}
+        draggable={true}
+        onDragStart={handleDragStart}
       >
         <div className="relative flex-1 dark:bg-white bg-amber-50">
           <Image

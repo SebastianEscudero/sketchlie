@@ -1,5 +1,5 @@
 export const PlantillaDiagrama = {
-    name: 'Diagrama',
+    name: 'Diagram',
     image: '/templates/diagrama.png',
     href: "/plantillas/diagrama/",
     "layers": {

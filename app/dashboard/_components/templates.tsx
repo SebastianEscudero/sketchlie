@@ -93,7 +93,7 @@ export const Templates = ({
                             <ChevronsDown className="h-6 w-6 text-white" />
                         </DialogTrigger>
                     </div>
-                    <DialogContent className="w-full max-w-[80%] max-h-[85%] xl:max-w-[50%] overflow-y-auto">
+                    <DialogContent className="w-full max-w-[80%] max-h-[85%] h-full xl:max-w-[50%]">
                         <ShowAllTemplates
                             usersRole={usersRole}
                             pending={pending}

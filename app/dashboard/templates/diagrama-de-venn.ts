@@ -1,5 +1,5 @@
 export const PlantillaDiagramaDeVenn = {
-    name: 'Diagrama de Venn',
+    name: 'Venn Diagram',
     image: '/templates/diagrama-de-venn.png',
     href: "/plantillas/diagrama-de-venn/",
     "layers": {

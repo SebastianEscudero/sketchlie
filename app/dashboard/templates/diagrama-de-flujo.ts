@@ -1,5 +1,5 @@
 export const PlantillaDiagramaDeFlujo = {
-    name: 'Diagrama de Flujo',
+    name: 'Flowchart',
     image: '/templates/diagrama-de-flujo.png',
     href: "/plantillas/diagrama-de-flujo/",
     "layers": {
