@@ -1,7 +1,7 @@
 "use client";
 
 import { AuthNavbar } from "@/components/auth/auth-navbar";
-import { themeCheck } from "@/lib/theme-utilts";
+import { themeCheck } from "@/lib/theme-utils";
 import { useEffect } from "react";
 
 const AuthLayout = ({ 

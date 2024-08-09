@@ -7,6 +7,7 @@ import {
   ArrowOrientation,
   ArrowType,
   Camera,
+  CanvasState,
   Color,
   Layer,
   Layers,

@@ -31,3 +31,8 @@ export function setCursorWithFill(svgUrl: any, fillColor: any, x: any, y: any) {
         })
         .catch(error => console.error('Error setting the cursor:', error));
 }
+
+export const themeColors = {
+    light: "#E5C100",
+    dark: "#5A7DFF",
+};

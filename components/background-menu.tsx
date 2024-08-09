@@ -7,7 +7,7 @@ import {
 import { Check, ChevronRight, Eye } from "lucide-react";
 import { Button } from "./ui/button";
 import { MoonIcon, SunIcon } from "lucide-react";
-import { themeCheck, themeSwitch } from "@/lib/theme-utilts";
+import { themeCheck, themeColors, themeSwitch } from "@/lib/theme-utils";
 import { useEffect, useState } from "react";
 
 interface BackgroundMenuProps {
@@ -23,10 +23,6 @@ export const BackgroundMenu = ({
 }: BackgroundMenuProps) => {
     const options = ['none', 'grid', 'line'];
     const [theme, setTheme] = useState("dark");
-    const themeColors = {
-        light: "#DAA520",
-        dark: "#4F76E8",
-    };
 
     useEffect(() => {
         setTheme(themeCheck());

@@ -9,7 +9,7 @@ import { useState, useEffect } from "react";
 import { useConvex } from "convex/react";
 import { Loading } from "@/components/auth/loading";
 import { Layers } from "@/types/canvas";
-import { themeCheck } from "@/lib/theme-utilts";
+import { themeCheck } from "@/lib/theme-utils";
 
 interface BoardIdPageProps {
   params: {

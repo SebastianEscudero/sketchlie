@@ -1,14 +1,10 @@
 import { MoonIcon, SunIcon, ToggleLeft, ToggleRight } from "lucide-react";
 import { Button } from "../ui/button";
-import { themeCheck, themeSwitch } from "@/lib/theme-utilts";
+import { themeCheck, themeColors, themeSwitch } from "@/lib/theme-utils";
 import { useEffect, useState } from "react";
 
 export const ThemeDropdownMenu = () => {
     const [theme, setTheme] = useState("dark");
-    const themeColors = {
-        light: "#DAA520",
-        dark: "#4F76E8",
-    };
 
     useEffect(() => {
         setTheme(themeCheck());

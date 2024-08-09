@@ -11,7 +11,7 @@ import { Loading } from "@/components/auth/loading";
 import { useProModal } from "@/hooks/use-pro-modal";
 import Templates from "./_components/templates";
 import { EmptyOrgSidebar } from "./_components/empty-org-sidebar";
-import { themeCheck } from "@/lib/theme-utilts";
+import { themeCheck } from "@/lib/theme-utils";
 import { useApiMutation } from "@/hooks/use-api-mutation";
 import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
