@@ -27,7 +27,7 @@ export const LoginForm = () => {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl");
   const urlError = searchParams.get("error") === "OAuthAccountNotLinked"
-    ? "Email already in use with different provider!"
+    ? "Email linked to another sign-in method. Use your original login method (Google, GitHub, or email/password)"
     : "";
 
   const [error, setError] = useState<string | undefined>("");

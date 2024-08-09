@@ -393,7 +393,7 @@ export const SelectionTools = memo(({
       style={{
         transform: initialPosition
           ? `translate(
-          calc(${initialPosition.x < 300 ? 300 : initialPosition.x + 230 > window.innerWidth ? window.innerWidth - 230 : initialPosition.x}px - 50%),
+          calc(${initialPosition.x < 220 ? 220 : initialPosition.x + 230 > window.innerWidth ? window.innerWidth - 230 : initialPosition.x}px - 50%),
           ${initialPosition.y < 130
             ? `calc(${initialPosition.y + selectionBounds.height * zoom + 30}px)`
             : `calc(${initialPosition.y - 30}px - 100%)`

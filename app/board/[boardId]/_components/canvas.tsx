@@ -510,7 +510,7 @@ export const Canvas = ({
         }
     
         setLiveLayers(newLayers);
-    }, [canvasState, setCanvasState, setLiveLayers, socket, liveLayers, expired, zoom, setMyPresence, myPresence]);
+    }, [setLiveLayers, socket, liveLayers, expired, zoom, setMyPresence, myPresence]);
 
     const unselectLayers = useCallback(() => {
         if (selectedLayersRef.current.length > 0) {
@@ -1856,6 +1856,8 @@ export const Canvas = ({
             const key = e.key.toLowerCase();
             if (key === "arrowup" || key === "arrowdown" || key === "arrowleft" || key === "arrowright") {
                 if (canvasState.mode === CanvasMode.Translating) {
+                    const command = new TranslateLayersCommand(selectedLayersRef.current, initialLayers, liveLayers, setLiveLayers, boardId, socket);
+                    performAction(command);
                     setCanvasState({ mode: CanvasMode.None });
                     setIsMoving(false);
                 }
@@ -1871,7 +1873,7 @@ export const Canvas = ({
         }
         
     }, [copySelectedLayers, pasteCopiedLayers, camera, zoom, liveLayers, copiedLayerIds, liveLayerIds, myPresence, socket, User.userId, forceSelectionBoxRender, canvasState,
-        boardId, history.length, mousePosition, performAction, redo, redoStack.length, setLiveLayerIds, setLiveLayers, undo, unselectLayers, expired, translateSelectedLayersWithDelta]);
+        boardId, history.length, mousePosition, performAction, redo, redoStack.length, setLiveLayerIds, setLiveLayers, undo, unselectLayers, expired, translateSelectedLayersWithDelta, initialLayers]);
 
 
     useEffect(() => {
