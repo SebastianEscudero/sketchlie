@@ -2,22 +2,19 @@ import { useApiMutation } from '@/hooks/use-api-mutation';
 import { api } from '@/convex/_generated/api';
 import { toast } from 'sonner';
 import Image from 'next/image';
-import { ChevronRight, Import, MoreHorizontal } from 'lucide-react';
+import { ChevronRight, Folder, Import, MoreHorizontal } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
-import { BoardCard } from './board-card';
 import { FolderActions } from '@/components/folder-actions';
 import React from 'react';
+import Link from 'next/link';
 
 interface FolderListProps {
   folders: any[];
   groupedBoards: Record<string, any[]>;
   org: any;
-  query: any;
-  onToggleFolder: (folderId: string) => void;
-  expandedFolder: string | null;
 }
 
-export const FolderList = ({ folders, groupedBoards, org, query, onToggleFolder, expandedFolder }: FolderListProps) => {
+export const FolderList = ({ folders, groupedBoards, org }: FolderListProps) => {
   const { mutate: updateBoardFolder } = useApiMutation(api.boards.updateFolder);
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -56,11 +53,10 @@ export const FolderList = ({ folders, groupedBoards, org, query, onToggleFolder,
   return (
     <>
       {folders.map((folder) => (
-        <React.Fragment key={folder._id}>
+        <Link key={folder._id} href={`/dashboard/?folder=${folder._id}`}>
           <div
             key={folder._id}
             className=" shadow-custom-1 border dark:border-zinc-700 group aspect-[100/127] rounded-lg flex flex-col items-center justify-center cursor-pointer"
-            onClick={() => onToggleFolder(folder._id)}
             onDragOver={handleDragOver}
             onDrop={(e) => handleDrop(e, folder._id)}
           >
@@ -79,12 +75,7 @@ export const FolderList = ({ folders, groupedBoards, org, query, onToggleFolder,
                   />
                 </button>
               </FolderActions>
-              {expandedFolder === folder._id ? (
-                <div className='w-full flex items-center justify-center'>
-                  <ChevronRight size={80} className="text-gray-800" />
-                </div>
-              ) : (
-                (!groupedBoards[folder._id] || groupedBoards[folder._id].length === 0) ? (
+              {(!groupedBoards[folder._id] || groupedBoards[folder._id].length === 0) ? (
                   <div className='w-full flex flex-col items-center justify-center text-center'>
                     <Import size={50} className='text-gray-800 mb-2' />
                     <p className='text-gray-600'>Drag your board here</p>
@@ -93,7 +84,7 @@ export const FolderList = ({ folders, groupedBoards, org, query, onToggleFolder,
                   groupedBoards[folder._id]?.slice(0, 4).map((board) => (
                     <div key={board._id} className="w-1/2 px-2 py-1">
                       <div
-                        className="group aspect-[120/127] border rounded-lg shadow-custom-1 flex flex-col justify-between overflow-hidden dark:bg-zinc-800 dark:border-zinc-700 bg-amber-50"
+                        className="group aspect-[127/127] border rounded-lg shadow-custom-1 flex flex-col justify-between overflow-hidden dark:bg-zinc-800 dark:border-zinc-700 bg-amber-50"
                         draggable={true}
                         onDragStart={(e) => handleDragStart(e, board._id, folder._id)}
                       >
@@ -105,47 +96,28 @@ export const FolderList = ({ folders, groupedBoards, org, query, onToggleFolder,
                             className="object-fit"
                           />
                         </div>
-                        <div className="relative dark:bg-[#2C2C2C] bg-zinc-100 p-2">
+                        <div className="relative dark:bg-[#2C2C2C] bg-zinc-100 p-1">
                           <p className="text-[10px] truncate text-black dark:text-white">
                             {board.title}
-                          </p>
-                          <p className="transition-opacity text-[8px] truncate dark:text-zinc-300 text-muted-foreground">
-                            {board.authorName}
                           </p>
                         </div>
                       </div>
                     </div>
                   ))
                 )
-              )}
+              }
             </div>
-            <div className="relative dark:bg-[#2C2C2C] bg-zinc-100 p-3 w-full">
+            <div className="relative dark:bg-[#2C2C2C] bg-zinc-100 rounded-b-lg p-3 w-full">
               <p className="text-[13px] truncate text-black dark:text-white">
                 {folder.name}
               </p>
-              <p className="transition-opacity text-[11px] truncate dark:text-zinc-300 text-muted-foreground">
+              <p className="transition-opacity text-[11px] truncate dark:text-zinc-300 text-muted-foreground flex flex-row items-center">
+                <Folder className="inline-block w-4 h-4 mr-2" />
                 {formatDistanceToNow(folder.createdAt, { addSuffix: true, })}
               </p>
             </div>
           </div>
-          {expandedFolder && expandedFolder === folder._id && (
-            groupedBoards[expandedFolder]?.map((board: any) => (
-              <BoardCard
-                org={org}
-                key={board._id}
-                id={board._id}
-                title={board.title}
-                imageUrl={board.imageUrl}
-                authorId={board.authorId}
-                authorName={board.authorName}
-                createdAt={board._creationTime}
-                orgId={board.orgId}
-                isFavorite={board.isFavorite}
-                isPrivate={board.private}
-              />
-            ))
-          )}
-        </React.Fragment>
+        </Link>
       ))}
     </>
   );

@@ -9,6 +9,7 @@ export const get = query({
     userId: v.optional(v.string()),
     search: v.optional(v.string()),
     favorites: v.optional(v.string()),
+    folderId: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     
@@ -47,13 +48,21 @@ export const get = query({
             .eq("orgId", args.orgId)
         )
         .collect();
-    } else {
-      boards = await ctx.db
-        .query("boards")
-        .withIndex("by_org", (q) => q.eq("orgId", args.orgId))
-        .order("desc")
-        .collect();
-    }
+      } else if (args.folderId) {
+        // If folderId is provided, fetch boards for that specific folder
+        boards = await ctx.db
+          .query("boards")
+          .withIndex("by_folder", (q) => q.eq("folderId", args.folderId))
+          .order("desc")
+          .collect();
+      } else {
+        // Fetch all boards for the organization
+        boards = await ctx.db
+          .query("boards")
+          .withIndex("by_org", (q) => q.eq("orgId", args.orgId))
+          .order("desc")
+          .collect();
+      }
 
     const boardsWithFavoriteRelation = boards.map((board) => {
       return ctx.db

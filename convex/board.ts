@@ -21,7 +21,8 @@ export const create = mutation({
     userName: v.optional(v.string()),
     orgId: v.string(),
     title: v.string(),
-    private: v.optional(v.boolean())
+    private: v.optional(v.boolean()),
+    folderId: v.optional(v.string())
   },
   handler: async (ctx, args) => {
 
@@ -41,7 +42,8 @@ export const create = mutation({
       authorId: userId,
       authorName: userName!,
       imageUrl: randomImage,
-      private: isPrivate
+      private: isPrivate,
+      folderId: args.folderId
     });
 
     return board;

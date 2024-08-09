@@ -19,11 +19,17 @@ import { updateR2Bucket } from "@/lib/r2-bucket-functions";
 interface NewBoardButtonProps {
     org: any
     disabled?: boolean;
+    query?: {
+        search?: string;
+        favorites?: string;
+        folderId?: string;
+    }
 }
 
 export const NewBoardButton = ({
     org,
     disabled,
+    query
 }: NewBoardButtonProps) => {
 
     const maxAmountOfBoards = getMaxBoards(org);
@@ -53,6 +59,7 @@ export const NewBoardButton = ({
                 title,
                 userId: user.id,
                 userName: user.name,
+                folderId: query?.folderId,
             });
             await updateR2Bucket('/api/r2-bucket/createBoard', id, [], {});
             toast.success("Board created");

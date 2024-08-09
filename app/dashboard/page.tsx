@@ -25,6 +25,7 @@ const DashboardPage = () => {
   const search = searchParams.get("search") || undefined;
   const organizationId = searchParams.get("org") || undefined;
   const invitationId = searchParams.get("invitationId") || undefined
+  const folderId = searchParams.get("folder") || undefined;
   const favorites = searchParams.get("favorites") || undefined
   const user = useCurrentUser();
   const [activeOrganization, setActiveOrganization] = useState<string | null>(null);
@@ -131,7 +132,7 @@ const DashboardPage = () => {
               <BoardList
                 userId={user.id}
                 org={activeOrg}
-                query={{ search, favorites }}
+                query={{ search, favorites, folderId }}
               />
             )}
           </div>
