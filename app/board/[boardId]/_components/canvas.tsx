@@ -1369,6 +1369,22 @@ export const Canvas = ({
             });
         }
 
+        if (e.pointerType !== "mouse") {
+            const newPresence: Presence = {
+                ...myPresence,
+                cursor: null,
+                pencilDraft: null
+            };
+        
+            setPencilDraft([]);
+            setMyPresence(newPresence);
+        
+            if (socket) {
+                socket.emit('presence', newPresence, User.userId);
+            }
+            return;
+        }
+
         if (selectedLayersRef.current.length === 0) {
             const newPresence: Presence = {
                 ...myPresence,
@@ -1408,7 +1424,12 @@ export const Canvas = ({
             setLiveLayers,
         ]);
 
-    const onPointerLeave = useCallback(() => {
+    const onPointerLeave = useCallback((e: any) => {
+
+        if (e.pointerType !== "mouse") {
+            return;
+        }
+
         const newPresence: Presence = {
             ...myPresence,
             cursor: null,
@@ -1561,6 +1582,7 @@ export const Canvas = ({
     }, [setIsDraggingOverCanvas, camera, zoom, maxFileSize, User.userId, insertImage, expired]);
 
     const onTouchDown = useCallback((e: React.TouchEvent) => {
+        e.preventDefault();
         setIsMoving(false);
         setActiveTouches(e.touches.length);
 
@@ -1571,11 +1593,14 @@ export const Canvas = ({
     }, []);
 
     const onTouchUp = useCallback((e: React.TouchEvent) => {
+        e.preventDefault();
         setIsMoving(false);
         setActiveTouches(e.changedTouches.length);
     }, []);
 
     const onTouchMove = useCallback((e: React.TouchEvent) => {
+        e.preventDefault();
+
         if (canvasState.mode === CanvasMode.Translating) {
             setIsMoving(true);
         }
@@ -1879,6 +1904,11 @@ export const Canvas = ({
 
 
     useEffect(() => {
+        // just to make sure there are no dangling points
+        if (canvasState.mode === CanvasMode.None) {
+            setPencilDraft([]);
+        }
+
         canvasStateRef.current = canvasState;
         zoomRef.current = zoom;
         cameraRef.current = camera;
@@ -1989,6 +2019,7 @@ export const Canvas = ({
                 backgroundPosition: (background === 'grid' || background === 'line') ? `${camera.x}px ${camera.y}px` : undefined,
                 WebkitOverflowScrolling: 'touch',
                 WebkitUserSelect: 'none',
+                touchAction: 'none',
             }}
         >
             <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
