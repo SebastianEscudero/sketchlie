@@ -69,7 +69,6 @@ import { setCursorWithFill } from "@/lib/theme-utils";
 import { ArrowPostInsertMenu } from "./arrow-post-insert-menu";
 import { EraserTrail } from "./eraser-trail";
 import { CurrentSuggestedLayer } from "./current-suggested-layer";
-import { set, throttle } from "lodash";
 import { smoothLastPoint } from "@/lib/smooth-points";
 
 const preventDefault = (e: any) => {
@@ -998,7 +997,7 @@ export const Canvas = ({
                 socket.emit('layer-update', selectedLayersRef.current, liveLayers);
             }
         }
-    }, [camera, canvasState.mode, setCanvasState, startDrawing, setIsPanning, setIsRightClickPanning, zoom, activeTouches, expired, isPanning, unselectLayers, liveLayers, socket]);
+    }, [canvasState.mode, setCanvasState, startDrawing, setIsPanning, setIsRightClickPanning, activeTouches, expired, isPanning, unselectLayers, liveLayers, socket]);
 
     const onPointerMove = useCallback((e: React.PointerEvent) => {
         e.preventDefault();

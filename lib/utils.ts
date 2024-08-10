@@ -582,6 +582,20 @@ export function findIntersectingLayersWithPath(
   layerIds.forEach(layerId => {
     const layer = layers[layerId];
     if (!layer || layer.type !== LayerType.Path || !layer.points) return;
+    
+    console.log(layer.points);
+
+    if (layer.points.length < 2) {
+      for (let j = 0; j < eraserPathPoints.length - 1; j++) {
+        const startEraserPoint = eraserPathPoints[j];
+        const endEraserPoint = eraserPathPoints[j + 1];
+
+        if (doLinesIntersect([layer.x-2, layer.y-2], [layer.x+2, layer.y+2], startEraserPoint, endEraserPoint)) {
+          intersectingLayerIds.push(layerId);
+          break;
+        }
+      }
+    }
 
     for (let i = 0; i < layer.points.length - 1; i++) {
       const startLayerPoint = [layer.points[i][0] + layer.x, layer.points[i][1] + layer.y];
