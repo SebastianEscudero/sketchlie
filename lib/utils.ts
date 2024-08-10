@@ -50,10 +50,11 @@ export function pointerEventToCanvasPoint(
   e: any,
   camera: Camera,
   zoom: number,
+  svgRef: React.RefObject<SVGSVGElement>
 ) {
   let clientX, clientY;
 
-  if (e.type === "touchstart") {
+  if (e.type === "touchstart" || e.type === "touchmove" || e.type === "touchend") {
     clientX = e.touches[0].clientX;
     clientY = e.touches[0].clientY;
   } else {
@@ -61,11 +62,23 @@ export function pointerEventToCanvasPoint(
     clientY = e.clientY;
   }
 
+  const svg = svgRef.current;
+  if (!svg) return { x: 0, y: 0 };
+
+  const rect = svg.getBoundingClientRect();
+  const point = svg.createSVGPoint();
+
+  point.x = clientX - rect.left;
+  point.y = clientY - rect.top;
+
+  // Transform the point from screen coordinates to SVG coordinates
+  const transformedPoint = point.matrixTransform(svg.getScreenCTM()!.inverse());
+
   return {
-    x: (Math.round(clientX) - camera.x) / zoom,
-    y: (Math.round(clientY) - camera.y) / zoom,
+    x: (Math.round(transformedPoint.x) - camera.x) / zoom,
+    y: (Math.round(transformedPoint.y) - camera.y) / zoom,
   };
-};
+}
 
 export function connectionIdToColor(connectionId: number): string {
   return COLORS[connectionId % COLORS.length];

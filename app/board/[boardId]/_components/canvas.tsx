@@ -122,6 +122,8 @@ export const Canvas = ({
     const zoomRef = useRef(zoom);
     const cameraRef = useRef(camera);
     const canvasStateRef = useRef(canvasState);
+    const svgRef = useRef(null);
+    const [visibleLayers, setVisibleLayers] = useState<string[]>([]);
     const [isPanning, setIsPanning] = useState(false);
     const [rightClickPanning, setIsRightClickPanning] = useState(false);
     const [startPanPoint, setStartPanPoint] = useState({ x: 0, y: 0 });
@@ -937,7 +939,7 @@ export const Canvas = ({
             return;
         }
 
-        const point = pointerEventToCanvasPoint(e, camera, zoom);
+        const point = pointerEventToCanvasPoint(e, cameraRef.current, zoomRef.current, svgRef);
         if (point && selectedLayersRef.current.length > 0) {
             const bounds = calculateBoundingBox(selectedLayersRef.current.map(id => liveLayers[id]));
             if (bounds && point.x > bounds.x &&
@@ -978,7 +980,7 @@ export const Canvas = ({
             }
 
             if (canvasState.mode === CanvasMode.Inserting) {
-                const point = pointerEventToCanvasPoint(e, camera, zoom);
+                const point = pointerEventToCanvasPoint(e, cameraRef.current, zoomRef.current, svgRef);
                 setStartPanPoint(point);
                 setIsPanning(false);
                 return;
@@ -1029,7 +1031,7 @@ export const Canvas = ({
             setCamera(newCameraPosition);
             setStartPanPoint({ x: e.clientX, y: e.clientY });
         }
-        const current = pointerEventToCanvasPoint(e, camera, zoom);
+        const current = pointerEventToCanvasPoint(e, cameraRef.current, zoomRef.current, svgRef);
         setMousePosition(current);
 
         const newPresence: Presence = {
@@ -1067,7 +1069,7 @@ export const Canvas = ({
             canvasState.layerType !== LayerType.Image &&
             (startPanPoint.x !== 0 || startPanPoint.y !== 0)
         ) {
-            const point = pointerEventToCanvasPoint(e, camera, zoom);
+            const point = pointerEventToCanvasPoint(e, cameraRef.current, zoomRef.current, svgRef);
             let widthArrow = point.x - startPanPoint.x;
             let heightArrow = point.y - startPanPoint.y;
             const x = Math.min(point.x, startPanPoint.x);
@@ -1228,7 +1230,7 @@ export const Canvas = ({
 
     const onPointerUp = useCallback((e: React.PointerEvent) => {
         setIsRightClickPanning(false);
-        const point = pointerEventToCanvasPoint(e, camera, zoom);
+        const point = pointerEventToCanvasPoint(e, camera, zoom, svgRef);
 
         if (
             canvasState.mode === CanvasMode.None ||
@@ -1437,7 +1439,7 @@ export const Canvas = ({
         }
 
         e.stopPropagation();
-        const point = pointerEventToCanvasPoint(e, cameraRef.current, zoomRef.current);
+        const point = pointerEventToCanvasPoint(e, cameraRef.current, zoomRef.current, svgRef);
         setCanvasState({ mode: CanvasMode.Translating, current: point });
 
         if (selectedLayersRef.current.includes(layerId)) {
@@ -1946,9 +1948,6 @@ export const Canvas = ({
             document.body.style.cursor = 'default';
         }
     }, [canvasState.mode, canvasState, rightClickPanning]);
-
-    const svgRef = useRef(null);
-    const [visibleLayers, setVisibleLayers] = useState<string[]>([]);
 
     useEffect(() => {
         const updateVisibleLayers = () => {
