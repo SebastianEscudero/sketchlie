@@ -76,9 +76,9 @@ export const FolderList = ({ folders, groupedBoards, org }: FolderListProps) => 
                 </button>
               </FolderActions>
               {(!groupedBoards[folder._id] || groupedBoards[folder._id].length === 0) ? (
-                  <div className='w-full flex flex-col items-center justify-center text-center'>
+                  <div className='w-full flex flex-col items-center justify-center text-center p-4'>
                     <Import size={50} className='text-gray-800 mb-2' />
-                    <p className='text-gray-600'>Drag your board here</p>
+                    <p className='text-gray-600'>Drag your boards here</p>
                   </div>
                 ) : (
                   groupedBoards[folder._id]?.slice(0, 4).map((board) => (

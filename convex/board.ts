@@ -110,6 +110,29 @@ export const update = mutation({
   },
 });
 
+export const updateBoardsFolder = mutation({
+  args: { 
+    boardIds: v.array(v.id("boards")),
+    folderId: v.string(),
+    userId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const { boardIds, folderId, userId } = args;
+
+    if (!userId) {
+      throw new Error("Unauthorized");
+    }
+
+    const updatePromises = boardIds.map(boardId => 
+      ctx.db.patch(boardId, { folderId: folderId })
+    );
+
+    await Promise.all(updatePromises);
+
+    return { success: true };
+  },
+});
+
 export const favorite = mutation({
   args: { 
     id: v.id("boards"), 

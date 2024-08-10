@@ -15,6 +15,7 @@ import { Footer } from "./footer";
 import { Overlay } from "./overlay";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { useState } from "react";
+import { OnDropConfirmModal } from "@/components/on-drop-confirm-modal";
 
 interface BoardCardProps {
   id: string;
@@ -27,6 +28,7 @@ interface BoardCardProps {
   isFavorite: boolean;
   org: any;
   isPrivate: boolean;
+  user: any;
 };
 
 export const BoardCard = ({
@@ -40,8 +42,12 @@ export const BoardCard = ({
   isFavorite,
   org,
   isPrivate,
+  user
 }: BoardCardProps) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [droppedBoardId, setDroppedBoardId] = useState<string | null>(null);
+  const [folderName, setFolderName] = useState('New Folder');
 
   const userId = useCurrentUser()?.id;
   const authorLabel = userId === authorId ? "You" : authorName;
@@ -57,6 +63,14 @@ export const BoardCard = ({
     mutate: onUnfavorite,
     pending: pendingUnfavorite,
   } = useApiMutation(api.board.unfavorite);
+  const {
+    mutate: createFolder,
+    pending: pendingCreateFolder,
+  } = useApiMutation(api.folders.create);
+  const {
+    mutate: updateBoardsFolder,
+    pending: pendingUpdateBoardsFolder,
+  } = useApiMutation(api.board.updateBoardsFolder);
 
   const toggleFavorite = () => {
     if (isFavorite) {
@@ -77,17 +91,51 @@ export const BoardCard = ({
     setIsLoading(true);
   };
 
-  // const handleDrop = (e: React.DragEvent, folderId: string) => {
-  //   e.preventDefault();
-  //   e.stopPropagation();
+  const handleDrop = (e: React.DragEvent, droppedOnBoardId: string) => {
+    e.preventDefault();
+    e.stopPropagation();
 
-  //   const data = e.dataTransfer.getData('text/plain');
-  //   const { id: boardId, folderId: sourceFolderId } = JSON.parse(data);
+    const data = e.dataTransfer.getData('text/plain');
+    const { id: boardId } = JSON.parse(data);
 
-  //   if (sourceFolderId === folderId) {
-  //     return;
-  //   }
-  // };
+    if (droppedOnBoardId === boardId) {
+      return;
+    }
+
+    setDroppedBoardId(boardId);
+    setIsModalOpen(true);
+  };
+
+  const onBoardDropConfirm = async () => {
+    if (!userId || !droppedBoardId) return;
+
+    try {
+      const folderId = await createFolder({
+        userId: userId,
+        userName: user?.name || "",
+        orgId: orgId,
+        name: folderName,
+      });
+
+      if (folderId) {
+        await updateBoardsFolder({
+          boardIds: [id, droppedBoardId],
+          folderId: folderId,
+          userId: userId,
+        });
+
+        toast.success("Folder created and boards updated successfully");
+      } else {
+        throw new Error("Failed to create folder");
+      }
+    } catch (error) {
+      console.error("Error creating folder or updating boards:", error);
+      toast.error("Failed to create folder or update boards");
+    } finally {
+      setIsModalOpen(false);
+      setDroppedBoardId(null);
+    }
+  }
   
   const handleDragStart = (event: any) => {
     const target = event.target;
@@ -107,6 +155,7 @@ export const BoardCard = ({
         onClick={handleClick}
         draggable={true}
         onDragStart={handleDragStart}
+        onDrop={(e) => handleDrop(e, id)}
       >
         <div className="relative flex-1 dark:bg-white bg-amber-50">
           <Image
@@ -141,6 +190,14 @@ export const BoardCard = ({
           disabled={pendingFavorite || pendingUnfavorite}
         />
       </div>
+      <OnDropConfirmModal
+        header="Create a new folder"
+        description={`Do you want to create a new folder with "${title}" and the dropped board?`}
+        onConfirm={onBoardDropConfirm}
+        open={isModalOpen}
+        setOpen={setIsModalOpen}
+        setTitle={setFolderName}
+      />
     </Link>
   );
 };

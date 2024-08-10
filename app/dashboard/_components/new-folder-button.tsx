@@ -1,11 +1,9 @@
 import { useState } from 'react';
-import { Folder, Plus } from 'lucide-react';
 import { toast } from 'sonner';
 import { useApiMutation } from '@/hooks/use-api-mutation';
 import { api } from '@/convex/_generated/api';
 import { ConfirmBoardModal } from '@/components/create-board-modal';
 import { useCurrentUser } from '@/hooks/use-current-user';
-import { Button } from '@/components/ui/button';
 
 interface NewFolderButtonProps {
   org: any;

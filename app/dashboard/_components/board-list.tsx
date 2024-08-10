@@ -95,6 +95,7 @@ export const BoardList = ({
                 orgId={board.orgId}
                 isFavorite={board.isFavorite}
                 isPrivate={board.private}
+                user={user}
               />
             ))}
           </>
@@ -119,6 +120,7 @@ export const BoardList = ({
                 orgId={board.orgId}
                 isFavorite={board.isFavorite}
                 isPrivate={board.private}
+                user={user}
               />
             ))}
           </>
