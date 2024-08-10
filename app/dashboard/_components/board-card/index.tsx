@@ -77,6 +77,18 @@ export const BoardCard = ({
     setIsLoading(true);
   };
 
+  // const handleDrop = (e: React.DragEvent, folderId: string) => {
+  //   e.preventDefault();
+  //   e.stopPropagation();
+
+  //   const data = e.dataTransfer.getData('text/plain');
+  //   const { id: boardId, folderId: sourceFolderId } = JSON.parse(data);
+
+  //   if (sourceFolderId === folderId) {
+  //     return;
+  //   }
+  // };
+  
   const handleDragStart = (event: any) => {
     const target = event.target;
     const rect = target.getBoundingClientRect();

@@ -25,11 +25,13 @@ import { NewFolderButton } from "./new-folder-button";
 interface OrgSidebarProps {
     activeOrganization: string | null;
     setActiveOrganization: (id: string) => void;
+    mobile: boolean;
 }
 
 export const OrgSidebar = ({
     activeOrganization,
     setActiveOrganization,
+    mobile
 }: OrgSidebarProps) => {
 
     const searchParams = useSearchParams();
@@ -71,66 +73,78 @@ export const OrgSidebar = ({
     }
 
     return (
-        <div className="hidden lg:flex flex-col dark:bg-[#2C2C2C] space-y-2 shadow-custom-2 justify-between w-[240px] px-5 pt-5 select-none">
-            <div className="flex flex-col space-y-4">
-                <SketchlieButton 
-                    activeOrg={activeOrg}
-                />
-                <OrganizationSwitcher
-                    setActiveOrganization={setActiveOrganization}
-                    activeOrganization={activeOrganization}
-                />
-                <SearchInput />
-                <div className="space-y-1 w-full">
+        <div className={`${mobile ? '' : 'hidden lg:'}flex flex-col h-full dark:bg-[#2C2C2C] space-y-2 shadow-custom-2 justify-between w-[240px] px-5 pt-5 select-none`}>            <div className="flex flex-col space-y-4">
+            <SketchlieButton
+                activeOrg={activeOrg}
+            />
+            <OrganizationSwitcher
+                setActiveOrganization={setActiveOrganization}
+                activeOrganization={activeOrganization}
+            />
+            <SearchInput />
+            <div className="space-y-1 w-full">
+                <Button
+                    variant={favorites ? "dashboard" : "dashboardActive"}
+                    asChild
+                    size="lg"
+                    className="justify-start px-2 w-full"
+                >
+                    <Link href="/dashboard/">
+                        <LayoutDashboard className="h-4 w-4 mr-2" />
+                        Team boards
+                    </Link>
+                </Button>
+                <Button
+                    variant={favorites ? "dashboardActive" : "dashboard"}
+                    asChild
+                    size="lg"
+                    className="justify-start px-2 w-full"
+                >
+                    <Link href={{
+                        pathname: "/dashboard/",
+                        query: { favorites: true }
+                    }}>
+                        <Star className="h-4 w-4 mr-2" />
+                        Favorite boards
+                    </Link>
+                </Button>
+                <Dialog>
+                    <div className="rounded-lg flex flex-col justify-between flex-1">
+                        <DialogTrigger asChild className="flex justify-center">
+                            <Button
+                                variant="dashboard"
+                                className="justify-start px-2 w-full"
+                                size="lg"
+                            >
+                                <LayoutTemplate className="h-4 w-4 mr-2" />
+                                Templates
+                            </Button>
+                        </DialogTrigger>
+                    </div>
+                    <DialogContent className="w-full max-w-[80%] max-h-[85%] xl:max-w-[50%] overflow-y-auto">
+                        <ShowAllTemplates
+                            usersRole={usersRole}
+                            pending={pending}
+                            onClick={onClick}
+                        />
+                    </DialogContent>
+                </Dialog>
+                <NewFolderButton org={activeOrg}>
                     <Button
-                        variant={favorites ? "dashboard" : "dashboardActive"}
+                        variant="dashboard"
                         asChild
                         size="lg"
-                        className="justify-start px-2 w-full"
+                        className="justify-start px-2 w-full hover:cursor-pointer"
                     >
-                        <Link href="/dashboard/">
-                            <LayoutDashboard className="h-4 w-4 mr-2" />
-                            Team boards
-                        </Link>
-                    </Button>
-                    <Button
-                        variant={favorites ? "dashboardActive" : "dashboard"}
-                        asChild
-                        size="lg"
-                        className="justify-start px-2 w-full"
-                    >
-                        <Link href={{
-                            pathname: "/dashboard/",
-                            query: { favorites: true }
-                        }}>
-                            <Star className="h-4 w-4 mr-2" />
-                            Favorite boards
-                        </Link>
-                    </Button>
-                    <Dialog>
-                        <div className="rounded-lg flex flex-col justify-between flex-1">
-                            <DialogTrigger asChild className="flex justify-center">
-                                <Button
-                                    variant="dashboard"
-                                    className="justify-start px-2 w-full"
-                                    size="lg"
-                                >
-                                    <LayoutTemplate className="h-4 w-4 mr-2" />
-                                    Templates
-                                </Button>
-                            </DialogTrigger>
+                        <div className="flex flex-row">
+                            <Folder className="h-4 w-4 mr-2" />
+                            New Folder
+                            <Plus className="h-4 w-4 ml-auto" />
                         </div>
-                        <DialogContent className="w-full max-w-[80%] max-h-[85%] xl:max-w-[50%] overflow-y-auto">
-                            <ShowAllTemplates
-                                usersRole={usersRole}
-                                pending={pending}
-                                onClick={onClick}
-                            />
-                        </DialogContent>
-                    </Dialog>
-                    <NewFolderButton org={activeOrg} />
-                </div>
+                    </Button>
+                </NewFolderButton>
             </div>
+        </div>
             <div className="mt-auto pb-5">
                 {activeOrg && (
                     <SubscriptionPlanDropdown

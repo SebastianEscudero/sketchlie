@@ -105,6 +105,7 @@ const DashboardPage = () => {
           <OrgSidebar
             setActiveOrganization={setActiveOrganization}
             activeOrganization={activeOrganization}
+            mobile={false}
           />
         ) : (
           <EmptyOrgSidebar />

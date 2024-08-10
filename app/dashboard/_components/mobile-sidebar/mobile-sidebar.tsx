@@ -3,6 +3,7 @@ import { Sheet, SheetClose, SheetContent, SheetTrigger } from "@/components/ui/s
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 import { List } from "../sidebar/list";
+import { OrgSidebar } from "../org-sidebar";
 
 interface SideBarProps {
     activeOrganization: string | null;
@@ -20,16 +21,11 @@ export const MobileSidebar = ({
                     <Menu size={20} />
                 </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="h-full flex p-3 flex-col text-white w-[70px] dark:bg-[#2C2C2C] bg-gray-800 dark:border-zinc-500 border-r ">
-                    <SheetClose>
-                            <List
-                                activeOrganization={activeOrganization}
-                                setActiveOrganization={setActiveOrganization}
-                            />
-                    </SheetClose>
-                <NewOrgButton
-                    activeOrganization={activeOrganization}
+            <SheetContent side="left" className="h-full flex flex-col text-white w-[240px] p-0 dark:bg-[#2C2C2C] bg-gray-800">
+                <OrgSidebar
                     setActiveOrganization={setActiveOrganization}
+                    activeOrganization={activeOrganization}
+                    mobile={true}
                 />
             </SheetContent>
         </Sheet>

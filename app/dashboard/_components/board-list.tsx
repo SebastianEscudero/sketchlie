@@ -9,6 +9,7 @@ import { NewBoardButton } from "./new-board-button";
 import { FolderList } from "./folder-list";
 import Link from "next/link";
 import { ChevronsLeft } from "lucide-react";
+import { useCurrentUser } from "@/hooks/use-current-user";
 
 interface BoardListProps {
   userId: string;
@@ -25,6 +26,8 @@ export const BoardList = ({
   query,
   userId,
 }: BoardListProps) => {
+  const user = useCurrentUser();
+  const usersRole = org?.users?.find((u: any) => u.id === user?.id)?.role;
   const folders = useQuery(api.folders.get, { orgId: org.id });
   const boards = useQuery(api.boards.get, {
     orgId: org.id,
@@ -39,7 +42,7 @@ export const BoardList = ({
           {query.favorites ? "Favorite boards" : "Team boards"}
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 3xl:grid-cols-7 gap-5 mt-8 pb-10">
-          <NewBoardButton org={org} disabled />
+          <NewBoardButton user={user} usersRole={usersRole} org={org} disabled />
           <BoardCard.Skeleton />
           <BoardCard.Skeleton />
           <BoardCard.Skeleton />
@@ -78,7 +81,7 @@ export const BoardList = ({
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 3xl:grid-cols-7 mt-8 pb-10 gap-5">
         {query.folderId ? (
           <>
-            <NewBoardButton org={org} query={query} />
+            <NewBoardButton user={user} usersRole={usersRole} org={org} query={query} />
             {boards.map((board: any) => (
               <BoardCard
                 org={org}
@@ -97,7 +100,7 @@ export const BoardList = ({
           </>
         ) : (
           <>
-            <NewBoardButton org={org} />
+            <NewBoardButton user={user} usersRole={usersRole} org={org} />
             <FolderList
               folders={folders}
               groupedBoards={groupedBoards}

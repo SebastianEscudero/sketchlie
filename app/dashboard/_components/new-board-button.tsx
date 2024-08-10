@@ -10,13 +10,14 @@ import { ConfirmBoardModal } from "@/components/create-board-modal";
 import React, { useState } from 'react';
 import { useQuery } from "convex/react";
 import { useProModal } from "@/hooks/use-pro-modal";
-import { useCurrentUser } from "@/hooks/use-current-user";
 import { getMaxBoards } from "@/lib/planLimits";
 import { updateR2Bucket } from "@/lib/r2-bucket-functions";
 
 
 
 interface NewBoardButtonProps {
+    user: any;
+    usersRole: any;
     org: any
     disabled?: boolean;
     query?: {
@@ -27,17 +28,14 @@ interface NewBoardButtonProps {
 }
 
 export const NewBoardButton = ({
+    user,
+    usersRole,
     org,
     disabled,
-    query
+    query,
 }: NewBoardButtonProps) => {
 
     const maxAmountOfBoards = getMaxBoards(org);
-
-    const user = useCurrentUser();
-    const usersRole = org?.users?.find((u: any) => u.id === user?.id)?.role;
-
-
     const data = useQuery(api.boards.get, {
         orgId: org.id,
     });

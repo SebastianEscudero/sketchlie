@@ -10,18 +10,17 @@ import { Button } from '@/components/ui/button';
 interface NewFolderButtonProps {
   org: any;
   disabled?: boolean;
+  children: React.ReactNode;
 }
 
-export const NewFolderButton = ({ org, disabled }: NewFolderButtonProps) => {
+export const NewFolderButton = ({ org, disabled, children }: NewFolderButtonProps) => {
   const user = useCurrentUser();
-  const [isCreating, setIsCreating] = useState(false);
   const { mutate: createFolder, pending } = useApiMutation(api.folders.create);
   const [folderName, setFolderName] = useState('New Folder');
 
   const handleClick = () => {
     if (disabled) return;
 
-    setIsCreating(true);
     if (folderName) {
       createFolder({
         userId: user?.id,
@@ -36,10 +35,7 @@ export const NewFolderButton = ({ org, disabled }: NewFolderButtonProps) => {
           toast.error('Failed to create folder');
         })
         .finally(() => {
-          setIsCreating(false);
         });
-    } else {
-      setIsCreating(false);
     }
   };
 
@@ -52,19 +48,7 @@ export const NewFolderButton = ({ org, disabled }: NewFolderButtonProps) => {
       onConfirm={handleClick}
       setTitle={setFolderName}
     >
-      <Button
-        variant="dashboard"
-        asChild
-        size="lg"
-        className="justify-start px-2 w-full hover:cursor-pointer"
-        disabled={disabled || isCreating}
-      >
-        <div className="flex flex-row">
-          <Folder className="h-4 w-4 mr-2" />
-          New Folder
-          <Plus className="h-4 w-4 ml-auto" />
-        </div>
-      </Button>
+      {children}
     </ConfirmBoardModal>
   );
 };
