@@ -1600,58 +1600,60 @@ export const Canvas = ({
             setIsMoving(true);
         }
         setActiveTouches(e.touches.length);
-
+    
         if (e.touches.length < 2) {
             setPinchStartDist(null);
             return;
         }
-
+    
         const touch1 = e.touches[0];
         const touch2 = e.touches[1];
-
+    
         const dist = Math.hypot(
             touch1.clientX - touch2.clientX,
             touch1.clientY - touch2.clientY
         );
-
+    
         const svgRect = e.currentTarget.getBoundingClientRect();
         const x = ((touch1.clientX + touch2.clientX) / 2) - svgRect.left;
         const y = ((touch1.clientY + touch2.clientY) / 2) - svgRect.top;
-
+    
         if (pinchStartDist === null) {
             setPinchStartDist(dist);
             setStartPanPoint({ x, y });
             return;
         }
-
+    
         const isZooming = Math.abs(dist - pinchStartDist) > 10;
-
+    
         if (isZooming) { // Zooming
-            let newZoom = zoom;
-            if (dist > pinchStartDist) {
-                newZoom = Math.min(zoom * 1.1, 10);
-            } else {
-                newZoom = Math.max(zoom / 1.1, 0.3);
-            }
-
-            const zoomFactor = newZoom / zoom;
-            const newX = x - (x - camera.x) * zoomFactor;
-            const newY = y - (y - camera.y) * zoomFactor;
-
-            setZoom(newZoom);
+            const zoomSpeed = 1; // Adjust this value to control zoom sensitivity
+            const zoomFactor = dist / pinchStartDist;
+            const targetZoom = zoom * zoomFactor;
+            const newZoom = zoom + (targetZoom - zoom) * zoomSpeed;
+    
+            // Clamp zoom level
+            const clampedZoom = Math.max(0.3, Math.min(newZoom, 10));
+    
+            const zoomRatio = clampedZoom / zoom;
+            const newX = x - (x - camera.x) * zoomRatio;
+            const newY = y - (y - camera.y) * zoomRatio;
+    
+            setZoom(clampedZoom);
             setCamera({ x: newX, y: newY });
         } else if (startPanPoint) { // Panning
             const dx = x - startPanPoint.x;
             const dy = y - startPanPoint.y;
-
+    
+            const panSpeed = 1; // Adjust this value to control pan sensitivity
             const newCameraPosition = {
-                x: camera.x + dx,
-                y: camera.y + dy,
+                x: camera.x + dx * panSpeed,
+                y: camera.y + dy * panSpeed,
             };
-
+    
             setCamera(newCameraPosition);
         }
-
+    
         setPinchStartDist(dist);
         setStartPanPoint({ x, y });
     }, [zoom, pinchStartDist, camera, startPanPoint, canvasState]);
