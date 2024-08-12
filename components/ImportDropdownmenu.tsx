@@ -116,7 +116,7 @@ export const ImportDropdownMenu = (
                     <AlertDialogDescription>
                         The current layers will be replaced with the imported board, you can always undo to go back.
                     </AlertDialogDescription>
-                    <AlertDialogAction className="bg-custom-blue hover:bg-custom-blue-dark" onClick={handleImport}>Proceed</AlertDialogAction>
+                    <AlertDialogAction className="bg-custom-blue hover:bg-custom-blue-dark dark:text-white" onClick={handleImport}>Proceed</AlertDialogAction>
                     <AlertDialogCancel onClick={() => {
                         setIsAlertDialogOpen(false);
                         if (fileInputRef.current) fileInputRef.current.value = ''; // Reset the file input when cancelling
