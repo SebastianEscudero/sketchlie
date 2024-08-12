@@ -13,6 +13,7 @@ import { templates } from "../templates/templates";
 import { ShowAllTemplates } from "./show-all-templates";
 import { cn } from "@/lib/utils";
 import { updateR2Bucket } from "@/lib/r2-bucket-functions";
+import { Layers, LayerType } from "@/types/canvas";
 
 interface TemplateProps {
     org: any
@@ -38,7 +39,7 @@ export const Templates = ({
         return null;
     }
 
-    const onClick = async (templateName: string, templateLayerIds: any, templateLayers: any) => {
+    const onClick = async (templateName: string, templateLayerIds: any, templateLayers: Layers) => {
         if (maxAmountOfBoards !== null && (data?.length ?? 0) < maxAmountOfBoards) {
             try {
                 const id = await mutate({
@@ -47,7 +48,51 @@ export const Templates = ({
                     userId: user.id,
                     userName: user.name,
                 });
-                await updateR2Bucket('/api/r2-bucket/createBoard', id, templateLayerIds, templateLayers);
+    
+                // Get the screen dimensions
+                const screenWidth = window.innerWidth;
+                const screenHeight = window.innerHeight;
+    
+                // Calculate the center of the screen
+                const screenCenterX = screenWidth / 2;
+                const screenCenterY = screenHeight / 2;
+    
+                // Find the bounding box of all layers
+                let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+                Object.values(templateLayers).forEach(layer => {
+                    minX = Math.min(minX, layer.x);
+                    minY = Math.min(minY, layer.y);
+                    maxX = Math.max(maxX, layer.x + layer.width);
+                    maxY = Math.max(maxY, layer.y + layer.height);
+                });
+    
+                // Calculate the center of the layers
+                const layersCenterX = (minX + maxX) / 2;
+                const layersCenterY = (minY + maxY) / 2;
+    
+                // Calculate the offset to center the layers
+                const offsetX = screenCenterX - layersCenterX;
+                const offsetY = screenCenterY - layersCenterY;
+    
+                // Adjust the position of each layer
+                const centeredLayers = Object.fromEntries(
+                    Object.entries(templateLayers).map(([id, layer]) => [
+                        id,
+                        {
+                            ...layer,
+                            x: layer.x + offsetX,
+                            y: layer.y + offsetY,
+                            ...( (layer.type === LayerType.Arrow || layer.type === LayerType.Line) && layer.center && {
+                                center: {
+                                    x: layer.center.x + offsetX,
+                                    y: layer.center.y + offsetY,
+                                },
+                            }),
+                        },
+                    ])
+                );
+
+                await updateR2Bucket('/api/r2-bucket/createBoard', id, templateLayerIds, centeredLayers);
                 toast.success("Board created");
                 await router.push(`/board/${id}`);
             } catch (error) {
@@ -66,7 +111,7 @@ export const Templates = ({
                     {templates.map((template, index) => (
                         <div key={index} className="rounded-lg flex flex-col justify-between flex-1">
                             <button
-                                onClick={() => onClick(template.name, template.layerIds, template.layers)}
+                                onClick={() => onClick(template.name, template.layerIds, template.layers as Layers)}
                                 disabled={pending || usersRole !== 'Admin'}
                                 className={cn(
                                     "text-left flex flex-col hover:cursor-pointer flex-1 min-w-[110px] min-h-[85.5px] max-w-[130px] max-h-[101.1px]",
