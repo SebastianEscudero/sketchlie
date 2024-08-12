@@ -1259,7 +1259,7 @@ export const Canvas = ({
             }
         } else if (canvasState.mode === CanvasMode.Eraser) {
             setErasePath([]);
-            document.body.style.cursor = 'url(/custom-cursors/eraser.svg) 8 8, auto';
+            document.body.style.cursor = 'url(/custom-cursors/eraser.svg) 8 16, auto';
             if (layersToDeleteEraserRef.current.size > 0) {
                 const command = new DeleteLayerCommand(Array.from(layersToDeleteEraserRef.current), initialLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, boardId, socket);
                 performAction(command);
@@ -1306,7 +1306,7 @@ export const Canvas = ({
                 }
             }
         } else if (canvasState.mode === CanvasMode.Moving) {
-            document.body.style.cursor = 'url(/custom-cursors/hand.svg) 8 8, auto';
+            document.body.style.cursor = 'url(/custom-cursors/hand.svg) 0 10, auto';
             setIsPanning(false);
         } else if (canvasState.mode === CanvasMode.Translating) {
             const initialLayer = JSON.stringify(initialLayers[selectedLayersRef.current[0]]);
@@ -1972,7 +1972,7 @@ export const Canvas = ({
             document.body.style.cursor = 'url(/custom-cursors/laser.svg) 4 18, auto';
             selectedLayersRef.current = [];
         } else if (canvasState.mode === CanvasMode.Eraser) {
-            document.body.style.cursor = 'url(/custom-cursors/eraser.svg) 8 8, auto';
+            document.body.style.cursor = 'url(/custom-cursors/eraser.svg) 8 16, auto';
             selectedLayersRef.current = [];
         } else if (canvasState.mode === CanvasMode.Moving) {
             document.body.style.cursor = 'url(/custom-cursors/hand.svg) 8 8, auto';
