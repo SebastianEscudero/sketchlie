@@ -2,6 +2,7 @@
 
 import { customAlphabet } from "nanoid";
 import React, { useCallback, useMemo, useState, useEffect, useRef } from "react";
+import { useGesture } from '@use-gesture/react';
 
 import {
     colorToCss,
@@ -1581,6 +1582,7 @@ export const Canvas = ({
     }, [setIsDraggingOverCanvas, camera, zoom, maxFileSize, User.userId, insertImage, expired]);
 
     const onTouchDown = useCallback((e: React.TouchEvent) => {
+        e.preventDefault();
         setIsMoving(false);
         setActiveTouches(e.touches.length);
 
@@ -1591,11 +1593,15 @@ export const Canvas = ({
     }, []);
 
     const onTouchUp = useCallback((e: React.TouchEvent) => {
+        e.preventDefault();
         setIsMoving(false);
         setActiveTouches(e.changedTouches.length);
     }, []);
 
+    const [lastPanPoint, setLastPanPoint] = useState<{ x: number, y: number } | null>(null);
+
     const onTouchMove = useCallback((e: React.TouchEvent) => {
+        e.preventDefault();
         if (canvasState.mode === CanvasMode.Translating) {
             setIsMoving(true);
         }
@@ -1603,6 +1609,7 @@ export const Canvas = ({
     
         if (e.touches.length < 2) {
             setPinchStartDist(null);
+            setLastPanPoint(null);
             return;
         }
     
@@ -1620,13 +1627,13 @@ export const Canvas = ({
     
         if (pinchStartDist === null) {
             setPinchStartDist(dist);
-            setStartPanPoint({ x, y });
+            setLastPanPoint({ x, y });
             return;
         }
     
         const isZooming = Math.abs(dist - pinchStartDist) > 10;
     
-        if (isZooming) { // Zooming
+        if (isZooming) {
             const zoomSpeed = 1; // Adjust this value to control zoom sensitivity
             const zoomFactor = dist / pinchStartDist;
             const targetZoom = zoom * zoomFactor;
@@ -1641,22 +1648,22 @@ export const Canvas = ({
     
             setZoom(clampedZoom);
             setCamera({ x: newX, y: newY });
-        } else if (startPanPoint) { // Panning
-            const dx = x - startPanPoint.x;
-            const dy = y - startPanPoint.y;
+        } else if (lastPanPoint) {
+            // Panning logic using delta values
+            const dx = x - lastPanPoint.x;
+            const dy = y - lastPanPoint.y;
     
             const panSpeed = 1; // Adjust this value to control pan sensitivity
-            const newCameraPosition = {
-                x: camera.x + dx * panSpeed,
-                y: camera.y + dy * panSpeed,
-            };
     
-            setCamera(newCameraPosition);
+            setCamera(prevCamera => ({
+                x: prevCamera.x + dx * panSpeed,
+                y: prevCamera.y + dy * panSpeed,
+            }));
         }
     
         setPinchStartDist(dist);
-        setStartPanPoint({ x, y });
-    }, [zoom, pinchStartDist, camera, startPanPoint, canvasState]);
+        setLastPanPoint({ x, y });
+    }, [zoom, pinchStartDist, camera, lastPanPoint, canvasState]);
 
     const copySelectedLayers = useCallback(() => {
         setCopiedLayerIds(selectedLayersRef.current);
