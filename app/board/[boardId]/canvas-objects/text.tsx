@@ -80,14 +80,32 @@ const throttledUpdateLayer = throttle((boardId, layerId, layerUpdates) => {
           }
     }, [onPointerDown, id, onRefChange, focused]);
 
-    const handleOnTouchDown = useCallback((e: React.TouchEvent) => {
-        e.preventDefault();
-        if (e.touches.length > 1) {
-          return;
+    const handleTouchStart = (e: React.TouchEvent) => {
+      if (e.touches.length > 1) {
+        return;
+      }
+  
+      onRefChange?.(textRef);
+
+      if (e.target === textRef.current) {
+  
+        if (focused) {
+          e.stopPropagation();
+          textRef.current.focus();
+        } else {
+          e.preventDefault();
+          if (onPointerDown) onPointerDown(e, id);
         }
-        onPointerDown?.(e, id);
-        onRefChange?.(textRef);
-    }, [onPointerDown, id, onRefChange]);
+        return;
+      } else if (focused) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+  
+      if (onPointerDown) {
+        onPointerDown(e, id);
+      }
+    }
 
     const handleContentChange = useCallback((newValue: string) => {
       setValue(newValue);
@@ -123,7 +141,7 @@ const throttledUpdateLayer = throttle((boardId, layerId, layerUpdates) => {
                     outline: selectionColor ? `2px solid ${selectionColor}` : "none",
                 }}
                 onPointerDown={(e) => handlePointerDown(e)}
-                onTouchStart={(e) => handleOnTouchDown(e)}
+                onTouchStart={(e) => handleTouchStart(e)}
             >
                 <textarea
                     ref={textRef}

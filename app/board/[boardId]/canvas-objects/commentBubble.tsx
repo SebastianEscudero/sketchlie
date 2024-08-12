@@ -118,6 +118,7 @@ export const CommentBubble = memo(({
 
       if (focused) {
         e.stopPropagation();
+        CommentBubbleRef.current.focus();
       } else {
         e.preventDefault();
         if (onPointerDown) onPointerDown(e, id);

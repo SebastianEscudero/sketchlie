@@ -117,6 +117,7 @@ export const Rectangle = memo(({
 
       if (focused) {
         e.stopPropagation();
+        RectangleRef.current.focus();
       } else {
         e.preventDefault();
         if (onPointerDown) onPointerDown(e, id);

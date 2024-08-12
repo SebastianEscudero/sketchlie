@@ -1581,7 +1581,6 @@ export const Canvas = ({
     }, [setIsDraggingOverCanvas, camera, zoom, maxFileSize, User.userId, insertImage, expired]);
 
     const onTouchDown = useCallback((e: React.TouchEvent) => {
-        e.preventDefault();
         setIsMoving(false);
         setActiveTouches(e.touches.length);
 
@@ -1592,14 +1591,11 @@ export const Canvas = ({
     }, []);
 
     const onTouchUp = useCallback((e: React.TouchEvent) => {
-        e.preventDefault();
         setIsMoving(false);
         setActiveTouches(e.changedTouches.length);
     }, []);
 
     const onTouchMove = useCallback((e: React.TouchEvent) => {
-        e.preventDefault();
-
         if (canvasState.mode === CanvasMode.Translating) {
             setIsMoving(true);
         }

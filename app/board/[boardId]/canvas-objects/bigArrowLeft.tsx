@@ -118,6 +118,7 @@ export const BigArrowLeft = memo(({
 
       if (focused) {
         e.stopPropagation();
+        BigArrowLeftRef.current.focus();
       } else {
         e.preventDefault();
         if (onPointerDown) onPointerDown(e, id);
