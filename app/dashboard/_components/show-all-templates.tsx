@@ -22,7 +22,7 @@ export const ShowAllTemplates = ({
                 <span className="text-center text-gray-600 dark:text-zinc-300">Start with a template to acelerate your workflow</span>
             </DialogTitle>
             <ScrollArea>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center">
+                <div className="flex flex-wrap gap-5 justify-center items-center">
                     {templates.map((template, index) => (
                         <div key={index} className="rounded-lg flex flex-col w-[200px]">
                             <DialogClose

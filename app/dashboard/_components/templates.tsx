@@ -135,7 +135,7 @@ export const Templates = ({
                 <Dialog>
                     <div className="rounded-lg flex flex-col justify-between ml-2 flex-1">
                         <DialogTrigger className="flex justify-center">
-                            <ChevronsDown className="h-6 w-6 text-white" />
+                            <ChevronsDown className="h-6 w-6 text-black dark:text-white" />
                         </DialogTrigger>
                     </div>
                     <DialogContent className="w-full max-w-[80%] max-h-[85%] h-full xl:max-w-[50%]">
