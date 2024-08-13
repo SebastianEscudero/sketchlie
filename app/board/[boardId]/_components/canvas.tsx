@@ -333,7 +333,8 @@ export const Canvas = ({
     const insertMedia = useCallback((
         layerType: LayerType.Image | LayerType.Video,
         position: Point,
-        info: any
+        info: any,
+        zoom: number,
     ) => {
 
         const layerId = nanoid();
@@ -351,8 +352,8 @@ export const Canvas = ({
         }
 
         const aspectRatio = info.dimensions.width / info.dimensions.height;
-        const width = window.innerWidth/2;
-        const height = width / aspectRatio;
+        const height = window.innerHeight/(2*zoom);
+        const width = height * aspectRatio;
 
 
         const layer = {
@@ -1573,7 +1574,7 @@ export const Canvas = ({
                         });
                         img.src = url;
                         const info = await imgLoad;
-                        insertMedia(LayerType.Image, { x, y }, info);
+                        insertMedia(LayerType.Image, { x, y }, info, zoom);
                     } else if (file.type.startsWith('video/')) {
                         const video = document.createElement('video');
                         const videoLoad = new Promise<{ url: string, dimensions: { width: number, height: number }, type: string }>((resolve) => {
@@ -1584,7 +1585,7 @@ export const Canvas = ({
                         });
                         video.src = url;
                         const info = await videoLoad;
-                        insertMedia(LayerType.Video, { x, y }, info);
+                        insertMedia(LayerType.Video, { x, y }, info, zoom);
                     }
                 })
                 .catch(error => {
@@ -1592,7 +1593,7 @@ export const Canvas = ({
                 })
                 .finally(() => {
                     toast.dismiss(toastId);
-                    toast.success(`${file.type.startsWith('image/') ? 'Image' : 'Video'} uploaded successfully, you can now add it to the board.`);
+                    toast.success(`${file.type.startsWith('image/') ? 'Image' : 'Video'} uploaded successfully`);
                 });
         }
     }, [setIsDraggingOverCanvas, camera, zoom, maxFileSize, User.userId, insertMedia, expired]);

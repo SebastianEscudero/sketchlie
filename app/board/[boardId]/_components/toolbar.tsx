@@ -53,7 +53,7 @@ interface ToolbarProps {
   pathColor: Color;
   isPlacingLayer: boolean;
   expired: boolean;
-  insertMedia: (layerType: LayerType.Image | LayerType.Video, position: Point, info: any) => void;
+  insertMedia: (layerType: LayerType.Image | LayerType.Video, position: Point, info: any, zoom: number) => void;
   camera: any;
   svgRef: any;
   zoom: number;

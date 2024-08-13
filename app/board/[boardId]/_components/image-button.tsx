@@ -12,7 +12,7 @@ import { getCenterOfScreen } from "@/lib/utils";
 
 interface MediaButtonProps {
     isUploading: boolean;
-    insertMedia: (layerType: LayerType.Image | LayerType.Video, position: Point, info: any) => void;
+    insertMedia: (layerType: LayerType.Image | LayerType.Video, position: Point, info: any, zoom: number) => void;
     icon: LucideIcon;
     isActive?: boolean;
     isDisabled?: boolean;
@@ -91,7 +91,7 @@ export const ImageButton = ({
                 img.src = url;
                 const info = await imgLoad;
                 const centerPoint = getCenterOfScreen(camera, zoom, svgRef);
-                insertMedia(LayerType.Image, centerPoint, info);
+                insertMedia(LayerType.Image, centerPoint, info, zoom);
             } else if (file.type.startsWith('video/')) {
                 const video = document.createElement('video');
                 const videoLoad = new Promise<{ url: string, dimensions: { width: number, height: number }, type: string }>((resolve) => {
@@ -103,7 +103,7 @@ export const ImageButton = ({
                 video.src = url;
                 const info = await videoLoad;
                 const centerPoint = getCenterOfScreen(camera, zoom, svgRef);
-                insertMedia(LayerType.Video, centerPoint, info);
+                insertMedia(LayerType.Video, centerPoint, info, zoom);
             }
         })
         .catch(error => {
