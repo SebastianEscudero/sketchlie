@@ -327,7 +327,7 @@ export const Canvas = ({
     }, [socket, org, proModal, setLiveLayers, setLiveLayerIds, boardId, arrowTypeInserting, liveLayers, performAction, layerWithAssistDraw, expired]);
 
     useEffect(() => {
-        if (justInsertedText) {
+        if (justInsertedText && layerRef) {
             layerRef.current?.focus();
         }
     }, [justInsertedText, layerRef]);
