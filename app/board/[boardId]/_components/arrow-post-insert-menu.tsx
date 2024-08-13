@@ -70,32 +70,36 @@ export const ArrowPostInsertMenu = ({
     }, [arrowId, zoom, camera, liveLayers]);
 
     const insertLayer = useCallback(async (layerType: LayerType) => {
+        const offset = 5;
+        const startConnectedLayer = liveLayers[arrowLayer.startConnectedLayerId];
+        const layerWidth = startConnectedLayer.width || 80;
+        const layerHeight = startConnectedLayer.height || 80;
 
-        let x = arrowLayer.x + arrowLayer.width + 5;
-        let y = arrowLayer.y + arrowLayer.height - 40
+        let x = arrowLayer.x + arrowLayer.width + offset;
+        let y = arrowLayer.y + arrowLayer.height - layerHeight / 2;
 
         if (arrowLayer.width < 0) {
-            x -= 90;
+            x -= 2*offset + layerWidth; 
         }
 
         if (arrowLayer.arrowType === ArrowType.Diagram) {
             if (arrowLayer.orientation === ArrowOrientation.Vertical) {
               if (arrowLayer.height > 0) {
-                y = arrowLayer.y + arrowLayer.height + 5;
+                y = arrowLayer.y + arrowLayer.height + offset;
               } else {
-                y = arrowLayer.y + arrowLayer.height - 85;
+                y = arrowLayer.y + arrowLayer.height - layerHeight + offset;
               }
-              x = arrowLayer.x + arrowLayer.width - 40;
+              x = arrowLayer.x + arrowLayer.width - layerWidth/2;
             }
         } else {
             const isHorizontal = Math.abs(arrowLayer.width) > Math.abs(arrowLayer.height);
             if (!isHorizontal) {
                 if (arrowLayer.height > 0) {
-                    y = arrowLayer.y + arrowLayer.height + 5;
+                    y = arrowLayer.y + arrowLayer.height + offset;
                   } else {
-                    y = arrowLayer.y + arrowLayer.height - 85;
+                    y = arrowLayer.y + arrowLayer.height - layerHeight + offset;
                   }
-                  x = arrowLayer.x + arrowLayer.width - 40;
+                  x = arrowLayer.x + arrowLayer.width - layerWidth/2;
             }
         }
 
@@ -109,8 +113,8 @@ export const ArrowPostInsertMenu = ({
             type: layerType,
             x: x,
             y: y,
-            height: 80,
-            width: 80,
+            height: layerHeight,
+            width: layerWidth,
             fill: isNote ? { r: 252, g: 225, b: 156, a: 1 } : fillColor,
             value: "",
             outlineFill: isNote ? { r: 0, g: 0, b: 0, a: 0 } : { r: 29, g: 29, b: 29, a: 1 },

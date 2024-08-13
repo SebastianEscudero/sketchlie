@@ -31,7 +31,6 @@ const COLORS = [
   "#AF52DE", // Purple
   "#FF2D55", // Pink
   "#A2845E", // Brown
-  "#8E8E93", // Gray
   "#5AC8FA", // Light Blue
   "#FF6B22", // Vermilion
   "#C7C729", // Lime

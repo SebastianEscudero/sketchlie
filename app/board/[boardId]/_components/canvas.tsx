@@ -140,6 +140,7 @@ export const Canvas = ({
     const [forceLayerPreviewRender, setForceLayerPreviewRender] = useState(false);
     const [suggestedLayers, setSuggestedLayers] = useState<Layers>({});
     const [suggestedLayerIds, setSuggestedLayerIds] = useState<string[]>([]);
+    const [lastPanPoint, setLastPanPoint] = useState<{ x: number, y: number } | null>(null);
     const proModal = useProModal();
     const [background, setBackground] = useState(() => {
         const storedValue = localStorage.getItem('background');
@@ -184,6 +185,8 @@ export const Canvas = ({
         setHistory([...history, lastCommand]);
     }, [redoStack, liveLayerIds, liveLayers, history]);
 
+    const [justInsertedText, setJustInsertedText] = useState(false);
+
     const insertLayer = useCallback((layerType: LayerType, position: Point, width: number, height: number, center?: Point, startConnectedLayerId?: string, endConnectedLayerId?: string, arrowType?: ArrowType, orientation?: ArrowOrientation) => {
 
         if (expired) {
@@ -222,6 +225,7 @@ export const Canvas = ({
                 outlineFill: null,
                 alignX: 'left',
             };
+            setJustInsertedText(true);
         } else if (layerType === LayerType.Note) {
             layer = {
                 type: layerType,
@@ -321,6 +325,12 @@ export const Canvas = ({
         }
 
     }, [socket, org, proModal, setLiveLayers, setLiveLayerIds, boardId, arrowTypeInserting, liveLayers, performAction, layerWithAssistDraw, expired]);
+
+    useEffect(() => {
+        if (justInsertedText) {
+            layerRef.current?.focus();
+        }
+    }, [justInsertedText, layerRef]);
 
     const insertImage = useCallback((
         layerType: LayerType.Image,
@@ -1292,9 +1302,9 @@ export const Canvas = ({
                 let width
                 let height
                 if (layerType === LayerType.Text) {
-                    width = 95;
+                    width = 100;
                     height = 18;
-                    point.x = point.x - width / 2
+                    point.x = point.x - width/20
                     point.y = point.y - height / 2
                     insertLayer(layerType, point, width, height)
                 } else {
@@ -1597,8 +1607,6 @@ export const Canvas = ({
         setIsMoving(false);
         setActiveTouches(e.changedTouches.length);
     }, []);
-
-    const [lastPanPoint, setLastPanPoint] = useState<{ x: number, y: number } | null>(null);
 
     const onTouchMove = useCallback((e: React.TouchEvent) => {
         e.preventDefault();
