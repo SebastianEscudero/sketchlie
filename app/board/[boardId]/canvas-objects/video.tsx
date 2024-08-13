@@ -1,21 +1,23 @@
 import React from 'react';
-import { ImageLayer } from "@/types/canvas";
+import { VideoLayer } from "@/types/canvas";
 
-interface ImageProps {
+interface VideoProps {
   isUploading: boolean;
   id: string;
-  layer: ImageLayer;
+  layer: VideoLayer;
   onPointerDown: (e: React.PointerEvent, id: string) => void;
   selectionColor?: string;
+  focused?: boolean;
 };
 
-export const InsertImage = ({
+export const InsertVideo = ({
   isUploading,
   id,
   layer,
   onPointerDown,
   selectionColor,
-}: ImageProps) => {
+  focused,
+}: VideoProps) => {
   const { x, y, width, height, src } = layer;
 
   if (!isUploading) {
@@ -34,17 +36,25 @@ export const InsertImage = ({
             strokeLinejoin='round'
           />
         )}
-        <image
-          crossOrigin="anonymous"
-          opacity={opacity ? opacity : 1}
-          id={id}
-          href={src}
+        <foreignObject
           x={x}
           y={y}
           width={width}
           height={height}
           onPointerDown={(e) => onPointerDown(e, id)}
-        />
+        >
+          <video
+            width="100%"
+            height="100%"
+            autoPlay
+            loop
+            playsInline
+            controls={focused}
+            src={src}
+            style={{ pointerEvents: focused ? 'auto' : 'none' }}
+
+          />
+        </foreignObject>
       </>
     );
   } else {

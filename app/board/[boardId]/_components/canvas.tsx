@@ -2,7 +2,6 @@
 
 import { customAlphabet } from "nanoid";
 import React, { useCallback, useMemo, useState, useEffect, useRef } from "react";
-import { useGesture } from '@use-gesture/react';
 
 import {
     colorToCss,
@@ -127,7 +126,6 @@ export const Canvas = ({
     const [isPanning, setIsPanning] = useState(false);
     const [rightClickPanning, setIsRightClickPanning] = useState(false);
     const [startPanPoint, setStartPanPoint] = useState({ x: 0, y: 0 });
-    const [selectedImage, setSelectedImage] = useState<{ info: any } | null>(null);
     const [isUploading, setIsUploading] = useState(false);
     const [currentPreviewLayer, setCurrentPreviewLayer] = useState<PreviewLayer | null>(null);
     const [myPresence, setMyPresence] = useState<Presence | null>(null);
@@ -327,13 +325,13 @@ export const Canvas = ({
     }, [socket, org, proModal, setLiveLayers, setLiveLayerIds, boardId, arrowTypeInserting, liveLayers, performAction, layerWithAssistDraw, expired]);
 
     useEffect(() => {
-        if (justInsertedText && layerRef) {
+        if (justInsertedText && layerRef.current) {
             layerRef.current?.focus();
         }
     }, [justInsertedText, layerRef]);
 
-    const insertImage = useCallback((
-        layerType: LayerType.Image,
+    const insertMedia = useCallback((
+        layerType: LayerType.Image | LayerType.Video,
         position: Point,
         info: any
     ) => {
@@ -345,15 +343,15 @@ export const Canvas = ({
         }
 
         if (info.dimensions.width === 0) {
-            info.dimensions.width = 200;
+            info.dimensions.width = window.innerWidth/2;
         }
 
         if (info.dimensions.height === 0) {
-            info.dimensions.height = 200;
+            info.dimensions.height = window.innerHeight/2;
         }
 
         const aspectRatio = info.dimensions.width / info.dimensions.height;
-        const width = 200 / zoom
+        const width = window.innerWidth/2;
         const height = width / aspectRatio;
 
 
@@ -371,7 +369,7 @@ export const Canvas = ({
         const command = new InsertLayerCommand([layerId], [layer], setLiveLayers, setLiveLayerIds, boardId, socket, org, proModal);
         performAction(command);
         setCanvasState({ mode: CanvasMode.None });
-    }, [socket, org, proModal, setLiveLayers, setLiveLayerIds, boardId, performAction, zoom]);
+    }, [socket, org, proModal, setLiveLayers, setLiveLayerIds, boardId, performAction]);
 
     const translateSelectedLayers = useCallback((point: Point) => {
 
@@ -751,8 +749,12 @@ export const Canvas = ({
 
         const initialBoundingBox = calculateBoundingBox(selectedLayersRef.current.map(id => liveLayers[id]));
         let bounds: any;
-        let hasImageOrText = selectedLayersRef.current.some(id => liveLayers[id].type === LayerType.Image || liveLayers[id].type === LayerType.Text);
-        let mantainAspectRatio = hasImageOrText
+        let hasMediaOrText = selectedLayersRef.current.some(id => 
+            liveLayers[id].type === LayerType.Image || 
+            liveLayers[id].type === LayerType.Text || 
+            liveLayers[id].type === LayerType.Video
+        );
+        let mantainAspectRatio = hasMediaOrText
         let singleLayer = selectedLayersRef.current.length === 1
 
         const updatedLayerIds: string[] = [...selectedLayersRef.current];
@@ -1076,7 +1078,6 @@ export const Canvas = ({
             canvasState.mode === CanvasMode.Inserting &&
             startPanPoint &&
             canvasState.layerType !== LayerType.Path &&
-            canvasState.layerType !== LayerType.Image &&
             (startPanPoint.x !== 0 || startPanPoint.y !== 0)
         ) {
             const point = pointerEventToCanvasPoint(e, cameraRef.current, zoomRef.current, svgRef);
@@ -1277,11 +1278,7 @@ export const Canvas = ({
                 return;
             }
             return;
-        } else if (canvasState.mode === CanvasMode.Inserting && canvasState.layerType === LayerType.Image) {
-            setSelectedImage(null);
-            insertImage(LayerType.Image, point, selectedImage);
-        } else if (canvasState.mode === CanvasMode.Inserting && canvasState.layerType !== LayerType.Image) {
-
+        } else if (canvasState.mode === CanvasMode.Inserting) {
             if (e.button === 2 || e.button === 1) {
                 setCursorWithFill('/custom-cursors/inserting.svg', document.documentElement.classList.contains("dark") ? '#ffffff' : '#000000', 10, 10);
             }
@@ -1406,33 +1403,30 @@ export const Canvas = ({
             }
         }
     },
-        [
-            setCanvasState,
-            canvasState,
-            insertLayer,
-            insertPath,
-            setIsPanning,
-            selectedImage,
-            setSelectedImage,
-            insertImage,
-            selectedLayersRef,
-            liveLayers,
-            camera,
-            zoom,
-            currentPreviewLayer,
-            isPanning,
-            initialLayers,
-            socket,
-            myPresence,
-            User.userId,
-            boardId,
-            expired,
-            insertHighlight,
-            liveLayerIds,
-            performAction,
-            setLiveLayerIds,
-            setLiveLayers,
-        ]);
+    [
+        setCanvasState,
+        canvasState,
+        insertLayer,
+        insertPath,
+        setIsPanning,
+        selectedLayersRef,
+        liveLayers,
+        camera,
+        zoom,
+        currentPreviewLayer,
+        isPanning,
+        initialLayers,
+        socket,
+        myPresence,
+        User.userId,
+        boardId,
+        expired,
+        insertHighlight,
+        liveLayerIds,
+        performAction,
+        setLiveLayerIds,
+        setLiveLayers,
+    ]);
 
     const onPointerLeave = useCallback((e: any) => {
 
@@ -1534,30 +1528,31 @@ export const Canvas = ({
         if (expired) {
             return;
         }
-
+    
         setIsDraggingOverCanvas(false);
         let x = (Math.round(event.clientX) - camera.x) / zoom;
         let y = (Math.round(event.clientY) - camera.y) / zoom;
         const files = event.dataTransfer.files;
+    
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
-            if (!file.type.startsWith('image/')) {
-                toast.error('File type not accepted. Please upload an image file.');
-                continue;  // Skip if not an image
+            if (!file.type.startsWith('image/') && !file.type.startsWith('video/')) {
+                toast.error('File type not accepted. Please upload an image or video file.');
+                continue;
             }
-
+    
             // Check file size
             const fileSizeInMB = file.size / 1024 / 1024;
             if (fileSizeInMB > maxFileSize) {
                 toast.error(`File size has to be lower than ${maxFileSize}MB. Please try again.`);
-                return;
+                continue;
             }
-
-            const toastId = toast.loading("Image is being processed, please wait...");
+    
+            const toastId = toast.loading("Media is being processed, please wait...");
             const formData = new FormData();
             formData.append('file', file);
             formData.append('userId', User.userId);
-
+    
             fetch('/api/aws-s3-images', {
                 method: 'POST',
                 body: formData
@@ -1567,29 +1562,40 @@ export const Canvas = ({
                         throw new Error('Network response was not ok');
                     }
                     const url = await res.text();
-
-                    const img = new Image();
-                    const imgLoad = new Promise<{ url: string, dimensions: { width: number, height: number } }>((resolve) => {
-                        img.onload = () => {
-                            const dimensions = { width: img.width, height: img.height };
-                            resolve({ url, dimensions });
-                        };
-                    });
-                    img.src = url;
-                    const info = await imgLoad;
-
-                    // Insert the image into the canvas
-                    insertImage(LayerType.Image, { x: x, y: y }, info);
+    
+                    if (file.type.startsWith('image/')) {
+                        const img = new Image();
+                        const imgLoad = new Promise<{ url: string, dimensions: { width: number, height: number }, type: string }>((resolve) => {
+                            img.onload = () => {
+                                const dimensions = { width: img.width, height: img.height };
+                                resolve({ url, dimensions, type: 'image' });
+                            };
+                        });
+                        img.src = url;
+                        const info = await imgLoad;
+                        insertMedia(LayerType.Image, { x, y }, info);
+                    } else if (file.type.startsWith('video/')) {
+                        const video = document.createElement('video');
+                        const videoLoad = new Promise<{ url: string, dimensions: { width: number, height: number }, type: string }>((resolve) => {
+                            video.onloadedmetadata = () => {
+                                const dimensions = { width: video.videoWidth, height: video.videoHeight };
+                                resolve({ url, dimensions, type: 'video' });
+                            };
+                        });
+                        video.src = url;
+                        const info = await videoLoad;
+                        insertMedia(LayerType.Video, { x, y }, info);
+                    }
                 })
                 .catch(error => {
                     console.error('Error:', error);
                 })
                 .finally(() => {
                     toast.dismiss(toastId);
-                    toast.success("Image uploaded successfully, you can now add it to the board.")
+                    toast.success(`${file.type.startsWith('image/') ? 'Image' : 'Video'} uploaded successfully, you can now add it to the board.`);
                 });
         }
-    }, [setIsDraggingOverCanvas, camera, zoom, maxFileSize, User.userId, insertImage, expired]);
+    }, [setIsDraggingOverCanvas, camera, zoom, maxFileSize, User.userId, insertMedia, expired]);
 
     const onTouchDown = useCallback((e: React.TouchEvent) => {
         e.preventDefault();
@@ -2068,7 +2074,6 @@ export const Canvas = ({
                 setPathStrokeSize={setPathStrokeSize}
                 isUploading={isUploading}
                 setIsUploading={setIsUploading}
-                setSelectedImage={setSelectedImage}
                 canvasState={canvasState}
                 setCanvasState={setCanvasState}
                 org={org}
@@ -2088,6 +2093,10 @@ export const Canvas = ({
                 setIsPenEraserSwitcherOpen={setIsPenEraserSwitcherOpen}
                 isPlacingLayer={currentPreviewLayer !== null}
                 expired={expired}
+                insertMedia={insertMedia}
+                camera={camera}
+                svgRef={svgRef}
+                zoom={zoom}
             />
             {!IsArrowPostInsertMenuOpen && !isMoving && canvasState.mode !== CanvasMode.Resizing && canvasState.mode !== CanvasMode.ArrowResizeHandler && canvasState.mode !== CanvasMode.SelectionNet && activeTouches < 2 && (
                 <SelectionTools

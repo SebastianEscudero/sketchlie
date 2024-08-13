@@ -7,29 +7,35 @@ import { toast } from "sonner"
 import { useRef, Dispatch, SetStateAction } from "react";
 import { getMaxImageSize } from "@/lib/planLimits";
 import { useCurrentUser } from "@/hooks/use-current-user";
+import { LayerType, Point } from "@/types/canvas";
+import { getCenterOfScreen } from "@/lib/utils";
 
-interface ImageButtonProps {
+interface MediaButtonProps {
     isUploading: boolean;
-    setSelectedImage: (info: any) => void;
+    insertMedia: (layerType: LayerType.Image | LayerType.Video, position: Point, info: any) => void;
     icon: LucideIcon;
-    onClick: () => void;
     isActive?: boolean;
     isDisabled?: boolean;
     setIsUploading: Dispatch<SetStateAction<boolean>>;
     label: string;
     org: any;
+    camera: any;
+    svgRef: any;
+    zoom: number;
 };
 
 export const ImageButton = ({
     setIsUploading,
     icon: Icon,
-    onClick,
     isActive,
     isDisabled,
-    setSelectedImage,
+    insertMedia,
     org,
-    label
-}: ImageButtonProps) => {
+    label,
+    camera,
+    svgRef,
+    zoom
+}: MediaButtonProps) => {
     
     const user = useCurrentUser();
     const inputFileRef = useRef<HTMLInputElement>(null);
@@ -41,7 +47,6 @@ export const ImageButton = ({
 
     const handleButtonClick = () => {
         inputFileRef.current?.click();
-        onClick();
     };
 
     const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,17 +57,17 @@ export const ImageButton = ({
             return;
         }
 
-        // Check file size
-        const fileSizeInMB = e.target.files[0].size / 1024 / 1024;
+        const file = e.target.files[0];
+        const fileSizeInMB = file.size / 1024 / 1024;
         if (fileSizeInMB > maxFileSize) {
             setIsUploading(false);
             toast.error(`File size has to be lower than ${maxFileSize}MB. Please try again.`);
             return;
         }
 
-        const toastId = toast.loading("Image is being processed, please wait...");
+        const toastId = toast.loading("Media is being processed, please wait...");
         const formData = new FormData();
-        formData.append('file', e.target.files?.[0]);
+        formData.append('file', file);
         formData.append('userId', user.id);
 
         fetch('/api/aws-s3-images', {
@@ -75,16 +80,31 @@ export const ImageButton = ({
             }
             const url = await res.text();
     
-            const img = new Image();
-            const imgLoad = new Promise<{ url: string, dimensions: { width: number, height: number } }>((resolve) => {
-                img.onload = () => {
-                    const dimensions = { width: img.width, height: img.height };
-                    resolve({ url, dimensions });
-                };
-            });
-            img.src = url;
-            const info = await imgLoad;
-            setSelectedImage(info);
+            if (file.type.startsWith('image/')) {
+                const img = new Image();
+                const imgLoad = new Promise<{ url: string, dimensions: { width: number, height: number }, type: string }>((resolve) => {
+                    img.onload = () => {
+                        const dimensions = { width: img.width, height: img.height };
+                        resolve({ url, dimensions, type: 'image' });
+                    };
+                });
+                img.src = url;
+                const info = await imgLoad;
+                const centerPoint = getCenterOfScreen(camera, zoom, svgRef);
+                insertMedia(LayerType.Image, centerPoint, info);
+            } else if (file.type.startsWith('video/')) {
+                const video = document.createElement('video');
+                const videoLoad = new Promise<{ url: string, dimensions: { width: number, height: number }, type: string }>((resolve) => {
+                    video.onloadedmetadata = () => {
+                        const dimensions = { width: video.videoWidth, height: video.videoHeight };
+                        resolve({ url, dimensions, type: 'video' });
+                    };
+                });
+                video.src = url;
+                const info = await videoLoad;
+                const centerPoint = getCenterOfScreen(camera, zoom, svgRef);
+                insertMedia(LayerType.Video, centerPoint, info);
+            }
         })
         .catch(error => {
             console.error('Error:', error);
@@ -93,7 +113,7 @@ export const ImageButton = ({
             e.target.value = '';
             toast.dismiss(toastId);
             setIsUploading(false);
-            toast.success("Image uploaded successfully, you can now add it to the board.")
+            toast.success("Media uploaded successfully")
         });
     };
 
@@ -105,7 +125,7 @@ export const ImageButton = ({
                     type="file"
                     onChange={handleUpload}
                     ref={inputFileRef}
-                    accept="image/*"
+                    accept="image/*,video/*"
                     style={{ display: 'none' }}
                 />
             </Button>

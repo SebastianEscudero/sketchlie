@@ -59,7 +59,7 @@ export const SelectionTools = memo(({
   const nanoid = customAlphabet(alphabet, 21);
   const [openSelector, setOpenSelector] = useState<SelectorType | null>(null);
 
-  let hasText = true, isImageLayer = false, hasOutline = true, isArrowLayer = true, isLineLayer = true, isPathLayer = true;
+  let hasText = true, isMediaLayer = false, hasOutline = true, isArrowLayer = true, isLineLayer = true, isPathLayer = true;
 
   selectedLayersRef.current.forEach((id: string) => {
     const type = liveLayers[id]?.type;
@@ -68,7 +68,7 @@ export const SelectionTools = memo(({
   
     // Update conditions based on the current layer type
     hasText = hasText && isTextType;
-    isImageLayer = isImageLayer || type === LayerType.Image;
+    isMediaLayer = isMediaLayer || type === LayerType.Image || type === LayerType.Video;
     hasOutline = hasOutline && isOutlineType;
     isArrowLayer = isArrowLayer && type === LayerType.Arrow;
     isLineLayer = isLineLayer && type === LayerType.Line;
@@ -458,7 +458,7 @@ export const SelectionTools = memo(({
           expandUp={position + 50 + 205 > window.innerHeight}
         />
       )}
-      {!isImageLayer && (
+      {!isMediaLayer && (
         <ColorPicker
           layers={layers}
           handleOpacityChange={setOpacity}

@@ -109,20 +109,38 @@ export const ArrowPostInsertMenu = ({
         let fillColor = { r: 0, g: 0, b: 0, a: 0 }
         let isNote = layerType === LayerType.Note
 
-        layer = {
-            type: layerType,
-            x: x,
-            y: y,
-            height: layerHeight,
-            width: layerWidth,
-            fill: isNote ? { r: 252, g: 225, b: 156, a: 1 } : fillColor,
-            value: "",
-            outlineFill: isNote ? { r: 0, g: 0, b: 0, a: 0 } : { r: 29, g: 29, b: 29, a: 1 },
-            textFontSize: 12,
-            alignX: 'center',
-            alignY: 'center',
-            connectedArrows: [arrowId]
-        };
+        if (layerType === LayerType.Image || layerType === LayerType.Video) {
+            layer = {
+                type: layerType,
+                x: x,
+                y: y,
+                height: layerHeight,
+                width: layerWidth,
+                fill: isNote ? { r: 252, g: 225, b: 156, a: 1 } : fillColor,
+                value: "",
+                outlineFill: isNote ? { r: 0, g: 0, b: 0, a: 0 } : { r: 29, g: 29, b: 29, a: 1 },
+                textFontSize: 12,
+                alignX: 'center',
+                alignY: 'center',
+                connectedArrows: [arrowId],
+                src: startConnectedLayer.src || "",
+            };
+        } else {
+            layer = {
+                type: layerType,
+                x: x,
+                y: y,
+                height: layerHeight,
+                width: layerWidth,
+                fill: isNote ? { r: 252, g: 225, b: 156, a: 1 } : fillColor,
+                value: "",
+                outlineFill: isNote ? { r: 0, g: 0, b: 0, a: 0 } : { r: 29, g: 29, b: 29, a: 1 },
+                textFontSize: 12,
+                alignX: 'center',
+                alignY: 'center',
+                connectedArrows: [arrowId]
+            };
+        }
 
         const command = new InsertLayerCommand([layerId], [layer], setLiveLayers, setLiveLayerIds, boardId, socket, org, proModal);
         await performAction(command)
@@ -144,7 +162,7 @@ export const ArrowPostInsertMenu = ({
         selectedLayersRef.current = [layerId];
 
         setIsArrowPostInsertMenuOpen(false);
-    }, [socket, org, proModal, setLiveLayers, setLiveLayerIds, boardId, liveLayers, arrowId, performAction]);
+    }, [socket, org, proModal, setLiveLayers, setLiveLayerIds, boardId, liveLayers, arrowId, performAction, arrowLayer, selectedLayersRef, setIsArrowPostInsertMenuOpen]);
 
     if (!selectionBounds) {
         return null;
@@ -167,7 +185,7 @@ export const ArrowPostInsertMenu = ({
                     variant="auth"
                     className="w-full"
                     onPointerDown={() => {
-                        const type = liveLayers[arrowLayer.startConnectedLayerId].type;
+                        const type = liveLayers[arrowLayer.startConnectedLayerId].type || LayerType.Rectangle;
                         insertLayer(type);
                     }}
                 >

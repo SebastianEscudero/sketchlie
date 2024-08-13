@@ -2,13 +2,12 @@
 
 import { memo } from "react";
 import { colorToCss } from "@/lib/utils";
-import { Layer, Layers, LayerType } from "@/types/canvas";
+import { Layer, LayerType } from "@/types/canvas";
 import { Path } from "../canvas-objects/path";
 import { Note } from "../canvas-objects/note";
 import { Text } from "../canvas-objects/text";
 import { Ellipse } from "../canvas-objects/ellipse";
 import { Rectangle } from "../canvas-objects/rectangle";
-import { InsertImage } from "../canvas-objects/image";
 import { Arrow } from "../canvas-objects/arrow";
 import { Rhombus } from "../canvas-objects/rhombus";
 import { Triangle } from "../canvas-objects/triangle";
@@ -20,6 +19,8 @@ import { BigArrowUp } from "../canvas-objects/bigArrowUp";
 import { BigArrowDown } from "../canvas-objects/bigArrowDown";
 import { CommentBubble } from "../canvas-objects/commentBubble";
 import { Line } from "../canvas-objects/line";
+import { InsertImage } from "../canvas-objects/image";
+import { InsertVideo } from "../canvas-objects/video";
 
 interface LayerPreviewProps {
   id: string;
@@ -269,6 +270,17 @@ export const LayerPreview = memo(({
           layer={layer}
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
+        />
+      );
+    case LayerType.Video:
+      return (
+        <InsertVideo
+          isUploading={false}
+          id={id}
+          layer={layer}
+          onPointerDown={onLayerPointerDown}
+          selectionColor={selectionColor}
+          focused={focused}
         />
       );
     case LayerType.Arrow:

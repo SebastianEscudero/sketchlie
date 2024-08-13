@@ -100,6 +100,35 @@ export function colorToCss(color: Color) {
   return `rgba(${color.r},${color.g},${color.b},${color.a})`;
 }
 
+export function getCenterOfScreen(
+  camera: Camera,
+  zoom: number,
+  svgRef: React.RefObject<SVGSVGElement>
+) {
+  const svg = svgRef.current;
+  if (!svg) return { x: 0, y: 0 };
+
+  const rect = svg.getBoundingClientRect();
+  const width = rect.width;
+  const height = rect.height;
+
+  const centerX = width / 2;
+  const centerY = height / 2;
+
+  const point = svg.createSVGPoint();
+  point.x = centerX;
+  point.y = centerY;
+
+  // Transform the point from screen coordinates to SVG coordinates
+  const transformedPoint = point.matrixTransform(svg.getScreenCTM()!.inverse());
+
+  return {
+    x: (Math.round(transformedPoint.x) - camera.x) / zoom,
+    y: (Math.round(transformedPoint.y) - camera.y) / zoom,
+  };
+}
+
+
 export function resizeBounds(
   bounds: XYWH,
   corner: Side,
@@ -1126,7 +1155,8 @@ export function resizeBox(
     newLayer.type !== LayerType.Path &&
     newLayer.type !== LayerType.Image &&
     newLayer.type !== LayerType.Line &&
-    newLayer.type !== LayerType.Arrow
+    newLayer.type !== LayerType.Arrow &&
+    newLayer.type !== LayerType.Video
   ) {
     if (!singleLayer) {
       textFontSize = newLayer.textFontSize * scaleY;

@@ -15,7 +15,7 @@ import {
   Undo2,
 } from "lucide-react";
 
-import { ArrowType, CanvasMode, CanvasState, Color, LayerType } from "@/types/canvas";
+import { ArrowType, CanvasMode, CanvasState, Color, LayerType, Point } from "@/types/canvas";
 import { ToolButton } from "./tool-button";
 import { ImageButton } from "./image-button";
 import { Dispatch, SetStateAction, useEffect } from "react";
@@ -30,7 +30,6 @@ import { ArrowMenu } from "./arrow-menu";
 interface ToolbarProps {
   isUploading: boolean;
   setIsUploading: Dispatch<SetStateAction<boolean>>;
-  setSelectedImage: (info: any) => void;
   canvasState: CanvasState;
   setCanvasState: (newState: any) => void;
   org: any;
@@ -54,6 +53,10 @@ interface ToolbarProps {
   pathColor: Color;
   isPlacingLayer: boolean;
   expired: boolean;
+  insertMedia: (layerType: LayerType.Image | LayerType.Video, position: Point, info: any) => void;
+  camera: any;
+  svgRef: any;
+  zoom: number;
 }
 
 export const Toolbar = ({
@@ -61,7 +64,6 @@ export const Toolbar = ({
   setIsUploading,
   canvasState,
   setCanvasState,
-  setSelectedImage,
   org,
   pathStrokeSize,
   setPathColor,
@@ -83,6 +85,10 @@ export const Toolbar = ({
   pathColor,
   isPlacingLayer,
   expired,
+  insertMedia,
+  camera,
+  svgRef,
+  zoom
 }: ToolbarProps) => {
   const onPathColorChange = (color: any) => {
     setPathColor(color);
@@ -101,7 +107,7 @@ export const Toolbar = ({
     if (canvasState.mode !== CanvasMode.Inserting || isPlacingLayer) {
       setIsShapesMenuOpen(false);
     } else {
-      if (canvasState.layerType === LayerType.Arrow || canvasState.layerType === LayerType.Note || canvasState.layerType === LayerType.Image || canvasState.layerType === LayerType.Text) {
+      if (canvasState.layerType === LayerType.Arrow || canvasState.layerType === LayerType.Note || canvasState.layerType === LayerType.Text) {
         setIsShapesMenuOpen(false);
       }
     }
@@ -205,24 +211,24 @@ export const Toolbar = ({
             setIsShapesMenuOpen(!isShapesMenuOpen);
           }}
           isActive={
-            canvasState.mode === CanvasMode.Inserting && canvasState.layerType !== LayerType.Image && canvasState.layerType !== LayerType.Text && canvasState.layerType !== LayerType.Arrow && canvasState.layerType !== LayerType.Note
+            canvasState.mode === CanvasMode.Inserting && canvasState.layerType !== LayerType.Text && canvasState.layerType !== LayerType.Arrow && canvasState.layerType !== LayerType.Note
           }
         />
-<ToolButton
-  label={!isArrowsMenuOpen ? (arrowTypeInserting === ArrowType.Straight ? "Straight" : arrowTypeInserting === ArrowType.Curved ? "Curved" : "Diagram") : undefined}
-  icon={arrowTypeInserting === ArrowType.Straight ? MoveUpRight : arrowTypeInserting === ArrowType.Curved ? Redo : TrendingUp}
-  onClick={() => {
-    setCanvasState({
-      mode: CanvasMode.Inserting,
-      layerType: LayerType.Arrow,
-    });
-    setIsArrowsMenuOpen(!isArrowsMenuOpen);
-  }}
-  isActive={
-    canvasState.mode === CanvasMode.Inserting &&
-    canvasState.layerType === LayerType.Arrow
-  }
-/>
+        <ToolButton
+          label={!isArrowsMenuOpen ? (arrowTypeInserting === ArrowType.Straight ? "Straight" : arrowTypeInserting === ArrowType.Curved ? "Curved" : "Diagram") : undefined}
+          icon={arrowTypeInserting === ArrowType.Straight ? MoveUpRight : arrowTypeInserting === ArrowType.Curved ? Redo : TrendingUp}
+          onClick={() => {
+            setCanvasState({
+              mode: CanvasMode.Inserting,
+              layerType: LayerType.Arrow,
+            });
+            setIsArrowsMenuOpen(!isArrowsMenuOpen);
+          }}
+          isActive={
+            canvasState.mode === CanvasMode.Inserting &&
+            canvasState.layerType === LayerType.Arrow
+          }
+        />
         <ToolButton
           label="Note"
           icon={StickyNote}
@@ -252,16 +258,11 @@ export const Toolbar = ({
           org={org}
           isUploading={isUploading}
           setIsUploading={setIsUploading}
-          setSelectedImage={setSelectedImage}
+          insertMedia={insertMedia}
           icon={Image}
-          onClick={() => setCanvasState({
-            mode: CanvasMode.Inserting,
-            layerType: LayerType.Image,
-          })}
-          isActive={
-            canvasState.mode === CanvasMode.Inserting &&
-            canvasState.layerType === LayerType.Image
-          }
+          camera={camera}
+          svgRef={svgRef}
+          zoom={zoom}
         />
       </div>
       <div className="bg-white dark:bg-[#383838] rounded-md p-1.5 hidden md:flex flex-row items-center shadow-custom-3">
@@ -286,7 +287,7 @@ export const Toolbar = ({
         />
       }
 
-      {isShapesMenuOpen && canvasState.mode === CanvasMode.Inserting && canvasState.layerType !== LayerType.Image && canvasState.layerType !== LayerType.Text && canvasState.layerType !== LayerType.Arrow && canvasState.layerType !== LayerType.Note &&
+      {isShapesMenuOpen && canvasState.mode === CanvasMode.Inserting && canvasState.layerType !== LayerType.Text && canvasState.layerType !== LayerType.Arrow && canvasState.layerType !== LayerType.Note &&
         <ShapesMenu
           setCanvasState={setCanvasState}
           canvasState={canvasState}
@@ -300,7 +301,7 @@ export const Toolbar = ({
           isPenMenuOpen={isPenMenuOpen}
         />
       }
-      {isArrowsMenuOpen && canvasState.mode === CanvasMode.Inserting && canvasState.layerType === LayerType.Arrow && 
+      {isArrowsMenuOpen && canvasState.mode === CanvasMode.Inserting && canvasState.layerType === LayerType.Arrow &&
         <ArrowMenu
           setCanvasState={setCanvasState}
           arrowTypeInserting={arrowTypeInserting}
