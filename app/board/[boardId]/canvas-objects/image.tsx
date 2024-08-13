@@ -36,7 +36,6 @@ export const InsertImage = ({
         )}
         <image
           crossOrigin="anonymous"
-          opacity={opacity ? opacity : 1}
           id={id}
           href={src}
           x={x}
