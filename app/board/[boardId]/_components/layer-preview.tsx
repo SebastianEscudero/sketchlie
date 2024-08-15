@@ -20,7 +20,6 @@ import { BigArrowDown } from "../canvas-objects/bigArrowDown";
 import { CommentBubble } from "../canvas-objects/commentBubble";
 import { Line } from "../canvas-objects/line";
 import { InsertImage } from "../canvas-objects/image";
-import { InsertVideo } from "../canvas-objects/video";
 
 interface LayerPreviewProps {
   id: string;
@@ -270,17 +269,6 @@ export const LayerPreview = memo(({
           layer={layer}
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
-        />
-      );
-    case LayerType.Video:
-      return (
-        <InsertVideo
-          isUploading={false}
-          id={id}
-          layer={layer}
-          onPointerDown={onLayerPointerDown}
-          selectionColor={selectionColor}
-          focused={focused}
         />
       );
     case LayerType.Arrow:

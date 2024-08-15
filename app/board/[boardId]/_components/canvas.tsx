@@ -70,6 +70,8 @@ import { ArrowPostInsertMenu } from "./arrow-post-insert-menu";
 import { EraserTrail } from "./eraser-trail";
 import { CurrentSuggestedLayer } from "./current-suggested-layer";
 import { smoothLastPoint } from "@/lib/smooth-points";
+import { InsertVideo } from "../canvas-objects/video";
+import { Background } from "./background";
 
 const preventDefault = (e: any) => {
     if (e.scale !== 1) {
@@ -2025,118 +2027,115 @@ export const Canvas = ({
     }, [liveLayerIds, liveLayers, camera, zoom]);
 
     return (
-        <main
-            className={`bg-[#F9FAFB] dark:bg-[#101011] fixed h-full w-full touch-none overscroll-none ${isDraggingOverCanvas && 'bg-neutral-200 border-2 border-dashed border-custom-blue'}`}
-            style={{
-                backgroundImage: (background === 'grid') ? `
-                linear-gradient(0deg, ${document.documentElement.classList.contains("dark") ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'} 1px, transparent 1px),
-                linear-gradient(90deg, ${document.documentElement.classList.contains("dark") ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'} 1px, transparent 1px)
-            ` : (background === 'line') ? `
-                linear-gradient(0deg, ${document.documentElement.classList.contains("dark") ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'} 1px, transparent 1px)
-            ` : 'none',
-                backgroundSize: (background === 'grid' || background === 'line') ? `${65 * zoom}px ${65 * zoom}px` : undefined,
-                backgroundPosition: (background === 'grid' || background === 'line') ? `${camera.x}px ${camera.y}px` : undefined,
-                WebkitOverflowScrolling: 'touch',
-                WebkitUserSelect: 'none',
-                touchAction: 'none',
-            }}
-        >
-            <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-            <Info
-                board={board}
-                org={org}
-                setBackground={setBackground}
-                Background={background}
-                setLiveLayerIds={setLiveLayerIds}
-                setLiveLayers={setLiveLayers}
-                performAction={performAction}
-                socket={socket}
-                setCanvasState={setCanvasState}
-                nanoid={nanoid}
-                zoom={zoom}
-                camera={camera}
-                selectedLayersRef={selectedLayersRef}
-                setIsShowingAIInput={setIsShowingAIInput}
-                isShowingAIInput={isShowingAIInput}
-                setForcedRender={setForceLayerPreviewRender}
-                User={User}
-            />
-            <Participants
-                org={org}
-                otherUsers={otherUsers}
-                User={User}
-                socket={socket}
-                expired={expired}
-            />
-            <Toolbar
-                pathColor={pathColor}
-                pathStrokeSize={pathStrokeSize}
-                setPathColor={setPathColor}
-                setPathStrokeSize={setPathStrokeSize}
-                isUploading={isUploading}
-                setIsUploading={setIsUploading}
-                canvasState={canvasState}
-                setCanvasState={setCanvasState}
-                org={org}
-                undo={undo}
-                redo={redo}
-                canUndo={history.length > 0}
-                canRedo={redoStack.length > 0}
-                arrowTypeInserting={arrowTypeInserting}
-                setArrowTypeInserting={setArrowTypeInserting}
-                isArrowsMenuOpen={isArrowsMenuOpen}
-                setIsArrowsMenuOpen={setIsArrowsMenuOpen}
-                isPenMenuOpen={isPenMenuOpen}
-                setIsPenMenuOpen={setIsPenMenuOpen}
-                isShapesMenuOpen={isShapesMenuOpen}
-                setIsShapesMenuOpen={setIsShapesMenuOpen}
-                isPenEraserSwitcherOpen={isPenEraserSwitcherOpen}
-                setIsPenEraserSwitcherOpen={setIsPenEraserSwitcherOpen}
-                isPlacingLayer={currentPreviewLayer !== null}
-                expired={expired}
-                insertMedia={insertMedia}
-                camera={camera}
-                svgRef={svgRef}
-                zoom={zoom}
-            />
-            {!IsArrowPostInsertMenuOpen && !isMoving && canvasState.mode !== CanvasMode.Resizing && canvasState.mode !== CanvasMode.ArrowResizeHandler && canvasState.mode !== CanvasMode.SelectionNet && activeTouches < 2 && (
-                <SelectionTools
-                    board={board}
-                    boardId={boardId}
-                    setLiveLayerIds={setLiveLayerIds}
-                    setLiveLayers={setLiveLayers}
-                    liveLayerIds={liveLayerIds}
-                    liveLayers={liveLayers}
-                    selectedLayersRef={selectedLayersRef}
-                    zoom={zoom}
-                    camera={camera}
-                    socket={socket}
-                    performAction={performAction}
-                    org={org}
-                    proModal={proModal}
-                    myPresence={myPresence}
-                    setMyPresence={setMyPresence}
-                    canvasState={canvasState.mode}
-                />
-            )}
-            {liveLayers[selectedLayersRef.current[0]] && IsArrowPostInsertMenuOpen && (
-                <ArrowPostInsertMenu
-                    selectedLayersRef={selectedLayersRef}
-                    liveLayers={liveLayers}
-                    zoom={zoom}
-                    camera={camera}
-                    setLiveLayers={setLiveLayers}
-                    setLiveLayerIds={setLiveLayerIds}
-                    boardId={boardId}
-                    socket={socket}
-                    org={org}
-                    proModal={proModal}
-                    performAction={performAction}
-                    setIsArrowPostInsertMenuOpen={setIsArrowPostInsertMenuOpen}
-                />
-            )}
-            <ZoomToolbar zoom={zoom} setZoom={setZoom} setCamera={setCamera} camera={camera} />
-            {/* {isShowingAIInput && (
+        <>
+            <Background background={background} zoom={zoom} camera={camera} isDraggingOverCanvas={isDraggingOverCanvas} />
+            <main
+                className="fixed inset-0 z-10 h-full w-full touch-none overscroll-none"
+                style={{
+                    WebkitOverflowScrolling: 'touch',
+                    WebkitUserSelect: 'none',
+                    touchAction: 'none',
+                }}
+            >
+                <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+                <div className="grid grid-cols-1 grid-rows-1 h-full w-full">
+                    <div className="col-start-1 row-start-1 z-20 pointer-events-none">
+                        <div className="pointer-events-auto">
+                            <Info
+                                board={board}
+                                org={org}
+                                setBackground={setBackground}
+                                Background={background}
+                                setLiveLayerIds={setLiveLayerIds}
+                                setLiveLayers={setLiveLayers}
+                                performAction={performAction}
+                                socket={socket}
+                                setCanvasState={setCanvasState}
+                                nanoid={nanoid}
+                                zoom={zoom}
+                                camera={camera}
+                                selectedLayersRef={selectedLayersRef}
+                                setIsShowingAIInput={setIsShowingAIInput}
+                                isShowingAIInput={isShowingAIInput}
+                                setForcedRender={setForceLayerPreviewRender}
+                                User={User}
+                            />
+                            <Participants
+                                org={org}
+                                otherUsers={otherUsers}
+                                User={User}
+                                socket={socket}
+                                expired={expired}
+                            />
+                            <Toolbar
+                                pathColor={pathColor}
+                                pathStrokeSize={pathStrokeSize}
+                                setPathColor={setPathColor}
+                                setPathStrokeSize={setPathStrokeSize}
+                                isUploading={isUploading}
+                                setIsUploading={setIsUploading}
+                                canvasState={canvasState}
+                                setCanvasState={setCanvasState}
+                                org={org}
+                                undo={undo}
+                                redo={redo}
+                                canUndo={history.length > 0}
+                                canRedo={redoStack.length > 0}
+                                arrowTypeInserting={arrowTypeInserting}
+                                setArrowTypeInserting={setArrowTypeInserting}
+                                isArrowsMenuOpen={isArrowsMenuOpen}
+                                setIsArrowsMenuOpen={setIsArrowsMenuOpen}
+                                isPenMenuOpen={isPenMenuOpen}
+                                setIsPenMenuOpen={setIsPenMenuOpen}
+                                isShapesMenuOpen={isShapesMenuOpen}
+                                setIsShapesMenuOpen={setIsShapesMenuOpen}
+                                isPenEraserSwitcherOpen={isPenEraserSwitcherOpen}
+                                setIsPenEraserSwitcherOpen={setIsPenEraserSwitcherOpen}
+                                isPlacingLayer={currentPreviewLayer !== null}
+                                expired={expired}
+                                insertMedia={insertMedia}
+                                camera={camera}
+                                svgRef={svgRef}
+                                zoom={zoom}
+                            />
+                            {!IsArrowPostInsertMenuOpen && !isMoving && canvasState.mode !== CanvasMode.Resizing && canvasState.mode !== CanvasMode.ArrowResizeHandler && canvasState.mode !== CanvasMode.SelectionNet && activeTouches < 2 && (
+                                <SelectionTools
+                                    board={board}
+                                    boardId={boardId}
+                                    setLiveLayerIds={setLiveLayerIds}
+                                    setLiveLayers={setLiveLayers}
+                                    liveLayerIds={liveLayerIds}
+                                    liveLayers={liveLayers}
+                                    selectedLayersRef={selectedLayersRef}
+                                    zoom={zoom}
+                                    camera={camera}
+                                    socket={socket}
+                                    performAction={performAction}
+                                    org={org}
+                                    proModal={proModal}
+                                    myPresence={myPresence}
+                                    setMyPresence={setMyPresence}
+                                    canvasState={canvasState.mode}
+                                />
+                            )}
+                            {liveLayers[selectedLayersRef.current[0]] && IsArrowPostInsertMenuOpen && (
+                                <ArrowPostInsertMenu
+                                    selectedLayersRef={selectedLayersRef}
+                                    liveLayers={liveLayers}
+                                    zoom={zoom}
+                                    camera={camera}
+                                    setLiveLayers={setLiveLayers}
+                                    setLiveLayerIds={setLiveLayerIds}
+                                    boardId={boardId}
+                                    socket={socket}
+                                    org={org}
+                                    proModal={proModal}
+                                    performAction={performAction}
+                                    setIsArrowPostInsertMenuOpen={setIsArrowPostInsertMenuOpen}
+                                />
+                            )}
+                            <ZoomToolbar zoom={zoom} setZoom={setZoom} setCamera={setCamera} camera={camera} />
+                            {/* {isShowingAIInput && (
                 <SketchlieAiInput 
                     setLiveLayers={setLiveLayers}
                     setLiveLayerIds={setLiveLayerIds}
@@ -2147,128 +2146,153 @@ export const Canvas = ({
                     performAction={performAction}
                 />
             )} */}
-            <div id="canvas">
-                <svg
-                    ref={svgRef}
-                    className="h-[100vh] w-[100vw]"
-                    viewBox={`0 0 ${window.innerWidth} ${window.innerHeight}`}
-                    onWheel={onWheel}
-                    onDragOver={onDragOver}
-                    onDrop={onDrop}
-                    onDragLeave={onDragLeave}
-                    onTouchStart={onTouchDown}
-                    onTouchMove={onTouchMove}
-                    onTouchEnd={onTouchUp}
-                    onPointerMove={onPointerMove}
-                    onPointerLeave={onPointerLeave}
-                    onPointerDown={onPointerDown}
-                    onPointerUp={onPointerUp}
-                >
-                    <g
-                        style={{
-                            transform: `translate(${camera.x}px, ${camera.y}px) scale(${zoom})`,
-                            transformOrigin: 'top left',
-                            willChange: 'transform',
-                        }}
-                    >
-                        {visibleLayers.map((layerId: string) => {
-                            const isFocused = selectedLayersRef.current.length === 1 && selectedLayersRef.current[0] === layerId && !justChanged;
-                            let layer = liveLayers[layerId];
-                            return (
-                                <LayerPreview
-                                    selectionColor={layerIdsToColorSelection[layerId]}
-                                    onLayerPointerDown={onLayerPointerDown}
-                                    focused={isFocused}
-                                    layer={layer}
-                                    setLiveLayers={setLiveLayers}
-                                    key={layerId}
-                                    id={layerId}
-                                    onRefChange={setLayerRef}
-                                    socket={socket}
-                                    expired={expired}
-                                    boardId={boardId}
-                                    forcedRender={forceLayerPreviewRender}
-                                />
-                            );
-                        })}
-                        {!isMoving && activeTouches < 2 && canvasState.mode !== CanvasMode.ArrowResizeHandler && (
-                            <SelectionBox
-                                zoom={zoom}
-                                liveLayers={liveLayers}
-                                selectedLayers={selectedLayersRef.current}
-                                onResizeHandlePointerDown={onResizeHandlePointerDown}
-                                onArrowResizeHandlePointerDown={onArrowResizeHandlePointerDown}
-                                setLiveLayers={setLiveLayers}
-                                forceRender={forceSelectionBoxRender}
-                                setCurrentPreviewLayer={setCurrentPreviewLayer}
-                                mousePosition={mousePosition}
-                                setCanvasState={setCanvasState}
-                                setStartPanPoint={setStartPanPoint}
-                                setArrowTypeInserting={setArrowTypeInserting}
-                            />
-                        )}
-                        {currentPreviewLayer && (
-                            <CurrentPreviewLayer
-                                layer={currentPreviewLayer}
-                            />
-                        )}
-                        {suggestedLayers && (
-                            <CurrentSuggestedLayer
-                                layer={suggestedLayers}
-                            />
-                        )}
-                        {((canvasState.mode === CanvasMode.ArrowResizeHandler && selectedLayersRef.current.length === 1) || (currentPreviewLayer?.type === LayerType.Arrow)) && (
-                            <ArrowConnectionOutlinePreview
-                                zoom={zoom}
-                                selectedArrow={currentPreviewLayer || liveLayers[selectedLayersRef.current[0]]}
-                                liveLayers={liveLayers}
-                                mousePosition={mousePosition}
-                                handle={canvasState.mode === CanvasMode.ArrowResizeHandler ? canvasState.handle : ArrowHandle.end}
-                            />
-                        )}
-                        {(canvasState.mode === CanvasMode.Eraser) && erasePath.length > 0 && (
-                            <EraserTrail mousePosition={mousePosition} zoom={zoom} />
-                        )}
-                        {canvasState.mode === CanvasMode.SelectionNet && canvasState.current != null && activeTouches < 2 && (
-                            <rect
-                                style={{
-                                    fill: 'rgba(59, 130, 246, 0.3)',
-                                    stroke: '#3B82F6',
-                                    strokeWidth: 1 / zoom
-                                }}
-                                x={Math.min(canvasState.origin.x, canvasState.current.x)}
-                                y={Math.min(canvasState.origin.y, canvasState.current.y)}
-                                width={Math.abs(canvasState.origin.x - canvasState.current.x)}
-                                height={Math.abs(canvasState.origin.y - canvasState.current.y)}
-                            />
-                        )}
-                        {otherUsers && <CursorsPresence otherUsers={otherUsers} zoom={zoom} />}
-                        {
-                            pencilDraft && !pencilDraft.some(array => array.some(isNaN)) && (
-                                <Path
-                                    points={pencilDraft}
-                                    fill={
-                                        canvasState.mode === CanvasMode.Laser
-                                            ? '#F35223'
-                                            : canvasState.mode === CanvasMode.Highlighter
-                                                ? colorToCss({ ...pathColor, a: 0.7 }) // Semi-transparent yellow
-                                                : colorToCss(pathColor)
+                        </div>
+                    </div>
+                    <div className="col-start-1 row-start-1 z-10">
+                        <div
+                            id="canvas"
+                            onWheel={onWheel}
+                            onDragOver={onDragOver}
+                            onDrop={onDrop}
+                            onDragLeave={onDragLeave}
+                            onTouchStart={onTouchDown}
+                            onTouchMove={onTouchMove}
+                            onTouchEnd={onTouchUp}
+                            onPointerMove={onPointerMove}
+                            onPointerLeave={onPointerLeave}
+                            onPointerDown={onPointerDown}
+                            onPointerUp={onPointerUp}
+                        >
+                            {visibleLayers.map((layerId: string) => {
+                                const layer = liveLayers[layerId];
+                                if (layer && layer.type === LayerType.Video) {
+                                    return (
+                                        <InsertVideo
+                                            key={layerId}
+                                            id={layerId}
+                                            layer={layer}
+                                            onPointerDown={onLayerPointerDown}
+                                            selectionColor={layerIdsToColorSelection[layerId]}
+                                            focused={selectedLayersRef.current.includes(layerId)}
+                                            zoom={zoom}
+                                            camera={camera}
+                                        />
+                                    );
+                                }
+                            })}
+                            <svg
+                                ref={svgRef}
+                                className="h-[100vh] w-[100vw] z-20"
+                                viewBox={`0 0 ${window.innerWidth} ${window.innerHeight}`}
+                            >
+                                <g
+                                    style={{
+                                        transform: `translate(${camera.x}px, ${camera.y}px) scale(${zoom})`,
+                                        transformOrigin: 'top left',
+                                        willChange: 'transform',
+                                    }}
+                                >
+                                    {visibleLayers.map((layerId: string) => {
+                                        const isFocused = selectedLayersRef.current.length === 1 && selectedLayersRef.current[0] === layerId && !justChanged;
+                                        let layer = liveLayers[layerId];
+                                        return (
+                                            <LayerPreview
+                                                selectionColor={layerIdsToColorSelection[layerId]}
+                                                onLayerPointerDown={onLayerPointerDown}
+                                                focused={isFocused}
+                                                layer={layer}
+                                                setLiveLayers={setLiveLayers}
+                                                key={layerId}
+                                                id={layerId}
+                                                onRefChange={setLayerRef}
+                                                socket={socket}
+                                                expired={expired}
+                                                boardId={boardId}
+                                                forcedRender={forceLayerPreviewRender}
+                                            />
+                                        );
+                                    })}
+                                    {!isMoving && activeTouches < 2 && canvasState.mode !== CanvasMode.ArrowResizeHandler && (
+                                        <SelectionBox
+                                            zoom={zoom}
+                                            liveLayers={liveLayers}
+                                            selectedLayers={selectedLayersRef.current}
+                                            onResizeHandlePointerDown={onResizeHandlePointerDown}
+                                            onArrowResizeHandlePointerDown={onArrowResizeHandlePointerDown}
+                                            setLiveLayers={setLiveLayers}
+                                            forceRender={forceSelectionBoxRender}
+                                            setCurrentPreviewLayer={setCurrentPreviewLayer}
+                                            mousePosition={mousePosition}
+                                            setCanvasState={setCanvasState}
+                                            setStartPanPoint={setStartPanPoint}
+                                            setArrowTypeInserting={setArrowTypeInserting}
+                                        />
+                                    )}
+                                    {currentPreviewLayer && (
+                                        <CurrentPreviewLayer
+                                            layer={currentPreviewLayer}
+                                        />
+                                    )}
+                                    {suggestedLayers && (
+                                        <CurrentSuggestedLayer
+                                            layer={suggestedLayers}
+                                        />
+                                    )}
+                                    {((canvasState.mode === CanvasMode.ArrowResizeHandler && selectedLayersRef.current.length === 1) || (currentPreviewLayer?.type === LayerType.Arrow)) && (
+                                        <ArrowConnectionOutlinePreview
+                                            zoom={zoom}
+                                            selectedArrow={currentPreviewLayer || liveLayers[selectedLayersRef.current[0]]}
+                                            liveLayers={liveLayers}
+                                            mousePosition={mousePosition}
+                                            handle={canvasState.mode === CanvasMode.ArrowResizeHandler ? canvasState.handle : ArrowHandle.end}
+                                        />
+                                    )}
+                                    {(canvasState.mode === CanvasMode.Eraser) && erasePath.length > 0 && (
+                                        <EraserTrail mousePosition={mousePosition} zoom={zoom} />
+                                    )}
+                                    {canvasState.mode === CanvasMode.SelectionNet && canvasState.current != null && activeTouches < 2 && (
+                                        <rect
+                                            style={{
+                                                fill: 'rgba(59, 130, 246, 0.3)',
+                                                stroke: '#3B82F6',
+                                                strokeWidth: 1 / zoom,
+                                            }}
+                                            x={Math.min(canvasState.origin.x, canvasState.current.x)}
+                                            y={Math.min(canvasState.origin.y, canvasState.current.y)}
+                                            width={Math.abs(canvasState.origin.x - canvasState.current.x)}
+                                            height={Math.abs(canvasState.origin.y - canvasState.current.y)}
+                                        />
+                                    )}
+                                    {otherUsers && <CursorsPresence otherUsers={otherUsers} zoom={zoom} />}
+                                    {
+                                        pencilDraft && !pencilDraft.some(array => array.some(isNaN)) && (
+                                            <Path
+                                                points={pencilDraft}
+                                                fill={
+                                                    canvasState.mode === CanvasMode.Laser
+                                                        ? '#F35223'
+                                                        : canvasState.mode === CanvasMode.Highlighter
+                                                            ? colorToCss({ ...pathColor, a: 0.7 }) // Semi-transparent yellow
+                                                            : colorToCss(pathColor)
+                                                }
+                                                x={0}
+                                                y={0}
+                                                strokeSize={
+                                                    canvasState.mode === CanvasMode.Laser
+                                                        ? 5 / zoom
+                                                        : canvasState.mode === CanvasMode.Highlighter
+                                                            ? 30 / zoom // Increase stroke size for highlighter
+                                                            : pathStrokeSize
+                                                }
+                                            />
+                                        )
                                     }
-                                    x={0}
-                                    y={0}
-                                    strokeSize={
-                                        canvasState.mode === CanvasMode.Laser
-                                            ? 5 / zoom
-                                            : canvasState.mode === CanvasMode.Highlighter
-                                                ? 30 / zoom // Increase stroke size for highlighter
-                                                : pathStrokeSize
-                                    }
-                                />
-                            )
-                        }
-                    </g>
-                </svg>
-            </div>
-        </main>
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </>
     );
 };
