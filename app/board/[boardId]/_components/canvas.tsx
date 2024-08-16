@@ -327,7 +327,7 @@ export const Canvas = ({
     }, [socket, org, proModal, setLiveLayers, setLiveLayerIds, boardId, arrowTypeInserting, liveLayers, performAction, layerWithAssistDraw, expired]);
 
     useEffect(() => {
-        if (justInsertedText && layerRef.current) {
+        if (justInsertedText && layerRef && layerRef.current) {
             layerRef.current?.focus();
         }
     }, [justInsertedText, layerRef]);
@@ -2163,23 +2163,25 @@ export const Canvas = ({
                             onPointerDown={onPointerDown}
                             onPointerUp={onPointerUp}
                         >
-                            {visibleLayers.map((layerId: string) => {
-                                const layer = liveLayers[layerId];
-                                if (layer && layer.type === LayerType.Video) {
-                                    return (
-                                        <InsertVideo
-                                            key={layerId}
-                                            id={layerId}
-                                            layer={layer}
-                                            onPointerDown={onLayerPointerDown}
-                                            selectionColor={layerIdsToColorSelection[layerId]}
-                                            focused={selectedLayersRef.current.includes(layerId)}
-                                            zoom={zoom}
-                                            camera={camera}
-                                        />
-                                    );
-                                }
-                            })}
+                            <div className="z-10">
+                                {visibleLayers.map((layerId: string) => {
+                                    const layer = liveLayers[layerId];
+                                    if (layer && layer.type === LayerType.Video) {
+                                        return (
+                                            <InsertVideo
+                                                key={layerId}
+                                                id={layerId}
+                                                layer={layer}
+                                                onPointerDown={onLayerPointerDown}
+                                                selectionColor={layerIdsToColorSelection[layerId]}
+                                                focused={selectedLayersRef.current.includes(layerId)}
+                                                zoom={zoom}
+                                                camera={camera}
+                                            />
+                                        );
+                                    }
+                                })}
+                            </div>
                             <svg
                                 ref={svgRef}
                                 className="h-[100vh] w-[100vw] z-20"
