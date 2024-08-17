@@ -77,13 +77,12 @@ const OutlineColorButton = ({
 }: any) => {
   return (
     <button
-      className="w-6 h-6 my-1 items-center flex justify-center transition mx-2 border border-neutral-300 dark:border-zinc-500 rounded-[50%]"
+      className="w-6 h-6 my-1 items-center flex justify-center transition mx-2 border border-neutral-300 dark:border-zinc-500 rounded-[50%] bg-white dark:bg-[#383838]"
       onClick={() => onClick(color)}
       style={{ background: colorToCss(color) }}
     >
       <div
-        className="h-4 w-4 rounded-[50%] border border-neutral-300 dark:border-zinc-500 relative z-50"
-        style={{ background: 'white' }}
+        className="h-4 w-4 rounded-[50%] border border-neutral-300 dark:border-zinc-500 relative z-50 bg-white dark:bg-[#383838]"
       >
         {color.r === 0 && color.g === 0 && color.b === 0 && color.a === 0 && (
           <svg className="absolute top-0 left-0 w-full h-full" viewBox="0 0 1 1">
