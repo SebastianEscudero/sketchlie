@@ -150,6 +150,7 @@ export const BigArrowUp = memo(({
       transform={`translate(${x}, ${y})`}
       onPointerDown={(e) => handlePointerDown(e)}
       onTouchStart={(e) => handleTouchStart(e)}
+      pointerEvents="auto"
     >
       <path
         d={`M ${width / 2} ${0} L 0 ${arrowHeadHeight / 2} L ${width / 4} ${arrowHeadHeight / 2} L ${width / 4} ${height} L ${width * 3 / 4} ${height} L ${width * 3 / 4} ${arrowHeadHeight / 2} L ${width} ${arrowHeadHeight / 2} Z`} fill={fillColor}

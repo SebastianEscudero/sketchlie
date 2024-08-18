@@ -150,6 +150,7 @@ export const Triangle = memo(({
       transform={`translate(${x}, ${y})`}
       onPointerDown={(e) => handlePointerDown(e)}
       onTouchStart={(e) => handleTouchStart(e)}
+      pointerEvents="auto"
     >
       <polygon
         points={`${width / 2}, 0 ${width},${height} 0,${height}`}

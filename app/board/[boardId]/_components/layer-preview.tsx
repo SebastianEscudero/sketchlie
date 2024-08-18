@@ -20,6 +20,7 @@ import { BigArrowDown } from "../canvas-objects/bigArrowDown";
 import { CommentBubble } from "../canvas-objects/commentBubble";
 import { Line } from "../canvas-objects/line";
 import { InsertImage } from "../canvas-objects/image";
+import { VideoOutline } from "../canvas-objects/video";
 
 interface LayerPreviewProps {
   id: string;
@@ -260,6 +261,13 @@ export const LayerPreview = memo(({
           focused={focused}
           forcedRender={forcedRender}
         />
+      );
+    case LayerType.Video:
+      return (
+        <VideoOutline
+          layer={layer}
+          selectionColor={selectionColor}
+          />
       );
     case LayerType.Image:
       return (

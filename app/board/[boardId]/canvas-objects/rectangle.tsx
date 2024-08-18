@@ -149,6 +149,7 @@ export const Rectangle = memo(({
       transform={`translate(${x}, ${y})`}
       onPointerDown={(e) => handlePointerDown(e)}
       onTouchStart={(e) => handleTouchStart(e)}
+      pointerEvents="auto"
     >
       <rect
         width={width}

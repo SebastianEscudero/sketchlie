@@ -146,7 +146,7 @@ export const Info = ({
     if (!board) return <InfoSkeleton />;
 
     return (
-        <div className="absolute bg-white dark:bg-[#383838] rounded-br-lg px-1 h-12 flex items-center shadow-custom-1 dark:shadow-custom-3">
+        <div className="absolute bg-white dark:bg-[#383838] rounded-br-lg px-1 h-12 flex items-center shadow-custom-1 dark:shadow-custom-3 pointer-events-auto">
             <Hint label="Go to Dashboard" side="bottom" sideOffset={10}>
                 <Button asChild variant="board" className="px-2">
                     <Link href="/dashboard/">

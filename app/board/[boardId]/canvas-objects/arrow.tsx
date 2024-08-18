@@ -47,6 +47,7 @@ export const Arrow = ({
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin='round'
+          pointerEvents="auto"
         />
       )}
       <path
@@ -57,6 +58,7 @@ export const Arrow = ({
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
+        pointerEvents="auto"
       />
       {endArrowHead === ArrowHead.Triangle && (
         <path
@@ -68,6 +70,7 @@ export const Arrow = ({
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin='round'
+          pointerEvents="auto"
         />
       )}
     </>

@@ -389,7 +389,7 @@ export const SelectionTools = memo(({
 
   return (
     <div
-      className="absolute p-1 rounded-sm bg-white dark:bg-[#383838] border dark:border-zinc-800 shadow-sm flex select-none gap-x-2 items-center"
+      className="absolute p-1 rounded-sm bg-white dark:bg-[#383838] border dark:border-zinc-800 shadow-sm flex select-none gap-x-2 items-center pointer-events-auto"
       style={{
         transform: initialPosition
           ? `translate(
@@ -495,7 +495,7 @@ export const SelectionTools = memo(({
           <SendToBack />
         </Button>
       </Hint>
-      {/* <SketchlieAiDropdown 
+      <SketchlieAiDropdown 
         title={board.title}
         liveLayers={liveLayers}
         setLiveLayers={setLiveLayers}
@@ -503,7 +503,7 @@ export const SelectionTools = memo(({
         boardId={boardId}
         socket={socket}
         performAction={performAction}
-      /> */}
+      />
       <div className="flex items-center pl-2 border-l border-neutral-200">
         <Hint label="Delete">
           <Button

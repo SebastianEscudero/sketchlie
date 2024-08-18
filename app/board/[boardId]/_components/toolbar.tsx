@@ -128,7 +128,7 @@ export const Toolbar = ({
   }
 
   return (
-    <div className="absolute bottom-2 left-[50%] translate-x-[-50%] flex md:flex-row flex-col gap-x-4">
+    <div className="absolute bottom-2 left-[50%] translate-x-[-50%] flex md:flex-row flex-col gap-x-4 pointer-events-auto">
       <div className="bg-custom-blue rounded-t-lg w-[65px] md:hidden flex">
         <Button disabled={!canUndo} onClick={undo} className="h-8 w-8 p-2" variant="ghost">
           <Undo2 className="h-5 w-5 text-white" />

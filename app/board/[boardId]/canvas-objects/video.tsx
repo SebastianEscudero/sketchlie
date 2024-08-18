@@ -34,13 +34,11 @@ export const InsertVideo = ({
 
   return (
     <div
+      className="absolute"
       style={{
-        position: 'absolute',
         transform: `translate(${transformedX}px, ${transformedY}px)`,
         width: `${transformedWidth}px`,
         height: `${transformedHeight}px`,
-        zIndex: 1,  // Keep this positive but lower than UI layer
-        outline: `1px solid ${selectionColor}`
       }}
       onPointerDown={(e) => onPointerDown(e, id)}
       onPointerUp={() => setVisibleControls(true)}
@@ -61,3 +59,31 @@ export const InsertVideo = ({
     </div>
   );
 };
+
+interface VideoOutlineProps {
+  selectionColor?: string;
+  layer: any
+};
+
+export const VideoOutline = ({
+  selectionColor,
+  layer
+}: VideoOutlineProps) => {
+  const { x, y, width, height } = layer;
+
+  return (
+    <g transform={`translate(${x}, ${y})`} pointerEvents="auto">
+      {selectionColor && (
+        <rect
+          width={width}
+          height={height}
+          stroke={selectionColor}
+          strokeWidth="2"
+          fill="none"
+          strokeLinecap='round'
+          strokeLinejoin='round'
+        />
+      )}
+    </g>
+  )
+}

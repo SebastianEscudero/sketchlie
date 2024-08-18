@@ -138,7 +138,10 @@ export const Text = memo(({
   }
 
   return (
-    <g transform={`translate(${x}, ${y})`}>
+    <g 
+      transform={`translate(${x}, ${y})`} 
+      pointerEvents="auto"
+    >
       <foreignObject
         width={width}
         height={height}

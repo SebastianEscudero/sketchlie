@@ -37,6 +37,7 @@ export const Line = ({
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
+      pointerEvents="auto"
     />
   );
 };

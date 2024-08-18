@@ -32,6 +32,7 @@ export const InsertImage = ({
             fill="none"
             strokeLinecap='round'
             strokeLinejoin='round'
+            pointerEvents="auto"
           />
         )}
         <image
@@ -43,6 +44,7 @@ export const InsertImage = ({
           width={width}
           height={height}
           onPointerDown={(e) => onPointerDown(e, id)}
+          pointerEvents="auto"
         />
       </>
     );

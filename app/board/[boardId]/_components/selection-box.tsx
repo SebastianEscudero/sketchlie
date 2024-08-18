@@ -78,7 +78,7 @@ export const SelectionBox = memo(({
     return (
       <>
         <circle
-          className="fill-white stroke-blue-500 hover:cursor-hand"
+          className="pointer-events-auto fill-white stroke-blue-500 hover:cursor-hand"
           cx={start.x}
           cy={start.y}
           r={handleRadius}
@@ -95,7 +95,7 @@ export const SelectionBox = memo(({
           }}
         />
         <circle
-          className="fill-blue-500 stroke-white hover:cursor-hand"
+          className="pointer-events-auto fill-blue-500 stroke-white hover:cursor-hand"
           cx={arrowLayer?.center?.x}
           cy={arrowLayer?.center?.y}
           r={handleRadius}
@@ -109,7 +109,7 @@ export const SelectionBox = memo(({
           }}
         />
         <circle
-          className="fill-white stroke-blue-500 hover:cursor-hand"
+          className="pointer-events-auto fill-white stroke-blue-500 hover:cursor-hand"
           cx={end.x}
           cy={end.y}
           r={handleRadius}
@@ -169,7 +169,7 @@ export const SelectionBox = memo(({
     <>
       <rect
         onContextMenu={handleRightClick}
-        className=" stroke-blue-500 fill-transparent pointer-events-none"
+        className="pointer-events-none stroke-blue-500 fill-transparent"
         style={{
           strokeWidth: strokeWidth,
           transform: `translate(${bounds.x}px, ${bounds.y}px)`,
@@ -185,7 +185,7 @@ export const SelectionBox = memo(({
             cx={bounds.x + bounds.width / 2}
             cy={bounds.y - offset / zoom}
             r={sideHandleSize}
-            className="fill-white stroke-blue-500 hover:cursor-hand"
+            className="pointer-events-auto fill-white stroke-blue-500 hover:cursor-hand"
             onPointerDown={(e) => arrowPreviewHandle(e, { x: bounds.x + bounds.width / 2, y: bounds.y }, mousePosition, ArrowOrientation.Vertical)}
             strokeWidth={strokeWidth}
           />
@@ -194,7 +194,7 @@ export const SelectionBox = memo(({
             cx={bounds.x + bounds.width / 2}
             cy={bounds.y + bounds.height + offset / zoom}
             r={sideHandleSize}
-            className="fill-white stroke-blue-500 hover:cursor-hand"
+            className="pointer-events-auto fill-white stroke-blue-500 hover:cursor-hand"
             onPointerDown={(e) => arrowPreviewHandle(e, { x: bounds.x + bounds.width / 2, y: bounds.y + bounds.height }, mousePosition, ArrowOrientation.Vertical)}
             strokeWidth={strokeWidth}
           />
@@ -203,7 +203,7 @@ export const SelectionBox = memo(({
             cx={bounds.x - offset / zoom}
             cy={bounds.y + bounds.height / 2}
             r={sideHandleSize}
-            className="fill-white stroke-blue-500 hover:cursor-hand"
+            className="pointer-events-auto fill-white stroke-blue-500 hover:cursor-hand"
             onPointerDown={(e) => arrowPreviewHandle(e, { x: bounds.x, y: bounds.y + bounds.height / 2 }, mousePosition, ArrowOrientation.Horizontal)}
             strokeWidth={strokeWidth}
           />
@@ -212,14 +212,14 @@ export const SelectionBox = memo(({
             cx={bounds.x + bounds.width + offset / zoom}
             cy={bounds.y + bounds.height / 2}
             r={sideHandleSize}
-            className="fill-white stroke-blue-500 hover:cursor-hand"
+            className="pointer-events-auto fill-white stroke-blue-500 hover:cursor-hand"
             onPointerDown={(e) => arrowPreviewHandle(e, { x: bounds.x + bounds.width, y: bounds.y + bounds.height / 2 }, mousePosition, ArrowOrientation.Horizontal)}
             strokeWidth={strokeWidth}
           />
         </>
       )}
       <rect
-        className="fill-white stroke-blue-500 p-4"
+        className="pointer-events-auto fill-white stroke-blue-500 p-4"
         x={0}
         y={0}
         style={{
@@ -236,7 +236,7 @@ export const SelectionBox = memo(({
       />
       {!isTextLayer && (
         <rect
-          className="fill-transparent cursor-ns-resize"
+          className="pointer-events-auto fill-transparent cursor-ns-resize"
           x={0}
           y={-3 / zoom}
           width={bounds.width}
@@ -251,7 +251,7 @@ export const SelectionBox = memo(({
         />
       )}
       <rect
-        className="fill-white stroke-blue-500"
+        className="pointer-events-auto fill-white stroke-blue-500"
         x={0}
         y={0}
         style={{
@@ -268,7 +268,7 @@ export const SelectionBox = memo(({
         }}
       />
       <rect
-        className="fill-transparent cursor-ew-resize"
+        className="pointer-events-auto fill-transparent cursor-ew-resize"
         x={bounds.width - sideHandleSize + 3 / zoom}
         y={0}
         width={sideHandleSize}
@@ -282,7 +282,7 @@ export const SelectionBox = memo(({
         }}
       />
       <rect
-        className="fill-white stroke-blue-500"
+        className="pointer-events-auto fill-white stroke-blue-500"
         x={0}
         y={0}
         style={{
@@ -300,7 +300,7 @@ export const SelectionBox = memo(({
       />
       {!isTextLayer && (
         <rect
-          className="fill-transparent cursor-ns-resize"
+          className="pointer-events-auto fill-transparent cursor-ns-resize"
           x={0}
           y={bounds.height - sideHandleSize + 3 / zoom}
           width={bounds.width}
@@ -315,7 +315,7 @@ export const SelectionBox = memo(({
         />
       )}
       <rect
-        className="fill-white stroke-blue-500"
+        className="pointer-events-auto fill-white stroke-blue-500"
         x={0}
         y={0}
         style={{
@@ -335,7 +335,7 @@ export const SelectionBox = memo(({
         }}
       />
       <rect
-        className="fill-transparent cursor-ew-resize"
+        className="pointer-events-auto fill-transparent cursor-ew-resize"
         x={-3 / zoom}
         y={0}
         width={sideHandleSize}
