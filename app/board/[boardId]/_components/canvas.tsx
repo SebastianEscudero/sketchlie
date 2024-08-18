@@ -2149,7 +2149,7 @@ export const Canvas = ({
                         onPointerDown={onPointerDown}
                         onPointerUp={onPointerUp}
                     >
-                        <div className="z-10 absolute">
+                        <div className="z-10">
                             {visibleLayers.map((layerId: string) => {
                                 const layer = liveLayers[layerId];
                                 if (layer && layer.type === LayerType.Video) {
@@ -2177,6 +2177,10 @@ export const Canvas = ({
                                 ref={svgRef}
                                 className="h-[100vh] w-[100vw]"
                                 viewBox={`0 0 ${window.innerWidth} ${window.innerHeight}`}
+                                shapeRendering="crispEdges"
+                                style={{
+                                    willChange: 'transform'
+                                }}
                             >
                                 <g
                                     style={{

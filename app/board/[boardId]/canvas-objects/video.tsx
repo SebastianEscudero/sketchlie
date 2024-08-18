@@ -1,5 +1,5 @@
 import { VideoLayer } from "@/types/canvas";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 interface VideoProps {
   id: string;
@@ -9,6 +9,13 @@ interface VideoProps {
   focused?: boolean;
   zoom: number;
   camera: { x: number; y: number };
+}
+
+const isMobileSafari = () => {
+  const ua = window.navigator.userAgent;
+  const iOS = !!ua.match(/iPad/i) || !!ua.match(/iPhone/i);
+  const webkit = !!ua.match(/WebKit/i);
+  return iOS && webkit && !ua.match(/CriOS/i);
 };
 
 export const InsertVideo = ({
@@ -21,16 +28,40 @@ export const InsertVideo = ({
   camera,
 }: VideoProps) => {
   const { x, y, width, height, src } = layer;
-  const transformedX = x * zoom + camera.x;
-  const transformedY = y * zoom + camera.y;
-  const transformedWidth = width * zoom;
-  const transformedHeight = height * zoom;
-
   const [visibleControls, setVisibleControls] = useState(false);
+  const [safariOffset, setSafariOffset] = useState(0);
+
+  const calculateSafariOffset = useCallback(() => {
+    if (isMobileSafari()) {
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.clientHeight;
+      const offset = windowHeight - documentHeight;
+      setSafariOffset(offset > 0 ? offset : 0);
+    }
+  }, []);
+
+  useEffect(() => {
+    calculateSafariOffset();
+
+    const resizeObserver = new ResizeObserver(() => {
+      calculateSafariOffset();
+    });
+
+    resizeObserver.observe(document.documentElement);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [calculateSafariOffset]);
 
   useEffect(() => {
     if (!focused) setVisibleControls(false);
   }, [focused]);
+
+  const transformedX = x * zoom + camera.x;
+  const transformedY = y * zoom + camera.y + safariOffset;
+  const transformedWidth = width * zoom;
+  const transformedHeight = height * zoom;
 
   return (
     <div
@@ -44,8 +75,7 @@ export const InsertVideo = ({
       onPointerUp={() => setVisibleControls(true)}
     >
       <video
-        width="100%"
-        height="100%"
+        className="h-full w-full"
         autoPlay
         loop
         playsInline
