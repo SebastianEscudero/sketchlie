@@ -137,7 +137,7 @@ export const Toolbar = ({
           <Redo2 className="h-5 w-5 text-white" />
         </Button>
       </div>
-      <div className="bg-white dark:bg-[#383838] rounded-lg shadow-custom-3 p-1.5 flex gap-x-1 flex-row items-center">
+      <div className="bg-white dark:bg-[#272727] rounded-lg shadow-custom-3 p-1.5 flex gap-x-1 flex-row items-center">
         <ToolButton
           label="Select"
           icon={MousePointer2}
@@ -265,7 +265,7 @@ export const Toolbar = ({
           zoom={zoom}
         />
       </div>
-      <div className="bg-white dark:bg-[#383838] rounded-md p-1.5 hidden md:flex flex-row items-center shadow-custom-3">
+      <div className="bg-white dark:bg-[#272727] rounded-md p-1.5 hidden md:flex flex-row items-center shadow-custom-3">
         <Hint label="Undo" sideOffset={14}>
           <Button disabled={!canUndo} onClick={undo} className="h-8 w-8 xs:h-10 xs:w-10 p-2" variant="ghost">
             <Undo2 className="h-5 w-5" />

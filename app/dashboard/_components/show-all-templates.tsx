@@ -22,7 +22,7 @@ export const ShowAllTemplates = ({
                 <span className="text-center text-gray-600 dark:text-zinc-300">Start with a template to acelerate your workflow</span>
             </DialogTitle>
             <ScrollArea>
-                <div className="flex flex-wrap gap-5 justify-center items-center">
+                <div className="flex flex-wrap gap-5 justify-center items-center" onWheel={(e) => e.stopPropagation()}>
                     {templates.map((template, index) => (
                         <div key={index} className="rounded-lg flex flex-col w-[200px]">
                             <DialogClose

@@ -389,7 +389,7 @@ export const SelectionTools = memo(({
 
   return (
     <div
-      className="absolute p-1 rounded-sm bg-white dark:bg-[#383838] border dark:border-zinc-800 shadow-sm flex select-none gap-x-2 items-center pointer-events-auto"
+      className="absolute p-1 rounded-sm bg-white dark:bg-[#272727] border dark:border-zinc-800 shadow-sm flex select-none gap-x-2 items-center pointer-events-auto"
       style={{
         transform: initialPosition
           ? `translate(
