@@ -1156,7 +1156,8 @@ export function resizeBox(
     newLayer.type !== LayerType.Image &&
     newLayer.type !== LayerType.Line &&
     newLayer.type !== LayerType.Arrow &&
-    newLayer.type !== LayerType.Video
+    newLayer.type !== LayerType.Video &&
+    newLayer.type !== LayerType.Link
   ) {
     if (!singleLayer) {
       textFontSize = newLayer.textFontSize * scaleY;

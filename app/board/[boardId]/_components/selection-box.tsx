@@ -21,7 +21,7 @@ interface SelectionBoxProps {
 };
 
 const HANDLE_SIZE = 8;
-const STROKE_WIDTH = 2.5;
+const STROKE_WIDTH = 1.5;
 
 export const SelectionBox = memo(({
   zoom,
@@ -185,7 +185,7 @@ export const SelectionBox = memo(({
             cx={bounds.x + bounds.width / 2}
             cy={bounds.y - offset / zoom}
             r={sideHandleSize}
-            className="pointer-events-auto fill-white stroke-blue-500 hover:cursor-hand"
+            className="pointer-events-auto fill-blue-500 stroke-white border hover:cursor-hand"
             onPointerDown={(e) => arrowPreviewHandle(e, { x: bounds.x + bounds.width / 2, y: bounds.y }, mousePosition, ArrowOrientation.Vertical)}
             strokeWidth={strokeWidth}
           />
@@ -194,7 +194,7 @@ export const SelectionBox = memo(({
             cx={bounds.x + bounds.width / 2}
             cy={bounds.y + bounds.height + offset / zoom}
             r={sideHandleSize}
-            className="pointer-events-auto fill-white stroke-blue-500 hover:cursor-hand"
+            className="pointer-events-auto fill-blue-500 stroke-white border hover:cursor-hand"
             onPointerDown={(e) => arrowPreviewHandle(e, { x: bounds.x + bounds.width / 2, y: bounds.y + bounds.height }, mousePosition, ArrowOrientation.Vertical)}
             strokeWidth={strokeWidth}
           />
@@ -203,7 +203,7 @@ export const SelectionBox = memo(({
             cx={bounds.x - offset / zoom}
             cy={bounds.y + bounds.height / 2}
             r={sideHandleSize}
-            className="pointer-events-auto fill-white stroke-blue-500 hover:cursor-hand"
+            className="pointer-events-auto fill-blue-500 stroke-white border hover:cursor-hand"
             onPointerDown={(e) => arrowPreviewHandle(e, { x: bounds.x, y: bounds.y + bounds.height / 2 }, mousePosition, ArrowOrientation.Horizontal)}
             strokeWidth={strokeWidth}
           />
@@ -212,7 +212,7 @@ export const SelectionBox = memo(({
             cx={bounds.x + bounds.width + offset / zoom}
             cy={bounds.y + bounds.height / 2}
             r={sideHandleSize}
-            className="pointer-events-auto fill-white stroke-blue-500 hover:cursor-hand"
+            className="pointer-events-auto fill-blue-500 stroke-white border hover:cursor-hand"
             onPointerDown={(e) => arrowPreviewHandle(e, { x: bounds.x + bounds.width, y: bounds.y + bounds.height / 2 }, mousePosition, ArrowOrientation.Horizontal)}
             strokeWidth={strokeWidth}
           />

@@ -3,6 +3,7 @@ import {
   Hand,
   Highlighter,
   Image,
+  Link,
   MousePointer2,
   MoveUpRight,
   Pen,
@@ -26,6 +27,7 @@ import { PenMenu } from "./pen-menu";
 import { ShapesMenu } from "./shapes-menu";
 import { PenEraserMenu } from "./pen-eraser-laser-menu";
 import { ArrowMenu } from "./arrow-menu";
+import { LinkButton } from "./link-button";
 
 interface ToolbarProps {
   isUploading: boolean;
@@ -53,7 +55,7 @@ interface ToolbarProps {
   pathColor: Color;
   isPlacingLayer: boolean;
   expired: boolean;
-  insertMedia: (layerType: LayerType.Image | LayerType.Video, position: Point, info: any, zoom: number) => void;
+  insertMedia: (layerType: LayerType.Image | LayerType.Video | LayerType.Link, position: Point, info: any, zoom: number) => void;
   camera: any;
   svgRef: any;
   zoom: number;
@@ -254,7 +256,7 @@ export const Toolbar = ({
           }
         />
         <ImageButton
-          label="Image"
+          label="Media"
           org={org}
           isUploading={isUploading}
           setIsUploading={setIsUploading}
@@ -263,6 +265,15 @@ export const Toolbar = ({
           camera={camera}
           svgRef={svgRef}
           zoom={zoom}
+        />
+        <LinkButton 
+          label="Link"
+          org={org}
+          icon={Link}
+          camera={camera}
+          svgRef={svgRef}
+          zoom={zoom}
+          insertMedia={insertMedia}
         />
       </div>
       <div className="bg-white dark:bg-[#272727] rounded-md p-1.5 hidden md:flex flex-row items-center shadow-custom-3">

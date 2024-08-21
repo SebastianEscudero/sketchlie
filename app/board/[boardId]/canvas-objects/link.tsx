@@ -1,13 +1,14 @@
-import { VideoLayer } from "@/types/canvas";
+import { CanvasMode, CanvasState, LinkLayer } from "@/types/canvas";
 import { useEffect, useState, useCallback } from "react";
 
-interface VideoProps {
+interface LinkProps {
   id: string;
-  layer: VideoLayer;
+  layer: LinkLayer;
   onPointerDown: (e: React.PointerEvent, id: string) => void;
   focused?: boolean;
   zoom: number;
   camera: { x: number; y: number };
+  canvasState: CanvasState;
 }
 
 const isMobileSafari = () => {
@@ -17,14 +18,15 @@ const isMobileSafari = () => {
   return iOS && webkit && !ua.match(/CriOS/i);
 };
 
-export const InsertVideo = ({
+export const InsertLink = ({
   id,
   layer,
   onPointerDown,
   focused,
   zoom,
   camera,
-}: VideoProps) => {
+  canvasState,
+}: LinkProps) => {
   const { x, y, width, height, src } = layer;
   const [visibleControls, setVisibleControls] = useState(false);
   const [safariOffset, setSafariOffset] = useState(0);
@@ -40,6 +42,10 @@ export const InsertVideo = ({
   }, [calculateSafariOffset]);
 
   useEffect(() => {
+    if (canvasState.mode !== CanvasMode.None) setVisibleControls(false);
+  }, [canvasState.mode]);
+
+  useEffect(() => {
     if (!focused) setVisibleControls(false);
   }, [focused]);
 
@@ -50,7 +56,7 @@ export const InsertVideo = ({
 
   return (
     <div
-      className="absolute shadow-custom-1 rounded-md"
+      className="absolute shadow-custom-2 rounded-md"
       style={{
         transform: `translate(${transformedX}px, ${transformedY}px)`,
         width: `${transformedWidth}px`,
@@ -59,31 +65,30 @@ export const InsertVideo = ({
       onPointerDown={(e) => onPointerDown(e, id)}
       onPointerUp={() => {setVisibleControls(true)}}
     >
-      <video
+      <iframe
         className="h-full w-full rounded-md"
-        autoPlay
-        loop
-        playsInline
-        controls={visibleControls}
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        title="Link"
+        allowFullScreen
         src={src}
         onBlur={() => setVisibleControls(false)}
         style={{
-          pointerEvents: visibleControls ? 'auto' : 'none',
+          pointerEvents: visibleControls ? "auto" : "none",
         }}
       />
     </div>
   );
 };
 
-interface VideoOutlineProps {
+interface LinkOutlineProps {
   selectionColor?: string;
   layer: any
 };
 
-export const VideoOutline = ({
+export const LinkOutline = ({
   selectionColor,
   layer
-}: VideoOutlineProps) => {
+}: LinkOutlineProps) => {
   const { x, y, width, height } = layer;
 
   return (

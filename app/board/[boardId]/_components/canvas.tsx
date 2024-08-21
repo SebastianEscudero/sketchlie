@@ -70,8 +70,8 @@ import { ArrowPostInsertMenu } from "./arrow-post-insert-menu";
 import { EraserTrail } from "./eraser-trail";
 import { CurrentSuggestedLayer } from "./current-suggested-layer";
 import { smoothLastPoint } from "@/lib/smooth-points";
-import { InsertVideo } from "../canvas-objects/video";
 import { Background } from "./background";
+import { MediaPreview } from "./MediaPreview";
 
 const preventDefault = (e: any) => {
     if (e.scale !== 1) {
@@ -333,7 +333,7 @@ export const Canvas = ({
     }, [justInsertedText, layerRef]);
 
     const insertMedia = useCallback((
-        layerType: LayerType.Image | LayerType.Video,
+        layerType: LayerType.Image | LayerType.Video | LayerType.Link,
         position: Point,
         info: any,
         zoom: number,
@@ -345,11 +345,11 @@ export const Canvas = ({
             return;
         }
 
-        if (info.dimensions.width === 0) {
+        if (!info.dimensions.width) {
             info.dimensions.width = window.innerWidth / 2;
         }
 
-        if (info.dimensions.height === 0) {
+        if (!info.dimensions.height) {
             info.dimensions.height = window.innerHeight / 2;
         }
 
@@ -365,9 +365,9 @@ export const Canvas = ({
             height: height,
             width: width,
             src: info.url,
-            opacity: 1,
-            fill: null,
         };
+
+        console.log(layer);
 
         const command = new InsertLayerCommand([layerId], [layer], setLiveLayers, setLiveLayerIds, boardId, socket, org, proModal);
         performAction(command);
@@ -755,7 +755,8 @@ export const Canvas = ({
         let hasMediaOrText = selectedLayersRef.current.some(id =>
             liveLayers[id].type === LayerType.Image ||
             liveLayers[id].type === LayerType.Text ||
-            liveLayers[id].type === LayerType.Video
+            liveLayers[id].type === LayerType.Video ||
+            liveLayers[id].type === LayerType.Link
         );
         let mantainAspectRatio = hasMediaOrText
         let singleLayer = selectedLayersRef.current.length === 1
@@ -2152,17 +2153,17 @@ export const Canvas = ({
                         <div className="z-10">
                             {visibleLayers.map((layerId: string) => {
                                 const layer = liveLayers[layerId];
-                                if (layer && layer.type === LayerType.Video) {
+                                if (layer && (layer.type === LayerType.Video || layer.type === LayerType.Link)) {
                                     return (
-                                        <InsertVideo
+                                        <MediaPreview
                                             key={layerId}
                                             id={layerId}
                                             layer={layer}
                                             onPointerDown={onLayerPointerDown}
-                                            selectionColor={layerIdsToColorSelection[layerId]}
                                             focused={selectedLayersRef.current.includes(layerId)}
                                             zoom={zoom}
                                             camera={camera}
+                                            canvasState={canvasState}
                                         />
                                     );
                                 }
@@ -2177,10 +2178,6 @@ export const Canvas = ({
                                 ref={svgRef}
                                 className="h-[100vh] w-[100vw]"
                                 viewBox={`0 0 ${window.innerWidth} ${window.innerHeight}`}
-                                shapeRendering="crispEdges"
-                                style={{
-                                    willChange: 'transform'
-                                }}
                             >
                                 <g
                                     style={{

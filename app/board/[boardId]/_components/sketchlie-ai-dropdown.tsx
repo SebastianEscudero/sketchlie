@@ -30,6 +30,7 @@ export const SketchlieAiDropdown = ({
     const [isSummaryLoading, setIsSummaryLoading] = useState(false);
     const [isFillTextsLoading, setIsFillTextsLoading] = useState(false);
 
+    const amountOfSelectedLayers = selectedLayersRef.current.length;
     const layers = selectedLayersRef.current.reduce((obj: any, id: string) => {
         obj[id] = liveLayers[id];
         return obj;
@@ -160,7 +161,7 @@ export const SketchlieAiDropdown = ({
                         <Button
                             variant="board"
                             size="sm"
-                            disabled={layers.length < 2 || isSummaryLoading}
+                            disabled={amountOfSelectedLayers < 2 || isSummaryLoading}
                             className="mt-1 justify-start"
                             onClick={() => generateSummary(layers, title)}
                         >

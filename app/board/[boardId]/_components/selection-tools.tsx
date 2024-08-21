@@ -68,7 +68,7 @@ export const SelectionTools = memo(({
   
     // Update conditions based on the current layer type
     hasText = hasText && isTextType;
-    isMediaLayer = isMediaLayer || type === LayerType.Image || type === LayerType.Video;
+    isMediaLayer = isMediaLayer || type === LayerType.Image || type === LayerType.Video || type === LayerType.Link;
     hasOutline = hasOutline && isOutlineType;
     isArrowLayer = isArrowLayer && type === LayerType.Arrow;
     isLineLayer = isLineLayer && type === LayerType.Line;
