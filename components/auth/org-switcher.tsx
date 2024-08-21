@@ -48,7 +48,7 @@ export const OrganizationSwitcher = ({
 
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger className="border dark:border-zinc-600 border-zinc-400 dark:hover:bg-[#383838] hover:bg-zinc-200 rounded-lg p-[10px] flex items-center w-full outline-none">
+            <DropdownMenuTrigger className="dark:bg-[#383838] border dark:border-zinc-600 border-zinc-400 dark:hover:bg-zinc-700 hover:bg-zinc-200 rounded-lg p-[10px] flex items-center w-full outline-none">
                 {hasOrg && activeOrg ? (
                     <div className="flex items-center truncate">
                         <div className="aspect-square relative w-[36px] flex-shrink-0">
