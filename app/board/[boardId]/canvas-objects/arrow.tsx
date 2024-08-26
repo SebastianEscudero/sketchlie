@@ -1,4 +1,3 @@
-import { useRoom } from '@/components/room';
 import { colorToCss, getArrowHeadAngle, getArrowPath } from '@/lib/utils';
 import { ArrowHead, ArrowLayer, ArrowType, Layer } from '@/types/canvas';
 
