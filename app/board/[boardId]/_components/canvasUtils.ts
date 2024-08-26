@@ -1,24 +1,11 @@
 import { useCallback, useEffect, useMemo } from 'react';
 import { Command, DeleteLayerCommand, InsertLayerCommand, TranslateLayersCommand } from "@/lib/commands";
 import { ArrowHandle, ArrowHead, ArrowLayer, ArrowOrientation, ArrowType, Camera, CanvasMode, Layer, Layers, LayerType, Point, Presence, Side, XYWH } from "@/types/canvas";
-import { applyStraightnessAssist, calculateBoundingBox, checkIfTextarea, connectionIdToColor, findIntersectingLayerForConnection, findIntersectingLayersWithPath, findIntersectingLayersWithPoint, findIntersectingLayersWithRectangle, getClosestEndPoint, getClosestPointOnBorder, isLayerVisible, penPointsToPathLayer, pointerEventToCanvasPoint, removeHighlightFromText, resizeArrowBounds, resizeBounds, resizeBox, updateArrowPosition, updatedLayersConnectedArrows } from '@/lib/utils';
+import { applyStraightnessAssist, calculateBoundingBox, checkIfTextarea, connectionIdToColor, findIntersectingLayerForConnection, findIntersectingLayersWithPath, findIntersectingLayersWithPoint, findIntersectingLayersWithRectangle, getClosestEndPoint, getClosestPointOnBorder, isLayerVisible, penPointsToPathLayer, pointerEventToCanvasPoint, removeHighlightFromText, resizeArrowBounds, resizeBounds, resizeBox, SketchlieCopilot, updateArrowPosition, updatedLayersConnectedArrows } from '@/lib/utils';
 import { nanoid } from 'nanoid';
 import { smoothLastPoint } from '@/lib/smooth-points';
 import { setCursorWithFill } from '@/lib/theme-utils';
 import { toast } from 'sonner';
-
-export const usePerformAction = (
-  liveLayerIds: string[],
-  liveLayers: Layers,
-  setHistory: React.Dispatch<React.SetStateAction<Command[]>>,
-  setRedoStack: React.Dispatch<React.SetStateAction<Command[]>>
-) => {
-  return useCallback((command: Command) => {
-    command.execute(liveLayerIds, liveLayers);
-    setHistory((prevHistory) => [...prevHistory, command]);
-    setRedoStack([]); // clear redo stack when new action is performed
-  }, [liveLayerIds, liveLayers, setHistory, setRedoStack]);
-};
 
 export const useUndo = (
   history: Command[],
@@ -1938,7 +1925,11 @@ export const useKeyboardListener = (
   setIsMoving: (isMoving: boolean) => void,
   translateSelectedLayersWithDelta: (delta: { x: number; y: number }) => void,
   initialLayers: any,
-  canvasState: { mode: CanvasMode }
+  canvasState: { mode: CanvasMode },
+  suggestedLayers: any,
+  setSuggestedLayers: (layers: any) => void,
+  org: any,
+  proModal: any
 ) => {
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
@@ -2003,14 +1994,14 @@ export const useKeyboardListener = (
             e.preventDefault();
             return;
         }
-        // if (!isInsideTextArea) {
-        //     e.preventDefault();
-        //     const layerId = nanoid();
-        //     const command = new InsertLayerCommand([layerId], [suggestedLayers], setLiveLayers, setLiveLayerIds, boardId, socket, org, proModal);
-        //     performAction(command);
-        //     selectedLayersRef.current = [layerId];
-        //     setSuggestedLayers({});
-        // }
+        if (!isInsideTextArea) {
+            e.preventDefault();
+            const layerId = nanoid();
+            const command = new InsertLayerCommand([layerId], [suggestedLayers], setLiveLayers, setLiveLayerIds, boardId, socket, org, proModal);
+            performAction(command);
+            selectedLayersRef.current = [layerId];
+            setSuggestedLayers({});
+        }
       } else if (key === "backspace" || key === "delete") {
         if (selectedLayersRef.current.length > 0 && !isInsideTextArea) {
           const command = new DeleteLayerCommand(selectedLayersRef.current, liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, boardId, socket);

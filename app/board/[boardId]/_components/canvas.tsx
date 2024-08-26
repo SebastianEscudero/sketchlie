@@ -1,7 +1,7 @@
 "use client";
 
 import { customAlphabet } from "nanoid";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useCallback } from "react";
 
 import {
     removeHighlightFromText,
@@ -25,9 +25,10 @@ import { useRoom } from "@/components/room";
 import { Command } from "@/lib/commands";
 import { SketchlieAiInput } from "./sketchlie-ai-input";
 import { Background } from "./background";
-import { useArrowResizeHandlePointerDown, useContinueDrawing, useCopySelectedLayers, useCursorListener, useDragLeave, useDragOver, useEraserDeleteLayers, useFocusInitialTextLayer, useInsertHighlight, useInsertLayer, useInsertMedia, useInsertPath, useKeyboardListener, useLayerIdsToColorSelection, useLayerPointerDown, useNoDanglingPoints, useOnDrop, useOnWheel, usePasteCopiedLayers, usePerformAction, usePointerDown, usePointerLeave, usePointerMove, usePointerUp, usePreventDefaultSafariGestures, useRedo, useResizeHandlePointerDown, useResizeSelectedLayers, useStartDrawing, useStartMultiSelection, useTouchDown, useTouchMove, useTouchUp, useTranslateSelectedLayers, useTranslateSelectedLayersWithDelta, useUndo, useUndoInitialStateListener, useUnselectLayers, useUpdateSelectionNet, useUpdateVisibleLayers } from "./canvasUtils";
+import { useArrowResizeHandlePointerDown, useContinueDrawing, useCopySelectedLayers, useCursorListener, useDragLeave, useDragOver, useEraserDeleteLayers, useFocusInitialTextLayer, useInsertHighlight, useInsertLayer, useInsertMedia, useInsertPath, useKeyboardListener, useLayerIdsToColorSelection, useLayerPointerDown, useNoDanglingPoints, useOnDrop, useOnWheel, usePasteCopiedLayers, usePointerDown, usePointerLeave, usePointerMove, usePointerUp, usePreventDefaultSafariGestures, useRedo, useResizeHandlePointerDown, useResizeSelectedLayers, useStartDrawing, useStartMultiSelection, useTouchDown, useTouchMove, useTouchUp, useTranslateSelectedLayers, useTranslateSelectedLayersWithDelta, useUndo, useUndoInitialStateListener, useUnselectLayers, useUpdateSelectionNet, useUpdateVisibleLayers } from "./canvasUtils";
 import { CanvasOverlay } from "./canvas-overlay";
 import { CanvasContent } from "./canvas-content";
+import { debounce, throttle } from "lodash";
 
 const preventDefault = (e: any) => {
     if (e.scale !== 1) {
@@ -116,7 +117,25 @@ export const Canvas = ({
 
     useDisableScrollBounce();
 
-    const performAction = usePerformAction(liveLayerIds, liveLayers, setHistory, setRedoStack);
+    const debouncedSketchlieCopilot = useCallback(
+        debounce(async (liveLayers, visibleLayers, title) => {
+            const data = await SketchlieCopilot(liveLayers, visibleLayers, title);
+            if (data && data.layer && data.layerId) {
+                setSuggestedLayers(data.layer);
+                setSuggestedLayerIds(data.layerId[0]);
+            }
+        }, 1000),
+        []
+    );
+
+    const performAction = useCallback(async (command: Command) => {
+        command.execute(liveLayerIds, liveLayers);
+        setHistory([...history, command]);
+        setRedoStack([]);
+
+        // debouncedSketchlieCopilot(liveLayers, visibleLayers, board.title);
+    }, [liveLayerIds, liveLayers, history, visibleLayers, board.title, debouncedSketchlieCopilot]);
+    
     const undo = useUndo(history, liveLayerIds, liveLayers, setHistory, setRedoStack);
     const redo = useRedo(redoStack, liveLayerIds, liveLayers, setRedoStack, setHistory);
 
@@ -419,7 +438,11 @@ export const Canvas = ({
         setIsMoving,
         translateSelectedLayersWithDelta,
         initialLayers,
-        canvasState
+        canvasState,
+        suggestedLayers,
+        setSuggestedLayers,
+        org,
+        proModal
     );
 
 
