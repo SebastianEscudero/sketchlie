@@ -85,27 +85,20 @@ export const BigArrowDown = memo(({
     }
   }, []);
 
-  const handlePointerDown = (e: React.PointerEvent) => {
-    if (e.pointerType === 'mouse') {
-      if (e.target === BigArrowDownRef.current) {
-
-        if (focused) {
-          e.stopPropagation();
-        } else {
-          e.preventDefault();
-          if (onPointerDown) onPointerDown(e, id);
-        }
-        return;
-      } else if (focused) {
-        e.preventDefault();
-        e.stopPropagation();
-        BigArrowDownRef.current.focus();
-      }
-
-      if (onPointerDown) {
-        onPointerDown(e, id);
-      }
+  const contentEditablePointerDown = (e: React.PointerEvent) => {
+    if (focused) {
+      e.stopPropagation();
     }
+  }
+
+  const handlePointerDown = (e: React.PointerEvent) => {
+    if (focused) {
+      e.stopPropagation();
+      e.preventDefault(); 
+      BigArrowDownRef.current.focus();
+    }
+
+    if (onPointerDown) onPointerDown(e, id);
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -175,19 +168,7 @@ export const BigArrowDown = memo(({
             html={value || ""}
             onChange={handleContentChange}
             onPaste={handlePaste}
-            onKeyDown={(e) => {
-              // Check if the pressed key is Enter
-              if (e.key === 'Enter') {
-                e.preventDefault(); // Prevent the default Enter key behavior
-
-                // Insert a new line at the current cursor position
-                document.execCommand('insertText', false, '\n');
-              }
-            }}
-            className={cn(
-              "outline-none w-full",
-              font.className
-            )}
+            onPointerDown={contentEditablePointerDown}
             style={{
               fontSize: textFontSize,
               color: fill ? getContrastingTextColor(fill) : "#000",

@@ -85,27 +85,20 @@ export const Rhombus = memo(({
     }
   }, []);
 
-  const handlePointerDown = (e: React.PointerEvent) => {
-    if (e.pointerType === 'mouse') {
-      if (e.target === RhombusRef.current) {
-
-        if (focused) {
-          e.stopPropagation();
-        } else {
-          e.preventDefault();
-          if (onPointerDown) onPointerDown(e, id);
-        }
-        return;
-      } else if (focused) {
-        e.preventDefault();
-        e.stopPropagation();
-        RhombusRef.current.focus();
-      }
-  
-      if (onPointerDown) {
-        onPointerDown(e, id);
-      }
+  const contentEditablePointerDown = (e: React.PointerEvent) => {
+    if (focused) {
+      e.stopPropagation();
     }
+  }
+
+  const handlePointerDown = (e: React.PointerEvent) => {
+    if (focused) {
+      e.stopPropagation();
+      e.preventDefault(); 
+      RhombusRef.current.focus();
+    }
+
+    if (onPointerDown) onPointerDown(e, id);
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -174,16 +167,8 @@ export const Rhombus = memo(({
             innerRef={RhombusRef}
             html={value || ""}
             onChange={handleContentChange}
+            onPointerDown={contentEditablePointerDown}
             onPaste={handlePaste}
-            onKeyDown={(e) => {
-              // Check if the pressed key is Enter
-              if (e.key === 'Enter') {
-                e.preventDefault(); // Prevent the default Enter key behavior
-                
-                // Insert a new line at the current cursor position
-                document.execCommand('insertText', false, '\n');
-              }
-            }}
             className={cn(
               "outline-none w-full p-1",
               font.className
