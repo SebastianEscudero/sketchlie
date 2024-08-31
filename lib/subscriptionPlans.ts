@@ -5,9 +5,9 @@ export const subscriptionPlans = [
         characteristicsDescription: "Lo necesario para poder colaborar:",
         price: 0,
         features: {
-            "Boards": "3",
+            "Boards": "1",
             'Imágenes': "Hasta 1MB",
-            "Capas máximas": "200",
+            "Capas máximas": "100",
             "Herramientas": "Basicas",
             "Teams": "1",
         }
@@ -16,7 +16,7 @@ export const subscriptionPlans = [
         label: "Starter",
         description: "Desbloquea espacios de trabajo infinitos con todas las herramientas que necesitas.",
         characteristicsDescription: "Todas las características del plan Gratis más:",
-        price: 6990,
+        price: 7990,
         features: {
             "Boards": "Ilimitados",
             'Imágenes': "Hasta 4MB",
@@ -30,7 +30,7 @@ export const subscriptionPlans = [
         label: "Business",
         description: "Lleva la colaboración y la seguridad al siguiente nivel.",
         characteristicsDescription: "Obtén todas las características del plan Starter más:",
-        price: 11990,
+        price: 12990,
         features: {
             "Boards": "Ilimitados",
             'Imágenes': "Hasta 8MB",

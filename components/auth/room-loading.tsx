@@ -1,18 +1,15 @@
-"use client";
+import Image from 'next/image';
 
-import TypewriterComponent from "typewriter-effect";
-import { useState, useEffect } from 'react';
+interface RoomLoadingProps {
+    label: string
+}
 
-export const Loading = () => {
-    const [mounted, setMounted] = useState(false);
-
-    useEffect(() => {
-        setMounted(true);
-    }, []);
-
+export const RoomLoading = ({
+    label
+}: RoomLoadingProps) => {
     return (
         <div className='h-full w-full flex flex-col justify-center items-center dark:bg-[#383838]'>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 100" width="180" height="180">
+           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 100" width="180" height="180">
                 <defs>
                     <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="25%" stopColor="#2563EB" />
@@ -38,25 +35,7 @@ export const Loading = () => {
                 <circle cx="90" cy="55" r="5" fill="#ffffff" stroke="#2563EB" strokeWidth="2" />
                 <circle cx="110" cy="75" r="5" fill="#ffffff" stroke="#2563EB" strokeWidth="2" />
             </svg>
-            <div className="text-center text-lg font-semibold max-w-[80%] w-full h-[80px]">
-                {mounted && (
-                    <TypewriterComponent
-                        options={{
-                            strings: [
-                                "Tip: Usa atajos de teclado para mayor eficiencia.",
-                                "Tip: Con click derecho puedes moverte en tu tablero.",
-                                "Tip: Invita a tu equipo con el boton de compartir.",
-                                "Tip: Utiliza plantillas para acelerar tu trabajo.",
-                                "Tip: Utiliza los atajos de teclado para mayor eficiencia.",
-                            ],
-                            autoStart: true,
-                            loop: true,
-                            deleteSpeed: 10,
-                            delay: 30,
-                        }}
-                    />
-                )}
-            </div>
+            <h1 className="text-center text-lg font-semibold max-w-[80%] w-full h-[80px]">{label}</h1>
         </div>
     );
 };

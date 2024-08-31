@@ -43,7 +43,7 @@ export const BlogStructure = ({
                 <h1>
                     {title}
                 </h1>
-                <div className="bg-clip-text text-[#2E4DE6] leading-small h-[60px]">
+                <div className="bg-clip-text text-[#2E4DE6] leading-small h-[60px]" data-no-translate>
                     <TypewriterComponent 
                         options = {{
                             strings: [

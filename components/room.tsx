@@ -1,10 +1,10 @@
 import { Layers, User } from "@/types/canvas";
 import React, { createContext, ReactNode, Suspense, useContext, useEffect, useState } from "react";
 import { Socket } from "socket.io-client";
-import { NotPartOfOrg } from "./auth/board-not-part-of-org-loading";
 import { addUserToOrganization } from "@/actions/accept-invite";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import useWebSocket from "@/app/board/[boardId]/_components/use-websocket";
+import { RoomLoading } from "./auth/room-loading";
 
 interface RoomContextValue {
   roomId: string;
@@ -215,15 +215,15 @@ export const Room = React.memo(({ children, roomId, fallback, board, layers, lay
   }, [socket, User]);
 
   if (isLoading) {
-    return <NotPartOfOrg label="Joining organization..."/>;
+    return <RoomLoading label="Joining organization..."/>;
   }
 
   if (!isUserPartOfOrg) {
-    return <NotPartOfOrg label="You are not part of this organization"/>;
+    return <RoomLoading label="You are not part of this organization"/>;
   }
 
   if (!isConnected) {
-    return <NotPartOfOrg label="Connecting to room..."/>;
+    return <RoomLoading label="Getting things ready..."/>;
   }
 
   return (

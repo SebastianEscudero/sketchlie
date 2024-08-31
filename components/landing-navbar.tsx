@@ -12,11 +12,11 @@ export const LandingNavbar = () => {
             <div className="flex items-center justify-between xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] h-[40px]">
                 <div className="flex items-center">
                     <MobileSidebar />
-                    <Link href="/" className="flex items-center mr-2 ml-2" title="Sketchlie">
-                        <div className="mr-4 h-full w-full">
+                    <Link href="/" className="flex items-center mr-2 ml-2 h-[40px]" title="Sketchlie">
+                        <div className="mr-2 h-full w-full">
                             <Image
-                                height={50}
-                                width={50}
+                                height={70}
+                                width={70}
                                 alt="Sketchlie Logo"
                                 src="/logo.svg"    
                                 loading="lazy"

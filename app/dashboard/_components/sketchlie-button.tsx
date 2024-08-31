@@ -47,8 +47,8 @@ export const SketchlieButton = ({
                     <Image
                         src="/logo.svg"
                         alt="Logo"
-                        height={45}
-                        width={45}
+                        height={50}
+                        width={50}
                     />
                     <span className={cn(
                         "font-semibold text-lg",
