@@ -86,7 +86,7 @@ export const NewBoardButton = ({
             <button
                 disabled={pending || disabled || usersRole !== 'Admin'}
                 className={cn(
-                    "col-span-1 aspect-[100/127] bg-blue-600 shadow-custom-1 rounded-lg hover:bg-blue-800 flex flex-col items-center justify-center",
+                    "col-span-1 aspect-[100/100] bg-blue-600 shadow-custom-2 rounded-lg hover:bg-blue-800 flex flex-col items-center justify-center",
                     (pending || disabled || usersRole !== 'Admin') && "opacity-75 hover:bg-blue-600 cursor-not-allowed"
                 )}
             >

@@ -29,7 +29,7 @@ export const Footer = ({
   };
 
   return (
-    <div className="relative dark:bg-[#2C2C2C] bg-zinc-100 p-3">
+    <div className="relative dark:bg-[#2C2C2C] bg-white p-3">
       <p className="text-[13px] truncate max-w-[calc(100%-20px)] text-black dark:text-white">
         {title}
       </p>

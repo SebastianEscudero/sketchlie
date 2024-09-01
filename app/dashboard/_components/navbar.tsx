@@ -3,7 +3,6 @@
 import { OrganizationSwitcher } from "@/components/auth/org-switcher";
 import { UserButton } from "@/components/auth/user-button";
 import { InviteButton } from "./org-invite-button";
-import { SearchInput } from "./search-input";
 import { MobileSidebar } from "./mobile-sidebar/mobile-sidebar";
 import { Button } from "@/components/ui/button";
 import { Zap } from "lucide-react";
@@ -37,7 +36,7 @@ export const Navbar = ({
     }
 
     return (
-        <div className="flex flex-wrap items-center gap-x-2 gap-y-2 px-3 lg:py-0 py-3 justify-between shadow-custom-1 dark:bg-zinc-600 lg:bg-gray-800">
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-2 px-3 lg:py-0 py-3 justify-between shadow-custom-1 dark:bg-[#2C2C2C] dark:shadow-custom-3 lg:bg-gray-800">
             <div className="hidden lg:flex flex-row space-x-4 p-3 flex-1 overflow-hidden">
                 <NewOrgButton 
                     activeOrganization={activeOrganization}

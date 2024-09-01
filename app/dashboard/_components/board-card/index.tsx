@@ -151,13 +151,13 @@ export const BoardCard = ({
   return (
     <Link href={`/board/${id}`}>
       <div
-        className={`group aspect-[100/127] border rounded-lg shadow-custom-1 flex flex-col justify-between overflow-hidden dark:bg-zinc-800 dark:border-zinc-700 bg-amber-50" ${isLoading ? 'opacity-80 transition-opacity cursor-not-allowed' : ''}`}
+        className={`group aspect-[100/100] border rounded-lg flex flex-col justify-between shadow-custom-2 overflow-hidden bg-amber-50 dark:bg-zinc-500 dark:border-zinc-800 bg-zinc-100" ${isLoading ? 'opacity-80 transition-opacity cursor-not-allowed' : ''}`}
         onClick={handleClick}
         draggable={true}
         onDragStart={handleDragStart}
         onDrop={(e) => handleDrop(e, id)}
       >
-        <div className="relative flex-1 dark:bg-white bg-amber-50">
+        <div className="relative flex-1">
           <Image
             src={imageUrl}
             alt={title}
@@ -176,7 +176,7 @@ export const BoardCard = ({
               className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity px-3 py-2 outline-none"
             >
               <MoreHorizontal
-                className="text-zinc-800 opacity-75 hover:opacity-100 transition-opacity"
+                className="text-white opacity-75 hover:opacity-100 transition-opacity"
               />
             </button>
           </Actions>
