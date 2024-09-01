@@ -102,11 +102,13 @@ export const BoardList = ({
         ) : (
           <>
             <NewBoardButton user={user} usersRole={usersRole} org={org} />
-            <FolderList
-              folders={folders}
-              groupedBoards={groupedBoards}
-              org={org}
-            />
+            {!query.favorites && (
+              <FolderList
+                folders={folders}
+                groupedBoards={groupedBoards}
+                org={org}
+              />
+            )}
             {groupedBoards['uncategorized']?.map((board: any) => (
               <BoardCard
                 org={org}

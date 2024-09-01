@@ -3,7 +3,7 @@
 import { toast } from "sonner";
 import Link from "next/link";
 import Image from "next/image";
-import { MoreHorizontal } from "lucide-react";
+import { MoreHorizontal, Star } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 
 import { api } from "@/convex/_generated/api";
@@ -16,6 +16,7 @@ import { Overlay } from "./overlay";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { useState } from "react";
 import { OnDropConfirmModal } from "@/components/on-drop-confirm-modal";
+import { cn } from "@/lib/utils";
 
 interface BoardCardProps {
   id: string;
@@ -72,7 +73,10 @@ export const BoardCard = ({
     pending: pendingUpdateBoardsFolder,
   } = useApiMutation(api.board.updateBoardsFolder);
 
-  const toggleFavorite = () => {
+  const toggleFavorite = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.stopPropagation();
+    e.preventDefault();
+
     if (isFavorite) {
       onUnfavorite({ id, userId: userId })
         .catch(() => toast.error("Failed to unfavorite"))
@@ -136,13 +140,13 @@ export const BoardCard = ({
       setDroppedBoardId(null);
     }
   }
-  
+
   const handleDragStart = (event: any) => {
     const target = event.target;
     const rect = target.getBoundingClientRect();
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-  
+
     // Set the drag image to the center of the board element
     event.dataTransfer.setDragImage(target, centerX, centerY);
     event.dataTransfer.setData('text/plain', JSON.stringify({ id: id, folderId: undefined }));
@@ -151,7 +155,7 @@ export const BoardCard = ({
   return (
     <Link href={`/board/${id}`}>
       <div
-        className={`group aspect-[100/100] border rounded-lg flex flex-col justify-between shadow-custom-2 overflow-hidden bg-amber-50 dark:bg-zinc-500 dark:border-zinc-800 bg-zinc-100" ${isLoading ? 'opacity-80 transition-opacity cursor-not-allowed' : ''}`}
+        className={`group aspect-[100/127] border rounded-lg flex flex-col justify-between shadow-custom-2 overflow-hidden bg-amber-50 dark:bg-zinc-500 dark:border-zinc-800 " ${isLoading ? 'opacity-80 transition-opacity cursor-not-allowed' : ''}`}
         onClick={handleClick}
         draggable={true}
         onDragStart={handleDragStart}
@@ -165,29 +169,30 @@ export const BoardCard = ({
             className="object-fit"
           />
           <Overlay />
-          <Actions
-            org={org}
-            id={id}
-            title={title}
-            side="right"
-            isPrivate={isPrivate}
+          <button
+            disabled={pendingFavorite || pendingUnfavorite}
+            onClick={toggleFavorite}
+            className={cn(
+              "opacity-0 group-hover:opacity-100 transition absolute top-3 right-3 dark:text-white dark:hover:text-blue-600 text-muted-foreground hover:text-blue-600",
+              pendingFavorite || pendingUnfavorite && "cursor-not-allowed opacity-75"
+            )}
           >
-            <button
-              className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity px-3 py-2 outline-none"
-            >
-              <MoreHorizontal
-                className="text-white opacity-75 hover:opacity-100 transition-opacity"
-              />
-            </button>
-          </Actions>
+            <Star
+              className={cn(
+                "h-4 w-4",
+                isFavorite && "fill-blue-600 text-blue-600"
+              )}
+            />
+          </button>
         </div>
         <Footer
-          isFavorite={isFavorite}
           title={title}
           authorLabel={authorLabel}
           createdAtLabel={createdAtLabel}
-          onClick={toggleFavorite}
           disabled={pendingFavorite || pendingUnfavorite}
+          org={org}
+          id={id}
+          isPrivate={isPrivate}
         />
       </div>
       <OnDropConfirmModal

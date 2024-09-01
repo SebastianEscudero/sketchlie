@@ -56,25 +56,11 @@ export const FolderList = ({ folders, groupedBoards, org }: FolderListProps) => 
         <Link key={folder._id} href={`/dashboard/?folder=${folder._id}`}>
           <div
             key={folder._id}
-            className=" shadow-custom-1 border dark:border-zinc-700 group aspect-[100/127] rounded-lg flex flex-col items-center justify-center cursor-pointer"
+            className=" shadow-custom-2 border dark:border-zinc-800 group aspect-[100/127] rounded-lg flex flex-col items-center justify-center cursor-pointer"
             onDragOver={handleDragOver}
             onDrop={(e) => handleDrop(e, folder._id)}
           >
-            <div className="relative flex flex-wrap w-full h-full flex-1 rounded-t-lg bg-zinc-300 hover:bg-zinc-400 p-1.5">
-              <FolderActions
-                id={folder._id}
-                title={folder.name}
-                org={org}
-                side='right'
-              >
-                <button
-                  className="absolute top-1 right-1 z-[1] opacity-0 group-hover:opacity-100 transition-opacity px-3 py-2 outline-none"
-                >
-                  <MoreHorizontal
-                    className="text-zinc-800 opacity-75 hover:opacity-100 transition-opacity"
-                  />
-                </button>
-              </FolderActions>
+            <div className="relative flex flex-wrap w-full h-full flex-1 rounded-t-lg bg-zinc-100 dark:bg-zinc-400 hover:bg-zinc-400 dark:hover:bg-zinc-500 p-1.5">
               {(!groupedBoards[folder._id] || groupedBoards[folder._id].length === 0) ? (
                   <div className='w-full flex flex-col items-center justify-center text-center p-4'>
                     <Import size={50} className='text-gray-800 mb-2' />
@@ -82,13 +68,13 @@ export const FolderList = ({ folders, groupedBoards, org }: FolderListProps) => 
                   </div>
                 ) : (
                   groupedBoards[folder._id]?.slice(0, 4).map((board) => (
-                    <div key={board._id} className="w-1/2 px-2 py-1">
+                    <div key={board._id} className="w-1/2 px-2 py-1 ">
                       <div
-                        className="group aspect-[127/127] border rounded-lg shadow-custom-1 flex flex-col justify-between overflow-hidden dark:bg-zinc-800 dark:border-zinc-700 bg-amber-50"
+                        className="group aspect-[100/100] border rounded-lg shadow-custom-2 flex flex-col justify-between overflow-hidden bg-amber-50 dark:bg-zinc-500 dark:border-zinc-800"
                         draggable={true}
                         onDragStart={(e) => handleDragStart(e, board._id, folder._id)}
                       >
-                        <div className="relative flex-1 dark:bg-white bg-amber-50">
+                        <div className="relative flex-1">
                           <Image
                             src={board.imageUrl}
                             alt={board.title}
@@ -97,7 +83,7 @@ export const FolderList = ({ folders, groupedBoards, org }: FolderListProps) => 
                           />
                         </div>
                         <div className="relative dark:bg-[#2C2C2C] bg-zinc-100 p-1">
-                          <p className="text-[10px] truncate text-black dark:text-white">
+                          <p className="text-xs truncate text-black dark:text-white">
                             {board.title}
                           </p>
                         </div>
@@ -107,13 +93,27 @@ export const FolderList = ({ folders, groupedBoards, org }: FolderListProps) => 
                 )
               }
             </div>
-            <div className="relative dark:bg-[#2C2C2C] bg-zinc-100 rounded-b-lg p-3 w-full">
+            <div className="relative dark:bg-[#2C2C2C] bg-white rounded-b-lg p-2 w-full">
               <p className="text-[13px] truncate text-black dark:text-white">
                 {folder.name}
               </p>
               <p className="transition-opacity text-[11px] truncate dark:text-zinc-300 text-muted-foreground flex flex-row items-center">
                 <Folder className="inline-block w-4 h-4 mr-2" />
                 {formatDistanceToNow(folder.createdAt, { addSuffix: true, })}
+                <FolderActions
+                id={folder._id}
+                title={folder.name}
+                org={org}
+                side='right'
+              >
+                <button
+                  className="absolute top-1 right-1 z-[1] px-3 py-2 outline-none"
+                >
+                  <MoreHorizontal
+                    className="text-zinc-800 dark:text-white opacity-75 hover:opacity-100 transition-opacity"
+                  />
+                </button>
+              </FolderActions>
               </p>
             </div>
           </div>
