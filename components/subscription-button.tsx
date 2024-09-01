@@ -7,15 +7,20 @@ import { toast } from "sonner";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { useState } from "react";
 import { getUsersCurrency } from "@/lib/utils";
+import Link from "next/link";
 
 interface SubscriptionButtonProps {
     selectedOrganization: any;
     plan: any;
+    className?: string;
+    children: React.ReactNode;
 }
 
 export const SubscriptionButton = ({
     selectedOrganization,
     plan,
+    className,
+    children,
 }: SubscriptionButtonProps) => {
 
     const user = useCurrentUser();
@@ -40,8 +45,16 @@ export const SubscriptionButton = ({
     }
 
     return (
-        <Button variant="sketchlieBlue" onClick={onClick} disabled={isLoading}> 
-            {isLoading ? <LoaderCircle className="animate-spin w-5 h-5 text-white"/> : <>Upgrade <Zap className="w-4 h-4 ml-2 fill-white"/></>}
-        </Button>
+        plan.label === "Enterprise" ? (
+            <Link href="/contact">
+                <Button variant="sketchlieBlue" disabled={isLoading} className={className}> 
+                    {isLoading ? <LoaderCircle className="animate-spin w-5 h-5 text-white"/> : children}
+                </Button>
+            </Link>
+        ) : (
+            <Button variant="sketchlieBlue" onClick={onClick} disabled={isLoading} className={className}> 
+                {isLoading ? <LoaderCircle className="animate-spin w-5 h-5 text-white"/> : children}
+            </Button>
+        )
     )
 }

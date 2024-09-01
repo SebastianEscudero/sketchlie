@@ -42,4 +42,9 @@ export const subscriptionPlans = [
         extraFeatures: "Proteccón de datos con inicio de sesión único",
         recommended: true,
     },
+    {
+        label: "Enterprise",
+        description: "Para equipos grandes y organizaciones que necesitan una solución personalizada.",
+        characteristicsDescription: "Para equipos grandes y organizaciones que necesitan una solución personalizada.",
+    }
 ]
