@@ -19,10 +19,10 @@ export const NewOrgButton = ({
     return (
         <>
             <Hint label="Create Organization" side="bottom" align="center" sideOffset={18}>
-                <button className="bg-white/25 lg:h-[36px] lg:w-[36px] h-[45px] w-[45px] rounded-md flex items-center justify-center opacity-60 hover:opacity-100 transition"
+                <button className="hover:bg-zinc-200 dark:hover:bg-zinc-500 border-2 dark:border-zinc-500 lg:h-[36px] lg:w-[36px] h-[45px] w-[45px] rounded-md flex items-center justify-center transition"
                     onClick={() => setIsCreateBoardDialogOpen(true)}
                 >
-                    <Plus className="text-white sm:h-6 sm:w-6 h-8 w-8" />
+                    <Plus className="text-black dark:text-white sm:h-5 sm:w-5 h-8 w-8" />
                 </button>
             </Hint>
             {isCreateBoardDialogOpen && (

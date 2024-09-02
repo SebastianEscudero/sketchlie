@@ -23,7 +23,7 @@ export const List = ({
         }));
 
     return (
-        <ul className={`space-y-4 lg:space-y-0 lg:space-x-4 ${hasOrganizations ? 'lg:mr-4 mr:0 flex flex-col lg:flex-row' : ''}`}>
+        <ul className={`space-y-4 lg:space-y-0 lg:space-x-3 ${hasOrganizations ? 'lg:mr-4 mr:0 flex flex-col lg:flex-row' : ''}`}>
             {user?.organizations.map((org) => (
                 <Item 
                     plan={org.subscriptionPlan}

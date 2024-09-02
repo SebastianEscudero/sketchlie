@@ -36,8 +36,8 @@ export const Navbar = ({
     }
 
     return (
-        <div className="flex flex-wrap items-center gap-x-2 gap-y-2 px-3 lg:py-0 py-3 justify-between shadow-custom-1 dark:bg-[#2C2C2C] dark:shadow-custom-3 lg:bg-gray-800">
-            <div className="hidden lg:flex flex-row space-x-4 p-3 flex-1 overflow-hidden">
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-2 px-3 py-3 justify-between">
+            <div className="hidden lg:flex flex-row space-x-3 p-3 flex-1 overflow-hidden">
                 <NewOrgButton 
                     activeOrganization={activeOrganization}
                     setActiveOrganization={setActiveOrganization}

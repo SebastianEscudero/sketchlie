@@ -24,7 +24,7 @@ export const Item = ({ id, name, activeOrganization, setActiveOrganization, plan
 
     return (
         <div className={cn(
-            "rounded-md cursor-pointer opacity-75 hover:opacity-100 transition aspect-square relative",
+            "rounded-md cursor-pointer opacity-80 hover:opacity-100 transition aspect-square relative",
             isActive && "opacity-100"
         )}
             onClick={onClick}

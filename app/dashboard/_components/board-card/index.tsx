@@ -155,7 +155,7 @@ export const BoardCard = ({
   return (
     <Link href={`/board/${id}`}>
       <div
-        className={`group aspect-[100/127] border rounded-lg flex flex-col justify-between shadow-custom-2 overflow-hidden bg-amber-50 dark:bg-zinc-500 dark:border-zinc-800 " ${isLoading ? 'opacity-80 transition-opacity cursor-not-allowed' : ''}`}
+        className={`group aspect-[100/127] border rounded-lg flex flex-col justify-between overflow-hidden bg-amber-50 dark:bg-zinc-500 dark:border-zinc-800 " ${isLoading ? 'opacity-80 transition-opacity cursor-not-allowed' : ''}`}
         onClick={handleClick}
         draggable={true}
         onDragStart={handleDragStart}

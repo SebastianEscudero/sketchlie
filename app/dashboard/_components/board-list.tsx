@@ -70,7 +70,7 @@ export const BoardList = ({
 
   return (
     <div>
-      <h2 className="text-3xl font-semibold mb-4 flex flex-row">
+      <h2 className="text-xl font-semibold mb-4 flex flex-row">
         {query.folderId && (
           <Link href="/dashboard/" className="flex flex-row items-center">
             <ChevronsLeft className="mr-3 h-8 w-8" />

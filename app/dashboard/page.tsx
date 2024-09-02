@@ -99,7 +99,7 @@ const DashboardPage = () => {
   if (!user) return <Loading />;
 
   return (
-    <main className="h-full dark:bg-[#383838] dark:text-white bg-[#F9FAFB]">
+    <main className="h-full dark:bg-[#383838] dark:text-white bg-[#f9fafb]">
       <div className="flex h-full">
         {activeOrg ? (
           <OrgSidebar

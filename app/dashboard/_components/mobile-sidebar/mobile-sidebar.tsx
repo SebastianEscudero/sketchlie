@@ -1,8 +1,6 @@
-import { NewOrgButton } from "@/components/auth/org-button"
-import { Sheet, SheetClose, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
-import { List } from "../sidebar/list";
 import { OrgSidebar } from "../org-sidebar";
 
 interface SideBarProps {

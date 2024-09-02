@@ -73,7 +73,7 @@ export const OrgSidebar = ({
     }
 
     return (
-        <div className={`${mobile ? '' : 'hidden lg:'}flex flex-col h-full dark:bg-[#2C2C2C] bg-zinc-100 space-y-2 shadow-custom-2 justify-between w-[240px] px-5 pt-5 select-none`}>
+        <div className={`${mobile ? '' : 'hidden lg:'}flex flex-col h-full dark:bg-[#2C2C2C] text-black dark:text-white bg-white space-y-2 justify-between w-[240px] px-5 pt-5 select-none border-r dark:border-zinc-500`}>
           <div className="flex flex-col space-y-4">
             <SketchlieButton
                 activeOrg={activeOrg}
@@ -140,7 +140,6 @@ export const OrgSidebar = ({
                         <div className="flex flex-row">
                             <Folder className="h-4 w-4 mr-2" />
                             New Folder
-                            <Plus className="h-4 w-4 ml-auto" />
                         </div>
                     </Button>
                 </NewFolderButton>
