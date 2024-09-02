@@ -44,7 +44,7 @@ const CollaborationPage = () => {
                     Colaboración en Línea: El Espacio de Trabajo Ideal
                 </h1>
                 <Image
-                    src="/placeholders/collaboration-workspace.png"
+                    src="/placeholders/modelo-canvas.png"
                     alt="Colaboración en línea"
                     width={1920}
                     height={1080}
