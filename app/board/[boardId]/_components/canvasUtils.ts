@@ -1929,7 +1929,9 @@ export const useKeyboardListener = (
   suggestedLayers: any,
   setSuggestedLayers: (layers: any) => void,
   org: any,
-  proModal: any
+  proModal: any,
+  insertMedia: (type: LayerType.Video | LayerType.Image, position: { x: number; y: number }, info: any, zoom: number) => void,
+  zoom: number
 ) => {
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
@@ -1963,11 +1965,43 @@ export const useKeyboardListener = (
           }
         }
       } else if (key === "v") {
-        if (!isInsideTextArea) {
-          if (e.ctrlKey || e.metaKey) {
-            e.preventDefault();
-            pasteCopiedLayers(mousePosition);
-          }
+        if (!isInsideTextArea && (e.ctrlKey || e.metaKey)) {
+          e.preventDefault();
+          
+          navigator.clipboard.read().then(items => {
+            for (const item of items) {
+              if (item.types.includes('image/png') || item.types.includes('image/jpeg')) {
+                item.getType('image/png').then(blob => {
+                  const reader = new FileReader();
+                  reader.onload = function(event) {
+                    const imageDataUrl = event.target?.result as string;
+                    
+                    // Create an Image object to get dimensions
+                    const img = new Image();
+                    img.onload = function() {
+                      const info = {
+                        url: imageDataUrl,
+                        dimensions: {
+                          width: img.width,
+                          height: img.height
+                        }
+                      };
+                      
+                      insertMedia(LayerType.Image, mousePosition, info, zoom);
+                    };
+                    img.src = imageDataUrl;
+                  };
+                  reader.readAsDataURL(blob);
+                }).catch(err => {
+                  console.error("Error reading image from clipboard:", err);
+                });
+                return; // Exit after handling the image
+              }
+            }
+            console.log("No image found in clipboard");
+          }).catch(err => {
+            console.error("Error accessing clipboard:", err);
+          });
         }
       } else if (key === "a") {
         if (!isInsideTextArea) {

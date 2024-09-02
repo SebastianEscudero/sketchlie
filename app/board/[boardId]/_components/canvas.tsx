@@ -442,7 +442,9 @@ export const Canvas = ({
         suggestedLayers,
         setSuggestedLayers,
         org,
-        proModal
+        proModal,
+        insertMedia,
+        zoom
     );
 
 
