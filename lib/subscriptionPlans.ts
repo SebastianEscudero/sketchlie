@@ -5,7 +5,7 @@ export const subscriptionPlans = [
         characteristicsDescription: "Lo necesario para poder colaborar:",
         price: 0,
         features: {
-            "Boards": "1",
+            "Boards": "3",
             'Imágenes': "Hasta 1MB",
             "Capas máximas": "100",
             "Herramientas": "Basicas",
