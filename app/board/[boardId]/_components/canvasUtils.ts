@@ -210,7 +210,8 @@ export const useInsertMedia = (
   setLiveLayerIds: (ids: string[]) => void,
   boardId: string,
   performAction: (command: any) => void,
-  setCanvasState: (state: any) => void
+  setCanvasState: (state: any) => void,
+  selectedLayersRef: React.MutableRefObject<string[]>,
 ) => {
   return useCallback((
     layerType: LayerType.Image | LayerType.Video | LayerType.Link,
@@ -245,12 +246,12 @@ export const useInsertMedia = (
       src: info.url,
     };
 
-    console.log(layer);
+    selectedLayersRef.current = [layerId];
 
     const command = new InsertLayerCommand([layerId], [layer], setLiveLayers, setLiveLayerIds, boardId, socket, org, proModal);
     performAction(command);
     setCanvasState({ mode: CanvasMode.None });
-  }, [socket, org, proModal, setLiveLayers, setLiveLayerIds, boardId, performAction, setCanvasState]);
+  }, [socket, org, proModal, setLiveLayers, setLiveLayerIds, boardId, performAction, setCanvasState, selectedLayersRef]);
 };
 
 export const useTranslateSelectedLayers = (
@@ -1931,7 +1932,8 @@ export const useKeyboardListener = (
   org: any,
   proModal: any,
   insertMedia: (type: LayerType.Video | LayerType.Image, position: { x: number; y: number }, info: any, zoom: number) => void,
-  zoom: number
+  zoom: number,
+  copiedLayerIds: string[],
 ) => {
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
@@ -1959,7 +1961,11 @@ export const useKeyboardListener = (
       } else if (key === "c") {
         if (!isInsideTextArea) {
           if (e.ctrlKey || e.metaKey) {
+            e.preventDefault();
             copySelectedLayers();
+            navigator.clipboard.writeText('').catch(err => {
+              console.error("Failed to clear clipboard:", err);
+            });
           } else {
             setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Ellipse });
           }
@@ -1968,15 +1974,21 @@ export const useKeyboardListener = (
         if (!isInsideTextArea && (e.ctrlKey || e.metaKey)) {
           e.preventDefault();
           
-          navigator.clipboard.read().then(items => {
+          // First, check the system clipboard for content
+          navigator.clipboard.read().then(async items => {
+            let hasImage = false;
+            let hasText = false;
+      
             for (const item of items) {
+              // Check for image
               if (item.types.includes('image/png') || item.types.includes('image/jpeg')) {
-                item.getType('image/png').then(blob => {
+                hasImage = true;
+                try {
+                  const blob = await item.getType('image/png');
                   const reader = new FileReader();
                   reader.onload = function(event) {
                     const imageDataUrl = event.target?.result as string;
                     
-                    // Create an Image object to get dimensions
                     const img = new Image();
                     img.onload = function() {
                       const info = {
@@ -1992,15 +2004,37 @@ export const useKeyboardListener = (
                     img.src = imageDataUrl;
                   };
                   reader.readAsDataURL(blob);
-                }).catch(err => {
+                } catch (err) {
                   console.error("Error reading image from clipboard:", err);
-                });
-                return; // Exit after handling the image
+                }
+                break; // Exit the loop after handling the first image
               }
+              
+              // Check for text
+              //if (item.types.includes('text/plain')) {
+              //  hasText = true;
+              //  try {
+              //    const text = await item.getType('text/plain');
+              //    const textContent = await text.text();
+              //     insertLayer(LayerType.Text, mousePosition, 100, 18, undefined, undefined, undefined, undefined, undefined, textContent);
+              //
+              //  } catch (err) {
+              //    console.error("Error reading text from clipboard:", err);
+              //  }
+              //  break; // Exit the loop after handling the text
+              //}
             }
-            console.log("No image found in clipboard");
+            
+            // If no image or text was found in the clipboard, paste copied layers
+            if (!hasImage && !hasText && copiedLayerIds.length > 0) {
+              pasteCopiedLayers(mousePosition);
+            }
           }).catch(err => {
             console.error("Error accessing clipboard:", err);
+            // If there was an error accessing the clipboard, fall back to pasting copied layers
+            if (copiedLayerIds.length > 0) {
+              pasteCopiedLayers(mousePosition);
+            }
           });
         }
       } else if (key === "a") {

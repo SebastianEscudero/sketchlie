@@ -170,7 +170,8 @@ export const Canvas = ({
         setLiveLayerIds,
         boardId,
         performAction,
-        setCanvasState
+        setCanvasState,
+        selectedLayersRef
     );
 
     const translateSelectedLayers = useTranslateSelectedLayers(
@@ -444,7 +445,8 @@ export const Canvas = ({
         org,
         proModal,
         insertMedia,
-        zoom
+        zoom,
+        copiedLayerIds
     );
 
 
