@@ -4,11 +4,16 @@ import { User } from "@/types/canvas";
 
 const RECONNECTION_INTERVAL = 5000; // 5 seconds
 
-function useWebSocket(url: string, roomId: string, user: User) {
+function useWebSocket(url: string, roomId: string, user: User, isUserPartOfOrg: boolean) {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [isConnected, setIsConnected] = useState(false);
 
   const connect = useCallback(() => {
+    if (!isUserPartOfOrg) {
+      console.log('User is not part of the organization. Connection aborted.');
+      return () => {};
+    }
+
     const newSocket = io(url, {
       query: { roomId },
       reconnection: true,

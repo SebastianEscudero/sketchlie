@@ -1985,27 +1985,39 @@ export const useKeyboardListener = (
                 hasImage = true;
                 try {
                   const blob = await item.getType('image/png');
-                  const reader = new FileReader();
-                  reader.onload = function(event) {
-                    const imageDataUrl = event.target?.result as string;
-                    
-                    const img = new Image();
-                    img.onload = function() {
-                      const info = {
-                        url: imageDataUrl,
-                        dimensions: {
-                          width: img.width,
-                          height: img.height
-                        }
-                      };
-                      
-                      insertMedia(LayerType.Image, mousePosition, info, zoom);
+                  const file = new File([blob], "clipboard-image.png", { type: "image/png" });
+                  
+                  const toastId = toast.loading("Image is being processed, please wait...");
+                  const formData = new FormData();
+                  formData.append('file', file);
+                  formData.append('userId', User.userId);
+      
+                  const res = await fetch('/api/aws-s3-images', {
+                    method: 'POST',
+                    body: formData
+                  });
+      
+                  if (!res.ok) {
+                    throw new Error('Network response was not ok');
+                  }
+      
+                  const url = await res.text();
+                  const img = new Image();
+                  const imgLoad = new Promise<{ url: string, dimensions: { width: number, height: number }, type: string }>((resolve) => {
+                    img.onload = () => {
+                      const dimensions = { width: img.width, height: img.height };
+                      resolve({ url, dimensions, type: 'image' });
                     };
-                    img.src = imageDataUrl;
-                  };
-                  reader.readAsDataURL(blob);
+                  });
+                  img.src = url;
+                  const info = await imgLoad;
+                  
+                  insertMedia(LayerType.Image, mousePosition, info, zoom);
+                  toast.dismiss(toastId);
+                  toast.success("Image uploaded successfully");
                 } catch (err) {
-                  console.error("Error reading image from clipboard:", err);
+                  console.error("Error processing image from clipboard:", err);
+                  toast.error("Failed to process image from clipboard");
                 }
                 break; // Exit the loop after handling the first image
               }
@@ -2015,9 +2027,8 @@ export const useKeyboardListener = (
               //  hasText = true;
               //  try {
               //    const text = await item.getType('text/plain');
-              //    const textContent = await text.text();
-              //     insertLayer(LayerType.Text, mousePosition, 100, 18, undefined, undefined, undefined, undefined, undefined, textContent);
-              //
+              //   const textContent = await text.text();
+              //    insertLayer(LayerType.Text, mousePosition, 100, 18, undefined, undefined, undefined, undefined, undefined, textContent);
               //  } catch (err) {
               //    console.error("Error reading text from clipboard:", err);
               //  }

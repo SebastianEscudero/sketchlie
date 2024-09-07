@@ -140,7 +140,8 @@ export const Room = React.memo(({ children, roomId, fallback, board, layers, lay
   const { socket, isConnected } = useWebSocket(
     'https://sketchlie-server-little-resonance-2329.fly.dev',
     roomId,
-    User
+    User,
+    isUserPartOfOrg
   );
 
   useEffect(() => {

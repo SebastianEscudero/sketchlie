@@ -88,6 +88,8 @@ export const Rhombus = memo(({
   const contentEditablePointerDown = (e: React.PointerEvent) => {
     if (focused) {
       e.stopPropagation();
+    } else {
+      e.preventDefault();
     }
   }
 

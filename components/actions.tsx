@@ -152,8 +152,8 @@ export const Actions = ({
             onClick={() => setIsPrivateModalOpen(true)}
             className="p-3 cursor-pointer"
           >
-            {isPrivate ? <LockKeyholeOpen className="h-4 w-4 mr-2" /> : <LockKeyhole className="h-4 w-4 mr-2" />}
-            {isPrivate ? "Make Public" : "Make Private"}
+            {isPrivate ? <LockKeyhole className="h-4 w-4 mr-2" /> : <LockKeyholeOpen className="h-4 w-4 mr-2" />}
+            {isPrivate ? "Private" : "Public"}
             {(User?.information.role !== "Admin" && usersRole !== "Admin") &&
               <span className="text-sm ml-2">(Admin)</span>
             }
