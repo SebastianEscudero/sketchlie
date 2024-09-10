@@ -31,7 +31,7 @@ const buttonVariants = cva(
         selectOrg: "text-custom-blue hover:bg-accent",
         gratis: "bg-accent text-accent-foreground hover:bg-accent/90",
         starter: "bg-yellow-500 text-black hover:bg-yellow-600",
-        business: "bg-[#1C1C1E] text-white hover:text-accent-foreground hover:bg-accent/90 border",
+        business: "bg-[#1C1C1E] text-white hover:text-accent-foreground hover:bg-accent/90 border dark:border-zinc-500",
         icon: "hover:text-accent-foreground hover:bg-accent-foreground/10",
         iconActive: "bg-blue-600 text-white fill-white",
         magicAssist: "text-black hover:text-custom-blue",

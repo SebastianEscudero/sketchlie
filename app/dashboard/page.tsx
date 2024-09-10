@@ -123,7 +123,7 @@ const DashboardPage = () => {
           {activeOrg && (
             <Templates org={activeOrg} />
           )}
-          <div className="flex-1 h-[calc(100%-64px)] p-6">
+          <div className="flex-1 h-[calc(100%-64px)] lg:p-6 p-4">
             {!activeOrg ? (
               <EmptyOrg
                 setActiveOrganization={setActiveOrganization}

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { OrganizationSwitcher } from "@/components/auth/org-switcher";
-import { Folder, LayoutDashboard, LayoutTemplate, Plus, Star } from "lucide-react";
+import { Folder, LayoutDashboard, LayoutTemplate, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSearchParams } from "next/navigation";
 import { useCurrentUser } from "@/hooks/use-current-user";
