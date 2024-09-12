@@ -4,7 +4,10 @@ export const getSelectorPositionClass = (expandUp: boolean) => {
     return expandUp ? 'bottom-[100%] mb-2' : 'top-[100%] mt-2';
 }
 
-export const kalamFont = Kalam({ subsets: ['latin'], weight: ['400'] });
+// Default font is Kalam 
+export const defaultFont = Roboto({ subsets: ['latin'], weight: ['400'] });
+
+const kalamFont = Kalam({ subsets: ['latin'], weight: ['400'] });
 const roboto = Roboto({ subsets: ['latin'], weight: ['400'] });
 const lobster = Lobster({ subsets: ['latin'], weight: ['400'] });
 const pacifico = Pacifico({ subsets: ['latin'], weight: ['400'] });
@@ -16,7 +19,7 @@ const shadowsIntoLight = Shadows_Into_Light({ subsets: ['latin'], weight: ['400'
 const indieFlower = Indie_Flower({ subsets: ['latin'], weight: ['400'] });
 const architectsDaughter = Architects_Daughter({ subsets: ['latin'], weight: ['400'] });
 
-export const DEFAULT_FONT = kalamFont.style.fontFamily;
+export const DEFAULT_FONT = defaultFont.style.fontFamily;
 
 export const standardFonts = [
     { value: 'Arial', label: 'Arial' },

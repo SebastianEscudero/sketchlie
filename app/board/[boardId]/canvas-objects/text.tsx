@@ -4,12 +4,7 @@ import { cn, colorToCss } from "@/lib/utils";
 import { Kalam } from "next/font/google";
 import { throttle } from 'lodash';
 import { updateR2Bucket } from '@/lib/r2-bucket-functions';
-import { DEFAULT_FONT, kalamFont } from '../selection-tools/selectionToolUtils';
-
-const font = Kalam({
-  subsets: ["latin"],
-  weight: ["400"],
-});
+import { DEFAULT_FONT, defaultFont } from '../selection-tools/selectionToolUtils';
 
 interface TextProps {
   setLiveLayers?: (layers: any) => void;
@@ -166,7 +161,7 @@ export const Text = memo(({
           placeholder={isFocused ? "" : 'Type something...'}
           className={cn(
             "outline-none w-full h-full text-left flex px-0.5 bg-transparent",
-            kalamFont.className
+            defaultFont.className
           )}
           style={{
             color: isTransparent

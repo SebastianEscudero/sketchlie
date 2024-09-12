@@ -6,7 +6,7 @@ import { cn, colorToCss, getContrastingTextColor, removeHighlightFromText } from
 import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import { throttle } from "lodash";
 import { updateR2Bucket } from "@/lib/r2-bucket-functions";
-import { DEFAULT_FONT, kalamFont } from "../selection-tools/selectionToolUtils";
+import { DEFAULT_FONT, defaultFont } from "../selection-tools/selectionToolUtils";
 
 const font = Kalam({
   subsets: ["latin"],
@@ -174,7 +174,7 @@ export const Note = memo(({
             onPointerDown={contentEditablePointerDown}
             className={cn(
               "outline-none w-full p-1",
-              kalamFont.className
+              defaultFont.className
             )} style={{
               fontSize: textFontSize,
               color: fill ? getContrastingTextColor(fill) : "#000",
