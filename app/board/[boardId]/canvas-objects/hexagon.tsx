@@ -6,6 +6,7 @@ import { cn, colorToCss, getContrastingTextColor, removeHighlightFromText } from
 import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import { throttle } from "lodash";
 import { updateR2Bucket } from "@/lib/r2-bucket-functions";
+import { DEFAULT_FONT, kalamFont } from "../selection-tools/selectionToolUtils";
 
 const font = Kalam({
   subsets: ["latin"],
@@ -38,7 +39,7 @@ export const Hexagon = memo(({
   socket,
   focused = false,
 }: HexagonProps) => {
-  const { x, y, width, height, fill, outlineFill, value: initialValue, textFontSize } = layer;
+  const { x, y, width, height, fill, outlineFill, value: initialValue, textFontSize, fontFamily } = layer;
   const alignX = layer.alignX || "center";
   const alignY = layer.alignY || "center";
   const [value, setValue] = useState(initialValue);
@@ -172,15 +173,15 @@ export const Hexagon = memo(({
             onPointerDown={contentEditablePointerDown}
             className={cn(
               "outline-none w-full p-1",
-              font.className
-            )}
-            style={{
+              kalamFont.className
+            )} style={{
               fontSize: textFontSize,
               color: fill ? getContrastingTextColor(fill) : "#000",
               textWrap: "wrap",
               WebkitUserSelect: 'auto',
               textAlign: alignX,
               cursor: focused && 'text',
+              fontFamily: fontFamily || DEFAULT_FONT,
             }}
             spellCheck={false}
             onDragStart={(e) => e.preventDefault()}

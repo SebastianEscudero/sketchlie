@@ -4,6 +4,7 @@ import { cn, colorToCss } from "@/lib/utils";
 import { Kalam } from "next/font/google";
 import { throttle } from 'lodash';
 import { updateR2Bucket } from '@/lib/r2-bucket-functions';
+import { DEFAULT_FONT, kalamFont } from '../selection-tools/selectionToolUtils';
 
 const font = Kalam({
   subsets: ["latin"],
@@ -41,7 +42,7 @@ export const Text = memo(({
   focused = false,
   boardId,
 }: TextProps) => {
-  const { x, y, width, height, fill, value: initialValue, textFontSize } = layer;
+  const { x, y, width, height, fill, value: initialValue, textFontSize, fontFamily } = layer;
   const alignX = layer.alignX || "center";
   const [value, setValue] = useState(initialValue);
   const textRef = useRef<any>(null);
@@ -138,8 +139,8 @@ export const Text = memo(({
   }
 
   return (
-    <g 
-      transform={`translate(${x}, ${y})`} 
+    <g
+      transform={`translate(${x}, ${y})`}
       pointerEvents="auto"
     >
       <foreignObject
@@ -165,7 +166,7 @@ export const Text = memo(({
           placeholder={isFocused ? "" : 'Type something...'}
           className={cn(
             "outline-none w-full h-full text-left flex px-0.5 bg-transparent",
-            font.className
+            kalamFont.className
           )}
           style={{
             color: isTransparent
@@ -180,6 +181,7 @@ export const Text = memo(({
             fontSize: textFontSize,
             textAlign: alignX,
             cursor: focused ? 'text' : 'default',
+            fontFamily: fontFamily || DEFAULT_FONT,
           }}
         />
       </foreignObject>

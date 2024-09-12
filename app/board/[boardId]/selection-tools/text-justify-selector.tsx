@@ -5,6 +5,8 @@ import { LayerType, SelectorType } from '@/types/canvas';
 import { Button } from '@/components/ui/button';
 import { Socket } from 'socket.io-client';
 import { updateR2Bucket } from '@/lib/r2-bucket-functions';
+import { Hint } from "@/components/hint";
+import { getSelectorPositionClass } from "./selectionToolUtils";
 
 interface TextJustifySelectorProps {
     selectedLayers: any;
@@ -61,20 +63,41 @@ export const TextJustifySelector = ({
         }
 
         setLiveLayers(newLayers);
-        setOpenSelector(null);
     };
 
-    const selectorPositionClass = expandUp ? 'bottom-[100%] mb-4' : 'top-[100%] mt-4';
+    const toggleSelector = () => {
+        setOpenSelector(openSelector === SelectorType.TextJustify ? null : SelectorType.TextJustify);
+    };
+
+    const getAlignIcon = () => {
+        switch (alignX) {
+            case 'left':
+                return AlignLeft;
+            case 'right':
+                return AlignRight;
+            default:
+                return AlignCenter;
+        }
+    };
+
+    const AlignIcon = getAlignIcon();
 
     return (
         <div className="relative text-left border-neutral-200 flex justify-center">
 
-            {alignX === 'left' && <AlignLeft className='w-6 h-6 mx-2 hover:cursor-pointer' onClick={() => setOpenSelector(openSelector === SelectorType.TextJustify ? null : SelectorType.TextJustify)} />}
-            {alignX === 'right' && <AlignRight className='w-6 h-6 mx-2 hover:cursor-pointer' onClick={() => setOpenSelector(openSelector === SelectorType.TextJustify ? null : SelectorType.TextJustify)} />}
-            {alignX === 'center' && <AlignCenter className='w-6 h-6 mx-2 hover:cursor-pointer' onClick={() => setOpenSelector(openSelector === SelectorType.TextJustify ? null : SelectorType.TextJustify)} />}
+            <Hint label={`Align ${alignX}`} side="top">
+                <Button
+                    variant="board"
+                    size="icon"
+                    onClick={toggleSelector}
+                    className={openSelector === SelectorType.TextJustify ? 'bg-blue-500/20' : ''}
+                >
+                    <AlignIcon className='w-6 h-6' />
+                </Button>
+            </Hint>
 
             {openSelector === SelectorType.TextJustify && (
-                <div className={`p-3 absolute ${selectorPositionClass} left-1/2 transform -translate-x-1/2 w-[140px] rounded-lg shadow-custom-1 bg-white dark:bg-[#383838] ring-1 ring-black ring-opacity-5`}>
+                <div className={`p-3 absolute ${getSelectorPositionClass(expandUp)} left-1/2 transform -translate-x-1/2 w-[140px] rounded-lg shadow-custom-1 bg-white dark:bg-[#383838] ring-1 ring-black ring-opacity-5`}>
                     <div className='flex flex-row justify-center items-center mb-1'>
                         {/* Horizontal Alignment Buttons */}
                         <Button onClick={() => updateAlignment('left', null)} variant={alignX === 'left' ? "alignedActive" : "aligned"} className='px-1'>

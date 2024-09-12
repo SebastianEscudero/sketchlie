@@ -4,6 +4,9 @@ import { Color, SelectorType } from "@/types/canvas";
 import { colorToCss } from "@/lib/utils";
 import { Slider } from "@/components/ui/slider";
 import { ColorButton } from "./color-picker";
+import { Hint } from "@/components/hint";
+import { Button } from "@/components/ui/button";
+import { getSelectorPositionClass } from "./selectionToolUtils";
 
 interface OutlineColorPickerProps {
   onChange: (color: Color) => void;
@@ -30,7 +33,6 @@ export const OutlineColorPicker = ({
     colorButtonColor = { r: 0, g: 0, b: 0, a: 0 };
   }
 
-  const selectorPositionClass = expandUp ? 'bottom-[100%] mb-3' : 'top-[100%] mt-3';
   const opacity = colorButtonColor.a;
 
   return (
@@ -38,7 +40,7 @@ export const OutlineColorPicker = ({
       <OutlineColorButton color={colorButtonColor} onClick={() => setOpenSelector(openSelector === SelectorType.OutlineColor ? null : SelectorType.OutlineColor)} />
       {openSelector === SelectorType.OutlineColor && (
         <div
-          className={`p-3 pt-5 pb-2 origin-top-right absolute right-0 ${selectorPositionClass} w-[165px] translate-x-1/3 rounded-lg shadow-custom-1 bg-white dark:bg-[#383838]`}
+          className={`p-3 pt-5 pb-2 origin-top-right absolute right-0 ${getSelectorPositionClass(expandUp)} w-[165px] translate-x-1/3 rounded-lg shadow-custom-1 bg-white dark:bg-[#383838]`}
         >
           <Slider
             defaultValue={[opacity || 1]}
@@ -75,21 +77,32 @@ const OutlineColorButton = ({
   onClick,
   color,
 }: any) => {
+  const buttonStyle = color.r === 0 && color.g === 0 && color.b === 0 && color.a === 0
+    ? { background: 'white' }
+    : { background: colorToCss(color) };
+
   return (
-    <button
-      className="w-6 h-6 my-1 items-center flex justify-center transition mx-2 border border-neutral-300 dark:border-zinc-500 rounded-[50%] bg-white dark:bg-[#383838]"
-      onClick={() => onClick(color)}
-      style={{ background: colorToCss(color) }}
-    >
-      <div
-        className="h-4 w-4 rounded-[50%] border border-neutral-300 dark:border-zinc-500 relative z-50 bg-white dark:bg-[#383838]"
+    <Hint label="Outline Color" side="top">
+      <Button
+        variant="board"
+        size="icon"
+        onClick={() => onClick(color)}
       >
-        {color.r === 0 && color.g === 0 && color.b === 0 && color.a === 0 && (
-          <svg className="absolute top-0 left-0 w-full h-full" viewBox="0 0 1 1">
-            <line x1="0.15" y1="0.15" x2="0.85" y2="0.85" stroke="#d4d4d4" strokeWidth="0.05" />
-          </svg>
-        )}
+      <div
+        className="w-6 h-6 my-1 items-center flex justify-center transition mx-2 border border-neutral-300 dark:border-zinc-500 rounded-[50%] bg-white dark:bg-[#383838]"
+        style={buttonStyle}
+      >
+        <div
+          className="h-4 w-4 rounded-[50%] border border-neutral-300 dark:border-zinc-500 relative z-50 bg-white dark:bg-[#383838]"
+        >
+          {color.r === 0 && color.g === 0 && color.b === 0 && color.a === 0 && (
+            <svg className="absolute top-0 left-0 w-full h-full" viewBox="0 0 1 1">
+              <line x1="0.15" y1="0.15" x2="0.85" y2="0.85" stroke="#d4d4d4" strokeWidth="0.05" />
+            </svg>
+          )}
+        </div>
       </div>
-    </button>
+      </Button>
+    </Hint>
   )
 }

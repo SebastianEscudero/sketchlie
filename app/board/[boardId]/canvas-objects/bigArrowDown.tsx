@@ -1,16 +1,10 @@
-import { Kalam } from "next/font/google";
 import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
-
 import { LayerType, BigArrowDownLayer } from "@/types/canvas";
 import { cn, colorToCss, getContrastingTextColor, removeHighlightFromText } from "@/lib/utils";
 import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import { throttle } from "lodash";
 import { updateR2Bucket } from "@/lib/r2-bucket-functions";
-
-const font = Kalam({
-  subsets: ["latin"],
-  weight: ["400"],
-});
+import { DEFAULT_FONT, kalamFont } from "../selection-tools/selectionToolUtils";
 
 interface BigArrowDownProps {
   id: string;
@@ -38,7 +32,7 @@ export const BigArrowDown = memo(({
   socket,
   focused = false,
 }: BigArrowDownProps) => {
-  const { x, y, width, height, fill, outlineFill, value: initialValue, textFontSize } = layer;
+  const { x, y, width, height, fill, outlineFill, value: initialValue, textFontSize, fontFamily } = layer;
   const alignX = layer.alignX || "center";
   const alignY = layer.alignY || "center";
   const [value, setValue] = useState(initialValue);
@@ -96,7 +90,7 @@ export const BigArrowDown = memo(({
   const handlePointerDown = (e: React.PointerEvent) => {
     if (focused) {
       e.stopPropagation();
-      e.preventDefault(); 
+      e.preventDefault();
       BigArrowDownRef.current.focus();
     }
 
@@ -132,15 +126,15 @@ export const BigArrowDown = memo(({
   const arrowHeadHeight = Math.min(height * 0.8, width * 0.7);
   const divWidth = width * 0.5;
   const divHeight = height - arrowHeadHeight / 2;
-  
+
   // Calculate the position to center the foreignObject within the BigArrowDown
   const foreignObjectX = (width - divWidth) / 2;
-  const foreignObjectY = (height - divHeight - arrowHeadHeight/2);
-  
+  const foreignObjectY = (height - divHeight - arrowHeadHeight / 2);
+
   if (!fill) {
     return null;
   }
-  
+
   return (
     <g
       transform={`translate(${x}, ${y})`}
@@ -173,15 +167,15 @@ export const BigArrowDown = memo(({
             onPointerDown={contentEditablePointerDown}
             className={cn(
               "outline-none w-full p-1",
-              font.className
-            )}
-            style={{
+              kalamFont.className
+            )} style={{
               fontSize: textFontSize,
               color: fill ? getContrastingTextColor(fill) : "#000",
               textWrap: "wrap",
               WebkitUserSelect: 'auto',
               textAlign: alignX,
               cursor: focused && 'text',
+              fontFamily: fontFamily || DEFAULT_FONT,
             }}
             spellCheck={false}
             onDragStart={(e) => e.preventDefault()}

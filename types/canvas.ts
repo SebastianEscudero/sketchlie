@@ -59,6 +59,7 @@ export type RectangleLayer = {
   outlineFill: Color | null;
   textFontSize: number;
   value?: string;
+  fontFamily?: string;
   alignX?: "left" | "center" | "right";
   alignY?: "top" | "center" | "bottom";
   connectedArrows?: string[];
@@ -74,6 +75,7 @@ export type EllipseLayer = {
   outlineFill: Color | null;
   textFontSize: number;
   value?: string;
+  fontFamily?: string;
   alignX?: "left" | "center" | "right";
   alignY?: "top" | "center" | "bottom";
   connectedArrows?: string[];
@@ -89,6 +91,7 @@ export type RhombusLayer = {
   outlineFill: Color | null;
   textFontSize: number;
   value?: string;
+  fontFamily?: string;
   alignX?: "left" | "center" | "right";
   alignY?: "top" | "center" | "bottom";
   connectedArrows?: string[];
@@ -104,6 +107,7 @@ export type TriangleLayer = {
   outlineFill: Color | null;
   textFontSize: number;
   value?: string;
+  fontFamily?: string;
   alignX?: "left" | "center" | "right";
   alignY?: "top" | "center" | "bottom";
   connectedArrows?: string[];
@@ -119,6 +123,7 @@ export type StarLayer = {
   outlineFill: Color | null;
   textFontSize: number;
   value?: string;
+  fontFamily?: string;
   alignX?: "left" | "center" | "right";
   alignY?: "top" | "center" | "bottom";
   connectedArrows?: string[];
@@ -134,6 +139,7 @@ export type HexagonLayer = {
   outlineFill: Color | null;
   textFontSize: number;
   value?: string;
+  fontFamily?: string;
   alignX?: "left" | "center" | "right";
   alignY?: "top" | "center" | "bottom";
   connectedArrows?: string[];
@@ -149,6 +155,7 @@ export type BigArrowLeftLayer = {
   outlineFill: Color | null;
   textFontSize: number;
   value?: string;
+  fontFamily?: string;
   alignX?: "left" | "center" | "right";
   alignY?: "top" | "center" | "bottom";
   connectedArrows?: string[];
@@ -164,6 +171,7 @@ export type BigArrowRightLayer = {
   outlineFill: Color | null;
   textFontSize: number;
   value?: string;
+  fontFamily?: string;
   alignX?: "left" | "center" | "right";
   alignY?: "top" | "center" | "bottom";
   connectedArrows?: string[];
@@ -179,6 +187,7 @@ export type BigArrowDownLayer = {
   outlineFill: Color | null;
   textFontSize: number;
   value?: string;
+  fontFamily?: string;
   alignX?: "left" | "center" | "right";
   alignY?: "top" | "center" | "bottom";
   connectedArrows?: string[];
@@ -194,6 +203,7 @@ export type BigArrowUpLayer = {
   outlineFill: Color | null;
   textFontSize: number;
   value?: string;
+  fontFamily?: string;
   alignX?: "left" | "center" | "right";
   alignY?: "top" | "center" | "bottom";
   connectedArrows?: string[];
@@ -209,6 +219,7 @@ export type CommentBubbleLayer = {
   outlineFill: Color | null;
   textFontSize: number;
   value?: string;
+  fontFamily?: string;
   alignX?: "left" | "center" | "right";
   alignY?: "top" | "center" | "bottom";
   connectedArrows?: string[];
@@ -280,6 +291,7 @@ export type TextLayer = {
   fill: Color;
   outlineFill: Color | null;
   value?: string;
+  fontFamily?: string;
   textFontSize: number;
   alignX?: "left" | "center" | "right";
   alignY?: "top" | "center" | "bottom";
@@ -295,6 +307,7 @@ export type NoteLayer = {
   fill: Color;
   outlineFill: Color | null;
   value?: string;
+  fontFamily?: string;
   textFontSize: number;
   alignX?: "left" | "center" | "right";
   alignY?: "top" | "center" | "bottom";
@@ -451,5 +464,6 @@ export enum SelectorType {
   ArrowHead,
   TextJustify,
   FontSize,
-  ArrowType
+  ArrowType,
+  TextStyle
 };

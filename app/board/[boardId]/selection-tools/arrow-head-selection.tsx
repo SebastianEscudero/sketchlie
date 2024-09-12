@@ -4,6 +4,7 @@ import { ArrowHead, ArrowType, SelectorType } from '@/types/canvas';
 import { MoveLeft, MoveRight, MoveUpRight, Redo, RefreshCcw, TrendingUp } from 'lucide-react';
 import { useState } from 'react';
 import { Socket } from 'socket.io-client';
+import { getSelectorPositionClass } from './selectionToolUtils';
 
 interface ArrowHeadSelectionProps {
     selectedLayers: any;
@@ -123,8 +124,6 @@ export const ArrowHeadSelection = ({
         setLiveLayers(newLayers);
     }
 
-    const selectorPositionClass = expandUp ? 'bottom-[100%] mb-3' : 'top-[100%] mt-3';
-
     return (
         <div className="relative inline-block text-left pl-1">
             <div className='flex flex-row items center justify-center gap-x-1'>
@@ -163,7 +162,7 @@ export const ArrowHeadSelection = ({
             </div>
             {openSelector === SelectorType.ArrowHead && (
                 <div
-                    className={`shadow-custom-1 rounded-lg absolute ${selectorPositionClass} ${selectedHead === 'start' ? 'left-[-10px]' : 'left-[84px]'} w-[75px] bg-white dark:bg-[#383838] ring-1 ring-black ring-opacity-5`}
+                    className={`shadow-custom-1 rounded-lg absolute ${getSelectorPositionClass(expandUp)} ${selectedHead === 'start' ? 'left-[-10px]' : 'left-[84px]'} w-[75px] bg-white dark:bg-[#383838] ring-1 ring-black ring-opacity-5`}
                 >
                     <div className="p-2 grid grid-cols-1 gap-2 w-full text-sm" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                         <Button variant="board" size="default" className="text-xs" onClick={() => handleArrowHeadChange(ArrowHead.None)}>
@@ -177,7 +176,7 @@ export const ArrowHeadSelection = ({
             )}
             {openSelector === SelectorType.ArrowType && (
                 <div
-                    className={`shadow-custom-1 rounded-lg absolute ${selectorPositionClass} left-[126px] w-[75px] bg-white dark:bg-[#383838] ring-1 ring-black ring-opacity-5`}
+                    className={`shadow-custom-1 rounded-lg absolute ${getSelectorPositionClass(expandUp)} left-[126px] w-[75px] bg-white dark:bg-[#383838] ring-1 ring-black ring-opacity-5`}
                 >
                     <div className="p-2 grid grid-cols-1 gap-2 w-full text-sm" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                         <Button variant="board" size="default" onClick={() => handleArrowBodyChange(ArrowType.Straight)}>

@@ -2,9 +2,18 @@ import { Hint } from '@/components/hint';
 import { Button } from '@/components/ui/button';
 import { updateR2Bucket } from '@/lib/r2-bucket-functions';
 import { LayerType, SelectorType } from '@/types/canvas';
-import { ChevronDown, ChevronUp, Bold, Underline, Italic, Strikethrough } from 'lucide-react';
+import { ChevronDown, ChevronUp, Bold, Underline, Italic, Strikethrough, Type } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 import { Socket } from 'socket.io-client';
+import { DEFAULT_FONT, fontFamilies, getSelectorPositionClass } from './selectionToolUtils';
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
 
 interface TextOptionsProps {
     selectedLayers: any;
@@ -32,9 +41,31 @@ export const TextOptions = ({
     layers
 }: TextOptionsProps) => {
     const [inputFontSize, setInputFontSize] = useState(layers[0].textFontSize || 12);
+    const [textStyles, setTextStyles] = useState({
+        bold: false,
+        italic: false,
+        underline: false,
+        strikethrough: false,
+    });
+    const [fontFamily, setFontFamily] = useState(layers[0].fontFamily || DEFAULT_FONT);
+
+    const updateTextStyles = useCallback(() => {
+        setTextStyles({
+            bold: document.queryCommandState('bold'),
+            italic: document.queryCommandState('italic'),
+            underline: document.queryCommandState('underline'),
+            strikethrough: document.queryCommandState('strikethrough'),
+        });
+    }, []);
+
+    useEffect(() => {
+        document.addEventListener('selectionchange', updateTextStyles);
+        return () => document.removeEventListener('selectionchange', updateTextStyles);
+    }, [updateTextStyles]);
 
     useEffect(() => {
         setInputFontSize(layers[0].textFontSize || 12);
+        setFontFamily(layers[0].fontFamily || DEFAULT_FONT);
     }, [layers])
 
     const handleFontSizeChange = (fontSize: number) => {
@@ -109,7 +140,47 @@ export const TextOptions = ({
         }
     }, []);
 
-    const selectorPositionClass = expandUp ? 'bottom-[100%] mb-3' : 'top-[100%] mt-3';
+    const toggleSelector = () => {
+        setOpenSelector(openSelector === SelectorType.TextStyle ? null : SelectorType.TextStyle);
+    };
+
+    const renderStyleButton = (style: 'bold' | 'italic' | 'underline' | 'strikethrough', Icon: any, label: string) => (
+        <Hint label={label} side="bottom">
+            <Button
+                variant="board"
+                size="icon"
+                onClick={() => handleStyleChange(style)}
+                className={`${textStyles[style] ? 'bg-blue-500/20' : ''}`}
+            >
+                <Icon strokeWidth={2} />
+            </Button>
+        </Hint>
+    );
+
+    const handleFontFamilyChange = (newFontFamily: string) => {
+        const newLayers = { ...liveLayers };
+        const updatedIds: string[] = [];
+        const updatedLayers: any[] = [];
+
+        selectedLayers.forEach((layerId: string) => {
+            const layer = newLayers[layerId];
+            newLayers[layerId] = { ...layer, fontFamily: newFontFamily };
+
+            updatedIds.push(layerId);
+            updatedLayers.push({ fontFamily: newFontFamily });
+        });
+
+        if (updatedIds.length > 0) {
+            updateR2Bucket('/api/r2-bucket/updateLayer', boardId, updatedIds, updatedLayers);
+        }
+
+        if (socket) {
+            socket.emit('layer-update', updatedIds, updatedLayers);
+        }
+
+        setLiveLayers(newLayers);
+        setTextStyles(prev => ({ ...prev, fontFamily: newFontFamily }));
+    };
 
     return (
         <div className="relative inline-block text-left">
@@ -125,50 +196,51 @@ export const TextOptions = ({
                         className='h-8 w-8 text-center text-sm bg-transparent'
                     />
                 </div>
-                <div className='flex flex-col pl-3'>
+                <div className='flex flex-col'>
                     <button onClick={() => handleArrowClick('up')}><ChevronUp className="h-4 w-4" /></button>
                     <button onClick={() => handleArrowClick('down')}><ChevronDown className="h-4 w-4" /></button>
                 </div>
-                <Hint label="Bold" side="top">
-                    <Button
-                        variant="board"
-                        size="icon"
-                        onClick={() => handleStyleChange('bold')}
-                    >
-                        <Bold strokeWidth={2} />
-                    </Button>
-                </Hint>
-                <Hint label="Italic" side="top">
-                    <Button
-                        variant="board"
-                        size="icon"
-                        onClick={() => handleStyleChange('italic')}
-                    >
-                        <Italic />
-                    </Button>
-                </Hint>
-                <Hint label="Underline" side="top">
-                    <Button
-                        variant="board"
-                        size="icon"
-                        onClick={() => handleStyleChange('underline')}
-                    >
-                        <Underline />
-                    </Button>
-                </Hint>
-                <Hint label="Strikethrough" side="top">
-                    <Button
-                        variant="board"
-                        size="icon"
-                        onClick={() => handleStyleChange('strikethrough')}
-                    >
-                        <Strikethrough />
-                    </Button>
-                </Hint>
+                <div>
+                    <Hint label="Text Style" side="top">
+                        <Button
+                            variant="board"
+                            size="icon"
+                            onClick={toggleSelector}
+                            className={`flex items-center ${openSelector === SelectorType.TextStyle ? 'bg-blue-500/20' : ''}`}
+                        >
+                            <Type strokeWidth={2} />
+                        </Button>
+                    </Hint>
+
+                    {openSelector === SelectorType.TextStyle && (
+                        <div className="absolute flex flex-row items-center justify-center left-0 mt-2 w-[308px] rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100">
+                            <Select onValueChange={handleFontFamilyChange} value={fontFamily}>
+                                <SelectTrigger className="w-[120px]">
+                                    <SelectValue placeholder={fontFamily} />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectGroup>
+                                        {fontFamilies.map(font => (
+                                            <SelectItem key={font.value} value={font.value} style={{ fontFamily: font.value }}>
+                                                {font.label}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select>
+                            <div className="p-1 space-x-1">
+                                {renderStyleButton('bold', Bold, 'Bold')}
+                                {renderStyleButton('italic', Italic, 'Italic')}
+                                {renderStyleButton('underline', Underline, 'Underline')}
+                                {renderStyleButton('strikethrough', Strikethrough, 'Strikethrough')}
+                            </div>
+                        </div>
+                    )}
+                </div>
             </div>
             {openSelector === SelectorType.FontSize && (
                 <div
-                    className={`shadow-custom-1 rounded-lg absolute ${selectorPositionClass} right-5 w-[55px] bg-white dark:bg-[#272727] ring-1 ring-black ring-opacity-5`}
+                    className={`shadow-custom-1 rounded-lg absolute ${getSelectorPositionClass(expandUp)} w-[55px] bg-white dark:bg-[#272727] ring-1 ring-black ring-opacity-5`}
                 >
                     <div className="py-4 grid grid-cols-1 gap-5 w-full text-xs" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                         {fontSizes.slice(5).map(fontSize => (
