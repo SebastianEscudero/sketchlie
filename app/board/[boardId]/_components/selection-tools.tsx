@@ -1,13 +1,13 @@
 "use client";
 
-import { memo, useCallback, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { BringToFront, Copy, SendToBack, Sparkles, Trash2, WandSparkles } from "lucide-react";
 import { Hint } from "@/components/hint";
 import { Camera, CanvasMode, Color, Layer, LayerType, Presence, SelectorType } from "@/types/canvas";
 import { Button } from "@/components/ui/button";
 import { useSelectionBounds } from "@/hooks/use-selection-bounds";
 import { ColorPicker } from "../selection-tools/color-picker";
-import { FontSizePicker } from "../selection-tools/font-size-picker"
+import { TextOptions } from "../selection-tools/text-options"
 import { Socket } from "socket.io-client";
 import { OutlineColorPicker } from "../selection-tools/outline-color-picker";
 import { ArrowHeadSelection } from "../selection-tools/arrow-head-selection";
@@ -79,6 +79,25 @@ export const SelectionTools = memo(({
   const layers = selectedLayersRef.current.map((id: string) => liveLayers[id]);
   const [initialPosition, setInitialPosition] = useState<{ x: number, y: number } | null>(null);
   const selectionBounds = useSelectionBounds(selectedLayersRef.current, liveLayers);
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [containerWidth, setContainerWidth] = useState(0);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const resizeObserver = new ResizeObserver(entries => {
+      for (let entry of entries) {
+        setContainerWidth(entry.contentRect.width);
+      }
+    });
+
+    resizeObserver.observe(containerRef.current);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     if (canvasState !== CanvasMode.None) {
@@ -389,11 +408,12 @@ export const SelectionTools = memo(({
 
   return (
     <div
+      ref={containerRef}
       className="absolute p-1 rounded-sm bg-white dark:bg-[#272727] border dark:border-zinc-800 shadow-sm flex select-none gap-x-2 items-center pointer-events-auto"
       style={{
         transform: initialPosition
           ? `translate(
-          calc(${initialPosition.x < 220 ? 220 : initialPosition.x + 230 > window.innerWidth ? window.innerWidth - 230 : initialPosition.x}px - 50%),
+          calc(${Math.min(Math.max(initialPosition.x, containerWidth / 2), window.innerWidth - containerWidth / 2)}px - 50%),
           ${initialPosition.y < 130
             ? `calc(${initialPosition.y + selectionBounds.height * zoom + 30}px)`
             : `calc(${initialPosition.y - 30}px - 100%)`
@@ -424,7 +444,7 @@ export const SelectionTools = memo(({
         />
       )}
       {hasText && (
-        <FontSizePicker
+        <TextOptions
           selectedLayers={selectedLayersRef.current}
           setLiveLayers={setLiveLayers}
           liveLayers={liveLayers}

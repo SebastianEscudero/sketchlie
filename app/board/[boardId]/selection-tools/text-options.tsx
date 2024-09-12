@@ -1,10 +1,12 @@
+import { Hint } from '@/components/hint';
+import { Button } from '@/components/ui/button';
 import { updateR2Bucket } from '@/lib/r2-bucket-functions';
 import { LayerType, SelectorType } from '@/types/canvas';
-import { ChevronDown, ChevronUp } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { ChevronDown, ChevronUp, Bold, Underline, Italic, Strikethrough } from 'lucide-react';
+import { useCallback, useEffect, useState } from 'react';
 import { Socket } from 'socket.io-client';
 
-interface FontSizePickerProps {
+interface TextOptionsProps {
     selectedLayers: any;
     setLiveLayers: (layers: any) => void;
     liveLayers: any;
@@ -18,7 +20,7 @@ interface FontSizePickerProps {
 
 const fontSizes = [1, 2, 4, 6, 8, 10, 12, 14, 18, 24, 36, 48, 56, 64, 80, 144];
 
-export const FontSizePicker = ({
+export const TextOptions = ({
     selectedLayers,
     setLiveLayers,
     liveLayers,
@@ -28,7 +30,7 @@ export const FontSizePicker = ({
     setOpenSelector,
     expandUp = false,
     layers
-}: FontSizePickerProps) => {
+}: TextOptionsProps) => {
     const [inputFontSize, setInputFontSize] = useState(layers[0].textFontSize || 12);
 
     useEffect(() => {
@@ -39,37 +41,37 @@ export const FontSizePicker = ({
         const newLayers = { ...liveLayers };
         const updatedIds: any = [];
         const updatedLayers: any = [];
-      
+
         selectedLayers.map((layerId: string) => {
-          const originalFontSize = newLayers[layerId].textFontSize;
-          const scaleFactor = fontSize / originalFontSize;
-          const layer = newLayers[layerId];
-          newLayers[layerId] = { ...layer, textFontSize: fontSize };
-          if (newLayers[layerId].type === LayerType.Text) {
-            newLayers[layerId].width *= scaleFactor;
-            newLayers[layerId].height *= scaleFactor;
-          }
-        
-      
-          updatedIds.push(layerId);
-          updatedLayers.push({
-            textFontSize: fontSize,
-            width: newLayers[layerId].width,
-            height: newLayers[layerId].height,
-          });
+            const originalFontSize = newLayers[layerId].textFontSize;
+            const scaleFactor = fontSize / originalFontSize;
+            const layer = newLayers[layerId];
+            newLayers[layerId] = { ...layer, textFontSize: fontSize };
+            if (newLayers[layerId].type === LayerType.Text) {
+                newLayers[layerId].width *= scaleFactor;
+                newLayers[layerId].height *= scaleFactor;
+            }
+
+
+            updatedIds.push(layerId);
+            updatedLayers.push({
+                textFontSize: fontSize,
+                width: newLayers[layerId].width,
+                height: newLayers[layerId].height,
+            });
         });
-      
+
         if (updatedIds.length > 0) {
             updateR2Bucket('/api/r2-bucket/updateLayer', boardId, updatedIds, updatedLayers);
         }
-      
+
         if (socket) {
-          socket.emit('layer-update', updatedIds, updatedLayers);
+            socket.emit('layer-update', updatedIds, updatedLayers);
         }
-      
+
         setLiveLayers(newLayers);
         setInputFontSize(fontSize);
-      };
+    };
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setInputFontSize(parseInt(event.target.value));
@@ -100,11 +102,18 @@ export const FontSizePicker = ({
         }
     };
 
+    const handleStyleChange = useCallback((style: 'bold' | 'italic' | 'underline' | 'strikethrough') => {
+        const selection = window.getSelection();
+        if (selection && !selection.isCollapsed) {
+            document.execCommand(style, false);
+        }
+    }, []);
+
     const selectorPositionClass = expandUp ? 'bottom-[100%] mb-3' : 'top-[100%] mt-3';
 
     return (
         <div className="relative inline-block text-left">
-            <div className='flex flex-row items center justify-center'>
+            <div className='flex flex-row items-center justify-center space-x-2'>
                 <div onClick={() => setOpenSelector(openSelector === SelectorType.FontSize ? null : SelectorType.FontSize)}>
                     <input
                         id="font-size-menu"
@@ -120,6 +129,42 @@ export const FontSizePicker = ({
                     <button onClick={() => handleArrowClick('up')}><ChevronUp className="h-4 w-4" /></button>
                     <button onClick={() => handleArrowClick('down')}><ChevronDown className="h-4 w-4" /></button>
                 </div>
+                <Hint label="Bold" side="top">
+                    <Button
+                        variant="board"
+                        size="icon"
+                        onClick={() => handleStyleChange('bold')}
+                    >
+                        <Bold strokeWidth={2} />
+                    </Button>
+                </Hint>
+                <Hint label="Italic" side="top">
+                    <Button
+                        variant="board"
+                        size="icon"
+                        onClick={() => handleStyleChange('italic')}
+                    >
+                        <Italic />
+                    </Button>
+                </Hint>
+                <Hint label="Underline" side="top">
+                    <Button
+                        variant="board"
+                        size="icon"
+                        onClick={() => handleStyleChange('underline')}
+                    >
+                        <Underline />
+                    </Button>
+                </Hint>
+                <Hint label="Strikethrough" side="top">
+                    <Button
+                        variant="board"
+                        size="icon"
+                        onClick={() => handleStyleChange('strikethrough')}
+                    >
+                        <Strikethrough />
+                    </Button>
+                </Hint>
             </div>
             {openSelector === SelectorType.FontSize && (
                 <div
