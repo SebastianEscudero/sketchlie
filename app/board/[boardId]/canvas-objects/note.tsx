@@ -171,6 +171,10 @@ export const Note = memo(({
             onChange={handleContentChange}
             onPaste={handlePaste}
             onPointerDown={contentEditablePointerDown}
+            className={cn(
+              "outline-none w-full p-1",
+              font.className
+            )}
             style={{
               fontSize: textFontSize,
               color: fill ? getContrastingTextColor(fill) : "#000",

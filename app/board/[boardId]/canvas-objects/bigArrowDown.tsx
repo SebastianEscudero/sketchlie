@@ -171,12 +171,17 @@ export const BigArrowDown = memo(({
             onChange={handleContentChange}
             onPaste={handlePaste}
             onPointerDown={contentEditablePointerDown}
+            className={cn(
+              "outline-none w-full p-1",
+              font.className
+            )}
             style={{
               fontSize: textFontSize,
               color: fill ? getContrastingTextColor(fill) : "#000",
               textWrap: "wrap",
               WebkitUserSelect: 'auto',
-              textAlign: alignX
+              textAlign: alignX,
+              cursor: focused && 'text',
             }}
             spellCheck={false}
             onDragStart={(e) => e.preventDefault()}
