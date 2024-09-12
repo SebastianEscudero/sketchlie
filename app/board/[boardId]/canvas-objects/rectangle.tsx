@@ -96,7 +96,7 @@ export const Rectangle = memo(({
   const handlePointerDown = (e: React.PointerEvent) => {
     if (focused) {
       e.stopPropagation();
-      e.preventDefault(); 
+      e.preventDefault();
       RectangleRef.current.focus();
     }
 
@@ -175,7 +175,8 @@ export const Rectangle = memo(({
             className={cn(
               "outline-none w-full p-1",
               defaultFont.className
-            )} style={{
+            )}
+            style={{
               fontSize: textFontSize,
               color: fill ? getContrastingTextColor(fill) : "#000",
               textWrap: "wrap",

@@ -1,7 +1,6 @@
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { TextLayer, UpdateLayerMutation } from "@/types/canvas";
 import { cn, colorToCss } from "@/lib/utils";
-import { Kalam } from "next/font/google";
 import { throttle } from 'lodash';
 import { updateR2Bucket } from '@/lib/r2-bucket-functions';
 import { DEFAULT_FONT, defaultFont } from '../selection-tools/selectionToolUtils';
