@@ -9,6 +9,7 @@ import { Button } from "./ui/button";
 import { MoonIcon, SunIcon } from "lucide-react";
 import { themeCheck, themeColors, themeSwitch } from "@/lib/theme-utils";
 import { useEffect, useState } from "react";
+import { Switch } from "@/components/ui/switch";
 
 interface BackgroundMenuProps {
     Background?: string;
@@ -27,12 +28,6 @@ export const BackgroundMenu = ({
     useEffect(() => {
         setTheme(themeCheck());
     }, [])
-
-    const onClick = () => {
-        const newTheme = themeSwitch();
-        setTheme(newTheme);
-        setForcedRender && setForcedRender((prev: any) => !prev);
-    };
 
     return (
         <DropdownMenu>
@@ -62,14 +57,20 @@ export const BackgroundMenu = ({
                         )}
                     </Button>
                 ))}
-                <Button
-                    className="p-3 cursor-pointer w-full justify-start bg-white dark:bg-inherit hover:bg-accent dark:hover:bg-[#2C2C2C]"
-                    variant="ghost"
-                    onClick={onClick}
-                >
-                    Theme
-                    {theme === "dark" ? <MoonIcon className="ml-auto" fill={themeColors.dark} /> : <SunIcon className="ml-auto" fill={themeColors.light} />}
-                </Button>
+                <div className="flex items-center justify-between p-3 pl-4 cursor-pointer">
+                    {theme === "dark" ? (
+                        <MoonIcon className="h-5 w-5 mr-2 text-indigo-400 fill-indigo-400" />
+                    ) : (
+                        <SunIcon className="h-5 w-5 mr-2 text-amber-400 fill-amber-400" />
+                    )}                    <Switch
+                        checked={theme === "dark"}
+                        onCheckedChange={() => {
+                            const newTheme = themeSwitch();
+                            setTheme(newTheme);
+                            setForcedRender && setForcedRender((prev: any) => !prev);
+                        }}
+                    />
+                </div>
             </DropdownMenuContent>
         </DropdownMenu>
     )

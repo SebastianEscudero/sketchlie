@@ -1,28 +1,32 @@
-import { MoonIcon, SunIcon, ToggleLeft, ToggleRight } from "lucide-react";
-import { Button } from "../ui/button";
-import { themeCheck, themeColors, themeSwitch } from "@/lib/theme-utils";
+import { MoonIcon, SunIcon } from "lucide-react";
+import { themeCheck, themeSwitch } from "@/lib/theme-utils";
 import { useEffect, useState } from "react";
+import { Switch } from "@/components/ui/switch";
 
 export const ThemeDropdownMenu = () => {
     const [theme, setTheme] = useState("dark");
 
     useEffect(() => {
         setTheme(themeCheck());
-    },[])
+    }, [])
 
-    const onClick = () => {
+    const handleThemeChange = () => {
         const newTheme = themeSwitch();
         setTheme(newTheme);
     };
 
     return (
-        <Button
-            className="p-5 cursor-pointer w-full justify-start font-normal bg-white dark:bg-inherit hover:bg-accent dark:hover:bg-[#2C2C2C]"
-            variant="ghost"
-            onClick={onClick}
-        >
-            {theme === "dark" ? <MoonIcon className="mr-7" fill={themeColors.dark} /> : <SunIcon className="mr-7" fill={themeColors.light} />}
-            {theme === "dark" ? <ToggleLeft fill={themeColors.dark}/> : <ToggleRight fill={themeColors.light}/>}
-        </Button>
+        <div className="flex items-center p-3 px-[18px] cursor-pointer w-full">
+            {theme === "dark" ? (
+                <MoonIcon className="h-5 w-5 mr-2 text-indigo-400 fill-indigo-400 theme-icon" />
+            ) : (
+                <SunIcon className="h-5 w-5 mr-2 text-amber-400 fill-amber-400 theme-icon" />
+            )}
+            <Switch
+                className="ml-4"
+                checked={theme === "dark"}
+                onCheckedChange={handleThemeChange}
+            />
+        </div>
     );
 };
