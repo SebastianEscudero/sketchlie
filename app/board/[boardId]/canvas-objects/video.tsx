@@ -50,7 +50,7 @@ export const InsertVideo = ({
 
   return (
     <div
-      className="absolute shadow-custom-1 rounded-md"
+      className="absolute"
       style={{
         transform: `translate(${transformedX}px, ${transformedY}px)`,
         width: `${transformedWidth}px`,
@@ -60,7 +60,7 @@ export const InsertVideo = ({
       onPointerUp={() => {setVisibleControls(true)}}
     >
       <video
-        className="h-full w-full rounded-md"
+        className="h-full w-full"
         autoPlay
         loop
         playsInline

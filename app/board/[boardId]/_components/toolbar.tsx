@@ -18,7 +18,7 @@ import {
 
 import { ArrowType, CanvasMode, CanvasState, Color, LayerType, Point } from "@/types/canvas";
 import { ToolButton } from "./tool-button";
-import { ImageButton } from "./image-button";
+import { MediaButton } from "./image-button";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import { LaserIcon } from "@/public/custom-cursors/laser";
 import { Button } from "@/components/ui/button";
@@ -255,7 +255,7 @@ export const Toolbar = ({
             canvasState.layerType === LayerType.Text
           }
         />
-        <ImageButton
+        <MediaButton
           label="Media"
           org={org}
           isUploading={isUploading}

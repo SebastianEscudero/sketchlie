@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useDebounce } from "usehooks-ts";
 import { themeCheck } from "@/lib/theme-utils";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface MediaButtonProps {
     isUploading: boolean;
@@ -30,7 +31,7 @@ interface MediaButtonProps {
     zoom: number;
 };
 
-export const ImageButton = ({
+export const MediaButton = ({
     setIsUploading,
     icon: Icon,
     isActive,
@@ -47,18 +48,60 @@ export const ImageButton = ({
     const inputFileRef = useRef<HTMLInputElement>(null);
     const maxFileSize = org && getMaxImageSize(org) || 0;
     const [isDialogOpen, setIsDialogOpen] = useState(false);
-    const [gifs, setGifs] = useState<any[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
     const debouncedSearchTerm = useDebounce(searchTerm, 500);
     const [isSearching, setIsSearching] = useState(false);
     const [isDragging, setIsDragging] = useState(false);
     const dialogRef = useRef<HTMLDivElement>(null);
     const [theme, setTheme] = useState("dark");
+    const [activeTab, setActiveTab] = useState<"gifs" | "images" | "videos">("gifs");
+    const [searchResults, setSearchResults] = useState<any[]>([]);
     const giphyLogo = theme === "dark" ? "/watermarks/giphy-black.png" : "/watermarks/giphy-white.png";
 
     useEffect(() => {
         setTheme(themeCheck());
-    },[searchTerm])
+    }, [searchTerm])
+
+    useEffect(() => {
+        setSearchResults([]);
+        setSearchTerm("");
+    }, [activeTab]);
+
+    useEffect(() => {
+        const handleSearch = async () => {
+            if (debouncedSearchTerm) {
+                setIsSearching(true);
+                try {
+                    let response;
+                    switch (activeTab) {
+                        case "gifs":
+                            response = await fetch(`/api/media/giphy?q=${encodeURIComponent(debouncedSearchTerm)}`);
+                            break;
+                        case "images":
+                            response = await fetch(`/api/media/pexels/images?q=${encodeURIComponent(debouncedSearchTerm)}`);
+                            break;
+                        case "videos":
+                            response = await fetch(`/api/media/pexels/videos?q=${encodeURIComponent(debouncedSearchTerm)}`);
+                            break;
+                    }
+                    if (!response.ok) {
+                        throw new Error(`Failed to fetch ${activeTab}`);
+                    }
+                    const data = await response.json();
+                    setSearchResults(activeTab === "gifs" ? data.data : data.videos || data.photos);
+                } catch (error) {
+                    console.error('Error:', error);
+                    toast.error(`Failed to search ${activeTab}`);
+                } finally {
+                    setIsSearching(false);
+                }
+            } else {
+                setSearchResults([]);
+            }
+        };
+
+        handleSearch();
+    }, [debouncedSearchTerm, activeTab]);
 
     const handleUpload = useCallback(async (e: React.ChangeEvent<HTMLInputElement> | { target: { files: File[] } }) => {
         setIsUploading(true);
@@ -160,49 +203,49 @@ export const ImageButton = ({
         setIsDialogOpen(true);
     };
 
-    useEffect(() => {
-        const handleGifSearch = async () => {
-            if (debouncedSearchTerm) {
-                setIsSearching(true);
-                try {
-                    const response = await fetch(`/api/giphy?q=${encodeURIComponent(debouncedSearchTerm)}`);
-                    if (!response.ok) {
-                        throw new Error('Failed to fetch GIFs');
-                    }
-                    const data = await response.json();
-                    setGifs(data.data);
-                } catch (error) {
-                    console.error('Error:', error);
-                    toast.error("Failed to search GIFs");
-                } finally {
-                    setIsSearching(false);
-                }
-            } else {
-                setGifs([]);
-            }
-        };
-
-        handleGifSearch();
-    }, [debouncedSearchTerm]);
-
-    const handleGifSelect = async (gif: any) => {
+    const handleMediaSelect = async (media: any) => {
         setIsUploading(true);
 
         try {
-            const info = {
-                url: gif.images.original.url,
-                dimensions: {
-                    width: gif.images.original.width,
-                    height: gif.images.original.height
-                },
-                type: 'image'
-            };
+            let info;
+            switch (activeTab) {
+                case "gifs":
+                    info = {
+                        url: media.images.original.url,
+                        dimensions: {
+                            width: media.images.original.width,
+                            height: media.images.original.height
+                        },
+                        type: 'image'
+                    };
+                    break;
+                case "images":
+                    info = {
+                        url: media.src.original,
+                        dimensions: {
+                            width: media.width,
+                            height: media.height
+                        },
+                        type: 'image'
+                    };
+                    break;
+                case "videos":
+                    info = {
+                        url: media.video_files.find((file: any) => file.quality === 'hd').link,
+                        dimensions: {
+                            width: media.width,
+                            height: media.height
+                        },
+                        type: 'video'
+                    };
+                    break;
+            }
             const centerPoint = getCenterOfScreen(camera, zoom, svgRef);
-            insertMedia(LayerType.Image, centerPoint, info, zoom);
-            toast.success("GIF added successfully");
+            insertMedia(activeTab === "videos" ? LayerType.Video : LayerType.Image, centerPoint, info, zoom);
+            toast.success(`${activeTab.slice(0, -1)} added successfully`);
         } catch (error) {
             console.error('Error:', error);
-            toast.error("Failed to add GIF");
+            toast.error(`Failed to add ${activeTab.slice(0, -1)}`);
         } finally {
             setIsUploading(false);
             setIsDialogOpen(false);
@@ -236,13 +279,20 @@ export const ImageButton = ({
                         </DialogDescription>
                     </DialogHeader>
                     <div className="flex flex-col gap-4">
+                        <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "gifs" | "images" | "videos")}>
+                            <TabsList className="grid w-full grid-cols-3">
+                                <TabsTrigger value="gifs">GIFs</TabsTrigger>
+                                <TabsTrigger value="images">Images</TabsTrigger>
+                                <TabsTrigger value="videos">Videos</TabsTrigger>
+                            </TabsList>
+                        </Tabs>
                         <div className="relative flex items-center">
                             <Search
                                 className="absolute left-3 text-muted-foreground h-4 w-4"
                             />
                             <Input
                                 className="pl-9 pr-10"
-                                placeholder="Search GIFs..."
+                                placeholder={`Search ${activeTab}...`}
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                             />
@@ -261,23 +311,38 @@ export const ImageButton = ({
                                     <div className="absolute inset-0 flex justify-center items-center">
                                         <Loader2 className="w-10 h-10 animate-spin text-blue-600" />
                                     </div>
-                                ) : gifs.length > 0 ? (
+                                ) : searchResults.length > 0 ? (
                                     <div className="grid grid-cols-3 gap-2 p-2">
-                                        {gifs.map((gif) => (
-                                            <img
-                                                key={gif.id}
-                                                src={gif.images.fixed_height_small.url}
-                                                alt={gif.title}
-                                                onClick={() => handleGifSelect(gif)}
-                                                className="cursor-pointer"
-                                            />
+                                        {searchResults.map((item) => (
+                                            activeTab === "videos" ? (
+                                                <video
+                                                    key={item.id}
+                                                    src={item.video_files.find((file: any) => file.quality === 'sd').link}
+                                                    onClick={() => handleMediaSelect(item)}
+                                                    className="cursor-pointer object-cover w-full h-32"
+                                                    muted
+                                                    loop
+                                                    onMouseOver={(e) => e.currentTarget.play()}
+                                                    onMouseOut={(e) => e.currentTarget.pause()}
+                                                />
+                                            ) : (
+                                                <img
+                                                    key={item.id}
+                                                    src={activeTab === "gifs" 
+                                                        ? item.images?.fixed_height_small?.url 
+                                                        : item.src?.medium}
+                                                    alt={activeTab === "gifs" ? item.title : item.alt}
+                                                    onClick={() => handleMediaSelect(item)}
+                                                    className="cursor-pointer object-cover w-full h-32"
+                                                />
+                                            )
                                         ))}
                                     </div>
                                 ) : (
                                     <div className="absolute inset-0 flex flex-col items-center justify-center h-full">
                                         <Search className="w-12 h-12 text-gray-400 mb-2" />
                                         <p className="text-gray-500 mb-4">
-                                            {searchTerm ? `No results for "${searchTerm}"` : "Search images"}
+                                            {searchTerm ? `No results for "${searchTerm}"` : `Search ${activeTab}`}
                                         </p>
                                         <Button onClick={() => inputFileRef.current?.click()} variant="sketchlieBlue">
                                             <Upload className="w-4 h-4 mr-2" />
@@ -287,12 +352,17 @@ export const ImageButton = ({
                                 )}
                             </ScrollArea>
                         </div>
-                        {searchTerm && (
-                            <div className="pt-2 border-t" onDrag={(e) => {e.stopPropagation(), e.preventDefault()}} onDragStart={(e) => {e.stopPropagation(), e.preventDefault()}}>
+                        {activeTab === "gifs" && searchTerm && (
+                            <div className="pt-2 border-t">
                                 <img
                                     src={giphyLogo}
                                     alt="Powered by GIPHY"
                                 />
+                            </div>
+                        )}
+                        {(activeTab === "images" || activeTab === "videos") && searchTerm && (
+                            <div className="pt-2 border-t text-sm text-gray-500">
+                                {activeTab === "images" ? "Photos" : "Videos"} provided by Pexels
                             </div>
                         )}
                     </div>
