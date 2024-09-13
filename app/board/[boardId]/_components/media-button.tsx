@@ -67,6 +67,20 @@ export const MediaButton = ({
         setSearchTerm("");
     }, [activeTab]);
 
+    const getMediaSrc = (item: any) => {
+        switch (activeTab) {
+            case "gifs":
+                return item.images?.fixed_height_small?.url || '';
+            case "images":
+                return item.src?.medium || '';
+            case "videos":
+                const sdVideo = item.video_files?.find((file: any) => file.quality === 'sd');
+                return sdVideo ? sdVideo.link : '';
+            default:
+                return '';
+        }
+    };
+
     useEffect(() => {
         const handleSearch = async () => {
             if (debouncedSearchTerm) {
@@ -242,7 +256,7 @@ export const MediaButton = ({
             }
             const centerPoint = getCenterOfScreen(camera, zoom, svgRef);
             insertMedia(activeTab === "videos" ? LayerType.Video : LayerType.Image, centerPoint, info, zoom);
-            toast.success(`${activeTab.slice(0, -1)} added successfully`);
+            toast.success(`${activeTab.slice(0, -1).charAt(0).toUpperCase() + activeTab.slice(0, -1).slice(1)} added successfully`);
         } catch (error) {
             console.error('Error:', error);
             toast.error(`Failed to add ${activeTab.slice(0, -1)}`);
@@ -313,30 +327,31 @@ export const MediaButton = ({
                                     </div>
                                 ) : searchResults.length > 0 ? (
                                     <div className="grid grid-cols-3 gap-2 p-2">
-                                        {searchResults.map((item) => (
-                                            activeTab === "videos" ? (
-                                                <video
-                                                    key={item.id}
-                                                    src={item.video_files.find((file: any) => file.quality === 'sd').link}
-                                                    onClick={() => handleMediaSelect(item)}
-                                                    className="cursor-pointer object-cover w-full h-32"
-                                                    muted
-                                                    loop
-                                                    onMouseOver={(e) => e.currentTarget.play()}
-                                                    onMouseOut={(e) => e.currentTarget.pause()}
-                                                />
+                                        {searchResults.map((item) => {
+                                            const mediaSrc = getMediaSrc(item);
+                                            return activeTab === "videos" ? (
+                                                mediaSrc ? (
+                                                    <video
+                                                        key={item.id}
+                                                        src={mediaSrc}
+                                                        onClick={() => handleMediaSelect(item)}
+                                                        className="cursor-pointer object-cover w-full h-32"
+                                                        muted
+                                                        loop
+                                                        onMouseOver={(e) => e.currentTarget.play()}
+                                                        onMouseOut={(e) => e.currentTarget.pause()}
+                                                    />
+                                                ) : null
                                             ) : (
                                                 <img
                                                     key={item.id}
-                                                    src={activeTab === "gifs" 
-                                                        ? item.images?.fixed_height_small?.url 
-                                                        : item.src?.medium}
+                                                    src={mediaSrc}
                                                     alt={activeTab === "gifs" ? item.title : item.alt}
                                                     onClick={() => handleMediaSelect(item)}
                                                     className="cursor-pointer object-cover w-full h-32"
                                                 />
-                                            )
-                                        ))}
+                                            );
+                                        })}
                                     </div>
                                 ) : (
                                     <div className="absolute inset-0 flex flex-col items-center justify-center h-full">

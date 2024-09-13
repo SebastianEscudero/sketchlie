@@ -18,7 +18,7 @@ import {
 
 import { ArrowType, CanvasMode, CanvasState, Color, LayerType, Point } from "@/types/canvas";
 import { ToolButton } from "./tool-button";
-import { MediaButton } from "./image-button";
+import { MediaButton } from "./media-button";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import { LaserIcon } from "@/public/custom-cursors/laser";
 import { Button } from "@/components/ui/button";
