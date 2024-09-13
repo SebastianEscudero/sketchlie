@@ -148,6 +148,7 @@ export const CanvasOverlay = ({
         User={User}
         socket={socket}
         expired={expired}
+        board={board}
       />
       <Toolbar
         pathColor={pathColor}

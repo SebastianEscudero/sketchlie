@@ -6,10 +6,10 @@ import { useCurrentUser } from "@/hooks/use-current-user";
 import { Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
 import { useState, useEffect } from "react";
-import { useConvex } from "convex/react";
 import { Loading } from "@/components/auth/loading";
 import { Layers } from "@/types/canvas";
 import { themeCheck } from "@/lib/theme-utils";
+import { useQuery } from "convex/react";
 
 interface BoardIdPageProps {
   params: {
@@ -22,30 +22,14 @@ const BoardIdPage = ({
 }: BoardIdPageProps) => {
 
   const user = useCurrentUser();
-  const [board, setBoard] = useState<{
-    _id: Id<"boards">;
-    _creationTime: number;
-    title: string;
-    orgId: string;
-    authorId: string;
-    authorName: string;
-    imageUrl: string;
-  } | null>(null);
-
-  const convex = useConvex();
+  const board = useQuery(api.board.get, {
+    id: params.boardId as Id<"boards">
+  });
 
   const [layers, setLayers] = useState<Layers | null>(null);
   const [layerIds, setLayerIds] = useState<string[] | null>(null);
 
   useEffect(() => {
-    const fetchBoard = async () => {
-      const fetchedBoard = await convex.query(api.board.get, {
-        id: params.boardId as Id<"boards">
-      });
-      setBoard(fetchedBoard);
-    };
-
-    fetchBoard();
     themeCheck();
 
     const fetchLayers = async () => {
@@ -59,14 +43,6 @@ const BoardIdPage = ({
     }
 
     fetchLayers();
-
-    const handleTitleChange = () => {
-      fetchBoard();
-    };
-    window.addEventListener('boardTitleChanged', handleTitleChange);
-    return () => {
-      window.removeEventListener('boardTitleChanged', handleTitleChange);
-    };
   }, [params]);
 
   if (!user || !board || layers === null || layerIds === null) {

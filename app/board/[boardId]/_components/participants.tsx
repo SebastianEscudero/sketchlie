@@ -6,8 +6,8 @@ import { UserAvatar } from "./user-avatar";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { OrganizationInvite } from "@/components/auth/organization-invite";
-import { UserIcon } from "lucide-react";
 import { UsersDialogBoard } from "./users-dialog-board";
+import { UserPlus } from "lucide-react";
 
 const MAX_SHOWN_USERS = 5;
 
@@ -17,6 +17,7 @@ interface ParticipantsProps {
     org: any;
     socket: any;
     expired: boolean;
+    board: any;
 }
 
 export const Participants = ({
@@ -24,15 +25,16 @@ export const Participants = ({
     User,
     org,
     socket,
-    expired
+    expired,
+    board
 }: ParticipantsProps) => {
 
     const hasMoreUsers = otherUsers && otherUsers.length > MAX_SHOWN_USERS;
 
     return (
-        <div className="absolute h-12 right-0 bg-white dark:bg-[#272727] rounded-bl-lg p-3 flex items-center shadow-custom-1 dark:shadow-custom-3 pointer-events-auto">
+        <div className="border dark:border-zinc-700 shadow-md absolute h-12 right-2 top-2 bg-white dark:bg-[#272727] rounded-lg p-3 flex items-center pointer-events-auto">
             <div className="hidden xs:flex gap-x-2">
-                <UsersDialogBoard 
+                <UsersDialogBoard
                     Me={User}
                     otherUsers={otherUsers}
                     orgId={org.id}
@@ -69,19 +71,16 @@ export const Participants = ({
                 )}
             </div>
             {org && expired !== true && User.information.role === "Admin" && (
-                <Dialog>
-                    <DialogTrigger asChild className="xs:ml-3">
-                        <Button variant="sketchlieBlue" className="h-8 w-24">
-                            <UserIcon className="h-4 w-4 mr-2" />
-                            Invite
-                        </Button>
-                    </DialogTrigger>
-                    <DialogContent className="min-h-[500px] max-h-[90%] w-full max-w-[90%] lg:max-w-[50%] xl:max-w-[40%] overflow-y-auto">
-                        <OrganizationInvite
-                            activeOrganization={org.id}
-                        />
-                    </DialogContent>
-                </Dialog>
+                <OrganizationInvite
+                    activeOrganization={org.id}
+                    isPrivate={board.private}
+                    boardId={board._id}
+                >
+                    <Button variant="sketchlieBlue" className="h-8 w-20 p-1 text-sm font-semibold">
+                        <UserPlus className="h-4 w-4 mr-1" strokeWidth={3} />
+                        Share
+                    </Button>
+                </OrganizationInvite>
             )}
         </div>
     )

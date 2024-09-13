@@ -21,7 +21,7 @@ import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { Button } from "../ui/button";
-import { Ellipsis, LoaderCircle, Settings, User, X, Zap } from "lucide-react";
+import { Ellipsis, LoaderCircle, Settings, User, UserPlus, X, Zap } from "lucide-react";
 import { organizationSettings } from "@/actions/organization-settings";
 import { deleteOrganization } from "@/actions/delete-organization";
 import { DialogClose, DialogTitle } from "../ui/dialog";
@@ -37,7 +37,6 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { InviteButton } from "@/app/dashboard/_components/org-invite-button";
 import { api } from "@/convex/_generated/api";
 import { useApiMutation } from "@/hooks/use-api-mutation";
 import { useQuery } from "convex/react";
@@ -47,8 +46,8 @@ import { toast } from "sonner";
 import { getPlanColor } from "@/lib/orgUtils";
 import { OrgImage } from "./org-image";
 import { Dialog, DialogContent } from "../ui/dialog";
-import axios from "axios";
 import { ScrollArea } from "../ui/scroll-area";
+import { OrganizationInvite } from "./organization-invite";
 
 interface OrganizationSettingsProps {
     activeOrganization: string | null;
@@ -179,9 +178,14 @@ export const OrganizationSettings = ({
                                 <Settings className="w-4 h-4 mr-2" />Settings
                             </Button>
                             {usersRole !== 'Guest' && (
-                                <InviteButton
+                                <OrganizationInvite
                                     activeOrganization={activeOrganization}
-                                />
+                                >
+                                    <Button variant="sketchlieBlue">
+                                        <UserPlus className="h-4 w-4 mr-2" />
+                                        Invite Members
+                                    </Button>
+                                </OrganizationInvite>
                             )}
                         </div>
                     </div>

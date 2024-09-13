@@ -6,7 +6,6 @@ import { Hint } from "@/components/hint";
 import { ChevronsLeft, LayoutTemplate, Menu, Zap } from "lucide-react";
 import { Actions } from "@/components/actions";
 import { useProModal } from "@/hooks/use-pro-modal";
-import { useCurrentUser } from "@/hooks/use-current-user";
 import { toast } from "sonner";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ShowAllTemplates } from "@/app/dashboard/_components/show-all-templates";
@@ -146,9 +145,9 @@ export const Info = ({
     if (!board) return <InfoSkeleton />;
 
     return (
-        <div className="absolute bg-white dark:bg-[#272727] rounded-br-lg px-1 h-12 flex items-center shadow-custom-1 dark:shadow-custom-3 pointer-events-auto">
+        <div className="border dark:border-zinc-700 shadow-md absolute bg-white dark:bg-[#272727] top-2 left-2 rounded-lg p-1 h-12 flex items-center pointer-events-auto">
             <Hint label="Go to Dashboard" side="bottom" sideOffset={10}>
-                <Button asChild variant="board" className="px-2">
+                <Button asChild variant="icon" className="px-2">
                     <Link href="/dashboard/">
                         <ChevronsLeft className="h-5 w-5" />
                     </Link>
@@ -158,7 +157,7 @@ export const Info = ({
                 |
             </div>
             <Hint label="Edit title" side="bottom" sideOffset={10}>
-                <Button disabled={User.information.role !== "Admin"} variant="board" className="text-base px-2 sm:max-w-[100px] md:max-w-[400px] max-w-[80px] overflow-hidden relative sm:flex hidden" onClick={() => setIsRenameModalOpen(true)}>
+                <Button disabled={User.information.role !== "Admin"} variant="icon" className="text-base px-2 sm:max-w-[100px] md:max-w-[400px] max-w-[80px] overflow-hidden relative sm:flex hidden" onClick={() => setIsRenameModalOpen(true)}>
                     <div className="w-full text-left truncate">
                         {board.title}
                     </div>
@@ -195,7 +194,7 @@ export const Info = ({
             >
                 <div className="w-10 flex justify-center items-center">
                     <Hint label="Main menu" side="bottom" sideOffset={10}>
-                        <Button size="icon" variant="board">
+                        <Button size="icon" variant="icon">
                             <Menu />
                         </Button>
                     </Hint>
@@ -217,7 +216,7 @@ export const Info = ({
                                 <Dialog>
                                     <Hint label="Templates" side="bottom" sideOffset={10}>
                                         <DialogTrigger className="justify-center items-center xs:flex hidden" onClick={() => setCanvasState({ mode: CanvasMode.None })}>
-                                            <Button asChild className="h-8 w-8 xs:h-10 xs:w-10 p-2" variant="board">
+                                            <Button asChild className="h-8 w-8 xs:h-10 xs:w-10 p-2" variant="icon">
                                                 <LayoutTemplate className="h-5 w-5" />
                                             </Button>
                                         </DialogTrigger>
@@ -233,7 +232,7 @@ export const Info = ({
                 </>
             )}
             <Hint label="Upgrade" side="bottom" sideOffset={10}>
-                <Button variant="board"
+                <Button variant="icon"
                     size="icon"
                     onClick={() => proModal.onOpen(orgId)}
                 >

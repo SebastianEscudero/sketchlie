@@ -241,11 +241,6 @@ export const togglePrivate = mutation({
       throw new Error("Board not found");
     }
 
-    // Check if the user is the author of the board
-    if (board.authorId !== userId) {
-      throw new Error("Only the board author can change privacy settings");
-    }
-
     // Toggle the private status
     const updatedBoard = await ctx.db.patch(args.id, {
       private: !board.private,

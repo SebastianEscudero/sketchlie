@@ -2,15 +2,15 @@
 
 import { OrganizationSwitcher } from "@/components/auth/org-switcher";
 import { UserButton } from "@/components/auth/user-button";
-import { InviteButton } from "./org-invite-button";
 import { MobileSidebar } from "./mobile-sidebar/mobile-sidebar";
 import { Button } from "@/components/ui/button";
-import { Zap } from "lucide-react";
+import { UserPlus, Zap } from "lucide-react";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { NotificationsMenu } from "./notifications-menu";
 import { NewOrgButton } from "@/components/auth/org-button";
 import { List } from "./sidebar/list";
+import { OrganizationInvite } from "@/components/auth/organization-invite";
 
 interface NavbarProps {
     activeOrganization: string | null;
@@ -38,11 +38,11 @@ export const Navbar = ({
     return (
         <div className="flex flex-wrap items-center gap-x-2 gap-y-2 px-3 py-3 justify-between">
             <div className="hidden lg:flex flex-row space-x-3 p-3 flex-1 overflow-hidden">
-                <NewOrgButton 
+                <NewOrgButton
                     activeOrganization={activeOrganization}
                     setActiveOrganization={setActiveOrganization}
                 />
-                <List 
+                <List
                     activeOrganization={activeOrganization}
                     setActiveOrganization={setActiveOrganization}
                 />
@@ -61,9 +61,14 @@ export const Navbar = ({
                 {activeOrg && (
                     <div className="flex items-center space-x-2">
                         {usersRole === "Admin" && (
-                            <InviteButton
+                            <OrganizationInvite
                                 activeOrganization={activeOrganization}
-                            />
+                            >
+                                <Button variant="sketchlieBlue">
+                                    <UserPlus className="h-4 w-4 mr-2" />
+                                    Invite Members
+                                </Button>
+                            </OrganizationInvite>
                         )}
                         {activeOrg.subscriptionPlan === "Gratis" && (
                             <Button variant="premium" onClick={onClick}>
@@ -80,7 +85,7 @@ export const Navbar = ({
                     </div>
                 )}
                 <div className="xs:mx-2 flex flex-row xs:space-x-4 items-center justify-center">
-                    <NotificationsMenu 
+                    <NotificationsMenu
                         setActiveOrganization={setActiveOrganization}
                     />
                     <UserButton />

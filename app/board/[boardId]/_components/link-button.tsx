@@ -71,7 +71,7 @@ export const LinkButton = ({
             </Hint>
 
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                <DialogContent>
+                <DialogContent className="max-w-[90%] md:max-w-[50%] lg:max-w-[40%] 2xl:max-w-[30%] w-full max-h-[90%] pt-10">
                     <DialogHeader>
                         <DialogTitle>Insert Link</DialogTitle>
                         <DialogDescription>Enter a link to embed</DialogDescription>
