@@ -56,8 +56,6 @@ export const ImageButton = ({
     const [theme, setTheme] = useState("dark");
     const giphyLogo = theme === "dark" ? "/watermarks/giphy-black.png" : "/watermarks/giphy-white.png";
 
-    console.log(giphyLogo);
-
     useEffect(() => {
         setTheme(themeCheck());
     },[searchTerm])
