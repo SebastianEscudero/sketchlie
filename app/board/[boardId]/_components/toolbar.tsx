@@ -3,6 +3,7 @@ import {
   Hand,
   Highlighter,
   Image,
+  Lightbulb,
   Link,
   MousePointer2,
   MoveUpRight,
@@ -28,6 +29,7 @@ import { ShapesMenu } from "./shapes-menu";
 import { PenEraserMenu } from "./pen-eraser-laser-menu";
 import { ArrowMenu } from "./arrow-menu";
 import { LinkButton } from "./link-button";
+import { IconButton } from "./icon-button";
 
 interface ToolbarProps {
   isUploading: boolean;
@@ -265,6 +267,15 @@ export const Toolbar = ({
           camera={camera}
           svgRef={svgRef}
           zoom={zoom}
+        />
+        <IconButton
+          label="Icon"
+          org={org}
+          icon={Lightbulb}
+          camera={camera}
+          svgRef={svgRef}
+          zoom={zoom}
+          insertMedia={insertMedia}
         />
         <LinkButton 
           label="Link"

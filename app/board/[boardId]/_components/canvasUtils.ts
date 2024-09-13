@@ -218,6 +218,7 @@ export const useInsertMedia = (
     position: Point,
     info: any,
     zoom: number,
+    isIcon?: boolean
   ) => {
     const layerId = nanoid();
 
@@ -234,7 +235,7 @@ export const useInsertMedia = (
     }
 
     const aspectRatio = info.dimensions.width / info.dimensions.height;
-    const height = window.innerHeight / (2 * zoom);
+    const height = isIcon ? 100 : window.innerHeight / (2 * zoom);
     const width = height * aspectRatio;
 
     const layer = {
