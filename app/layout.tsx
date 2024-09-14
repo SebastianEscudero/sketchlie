@@ -7,6 +7,7 @@ import { Suspense } from "react";
 import { Loading } from "@/components/auth/loading";
 import { ProModalProvider } from "@/providers/max-layers-provider";
 import { SettingsModalProvider } from "@/providers/settings";
+import { AmplitudeAnalytics } from "@/components/AmplitudeAnalytics";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -38,14 +39,15 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className={`${inter.className}`}>
-      <Suspense fallback={<Loading />}>
-        <ConvexClientProvider>
-          <Toaster />
-          <ProModalProvider />
-          <SettingsModalProvider />
-          {children}
-        </ConvexClientProvider>
-      </Suspense>
+        <AmplitudeAnalytics />
+        <Suspense fallback={<Loading />}>
+          <ConvexClientProvider>
+            <Toaster />
+            <ProModalProvider />
+            <SettingsModalProvider />
+            {children}
+          </ConvexClientProvider>
+        </Suspense>
       </body>
     </html>
   );
