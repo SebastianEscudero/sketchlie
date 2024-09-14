@@ -97,7 +97,6 @@ export const LayerPreview = memo(({
           expired={expired}
           focused={focused}
           boardId={boardId}
-          forcedRender={forcedRender}
         />
       );
     case LayerType.Ellipse:

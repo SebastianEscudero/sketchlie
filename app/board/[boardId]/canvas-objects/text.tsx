@@ -100,11 +100,6 @@ export const Text = memo(({
     }
   }, []);
 
-  useEffect(() => {
-    textRef.current.style.height = `${textFontSize * 1.5}px`;
-    textRef.current.style.height = `${textRef.current.scrollHeight}px`;
-  }, [width, value, id, height, layer, textFontSize]);
-
   const contentEditablePointerDown = (e: React.PointerEvent) => {
     if (focused) {
       e.stopPropagation();
