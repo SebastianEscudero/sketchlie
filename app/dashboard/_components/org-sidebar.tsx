@@ -74,44 +74,48 @@ export const OrgSidebar = ({
 
     return (
         <div className={`${mobile ? '' : 'hidden lg:'}flex flex-col h-full dark:bg-[#2C2C2C] text-black dark:text-white bg-white space-y-2 justify-between w-[240px] px-5 pt-5 select-none border-r dark:border-zinc-500`}>
-          <div className="flex flex-col space-y-4">
-            <SketchlieButton
-                activeOrg={activeOrg}
-            />
-            <OrganizationSwitcher
-                setActiveOrganization={setActiveOrganization}
-                activeOrganization={activeOrganization}
-            />
-            <SearchInput />
-            <div className="space-y-1 w-full">
-                <Button
-                    variant={favorites ? "dashboard" : "dashboardActive"}
-                    asChild
-                    size="lg"
-                    className="justify-start px-2 w-full"
-                >
-                    <Link href="/dashboard/">
-                        <LayoutDashboard className="h-4 w-4 mr-2" />
-                        Team boards
-                    </Link>
-                </Button>
-                <Button
-                    variant={favorites ? "dashboardActive" : "dashboard"}
-                    asChild
-                    size="lg"
-                    className="justify-start px-2 w-full"
-                >
-                    <Link href={{
-                        pathname: "/dashboard/",
-                        query: { favorites: true }
-                    }}>
-                        <Star className="h-4 w-4 mr-2" />
-                        Favorite boards
-                    </Link>
-                </Button>
-                <Dialog>
-                    <div className="rounded-lg flex flex-col justify-between flex-1">
-                        <DialogTrigger asChild className="flex justify-center">
+            <div className="flex flex-col space-y-4">
+                <SketchlieButton
+                    activeOrg={activeOrg}
+                />
+                <OrganizationSwitcher
+                    setActiveOrganization={setActiveOrganization}
+                    activeOrganization={activeOrganization}
+                />
+                <SearchInput />
+                <div className="space-y-1 w-full">
+                    <Button
+                        variant={favorites ? "dashboard" : "dashboardActive"}
+                        asChild
+                        size="lg"
+                        className="justify-start px-2 w-full"
+                    >
+                        <Link href="/dashboard/">
+                            <LayoutDashboard className="h-4 w-4 mr-2" />
+                            Team boards
+                        </Link>
+                    </Button>
+                    <Button
+                        variant={favorites ? "dashboardActive" : "dashboard"}
+                        asChild
+                        size="lg"
+                        className="justify-start px-2 w-full"
+                    >
+                        <Link href={{
+                            pathname: "/dashboard/",
+                            query: { favorites: true }
+                        }}>
+                            <Star className="h-4 w-4 mr-2" />
+                            Favorite boards
+                        </Link>
+                    </Button>
+
+                    <ShowAllTemplates
+                        usersRole={usersRole}
+                        pending={pending}
+                        onClick={onClick}
+                    >
+                        <div className="w-[199px]">
                             <Button
                                 variant="dashboard"
                                 className="justify-start px-2 w-full"
@@ -120,31 +124,23 @@ export const OrgSidebar = ({
                                 <LayoutTemplate className="h-4 w-4 mr-2" />
                                 Templates
                             </Button>
-                        </DialogTrigger>
-                    </div>
-                    <DialogContent className="w-full max-w-[80%] max-h-[85%] xl:max-w-[50%] overflow-y-auto">
-                        <ShowAllTemplates
-                            usersRole={usersRole}
-                            pending={pending}
-                            onClick={onClick}
-                        />
-                    </DialogContent>
-                </Dialog>
-                <NewFolderButton org={activeOrg}>
-                    <Button
-                        variant="dashboard"
-                        asChild
-                        size="lg"
-                        className="justify-start px-2 w-full hover:cursor-pointer"
-                    >
-                        <div className="flex flex-row">
-                            <Folder className="h-4 w-4 mr-2" />
-                            New Folder
                         </div>
-                    </Button>
-                </NewFolderButton>
+                    </ShowAllTemplates>
+                    <NewFolderButton org={activeOrg}>
+                        <Button
+                            variant="dashboard"
+                            asChild
+                            size="lg"
+                            className="justify-start px-2 w-full hover:cursor-pointer"
+                        >
+                            <div className="flex flex-row">
+                                <Folder className="h-4 w-4 mr-2" />
+                                New Folder
+                            </div>
+                        </Button>
+                    </NewFolderButton>
+                </div>
             </div>
-        </div>
             <div className="mt-auto pb-5">
                 {activeOrg && (
                     <SubscriptionPlanDropdown

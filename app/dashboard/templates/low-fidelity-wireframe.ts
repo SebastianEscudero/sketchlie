@@ -3,86 +3,6 @@ export const PlantillaLowFidelityWireframe = {
     image: '/templates/lowfidelity-wireframe.png',
     href: "/plantillas/low-fidelity-wireframe/",
     "layers": {
-        "d5i8mycAgxJa6EzDub2Ry": {
-            "fill": {
-                "a": 1,
-                "b": 255,
-                "g": 255,
-                "r": 255
-            },
-            "height": 306.186113266813,
-            "outlineFill": {
-                "r": 29,
-                "g": 29,
-                "b": 29,
-                "a": 1
-            },
-            "textFontSize": 0,
-            "type": 0,
-            "width": 118.46983129124635,
-            "x": 158.33194606161646,
-            "y": 89.20615537170534
-        },
-        "xatAhRX4bVuatCmjRAHKT": {
-            "fill": {
-                "a": 1,
-                "b": 255,
-                "g": 255,
-                "r": 255
-            },
-            "height": 306.186113266813,
-            "outlineFill": {
-                "r": 29,
-                "g": 29,
-                "b": 29,
-                "a": 1
-            },
-            "textFontSize": 0,
-            "type": 0,
-            "width": 118.46983129124635,
-            "x": 322.677968078518,
-            "y": 89.20615537170534
-        },
-        "Jb2Ui1eRGlzoOIWyhhbXR": {
-            "fill": {
-                "a": 1,
-                "b": 255,
-                "g": 255,
-                "r": 255
-            },
-            "height": 306.186113266813,
-            "outlineFill": {
-                "r": 29,
-                "g": 29,
-                "b": 29,
-                "a": 1
-            },
-            "textFontSize": 0,
-            "type": 0,
-            "width": 118.46983129124635,
-            "x": 478.8807187342212,
-            "y": 89.94645276817835
-        },
-        "bITXxFb8bsOZuEDib0wNl": {
-            "fill": {
-                "a": 1,
-                "b": 255,
-                "g": 255,
-                "r": 255
-            },
-            "height": 306.186113266813,
-            "outlineFill": {
-                "r": 29,
-                "g": 29,
-                "b": 29,
-                "a": 1
-            },
-            "textFontSize": 0,
-            "type": 0,
-            "width": 118.46983129124635,
-            "x": 638.784956372289,
-            "y": 91.42704756112352
-        },
         "YDj8atzUvv44S0bQrqrzw": {
             "fill": {
                 "r": 29,
@@ -90,13 +10,13 @@ export const PlantillaLowFidelityWireframe = {
                 "b": 29,
                 "a": 1
             },
-            "height": 15.573498949084053,
-            "textFontSize": 10.011535038696897,
+            "height": 17.635520930315938,
+            "textFontSize": 12,
             "type": 13,
             "value": "Landing Page",
-            "width": 59.234915645623175,
-            "x": 163.38683390269887,
-            "y": 71.68211943907914
+            "width": 79.76021679111135,
+            "x": 663.2577962967446,
+            "y": 312.03759196242476
         },
         "19toi55Lu9QIxaM7cq9Va": {
             "fill": {
@@ -105,13 +25,13 @@ export const PlantillaLowFidelityWireframe = {
                 "b": 29,
                 "a": 1
             },
-            "height": 15.573498949084053,
-            "textFontSize": 10.011535038696897,
+            "height": 17.94607734320041,
+            "textFontSize": 12,
             "type": 13,
             "value": "Dashboard",
-            "width": 47.92123037004939,
-            "x": 327.27128025219963,
-            "y": 71.04959286297719
+            "width": 61.896460916488294,
+            "x": 825.7493478368206,
+            "y": 313.3336627722924
         },
         "j9rLW9ms8PiU6O0lQugpc": {
             "fill": {
@@ -120,13 +40,13 @@ export const PlantillaLowFidelityWireframe = {
                 "b": 29,
                 "a": 1
             },
-            "height": 15.573498949084053,
-            "textFontSize": 10.011535038696897,
+            "height": 17.44690891097186,
+            "textFontSize": 12,
             "type": 13,
             "value": "About us",
-            "width": 42.25828489187336,
-            "x": 486.9637525802709,
-            "y": 71
+            "width": 53.54035722199342,
+            "x": 986.170385717695,
+            "y": 314.1934195860317
         },
         "731cDu5SQxFQE4gsrj2B1": {
             "fill": {
@@ -135,23 +55,138 @@ export const PlantillaLowFidelityWireframe = {
                 "b": 29,
                 "a": 1
             },
-            "height": 15.573498949084053,
-            "textFontSize": 10.011535038696897,
+            "height": 17.536016452624562,
+            "textFontSize": 12,
             "type": 13,
             "value": "Blog",
-            "width": 22.032961581374643,
-            "x": 646.7438067332128,
-            "y": 73.02253233105023
+            "width": 31.8533341775663,
+            "x": 1143.9504398706367,
+            "y": 316.21595191708195
+        },
+        "eeKZtz3nSB_Ln8KuVR2Gm": {
+            "type": 0,
+            "x": 692.2118711431978,
+            "y": 604.2846002629688,
+            "height": 73.7654531794276,
+            "width": 64.20326480431675,
+            "fill": {
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "value": "a",
+            "outlineFill": {
+                "r": 29,
+                "g": 29,
+                "b": 29,
+                "a": 1
+            },
+            "textFontSize": 9.630489720647512,
+            "alignX": "center",
+            "alignY": "center"
+        },
+        "KOzLn2jBkl8Vy7Q2vTEIb": {
+            "type": 0,
+            "x": 663.2698968978104,
+            "y": 335.01168091561357,
+            "height": 303.6305269759268,
+            "width": 126.66794990406754,
+            "fill": {
+                "r": 255,
+                "g": 255,
+                "b": 255,
+                "a": 1
+            },
+            "value": "",
+            "outlineFill": {
+                "r": 29,
+                "g": 29,
+                "b": 29,
+                "a": 1
+            },
+            "textFontSize": 19.000192485610132,
+            "alignX": "left",
+            "alignY": "top"
+        },
+        "KLaLO8cenC3jmSYpcb3qI": {
+            "type": 0,
+            "x": 820.0175047984134,
+            "y": 335.51839928432906,
+            "height": 303.6305269759268,
+            "width": 126.66794990406754,
+            "fill": {
+                "r": 255,
+                "g": 255,
+                "b": 255,
+                "a": 1
+            },
+            "value": "",
+            "outlineFill": {
+                "r": 29,
+                "g": 29,
+                "b": 29,
+                "a": 1
+            },
+            "textFontSize": 19.000192485610132,
+            "alignX": "left",
+            "alignY": "top"
+        },
+        "fDybi5ranQMc1hOp9mDQb": {
+            "type": 0,
+            "x": 980.0175047984135,
+            "y": 336.51839928432906,
+            "height": 303.6305269759268,
+            "width": 126.66794990406754,
+            "fill": {
+                "r": 255,
+                "g": 255,
+                "b": 255,
+                "a": 1
+            },
+            "value": "",
+            "outlineFill": {
+                "r": 29,
+                "g": 29,
+                "b": 29,
+                "a": 1
+            },
+            "textFontSize": 19.000192485610132,
+            "alignX": "left",
+            "alignY": "top"
+        },
+        "iBjp7KnbhrEYxjCA09nLX": {
+            "type": 0,
+            "x": 1138.0175047984135,
+            "y": 336.51839928432906,
+            "height": 303.6305269759268,
+            "width": 126.66794990406754,
+            "fill": {
+                "r": 255,
+                "g": 255,
+                "b": 255,
+                "a": 1
+            },
+            "value": "",
+            "outlineFill": {
+                "r": 29,
+                "g": 29,
+                "b": 29,
+                "a": 1
+            },
+            "textFontSize": 19.000192485610132,
+            "alignX": "left",
+            "alignY": "top"
         }
     },
     "layerIds": [
-        "d5i8mycAgxJa6EzDub2Ry",
-        "xatAhRX4bVuatCmjRAHKT",
-        "Jb2Ui1eRGlzoOIWyhhbXR",
-        "bITXxFb8bsOZuEDib0wNl",
         "YDj8atzUvv44S0bQrqrzw",
         "19toi55Lu9QIxaM7cq9Va",
         "j9rLW9ms8PiU6O0lQugpc",
-        "731cDu5SQxFQE4gsrj2B1"
+        "731cDu5SQxFQE4gsrj2B1",
+        "KOzLn2jBkl8Vy7Q2vTEIb",
+        "KLaLO8cenC3jmSYpcb3qI",
+        "fDybi5ranQMc1hOp9mDQb",
+        "iBjp7KnbhrEYxjCA09nLX"
     ]
 };

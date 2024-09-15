@@ -20,13 +20,13 @@ export const PlantillaMapaDeProceso = {
             "textFontSize": 0,
             "type": 0,
             "width": 820.874026973954,
-            "x": 529.9584700738068,
-            "y": 361.96765955932466
+            "x": 549.4330343718581,
+            "y": 389.94382049807376
         },
         "I2oKcxYAReswqeTqOiImC": {
             "center": {
-                "x": 940.8507414531741,
-                "y": 451.1062393293852
+                "x": 960.3253057512254,
+                "y": 479.0824002681343
             },
             "endArrowHead": "None",
             "fill": {
@@ -39,15 +39,15 @@ export const PlantillaMapaDeProceso = {
             "startArrowHead": "None",
             "type": 16,
             "width": 820.874026973954,
-            "x": 530.4137279661977,
-            "y": 451.1062393293852,
+            "x": 549.888292264249,
+            "y": 479.0824002681343,
             "startConnectedLayerId": "",
             "endConnectedLayerId": ""
         },
         "x9t6vCwFjM4AdXHdto1gt": {
             "center": {
-                "x": 940.2001299507228,
-                "y": 541.408460559173
+                "x": 959.6746942487741,
+                "y": 569.3846214979221
             },
             "endArrowHead": "None",
             "fill": {
@@ -60,15 +60,15 @@ export const PlantillaMapaDeProceso = {
             "startArrowHead": "None",
             "type": 16,
             "width": 820.874026973954,
-            "x": 529.7631164637457,
-            "y": 541.408460559173,
+            "x": 549.237680761797,
+            "y": 569.3846214979221,
             "startConnectedLayerId": "",
             "endConnectedLayerId": ""
         },
         "gIHdBiLEza9MVlmP0HYsF": {
             "center": {
-                "x": 638.2954095717778,
-                "y": 493.013196081485
+                "x": 657.7699738698291,
+                "y": 520.9893570202341
             },
             "endArrowHead": "None",
             "fill": {
@@ -81,15 +81,15 @@ export const PlantillaMapaDeProceso = {
             "startArrowHead": "None",
             "type": 16,
             "width": -0.06278367474601047,
-            "x": 638.3268014091507,
-            "y": 623.2693629140002,
+            "x": 657.801365707202,
+            "y": 651.2455238527493,
             "startConnectedLayerId": "",
             "endConnectedLayerId": ""
         },
         "B1Jbx6te2qDaWqz9uRvAy": {
             "center": {
-                "x": 712.4133335542339,
-                "y": 453.4707466221463
+                "x": 731.8878978522852,
+                "y": 481.4469075608954
             },
             "endArrowHead": "Triangle",
             "fill": {
@@ -102,15 +102,15 @@ export const PlantillaMapaDeProceso = {
             "startArrowHead": "None",
             "type": 16,
             "width": -0.6172450651414465,
-            "x": 712.7219560868047,
-            "y": 426.09541739125314,
+            "x": 732.196520384856,
+            "y": 454.07157833000224,
             "startConnectedLayerId": "5ftNQt7ad2bFGJKDFEMVp",
             "endConnectedLayerId": "kCquyYLcJYxcN3pJytuB5"
         },
         "frBdvck4zwJx0IEwaMln2": {
             "center": {
-                "x": 791.4326110462425,
-                "y": 502.64281958312125
+                "x": 810.9071753442938,
+                "y": 530.6189805218703
             },
             "endArrowHead": "Triangle",
             "fill": {
@@ -123,15 +123,15 @@ export const PlantillaMapaDeProceso = {
             "startArrowHead": "None",
             "type": 16,
             "width": 74.97718168001143,
-            "x": 753.9440202062368,
-            "y": 502.64467681092395,
+            "x": 773.4185845042881,
+            "y": 530.620837749673,
             "startConnectedLayerId": "kCquyYLcJYxcN3pJytuB5",
             "endConnectedLayerId": "2jWn01HlgFGqxuSlTXgXT"
         },
         "mIVlngmFrvVvpfAwsZ6OF": {
             "center": {
-                "x": 868.3340863155131,
-                "y": 585.3834253052045
+                "x": 887.8086506135644,
+                "y": 613.3595862439536
             },
             "endArrowHead": "None",
             "fill": {
@@ -144,15 +144,15 @@ export const PlantillaMapaDeProceso = {
             "startArrowHead": "None",
             "type": 16,
             "width": 80.27570502217043,
-            "x": 867.6404139525503,
-            "y": 522.0912314641126,
+            "x": 887.1149782506016,
+            "y": 550.0673924028617,
             "startConnectedLayerId": "2jWn01HlgFGqxuSlTXgXT",
             "endConnectedLayerId": "7F9c5c02GssNVLqwCG1qD"
         },
         "sWmWmulEzNsbkwVb2wz1I": {
             "center": {
-                "x": 866.3340863155131,
-                "y": 405.38342530520447
+                "x": 885.8086506135644,
+                "y": 433.3595862439536
             },
             "endArrowHead": "None",
             "fill": {
@@ -165,15 +165,15 @@ export const PlantillaMapaDeProceso = {
             "startArrowHead": "None",
             "type": 16,
             "width": 74.49122847457647,
-            "x": 867.2029340510743,
-            "y": 482.6793095214408,
+            "x": 886.6774983491256,
+            "y": 510.6554704601899,
             "startConnectedLayerId": "2jWn01HlgFGqxuSlTXgXT",
             "endConnectedLayerId": "fauFMOWRolfD7PvEBZgQr"
         },
         "lpipJSiaULPPwEQKpQ68D": {
             "center": {
-                "x": 1060.0599720246742,
-                "y": 404.96110393743487
+                "x": 1079.5345363227254,
+                "y": 432.937264876184
             },
             "endArrowHead": "Triangle",
             "fill": {
@@ -186,15 +186,15 @@ export const PlantillaMapaDeProceso = {
             "startArrowHead": "None",
             "type": 16,
             "width": 68.69973611867567,
-            "x": 1025.7101039653367,
-            "y": 404.9235936989398,
+            "x": 1045.184668263388,
+            "y": 432.8997546376889,
             "startConnectedLayerId": "fauFMOWRolfD7PvEBZgQr",
             "endConnectedLayerId": "4StI62XCpIdWpLvWb7CDN"
         },
         "p2t32f31WjQ99HdTJYp1V": {
             "center": {
-                "x": 1243.3340863155126,
-                "y": 405.38342530520447
+                "x": 1262.808650613564,
+                "y": 433.3595862439536
             },
             "endArrowHead": "Triangle",
             "fill": {
@@ -207,15 +207,15 @@ export const PlantillaMapaDeProceso = {
             "startArrowHead": "None",
             "type": 16,
             "width": 65.85293021599057,
-            "x": 1178.4257815236983,
-            "y": 405.3103647369476,
+            "x": 1197.9003458217496,
+            "y": 433.2865256756967,
             "startConnectedLayerId": "4StI62XCpIdWpLvWb7CDN",
             "endConnectedLayerId": "MGIBuUEe10Q7HSsbhtFRQ"
         },
         "hegybMqzvliRl1CRq1JLO": {
             "center": {
-                "x": 1118.918558290843,
-                "y": 585.0646162012757
+                "x": 1138.3931225888944,
+                "y": 613.0407771400248
             },
             "endArrowHead": "Triangle",
             "fill": {
@@ -228,8 +228,8 @@ export const PlantillaMapaDeProceso = {
             "startArrowHead": "None",
             "type": 16,
             "width": 173.97299575287366,
-            "x": 1031.9320604144064,
-            "y": 585.9198211589177,
+            "x": 1051.4066247124576,
+            "y": 613.8959820976668,
             "startConnectedLayerId": "7F9c5c02GssNVLqwCG1qD",
             "endConnectedLayerId": "MGIBuUEe10Q7HSsbhtFRQ"
         },
@@ -240,8 +240,8 @@ export const PlantillaMapaDeProceso = {
             "type": 15,
             "opacity": 1,
             "width": 42.422430334571175,
-            "x": 564.3516722338549,
-            "y": 380.40218877176625
+            "x": 583.8262365319061,
+            "y": 408.37834971051535
         },
         "zXHK5wiHkWCZfCWktg0u5": {
             "fill": null,
@@ -250,8 +250,8 @@ export const PlantillaMapaDeProceso = {
             "type": 15,
             "opacity": 1,
             "width": 37.473146795537886,
-            "x": 567.1798342561597,
-            "y": 468.0752114632136
+            "x": 586.654398554211,
+            "y": 496.0513724019627
         },
         "7EFW5vdJtKPd1Q2st6Ldz": {
             "fill": null,
@@ -260,8 +260,8 @@ export const PlantillaMapaDeProceso = {
             "type": 15,
             "opacity": 1,
             "width": 33.93794426765696,
-            "x": 570.0079962784641,
-            "y": 558.5763961769654
+            "x": 589.4825605765154,
+            "y": 586.5525571157145
         },
         "yqDQbMGijLSNnc6uiNH7N": {
             "fill": {
@@ -270,43 +270,13 @@ export const PlantillaMapaDeProceso = {
                 "b": 29,
                 "a": 1
             },
-            "height": 26.160498706318926,
-            "textFontSize": 16.9689721338285,
+            "height": 21.234873233241245,
+            "textFontSize": 14,
             "type": 13,
             "value": "Usuario",
-            "width": 56.209720193306836,
-            "x": 556.9277469253045,
-            "y": 424.9457406230663
-        },
-        "nwWfcBoUHCJcAP6R9pEyx": {
-            "fill": {
-                "r": 29,
-                "g": 29,
-                "b": 29,
-                "a": 1
-            },
-            "height": 26.160498706318926,
-            "textFontSize": 16.9689721338285,
-            "type": 13,
-            "value": "Software",
-            "width": 66.28504739776751,
-            "x": 553.2157842710301,
-            "y": 510.85116205057295
-        },
-        "7yjowk1rVt81vXfcWBIr2": {
-            "fill": {
-                "r": 29,
-                "g": 29,
-                "b": 29,
-                "a": 1
-            },
-            "height": 26.160498706318926,
-            "textFontSize": 16.9689721338285,
-            "type": 13,
-            "value": "Ventas",
-            "width": 56.209720193306836,
-            "x": 560.2861893267919,
-            "y": 593.5749012029866
+            "width": 67.60987323324119,
+            "x": 572.4023112233558,
+            "y": 451.9219015618154
         },
         "G6Ef6ESB5Cd5dUV9O2lOY": {
             "fill": {
@@ -320,8 +290,8 @@ export const PlantillaMapaDeProceso = {
             "type": 13,
             "value": "Mapa de Procesos",
             "width": 268.67539211895087,
-            "x": 809.7696739623827,
-            "y": 279.9974876964087
+            "x": 829.244238260434,
+            "y": 307.9736486351578
         },
         "5ftNQt7ad2bFGJKDFEMVp": {
             "fill": {
@@ -340,8 +310,8 @@ export const PlantillaMapaDeProceso = {
             "textFontSize": 8.48448606691425,
             "type": 0,
             "width": 84.01594143968612,
-            "x": 671.0292923024683,
-            "y": 383.0478230880643,
+            "x": 690.5038566005196,
+            "y": 411.0239840268134,
             "connectedArrows": [
                 "B1Jbx6te2qDaWqz9uRvAy"
             ],
@@ -364,8 +334,8 @@ export const PlantillaMapaDeProceso = {
             "textFontSize": 8.48448606691425,
             "type": 0,
             "width": 84.01594143968612,
-            "x": 669.9280787665507,
-            "y": 480.8460758530394,
+            "x": 689.402643064602,
+            "y": 508.8222367917885,
             "connectedArrows": [
                 "B1Jbx6te2qDaWqz9uRvAy",
                 "frBdvck4zwJx0IEwaMln2"
@@ -389,8 +359,8 @@ export const PlantillaMapaDeProceso = {
             "textFontSize": 8.48448606691425,
             "type": 0,
             "width": 84.01594143968612,
-            "x": 941.6941625256509,
-            "y": 383.5725172240459,
+            "x": 961.1687268237022,
+            "y": 411.548678162795,
             "connectedArrows": [
                 "sWmWmulEzNsbkwVb2wz1I",
                 "lpipJSiaULPPwEQKpQ68D"
@@ -414,8 +384,8 @@ export const PlantillaMapaDeProceso = {
             "textFontSize": 8.48448606691425,
             "type": 0,
             "width": 84.01594143968612,
-            "x": 1094.409840084012,
-            "y": 383.73928355564453,
+            "x": 1113.8844043820634,
+            "y": 411.71544449439364,
             "connectedArrows": [
                 "lpipJSiaULPPwEQKpQ68D",
                 "p2t32f31WjQ99HdTJYp1V"
@@ -439,8 +409,8 @@ export const PlantillaMapaDeProceso = {
             "textFontSize": 8.48448606691425,
             "type": 0,
             "width": 84.01594143968612,
-            "x": 947.9161189747206,
-            "y": 564.7869988032224,
+            "x": 967.3906832727719,
+            "y": 592.7631597419715,
             "connectedArrows": [
                 "hegybMqzvliRl1CRq1JLO",
                 "mIVlngmFrvVvpfAwsZ6OF"
@@ -464,8 +434,8 @@ export const PlantillaMapaDeProceso = {
             "textFontSize": 8.48448606691425,
             "type": 0,
             "width": 77.00647574586431,
-            "x": 1205.9050561672802,
-            "y": 562.2869988032224,
+            "x": 1225.3796204653315,
+            "y": 590.2631597419715,
             "connectedArrows": [
                 "p2t32f31WjQ99HdTJYp1V",
                 "hegybMqzvliRl1CRq1JLO"
@@ -489,14 +459,44 @@ export const PlantillaMapaDeProceso = {
             "textFontSize": 8.48448606691425,
             "type": 0,
             "width": 77.00647574586424,
-            "x": 828.9212018862482,
-            "y": 482.6793095214408,
+            "x": 848.3957661842995,
+            "y": 510.6554704601899,
             "connectedArrows": [
                 "frBdvck4zwJx0IEwaMln2",
                 "sWmWmulEzNsbkwVb2wz1I",
                 "mIVlngmFrvVvpfAwsZ6OF"
             ],
             "value": ""
+        },
+        "V01lxn_YB3qMBBXbPYcFq": {
+            "fill": {
+                "r": 29,
+                "g": 29,
+                "b": 29,
+                "a": 1
+            },
+            "height": 21,
+            "textFontSize": 14,
+            "type": 13,
+            "value": "Software",
+            "width": 67.60987323324119,
+            "x": 570.1950633833794,
+            "y": 542.3825633833794
+        },
+        "6tb9fe3ASBRtLGGh-5Z8a": {
+            "fill": {
+                "r": 29,
+                "g": 29,
+                "b": 29,
+                "a": 1
+            },
+            "height": 21,
+            "textFontSize": 14,
+            "type": 13,
+            "value": "Ventas",
+            "width": 67.60987323324119,
+            "x": 569.1950633833794,
+            "y": 626.3825633833794
         }
     },
     "layerIds": [
@@ -515,8 +515,6 @@ export const PlantillaMapaDeProceso = {
         "zXHK5wiHkWCZfCWktg0u5",
         "7EFW5vdJtKPd1Q2st6Ldz",
         "yqDQbMGijLSNnc6uiNH7N",
-        "nwWfcBoUHCJcAP6R9pEyx",
-        "7yjowk1rVt81vXfcWBIr2",
         "G6Ef6ESB5Cd5dUV9O2lOY",
         "5ftNQt7ad2bFGJKDFEMVp",
         "kCquyYLcJYxcN3pJytuB5",
@@ -524,6 +522,8 @@ export const PlantillaMapaDeProceso = {
         "4StI62XCpIdWpLvWb7CDN",
         "7F9c5c02GssNVLqwCG1qD",
         "MGIBuUEe10Q7HSsbhtFRQ",
-        "2jWn01HlgFGqxuSlTXgXT"
+        "2jWn01HlgFGqxuSlTXgXT",
+        "V01lxn_YB3qMBBXbPYcFq",
+        "6tb9fe3ASBRtLGGh-5Z8a"
     ]
 };

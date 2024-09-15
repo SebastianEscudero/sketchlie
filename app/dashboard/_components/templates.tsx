@@ -48,15 +48,15 @@ export const Templates = ({
                     userId: user.id,
                     userName: user.name,
                 });
-    
+
                 // Get the screen dimensions
                 const screenWidth = window.innerWidth;
                 const screenHeight = window.innerHeight;
-    
+
                 // Calculate the center of the screen
                 const screenCenterX = screenWidth / 2;
                 const screenCenterY = screenHeight / 2;
-    
+
                 // Find the bounding box of all layers
                 let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
                 Object.values(templateLayers).forEach(layer => {
@@ -65,15 +65,15 @@ export const Templates = ({
                     maxX = Math.max(maxX, layer.x + layer.width);
                     maxY = Math.max(maxY, layer.y + layer.height);
                 });
-    
+
                 // Calculate the center of the layers
                 const layersCenterX = (minX + maxX) / 2;
                 const layersCenterY = (minY + maxY) / 2;
-    
+
                 // Calculate the offset to center the layers
                 const offsetX = screenCenterX - layersCenterX;
                 const offsetY = screenCenterY - layersCenterY;
-    
+
                 // Adjust the position of each layer
                 const centeredLayers = Object.fromEntries(
                     Object.entries(templateLayers).map(([id, layer]) => [
@@ -82,7 +82,7 @@ export const Templates = ({
                             ...layer,
                             x: layer.x + offsetX,
                             y: layer.y + offsetY,
-                            ...( (layer.type === LayerType.Arrow || layer.type === LayerType.Line) && layer.center && {
+                            ...((layer.type === LayerType.Arrow || layer.type === LayerType.Line) && layer.center && {
                                 center: {
                                     x: layer.center.x + offsetX,
                                     y: layer.center.y + offsetY,
@@ -135,20 +135,15 @@ export const Templates = ({
                         </div>
                     ))}
                 </div>
-                <Dialog>
-                    <div className="rounded-lg flex flex-col justify-between ml-2 flex-1">
-                        <DialogTrigger className="flex justify-center">
-                            <ChevronsDown className="h-6 w-6 text-black dark:text-white" />
-                        </DialogTrigger>
+                <ShowAllTemplates
+                    usersRole={usersRole}
+                    pending={pending}
+                    onClick={onClick}
+                >
+                    <div className="rounded-lg flex flex-col justify-between ml-2 flex-1 h-full">
+                        <ChevronsDown className="h-6 w-6 text-blue-600 dark:text-blue-300" />
                     </div>
-                    <DialogContent className="w-full max-w-[80%] max-h-[85%] h-full xl:max-w-[50%]">
-                        <ShowAllTemplates
-                            usersRole={usersRole}
-                            pending={pending}
-                            onClick={onClick}
-                        />
-                    </DialogContent>
-                </Dialog>
+                </ShowAllTemplates>
             </div>
         </div>
     )

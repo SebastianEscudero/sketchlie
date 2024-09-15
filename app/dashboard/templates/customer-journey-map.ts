@@ -22,8 +22,8 @@ export const PlantillaCustomerJourneyMap = {
       "textFontSize": 5.289407524823344,
       "type": 0,
       "width": 814.1318477846547,
-      "x": 85.56160874478314,
-      "y": 30.168858657268302
+      "x": 552.9340761076726,
+      "y": 224.42668348434148
     },
     "lXzISRwleSfIQ1dOHxazp": {
       "alignX": "center",
@@ -44,8 +44,8 @@ export const PlantillaCustomerJourneyMap = {
       "textFontSize": 5.289407524823344,
       "type": 0,
       "width": 681.3502631996089,
-      "x": 199.95601196926265,
-      "y": 113.25606397768821
+      "x": 667.3284793321521,
+      "y": 307.5138888047614
     },
     "UAgXLWwKJ8pHa5mG4NnUb": {
       "alignX": "center",
@@ -66,8 +66,8 @@ export const PlantillaCustomerJourneyMap = {
       "textFontSize": 5.289407524823344,
       "type": 0,
       "width": 111.98534250032857,
-      "x": 106.82287155391407,
-      "y": 188.63627232578466
+      "x": 574.1953389168036,
+      "y": 382.89409715285785
     },
     "P5emIf9o6GJqZ2wBSTfel": {
       "alignX": "center",
@@ -88,13 +88,13 @@ export const PlantillaCustomerJourneyMap = {
       "textFontSize": 5.289407524823344,
       "type": 0,
       "width": 111.98534250032857,
-      "x": 106.80411477435896,
-      "y": 113.22907709695927
+      "x": 574.1765821372485,
+      "y": 307.48690192403245
     },
     "1CoSrwjvQKdJ2HqFhTqNQ": {
       "center": {
-        "x": 493.7023720896025,
-        "y": 255.80899441226734
+        "x": 961.0748394524919,
+        "y": 450.06681923934053
       },
       "fill": {
         "a": 1,
@@ -105,13 +105,13 @@ export const PlantillaCustomerJourneyMap = {
       "height": -0.43604996530807,
       "type": 11,
       "width": 773.9580083678542,
-      "x": 106.72336790567367,
-      "y": 256.02701939492096
+      "x": 574.0958352685632,
+      "y": 450.28484422199415
     },
     "UYmgj7xF46fW33FioTteT": {
       "center": {
-        "x": 493.9417598675802,
-        "y": 319.5851834875927
+        "x": 961.3142272304697,
+        "y": 513.8430083146659
       },
       "fill": {
         "a": 1,
@@ -122,13 +122,13 @@ export const PlantillaCustomerJourneyMap = {
       "height": -0.04791645285205921,
       "type": 11,
       "width": 773.7913496365439,
-      "x": 107.04608504930589,
-      "y": 319.609141714019
+      "x": 574.4185524121954,
+      "y": 513.8669665410922
     },
     "3aTDgZSa8aGUMPNQVCP9U": {
       "center": {
-        "x": 493.7227113306802,
-        "y": 382.2363920972774
+        "x": 961.0951786935698,
+        "y": 576.4942169243507
       },
       "fill": {
         "a": 1,
@@ -139,13 +139,13 @@ export const PlantillaCustomerJourneyMap = {
       "height": 0.4948131563267325,
       "type": 11,
       "width": 773.9173298856991,
-      "x": 106.76404638783015,
-      "y": 381.988985519114
+      "x": 574.1365137507196,
+      "y": 576.2468103461872
     },
     "JAeGJFj6FjLgUJbX5dSvT": {
       "center": {
-        "x": 881.3144951758197,
-        "y": 317.8440313198527
+        "x": 1348.6869625387092,
+        "y": 512.1018561469259
       },
       "fill": {
         "a": 1,
@@ -156,13 +156,13 @@ export const PlantillaCustomerJourneyMap = {
       "height": 408.34452698338896,
       "type": 11,
       "width": -0.31922790611167784,
-      "x": 881.4741091288756,
-      "y": 113.67176782815822
+      "x": 1348.846576491765,
+      "y": 307.92959265523143
     },
     "3rgzRrbTYWlIeqcD4M68k": {
       "center": {
-        "x": 494.6475667582353,
-        "y": 522.018934387034
+        "x": 962.0200341211248,
+        "y": 716.2767592141072
       },
       "fill": {
         "a": 1,
@@ -173,13 +173,13 @@ export const PlantillaCustomerJourneyMap = {
       "height": 0.17107849450493332,
       "type": 11,
       "width": 771.4589402780557,
-      "x": 108.91809661920612,
-      "y": 521.9333951397822
+      "x": 576.2905639820956,
+      "y": 716.1912199668554
     },
     "VYfcFGaNmTm1JbvMoLiWR": {
       "center": {
-        "x": 494.20855369667896,
-        "y": 447.75023558495695
+        "x": 961.5810210595685,
+        "y": 642.0080604120301
       },
       "fill": {
         "a": 1,
@@ -190,8 +190,8 @@ export const PlantillaCustomerJourneyMap = {
       "height": 0.4948131563267325,
       "type": 11,
       "width": 773.9173298856991,
-      "x": 107.24988875382918,
-      "y": 447.50282900679366
+      "x": 574.6223561167187,
+      "y": 641.7606538338669
     },
     "xA5zMOhAIJ3oIbaFsgTNP": {
       "fill": {
@@ -205,8 +205,8 @@ export const PlantillaCustomerJourneyMap = {
       "type": 13,
       "value": "Journey Steps",
       "width": 75.3119145292609,
-      "x": 126.55502997889008,
-      "y": 142.9367042315977
+      "x": 593.9274973417796,
+      "y": 337.1945290586709
     },
     "ikf33KCPAX3fsfVrDH9Ul": {
       "fill": {
@@ -220,8 +220,8 @@ export const PlantillaCustomerJourneyMap = {
       "type": 13,
       "value": "User Actions",
       "width": 63.733503377220195,
-      "x": 132.65550382892076,
-      "y": 214.1782436349855
+      "x": 600.0279711918103,
+      "y": 408.4360684620587
     },
     "GTfeQVNdyyPJkHeTLVEml": {
       "fill": {
@@ -235,8 +235,8 @@ export const PlantillaCustomerJourneyMap = {
       "type": 13,
       "value": "Touchpoints",
       "width": 63.733503377220195,
-      "x": 130.9282344139955,
-      "y": 279.48414207857167
+      "x": 598.300701776885,
+      "y": 473.74196690564486
     },
     "BOzxlZomgcj9QYGLdZhNs": {
       "fill": {
@@ -250,8 +250,8 @@ export const PlantillaCustomerJourneyMap = {
       "type": 13,
       "value": "Pain Points",
       "width": 63.733503377220195,
-      "x": 130.33459790107952,
-      "y": 342.44764102785825
+      "x": 597.7070652639691,
+      "y": 536.7054658549314
     },
     "wjxfOsQ1GlpwicOcGrTGV": {
       "fill": {
@@ -265,8 +265,8 @@ export const PlantillaCustomerJourneyMap = {
       "type": 13,
       "value": "Emotions",
       "width": 63.733503377220195,
-      "x": 131.08545161246252,
-      "y": 406.3650695817883
+      "x": 598.457918975352,
+      "y": 600.6228944088615
     },
     "hqDccXm71cl8ACLDw1CLW": {
       "fill": {
@@ -280,13 +280,13 @@ export const PlantillaCustomerJourneyMap = {
       "type": 13,
       "value": "Ideas",
       "width": 31.446885353786126,
-      "x": 144.08759959936037,
-      "y": 476.41114044546265
+      "x": 611.4600669622498,
+      "y": 670.6689652725358
     },
     "KUjG4wQRWrgmodqwnvJvI": {
       "center": {
-        "x": 345.17438504228613,
-        "y": 317.660633403191
+        "x": 812.5468524051756,
+        "y": 511.9184582302642
       },
       "fill": {
         "a": 1,
@@ -297,13 +297,13 @@ export const PlantillaCustomerJourneyMap = {
       "height": 407.926091803854,
       "type": 11,
       "width": -0.8797145221104188,
-      "x": 345.6142423033413,
-      "y": 113.69758750126405
+      "x": 812.9867096662308,
+      "y": 307.9554123283373
     },
     "HjN7dZmjLhkLM3UUZdM5y": {
       "center": {
-        "x": 475.44472222743224,
-        "y": 317.8467462414368
+        "x": 942.8171895903217,
+        "y": 512.10457106851
       },
       "fill": {
         "a": 1,
@@ -314,13 +314,13 @@ export const PlantillaCustomerJourneyMap = {
       "height": 408.55513340274547,
       "type": 11,
       "width": -0.8105546164181874,
-      "x": 475.8499995356413,
-      "y": 113.56917954006406
+      "x": 943.2224668985308,
+      "y": 307.82700436713725
     },
     "0c477UbMaBtIMRUHfNuny": {
       "center": {
-        "x": 600.4087777498235,
-        "y": 318.332375782694
+        "x": 1067.781245112713,
+        "y": 512.5902006097672
       },
       "fill": {
         "a": 1,
@@ -331,13 +331,13 @@ export const PlantillaCustomerJourneyMap = {
       "height": 407.66439738525986,
       "type": 11,
       "width": -0.641386611635653,
-      "x": 600.7294710556414,
-      "y": 114.50017709006404
+      "x": 1068.1019384185308,
+      "y": 308.7580019171372
     },
     "wKRhlCUZWs8f18nP1Odwt": {
       "center": {
-        "x": 736.7925838642532,
-        "y": 318.14939817118733
+        "x": 1204.1650512271426,
+        "y": 512.4072229982605
       },
       "fill": {
         "a": 1,
@@ -348,8 +348,8 @@ export const PlantillaCustomerJourneyMap = {
       "height": 406.87510753636366,
       "type": 11,
       "width": -0.8169562677597924,
-      "x": 737.2010619981331,
-      "y": 114.7118444030055
+      "x": 1204.5735293610226,
+      "y": 308.9696692300787
     },
     "vFQOU3iu1PdTbSpBBx4sr": {
       "fill": {
@@ -363,8 +363,8 @@ export const PlantillaCustomerJourneyMap = {
       "type": 13,
       "value": "Stage 1\n Awarness",
       "width": 70.55570735860672,
-      "x": 243.39219407327624,
-      "y": 132.62457329744316
+      "x": 710.7646614361657,
+      "y": 328.7451620936938
     },
     "ZF5B0tLnxHGmooOjdluJQ": {
       "fill": {
@@ -373,13 +373,13 @@ export const PlantillaCustomerJourneyMap = {
         "g": 29,
         "r": 29
       },
-      "height": 24,
-      "textFontSize": 7.93411128723501,
+      "height": 12,
+      "textFontSize": 8.015410085611963,
       "type": 13,
       "value": "Stage 2\nConsideration",
-      "width": 70.55570735860672,
-      "x": 374.2978317718397,
-      "y": 133.06668731698704
+      "width": 79.97157207376932,
+      "x": 840.428456488611,
+      "y": 327.9454334671194
     },
     "I3bUbORVMpTWPHxEoQGat": {
       "fill": {
@@ -393,8 +393,8 @@ export const PlantillaCustomerJourneyMap = {
       "type": 13,
       "value": "Stage 3\nDecision",
       "width": 70.55570735860672,
-      "x": 499.1902258436721,
-      "y": 134.40243484716675
+      "x": 966.5626932065616,
+      "y": 328.6602596742399
     },
     "5EytTtod95iJno4KucPEn": {
       "fill": {
@@ -408,8 +408,8 @@ export const PlantillaCustomerJourneyMap = {
       "type": 13,
       "value": "Stage 4\n Delivery & Use",
       "width": 84.03263853087384,
-      "x": 622.0789986202415,
-      "y": 134.40243484716711
+      "x": 1089.451465983131,
+      "y": 328.6602596742403
     },
     "yBkeOBdD0wY6s5AH6Kpdh": {
       "fill": {
@@ -423,8 +423,8 @@ export const PlantillaCustomerJourneyMap = {
       "type": 13,
       "value": "Stage 5\nAdvocacy",
       "width": 70.5400282219406,
-      "x": 772.1978015799141,
-      "y": 135.72795982444038
+      "x": 1239.5702689428035,
+      "y": 329.98578465151354
     },
     "M395iplq6VVFeOPuTXfaz": {
       "fill": null,
@@ -432,8 +432,8 @@ export const PlantillaCustomerJourneyMap = {
       "src": "https://sketchlie.s3.us-east-2.amazonaws.com/laptop.svg",
       "type": 15,
       "width": 20.41256864173232,
-      "x": 259.34250904074537,
-      "y": 280.6913791428887
+      "x": 726.7149764036349,
+      "y": 474.9492039699619
     },
     "EVSWbjOxoQtiAhmqDgS25": {
       "fill": null,
@@ -441,8 +441,8 @@ export const PlantillaCustomerJourneyMap = {
       "src": "https://sketchlie.s3.us-east-2.amazonaws.com/smartphone.svg",
       "type": 15,
       "width": 19.176864837297114,
-      "x": 292.8680976199723,
-      "y": 281.24163325830534
+      "x": 760.2405649828618,
+      "y": 475.49945808537854
     },
     "lvoOrYQYmFjRz6GHeqbjq": {
       "fill": null,
@@ -450,8 +450,8 @@ export const PlantillaCustomerJourneyMap = {
       "src": "https://sketchlie.s3.us-east-2.amazonaws.com/smartphone.svg",
       "type": 15,
       "width": 19.176864837297114,
-      "x": 417.3496962199906,
-      "y": 283.6304448683484
+      "x": 884.7221635828801,
+      "y": 477.88826969542157
     },
     "HG31WFFtqezt2lukjRJ4Q": {
       "fill": null,
@@ -459,8 +459,8 @@ export const PlantillaCustomerJourneyMap = {
       "src": "https://sketchlie.s3.us-east-2.amazonaws.com/laptop.svg",
       "type": 15,
       "width": 20.41256864173232,
-      "x": 385.87941109020636,
-      "y": 282.32954235102375
+      "x": 853.2518784530959,
+      "y": 476.58736717809694
     },
     "sgsZDCsa4NyVOOIzrGUEP": {
       "fill": null,
@@ -468,8 +468,8 @@ export const PlantillaCustomerJourneyMap = {
       "src": "https://sketchlie.s3.us-east-2.amazonaws.com/smartphone.svg",
       "type": 15,
       "width": 19.176864837297114,
-      "x": 543.7704041337083,
-      "y": 282.65994338156975
+      "x": 1011.1428714965978,
+      "y": 476.91776820864294
     },
     "9OFpEOsocPEErrgsQx9xA": {
       "fill": null,
@@ -477,8 +477,8 @@ export const PlantillaCustomerJourneyMap = {
       "src": "https://sketchlie.s3.us-east-2.amazonaws.com/laptop.svg",
       "type": 15,
       "width": 20.41256864173232,
-      "x": 511.22326544024446,
-      "y": 282.04209147935205
+      "x": 978.595732803134,
+      "y": 476.29991630642525
     },
     "B7fOoKte0hWgYtBQB7zAh": {
       "fill": null,
@@ -486,8 +486,8 @@ export const PlantillaCustomerJourneyMap = {
       "src": "https://sketchlie.s3.us-east-2.amazonaws.com/laptop.svg",
       "type": 15,
       "width": 20.41256864173232,
-      "x": 634.0480218872171,
-      "y": 280.7546202377698
+      "x": 1101.4204892501066,
+      "y": 475.012445064843
     },
     "sKZ39FM3hXvUVHxHWsLOe": {
       "fill": null,
@@ -495,8 +495,8 @@ export const PlantillaCustomerJourneyMap = {
       "src": "https://sketchlie.s3.us-east-2.amazonaws.com/smartphone.svg",
       "type": 15,
       "width": 19.176864837297114,
-      "x": 669.6850915604773,
-      "y": 282.4024491332532
+      "x": 1137.0575589233667,
+      "y": 476.6602739603264
     },
     "6J4APvJUJrOZgItQgVoQZ": {
       "fill": null,
@@ -504,8 +504,8 @@ export const PlantillaCustomerJourneyMap = {
       "src": "https://sketchlie.s3.us-east-2.amazonaws.com/laptop.svg",
       "type": 15,
       "width": 20.41256864173232,
-      "x": 779.3857471299095,
-      "y": 278.2422735234875
+      "x": 1246.758214492799,
+      "y": 472.5000983505607
     },
     "IAB9tqaoedbaSSUxepHlE": {
       "fill": null,
@@ -513,8 +513,8 @@ export const PlantillaCustomerJourneyMap = {
       "src": "https://sketchlie.s3.us-east-2.amazonaws.com/smartphone.svg",
       "type": 15,
       "width": 19.172603287156576,
-      "x": 811.7072938817273,
-      "y": 278.88036416429725
+      "x": 1279.0797612446167,
+      "y": 473.13818899137044
     },
     "GllYSnaAgIBhi8flUXAli": {
       "alignX": "center",
@@ -536,8 +536,8 @@ export const PlantillaCustomerJourneyMap = {
       "type": 14,
       "width": 35.2627168321556,
       "value": "",
-      "x": 239.43794267608735,
-      "y": 207.26971166346664
+      "x": 706.8104100389769,
+      "y": 401.52753649053983
     },
     "PKkwbBBMZjF8z2okFZm3k": {
       "alignX": "center",
@@ -559,8 +559,8 @@ export const PlantillaCustomerJourneyMap = {
       "type": 14,
       "width": 35.2627168321556,
       "value": "",
-      "x": 287.7102570486389,
-      "y": 207.9795986395336
+      "x": 755.0827244115284,
+      "y": 402.2374234666068
     },
     "90kjvNBDC27MGac4tpNos": {
       "alignX": "center",
@@ -582,8 +582,8 @@ export const PlantillaCustomerJourneyMap = {
       "type": 14,
       "width": 35.2627168321556,
       "value": "",
-      "x": 369.3472592963369,
-      "y": 208.6894856156004
+      "x": 836.7197266592264,
+      "y": 402.9473104426736
     },
     "zXVRG9ik9Nq36zQEEd1LE": {
       "alignX": "center",
@@ -605,8 +605,8 @@ export const PlantillaCustomerJourneyMap = {
       "type": 14,
       "width": 35.2627168321556,
       "value": "",
-      "x": 413.3602518124874,
-      "y": 208.6894856156004
+      "x": 880.7327191753768,
+      "y": 402.9473104426736
     },
     "D8UxRMGVqXERrRS1R7Nxs": {
       "alignX": "center",
@@ -628,8 +628,8 @@ export const PlantillaCustomerJourneyMap = {
       "type": 14,
       "width": 35.2627168321556,
       "value": "",
-      "x": 506.3554456772561,
-      "y": 208.6894856156004
+      "x": 973.7279130401456,
+      "y": 402.9473104426736
     },
     "4B1rmn7JAODqOCDEPSFbl": {
       "alignX": "center",
@@ -651,8 +651,8 @@ export const PlantillaCustomerJourneyMap = {
       "type": 14,
       "width": 35.2627168321556,
       "value": "",
-      "x": 549.6585512173419,
-      "y": 208.6894856156004
+      "x": 1017.0310185802314,
+      "y": 402.9473104426736
     },
     "zPVtyRYkUeXgbK6tL8AdX": {
       "alignX": "center",
@@ -674,8 +674,8 @@ export const PlantillaCustomerJourneyMap = {
       "type": 14,
       "width": 35.2627168321556,
       "value": "",
-      "x": 629.8757795129054,
-      "y": 208.6894856156004
+      "x": 1097.2482468757948,
+      "y": 402.9473104426736
     },
     "tLeJFmehUjeX2BNb1dG0q": {
       "alignX": "center",
@@ -697,8 +697,8 @@ export const PlantillaCustomerJourneyMap = {
       "type": 14,
       "width": 35.2627168321556,
       "value": "",
-      "x": 674.5986590051225,
-      "y": 209.39937259166743
+      "x": 1141.971126368012,
+      "y": 403.6571974187406
     },
     "Ec8Tm8T0laequufQwqJcX": {
       "alignX": "center",
@@ -720,8 +720,8 @@ export const PlantillaCustomerJourneyMap = {
       "type": 14,
       "width": 35.2627168321556,
       "value": "",
-      "x": 773.9828356544942,
-      "y": 207.9795986395336
+      "x": 1241.3553030173837,
+      "y": 402.2374234666068
     },
     "3Y7GOMIQ40vLUjfLxw7PV": {
       "alignX": "center",
@@ -743,8 +743,8 @@ export const PlantillaCustomerJourneyMap = {
       "type": 14,
       "width": 35.2627168321556,
       "value": "",
-      "x": 815.8661672424437,
-      "y": 208.6894856156004
+      "x": 1283.2386346053331,
+      "y": 402.9473104426736
     },
     "VV6KaqnuirTIBhesVz8bW": {
       "alignX": "center",
@@ -766,8 +766,8 @@ export const PlantillaCustomerJourneyMap = {
       "type": 14,
       "width": 35.2627168321556,
       "value": "",
-      "x": 240.47011833928832,
-      "y": 464.91467098324824
+      "x": 707.8425857021778,
+      "y": 659.1724958103214
     },
     "1313UVDOvEvj4S2k8jhWv": {
       "alignX": "center",
@@ -789,8 +789,8 @@ export const PlantillaCustomerJourneyMap = {
       "type": 14,
       "width": 35.2627168321556,
       "value": "",
-      "x": 286.61277178363906,
-      "y": 465.6245579593149
+      "x": 753.9852391465286,
+      "y": 659.8823827863881
     },
     "aA6yLZ30Q2VzvXL85ahTR": {
       "alignX": "center",
@@ -812,8 +812,8 @@ export const PlantillaCustomerJourneyMap = {
       "type": 14,
       "width": 35.2627168321556,
       "value": "",
-      "x": 368.9596610074041,
-      "y": 466.33444493538224
+      "x": 836.3321283702936,
+      "y": 660.5922697624554
     },
     "Wq614O9L5GCBqcd6pca3w": {
       "alignX": "center",
@@ -835,8 +835,8 @@ export const PlantillaCustomerJourneyMap = {
       "type": 14,
       "width": 35.2627168321556,
       "value": "",
-      "x": 410.8429925953536,
-      "y": 466.33444493538246
+      "x": 878.2154599582432,
+      "y": 660.5922697624557
     },
     "OGGIZtHsvpj1hYyQ8Mquf": {
       "alignX": "center",
@@ -858,8 +858,8 @@ export const PlantillaCustomerJourneyMap = {
       "type": 14,
       "width": 35.2627168321556,
       "value": "",
-      "x": 498.1590906515874,
-      "y": 467.0443319114492
+      "x": 965.5315580144769,
+      "y": 661.3021567385224
     },
     "qAUuFogS57m6Q1tTxvDmc": {
       "alignX": "center",
@@ -881,8 +881,8 @@ export const PlantillaCustomerJourneyMap = {
       "type": 14,
       "width": 35.2627168321556,
       "value": "",
-      "x": 541.4621961916716,
-      "y": 467.75421888751595
+      "x": 1008.8346635545611,
+      "y": 662.0120437145891
     },
     "6hh3rDS2mKO7JeNLnZMoi": {
       "alignX": "center",
@@ -904,8 +904,8 @@ export const PlantillaCustomerJourneyMap = {
       "type": 14,
       "width": 35.2627168321556,
       "value": "",
-      "x": 630.9079551761085,
-      "y": 467.75421888751595
+      "x": 1098.280422538998,
+      "y": 662.0120437145891
     },
     "iQv5XpjqKYeKOoZQBM5gA": {
       "alignX": "center",
@@ -927,8 +927,8 @@ export const PlantillaCustomerJourneyMap = {
       "type": 14,
       "width": 35.2627168321556,
       "value": "",
-      "x": 671.6429937527012,
-      "y": 467.79207362274184
+      "x": 1139.0154611155906,
+      "y": 662.049898449815
     },
     "OCLJnKHBhQMG0ftPNA8Ai": {
       "alignX": "center",
@@ -950,8 +950,8 @@ export const PlantillaCustomerJourneyMap = {
       "type": 14,
       "width": 35.2627168321556,
       "value": "",
-      "x": 770.9435606620752,
-      "y": 467.97900905056497
+      "x": 1238.3160280249647,
+      "y": 662.2368338776382
     },
     "tUiFqQEcMWfDEdRduIbq7": {
       "alignX": "center",
@@ -973,8 +973,8 @@ export const PlantillaCustomerJourneyMap = {
       "type": 14,
       "width": 35.2627168321556,
       "value": "",
-      "x": 812.630161066663,
-      "y": 468.1659444783884
+      "x": 1280.0026284295525,
+      "y": 662.4237693054615
     },
     "C5lhZpJnvtOuH7sotb4ni": {
       "alignX": "center",
@@ -996,8 +996,8 @@ export const PlantillaCustomerJourneyMap = {
       "type": 14,
       "value": "Customer journey map",
       "width": 247.3814134198061,
-      "x": 365.2985246898093,
-      "y": 50.84671348780664
+      "x": 832.6709920526988,
+      "y": 245.10453831487985
     }
   },
   "layerIds": [
