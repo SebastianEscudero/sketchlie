@@ -13,13 +13,12 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,  
+  FormMessage,
 } from "@/components/ui/form";
 import { CardWrapper } from "@/components/auth/card-wrapper"
 import { Button } from "@/components/ui/button";
-import { FormError } from "@/components/form-error";
-import { FormSuccess } from "@/components/form-success";
 import { register } from "@/actions/register";
+import { AlertCircle, Mail } from "lucide-react";
 
 export const RegisterForm = () => {
   const [error, setError] = useState<string | undefined>("");
@@ -38,7 +37,7 @@ export const RegisterForm = () => {
   const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
     setError("");
     setSuccess("");
-    
+
     startTransition(() => {
       register(values)
         .then((data) => {
@@ -56,7 +55,7 @@ export const RegisterForm = () => {
       showSocial
     >
       <Form {...form}>
-        <form 
+        <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-6"
         >
@@ -118,8 +117,29 @@ export const RegisterForm = () => {
               )}
             />
           </div>
-          <FormError message={error} />
-          <FormSuccess message={success} />
+          {error && (
+            <div className="bg-red-50 border-l-4 border-red-400 p-4 mb-4 rounded-md shadow-sm animate-fadeIn">
+              <div className="flex items-center">
+                <AlertCircle className="h-6 w-6 text-red-500 mr-3" />
+                <p className="text-red-700 font-medium">
+                  {error}
+                </p>
+              </div>
+            </div>
+          )}
+          {success && (
+            <div className="bg-green-50 border-l-4 border-green-400 p-4 mb-4 rounded-md shadow-sm animate-fadeIn">
+              <div className="flex items-center">
+                <Mail className="h-6 w-6 text-green-500 mr-3 animate-bounce" />
+                <p className="text-green-700 font-medium">
+                  {success}
+                </p>
+              </div>
+              <p className="text-green-600 mt-2 text-sm">
+                Please check your email to verify your account.
+              </p>
+            </div>
+          )}
           <Button
             disabled={isPending}
             type="submit"
