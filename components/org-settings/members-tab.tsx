@@ -59,11 +59,11 @@ export const MembersTab = ({ activeOrg, user, usersRole, setActiveOrganization }
     }
 
     return (
-        <ScrollArea className="h-[50vh] w-full border p-2 rounded-md">
+        <ScrollArea className="h-[50vh] w-full rounded-md">
             {activeOrg.users
                 .sort((a: any, b: any) => (a.id === user?.id ? -1 : b.id === user?.id ? 1 : 0))
                 .map((orgUser: any) => (
-                    <div key={orgUser.id} className="flex items-center justify-between p-2 border rounded-md mb-2">
+                    <div key={orgUser.id} className="flex items-center justify-between p-2 border dark:border-zinc-300 rounded-md mb-2">
                         <div className="flex items-center space-x-4 bflex-grow min-w-0">
                             <Avatar className="flex-shrink-0">
                                 <AvatarImage src={orgUser.image || ""} />
