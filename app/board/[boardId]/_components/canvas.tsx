@@ -4,6 +4,7 @@ import { customAlphabet } from "nanoid";
 import React, { useState, useRef, useCallback } from "react";
 
 import {
+    cn,
     removeHighlightFromText,
     SketchlieCopilot,
 } from "@/lib/utils";
@@ -29,6 +30,7 @@ import { useArrowResizeHandlePointerDown, useContinueDrawing, useCopySelectedLay
 import { CanvasOverlay } from "./canvas-overlay";
 import { CanvasContent } from "./canvas-content";
 import { debounce, throttle } from "lodash";
+import { mainFont } from "@/lib/font";
 
 const preventDefault = (e: any) => {
     if (e.scale !== 1) {
@@ -482,7 +484,7 @@ export const Canvas = ({
                 isDraggingOverCanvas={isDraggingOverCanvas}
             />
             <main
-                className="fixed h-full w-full touch-none overscroll-none"
+                className={cn("fixed h-full w-full touch-none overscroll-none", mainFont.className)}
                 style={{
                     WebkitOverflowScrolling: 'touch',
                     WebkitUserSelect: 'none',

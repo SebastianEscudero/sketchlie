@@ -35,8 +35,8 @@ export const ProModal = () => {
             <Dialog open={proModal.isOpen} onOpenChange={proModal.onClose}>
                 <DialogContent className="max-w-[90%] lg:max-w-[80%] xl:max-w-[70%] 2xl:max-w-[60%] w-full overflow-y-auto max-h-[90%] pt-10">
                     <DialogHeader>
-                        <DialogTitle className="text-3xl font-bold text-center mb-4">Choose Your Plan</DialogTitle>
-                        <p className="text-xl text-gray-600 dark:text-gray-400 text-center mb-8">Upgrade your organization and unlock more features</p>
+                        <DialogTitle className="text-3xl font-bold text-center">Choose Your Plan</DialogTitle>
+                        <p className="text-xl text-gray-600 dark:text-gray-400 text-center mb-8">Everything you need to collaborate with your team</p>
                         <div className="flex justify-center items-center flex-wrap text-center mb-8">
                             <span className="text-xl mr-3">Organization:</span>
                             <DropdownMenu>
@@ -84,7 +84,7 @@ export const ProModal = () => {
                                         <div className="mb-4">
                                             <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">{subscriptionPlan.label}</h2>
                                             {subscriptionPlan.recommended && (
-                                                <Badge variant="secondary" className="mt-2">
+                                                <Badge variant="sketchlieBlue" className="mt-2">
                                                     Popular
                                                 </Badge>
                                             )}
