@@ -95,14 +95,14 @@ const LandingPage = () => {
 
     return (
         <div>
-            <Breadcrumb className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
+            <Breadcrumb className="xl:px-[15%] lg:px-[7%] md:px-[5%] px-[5%] pt-5 bg-blue-700">
                 <BreadcrumbList>
                     <BreadcrumbItem>
                         <Link href="/" title="Home">Home</Link>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
-                        <BreadcrumbPage>Diagrama</BreadcrumbPage>
+                        <BreadcrumbPage className="text-white">Diagrama</BreadcrumbPage>
                     </BreadcrumbItem>
                 </BreadcrumbList>
             </Breadcrumb>
@@ -113,8 +113,7 @@ const LandingPage = () => {
                 alt="Diagrama"
                 img="/placeholders/mapa-conceptual-online.png"
             />
-            <LogoSlider />
-            <LandingVideo />
+            
             <BlogSection
                 title="Crea diagramas online en minutos, no horas"
                 text="Descubre la forma perfecta para transformar conceptos complejos en un diagrama online digerible para ti, tus alumnos o tu equipo. Haz un diagrama de cualquier tema o de tu investigación para cualquier ocasión, ya sea sobre un nuevo producto de tu empresa o para presentar una lección abrumadora en clase. Estructura un diagrama online creativo a partir de la pizarra online de Sketchlie y aprovecha todas las herramientas y elementos de diseño y cautiva a tu publico."
@@ -151,7 +150,7 @@ const LandingPage = () => {
                 <PlatformYouCanTrust />
             </div>
             <FaqSection accordionData={faqData} sectionTitle="los diagramas" />
-            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5 md:my-10 my-5">
+            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:px-[15%] lg:px-[7%] md:px-[5%] px-[5%] gap-5 md:my-10 my-5">
                 <VerMas title="¿Cuál es la utilidad de los diagramas?" href="/diagrama/que-es-diagrama/" />
                 <VerMas title="¿Cómo usar un diagrama online?" href="/diagrama/que-es-diagrama/" />
                 <VerMas title="¿Cómo utilizar diagramas en proyectos de trabajo?" href="/diagrama/que-es-diagrama/" />

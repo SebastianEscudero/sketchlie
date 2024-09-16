@@ -34,7 +34,7 @@ const LandingPage = () => {
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
-                            <BreadcrumbPage>¿Qué es una Pizarra Online?</BreadcrumbPage>
+                            <BreadcrumbPage className="text-white">¿Qué es una Pizarra Online?</BreadcrumbPage>
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>

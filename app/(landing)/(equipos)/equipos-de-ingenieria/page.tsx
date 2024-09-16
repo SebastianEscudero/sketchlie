@@ -82,14 +82,14 @@ const LandingPage = () => {
 
     return (
         <div>
-            <Breadcrumb className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
+            <Breadcrumb className="xl:px-[15%] lg:px-[7%] md:px-[5%] px-[5%] pt-5 bg-blue-700">
                 <BreadcrumbList>
                     <BreadcrumbItem>
                         <Link href="/" title="Home">Home</Link>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
-                        <BreadcrumbPage>Equipos de Ingeniería</BreadcrumbPage>
+                        <BreadcrumbPage className="text-white">Equipos de Ingeniería</BreadcrumbPage>
                     </BreadcrumbItem>
                 </BreadcrumbList>
             </Breadcrumb>
@@ -100,8 +100,7 @@ const LandingPage = () => {
                 alt="Equipo de ingeniería colaborando"
                 img="/placeholders/modelo-canvas.png"
             />
-            <LogoSlider />
-            <LandingVideo />
+            
             <BlogSection
                 title="Diseña, itera y construye con confianza"
                 text="Utiliza nuestras herramientas intuitivas para crear diagramas técnicos, prototipos y modelos que lleven tus proyectos al siguiente nivel. Sketchlie te permite visualizar y perfeccionar tus ideas de ingeniería con facilidad."
@@ -135,7 +134,7 @@ const LandingPage = () => {
                 <PlatformYouCanTrust />
             </div>
             <FaqSection accordionData={faqData} sectionTitle="equipos de ingeniería y Sketchlie" />
-            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-5 md:my-20 my-5 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%]">
+            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-5 md:my-20 my-5 xl:px-[15%] lg:px-[7%] md:px-[5%] px-[5%]">
                 <BlogLinks blogTitle="Mapa Conceptual Online" blogImage="/placeholders/mapa-conceptual-online.png" blogHref="/mapa-conceptual/" blogDescription="Descubre cómo desatar tu creatividad y potenciar la colaboración en tiempo real con Sketchlie." />
                 <BlogLinks blogTitle="Mapa de Procesos" blogImage="/placeholders/mapa-de-procesos.png" blogHref="/mapas-de-procesos" blogDescription="El mapa de procesos ayuda a los equipos a mapear y implementar mejoras. Registrate hoy con una 3 espacios de trabajo gratuitos para empezar a utilizar la mejor herramienta de mapa de procesos." />
                 <BlogLinks blogTitle="Mapas Mentales" blogImage="/placeholders/mapa-mental.png" blogHref="/mapa-mental-online/" blogDescription="Explora nuestras herramientas para simplificar la creación de mapas mentales. Organiza tus ideas de manera jerárquica y potencia tu creatividad con nuestro intuitivo creador de mapas mentales." />

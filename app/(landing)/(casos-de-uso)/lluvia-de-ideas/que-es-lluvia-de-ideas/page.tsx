@@ -34,7 +34,7 @@ const LandingPage = () => {
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
-                            <BreadcrumbPage>¿Qué es una lluvia de ideas?</BreadcrumbPage>
+                            <BreadcrumbPage className="text-white">¿Qué es una lluvia de ideas?</BreadcrumbPage>
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>

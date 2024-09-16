@@ -78,7 +78,7 @@ const LandingPage = () => {
     
     return (
         <div>
-            <div className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
+            <div className="xl:px-[15%] lg:px-[7%] md:px-[5%] px-[5%] mt-5">
                 <Breadcrumb>
                     <BreadcrumbList>
                         <BreadcrumbItem>
@@ -90,7 +90,7 @@ const LandingPage = () => {
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
-                            <BreadcrumbPage>Diagrama Ishikawa</BreadcrumbPage>
+                            <BreadcrumbPage className="text-white">Diagrama Ishikawa</BreadcrumbPage>
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>
@@ -104,7 +104,7 @@ const LandingPage = () => {
                     cta="Utilizar plantilla"
                 />
             </div>
-            <div className="flex flex-col-reverse lg:flex-row justify-between xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
+            <div className="flex flex-col-reverse lg:flex-row justify-between xl:px-[15%] lg:px-[7%] md:px-[5%] px-[5%] mt-5">
                 <div className="lg:max-w-[70%] text-xl">
                     <div id="1" className="h-[80px] mt-[-80px]"></div>
                     <h2 className="text-4xl md:text-5xl mb-10">¿Qué es un diagrama de Ishikawa?</h2>
@@ -181,10 +181,10 @@ const LandingPage = () => {
 
                 </div>
                 <div className="lg:w-[30%] xl:ml-10 lg:ml-5 border border-black rounded-lg p-10 bg-white lg:sticky lg:z-30 lg:top-24 lg:h-[50%] lg:mb-0 mb-10">
-                    <h3 className="text-3xl mb-3 font-roobert font-semibold">
+                    <h3 className="text-3xl mb-3  font-semibold">
                         Comienza con nuestra plantilla
                     </h3>
-                    <p className="text-lg text-zinc-600 mb-4 font-roobert">
+                    <p className="text-lg text-zinc-600 mb-4 ">
                         Identifica las causas y efectos de un problema designado con nuestra plantilla de diagrama de ishikawa.
                     </p>
                     <Link href="/dashboard/">

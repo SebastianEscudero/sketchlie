@@ -79,14 +79,14 @@ const LandingPage = () => {
 
     return (
         <div>
-            <Breadcrumb className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
+            <Breadcrumb className="xl:px-[15%] lg:px-[7%] md:px-[5%] px-[5%] pt-5 bg-blue-700">
                 <BreadcrumbList>
                     <BreadcrumbItem>
                         <Link href="/" title="Home">Home</Link>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
-                        <BreadcrumbPage>Modelo canvas</BreadcrumbPage>
+                        <BreadcrumbPage className="text-white">Modelo canvas</BreadcrumbPage>
                     </BreadcrumbItem>
                 </BreadcrumbList>
             </Breadcrumb>
@@ -97,8 +97,7 @@ const LandingPage = () => {
                 alt="Modelo canvas"
                 img="/placeholders/modelo-canvas.png"
             />
-            <LogoSlider />
-            <LandingVideo />
+            
             <div className="mb:my-28 my-14">
                 <BlogSection
                     title="Visualiza tu modelo de negocio completo"
@@ -140,7 +139,7 @@ const LandingPage = () => {
             <HowToCreate steps={steps} title="¿Cómo se crea un modelo canvas?" img="/templates/modelo-canvas.png" alt="Modelo canvas" cta="Crear modelo canvas"/>
             <TemplatesSlider />
             <FaqSection accordionData={faqData} sectionTitle="el modelo canvas" />
-            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5 md:my-10 my-5">
+            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:px-[15%] lg:px-[7%] md:px-[5%] px-[5%] gap-5 md:my-10 my-5">
                 <VerMas title="¿Qué es el Modelo Canvas?" href="/modelo-canvas/que-es-modelo-canvas/" />
                 <VerMas title="Los 9 bloques del Modelo Canvas" href="/modelo-canvas/que-es-modelo-canvas/" />
                 <VerMas title="Consejos para optimizar tu Modelo Canvas" href="/modelo-canvas/que-es-modelo-canvas/" />

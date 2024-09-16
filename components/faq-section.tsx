@@ -22,7 +22,7 @@ export const FaqSection = ({
     sectionTitle,
 }: FaqSectionProps) => {
     return (
-        <div className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mb-10 mt-32">
+        <div className="xl:px-[15%] lg:px-[7%] md:px-[5%] px-[5%] mb-10">
             <div className="text-[#1c1c1e] mb-14 md:w-1/2">
                 <h2 className="text-4xl lg:text-5xl sm:text-left text-center" style={{ lineHeight: 1.2 }}>
                     Preguntas frecuentes sobre {sectionTitle}.

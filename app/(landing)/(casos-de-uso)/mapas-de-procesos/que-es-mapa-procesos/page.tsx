@@ -34,7 +34,7 @@ const LandingPage = () => {
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
-                            <BreadcrumbPage>¿Qué es un Mapa de Procesos?</BreadcrumbPage>
+                            <BreadcrumbPage className="text-white">¿Qué es un Mapa de Procesos?</BreadcrumbPage>
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>

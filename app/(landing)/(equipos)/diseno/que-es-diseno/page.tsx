@@ -34,7 +34,7 @@ const LandingPage = () => {
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
-                            <BreadcrumbPage>¿Qué es Diseño UX/UI?</BreadcrumbPage>
+                            <BreadcrumbPage className="text-white">¿Qué es Diseño UX/UI?</BreadcrumbPage>
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>

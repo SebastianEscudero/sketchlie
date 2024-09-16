@@ -88,7 +88,7 @@ const BlogPage = () => {
 
     return (
         <div>
-            <Breadcrumb className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
+            <Breadcrumb className="xl:px-[15%] lg:px-[7%] md:px-[5%] px-[5%] mt-5">
                 <BreadcrumbList>
                     <BreadcrumbItem>
                         <Link href="/" title="Home">Home</Link>
@@ -99,7 +99,7 @@ const BlogPage = () => {
                     </BreadcrumbItem>
                 </BreadcrumbList>
             </Breadcrumb>
-            <div className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mb-10 mt-[3%]">
+            <div className="xl:px-[15%] lg:px-[7%] md:px-[5%] px-[5%] mb-10 mt-[3%]">
                 <HeaderBlog
                     blogTitle="Tutorial de la Pizarra Online"
                     blogImage="/placeholders/pizarra-online.png"
@@ -108,7 +108,7 @@ const BlogPage = () => {
                     isNew={true}
                 />
             </div>
-            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5">
+            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:px-[15%] lg:px-[7%] md:px-[5%] px-[5%] gap-5">
                 {blogLinksData.map((blogLink, index) => (
                     <BlogLinks
                         key={index}

@@ -89,7 +89,7 @@ const LandingPage = () => {
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
-                            <BreadcrumbPage>Customer Journey Map</BreadcrumbPage>
+                            <BreadcrumbPage className="text-white">Customer Journey Map</BreadcrumbPage>
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>
@@ -178,10 +178,10 @@ const LandingPage = () => {
                     </ul>
                 </div>
                 <div className="lg:w-[30%] xl:ml-10 lg:ml-5 border border-black rounded-lg p-10 bg-white lg:sticky lg:z-30 lg:top-24 lg:h-[50%] lg:mb-0 mb-10">
-                    <h3 className="text-3xl mb-3 font-roobert font-semibold">
+                    <h3 className="text-3xl mb-3  font-semibold">
                         Comienza con nuestra plantilla
                     </h3>
-                    <p className="text-lg text-zinc-600 mb-4 font-roobert">
+                    <p className="text-lg text-zinc-600 mb-4 ">
                         Utiliza nuestra plantilla de customer journey map para visualizar la experiencia de tus clientes y mejorar la interacción con tu marca.
                     </p>
                     <Link href="/dashboard/">

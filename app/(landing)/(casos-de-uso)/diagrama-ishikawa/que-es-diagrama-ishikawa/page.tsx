@@ -34,7 +34,7 @@ const LandingPage = () => {
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
-                            <BreadcrumbPage>¿Qué es un Diagrama Ishikawa?</BreadcrumbPage>
+                            <BreadcrumbPage className="text-white">¿Qué es un Diagrama Ishikawa?</BreadcrumbPage>
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>

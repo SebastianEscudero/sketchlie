@@ -79,14 +79,14 @@ const LandingPage = () => {
 
     return (
         <div>
-            <Breadcrumb className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
+            <Breadcrumb className="xl:px-[15%] lg:px-[7%] md:px-[5%] px-[5%] pt-5 bg-blue-700">
                 <BreadcrumbList>
                     <BreadcrumbItem>
                         <Link href="/" title="Home">Home</Link>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
-                        <BreadcrumbPage>Diseño</BreadcrumbPage>
+                        <BreadcrumbPage className="text-white">Diseño</BreadcrumbPage>
                     </BreadcrumbItem>
                 </BreadcrumbList>
             </Breadcrumb>
@@ -97,8 +97,7 @@ const LandingPage = () => {
                 alt="Diagrama"
                 img="/placeholders/customer-journey-map.png"
             />
-            <LogoSlider />
-            <LandingVideo />
+            
             <BlogSection
                 title="Mejora la experiencia del cliente con Customer Journey Maps"
                 text={
@@ -142,7 +141,7 @@ const LandingPage = () => {
             <HowToCreate steps={steps} title="Cómo diseñar una experiencia de usuario (UX)" img="/templates/customer-journey-map.png" alt="Customer journey map" cta="Comienza hoy gratis"/>
             <TemplatesSlider />
             <FaqSection accordionData={faqData} sectionTitle="el diseño UX/UI" />
-            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5 md:my-10 my-5">
+            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:px-[15%] lg:px-[7%] md:px-[5%] px-[5%] gap-5 md:my-10 my-5">
                 <VerMas title="¿Qué es el diseño UX?" href="/diseno/que-es-diseno/" />
                 <VerMas title="¿Qué es el diseño UI?" href="/diseno/que-es-diseno/" />
                 <VerMas title="¿Cuál es la diferencia entre diseño UI y UX?" href="/diseno/que-es-diseno/" />

@@ -94,14 +94,14 @@ const LandingPage = () => {
 
     return (
         <div>
-            <Breadcrumb className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
+            <Breadcrumb className="xl:px-[15%] lg:px-[7%] md:px-[5%] px-[5%] pt-5 bg-blue-700">
                 <BreadcrumbList>
                     <BreadcrumbItem>
                         <Link href="/" title="Home">Home</Link>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
-                        <BreadcrumbPage>Mapa conceptual</BreadcrumbPage>
+                        <BreadcrumbPage className="text-white">Mapa conceptual</BreadcrumbPage>
                     </BreadcrumbItem>
                 </BreadcrumbList>
             </Breadcrumb>
@@ -112,8 +112,7 @@ const LandingPage = () => {
                 alt="Mapa conceptual"
                 img="/placeholders/mapa-conceptual-online.png"
             />
-            <LogoSlider />
-            <LandingVideo />
+            
             <BlogSection
                 title="Crea mapas conceptuales en minutos, no horas"
                 text={
@@ -154,7 +153,7 @@ const LandingPage = () => {
                 <PlatformYouCanTrust />
             </div>
             <FaqSection accordionData={faqData} sectionTitle="los mapas conceptuales online" />
-            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5 md:my-10 my-5">
+            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:px-[15%] lg:px-[7%] md:px-[5%] px-[5%] gap-5 md:my-10 my-5">
                 <VerMas title="¿Qué es un Mapa Conceptual?" href="/mapa-conceptual/que-es-mapa-conceptual/" />
                 <VerMas title="Herramientas para la Creación de Mapas Conceptuales Online" href="/mapa-conceptual/que-es-mapa-conceptual/" />
                 <VerMas title="Ejemplos de Mapas Conceptuales" href="/mapa-conceptual/que-es-mapa-conceptual/" />

@@ -175,9 +175,9 @@ const Recursos = [
 export const BotNavbar = () => {
     const pathname = usePathname();
     return (
-        <footer className="bg-[#1C1C1E] text-white">
+        <footer className="bg-[#1C1C1E] text-white xl:px-[15%] lg:px-[7%] md:px-[5%] px-[5%]">
             <div className="py-10">
-                <div className="text-center mt-10 xl:mx-[25%] lg:mx-[20%] md:mx-[15%] mx-[5%]">
+                <div className="text-center mt-10 xl:mx-[10%] lg:mx-[8%] md:mx-[10%] mx-[0%]">
                     <h2 className="mb-10 text-4xl md:text-5xl lg:text-6xl">
                         Empieza hoy mismo y comienza a colaborar con tu equipo.
                     </h2>
@@ -192,7 +192,7 @@ export const BotNavbar = () => {
                 </div>
                 <LogoSlider />
             </div>
-            <div className="lg:flex xl:mx-[15%] lg:mx-[5%] text-xl justify-between hidden GAP-">
+            <div className="lg:flex text-xl justify-between hidden">
                 <nav className="flex flex-col">
                     <h3 className="font-bold mb-2">Soluciones</h3>
                     {porCasoDeUso.map((component, index) => (
@@ -218,7 +218,7 @@ export const BotNavbar = () => {
                     ))}
                 </nav>
             </div>
-            <Accordion type="single" collapsible className="text-lg xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] lg:hidden">
+            <Accordion type="single" collapsible className="text-lg lg:hidden">
                 <AccordionItem value="item-1" className="px-4">
                     <AccordionTrigger className="font-semibold">Producto</AccordionTrigger>
                     <AccordionContent className="flex flex-col w-full gap-1">

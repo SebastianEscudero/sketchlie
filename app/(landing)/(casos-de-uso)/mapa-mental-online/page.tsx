@@ -77,14 +77,14 @@ const LandingPage = () => {
 
     return (
         <div>
-            <Breadcrumb className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
+            <Breadcrumb className="xl:px-[15%] lg:px-[7%] md:px-[5%] px-[5%] pt-5 bg-blue-700">
                 <BreadcrumbList>
                     <BreadcrumbItem>
                         <Link href="/" title="Home">Home</Link>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
-                        <BreadcrumbPage>Mapa mental</BreadcrumbPage>
+                        <BreadcrumbPage className="text-white">Mapa mental</BreadcrumbPage>
                     </BreadcrumbItem>
                 </BreadcrumbList>
             </Breadcrumb>
@@ -95,8 +95,7 @@ const LandingPage = () => {
                 alt="Mapa mental"
                 img="/placeholders/mapa-mental.png"
             />
-            <LogoSlider />
-            <LandingVideo />
+            
             <div className="mb:my-28 my-14">
                 <BlogSection
                     title="Visualiza y Organiza tus Ideas con Mapas Mentales"
@@ -141,7 +140,7 @@ const LandingPage = () => {
                 <PlatformYouCanTrust />
             </div>
             <FaqSection accordionData={faqData} sectionTitle="mapas mentales" />
-            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5 md:my-10 my-5">
+            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:px-[15%] lg:px-[7%] md:px-[5%] px-[5%] gap-5 md:my-10 my-5">
                 <VerMas title="¿Cómo hacer un mapa mental?" href="/mapa-mental-online/que-es-mapa-mental/" />
                 <VerMas title="Que es un mapa mental online?" href="/mapa-mental-online/que-es-mapa-mental/" />
                 <VerMas title="¿Puedo utilizar un mapa mental online para la educación?" href="/mapa-mental-online/que-es-mapa-mental/" />

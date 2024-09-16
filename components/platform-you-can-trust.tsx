@@ -4,59 +4,39 @@ import Link from "next/link"
 
 export const PlatformYouCanTrust = () => {
     return (
-        <div className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] font-roobert">
-            <div className="text-center mb-10 mx-5">
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl mb-5 text-black ">
-                    Plataforma en la que puedes confiar.
-                </h2>
-                <p className="text-zinc-700 text-lg md:text-xl text-center">   
-                    Sketchlie es una plataforma segura y confiable que puede manejar cualquier situación que se presente
-                </p>
-            </div>
-            <div className="bg-[#FFF] p-4 lg:pb-5 pb-5 border border-zinc-500 rounded-lg">
-                <div className="py-3">
-                    <div className="grid grid-cols-1 grid-rows-2 lg:grid-cols-2 rounded-lg my-4">
-                        <div className="md:p-7 py-6 m-2 rounded-md">
-                            <h3 className="lg:text-2xl md:text-xl text-lg flex items-center mb-1 font-semibold text-black">   
-                                <GaugeCircle className="mr-2 text-pink-500"/>
-                                99.99% de tiempo de actividad
-                            </h3>
-                            <p className="text-zinc-700 text-lg md:text-xl">
-                                Garantizamos un alto tiempo de actividad para que puedas colaborar sin interrupciones.
-                            </p>
-                        </div>
-                        <div className="md:p-7 py-6 m-2 rounded-md">
-                            <h3 className="lg:text-2xl md:text-xl text-lg flex items-center mb-1 font-semibold text-black">   
-                                <ChevronsUp className="mr-2 text-green-500" />
-                                Colaboración con todo tu equipo
-                            </h3>
-                            <p className="text-zinc-700 text-lg md:text-xl">
-                                Invita a tu equipo a colaborar en tiempo real. Innova, crea, diseña y ejecuta proyectos juntos.
-                            </p>
-                        </div>
-                        <div className="md:p-7 py-6 m-2 rounded-md">
-                            <h3 className="lg:text-2xl md:text-xl text-lg flex items-center mb-1 font-semibold text-black">   
-                                <GanttChart className="mr-2 text-orange-500"/>
-                                Planificación de Proyectos
-                            </h3>
-                            <p className="text-zinc-700 text-lg md:text-xl">
-                                Planifica tus proyectos sin preocupación el único que tiene acceso a tu espacio de trabajo es tu y tu equipo
-                            </p>
-                        </div>
-                        <div className="md:p-7 py-6 m-2 rounded-md">
-                            <h3 className="lg:text-2xl md:text-xl text-lg flex items-center mb-1 font-semibold text-black">   
-                                <LucideLockKeyhole className="mr-2 text-custom-blue"/>
-                                Seguridad con AWS
-                            </h3>
-                            <p className="text-zinc-700 text-lg md:text-xl">
-                                Utilizamos la seguridad de AWS para proteger tus imágenes y datos con la más alta tecnología.
-                            </p>
-                        </div>
+        <div className="bg-gradient-to-b from-blue-50 to-white py-16">
+            <div className="xl:px-[15%] lg:px-[7%] md:px-[5%] px-[5%]">
+                <div className="text-center mb-12 mx-5">
+                    <h2 className="text-3xl sm:text-4xl lg:text-5xl mb-5 text-blue-900 font-bold">
+                        Plataforma en la que puedes confiar.
+                    </h2>
+                    <p className="text-blue-700 text-lg md:text-xl text-center max-w-3xl mx-auto">   
+                        Sketchlie es una plataforma segura y confiable que puede manejar cualquier situación que se presente
+                    </p>
+                </div>
+                <div className="bg-white p-8 border-2 border-blue-200 rounded-2xl shadow-xl">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        {[
+                            { icon: GaugeCircle, color: "text-blue-500", title: "99.99% de tiempo de actividad", description: "Garantizamos un alto tiempo de actividad para que puedas colaborar sin interrupciones." },
+                            { icon: ChevronsUp, color: "text-yellow-500", title: "Colaboración con todo tu equipo", description: "Invita a tu equipo a colaborar en tiempo real. Innova, crea, diseña y ejecuta proyectos juntos." },
+                            { icon: GanttChart, color: "text-blue-500", title: "Planificación de Proyectos", description: "Planifica tus proyectos sin preocupación. El único que tiene acceso a tu espacio de trabajo eres tú y tu equipo." },
+                            { icon: LucideLockKeyhole, color: "text-yellow-500", title: "Enfocado en la seguridad", description: "Priorizamos la seguridad de tus datos y tu privacidad. Nuestro equipo de expertos en seguridad trabaja constantemente para proteger tus datos." },
+                        ].map((item, index) => (
+                            <div key={index} className="bg-blue-50 p-6 rounded-xl transition-all duration-300 hover:shadow-md hover:scale-105">
+                                <h3 className="text-2xl flex items-center mb-3 font-bold text-blue-900">   
+                                    <item.icon className={`mr-3 ${item.color}`} size={28}/>
+                                    {item.title}
+                                </h3>
+                                <p className="text-blue-700 text-lg">
+                                    {item.description}
+                                </p>
+                            </div>
+                        ))}
                     </div>
-                    <div className="text-center">
+                    <div className="text-center mt-12">
                         <Link href={"/dashboard/"} title="Regístrate gratis">
-                            <Button variant="auth" className="text-lg p-6 mt-4">
-                                {"Regístrate gratis"}
+                            <Button variant="auth" className="text-lg px-8 py-4 bg-yellow-500 hover:bg-yellow-600 text-blue-900 font-bold rounded-full transition-all duration-300 transform hover:scale-105">
+                                Regístrate gratis
                             </Button>
                         </Link>
                     </div>

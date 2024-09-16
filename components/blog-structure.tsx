@@ -2,15 +2,16 @@
 
 import Link from "next/link"
 import { Button } from "./ui/button"
-import TypewriterComponent from "typewriter-effect";
 import Image from "next/image";
-import { cn } from "@/lib/utils";
+import { LogoSlider } from "./logo-slider";
+import { LandingVideo } from "./landing-video";
+import { ArrowRightIcon } from "lucide-react";
 
 interface BlogStructureProps {
     title: string;
     description: string;
     cta: string;
-    img?: string;
+    img: string;
     alt: string
 }
 
@@ -21,54 +22,42 @@ export const BlogStructure = ({
     img,
     alt
 }: BlogStructureProps) => {
-    const imageElement = img && (
-        <div className="flex-1 w-full border border-[#837D7C] rounded-sm md:block hidden shadow-custom-1">
+    const imageElement = (
+        <div className="flex-1 w-full border md:block hidden rounded-sm">
             <Image
                 src={img}
                 alt={alt}
-                className="w-full rounded-sm"
+                className="w-full rounded-[3px]"
                 width={1919}
                 height={1079}
                 priority
             />
         </div>
     );
-    
+
     return (
-        <div className={`text-[#1c1c1e] pt-20 md:pt-20 lg:pt-16 xl:pt-24 flex flex-col sm:mx-[20%] md:flex-row md:space-x-10 xl:space-x-18 font-roobert ${img ? "xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] items-center md:text-left text-center" : "lg:mx-[25%] md:mx-[15%] mx-[5%] text-center space-y-5"}`}>
-            <div className={cn(`space-y-5 flex-1`, {
-                'text-3xl md:text-4xl lg:text-5xl xl:text-5xl md:mb-0 mb-5': img,
-                'text-3xl md:text-4xl lg:text-5xl xl:text-5xl': !img,
-            })}>
-                <h1>
-                    {title}
-                </h1>
-                <div className="bg-clip-text text-[#2E4DE6] leading-small h-[60px]" data-no-translate>
-                    <TypewriterComponent 
-                        options = {{
-                            strings: [
-                                "Colabora.",
-                                "Diseña.",
-                                "Crea.",
-                                "Enseña.",
-                            ],
-                            autoStart: true,
-                            loop: true,
-                        }}
-                    />
+        <div className="bg-blue-700 text-white xl:px-[15%] lg:px-[10%] md:px-[7%] px-[5%] py-20 md:py-20 lg:py-16 xl:py-24">
+            <div className="flex flex-col md:flex-row md:space-x-10 xl:space-x-18 items-center md:text-left text-center">
+                <div className="space-y-10 flex-1 text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
+                    <h1>
+                        {title}
+                    </h1>
+                    <p className="sm:text-lg text-base text-zinc-200 md:pr-[25%] px-auto">
+                        {description}
+                    </p>
+                    <div className="mt-20">
+                        <Link href={"/auth/register/"} title={cta}>
+                            <Button variant="golden" className="transition-all duration-300 transform hover:scale-105 hover:text-white rounded-full p-6 px-8 text-lg w-full md:w-auto flex items-center justify-center">
+                                {cta}
+                                <ArrowRightIcon className="w-4 h-4 ml-2" />
+                            </Button>
+                        </Link>
+                    </div>
                 </div>
-                <p className="sm:text-lg text-base text-zinc-600 md:mr-[25%] mx-auto">
-                    {description}
-                </p>
-                <div>
-                    <Link href={"/auth/register/"} title={cta}>
-                        <Button variant="auth" className="p-6 text-lg w-full md:w-auto">
-                            {cta}
-                        </Button>
-                    </Link>
-                </div>
+                {imageElement}
             </div>
-            {img && imageElement}
+            <LogoSlider />
+            <LandingVideo />
         </div>
     )
 }

@@ -20,11 +20,11 @@ export const BlogSection = ({
     side = 'right',
 }: BlogSectionProps) => {
     const imageElement = img && (
-        <div className="flex-1 w-full border border-[#837D7C] shadow-custom-1">
+        <div className="flex-1 w-full overflow-hidden rounded-lg shadow-lg">
             <Image
                 src={img}
                 alt={alt || 'Blog image'}
-                className="w-full"
+                className="w-full object-cover"
                 width={1919}
                 height={1079}
             />
@@ -32,26 +32,32 @@ export const BlogSection = ({
     );
 
     return (
-        <div className={`text-[#1c1c1e] font-roobert flex flex-col xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] md:flex-row items-center my-14 md:space-x-20 xl:space-x-28 ${!img && 'text-center'} ${side === 'left' && 'flex-col-reverse'}`}>
+        <div className={cn(
+            "lg:py-10 py-0 flex flex-col xl:px-[15%] lg:px-[7%] md:px-[5%] px-[5%] md:flex-row items-center my-14 md:space-x-20 xl:space-x-28",
+            !img && 'text-center',
+            side === 'left' && 'flex-col-reverse'
+        )}>
             {side === 'left' && imageElement}
             <div className="flex-1">
-                <h2 className={cn("mb-10 leading-snug space-y-5", {
-                    'text-3xl lg:text-4xl text-left': text && img,
-                    'text-3xl lg:text-4xl lg:mx-[20%] mx-[2%]': !img 
-                })} style={{ lineHeight: "1.2" }}>
+                <h2 className={cn(
+                    "mb-10 leading-snug space-y-5 text-blue-900 font-bold",
+                    text && img ? 'text-3xl lg:text-4xl text-left' : 'text-3xl lg:text-4xl lg:mx-[20%] mx-[2%]'
+                )} style={{ lineHeight: "1.2" }}>
                     {title}
                 </h2>
                 {text && (
-                    <p className={cn("text-lg lg:text-xl text-[#1c1c1e] md:mb-0 mb-5 text-justify", {
-                        'lg:mx-[20%] mx-[2%] text-justify': !img
-                    })}>
+                    <p className={cn(
+                        "text-lg lg:text-xl text-black md:mb-0 mb-5",
+                        !img ? 'lg:mx-[20%] mx-[2%] text-center' : 'text-justify'
+                    )}>
                         {text}
                     </p>
                 )}
                 {text2 && (
-                    <p className={cn("mt-5 text-lg lg:text-xl text-[#1c1c1e] md:mb-0 mb-5 text-justify", {
-                        'lg:mx-[20%] mx-[2%]': !img
-                    })}>
+                    <p className={cn(
+                        "mt-5 text-lg lg:text-xl text-black md:mb-0 mb-5",
+                        !img ? 'lg:mx-[20%] mx-[2%] text-center' : 'text-justify'
+                    )}>
                         {text2}
                     </p>
                 )}

@@ -26,7 +26,7 @@ export const AuthNavbar = () => {
                                 src="/logo.svg"    
                             />
                         </div>
-                        <p className="text-2xl font-bold text-[#38322C] font-roobert">
+                        <p className="text-2xl font-bold text-[#38322C] ">
                             Sketchlie
                         </p>
                     </Link>

@@ -24,14 +24,14 @@ export const metadata: Metadata = {
 const templatesPage = () => {
     return (
         <div>
-            <Breadcrumb className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
+            <Breadcrumb className="xl:px-[15%] lg:px-[7%] md:px-[5%] px-[5%] pt-5 bg-blue-700">
                 <BreadcrumbList>
                     <BreadcrumbItem>
                         <Link href="/" title="Home">Home</Link>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
-                        <BreadcrumbPage>Plantillas</BreadcrumbPage>
+                        <BreadcrumbPage className="text-white">Plantillas</BreadcrumbPage>
                     </BreadcrumbItem>
                 </BreadcrumbList>
             </Breadcrumb>
@@ -42,8 +42,7 @@ const templatesPage = () => {
                 alt="Plantillas de Sketchlie"
                 cta="Explorar Plantillas"
             />
-            <LogoSlider />
-            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5 mt-[3%]">
+            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:px-[15%] lg:px-[7%] md:px-[5%] px-[5%] gap-5 mt-[3%]">
                 {templates.map((template, index) => (
                     <TemplateLink
                         key={index}

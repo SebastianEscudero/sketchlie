@@ -1,36 +1,66 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { NavigationMenuLanding } from "./navigation-menu";
 import { MobileSidebar } from "./mobile-sidebar";
 import { Button } from "./ui/button";
 
+// Custom hook to track scroll direction
+const useScrollDirection = () => {
+    const [scrollDirection, setScrollDirection] = useState("up");
+
+    useEffect(() => {
+        let lastScrollY = window.pageYOffset;
+
+        const updateScrollDirection = () => {
+            const scrollY = window.pageYOffset;
+            const direction = scrollY > lastScrollY ? "down" : "up";
+            if (direction !== scrollDirection && (scrollY - lastScrollY > 10 || scrollY - lastScrollY < -10)) {
+                setScrollDirection(direction);
+            }
+            lastScrollY = scrollY > 0 ? scrollY : 0;
+        };
+
+        window.addEventListener("scroll", updateScrollDirection);
+        return () => {
+            window.removeEventListener("scroll", updateScrollDirection);
+        }
+    }, [scrollDirection]);
+
+    return scrollDirection;
+};
+
 export const LandingNavbar = () => {
+    const scrollDirection = useScrollDirection();
+
     return (
-        <nav className="py-3 bg-white shadow-custom-1 sticky top-0 z-50 h-[71px]">
-            <div className="flex items-center justify-between xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] h-[40px]">
-                <div className="flex items-center">
-                    <MobileSidebar />
-                    <Link href="/" className="flex items-center mr-2 ml-2 h-[40px]" title="Sketchlie">
-                        <div className="mr-2 h-full w-full">
-                            <Image
-                                height={70}
-                                width={70}
-                                alt="Sketchlie Logo"
-                                src="/logo.svg"    
-                                loading="lazy"
-                            />
-                        </div>
-                        <p className="text-2xl font-bold text-[#38322C] font-roobert">
-                            Sketchlie
-                        </p>
-                    </Link>
+        <nav className={`bg-blue-700 sticky top-0 z-50 h-[88px] flex items-center transition-transform duration-300 ${
+            scrollDirection === "down" ? "-translate-y-[71px]" : "translate-y-0"
+        }`}>
+            <div className="flex items-center w-full h-full xl:px-[15%] lg:px-[7%] md:px-[5%] px-[5%]">
+                <div className="flex items-center justify-between w-full max-w-7xl">
+                    <div className="flex items-center">
+                        <MobileSidebar />
+                        <Link href="/" className="flex items-center mr-2 ml-2 h-[40px]" title="Sketchlie">
+                            <div className="mr-2 h-full w-full">
+                                <Image
+                                    height={60}
+                                    width={60}
+                                    alt="Sketchlie Logo"
+                                    src="/logo.svg"    
+                                    loading="lazy"
+                                />
+                            </div>
+                            <p className="text-2xl font-bold text-white">
+                                Sketchlie
+                            </p>
+                        </Link>
+                    </div>
                     <NavigationMenuLanding />
-                </div>
-                <div className="hidden sm:flex items-center gap-x-2">
                     <Link href="/auth/register/" title="Regístrate gratis">
-                        <Button variant="auth" className="rounded-lg">
+                        <Button variant="golden" className="rounded-lg">
                             Regístrate gratis
                         </Button>
                     </Link>

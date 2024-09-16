@@ -96,14 +96,14 @@ const LluviaDeIdeas = () => {
 
     return (
         <div>
-            <Breadcrumb className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
+            <Breadcrumb className="xl:px-[15%] lg:px-[7%] md:px-[5%] px-[5%] pt-5 bg-blue-700">
                 <BreadcrumbList>
                     <BreadcrumbItem>
                         <Link href="/" title="Home">Home</Link>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
-                        <BreadcrumbPage>Lluvia de Ideas</BreadcrumbPage>
+                        <BreadcrumbPage className="text-white">Lluvia de Ideas</BreadcrumbPage>
                     </BreadcrumbItem>
                 </BreadcrumbList>
             </Breadcrumb>
@@ -114,8 +114,7 @@ const LluviaDeIdeas = () => {
                 alt="Lluvia de Ideas"
                 img="/placeholders/lluvia-de-ideas.png"
             />
-            <LogoSlider />
-            <LandingVideo />
+            
             <BlogSection
                 title="Lienzo Infinito para Ideas Sin Límites"
                 text="Libera tu creatividad en nuestro lienzo digital ilimitado. Captura cada chispa de inspiración con notas adhesivas virtuales, dibujos a mano alzada y elementos multimedia. Organiza y reorganiza tus ideas con facilidad, permitiendo que los patrones y conexiones emerjan naturalmente."
@@ -150,7 +149,7 @@ const LluviaDeIdeas = () => {
                 <PlatformYouCanTrust />
             </div>
             <FaqSection accordionData={faqData} sectionTitle="lluvia de ideas y Sketchlie" />
-            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5 md:my-10 my-5">
+            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:px-[15%] lg:px-[7%] md:px-[5%] px-[5%] gap-5 md:my-10 my-5">
                 <VerMas title="¿Qué es una lluvia de ideas?" href="/lluvia-de-ideas/que-es-lluvia-de-ideas/" />
                 <VerMas title="Consejos y Trucos para una Lluvia de Ideas Exitosa" href="/lluvia-de-ideas/que-es-lluvia-de-ideas/" />
                 <VerMas title="Tipos de Lluvia de Ideas" href="/lluvia-de-ideas/que-es-lluvia-de-ideas/" />

@@ -2,6 +2,8 @@
 
 import * as React from "react"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
+
 import {
     NavigationMenu,
     NavigationMenuContent,
@@ -9,9 +11,9 @@ import {
     NavigationMenuLink,
     NavigationMenuList,
     NavigationMenuTrigger,
+    navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
-import { usePathname } from "next/navigation"
-import { Button } from "./ui/button"
+import { cn } from "@/lib/utils"
 
 const porEquipo: { title: string; href: string }[] = [
     {
@@ -100,112 +102,92 @@ const Recursos = [
 
 export function NavigationMenuLanding() {
     const pathname = usePathname();
+
     return (
-        <div className="gap-x-2 flex flex-row">
-            <NavigationMenu className={`hidden lg:flex lg:flex-col`}>
-                <NavigationMenuList>
-                    <NavigationMenuItem>
-                        <NavigationMenuTrigger>¿Qué es Sketchlie?</NavigationMenuTrigger>
-                        <NavigationMenuContent>
-                            <div className="grid w-[400px] p-6 md:w-[500px] lg:w-[300px]">
-                                <p className="px-3 text-base mb-2 text-neutral-600 font-semibold">Producto</p>
-                                <NavigationMenuLink
-                                    href="/quienes-somos/"
-                                >
-                                    <Button
-                                        className='w-full justify-start my-[3px] text-base'
-                                        variant={pathname === "/quienes-somos/" ? 'auth' : 'navbar'}
-                                    >
-                                        Descripcion de Sketchlie
-                                    </Button>
-                                </NavigationMenuLink>
-                            </div>
-                        </NavigationMenuContent>
-                    </NavigationMenuItem>
-                </NavigationMenuList>
-            </NavigationMenu>
-            <NavigationMenu className="hidden lg:flex lg:flex-col">
-                <NavigationMenuList>
-                    <NavigationMenuItem>
-                        <NavigationMenuTrigger>Soluciones</NavigationMenuTrigger>
-                        <NavigationMenuContent>
-                            <div className="grid w-[400px] p-6 md:w-[500px] md:grid-cols-2 lg:w-[600px] gap-x-2">
-                                <div>
-                                    <p className="px-3 text-base mb-2 text-neutral-600 font-semibold">Equipos</p>
-                                    {porEquipo.map((component) => (
-                                        <Link
-                                            key={component.title}
-                                            href={component.href}
-                                            title={component.title}
-                                        >
-                                            <Button
-                                                className='w-full justify-start my-[3px] text-base'
-                                                variant={pathname === component.href ? 'auth' : 'navbar'}
-                                            >
-                                                {component.title}
-                                            </Button>
-                                        </Link>
+        <NavigationMenu>
+            <NavigationMenuList className="lg:flex hidden">
+                <NavigationMenuItem>
+                    <NavigationMenuTrigger>¿Qué es Sketchlie?</NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                        <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px]">
+                            <ListItem href="/quienes-somos/" title="Descripción de Sketchlie">
+                                Descubre qué es Sketchlie y cómo puede ayudarte.
+                            </ListItem>
+                        </ul>
+                    </NavigationMenuContent>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                    <NavigationMenuTrigger>Soluciones</NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                        <div className="grid gap-3 p-6 md:w-[400px] md:grid-cols-2 lg:w-[600px]">
+                            <div>
+                                <h3 className="mb-2 text-sm font-medium">Por Equipo</h3>
+                                <ul className="space-y-2">
+                                    {porEquipo.map((item) => (
+                                        <ListItem key={item.title} title={item.title} href={item.href} active={pathname === item.href} />
                                     ))}
-                                </div>
-                                <div>
-                                    <p className="px-3 text-base mb-2 text-neutral-600 font-semibold">Casos de uso</p>
-                                    {porCasoDeUso.map((component) => (
-                                        <Link
-                                            key={component.title}
-                                            href={component.href}
-                                            title={component.title}
-                                        >
-                                            <Button
-                                                className='w-full justify-start my-[3px] text-base'
-                                                variant={pathname === component.href ? 'auth' : 'navbar'}
-                                            >
-                                                {component.title}
-                                            </Button>
-                                        </Link>
+                                </ul>
+                            </div>
+                            <div>
+                                <h3 className="mb-2 text-sm font-medium">Por Caso de Uso</h3>
+                                <ul className="space-y-2">
+                                    {porCasoDeUso.map((item) => (
+                                        <ListItem key={item.title} title={item.title} href={item.href} active={pathname === item.href} />
                                     ))}
-                                </div>
+                                </ul>
                             </div>
-                        </NavigationMenuContent>
-                    </NavigationMenuItem>
-                </NavigationMenuList>
-            </NavigationMenu>
-            <NavigationMenu className="hidden lg:flex lg:flex-col">
-                <NavigationMenuList>
-                    <NavigationMenuItem>
-                        <NavigationMenuTrigger>Recursos</NavigationMenuTrigger>
-                        <NavigationMenuContent>
-                            <div className="p-6 md:w-[500px] lg:w-[300px] flex flex-col">
-                                <p className="px-3 text-base mb-2 text-neutral-600 font-semibold">Recursos</p>
-                                {Recursos.map((recurso) => (
-                                    <Link
-                                        key={recurso.title}
-                                        href={recurso.href}
-                                        title={recurso.title}
-                                    >
-                                        <Button
-                                            className='justify-start my-[3px] text-base mr-2 w-full'
-                                            variant={pathname === recurso.href ? 'auth' : 'navbar'}
-                                        >
-                                            {recurso.title}
-                                        </Button>
-                                    </Link>
-                                ))}
-                            </div>
-                        </NavigationMenuContent>
-                    </NavigationMenuItem>
-                </NavigationMenuList>
-            </NavigationMenu>
-            <Link
-                href="/pricing/"
-                title="Precios"
-            >
-                <Button
-                    className='justify-start my-[3px] text-base hidden lg:flex'
-                    variant={pathname === "/pricing/" ? 'auth' : 'navbar'}
-                >
-                    Precios
-                </Button>
-            </Link>
-        </div>
+                        </div>
+                    </NavigationMenuContent>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                    <NavigationMenuTrigger>Recursos</NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                        <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                            {Recursos.map((recurso) => (
+                                <ListItem key={recurso.title} title={recurso.title} href={recurso.href} active={pathname === recurso.href}>
+                                    Explora nuestros {recurso.title.toLowerCase()} para sacar el máximo provecho de Sketchlie.
+                                </ListItem>
+                            ))}
+                        </ul>
+                    </NavigationMenuContent>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                    <Link href="/pricing/" legacyBehavior passHref>
+                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                            Precios
+                        </NavigationMenuLink>
+                    </Link>
+                </NavigationMenuItem>
+            </NavigationMenuList>
+        </NavigationMenu>
     )
 }
+
+const ListItem = React.forwardRef<
+    React.ElementRef<"a">,
+    React.ComponentPropsWithoutRef<"a"> & { active?: boolean }
+>(({ className, title, children, active, ...props }, ref) => {
+    return (
+        <li>
+            <NavigationMenuLink asChild>
+                <a
+                    ref={ref}
+                    className={cn(
+                        "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+                        active && "text-blue-600 font-medium",
+                        className
+                    )}
+                    {...props}
+                >
+                    <div className="text-sm font-medium leading-none">{title}</div>
+                    {children && (
+                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                            {children}
+                        </p>
+                    )}
+                </a>
+            </NavigationMenuLink>
+        </li>
+    )
+})
+ListItem.displayName = "ListItem"

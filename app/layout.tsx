@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import { ConvexClientProvider } from "@/providers/convex-client-provider";
 import { Toaster } from "@/components/ui/sonner"
@@ -8,8 +7,7 @@ import { Loading } from "@/components/auth/loading";
 import { ProModalProvider } from "@/providers/max-layers-provider";
 import { SettingsModalProvider } from "@/providers/settings";
 import { AmplitudeAnalytics } from "@/components/AmplitudeAnalytics";
-
-const inter = Inter({ subsets: ["latin"] });
+import { mainFont } from "@/lib/font";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.sketchlie.com"),
@@ -38,7 +36,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className={`${inter.className}`}>
+      <body className={`${mainFont.className}`}>
         <AmplitudeAnalytics />
         <Suspense fallback={<Loading />}>
           <ConvexClientProvider>

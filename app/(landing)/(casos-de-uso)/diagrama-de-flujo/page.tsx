@@ -87,14 +87,14 @@ const LandingPage = () => {
 
     return (
         <div>
-            <Breadcrumb className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] mt-5">
+            <Breadcrumb className="xl:px-[15%] lg:px-[7%] md:px-[5%] px-[5%] pt-5 bg-blue-700">
                 <BreadcrumbList>
                     <BreadcrumbItem>
                         <Link href="/" title="Home">Home</Link>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
-                        <BreadcrumbPage>Diagrama de flujo</BreadcrumbPage>
+                        <BreadcrumbPage className="text-white">Diagrama de flujo</BreadcrumbPage>
                     </BreadcrumbItem>
                 </BreadcrumbList>
             </Breadcrumb>
@@ -105,8 +105,7 @@ const LandingPage = () => {
                 alt="Diagrama de Flujo"
                 img="/placeholders/diagrama-de-flujo.png"
             />
-            <LogoSlider />
-            <LandingVideo />
+            
             <div className="mb:my-28 my-14">
                 <BlogSection
                     title="Crea diagramas de flujo versátiles."
@@ -147,7 +146,7 @@ const LandingPage = () => {
                 <PlatformYouCanTrust />
             </div>
             <FaqSection accordionData={faqData} sectionTitle="diagramas de flujo" />
-            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[5%] gap-5 md:my-10 my-5">
+            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:px-[15%] lg:px-[7%] md:px-[5%] px-[5%] gap-5 md:my-10 my-5">
                 <VerMas title="Cómo hacer un Diagrama de Flujo" href="/diagrama-de-flujo/que-es-diagrama-de-flujo/" />
                 <VerMas title="Tipos de Diagramas de Flujo" href="/diagrama-de-flujo/que-es-diagrama-de-flujo/" />
                 <VerMas title="Beneficios de Crear Diagramas de Flujo" href="/diagrama-de-flujo/que-es-diagrama-de-flujo/" />

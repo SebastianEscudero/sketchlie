@@ -20,12 +20,11 @@ export const TemplatesSlider = () => {
     }
 
     return (
-        <div>
-            <h2 className="text-3xl lg:text-4xl font-roobert xl:mx-[10%] lg:mx-[7%] mx-[5%]">Explora nuestras plantillas</h2>
+        <div className="bg-white py-16">
+            <h2 className="text-3xl lg:text-4xl font-bold text-blue-900 xl:mx-[10%] lg:mx-[7%] mx-[5%] mb-8">Explora nuestras plantillas</h2>
             <div className="relative">
                 <Button
-                    className="px-2 absolute top-1/2 left-[8%] z-10 transform -translate-y-1/2  border border-black"
-                    variant="business"
+                    className="px-2 absolute top-1/2 left-[5%] z-10 transform -translate-y-1/2 bg-blue-600 hover:bg-blue-700 text-white"
                     onClick={() => scroll(-600)}
                     aria-label="Scroll left"
                 >
@@ -43,8 +42,7 @@ export const TemplatesSlider = () => {
                     ))}
                 </div>
                 <Button
-                    className="px-2 absolute top-1/2 right-[8%] transform -translate-y-1/2 border border-black"
-                    variant="business"
+                    className="px-2 absolute top-1/2 right-[5%] transform -translate-y-1/2 bg-blue-600 hover:bg-blue-700 text-white"
                     onClick={() => scroll(600)}
                     aria-label="Scroll right"
                 >
@@ -67,14 +65,16 @@ const TemplateInSlider = ({
     return (
         <Link
             href={href}
-            className="flex flex-col flex-shrink-0 rounded-xl border border-zinc-500 hover:border-black my-5 bg-[#f4f4f4] mb-5 transform transition-all duration-150 hover:scale-102">
-            <p className="my-5 text-center text-xl font-roobert font-semibold">{name}</p>
+            className="flex flex-col border border-zinc-300 flex-shrink-0 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 bg-white">
+            <div className="bg-[#f4f4f4] p-4">
+                <p className="text-center text-xl font-semibold text-blue-900">{name}</p>
+            </div>
             <Image
                 src={image}
                 alt={`Plantilla de ${name}`}
                 width={300}
                 height={300}
-                className="rounded-xl min-w-full h-48 w-[246px] md:h-56 md:w-[280px] lg:h-64 lg:w-[330px] xl:h-72 xl:w-[370px]"
+                className="min-w-full h-48 w-[246px] md:h-56 md:w-[280px] lg:h-64 lg:w-[330px] xl:h-72 xl:w-[370px] object-cover"
             />
         </Link>
     )

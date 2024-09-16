@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 };
 const LandingPage = () => {
     return ( 
-        <div className="xl:mx-[10%] lg:mx-[7%] md:mx-[5%] mx-[3%]">
+        <div className="xl:px-[15%] lg:px-[10%] md:px-[7%] px-[5%]">
            <div className="mt-[3%]">
            <Breadcrumb>
             <BreadcrumbList>

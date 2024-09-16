@@ -46,14 +46,16 @@ export const SubscriptionButton = ({
 
     return (
         plan.label === "Enterprise" ? (
-            <Link href="/contact">
+            <Link href="/contact" target="_blank">
                 <Button variant="sketchlieBlue" disabled={isLoading} className={className}> 
                     {isLoading ? <LoaderCircle className="animate-spin w-5 h-5 text-white"/> : children}
                 </Button>
             </Link>
         ) : (
             <Button variant="sketchlieBlue" onClick={onClick} disabled={isLoading} className={className}> 
-                {isLoading ? <LoaderCircle className="animate-spin w-5 h-5 text-white"/> : children}
+                {isLoading ? 
+                    <LoaderCircle className={`animate-spin w-5 h-5 ${plan.label === "Starter" ? "text-black" : "text-white"}`}/> 
+                    : children}
             </Button>
         )
     )
