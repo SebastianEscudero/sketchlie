@@ -8,7 +8,7 @@ import { Button } from "./ui/button";
 export const MobileSidebar = () => {
     return ( 
         <Sheet>
-            <SheetTrigger className="lg:hidden text-black" asChild>
+            <SheetTrigger className="lg:hidden text-white" asChild>
                 <Button size='icon' variant='ghost' className='top-3 left-3'>
                     <Menu size={20}/>
                 </Button>

@@ -19,20 +19,20 @@ export const HeaderBlog = ({
     isNew,
 }: BlogLinksProps) => {
     return(
-        <div className="flex md:flex-row flex-col-reverse w-auto rounded-lg border border-zinc-400 transform transition-all duration-200 hover:scale-102 hover:border-black">
-            <div className="flex-1 flex flex-col justify-between p-10 bg-[#1C1C1E] md:rounded-l-lg md:rounded-r-none rounded-b-md text-[#FFF]">
+        <div className="flex md:flex-row flex-col-reverse w-auto rounded-lg overflow-hidden shadow-lg transition-all duration-300 hover:shadow-xl bg-gradient-to-br from-blue-50 via-white to-yellow-50">
+            <div className="flex-1 flex flex-col justify-between p-8 md:p-10">
                 <div>
-                    {isNew ? <Badge className="mb-3" variant="new">Reciente</Badge> : null} 
-                    <h1 className="mb-5 xl:text-4xl md:text-2xl text-3xl">
+                    {isNew && <Badge className="mb-4 bg-yellow-400 text-blue-900 font-semibold px-3 py-1">Reciente</Badge>} 
+                    <h1 className="mb-6 text-3xl md:text-4xl xl:text-5xl font-bold text-blue-900">
                         {blogTitle}
                     </h1>
-                    <p className="h-[70%] md:mb-0 mb-5 text-zinc-200 xl:text-2xl md:text-xl text-2xl">
+                    <p className="mb-6 text-lg md:text-xl xl:text-2xl text-blue-700">
                         {blogDescription}
                     </p>
                 </div>
                 <div>
                     <Link href={blogHref}>
-                        <Button variant="auth" className="mt-3 xl:text-xl xl:p-7 text-lg p-6">
+                        <Button className="mt-4 px-8 py-3 text-lg font-semibold bg-yellow-400 hover:bg-yellow-500 text-blue-900 transition-colors duration-300">
                             Leer más
                         </Button>
                     </Link>
@@ -40,16 +40,17 @@ export const HeaderBlog = ({
             </div>
             <Link
                 href={blogHref}
-                className="md:flex-grow md:max-w-[60%] bg-[#F5F5F5] flex items-center justify-center md:rounded-r-lg rounded-t-lg"
+                className="md:w-[50%] lg:w-[60%] relative overflow-hidden"
                 title={blogTitle}
             >
                 <Image 
-                    className="rounded-lg w-full"
+                    className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                     src={blogImage}
                     alt={blogTitle}
                     width={1920}
                     height={1080}
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-blue-900/50 to-transparent opacity-0 transition-opacity duration-300 hover:opacity-100"></div>
             </Link>
         </div>
     )

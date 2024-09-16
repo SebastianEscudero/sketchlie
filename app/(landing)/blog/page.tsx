@@ -108,7 +108,7 @@ const BlogPage = () => {
                     isNew={true}
                 />
             </div>
-            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:px-[15%] lg:px-[7%] md:px-[5%] px-[5%] gap-5">
+            <div className="mb-20 grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:px-[15%] lg:px-[7%] md:px-[5%] px-[5%] gap-5">
                 {blogLinksData.map((blogLink, index) => (
                     <BlogLinks
                         key={index}

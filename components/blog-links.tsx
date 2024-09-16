@@ -19,36 +19,40 @@ export const BlogLinks = ({
     isNew,
 }: BlogLinksProps) => {
     return(
-        <div className="flex flex-col w-auto border border-zinc-400 rounded-md mb-5 transform transition-all duration-150 hover:scale-102 hover:border-black">
+        <div className="border border-blue-500/20 flex flex-col w-auto bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl">
             <Link
                 href={blogHref}
-                className="flex"
+                className="relative block"
                 title={blogTitle}
             >
                 <Image 
-                    className="rounded-t-md w-full"
+                    className="w-full h-48 object-cover"
                     src={blogImage}
                     alt={blogTitle}
                     width={1920}
                     height={1080}
                 />
+                {isNew && (
+                    <Badge className="absolute top-4 right-4 bg-yellow-400 text-blue-900 font-semibold px-3 py-1">
+                        Reciente
+                    </Badge>
+                )}
             </Link>
-            <div className="flex-1 flex flex-col justify-between p-5 bg-white rounded-b-md">
+            <div className="flex-1 flex flex-col justify-between p-6 bg-gradient-to-b from-blue-50 to-white">
                 <div>
-                    {isNew ? <Badge className="mb-3" variant="new">Reciente</Badge> : null} 
-                    <h2 className="mb-5 lg:text-2xl text-xl text-black ">
+                    <h2 className="mb-4 text-2xl font-bold text-blue-900 line-clamp-2">
                         {blogTitle}
                     </h2>
-                    <p className="text-black">
+                    <p className="text-blue-700 line-clamp-3">
                         {blogDescription}
                     </p>
                 </div>
-                <div className="mt-10">
+                <div className="mt-6">
                     <Link
                         href={blogHref}
                         title={blogTitle}
                     >
-                        <Button variant="auth">
+                        <Button className="w-full bg-yellow-400 hover:bg-yellow-500 text-blue-900 font-semibold transition-colors duration-300">
                             Leer más
                         </Button>
                     </Link>
