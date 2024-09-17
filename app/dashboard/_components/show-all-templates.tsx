@@ -71,7 +71,7 @@ export const ShowAllTemplates = ({
                 <p className="text-zinc-400">Start with a template to accelerate your workflow</p>
             </div>
             <div className="relative mb-6 px-3 pt-3">
-                <Search className="absolute left-6 top-1/2 transform -translate-y-1/3 text-zinc-400" />
+                <Search className="absolute left-6 top-1/2 transform -translate-y-[25%] text-zinc-400" />
                 <Input
                     className="w-full pl-10 py-2 dark:bg-zinc-800 border-zinc-700 text-white placeholder-zinc-500 focus:ring-2 focus:ring-blue-500"
                     placeholder="Search templates..."
