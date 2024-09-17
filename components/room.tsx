@@ -138,7 +138,7 @@ export const Room = React.memo(({ children, roomId, fallback, board, layers, lay
   }, [role]);
 
   const { socket, isConnected } = useWebSocket(
-    'https://sketchlie-server.fly.dev',
+    process.env.NEXT_PUBLIC_WEBSOCKET_URL || '',
     roomId,
     User,
     isUserPartOfOrg

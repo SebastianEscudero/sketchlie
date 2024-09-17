@@ -15,7 +15,7 @@
 
 # production
 /build
-
+/server
 # misc
 .DS_Store
 *.pem
@@ -36,7 +36,4 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-#server
-
-server/node_modules
-
+#admin commands
