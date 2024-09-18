@@ -7,12 +7,12 @@ import { ChevronsLeft, LayoutTemplate, Menu, Zap } from "lucide-react";
 import { Actions } from "@/components/actions";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { toast } from "sonner";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ShowAllTemplates } from "@/app/dashboard/_components/show-all-templates";
-import { CanvasMode, Layer, LayerType, User } from "@/types/canvas";
+import { Layer, LayerType, User } from "@/types/canvas";
 import { InsertLayerCommand } from "@/lib/commands";
 import { useState } from "react";
 import { RenameBoardDialog } from "@/components/modals/rename-modal";
+import { ExportDropdownMenu } from "@/components/ExportDropdownMenu";
 
 interface InfoProps {
     board: any;
@@ -225,6 +225,8 @@ export const Info = ({
                     })()}
                 </>
             )}
+            <TabSeparator />
+            <ExportDropdownMenu id={board._id} title={board.title} />
             <TabSeparator />
             <Hint label="Upgrade" side="bottom" sideOffset={10}>
                 <Button variant="infoIcons"

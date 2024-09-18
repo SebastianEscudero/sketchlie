@@ -6,9 +6,11 @@ import {
     DropdownMenuContent,
     DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { ArrowUpFromLine, ChevronRight, ToggleLeft, ToggleRight } from "lucide-react";
+import { Download } from "lucide-react";
 import { useState } from "react";
 import { Button } from "./ui/button";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 
 interface ExportDropdownMenuProps {
     id: string;
@@ -18,8 +20,6 @@ interface ExportDropdownMenuProps {
 export const ExportDropdownMenu = ({ id, title }: ExportDropdownMenuProps) => {
     const { liveLayers, liveLayerIds } = useRoom();
     const [isTransparent, setIsTransparent] = useState(false); // State to manage transparency
-
-    const toggleTransparency = () => setIsTransparent(!isTransparent); // Toggle function
 
     const exportOptions = [
         { label: 'to PDF', action: () => exportToPdf(title, isTransparent) },
@@ -31,16 +31,12 @@ export const ExportDropdownMenu = ({ id, title }: ExportDropdownMenuProps) => {
 
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger asChild className="h-[44px]">
-                <DropdownMenuItem className="p-3 cursor-pointer flex justify-between">
-                    <div className="flex flex-row items-center">
-                        <ArrowUpFromLine className="h-4 w-4 mr-2" />
-                        Export
-                    </div>
-                    <ChevronRight className="h-4 w-4" />
-                </DropdownMenuItem>
+            <DropdownMenuTrigger asChild>
+                <Button variant="infoIcons" className="p-2">
+                    <Download className="h-6 w-6" />
+                </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent side="right" sideOffset={8} className="w-[140px]">
+            <DropdownMenuContent side="bottom" sideOffset={8} className="w-[160px]">
                 {exportOptions.map((option, index) => (
                     <DropdownMenuItem
                         key={index}
@@ -50,14 +46,16 @@ export const ExportDropdownMenu = ({ id, title }: ExportDropdownMenuProps) => {
                         {option.label}
                     </DropdownMenuItem>
                 ))}
-                <div className="border-t dark:border-zinc-500 pt-1">
-                    <Button
-                        onClick={toggleTransparency}
-                        className="p-3 cursor-pointer w-full justify-start text-black dark:text-white font-normal bg-white dark:bg-inherit hover:bg-accent dark:hover:bg-[#2C2C2C]"
-                        variant="ghost"
-                    >
-                        {isTransparent ? <ToggleRight className="mr-2" /> : <ToggleLeft className="mr-2 text-neutral-400" />} Transparent
-                    </Button>
+                <div className="border-t dark:border-zinc-500 pt-2 pb-1">
+                    <div className="flex items-center space-x-2">
+                        <Switch
+                            id="transparent-mode"
+                            checked={isTransparent}
+                            onCheckedChange={setIsTransparent}
+                            className="scale-75"
+                        />
+                        <Label htmlFor="transparent-mode">Transparent</Label>
+                    </div>
                 </div>
             </DropdownMenuContent>
         </DropdownMenu>

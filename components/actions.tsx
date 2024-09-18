@@ -73,14 +73,6 @@ export const Actions = ({
   const [isRenameModalOpen, setIsRenameModalOpen] = useState(false);
   const [isPrivateModalOpen, setIsPrivateModalOpen] = useState(false);
 
-  const onCopyLink = () => {
-    navigator.clipboard.writeText(
-      `${window.location.origin}/board/${id}`,
-    )
-      .then(() => toast.success("Link copied"))
-      .catch(() => toast.error("Failed to copy link"))
-  };
-
   const router = useRouter();
   const user = useCurrentUser();
   const usersRole = org.users.find((u: any) => u.id === user?.id)?.role;
@@ -141,11 +133,12 @@ export const Actions = ({
           className="w-60"
         >
           <DropdownMenuItem
-            onClick={onCopyLink}
+            disabled={User !== undefined ? User.information.role !== "Admin" : usersRole !== "Admin"}
+            onClick={() => setIsRenameModalOpen(true)}
             className="p-3 cursor-pointer"
           >
-            <Link2 className="h-4 w-4 mr-2" />
-            Copy board link
+            <Pencil className="h-4 w-4 mr-2" />
+            {usersRole === "Admin" ? "Rename" : "Rename (Admin)"}
           </DropdownMenuItem>
           <DropdownMenuItem
             disabled={User !== undefined ? User.information.role !== "Admin" : usersRole !== "Admin"}
@@ -157,14 +150,6 @@ export const Actions = ({
             {(User?.information.role !== "Admin" && usersRole !== "Admin") &&
               <span className="text-sm ml-2">(Admin)</span>
             }
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            disabled={User !== undefined ? User.information.role !== "Admin" : usersRole !== "Admin"}
-            onClick={() => setIsRenameModalOpen(true)}
-            className="p-3 cursor-pointer"
-          >
-            <Pencil className="h-4 w-4 mr-2" />
-            {usersRole === "Admin" ? "Rename" : "Rename (Admin)"}
           </DropdownMenuItem>
           <ConfirmModal
             header="Delete board?"
@@ -193,7 +178,6 @@ export const Actions = ({
                 selectedLayersRef={selectedLayersRef}
                 User={User}
               />
-              <ExportDropdownMenu id={id} title={title} />
               <BackgroundMenu setBackground={setBackground} Background={Background} setForcedRender={setForcedRender} />
               <HelpDropdownMenu setCanvasState={setCanvasState} />
             </>

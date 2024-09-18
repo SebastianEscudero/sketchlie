@@ -44,7 +44,7 @@ function useWebSocket(url: string, roomId: string, user: User, isUserPartOfOrg: 
     return () => {
       newSocket.disconnect();
     };
-  }, [url, roomId, user]);
+  }, [url, roomId, user, isUserPartOfOrg]);
 
   useEffect(() => {
     const cleanup = connect();
