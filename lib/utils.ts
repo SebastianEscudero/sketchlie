@@ -1529,7 +1529,8 @@ export function checkIfTextarea() {
   if (document.activeElement &&
     document.activeElement.getAttribute('contentEditable') !== 'true' &&
     document.activeElement.tagName !== 'TEXTAREA' &&
-    document.activeElement.tagName !== 'INPUT'
+    document.activeElement.tagName !== 'INPUT' &&
+    !document.activeElement.classList.contains('shadcn-input') // Add this line
   ) {
     return false;
   }

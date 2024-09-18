@@ -3,9 +3,9 @@ import { Button } from '@/components/ui/button';
 import { updateR2Bucket } from '@/lib/r2-bucket-functions';
 import { LayerType, SelectorType } from '@/types/canvas';
 import { ChevronDown, ChevronUp, Bold, Underline, Italic, Strikethrough, Type } from 'lucide-react';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Socket } from 'socket.io-client';
-import { DEFAULT_FONT, fontFamilies, getSelectorPositionClass } from './selectionToolUtils';
+import { DEFAULT_FONT, fontFamilies, getSelectorPositionClass, searchFonts } from './selectionToolUtils';
 import {
     Select,
     SelectContent,
@@ -14,6 +14,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import { Input } from '@/components/ui/input';
 
 interface TextOptionsProps {
     selectedLayers: any;
@@ -48,6 +49,16 @@ export const TextOptions = ({
         strikethrough: false,
     });
     const [fontFamily, setFontFamily] = useState(layers[0].fontFamily || DEFAULT_FONT);
+
+    // Search Fonts
+    const [fontSearchQuery, setFontSearchQuery] = useState('');
+    const filteredFonts = searchFonts(fontSearchQuery);
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    // Ensure the current font is always in the list
+    const fontsToDisplay = filteredFonts.some(font => font.value === fontFamily)
+        ? filteredFonts
+        : [fontFamilies.find(font => font.value === fontFamily)!, ...filteredFonts];
 
     const updateTextStyles = useCallback(() => {
         setTextStyles({
@@ -182,6 +193,14 @@ export const TextOptions = ({
         setTextStyles(prev => ({ ...prev, fontFamily: newFontFamily }));
     };
 
+    const handleFontSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFontSearchQuery(e.target.value);
+        // Ensure the input keeps focus after state update
+        setTimeout(() => {
+            inputRef.current?.focus();
+        }, 0);
+    };
+
     return (
         <div className="relative inline-block text-left">
             <div className='flex flex-row items-center justify-center space-x-2'>
@@ -219,8 +238,18 @@ export const TextOptions = ({
                                     <SelectValue placeholder={fontFamily} />
                                 </SelectTrigger>
                                 <SelectContent>
+                                    <div className="p-2">
+                                        <Input
+                                            ref={inputRef}
+                                            type="text"
+                                            placeholder="Search fonts..."
+                                            value={fontSearchQuery}
+                                            onChange={handleFontSearchChange}
+                                            className="w-full mb-2"
+                                        />
+                                    </div>
                                     <SelectGroup>
-                                        {fontFamilies.map(font => (
+                                        {fontsToDisplay.map(font => (
                                             <SelectItem key={font.value} value={font.value} style={{ fontFamily: font.value }}>
                                                 {font.label}
                                             </SelectItem>
