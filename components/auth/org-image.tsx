@@ -25,7 +25,7 @@ export const OrgImage = ({
                 justifyContent: 'center',
                 borderRadius: '0.375rem'
             }}
-            className="flex-shrink-0 font-semibold text-sm"
+            className="flex-shrink-0 font-semibold text-base"
         >
             {letter}
         </div>

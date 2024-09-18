@@ -56,7 +56,7 @@ export const FolderList = ({ folders, groupedBoards, org }: FolderListProps) => 
         <Link key={folder._id} href={`/dashboard/?folder=${folder._id}`}>
           <div
             key={folder._id}
-            className=" shadow-custom-2 border dark:border-zinc-800 group aspect-[100/127] rounded-lg flex flex-col items-center justify-center cursor-pointer"
+            className="border dark:border-zinc-800 group aspect-[100/127] rounded-lg flex flex-col items-center justify-center cursor-pointer"
             onDragOver={handleDragOver}
             onDrop={(e) => handleDrop(e, folder._id)}
           >
@@ -70,7 +70,7 @@ export const FolderList = ({ folders, groupedBoards, org }: FolderListProps) => 
                   groupedBoards[folder._id]?.slice(0, 4).map((board) => (
                     <div key={board._id} className="w-1/2 px-2 py-1 ">
                       <div
-                        className="group aspect-[100/100] border rounded-lg shadow-custom-2 flex flex-col justify-between overflow-hidden bg-amber-50 dark:bg-zinc-500 dark:border-zinc-800"
+                        className="group aspect-[100/100] border rounded-lg flex flex-col justify-between overflow-hidden bg-amber-50 dark:bg-zinc-500 dark:border-zinc-800"
                         draggable={true}
                         onDragStart={(e) => handleDragStart(e, board._id, folder._id)}
                       >
