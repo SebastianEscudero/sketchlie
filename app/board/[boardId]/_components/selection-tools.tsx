@@ -17,6 +17,7 @@ import { TextJustifySelector } from "../selection-tools/text-justify-selector";
 import { updateR2Bucket } from "@/lib/r2-bucket-functions";
 import { DeleteLayerCommand, InsertLayerCommand } from "@/lib/commands";
 import { SketchlieAiDropdown } from "./sketchlie-ai-dropdown";
+import { DownloadButton } from "../selection-tools/download-button";
 
 interface SelectionToolsProps {
   board: any;
@@ -486,6 +487,11 @@ export const SelectionTools = memo(({
           openSelector={openSelector}
           setOpenSelector={setOpenSelector}
           expandUp={position + 50 + 205 > window.innerHeight}
+        />
+      )}
+      {isMediaLayer && (
+        <DownloadButton 
+          layers={layers}
         />
       )}
       <Hint label="Duplicate">

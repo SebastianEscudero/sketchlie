@@ -15,7 +15,7 @@ export const LogoSlider = () => {
             >
                 <Image src="/marquee/universidad-chile.svg" alt="Universidad de Chile Logo" height={70} width={70} className="mx-[30px] grayscale h-[80px] w-auto" />
                 <Image src="/marquee/sim.svg" alt="Brand Logo" width={70} height={70} className="mx-[30px] pt-8 pb-2 grayscale h-[80px] w-auto object-contain" />
-                <Image src="/marquee/2.svg" alt="Brand Logo" width={70} height={70} className="mx-[30px] pt-8 pb-2 grayscale h-[80px] w-auto" />
+                <Image src="/marquee/giphy-logo.svg" alt="Brand Logo" width={70} height={70} className="mx-[30px] pt-8 pb-2 grayscale h-[160px] w-auto" />
                 <Image src="/marquee/3.svg" alt="Brand Logo" width={70} height={70} className="mx-[30px] pt-8 pb-2 grayscale h-[80px] w-auto" />
                 <Image src="/marquee/4.svg" alt="Brand Logo" width={70} height={70} className="mx-[30px] pt-8 pb-2 grayscale h-[80px] w-auto" />
                 <Image src="/marquee/5.svg" alt="Brand Logo" width={70} height={70} className="mx-[30px] pt-8 pb-2 grayscale h-[80px] w-auto" />
