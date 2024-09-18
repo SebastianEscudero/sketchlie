@@ -166,7 +166,7 @@ export const BoardCard = ({
             src={imageUrl}
             alt={title}
             fill
-            className="object-fit"
+            className="object-fit p-3"
           />
           <Overlay />
           <button

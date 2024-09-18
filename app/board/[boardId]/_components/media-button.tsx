@@ -377,7 +377,7 @@ export const MediaButton = ({
                         )}
                         {(activeTab === "images" || activeTab === "videos") && searchTerm && (
                             <div className="pt-2 border-t text-sm text-gray-500">
-                                {activeTab === "images" ? "Photos" : "Videos"} provided by Pexels
+                                {activeTab === "images" ? "Photos" : "Videos"} provided by <a href="https://pexels.com" target="_blank" rel="noopener noreferrer">Pexels</a>
                             </div>
                         )}
                     </div>
