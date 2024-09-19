@@ -6,6 +6,7 @@ import { ArrowPostInsertMenu } from './arrow-post-insert-menu';
 import { ZoomToolbar } from './zoom-toolbar';
 import { CanvasMode, CanvasState, LayerType, Point } from "@/types/canvas";
 import { Dispatch, SetStateAction } from 'react';
+import { SketchlieAiInput } from './sketchlie-ai-input';
 
 interface CanvasOverlayProps {
   board: any;
@@ -217,6 +218,17 @@ export const CanvasOverlay = ({
         setIsArrowPostInsertMenuOpen={setIsArrowPostInsertMenuOpen}
       />
       )}
+      {/* {isShowingAIInput && (
+        <SketchlieAiInput 
+            setLiveLayers={setLiveLayers}
+            setLiveLayerIds={setLiveLayerIds}
+            boardId={boardId}
+            socket={socket}
+            org={org}
+            proModal={proModal}
+            performAction={performAction}
+        />
+    )} */}
       <ZoomToolbar zoom={zoom} setZoom={setZoom} setCamera={setCamera} camera={camera} />
     </div>
   );
