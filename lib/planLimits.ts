@@ -12,17 +12,17 @@ export function getMaxBoards(org: any): number {
   }
 
   if (planDetails && planDetails.features) {
-    return planDetails.features.Boards === "Ilimitados" ? Infinity : Number(planDetails.features.Boards);
+    return planDetails.features.Boards === "Unlimited" ? Infinity : Number(planDetails.features.Boards);
   }
   return 0;
 };
 
-export function getMaxCapas(org: any): number {
+export function getMaxLayers(org: any): number {
   const plan = org.subscriptionPlan;
 
   const planDetails = plans.find(subscriptionPlan => subscriptionPlan.label === plan);
   if (planDetails && planDetails.features) {
-    return planDetails.features["Capas máximas"] === "Ilimitados" ? Infinity : Number(planDetails.features["Capas máximas"]);
+    return planDetails.features["Maximum layers"] === "Unlimited" ? Infinity : Number(planDetails.features["Maximum layers"]);
   }
   return 0;
 }
@@ -36,7 +36,7 @@ export function getMaxOrganizations(user: any): number {
     if (org.subscription) {
       if (new Date(org.subscription.mercadoPagoCurrentPeriodEnd).getTime() > new Date().getTime()) {
         if (planDetails && planDetails.features) {
-          planLimit = planDetails.features["Teams"] === "Ilimitados" ? Infinity : Number(planDetails.features["Teams"]);
+          planLimit = planDetails.features["Teams"] === "Unlimited" ? Infinity : Number(planDetails.features["Teams"]);
         }
       }
     }
@@ -50,7 +50,7 @@ export function getMaxImageSize(org: any): number {
 
   const planDetails = plans.find(subscriptionPlan => subscriptionPlan.label === plan);
   if (planDetails && planDetails.features) {
-    const imageSizeStr = planDetails.features["Imágenes"];
+    const imageSizeStr = planDetails.features["Images"];
     const match = imageSizeStr.match(/\d+/);
     return match ? Number(match[0]) : 0;
   }
