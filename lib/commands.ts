@@ -1,7 +1,7 @@
 import { Layers } from "@/types/canvas";
 import { Socket } from "socket.io-client";
 import { updateR2Bucket } from "./r2-bucket-functions";
-import { getMaxCapas } from "./planLimits";
+import { getMaxLayers } from "./planLimits";
 
 export interface Command {
     execute(liveLayerIds: string[], liveLayers: Layers): void;
@@ -26,7 +26,7 @@ export class InsertLayerCommand implements Command {
             liveLayerIds = [...liveLayerIds, layerId];
         });
 
-        if (liveLayerIds.length > getMaxCapas(this.org)) {
+        if (liveLayerIds.length > getMaxLayers(this.org)) {
             this.proModal.onOpen();
             return;
         }
