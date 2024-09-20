@@ -60,8 +60,8 @@ export const SelectionTools = memo(({
   const nanoid = customAlphabet(alphabet, 21);
   const [openSelector, setOpenSelector] = useState<SelectorType | null>(null);
 
-  let hasText = true, isMediaLayer = false, hasOutline = true, isArrowLayer = true, isLineLayer = true, isPathLayer = true;
-
+  let hasText = true, isMediaLayer = true, hasOutline = true, isArrowLayer = true, isLineLayer = true, isPathLayer = true;
+  
   selectedLayersRef.current.forEach((id: string) => {
     const type = liveLayers[id]?.type;
     const isTextType = [LayerType.Text, LayerType.Note, LayerType.Rectangle, LayerType.Ellipse, LayerType.Rhombus, LayerType.Triangle, LayerType.Star, LayerType.Hexagon, LayerType.BigArrowLeft, LayerType.BigArrowRight, LayerType.BigArrowUp, LayerType.BigArrowDown, LayerType.CommentBubble].includes(type);
@@ -69,7 +69,7 @@ export const SelectionTools = memo(({
   
     // Update conditions based on the current layer type
     hasText = hasText && isTextType;
-    isMediaLayer = isMediaLayer || type === LayerType.Image || type === LayerType.Video || type === LayerType.Link;
+    isMediaLayer = isMediaLayer && (type === LayerType.Image || type === LayerType.Video || type === LayerType.Link);
     hasOutline = hasOutline && isOutlineType;
     isArrowLayer = isArrowLayer && type === LayerType.Arrow;
     isLineLayer = isLineLayer && type === LayerType.Line;

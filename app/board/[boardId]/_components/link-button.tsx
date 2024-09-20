@@ -52,7 +52,6 @@ export const LinkButton = ({
         const centerPoint = getCenterOfScreen(camera, zoom, svgRef);
         const dimensions = { width: 1600, height: 900 };
         const info = { dimensions, url: convertedLink };
-        console.log(convertedLink)
 
         insertMedia(LayerType.Link, centerPoint, info, zoom);
         setIsDialogOpen(false);

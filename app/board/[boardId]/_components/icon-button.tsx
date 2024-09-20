@@ -96,8 +96,8 @@ export const IconButton = ({
     return (
         <>
             <Hint side="top" label={label} sideOffset={14}>
-                <Button size="icon" variant="icon" className="h-10 w-10" onClick={() => setIsDialogOpen(true)}>
-                    <Icon />
+                <Button size="icon" variant="icon" className="h-8 w-8 xs:h-10 xs:w-10" onClick={() => setIsDialogOpen(true)}>
+                    <Icon className="h-5 w-5" />
                 </Button>
             </Hint>
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>

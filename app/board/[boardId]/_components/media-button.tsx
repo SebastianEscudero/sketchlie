@@ -273,8 +273,8 @@ export const MediaButton = ({
     return (
         <>
             <Hint side="top" label={label} sideOffset={14}>
-                <Button disabled={isDisabled} onClick={handleButtonClick} size="icon" variant={isActive ? "iconActive" : "icon"} className="h-10 w-10">
-                    <Icon />
+                <Button disabled={isDisabled} onClick={handleButtonClick} size="icon" variant={isActive ? "iconActive" : "icon"} className="h-8 w-8 xs:h-10 xs:w-10">
+                    <Icon className="h-5 w-5" />
                 </Button>
             </Hint>
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>

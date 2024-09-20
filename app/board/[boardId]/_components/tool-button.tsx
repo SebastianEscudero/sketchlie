@@ -20,7 +20,7 @@ export const ToolButton = ({
     label
 }: ToolButtonProps) => {
     const button = (
-        <Button disabled={isDisabled} onClick={onClick} className="h-10 w-10 p-2" variant={isActive ? "iconActive" : "icon"}>
+        <Button disabled={isDisabled} onClick={onClick} className="h-8 w-8 xs:h-10 xs:w-10 p-2" variant={isActive ? "iconActive" : "icon"}>
             <Icon className="h-5 w-5" />
         </Button>
     );

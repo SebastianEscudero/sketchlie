@@ -213,9 +213,9 @@ export const Info = ({
                         }
                         return (
                             <ShowAllTemplates onClick={onChooseTemplate}>
-                                <div className="flex justify-center items-center hover:cursor-pointer">
+                                <div className="flex justify-center items-center hover:cursor-pointer sm:flex hidden">
                                     <Hint label="Templates" side="bottom" sideOffset={10}>
-                                        <Button asChild className="h-8 w-8 xs:h-10 xs:w-10 p-2" variant="infoIcons">
+                                        <Button className="h-8 w-8 xs:h-10 xs:w-10" variant="infoIcons" size="icon">
                                             <LayoutTemplate className="h-5 w-5" />
                                         </Button>
                                     </Hint>
@@ -225,7 +225,9 @@ export const Info = ({
                     })()}
                 </>
             )}
-            <TabSeparator />
+            <div className="text-neutral-300 px-1 sm:flex hidden">
+                |
+            </div>
             <ExportDropdownMenu id={board._id} title={board.title} />
             <TabSeparator />
             <Hint label="Upgrade" side="bottom" sideOffset={10}>
