@@ -1,11 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { NavigationMenuLanding } from "./navigation-menu";
 import { MobileSidebar } from "./mobile-sidebar";
 import { Button } from "./ui/button";
+import landingNavbarTranslations from "@/public/locales/landing-navbar";
+import { LanguageContext } from "@/providers/language-provider";
+import { Language } from "@/types/canvas";
 
 // Custom hook to track scroll direction
 const useScrollDirection = () => {
@@ -34,16 +37,18 @@ const useScrollDirection = () => {
 
 export const LandingNavbar = () => {
     const scrollDirection = useScrollDirection();
+    const lang = useContext(LanguageContext);
+    const t = landingNavbarTranslations[lang as Language];
 
     return (
-        <nav className={`bg-blue-700 sticky top-0 z-50 h-[88px] flex items-center transition-transform duration-300 ${
+        <nav className={`bg-blue-600 sticky top-0 z-50 h-[88px] flex items-center transition-transform duration-300 ${
             scrollDirection === "down" ? "-translate-y-[71px]" : "translate-y-0"
         }`}>
             <div className="flex items-center w-full h-full xl:px-[15%] lg:px-[7%] md:px-[5%] px-[5%]">
                 <div className="flex items-center justify-between w-full max-w-7xl">
                     <div className="flex items-center">
-                        <MobileSidebar />
-                        <Link href="/" className="flex items-center mr-2 ml-2 h-[40px]" title="Sketchlie">
+                        <MobileSidebar translations={t} lang={lang} />
+                        <Link href={`/${lang}/`} className="flex items-center mr-2 ml-2 h-[40px]" title="Sketchlie">
                             <div className="mr-2 h-full w-full">
                                 <Image
                                     height={60}
@@ -58,10 +63,10 @@ export const LandingNavbar = () => {
                             </p>
                         </Link>
                     </div>
-                    <NavigationMenuLanding />
-                    <Link href="/auth/register/" title="Regístrate gratis">
+                    <NavigationMenuLanding translations={t} lang={lang}/>
+                    <Link href="/auth/register/" title={t.cta}>
                         <Button variant="golden" className="rounded-lg">
-                            Regístrate gratis
+                            {t.cta}
                         </Button>
                     </Link>
                 </div>

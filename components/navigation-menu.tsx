@@ -15,124 +15,40 @@ import {
 } from "@/components/ui/navigation-menu"
 import { cn } from "@/lib/utils"
 
-const porEquipo: { title: string; href: string }[] = [
-    {
-        title: "Diseño de Producto",
-        href: "/diseno-de-producto/",
-    },
-    {
-        title: "Equipos de Ingeniería",
-        href: "/equipos-de-ingenieria/",
-    },
-    {
-        title: "Diseño",
-        href: "/diseno/",
-    },
-    {
-        title: "Equipos de TI",
-        href: "/equipos-de-ti/",
-    },
-    {
-        title: "Marketing ",
-        href: "/marketing/",
-    },
-     {
-        title: "Agencias y Consultoras",
-        href: "/agencias-y-consultoras/",
-    },
-    {
-        title: "Ventas",
-        href: "/ventas/",
-    },
-]
-
-const porCasoDeUso: { title: string; href: string }[] = [
-    {
-        title: "Pizarra Online",
-        href: "/pizarra-online/",
-    },
-    {
-        title: "Mapa Conceptual",
-        href: "/mapa-conceptual/",
-    },
-    {
-        title: "Diagrama de Flujo",
-        href: "/diagrama-de-flujo/",
-    },
-    {
-        title: "Wireframe",
-        href: "/wireframe/",
-    },
-    {
-        title: "Mapas mentales",
-        href: "/mapa-mental-online/",
-    },
-    {
-        title: "Mapa de procesos",
-        href: "/mapas-de-procesos",
-    },
-    {
-        title: "Diagramas",
-        href: "/diagrama/",
-    },
-    {
-        title: "Lluvia de ideas ",
-        href: "/lluvia-de-ideas/",
-    },
-    {
-        title: "Customer Journey Map ",
-        href: "/customer-journey-map/",
-    },
-]
-
-const Recursos = [
-    {
-        title: "Plantillas",
-        href: "/plantillas/",
-    },
-    {
-        title: "Blog",
-        href: "/blog/",
-    },
-    {
-        title: "Tutorial de Sketchlie",
-        href: "/blog/pizarra-online-tutorial/",
-    }
-]
-
-export function NavigationMenuLanding() {
+export function NavigationMenuLanding({ translations, lang }: { translations: any, lang: string }) {
     const pathname = usePathname();
+    const t = translations;
 
     return (
         <NavigationMenu>
             <NavigationMenuList className="lg:flex hidden">
                 <NavigationMenuItem>
-                    <NavigationMenuTrigger>¿Qué es Sketchlie?</NavigationMenuTrigger>
+                    <NavigationMenuTrigger>{t.menu.whatIsSketchlie}</NavigationMenuTrigger>
                     <NavigationMenuContent>
                         <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px]">
-                            <ListItem href="/quienes-somos/" title="Descripción de Sketchlie">
-                                Descubre qué es Sketchlie y cómo puede ayudarte.
+                            <ListItem href={`/${lang}/quienes-somos/`} title={t.menu.whatIsSketchlie}>
+                                {t.menu.sketchlieDescription}
                             </ListItem>
                         </ul>
                     </NavigationMenuContent>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                    <NavigationMenuTrigger>Soluciones</NavigationMenuTrigger>
+                    <NavigationMenuTrigger>{t.menu.solutions}</NavigationMenuTrigger>
                     <NavigationMenuContent>
                         <div className="grid gap-3 p-6 md:w-[400px] md:grid-cols-2 lg:w-[600px]">
                             <div>
-                                <h3 className="mb-2 text-sm font-medium">Por Equipo</h3>
+                                <h3 className="mb-2 text-sm font-medium">{t.menu.byTeam}</h3>
                                 <ul className="space-y-2">
-                                    {porEquipo.map((item) => (
-                                        <ListItem key={item.title} title={item.title} href={item.href} active={pathname === item.href} />
+                                    {t.teams.map((item: any) => (
+                                        <ListItem key={item.title} title={item.title} href={`/${lang}${item.href}`} active={pathname === `${lang}${item.href}`} />
                                     ))}
                                 </ul>
                             </div>
                             <div>
-                                <h3 className="mb-2 text-sm font-medium">Por Caso de Uso</h3>
+                                <h3 className="mb-2 text-sm font-medium">{t.menu.byUseCase}</h3>
                                 <ul className="space-y-2">
-                                    {porCasoDeUso.map((item) => (
-                                        <ListItem key={item.title} title={item.title} href={item.href} active={pathname === item.href} />
+                                    {t.useCases.map((item: any) => (
+                                        <ListItem key={item.title} title={item.title} href={`/${lang}${item.href}`} active={pathname === `${lang}${item.href}`} />
                                     ))}
                                 </ul>
                             </div>
@@ -140,21 +56,21 @@ export function NavigationMenuLanding() {
                     </NavigationMenuContent>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                    <NavigationMenuTrigger>Recursos</NavigationMenuTrigger>
+                    <NavigationMenuTrigger>{t.menu.resources}</NavigationMenuTrigger>
                     <NavigationMenuContent>
                         <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                            {Recursos.map((recurso) => (
-                                <ListItem key={recurso.title} title={recurso.title} href={recurso.href} active={pathname === recurso.href}>
-                                    Explora nuestros {recurso.title.toLowerCase()} para sacar el máximo provecho de Sketchlie.
+                            {t.resources.map((recurso: any) => (
+                                <ListItem key={recurso.title} title={recurso.title} href={`/${lang}${recurso.href}`} active={pathname === `${lang}${recurso.href}`}>
+                                    {recurso.description}
                                 </ListItem>
                             ))}
                         </ul>
                     </NavigationMenuContent>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                    <Link href="/pricing/" legacyBehavior passHref>
+                    <Link href={`/${lang}/pricing/`} legacyBehavior passHref>
                         <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                            Precios
+                            {t.menu.pricing}
                         </NavigationMenuLink>
                     </Link>
                 </NavigationMenuItem>

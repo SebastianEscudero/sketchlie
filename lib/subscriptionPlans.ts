@@ -39,12 +39,13 @@ export const subscriptionPlans = [
             "Support": "Advanced",
             "Teams": "Unlimited",
         },
-        extraFeatures: "Proteccón de datos con inicio de sesión único",
+        extraFeatures: "Data protection with single sign-on",
         recommended: true,
     },
     {
         label: "Enterprise",
-        description: "Para equipos grandes y organizaciones que necesitan una solución personalizada.",
-        characteristicsDescription: "Para equipos grandes y organizaciones que necesitan una solución personalizada.",
+        description: "For large teams and organizations that need a custom solution.",
+        characteristicsDescription: "The apex of collaboration at your hands, everything you need to create the next big thing.",
     }
+
 ]

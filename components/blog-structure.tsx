@@ -36,7 +36,7 @@ export const BlogStructure = ({
     );
 
     return (
-        <div className="bg-blue-700 text-white xl:px-[15%] lg:px-[10%] md:px-[7%] px-[5%] py-20 md:py-20 lg:py-16 xl:py-24">
+        <div className="bg-blue-600 text-white xl:px-[15%] lg:px-[10%] md:px-[7%] px-[5%] py-20 md:py-20 lg:py-16 xl:py-24">
             <div className="flex flex-col md:flex-row md:space-x-10 xl:space-x-18 items-center md:text-left text-center">
                 <div className="space-y-10 flex-1 text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
                     <h1>

@@ -6,9 +6,13 @@ import { useRef } from "react"
 import { Button } from "./ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
+import { UseLanguage } from "@/hooks/use-language";
+import templatesSliderTranslations from "@/public/locales/templates-slider";
 
 export const TemplatesSlider = () => {
     const scrollContainerRef = useRef<HTMLDivElement>(null)
+    const language = UseLanguage();
+    const t = templatesSliderTranslations[language];
 
     const scroll = (scrollOffset: number) => {
         if (scrollContainerRef.current) {
@@ -21,7 +25,9 @@ export const TemplatesSlider = () => {
 
     return (
         <div className="bg-white py-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-blue-900 xl:mx-[10%] lg:mx-[7%] mx-[5%] mb-8">Explora nuestras plantillas</h2>
+            <h2 className="text-3xl lg:text-4xl font-bold text-blue-900 xl:mx-[10%] lg:mx-[7%] mx-[5%] mb-8">
+                {t.title}
+            </h2>
             <div className="relative">
                 <Button
                     className="px-2 absolute top-1/2 left-[5%] z-10 transform -translate-y-1/2 bg-blue-600 hover:bg-blue-700 text-white"

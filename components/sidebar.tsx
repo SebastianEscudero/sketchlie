@@ -10,80 +10,9 @@ import {
 } from "@/components/ui/accordion"
 import { SheetClose } from "./ui/sheet";
 
-const porCasoDeUso: { title: string; href: string }[] = [
-    {
-        title: "Pizarra Online",
-        href: "/pizarra-online/",
-    },
-    {
-        title: "Mapa Conceptual",
-        href: "/mapa-conceptual/",
-    },
-    {
-        title: "Diagrama de Flujo",
-        href: "/diagrama-de-flujo/",
-    },
-    {
-        title: "Wireframe",
-        href: "/wireframe/",
-    },
-    {
-        title: "Mapas mentales",
-        href: "/mapa-mental-online/",
-    },
-    {
-        title: "Mapa de procesos",
-        href: "/mapas-de-procesos",
-    },
-    {
-        title: "Diagramas",
-        href: "/diagrama/",
-    },
-    {
-        title: "Lluvia de ideas ",
-        href: "/lluvia-de-ideas/",
-    },
-    {
-        title: "Customer Journey Map ",
-        href: "/customer-journey-map/",
-    },
-]
-
-const porEquipo: { title: string; href: string }[] = [
-    {
-        title: "Diseño de Producto",
-        href: "/diseno-de-producto/",
-    },
-    {
-        title: "Equipos de Ingeniería",
-        href: "/equipos-de-ingenieria/",
-    },
-    {
-        title: "Diseño",
-        href: "/diseno/",
-    },
-    {
-        title: "Equipos de TI",
-        href: "/equipos-de-ti/",
-    },
-    {
-        title: "Marketing ",
-        href: "/marketing/",
-    },
-     {
-        title: "Agencias y Consultoras",
-        href: "/agencias-y-consultoras/",
-    },
-    {
-        title: "Ventas",
-        href: "/ventas/",
-    },
-]
-
-const Sidebar = ({
-}) => {
-
+const Sidebar = ({ translations, lang }: { translations: any, lang: string }) => {
     const pathname = usePathname();
+    const t = translations.translations;
 
     return (
         <div className="space-y-4 py-4 flex flex-col h-full bg-white text-black overflow-y-auto">
@@ -98,41 +27,41 @@ const Sidebar = ({
                         />
                     </div>
                     <h1 className="text-2xl font-semibold">
-                        Sketchlie
+                        {t.logo}
                     </h1>
                 </div>
                 <div className="space-y-1 mt-2">
                     <Accordion type="single" collapsible className="text-lg">
                         <AccordionItem value="item-1" className="px-4">
-                            <AccordionTrigger className="font-semibold">Producto</AccordionTrigger>
+                            <AccordionTrigger className="font-semibold">{t.menu.product}</AccordionTrigger>
                             <AccordionContent className="flex flex-col w-full gap-1">
                                 <SheetClose asChild>
                                     <Link
-                                        title="Descripcion de Sketchlie"
-                                        href="/quienes-somos/"
+                                        title={t.menu.sketchlieDescription}
+                                        href={`/${lang}/quienes-somos/`}
                                     >
                                         <Button
                                             className='w-full justify-start my-[2px] text-[16px] font-medium'
-                                            variant={pathname === "/quienes-somos/" ? 'auth' : 'navbar'}
+                                            variant={pathname === `${lang}/quienes-somos/` ? 'auth' : 'navbar'}
                                         >
-                                            Descripción de Sketchlie
+                                            {t.menu.sketchlieDescription}
                                         </Button>
                                     </Link>
                                 </SheetClose>
                             </AccordionContent>
                         </AccordionItem>
                         <AccordionItem value="item-2" className="px-4">
-                            <AccordionTrigger className="font-semibold">Soluciones</AccordionTrigger>
+                            <AccordionTrigger className="font-semibold">{t.menu.solutions}</AccordionTrigger>
                             <AccordionContent className="flex flex-col w-full gap-1">
-                                {porCasoDeUso.map((component) => (
+                                {t.useCases.map((component: any) => (
                                     <SheetClose asChild key={component.title}>
                                         <Link
                                             title={component.title}
-                                            href={component.href}
+                                            href={`/${lang}${component.href}`}
                                         >
                                             <Button
                                                 className='w-full justify-start my-[2px] text-[16px] font-medium'
-                                                variant={pathname === component.href ? 'auth' : 'navbar'}
+                                                variant={pathname === `${lang}${component.href}` ? 'auth' : 'navbar'}
                                             >
                                                 {component.title}
                                             </Button>
@@ -142,17 +71,17 @@ const Sidebar = ({
                             </AccordionContent>
                         </AccordionItem>
                         <AccordionItem value="item-3" className="px-4">
-                            <AccordionTrigger className="font-semibold">Equipos</AccordionTrigger>
+                            <AccordionTrigger className="font-semibold">{t.menu.byTeam}</AccordionTrigger>
                             <AccordionContent className="flex flex-col w-full gap-1">
-                                {porEquipo.map((component) => (
+                                {t.teams.map((component: any) => (
                                     <SheetClose asChild key={component.title}>
                                         <Link
                                             title={component.title}
-                                            href={component.href}
+                                            href={`/${lang}${component.href}`}
                                         >
                                             <Button
                                                 className='w-full justify-start my-[2px] text-[16px] font-medium'
-                                                variant={pathname === component.href ? 'auth' : 'navbar'}
+                                                variant={pathname === `${lang}${component.href}` ? 'auth' : 'navbar'}
                                             >
                                                 {component.title}
                                             </Button>
@@ -165,14 +94,14 @@ const Sidebar = ({
                             <SheetClose asChild>
                                 <Link
                                     className="my-2 text-lg hover:underline px-5"
-                                    href="/blog/"
-                                    title="Blog"
+                                    href={`/${lang}/blog/`}
+                                    title={t.menu.blog}
                                 >
                                     <Button
                                         className='w-full justify-start gap-1 text-lg font-semibold'
-                                        variant={pathname === "/blog/" ? 'auth' : 'navbar'}
+                                        variant={pathname === `${lang}/blog/` ? 'auth' : 'navbar'}
                                     >
-                                        Blog
+                                        {t.menu.blog}
                                     </Button>
                                 </Link>
                             </SheetClose>
@@ -181,14 +110,14 @@ const Sidebar = ({
                             <SheetClose asChild>
                                 <Link
                                     className="my-2 text-lg hover:underline px-5"
-                                    href="/pricing/"
-                                    title="Precios"
+                                    href={`/${lang}/pricing/`}
+                                    title={t.menu.pricing}
                                 >
                                     <Button
                                         className='w-full justify-start gap-1 text-lg font-semibold'
-                                        variant={pathname === "/pricing/" ? 'auth' : 'navbar'}
+                                        variant={pathname === `${lang}/pricing/` ? 'auth' : 'navbar'}
                                     >
-                                        Precios 
+                                        {t.menu.pricing}
                                     </Button>
                                 </Link>
                             </SheetClose>
@@ -196,20 +125,20 @@ const Sidebar = ({
                     </Accordion>
                 </div>
             </div>
-            <Link href="/auth/login/" className="text-center" title="Login">
+            <Link href="/auth/login/" className="text-center" title={t.login}>
                 <Button
                     variant="outline"
                     className="w-[90%]"
                 >
-                    Login
+                    {t.login}
                 </Button>
             </Link>
-            <Link href="/auth/register/" className="text-center" title="Regístrate gratis">
+            <Link href="/auth/register/" className="text-center" title={t.register}>
                 <Button
                     variant="auth"
                     className="w-[90%]"
                 >
-                    Regístrate gratis
+                    {t.register}
                 </Button>
             </Link>
         </div>

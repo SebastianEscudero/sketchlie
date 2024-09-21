@@ -467,3 +467,5 @@ export enum SelectorType {
   ArrowType,
   TextStyle
 };
+
+export type Language = 'en' | 'pt' | 'es';
