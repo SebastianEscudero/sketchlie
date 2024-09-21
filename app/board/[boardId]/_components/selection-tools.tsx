@@ -1,7 +1,7 @@
 "use client";
 
 import { memo, useCallback, useEffect, useRef, useState } from "react";
-import { BringToFront, Copy, SendToBack, Sparkles, Trash2, WandSparkles } from "lucide-react";
+import { BringToFront, Copy, SendToBack, Sparkles, Trash, WandSparkles } from "lucide-react";
 import { Hint } from "@/components/hint";
 import { Camera, CanvasMode, Color, Layer, LayerType, Presence, SelectorType } from "@/types/canvas";
 import { Button } from "@/components/ui/button";
@@ -410,7 +410,7 @@ export const SelectionTools = memo(({
   return (
     <div
       ref={containerRef}
-      className="absolute p-1 rounded-sm bg-white dark:bg-[#272727] border dark:border-zinc-800 shadow-sm flex select-none gap-x-2 items-center pointer-events-auto"
+      className="absolute p-1 rounded-xl bg-white dark:bg-zinc-800 border dark:border-zinc-800 shadow-sm flex select-none gap-x-2 items-center pointer-events-auto"
       style={{
         transform: initialPosition
           ? `translate(
@@ -530,14 +530,14 @@ export const SelectionTools = memo(({
         socket={socket}
         performAction={performAction}
       /> */}
-      <div className="flex items-center pl-2 border-l border-neutral-200">
+      <div className="flex items-center">
         <Hint label="Delete">
           <Button
             variant="board"
             size="icon"
             onClick={deleteLayers}
           >
-            <Trash2 />
+            <Trash />
           </Button>
         </Hint>
       </div>

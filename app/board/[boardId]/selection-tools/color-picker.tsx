@@ -35,13 +35,14 @@ export const ColorPicker = ({
   const opacity = colorButtonColor.a;
 
   return (
-    <div className="relative text-left border-r pr-1.5 border-neutral-200">
+    <div className="relative text-left">
       <ColorPickerButton color={colorButtonColor} onClick={() => setOpenSelector(openSelector === SelectorType.Color ? null : SelectorType.Color)} />
       {openSelector === SelectorType.Color && (
         <div
-          className={`p-3 pt-5 pb-2 origin-top-right absolute right-0 ${getSelectorPositionClass(expandUp)} w-[165px] translate-x-1/3 rounded-lg shadow-custom-1 bg-white dark:bg-[#383838]`}
+          className={`p-3 pt-5 pb-2 origin-top-right absolute right-0 ${getSelectorPositionClass(expandUp)} w-[165px] translate-x-1/3 rounded-lg shadow-custom-1 bg-white dark:bg-zinc-800`}
         >
           <Slider
+
             defaultValue={[opacity || 1]}
             min={0.1}
             max={1}
@@ -87,11 +88,11 @@ export const ColorButton = ({
   const isSelected = color.r === selectedColor?.r && color.g === selectedColor?.g && color.b === selectedColor?.b && color.a === selectedColor?.a;
   return (
     <button
-      className={`w-8 h-8 my-1 items-center flex justify-center transition ${isSelected && 'bg-neutral-100 rounded-lg'}`}
+      className={`w-8 h-8 my-1 items-center flex justify-center transition ${isSelected && 'bg-neutral-100 dark:bg-zinc-700 rounded-lg'}`}
       onClick={() => onClick(color)}
     >
       <div
-        className="h-5 w-5 rounded-[50%] border dark:border-zinc-500 relative"
+        className="h-5 w-5 rounded-[50%] border dark:border-zinc-700 relative"
         style={{ background: colorToCss(color) }}
       >
         {color.r === 0 && color.g === 0 && color.b === 0 && color.a === 0 && (
@@ -117,7 +118,7 @@ export const ColorPickerButton = ({
         size="icon"
       >
         <div
-          className="h-5 w-5 rounded-[50%] border dark:border-zinc-500 relative"
+          className="h-5 w-5 rounded-[50%] border dark:border-zinc-600 border-zinc-800 relative"
           style={{ background: colorToCss(color) }}
         >
           {color.r === 0 && color.g === 0 && color.b === 0 && color.a === 0 && (

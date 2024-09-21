@@ -145,7 +145,7 @@ export const Info = ({
     if (!board) return <InfoSkeleton />;
 
     return (
-        <div className="border dark:border-zinc-700 shadow-md absolute bg-white dark:bg-[#272727] top-2 left-2 rounded-lg p-1 h-12 flex items-center pointer-events-auto">
+        <div className="border dark:border-zinc-800 shadow-md absolute bg-white dark:bg-zinc-800 top-2 left-2 rounded-xl p-1 h-12 flex items-center pointer-events-auto">
             <Hint label="Go to Dashboard" side="bottom" sideOffset={10}>
                 <Button asChild variant="infoIcons" className="px-2">
                     <Link href="/dashboard/">
@@ -213,7 +213,7 @@ export const Info = ({
                         }
                         return (
                             <ShowAllTemplates onClick={onChooseTemplate}>
-                                <div className="flex justify-center items-center hover:cursor-pointer sm:flex hidden">
+                                <div className="justify-center items-center hover:cursor-pointer sm:flex hidden">
                                     <Hint label="Templates" side="bottom" sideOffset={10}>
                                         <Button className="h-8 w-8 xs:h-10 xs:w-10" variant="infoIcons" size="icon">
                                             <LayoutTemplate className="h-5 w-5" />

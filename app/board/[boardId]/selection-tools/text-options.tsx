@@ -232,7 +232,7 @@ export const TextOptions = ({
                     </Hint>
 
                     {openSelector === SelectorType.TextStyle && (
-                        <div className="absolute flex flex-row items-center justify-center left-0 mt-2 w-[308px] rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100">
+                        <div className="absolute flex flex-row items-center justify-center left-0 mt-2 w-[308px] rounded-md shadow-lg bg-white dark:bg-zinc-800">
                             <Select onValueChange={handleFontFamilyChange} value={fontFamily}>
                                 <SelectTrigger className="w-[120px]">
                                     <SelectValue placeholder={fontFamily} />
@@ -269,7 +269,7 @@ export const TextOptions = ({
             </div>
             {openSelector === SelectorType.FontSize && (
                 <div
-                    className={`shadow-custom-1 rounded-lg absolute ${getSelectorPositionClass(expandUp)} w-[55px] bg-white dark:bg-[#272727] ring-1 ring-black ring-opacity-5`}
+                    className={`shadow-custom-1 rounded-lg absolute ${getSelectorPositionClass(expandUp)} w-[55px] bg-white dark:bg-zinc-800 ring-1 ring-black ring-opacity-5`}
                 >
                     <div className="py-4 grid grid-cols-1 gap-5 w-full text-xs" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                         {fontSizes.slice(5).map(fontSize => (

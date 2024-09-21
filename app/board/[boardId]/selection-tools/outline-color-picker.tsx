@@ -36,11 +36,11 @@ export const OutlineColorPicker = ({
   const opacity = colorButtonColor.a;
 
   return (
-    <div className="relative text-left border-x px-1 border-neutral-200">
+    <div className="relative text-left">
       <OutlineColorButton color={colorButtonColor} onClick={() => setOpenSelector(openSelector === SelectorType.OutlineColor ? null : SelectorType.OutlineColor)} />
       {openSelector === SelectorType.OutlineColor && (
         <div
-          className={`p-3 pt-5 pb-2 origin-top-right absolute right-0 ${getSelectorPositionClass(expandUp)} w-[165px] translate-x-1/3 rounded-lg shadow-custom-1 bg-white dark:bg-[#383838]`}
+          className={`p-3 pt-5 pb-2 origin-top-right absolute right-0 ${getSelectorPositionClass(expandUp)} w-[165px] translate-x-1/3 rounded-lg shadow-custom-1 bg-white dark:bg-zinc-800`}
         >
           <Slider
             defaultValue={[opacity || 1]}
@@ -89,11 +89,11 @@ const OutlineColorButton = ({
         onClick={() => onClick(color)}
       >
       <div
-        className="w-6 h-6 my-1 items-center flex justify-center transition mx-2 border border-neutral-300 dark:border-zinc-500 rounded-[50%] bg-white dark:bg-[#383838]"
+        className="w-6 h-6 my-1 items-center flex justify-center transition mx-2 border border-neutral-300 dark:border-zinc-600 rounded-[50%] bg-white dark:bg-[#383838]"
         style={buttonStyle}
       >
         <div
-          className="h-4 w-4 rounded-[50%] border border-neutral-300 dark:border-zinc-500 relative z-50 bg-white dark:bg-[#383838]"
+          className="h-4 w-4 rounded-[50%] border border-neutral-300 dark:border-zinc-500 relative z-50 bg-white dark:bg-zinc-800"
         >
           {color.r === 0 && color.g === 0 && color.b === 0 && color.a === 0 && (
             <svg className="absolute top-0 left-0 w-full h-full" viewBox="0 0 1 1">

@@ -77,7 +77,7 @@ export const ZoomToolbar = ({
     const zoomPercentage = zoomToPercentage(zoom);
 
     return (
-        <div className="border dark:border-zinc-700 shadow-md absolute h-[52px] bottom-2 left-2 rounded-lg py-2 items-center sm:flex hidden bg-white dark:bg-[#272727] pointer-events-auto">
+        <div className="border dark:border-zinc-800 shadow-md absolute h-[52px] bottom-2 left-2 rounded-xl py-2 items-center sm:flex hidden bg-white dark:bg-zinc-800 pointer-events-auto">
             <Hint label="Zoom out" sideOffset={4}>
                 <Button onClick={handleZoomOut} className="ml-2 px-2" variant="board">
                     <Minus className="h-4 w-4" />

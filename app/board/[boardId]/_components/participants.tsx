@@ -3,7 +3,6 @@
 import { connectionIdToColor } from "@/lib/utils";
 import { User } from "@/types/canvas";
 import { UserAvatar } from "./user-avatar";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { OrganizationInvite } from "@/components/auth/organization-invite";
 import { UsersDialogBoard } from "./users-dialog-board";
@@ -32,7 +31,7 @@ export const Participants = ({
     const hasMoreUsers = otherUsers && otherUsers.length > MAX_SHOWN_USERS;
 
     return (
-        <div className="border dark:border-zinc-700 shadow-md absolute h-12 right-2 top-2 bg-white dark:bg-[#272727] rounded-lg p-3 flex items-center pointer-events-auto">
+        <div className="border dark:border-zinc-800 shadow-md absolute h-12 right-2 top-2 bg-white dark:bg-zinc-800 rounded-xl p-3 flex items-center pointer-events-auto">
             <div className="hidden xs:flex gap-x-2">
                 <UsersDialogBoard
                     Me={User}
