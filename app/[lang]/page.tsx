@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { LandingContent } from "@/components/landing-content";
 import { LandingHero } from "@/components/landing-hero";
+import { Language } from '@/types/canvas';
 
 type LanguageMetadata = {
   [key: string]: Metadata
@@ -24,12 +25,12 @@ const metadataByLanguage: LanguageMetadata = {
   },
 };
 
-export async function generateMetadata({ params }: { params: { lang: string } }): Promise<Metadata> {
-  const lang = params.lang as keyof typeof metadataByLanguage;
+export async function generateMetadata({ params }: { params: { lang: Language } }): Promise<Metadata> {
+  const lang = params.lang;
   return metadataByLanguage[lang] || metadataByLanguage['es']; // Fallback to English if language not found
 }
 
-const LandingPage = ({ params }: { params: { lang: string } }) => {
+const LandingPage = ({ params }: { params: { lang: Language } }) => {
     const lang = params.lang;
 
     return (
