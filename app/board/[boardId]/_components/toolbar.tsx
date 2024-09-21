@@ -132,17 +132,10 @@ export const Toolbar = ({
   }
 
   return (
-    <div className="absolute bottom-2 left-[50%] translate-x-[-50%] flex md:flex-row flex-col gap-x-4 pointer-events-auto">
-      <div className="bg-custom-blue rounded-t-lg w-[65px] md:hidden flex">
-        <Button disabled={!canUndo} onClick={undo} className="h-8 w-8 p-2" variant="ghost">
-          <Undo2 className="h-5 w-5 text-white" />
-        </Button>
-        <Button disabled={!canRedo} onClick={redo} className="h-8 w-8 p-2" variant="ghost">
-          <Redo2 className="h-5 w-5 text-white" />
-        </Button>
-      </div>
+    <div className="absolute bottom-2 left-[50%] translate-x-[-50%] flex sm:flex-row flex-col-reverse sm:gap-x-4 gap-x-0 sm:gap-y-0 gap-y-2 pointer-events-auto">
       <div className="border dark:border-zinc-800 shadow-md bg-white dark:bg-zinc-800 rounded-xl p-1.5 flex gap-x-1 flex-row items-center">
         <ToolButton
+
           label="Select"
           icon={MousePointer2}
           onClick={() => setCanvasState({
@@ -287,10 +280,9 @@ export const Toolbar = ({
           insertMedia={insertMedia}
         />
       </div>
-      <div className="border dark:border-zinc-800 shadow-md bg-white dark:bg-zinc-800 rounded-xl p-1.5 hidden md:flex flex-row items-center">
+      <div className="border dark:border-zinc-800 shadow-md bg-white dark:bg-zinc-800 rounded-xl p-1.5 sm:w-auto w-[80px] xs:w-[90px] flex flex-row items-center">
         <Hint label="Undo" sideOffset={14}>
           <Button disabled={!canUndo} onClick={undo} className="h-8 w-8 xs:h-10 xs:w-10 p-2" variant="ghost">
-
             <Undo2 className="h-5 w-5" />
           </Button>
         </Hint>
