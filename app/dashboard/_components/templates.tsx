@@ -141,7 +141,7 @@ export const Templates = ({
                     onClick={onClick}
                 >
                     <div className="rounded-lg flex flex-col justify-between ml-2 flex-1 h-full">
-                        <ChevronsDown className="h-6 w-6 text-blue-600 dark:text-blue-300" />
+                        <ChevronsDown className="h-6 w-6 text-blue-600 dark:text-blue-300 hover:cursor-pointer hover:text-blue-500" />
                     </div>
                 </ShowAllTemplates>
             </div>

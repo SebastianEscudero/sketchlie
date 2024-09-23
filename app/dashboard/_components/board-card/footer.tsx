@@ -23,11 +23,11 @@ export const Footer = ({
   isPrivate
 }: FooterProps) => {
   return (
-    <div className="relative dark:bg-[#2C2C2C] bg-white p-2">
+    <div className="relative dark:bg-[#2C2C2C] bg-white p-3 border-t">
       <p className="text-[13px] truncate max-w-[calc(100%-20px)] text-black dark:text-white">
         {title}
       </p>
-      <p className="transition-opacity text-[11px] truncate dark:text-zinc-300 text-muted-foreground">
+      <p className="transition-opacity text-xs truncate dark:text-zinc-300 text-muted-foreground">
         {authorLabel}, {createdAtLabel}
       </p>
       <Actions

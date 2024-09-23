@@ -1,7 +1,7 @@
 export const themeCheck = () => {
     const userTheme = localStorage.getItem("theme");
-    const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-    const theme = userTheme || systemTheme;
+    const defaultTheme = 'light';
+    const theme = userTheme || defaultTheme;
     document.documentElement.classList.add(theme);
     return theme;
 }

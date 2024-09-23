@@ -56,7 +56,7 @@ export const FolderList = ({ folders, groupedBoards, org }: FolderListProps) => 
         <Link key={folder._id} href={`/dashboard/?folder=${folder._id}`}>
           <div
             key={folder._id}
-            className="border dark:border-zinc-800 group aspect-[100/127] rounded-lg flex flex-col items-center justify-center cursor-pointer"
+            className="border dark:border-zinc-800 group aspect-[120/100] shadow-md hover:shadow-lg rounded-lg flex flex-col items-center justify-center cursor-pointer"
             onDragOver={handleDragOver}
             onDrop={(e) => handleDrop(e, folder._id)}
           >
@@ -70,7 +70,7 @@ export const FolderList = ({ folders, groupedBoards, org }: FolderListProps) => 
                   groupedBoards[folder._id]?.slice(0, 4).map((board) => (
                     <div key={board._id} className="w-1/2 px-2 py-1 ">
                       <div
-                        className="group aspect-[100/100] border rounded-lg flex flex-col justify-between overflow-hidden bg-amber-50 dark:bg-zinc-500 dark:border-zinc-800"
+                        className="group aspect-[150/100] border rounded-lg flex flex-col justify-between overflow-hidden bg-white dark:bg-zinc-500 dark:border-zinc-800"
                         draggable={true}
                         onDragStart={(e) => handleDragStart(e, board._id, folder._id)}
                       >
@@ -82,7 +82,7 @@ export const FolderList = ({ folders, groupedBoards, org }: FolderListProps) => 
                             className="object-fit"
                           />
                         </div>
-                        <div className="relative dark:bg-[#2C2C2C] bg-zinc-100 p-1">
+                        <div className="relative dark:bg-[#2C2C2C] bg-white border-t p-1">
                           <p className="text-xs truncate text-black dark:text-white">
                             {board.title}
                           </p>
@@ -125,6 +125,6 @@ export const FolderList = ({ folders, groupedBoards, org }: FolderListProps) => 
 
 FolderList.Skeleton = function FolderListSkeleton() {
   return (
-    <div className="col-span-1 aspect-[100/127] bg-gray-200 rounded animate-pulse"></div>
+    <div className="col-span-1 aspect-[120/100] bg-gray-200 rounded animate-pulse"></div>
   );
 };
