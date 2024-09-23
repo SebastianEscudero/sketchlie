@@ -1,7 +1,7 @@
 export function getPlanColor(plan: string) {
     switch (plan) {
         case 'Gratis':
-            return { color: '#9333ea', letterColor: '#FFFFFF' };
+            return { color: '#d4d4d8', letterColor: '#000000' };
         case 'Starter':
             return { color: '#F59E0B', letterColor: '#000000' };
         case 'Business':

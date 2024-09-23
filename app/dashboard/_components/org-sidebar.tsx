@@ -73,14 +73,10 @@ export const OrgSidebar = ({
     }
 
     return (
-        <div className={`${mobile ? '' : 'hidden lg:'}flex flex-col h-full dark:bg-[#2C2C2C] text-black dark:text-white bg-white space-y-2 justify-between w-[240px] px-5 pt-5 select-none border-r dark:border-zinc-500`}>
-            <div className="flex flex-col space-y-4">
+        <div className={`${mobile ? '' : 'hidden lg:'}flex flex-col h-full dark:bg-[#2C2C2C] text-black dark:text-white bg-white space-y-2 justify-between w-[240px] pt-5 select-none border-r dark:border-zinc-500`}>
+            <div className="flex flex-col space-y-4 px-2">
                 <SketchlieButton
                     activeOrg={activeOrg}
-                />
-                <OrganizationSwitcher
-                    setActiveOrganization={setActiveOrganization}
-                    activeOrganization={activeOrganization}
                 />
                 <SearchInput />
                 <div className="space-y-1 w-full">
@@ -115,7 +111,7 @@ export const OrgSidebar = ({
                         pending={pending}
                         onClick={onClick}
                     >
-                        <div className="w-[199px]">
+                        <div className="w-full">
                             <Button
                                 variant="dashboard"
                                 className="justify-start px-2 w-full"
@@ -141,13 +137,19 @@ export const OrgSidebar = ({
                     </NewFolderButton>
                 </div>
             </div>
-            <div className="mt-auto pb-5">
-                {activeOrg && (
-                    <SubscriptionPlanDropdown
-                        activeOrg={activeOrg}
-                        subscriptionPlan={subscriptionPlan}
-                    />
-                )}
+            <div className="mt-auto">
+                <div className="px-5 mb-5">
+                    {activeOrg && (
+                        <SubscriptionPlanDropdown
+                            activeOrg={activeOrg}
+                            subscriptionPlan={subscriptionPlan}
+                        />
+                    )}
+                </div>
+                <OrganizationSwitcher
+                    setActiveOrganization={setActiveOrganization}
+                    activeOrganization={activeOrganization}
+                />
             </div>
         </div>
     );

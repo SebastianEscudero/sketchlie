@@ -30,7 +30,7 @@ export const SubscriptionPlanDropdown = ({
     let letterColor = "#FFFFFF"; // default letter color
 
     if (activeOrg) {
-        ({ color, letterColor } = getPlanColor(subscriptionPlan || "Gratis"));
+        ({ color, letterColor } = getPlanColor("Starter"));
     }
 
     if (subscriptionPlan === "Business") {
