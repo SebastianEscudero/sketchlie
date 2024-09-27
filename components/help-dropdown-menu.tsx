@@ -5,6 +5,8 @@ import {
     DropdownMenuTrigger,
     DropdownMenuContent,
     DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { ChevronRight, CircleHelp } from "lucide-react";
 import Link from "next/link";
@@ -44,6 +46,8 @@ export const HelpDropdownMenu = ({
                     </DropdownMenuItem>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent side="right" sideOffset={8} className="w-[170px]">
+                    <DropdownMenuLabel className="p-2 text-sm font-semibold">Help & Feedback</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
                     <DropdownMenuItem
                         onClick={() => setIsKeyboardShortcutsDialogOpen(true)}
                         className="p-3 cursor-pointer"

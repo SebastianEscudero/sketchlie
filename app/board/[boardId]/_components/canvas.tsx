@@ -144,7 +144,7 @@ export const Canvas = ({
     const proModal = useProModal();
     const [background, setBackground] = useState(() => {
         const storedValue = localStorage.getItem('background');
-        return storedValue ? storedValue : 'none';
+        return storedValue ? storedValue : 'circular-grid';
     });
 
     useDisableScrollBounce();
@@ -2069,7 +2069,6 @@ export const Canvas = ({
                             board={board}
                         />
                         <Toolbar
-
                             pathColor={pathColor}
                             pathStrokeSize={pathStrokeSize}
                             setPathColor={setPathColor}

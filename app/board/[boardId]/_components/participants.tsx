@@ -31,7 +31,7 @@ export const Participants = ({
     const hasMoreUsers = otherUsers && otherUsers.length > MAX_SHOWN_USERS;
 
     return (
-        <div className="border dark:border-zinc-800 shadow-md absolute h-12 right-2 top-2 bg-white dark:bg-zinc-800 rounded-xl p-3 flex items-center pointer-events-auto">
+        <div className="border dark:border-zinc-800 shadow-md absolute h-12 right-4 top-2 bg-white dark:bg-zinc-800 rounded-xl p-3 flex items-center pointer-events-auto">
             <div className="hidden xs:flex gap-x-2">
                 <UsersDialogBoard
                     Me={User}

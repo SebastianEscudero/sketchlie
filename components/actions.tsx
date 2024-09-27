@@ -178,7 +178,7 @@ export const Actions = ({
                 selectedLayersRef={selectedLayersRef}
                 User={User}
               />
-              <BackgroundMenu setBackground={setBackground} Background={Background} setForcedRender={setForcedRender} />
+              <BackgroundMenu setBackground={setBackground} background={Background} setForcedRender={setForcedRender} />
               <HelpDropdownMenu setCanvasState={setCanvasState} />
             </>
           }
