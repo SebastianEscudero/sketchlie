@@ -155,18 +155,18 @@ export const BoardCard = ({
   return (
     <Link href={`/board/${id}`}>
       <div
-        className={`group aspect-[120/100] shadow-md hover:shadow-lg border rounded-lg flex flex-col justify-between overflow-hidden bg-white dark:bg-zinc-500 dark:border-zinc-800 " ${isLoading ? 'opacity-80 transition-opacity cursor-not-allowed' : ''}`}
+        className={`group aspect-[100/100] shadow-md hover:shadow-xl border rounded-xl flex flex-col justify-between overflow-hidden bg-white dark:bg-zinc-500 dark:border-zinc-800 " ${isLoading ? 'opacity-80 transition-opacity cursor-not-allowed' : ''}`}
         onClick={handleClick}
         draggable={true}
         onDragStart={handleDragStart}
         onDrop={(e) => handleDrop(e, id)}
       >
-        <div className="relative flex-1">
+        <div className="relative flex-1 bg-zinc-100 rounded-t-xl mt-3 mx-3">
           <Image
             src={imageUrl}
             alt={title}
             fill
-            className="object-fit p-3"
+            className="object-fit p-5"
           />
           <Overlay />
           <button
@@ -209,7 +209,7 @@ export const BoardCard = ({
 
 BoardCard.Skeleton = function BoardCardSkeleton() {
   return (
-    <div className="aspect-[120/100] rounded-lg overflow-hidden">
+    <div className="aspect-[100/100] rounded-lg overflow-hidden">
       <Skeleton className="h-full w-full" />
     </div>
   );

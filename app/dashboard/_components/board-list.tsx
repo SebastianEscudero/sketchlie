@@ -41,7 +41,7 @@ export const BoardList = ({
         <h2 className="text-xl font-semibold mb-4">
           {query.favorites ? "Favorite boards" : "Team boards"}
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 gap-5 mt-8 pb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 gap-5 mt-8 pb-10">
           <NewBoardButton user={user} usersRole={usersRole} org={org} disabled />
           <BoardCard.Skeleton />
           <BoardCard.Skeleton />
@@ -78,7 +78,7 @@ export const BoardList = ({
         )}
         {query.favorites ? "Favorite boards" : "Team boards"}
       </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 mt-8 pb-10 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 mt-8 pb-10 gap-5">
         {query.folderId ? (
           <>
             <NewBoardButton user={user} usersRole={usersRole} org={org} query={query} />

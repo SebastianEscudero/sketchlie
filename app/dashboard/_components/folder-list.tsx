@@ -56,7 +56,7 @@ export const FolderList = ({ folders, groupedBoards, org }: FolderListProps) => 
         <Link key={folder._id} href={`/dashboard/?folder=${folder._id}`}>
           <div
             key={folder._id}
-            className="border dark:border-zinc-800 group aspect-[120/100] shadow-md hover:shadow-lg rounded-lg flex flex-col items-center justify-center cursor-pointer"
+            className="border dark:border-zinc-800 group aspect-[100/100] shadow-md hover:shadow-lg rounded-lg flex flex-col items-center justify-center cursor-pointer"
             onDragOver={handleDragOver}
             onDrop={(e) => handleDrop(e, folder._id)}
           >
@@ -125,6 +125,6 @@ export const FolderList = ({ folders, groupedBoards, org }: FolderListProps) => 
 
 FolderList.Skeleton = function FolderListSkeleton() {
   return (
-    <div className="col-span-1 aspect-[120/100] bg-gray-200 rounded animate-pulse"></div>
+    <div className="col-span-1 aspect-[100/100] bg-gray-200 rounded animate-pulse"></div>
   );
 };
