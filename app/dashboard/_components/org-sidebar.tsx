@@ -7,9 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useSearchParams } from "next/navigation";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { SubscriptionPlanDropdown } from "./subscription-plan-dropdown";
-import { Dialog, DialogTrigger } from "@radix-ui/react-dialog";
 import { ShowAllTemplates } from "./show-all-templates";
-import { DialogContent } from "@/components/ui/dialog";
 import { useApiMutation } from "@/hooks/use-api-mutation";
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
@@ -73,18 +71,18 @@ export const OrgSidebar = ({
     }
 
     return (
-        <div className={`${mobile ? '' : 'hidden lg:'}flex flex-col h-full dark:bg-[#2C2C2C] text-black dark:text-white bg-white space-y-2 justify-between w-[240px] pt-5 select-none border-r dark:border-zinc-500`}>
-            <div className="flex flex-col space-y-4 px-2">
+        <div className={`${mobile ? '' : 'hidden lg:'}flex flex-col h-full dark:bg-[#2C2C2C] text-black dark:text-white bg-zinc-100 space-y-2 justify-between w-[240px] pt-5 select-none`}>
+            <div className="flex flex-col space-y-4 px-5">
                 <SketchlieButton
                     activeOrg={activeOrg}
                 />
                 <SearchInput />
-                <div className="space-y-1 w-full">
+                <div className="w-full space-y-1">
                     <Button
                         variant={favorites ? "dashboard" : "dashboardActive"}
                         asChild
-                        size="lg"
-                        className="justify-start px-2 w-full"
+                        size="sm"
+                        className="justify-start px-4 w-full font-semibold"
                     >
                         <Link href="/dashboard/">
                             <LayoutDashboard className="h-4 w-4 mr-2" />
@@ -94,8 +92,8 @@ export const OrgSidebar = ({
                     <Button
                         variant={favorites ? "dashboardActive" : "dashboard"}
                         asChild
-                        size="lg"
-                        className="justify-start px-2 w-full"
+                        size="sm"
+                        className="justify-start px-4 w-full font-semibold"
                     >
                         <Link href={{
                             pathname: "/dashboard/",
@@ -114,8 +112,8 @@ export const OrgSidebar = ({
                         <div className="w-full">
                             <Button
                                 variant="dashboard"
-                                className="justify-start px-2 w-full"
-                                size="lg"
+                                className="justify-start px-4 w-full font-semibold"
+                                size="sm"
                             >
                                 <LayoutTemplate className="h-4 w-4 mr-2" />
                                 Templates
@@ -126,8 +124,8 @@ export const OrgSidebar = ({
                         <Button
                             variant="dashboard"
                             asChild
-                            size="lg"
-                            className="justify-start px-2 w-full hover:cursor-pointer"
+                            size="sm"
+                            className="justify-start px-4 w-full font-semibold hover:cursor-pointer"
                         >
                             <div className="flex flex-row">
                                 <Folder className="h-4 w-4 mr-2" />
@@ -136,20 +134,19 @@ export const OrgSidebar = ({
                         </Button>
                     </NewFolderButton>
                 </div>
-            </div>
-            <div className="mt-auto">
-                <div className="px-5 mb-5">
-                    {activeOrg && (
-                        <SubscriptionPlanDropdown
-                            activeOrg={activeOrg}
-                            subscriptionPlan={subscriptionPlan}
-                        />
-                    )}
+                <div className="flex flex-col space-y-2 border-t dark:border-zinc-600 pt-2">
+                    <p className="text-sm font-semibold">Organization</p>
+                    <OrganizationSwitcher
+                        setActiveOrganization={setActiveOrganization}
+                        activeOrganization={activeOrganization}
+                    />
                 </div>
-                <OrganizationSwitcher
-                    setActiveOrganization={setActiveOrganization}
-                    activeOrganization={activeOrganization}
-                />
+                {activeOrg && (
+                    <SubscriptionPlanDropdown
+                        activeOrg={activeOrg}
+                        subscriptionPlan={subscriptionPlan}
+                    />
+                )}
             </div>
         </div>
     );

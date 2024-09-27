@@ -104,7 +104,7 @@ export const Templates = ({
     }
 
     return (
-        <div className="px-4 lg:px-6">
+        <div className="px-4 lg:px-6 mt-4">
             <div className="flex flex-row justify-between items-center">
                 <p className="text-xl font-semibold">Templates</p>
                 <p className="dark:text-zinc-300 text-gray-600 mt-2 sm:flex hidden">Only Admins of the organization can choose a template</p>

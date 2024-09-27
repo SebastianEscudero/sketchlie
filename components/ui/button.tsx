@@ -17,9 +17,9 @@ const buttonVariants = cva(
           "bg-white text-red-500 border border-red-500 hover:bg-red-500/90 hover:text-white",
         outline:
           "border border-black bg-white hover:bg-gray-100 dark:text-black",
-        dashboard: "dark:hover:bg-[#383838] dark:text-white hover:bg-accent-foreground/10 hover:text-accent-foreground",
+        dashboard: "hover:bg-zinc-200 text-black dark:text-white dark:hover:text-white dark:hover:bg-accent-foreground/10 dark:hover:text-accent-foreground",
         dashboardActive:
-          "bg-zinc-200 dark:bg-[#383838]/70 dark:text-white dark:hover:bg-[#383838]",
+          "dark:bg-zinc-200 bg-zinc-800 text-white hover:bg-[#383838] dark:text-black dark:hover:bg-zinc-200",
         secondary:
           "bg-white text-black",
         ghost: "hover:text-accent-foreground hover:bg-accent-foreground/10",
@@ -30,7 +30,7 @@ const buttonVariants = cva(
         auth: "border-input bg-custom-blue text-white hover:bg-custom-blue-dark hover:text-white",
         board: "hover:bg-blue-500/20 hover:text-blue-800 text-black dark:text-zinc-200",
         boardActive: "bg-blue-500/20 text-blue-800",
-        premium: "bg-[#9333ea] text-white border-0 hover:bg-[#9333ea]/90",
+        premium: "bg-zinc-100 text-blue-500 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-blue-500 dark:hover:bg-zinc-700 border-2 border-zinc-300 dark:border-zinc-700",
         selectOrg: "text-custom-blue hover:bg-accent",
         gratis: "bg-accent text-accent-foreground hover:bg-accent/90",
         starter: "bg-yellow-500 text-black hover:bg-yellow-600",

@@ -36,7 +36,7 @@ export const Navbar = ({
     }
 
     return (
-        <div className="flex flex-wrap items-center gap-x-2 gap-y-2 px-3 py-3 justify-between">
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-2 px-3 py-3 justify-between bg-zinc-100 dark:bg-[#2C2C2C]">
             <div className="hidden lg:flex flex-row space-x-3 p-3 flex-1 overflow-hidden">
                 <NewOrgButton
                     activeOrganization={activeOrganization}
@@ -71,9 +71,9 @@ export const Navbar = ({
                             </OrganizationInvite>
                         )}
                         {activeOrg.subscriptionPlan === "Gratis" && (
-                            <Button variant="premium" onClick={onClick}>
+                            <Button variant="premium" onClick={onClick} className="font-bold">
                                 Upgrade
-                                <Zap className="w-4 h-4 ml-2 fill-white" />
+                                <Zap className="w-4 h-4 ml-2" />
                             </Button>
                         )}
                         {activeOrg.subscriptionPlan === "Starter" && (

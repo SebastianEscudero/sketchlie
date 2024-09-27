@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeftRight, ChevronsUpDown, PlusIcon, Settings, User } from "lucide-react"
+import { ArrowLeftRight, ChevronDown, PlusIcon, Settings, User } from "lucide-react"
 
 import {
     DropdownMenu,
@@ -48,13 +48,13 @@ export const OrganizationSwitcher = ({
 
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger className="dark:bg-[#2C2C2C] lg:dark:bg-[#383838] bg-zinc-100 dark:hover:bg-zinc-700 hover:bg-zinc-200 p-3 flex items-center w-full outline-none">
+            <DropdownMenuTrigger className="border dark:border-zinc-600 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-lg px-2 py-1.5 flex items-center w-full outline-none">
                 {hasOrg && activeOrg ? (
                     <div className="flex items-center truncate">
-                        <div className="aspect-square relative w-[36px] flex-shrink-0">
+                        <div className="aspect-square relative w-[34px] flex-shrink-0">
                             <OrgImage
-                                height="36px"
-                                width="36px"
+                                height="34px"
+                                width="34px"
                                 letter={Initial}
                                 color={color}
                                 letterColor={letterColor}
@@ -62,7 +62,7 @@ export const OrganizationSwitcher = ({
                         </div>
                         <div className="flex items-center truncate w-full sm:max-w-[150px] max-w-[200px]">
                             <div className="flex flex-col text-left w-full font-medium">
-                                <p className="ml-3 text-sm truncate">{activeOrg.name}</p>
+                                <p className="ml-3 text-[13px] font-semibold truncate">{activeOrg.name}</p>
                                 <p className="ml-3 text-xs truncate flex flex-row items-center">{activeOrg.subscriptionPlan} - <User className="h-[11px] w-[11px] mx-1" />{activeOrg.users.length}</p>
                             </div>
                             {invitations.length > 0 && (
@@ -78,7 +78,7 @@ export const OrganizationSwitcher = ({
                         )}
                     </div>
                 )}
-                <ChevronsUpDown className="ml-auto text-zinc-400 flex-shrink-0" width={20} />
+                <ChevronDown className="ml-auto text-zinc-800 dark:text-zinc-200 flex-shrink-0" width={20} />
             </DropdownMenuTrigger>
             {isSettingsDialogOpen && activeOrg ? (
                 <OrganizationSettings
