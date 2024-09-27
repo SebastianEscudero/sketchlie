@@ -45,6 +45,13 @@ const BoardIdPage = ({
     fetchLayers();
   }, [params]);
 
+  // this is so that we can set the title of the page
+  useEffect(() => {
+    if (board && board.title) {
+      document.title = `${board.title} | Sketchlie`;
+    }
+  }, [board]);
+
   if (!user || !board || layers === null || layerIds === null) {
     return <Loading />;
   }

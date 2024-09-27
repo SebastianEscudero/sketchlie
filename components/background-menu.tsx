@@ -46,7 +46,7 @@ export const BackgroundMenu = ({
                     <ChevronRight className="h-4 w-4 ml-auto" />
                 </DropdownMenuItem>
             </DropdownMenuTrigger>
-            <DropdownMenuContent side="right" sideOffset={10} className="w-[200px]">
+            <DropdownMenuContent side="right" sideOffset={10} className="w-[160px]">
                 <DropdownMenuLabel className="p-2 text-sm font-semibold">Background</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 {backgroundOptions.map(option => (
