@@ -1801,18 +1801,93 @@ export const Canvas = ({
                 }
             } else if (key === "c") {
                 if (!isInsideTextArea) {
-                    if (e.ctrlKey || e.metaKey) {
-                        copySelectedLayers();
-                    } else {
-                        setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Ellipse });
-                    }
+                  if (e.ctrlKey || e.metaKey) {
+                    e.preventDefault();
+                    copySelectedLayers();
+                    navigator.clipboard.writeText('').catch(err => {
+                      console.error("Failed to clear clipboard:", err);
+                    });
+                  } else {
+                    setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Ellipse });
+                  }
                 }
             } else if (key === "v") {
-                if (!isInsideTextArea) {
-                    if (e.ctrlKey || e.metaKey) {
-                        e.preventDefault();
-                        pasteCopiedLayers(mousePosition);
+                if (!isInsideTextArea && (e.ctrlKey || e.metaKey)) {
+                  e.preventDefault();
+                  
+                  // First, check the system clipboard for content
+                  navigator.clipboard.read().then(async items => {
+                    let hasImage = false;
+                    let hasText = false;
+              
+                    for (const item of items) {
+                      // Check for image
+                      if (item.types.includes('image/png') || item.types.includes('image/jpeg')) {
+                        hasImage = true;
+                        try {
+                          const blob = await item.getType('image/png');
+                          const file = new File([blob], "clipboard-image.png", { type: "image/png" });
+                          
+                          const toastId = toast.loading("Image is being processed, please wait...");
+                          const formData = new FormData();
+                          formData.append('file', file);
+                          formData.append('userId', User.userId);
+              
+                          const res = await fetch('/api/aws-s3-images', {
+                            method: 'POST',
+                            body: formData
+                          });
+              
+                          if (!res.ok) {
+                            throw new Error('Network response was not ok');
+                          }
+              
+                          const url = await res.text();
+                          const img = new Image();
+                          const imgLoad = new Promise<{ url: string, dimensions: { width: number, height: number }, type: string }>((resolve) => {
+                            img.onload = () => {
+                              const dimensions = { width: img.width, height: img.height };
+                              resolve({ url, dimensions, type: 'image' });
+                            };
+                          });
+                          img.src = url;
+                          const info = await imgLoad;
+                          
+                          insertMedia(LayerType.Image, mousePosition, info, zoom);
+                          toast.dismiss(toastId);
+                          toast.success("Image uploaded successfully");
+                        } catch (err) {
+                          console.error("Error processing image from clipboard:", err);
+                          toast.error("Failed to process image from clipboard");
+                        }
+                        break; // Exit the loop after handling the first image
+                      }
+                      
+                      // Check for text
+                      //if (item.types.includes('text/plain')) {
+                      //  hasText = true;
+                      //  try {
+                      //    const text = await item.getType('text/plain');
+                      //   const textContent = await text.text();
+                      //    insertLayer(LayerType.Text, mousePosition, 100, 18, undefined, undefined, undefined, undefined, undefined, textContent);
+                      //  } catch (err) {
+                      //    console.error("Error reading text from clipboard:", err);
+                      //  }
+                      //  break; // Exit the loop after handling the text
+                      //}
                     }
+                    
+                    // If no image or text was found in the clipboard, paste copied layers
+                    if (!hasImage && !hasText && copiedLayerIds.length > 0) {
+                      pasteCopiedLayers(mousePosition);
+                    }
+                  }).catch(err => {
+                    console.error("Error accessing clipboard:", err);
+                    // If there was an error accessing the clipboard, fall back to pasting copied layers
+                    if (copiedLayerIds.length > 0) {
+                      pasteCopiedLayers(mousePosition);
+                    }
+                  });
                 }
             } else if (key === "a") {
                 if (!isInsideTextArea) {
