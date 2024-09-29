@@ -1826,13 +1826,15 @@ export const Canvas = ({
                         hasImage = true;
                         try {
                           const blob = await item.getType('image/png');
-                          const file = new File([blob], "clipboard-image.png", { type: "image/png" });
-                          
+                          const randomImageId = nanoid();
+                          const file = new File([blob], `${randomImageId}.png`, { type: "image/png" });
+
                           const toastId = toast.loading("Image is being processed, please wait...");
                           const formData = new FormData();
                           formData.append('file', file);
                           formData.append('userId', User.userId);
-              
+                          formData.append('imageId', randomImageId);
+
                           const res = await fetch('/api/aws-s3-images', {
                             method: 'POST',
                             body: formData
