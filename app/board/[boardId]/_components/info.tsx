@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Hint } from "@/components/hint";
-import { ChevronsLeft, LayoutTemplate, Menu, Zap } from "lucide-react";
+import { ChevronsLeft, LayoutTemplate, Menu, Rocket, Zap } from "lucide-react";
 import { Actions } from "@/components/actions";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { toast } from "sonner";
@@ -231,11 +231,12 @@ export const Info = ({
             <ExportDropdownMenu id={board._id} title={board.title} />
             <TabSeparator />
             <Hint label="Upgrade" side="bottom" sideOffset={10}>
-                <Button variant="infoIcons"
-                    size="icon"
+                <Button 
+                    variant="infoIcons"
                     onClick={() => proModal.onOpen(orgId)}
+                    size="icon"
                 >
-                    <Zap className="h-5 w-5 fill-blue-600 text-blue-600" />
+                    <Rocket className="w-4 h-4 fill-blue-600 stroke-blue-600 flex-shrink-0" />
                 </Button>
             </Hint>
             {/* <div className="text-neutral-300 px-1 md:flex hidden">

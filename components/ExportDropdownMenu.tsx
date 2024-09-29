@@ -5,6 +5,8 @@ import {
     DropdownMenuTrigger,
     DropdownMenuContent,
     DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Download } from "lucide-react";
 import { useState } from "react";
@@ -37,6 +39,8 @@ export const ExportDropdownMenu = ({ id, title }: ExportDropdownMenuProps) => {
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent side="bottom" sideOffset={8} className="w-[160px]">
+                <DropdownMenuLabel className="p-2 text-sm font-semibold">Export</DropdownMenuLabel>
+                <DropdownMenuSeparator />
                 {exportOptions.map((option, index) => (
                     <DropdownMenuItem
                         key={index}
