@@ -79,14 +79,14 @@ const LandingPage = () => {
 
     return (
         <div>
-            <Breadcrumb className="xl:px-[15%] lg:px-[7%] md:px-[5%] px-[5%] pt-5 bg-blue-600">
+            <Breadcrumb className="xl:px-[15%] lg:px-[7%] md:px-[5%] px-[5%] pt-5 bg-amber-50">
                 <BreadcrumbList>
                     <BreadcrumbItem>
                         <Link href="/" title="Home">Home</Link>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
-                        <BreadcrumbPage className="text-white">Diseño</BreadcrumbPage>
+                        <BreadcrumbPage className="text-black">Diseño</BreadcrumbPage>
                     </BreadcrumbItem>
                 </BreadcrumbList>
             </Breadcrumb>

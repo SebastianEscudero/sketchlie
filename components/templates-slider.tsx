@@ -24,7 +24,7 @@ export const TemplatesSlider = () => {
     }
 
     return (
-        <div className="bg-white py-16">
+        <div className="bg-white border border-black py-16">
             <h2 className="text-3xl lg:text-4xl font-bold text-blue-900 xl:mx-[10%] lg:mx-[7%] mx-[5%] mb-8">
                 {t.title}
             </h2>
@@ -71,7 +71,7 @@ const TemplateInSlider = ({
     return (
         <Link
             href={href}
-            className="flex flex-col border border-zinc-300 flex-shrink-0 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 bg-white">
+            className="flex flex-col border border-black flex-shrink-0 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 bg-white">
             <div className="bg-[#f4f4f4] p-4">
                 <p className="text-center text-xl font-semibold text-blue-900">{name}</p>
             </div>

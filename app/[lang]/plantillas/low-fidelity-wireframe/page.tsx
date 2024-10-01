@@ -81,7 +81,7 @@ const LandingPage = () => {
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
-                            <BreadcrumbPage className="text-white">Low fidelity wireframes</BreadcrumbPage>
+                            <BreadcrumbPage className="text-black">Low fidelity wireframes</BreadcrumbPage>
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>

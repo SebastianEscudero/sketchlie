@@ -85,7 +85,7 @@ const LandingPage = () => {
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
-                            <BreadcrumbPage className="text-white">Mapa de Proceso</BreadcrumbPage>
+                            <BreadcrumbPage className="text-black">Mapa de Proceso</BreadcrumbPage>
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>

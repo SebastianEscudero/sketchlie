@@ -11,7 +11,7 @@ export const PlatformYouCanTrust = ({ lang }: { lang: Language }) => {
     const colors = ["text-blue-500", "text-yellow-500", "text-blue-500", "text-yellow-500"];
 
     return (
-        <div className="bg-gradient-to-b from-blue-50 to-white py-16">
+        <div className="bg-amber-50 py-16">
             <div className="xl:px-[15%] lg:px-[7%] md:px-[5%] px-[5%]">
                 <div className="text-center mb-12 mx-5">
                     <h2 className="text-3xl sm:text-4xl lg:text-5xl mb-5 text-blue-900 font-bold">
@@ -40,7 +40,7 @@ export const PlatformYouCanTrust = ({ lang }: { lang: Language }) => {
                     </div>
                     <div className="text-center mt-12">
                         <Link href={"/dashboard/"} title={t.cta}>
-                            <Button variant="auth" className="text-lg px-8 py-4 bg-yellow-500 hover:bg-yellow-600 text-blue-900 font-bold rounded-full transition-all duration-300 transform hover:scale-105">
+                            <Button variant="golden" className="text-lg px-8 py-4 font-bold rounded-full transition-all duration-300 transform hover:scale-105">
                                 {t.cta}
                             </Button>
                         </Link>

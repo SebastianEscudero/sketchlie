@@ -41,7 +41,7 @@ const LandingPage = ({ params }: { params: { lang: Language } }) => {
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
-                            <BreadcrumbPage className="text-white">{t.breadcrumbs.queEsMapaMental}</BreadcrumbPage>
+                            <BreadcrumbPage className="text-black">{t.breadcrumbs.queEsMapaMental}</BreadcrumbPage>
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>

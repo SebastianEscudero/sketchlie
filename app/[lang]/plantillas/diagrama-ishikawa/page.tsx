@@ -90,7 +90,7 @@ const LandingPage = () => {
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
-                            <BreadcrumbPage className="text-white">Diagrama Ishikawa</BreadcrumbPage>
+                            <BreadcrumbPage className="text-black">Diagrama Ishikawa</BreadcrumbPage>
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>

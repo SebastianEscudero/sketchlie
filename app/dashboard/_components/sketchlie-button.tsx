@@ -2,14 +2,8 @@ import { Hint } from "@/components/hint";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { cn } from "@/lib/utils";
 import { ChevronsLeft, CircleAlert } from "lucide-react"
-import { Poppins } from "next/font/google";
 import Image from "next/image"
 import Link from "next/link"
-
-const font = Poppins({
-    subsets: ["latin"],
-    weight: ["600"],
-});
 
 interface SketchlieButtonProps {
     activeOrg: any;
@@ -50,10 +44,7 @@ export const SketchlieButton = ({
                         height={50}
                         width={50}
                     />
-                    <span className={cn(
-                        "font-semibold text-lg",
-                        font.className,
-                    )}>
+                    <span className="text-lg">
                         Sketchlie
                     </span>
                 </div>

@@ -32,5 +32,3 @@ export function AmplitudeAnalytics() {
 
   return null;
 }
-
-// Remove the generateUniqueId function as it's no longer needed

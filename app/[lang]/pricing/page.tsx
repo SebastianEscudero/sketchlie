@@ -39,7 +39,7 @@ const PricingPage = ({ params }: { params: { lang: Language } }) => {
     const allFeatures = Array.from(new Set(plans.flatMap(plan => Object.keys(plan.features || {}))))
 
     return (
-        <div className="bg-gradient-to-b from-gray-50 to-white min-h-screen">
+        <div className="bg-amber-50 min-h-screen">
             <Breadcrumb className="xl:mx-[15%] lg:mx-[5%] mx-[2%] pt-5">
                 <BreadcrumbList>
                     <BreadcrumbItem>
@@ -58,12 +58,12 @@ const PricingPage = ({ params }: { params: { lang: Language } }) => {
                     {plans.map((subscriptionPlan) => (
                         <Card
                             key={subscriptionPlan.label}
-                            className={`p-6 flex flex-col h-full bg-white dark:bg-white shadow-lg transition-all duration-300 hover:shadow-xl ${
+                            className={`p-6 flex flex-col h-full bg-amber-50 dark:bg-white shadow-lg transition-all duration-300 hover:shadow-xl ${
                                 subscriptionPlan.label === "Enterprise" 
                                     ? 'border-2 border-purple-500 scale-100 dark:border-purple-500' 
                                     : subscriptionPlan.recommended 
                                     ? 'border-2 border-blue-500 scale-105 dark:border-blue-500' 
-                                    : 'border border-gray-200 dark:border-gray-200'
+                                    : 'border border-black dark:border-black'
                             }`}
                         >
                             <div className="flex flex-col h-full">
@@ -158,7 +158,7 @@ const PricingPage = ({ params }: { params: { lang: Language } }) => {
                     <h2 className="text-3xl font-bold text-center mb-8">{t.planComparison}</h2>
                     <table className="w-full border-collapse">
                         <thead>
-                            <tr className="bg-gray-100">
+                            <tr className="bg-amber-100">
                                 <th className="p-4 text-left font-semibold">{t.feature}</th>
                                 {plans.map(plan => (
                                     <th key={plan.label} className="p-4 text-center font-semibold">{plan.label}</th>
@@ -167,7 +167,7 @@ const PricingPage = ({ params }: { params: { lang: Language } }) => {
                         </thead>
                         <tbody>
                             {allFeatures.map((feature, index) => (
-                                <tr key={feature} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                                <tr key={feature} className={index % 2 === 0 ? 'bg-amber-50' : 'bg-amber-100'}>
                                     <td className="p-4 font-medium">{feature}</td>
                                     {plans.map((plan: any) => (
                                         <td key={`${plan.label}-${feature}`} className="p-4 text-center">
@@ -191,7 +191,7 @@ const PricingPage = ({ params }: { params: { lang: Language } }) => {
                                 </tr>
                             ))}
                             {/* Extra features row */}
-                            <tr className={allFeatures.length % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                            <tr className={allFeatures.length % 2 === 0 ? 'bg-amber-50' : 'bg-amber-100'}>
                                 <td className="p-4 font-medium">{t.extraFeatures}</td>
                                 {plans.map(plan => (
                                     <td key={`${plan.label}-extra`} className="p-4 text-center">

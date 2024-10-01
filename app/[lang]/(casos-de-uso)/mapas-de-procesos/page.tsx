@@ -27,14 +27,14 @@ const LluviaDeIdeas = ({ params: { lang } }: { params: { lang: Language } }) => 
 
     return (
         <div>
-            <Breadcrumb className="xl:px-[15%] lg:px-[7%] md:px-[5%] px-[5%] pt-5 bg-blue-600">
+            <Breadcrumb className="xl:px-[15%] lg:px-[7%] md:px-[5%] px-[5%] pt-5 bg-amber-50">
                 <BreadcrumbList>
                     <BreadcrumbItem>
                         <Link href={`/${lang}`} title={t.breadcrumbs.home}>{t.breadcrumbs.home}</Link>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
-                        <BreadcrumbPage className="text-white">{t.breadcrumbs.mapaDeProcesos}</BreadcrumbPage>
+                        <BreadcrumbPage className="text-black">{t.breadcrumbs.mapaDeProcesos}</BreadcrumbPage>
                     </BreadcrumbItem>
                 </BreadcrumbList>
             </Breadcrumb>

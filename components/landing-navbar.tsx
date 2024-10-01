@@ -41,7 +41,7 @@ export const LandingNavbar = () => {
     const t = landingNavbarTranslations[lang as Language];
 
     return (
-        <nav className={`bg-blue-600 sticky top-0 z-50 h-[88px] flex items-center transition-transform duration-300 ${
+        <nav className={`border-b border-black bg-amber-50 sticky top-0 z-50 h-[88px] flex items-center transition-transform duration-300 ${
             scrollDirection === "down" ? "-translate-y-[71px]" : "translate-y-0"
         }`}>
             <div className="flex items-center w-full h-full xl:px-[15%] lg:px-[7%] md:px-[5%] px-[5%]">
@@ -58,7 +58,7 @@ export const LandingNavbar = () => {
                                     loading="lazy"
                                 />
                             </div>
-                            <p className="text-2xl font-bold text-white">
+                            <p className="text-2xl font-bold text-black">
                                 Sketchlie
                             </p>
                         </Link>

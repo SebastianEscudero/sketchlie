@@ -5,10 +5,10 @@ import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import Sidebar from "./sidebar";
 import { Button } from "./ui/button";
 
-export const MobileSidebar = ( translations: any, lang: string ) => {
+export const MobileSidebar = ({ translations, lang }: { translations: any, lang: string }) => {
     return ( 
         <Sheet>
-            <SheetTrigger className="lg:hidden text-white" asChild>
+            <SheetTrigger className="lg:hidden text-black" asChild>
                 <Button size='icon' variant='ghost' className='top-3 left-3'>
                     <Menu size={20}/>
                 </Button>

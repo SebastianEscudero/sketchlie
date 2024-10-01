@@ -12,10 +12,9 @@ import { SheetClose } from "./ui/sheet";
 
 const Sidebar = ({ translations, lang }: { translations: any, lang: string }) => {
     const pathname = usePathname();
-    const t = translations.translations;
-
+    const t = translations;
     return (
-        <div className="space-y-4 py-4 flex flex-col h-full bg-white text-black overflow-y-auto">
+        <div className="space-y-4 py-4 flex flex-col h-full bg-amber-50 text-black overflow-y-auto">
             <div className="py-2 flex-1">
                 <div className="flex items-center pl-8">
                     <div className="mr-4">

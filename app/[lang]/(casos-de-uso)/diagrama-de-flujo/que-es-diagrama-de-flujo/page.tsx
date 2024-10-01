@@ -41,7 +41,7 @@ export default function LandingPage({ params: { lang } }: { params: { lang: Lang
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
-                            <BreadcrumbPage className="text-white">{t.breadcrumb.whatIsFlowchart}</BreadcrumbPage>
+                            <BreadcrumbPage className="text-black">{t.breadcrumb.whatIsFlowchart}</BreadcrumbPage>
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>

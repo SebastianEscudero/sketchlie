@@ -16,7 +16,7 @@ const LandingLayout = ({
 }) => {
     return (
         <LanguageProvider lang={params.lang}>
-            <main className={cn("bg-white", mainFont.className)} lang="es">
+            <main className={cn("bg-amber-50", mainFont.className)} lang={params.lang}>
                 <div className="mx-auto h-full">
                     <LandingNavbar />
                     {children}

@@ -89,7 +89,7 @@ const LandingPage = () => {
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
-                            <BreadcrumbPage className="text-white">Diagrama de Venn</BreadcrumbPage>
+                            <BreadcrumbPage className="text-black">Diagrama de Venn</BreadcrumbPage>
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>
