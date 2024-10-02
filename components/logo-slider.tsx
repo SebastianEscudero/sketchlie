@@ -4,9 +4,9 @@ import Marquee from "react-fast-marquee"
 export const LogoSlider = () => {
     return (
         <div className="flex items-center mx-0 h-full py-16 justify-between">
-            <div className="flex flex-col text-xs sm:text-base font-semibold text-zinc-400 py-4 whitespace-nowrap">
-                <span>TRUSTED BY TEAMS</span>
-                <span>AROUND THE WORLD</span>
+            <div className="flex flex-col text-xs sm:text-base text-zinc-600 py-4 whitespace-nowrap">
+                <span>Trusted by teams</span>
+                <span>around the world</span>
             </div>
             <Marquee
                 speed={50}

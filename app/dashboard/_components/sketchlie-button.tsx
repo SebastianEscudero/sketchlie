@@ -44,7 +44,7 @@ export const SketchlieButton = ({
                         height={50}
                         width={50}
                     />
-                    <span className="text-lg">
+                    <span className="text-lg font-semibold">
                         Sketchlie
                     </span>
                 </div>

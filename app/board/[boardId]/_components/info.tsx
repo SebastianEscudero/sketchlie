@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Hint } from "@/components/hint";
-import { ChevronsLeft, LayoutTemplate, Menu, Rocket, Zap } from "lucide-react";
+import { ChevronsLeft, LayoutTemplate, Menu, Rocket } from "lucide-react";
 import { Actions } from "@/components/actions";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { toast } from "sonner";
@@ -215,8 +215,8 @@ export const Info = ({
                             <ShowAllTemplates onClick={onChooseTemplate}>
                                 <div className="justify-center items-center hover:cursor-pointer sm:flex hidden">
                                     <Hint label="Templates" side="bottom" sideOffset={10}>
-                                        <Button className="h-8 w-8 xs:h-10 xs:w-10" variant="infoIcons" size="icon">
-                                            <LayoutTemplate className="h-5 w-5" />
+                                        <Button variant="infoIcons" size="icon">
+                                            <LayoutTemplate />
                                         </Button>
                                     </Hint>
                                 </div>

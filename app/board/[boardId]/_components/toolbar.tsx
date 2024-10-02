@@ -135,7 +135,6 @@ export const Toolbar = ({
     <div className="absolute bottom-4 left-[50%] translate-x-[-50%] flex sm:flex-row flex-col-reverse sm:gap-x-4 gap-x-0 sm:gap-y-0 gap-y-2 pointer-events-auto">
       <div className="border dark:border-zinc-800 shadow-md bg-white dark:bg-zinc-800 rounded-xl p-1.5 flex gap-x-1 flex-row items-center">
         <ToolButton
-
           label="Select"
           icon={MousePointer2}
           onClick={() => setCanvasState({
