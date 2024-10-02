@@ -5,14 +5,14 @@ import { Roboto, Lato, Open_Sans, Montserrat, Poppins, Raleway, Oswald, Merriwea
     Architects_Daughter, Roboto_Condensed, Roboto_Slab, Ubuntu, Titillium_Web, 
     Noto_Sans, Noto_Serif, Exo_2, Josefin_Sans, Cabin, Arimo, Dosis, Oxygen, 
     Abel, Yanone_Kaffeesatz, Inconsolata, Bitter, Varela_Round, Archivo_Narrow, 
-    Fjalla_One, Signika } from "next/font/google";
+    Fjalla_One, Signika, Space_Grotesk } from "next/font/google";
 
 export const getSelectorPositionClass = (expandUp: boolean) => {
     return expandUp ? 'bottom-[100%] mb-2' : 'top-[100%] mt-2';
 }
 
-// Default font is Kalam 
-export const defaultFont = Roboto({ subsets: ['latin'], weight: ['400'] });
+// Default font is Space Grotesk 
+export const defaultFont = Space_Grotesk({ subsets: ['latin'], weight: ['400'] });
 
 const kalamFont = Kalam({ subsets: ['latin'], weight: ['400'] });
 const lobster = Lobster({ subsets: ['latin'], weight: ['400'] });
@@ -66,6 +66,7 @@ const signika = Signika({ subsets: ['latin'], weight: ['400'] });
 
 export const standardFonts = [
     { value: 'Arial', label: 'Arial' },
+    { value: defaultFont.style.fontFamily, label: 'Space Grotesk' },
     { value: 'Helvetica', label: 'Helvetica' },
     { value: 'Verdana', label: 'Verdana' },
     { value: 'Tahoma', label: 'Tahoma' },

@@ -152,7 +152,7 @@ export const Rhombus = memo(({
         d={`M ${width / 2} 0 L ${width} ${height / 2} L ${width / 2} ${height} L 0 ${height / 2} Z`}
         fill={fillColor}
         stroke={selectionColor || colorToCss(outlineFill || fill)}
-        strokeWidth="2"
+        strokeWidth="1"
         strokeLinecap="round"
         strokeLinejoin="round"
       />

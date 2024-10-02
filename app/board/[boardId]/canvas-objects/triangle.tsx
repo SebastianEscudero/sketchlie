@@ -152,7 +152,7 @@ export const Triangle = memo(({
         points={`${width / 2}, 0 ${width},${height} 0,${height}`}
         fill={fillColor}
         stroke={selectionColor || colorToCss(outlineFill || fill)}
-        strokeWidth="2"
+        strokeWidth="1"
         strokeLinecap="round"
         strokeLinejoin="round"
       />

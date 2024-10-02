@@ -21,20 +21,18 @@ export const InsertImage = ({
   if (!isUploading) {
     return (
       <>
-        {selectionColor && (
-          <rect
-            x={x}
-            y={y}
-            width={width}
-            height={height}
-            stroke={selectionColor}
-            strokeWidth="2"
-            fill="none"
-            strokeLinecap='round'
-            strokeLinejoin='round'
-            pointerEvents="auto"
-          />
-        )}
+        <rect
+          x={x}
+          y={y}
+          width={width}
+          height={height}
+          stroke={selectionColor || 'black'}
+          strokeWidth="1"
+          fill="none"
+          strokeLinecap='round'
+          strokeLinejoin='round'
+          pointerEvents="auto"
+        />
         <image
           crossOrigin="anonymous"
           id={id}

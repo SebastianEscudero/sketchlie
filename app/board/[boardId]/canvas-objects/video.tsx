@@ -91,8 +91,8 @@ export const VideoOutline = ({
       <rect
         width={width}
         height={height}
-        stroke={selectionColor}
-        strokeWidth="2"
+        stroke={selectionColor || 'black'}
+        strokeWidth="1"
         fill="none"
         strokeLinecap='round'
         strokeLinejoin='round'

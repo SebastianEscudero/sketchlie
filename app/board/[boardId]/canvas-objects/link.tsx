@@ -56,7 +56,7 @@ export const InsertLink = ({
 
   return (
     <div
-      className="absolute shadow-custom-2 rounded-md"
+      className="absolute"
       style={{
         transform: `translate(${transformedX}px, ${transformedY}px)`,
         width: `${transformedWidth}px`,
@@ -96,8 +96,8 @@ export const LinkOutline = ({
       <rect
         width={width}
         height={height}
-        stroke={selectionColor}
-        strokeWidth="2"
+        stroke={selectionColor || 'black'}
+        strokeWidth="0.5"
         fill="none"
         strokeLinecap='round'
         strokeLinejoin='round'

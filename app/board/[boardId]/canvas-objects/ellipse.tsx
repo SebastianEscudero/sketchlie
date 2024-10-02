@@ -155,7 +155,7 @@ export const Ellipse = memo(({
         ry={height / 2}
         fill={fillColor}
         stroke={selectionColor || colorToCss(outlineFill || fill)}
-        strokeWidth="2"
+        strokeWidth="1"
         strokeLinecap="round"
         strokeLinejoin="round"
       />

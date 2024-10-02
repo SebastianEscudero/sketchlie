@@ -153,7 +153,7 @@ export const BigArrowRight = memo(({
         d={`M ${width} ${height / 2} L ${width - arrowHeadWidth/2} ${0} L ${width - arrowHeadWidth/2} ${height / 4} L 0 ${height / 4} L 0 ${height * 3 / 4} L ${width - arrowHeadWidth/2} ${height * 3 / 4} L ${width - arrowHeadWidth/2} ${height} Z`}
         fill={fillColor}
         stroke={selectionColor || colorToCss(outlineFill || fill)}
-        strokeWidth="2"
+        strokeWidth="1"
         strokeLinecap="round"
         strokeLinejoin="round"
       />

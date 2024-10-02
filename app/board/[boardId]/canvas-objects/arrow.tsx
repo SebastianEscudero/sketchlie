@@ -43,7 +43,7 @@ export const Arrow = ({
           fill="none"
           onPointerDown={onPointerDown ? (e) => onPointerDown(e, id) : undefined}
           transform={`translate(${start.x}, ${start.y}) rotate(${startAngle})`}
-          strokeWidth="2"
+          strokeWidth="1"
           strokeLinecap="round"
           strokeLinejoin='round'
           pointerEvents="auto"
@@ -54,7 +54,7 @@ export const Arrow = ({
         d={pathData}
         fill="none"
         stroke={selectionColor || (isTransparent ? "rgba(29, 29, 29, 1)" : fillColor)}
-        strokeWidth="2"
+        strokeWidth="1"
         strokeLinecap="round"
         strokeLinejoin="round"
         pointerEvents="auto"
@@ -66,7 +66,7 @@ export const Arrow = ({
           fill="none"
           onPointerDown={onPointerDown ? (e) => onPointerDown(e, id) : undefined}
           transform={`translate(${end.x}, ${end.y}) rotate(${endAngle})`}
-          strokeWidth="2"
+          strokeWidth="1"
           strokeLinecap="round"
           strokeLinejoin='round'
           pointerEvents="auto"

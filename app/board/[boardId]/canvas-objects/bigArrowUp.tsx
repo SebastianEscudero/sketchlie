@@ -151,7 +151,7 @@ export const BigArrowUp = memo(({
       <path
         d={`M ${width / 2} ${0} L 0 ${arrowHeadHeight / 2} L ${width / 4} ${arrowHeadHeight / 2} L ${width / 4} ${height} L ${width * 3 / 4} ${height} L ${width * 3 / 4} ${arrowHeadHeight / 2} L ${width} ${arrowHeadHeight / 2} Z`} fill={fillColor}
         stroke={selectionColor || colorToCss(outlineFill || fill)}
-        strokeWidth="2"
+        strokeWidth="1"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
