@@ -1,5 +1,5 @@
-import { VideoLayer } from "@/types/canvas";
-import { useEffect, useState, useCallback } from "react";
+import { CanvasMode, CanvasState, VideoLayer } from "@/types/canvas";
+import { useEffect, useState } from "react";
 
 interface VideoProps {
   id: string;
@@ -8,14 +8,9 @@ interface VideoProps {
   focused?: boolean;
   zoom: number;
   camera: { x: number; y: number };
+  svgRef: React.RefObject<SVGSVGElement>;
+  canvasState: CanvasState;
 }
-
-const isMobileSafari = () => {
-  const ua = window.navigator.userAgent;
-  const iOS = !!ua.match(/iPad/i) || !!ua.match(/iPhone/i);
-  const webkit = !!ua.match(/WebKit/i);
-  return iOS && webkit && !ua.match(/CriOS/i);
-};
 
 export const InsertVideo = ({
   id,
@@ -24,40 +19,54 @@ export const InsertVideo = ({
   focused,
   zoom,
   camera,
+  svgRef,
+  canvasState,
 }: VideoProps) => {
   const { x, y, width, height, src } = layer;
+  const [transform, setTransform] = useState("");
   const [visibleControls, setVisibleControls] = useState(false);
-  const [safariOffset, setSafariOffset] = useState(0);
-
-  const calculateSafariOffset = useCallback(() => {
-    if (isMobileSafari()) {
-      setSafariOffset(38)
-    }
-  }, []);
 
   useEffect(() => {
-    calculateSafariOffset();
-  }, [calculateSafariOffset]);
+    const updateTransform = () => {
+      if (svgRef.current) {
+        const svg = svgRef.current;
+        const viewBox = svg.viewBox.baseVal;
+        const svgWidth = svg.width.baseVal.value || svg.clientWidth;
+        const svgHeight = svg.height.baseVal.value || svg.clientHeight;
+
+        const scaleX = svgWidth / viewBox.width;
+        const scaleY = svgHeight / viewBox.height;
+
+        const transformedX = (x * zoom + camera.x) * scaleX;
+        const transformedY = (y * zoom + camera.y) * scaleY;
+
+        setTransform(`translate(${transformedX}px, ${transformedY}px) scale(${zoom})`);
+      }
+    };
+
+    updateTransform();
+    window.addEventListener('resize', updateTransform);
+    return () => window.removeEventListener('resize', updateTransform);
+  }, [x, y, zoom, camera, svgRef]);
+
+  useEffect(() => {
+    if (canvasState.mode !== CanvasMode.None) setVisibleControls(false);
+  }, [canvasState.mode]);
 
   useEffect(() => {
     if (!focused) setVisibleControls(false);
   }, [focused]);
-
-  const transformedX = x * zoom + camera.x;
-  const transformedY = y * zoom + camera.y + safariOffset;
-  const transformedWidth = width * zoom;
-  const transformedHeight = height * zoom;
-
   return (
     <div
       className="absolute"
       style={{
-        transform: `translate(${transformedX}px, ${transformedY}px)`,
-        width: `${transformedWidth}px`,
-        height: `${transformedHeight}px`,
+        transform,
+        width: `${width}px`,
+        height: `${height}px`,
+        transformOrigin: 'top left',
       }}
       onPointerDown={(e) => onPointerDown(e, id)}
-      onPointerUp={() => {setVisibleControls(true)}}
+      onPointerUp={(e) => setVisibleControls(true)}
     >
       <video
         className="h-full w-full"
@@ -74,29 +83,3 @@ export const InsertVideo = ({
     </div>
   );
 };
-
-interface VideoOutlineProps {
-  selectionColor?: string;
-  layer: any
-};
-
-export const VideoOutline = ({
-  selectionColor,
-  layer
-}: VideoOutlineProps) => {
-  const { x, y, width, height } = layer;
-
-  return (
-    <g transform={`translate(${x}, ${y})`} pointerEvents="auto">
-      <rect
-        width={width}
-        height={height}
-        stroke={selectionColor || 'black'}
-        strokeWidth="1"
-        fill="none"
-        strokeLinecap='round'
-        strokeLinejoin='round'
-      />
-    </g>
-  )
-}

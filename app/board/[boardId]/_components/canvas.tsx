@@ -367,8 +367,6 @@ export const Canvas = ({
             src: info.url,
         };
 
-        console.log(layer);
-
         const command = new InsertLayerCommand([layerId], [layer], setLiveLayers, setLiveLayerIds, boardId, socket, org, proModal);
         performAction(command);
         setCanvasState({ mode: CanvasMode.None });
@@ -755,8 +753,7 @@ export const Canvas = ({
         let hasMediaOrText = selectedLayersRef.current.some(id =>
             liveLayers[id].type === LayerType.Image ||
             liveLayers[id].type === LayerType.Text ||
-            liveLayers[id].type === LayerType.Video ||
-            liveLayers[id].type === LayerType.Link
+            liveLayers[id].type === LayerType.Video
         );
         let mantainAspectRatio = hasMediaOrText
         let singleLayer = selectedLayersRef.current.length === 1
@@ -2242,6 +2239,7 @@ export const Canvas = ({
                                             zoom={zoom}
                                             camera={camera}
                                             canvasState={canvasState}
+                                            svgRef={svgRef}
                                         />
                                     );
                                 }
@@ -2249,8 +2247,12 @@ export const Canvas = ({
                         </div>
                         <div
                             id="canvas"
-                            className="z-20 absolute"
-                            style={{ position: 'relative', pointerEvents: 'none' }} // Disable pointer events on the parent container
+                            className="z-20 absolute selection-keep-text-color"
+                            style={{ 
+                                position: 'relative',
+                                pointerEvents: 'none',
+                                
+                            }} // Disable pointer events on the parent container
                         >
                             <svg
                                 ref={svgRef}

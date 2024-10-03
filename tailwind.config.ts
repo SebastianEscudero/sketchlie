@@ -107,7 +107,24 @@ const config = {
     },
     
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    function({ addUtilities }: { addUtilities: any }) {
+      const newUtilities = {
+        '.selection-keep-text-color': {
+          '::selection': {
+            color: 'inherit',
+            backgroundColor: '#3390FF', // Standard selection blue
+          },
+          '::-moz-selection': {
+            color: 'inherit',
+            backgroundColor: '#3390FF', // Standard selection blue
+          },
+        },
+      }
+      addUtilities(newUtilities)
+    },
+  ],
 } satisfies Config
 
 

@@ -465,7 +465,8 @@ export enum SelectorType {
   TextJustify,
   FontSize,
   ArrowType,
-  TextStyle
+  TextStyle,
+  TextColor
 };
 
 export type Language = 'en' | 'pt' | 'es';

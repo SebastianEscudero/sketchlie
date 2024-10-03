@@ -1,7 +1,7 @@
 import { Hint } from '@/components/hint';
 import { Button } from '@/components/ui/button';
 import { updateR2Bucket } from '@/lib/r2-bucket-functions';
-import { LayerType, SelectorType } from '@/types/canvas';
+import { Color, LayerType, SelectorType } from '@/types/canvas';
 import { ChevronDown, ChevronUp, Bold, Underline, Italic, Strikethrough, Type } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Socket } from 'socket.io-client';
@@ -15,6 +15,9 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { Input } from '@/components/ui/input';
+import { ColorButton } from './color-picker';
+import { colorToCss } from '@/lib/utils';
+import { BaselineIcon } from '@/public/custom-cursors/baseline';
 
 interface TextOptionsProps {
     selectedLayers: any;
@@ -47,6 +50,7 @@ export const TextOptions = ({
         italic: false,
         underline: false,
         strikethrough: false,
+        color: layers[0].color || '#000000',
     });
     const [fontFamily, setFontFamily] = useState(layers[0].fontFamily || DEFAULT_FONT);
 
@@ -66,6 +70,7 @@ export const TextOptions = ({
             italic: document.queryCommandState('italic'),
             underline: document.queryCommandState('underline'),
             strikethrough: document.queryCommandState('strikethrough'),
+            color: document.queryCommandValue('foreColor') || '#000000',
         });
     }, []);
 
@@ -201,6 +206,14 @@ export const TextOptions = ({
         }, 0);
     };
 
+    const handleColorChange = (color: Color) => {
+        const selection = window.getSelection();
+        if (selection && !selection.isCollapsed) {
+            document.execCommand('foreColor', false, colorToCss(color));
+        }
+        setOpenSelector(null);
+    };
+
     return (
         <div className="relative inline-block text-left">
             <div className='flex flex-row items-center justify-center space-x-2'>
@@ -220,17 +233,28 @@ export const TextOptions = ({
                     <button onClick={() => handleArrowClick('down')}><ChevronDown className="h-4 w-4" /></button>
                 </div>
                 <div>
-                    <Hint label="Text Style" side="top">
-                        <Button
-                            variant="board"
-                            size="icon"
-                            onClick={toggleSelector}
-                            className={`flex items-center ${openSelector === SelectorType.TextStyle ? 'bg-blue-500/20' : ''}`}
-                        >
-                            <Type strokeWidth={2} />
-                        </Button>
-                    </Hint>
-
+                    <div className='flex flex-row items-center justify-center space-x-2'>
+                        <Hint label="Text Style" side="top">
+                            <Button
+                                variant="board"
+                                size="icon"
+                                onClick={toggleSelector}
+                                className={`flex items-center ${openSelector === SelectorType.TextStyle ? 'bg-blue-500/20' : ''}`}
+                            >
+                                <Type strokeWidth={2} />
+                            </Button>
+                        </Hint>
+                        <Hint label="Text Color" side="bottom">
+                            <Button
+                                variant="board"
+                                size="icon"
+                                onClick={() => setOpenSelector(openSelector === SelectorType.TextColor ? null : SelectorType.TextColor)}
+                                className={`${openSelector === SelectorType.TextColor ? 'bg-blue-500/20' : ''} pt-1`}
+                            >   
+                                <BaselineIcon color={textStyles.color} />
+                            </Button>
+                        </Hint>
+                    </div>
                     {openSelector === SelectorType.TextStyle && (
                         <div className="absolute flex flex-row items-center justify-center left-0 mt-2 w-[308px] rounded-md shadow-lg bg-white dark:bg-zinc-800">
                             <Select onValueChange={handleFontFamilyChange} value={fontFamily}>
@@ -257,7 +281,7 @@ export const TextOptions = ({
                                     </SelectGroup>
                                 </SelectContent>
                             </Select>
-                            <div className="p-1 space-x-1">
+                            <div className="p-1 space-x-1 flex flex-row items-center justify-center">
                                 {renderStyleButton('bold', Bold, 'Bold')}
                                 {renderStyleButton('italic', Italic, 'Italic')}
                                 {renderStyleButton('underline', Underline, 'Underline')}
@@ -279,6 +303,27 @@ export const TextOptions = ({
                         ))}
                     </div>
                 </div>
+            )}
+            {openSelector === SelectorType.TextColor && (
+            <div 
+                className={`p-3 pb-2 origin-top-right absolute right-0 grid grid-cols-4 gap-x-1 ${getSelectorPositionClass(expandUp)} w-[165px] translate-x-1/3 rounded-lg shadow-custom-1 bg-white dark:bg-zinc-800`}>
+                <ColorButton color={{ r: 0, g: 0, b: 0, a: 0 }} onClick={handleColorChange} selectedColor={textStyles.color} />
+                <ColorButton color={{ r: 255, g: 255, b: 255, a: 1 }} onClick={handleColorChange} selectedColor={textStyles.color} />
+                <ColorButton color={{ r: 29, g: 29, b: 29, a: 1 }} onClick={handleColorChange} selectedColor={textStyles.color} />
+                <ColorButton color={{ r: 159, g: 168, b: 178, a: 1 }} onClick={handleColorChange} selectedColor={textStyles.color} />
+                <ColorButton color={{ r: 255, g: 240, b: 0, a: 1 }} onClick={handleColorChange} selectedColor={textStyles.color} />
+                <ColorButton color={{ r: 252, g: 225, b: 156, a: 1 }} onClick={handleColorChange} selectedColor={textStyles.color} />
+                <ColorButton color={{ r: 225, g: 133, b: 244, a: 1 }} onClick={handleColorChange} selectedColor={textStyles.color} />
+                <ColorButton color={{ r: 174, g: 62, b: 201, a: 1 }} onClick={handleColorChange} selectedColor={textStyles.color} />
+                <ColorButton color={{ r: 68, g: 101, b: 233, a: 1 }} onClick={handleColorChange} selectedColor={textStyles.color} />
+                <ColorButton color={{ r: 75, g: 161, b: 241, a: 1 }} onClick={handleColorChange} selectedColor={textStyles.color} />
+                <ColorButton color={{ r: 255, g: 165, b: 0, a: 1 }} onClick={handleColorChange} selectedColor={textStyles.color} />
+                <ColorButton color={{ a: 1, b: 42, g: 142, r: 252 }} onClick={handleColorChange} selectedColor={textStyles.color} />
+                <ColorButton color={{ r: 7, g: 147, b: 104, a: 1 }} onClick={handleColorChange} selectedColor={textStyles.color} />
+                <ColorButton color={{ a: 1, b: 99, g: 202, r: 68 }} onClick={handleColorChange} selectedColor={textStyles.color} />
+                <ColorButton color={{ r: 248, g: 119, b: 119, a: 1 }} onClick={handleColorChange} selectedColor={textStyles.color} />
+                <ColorButton color={{ r: 224, g: 49, b: 49, a: 1 }} onClick={handleColorChange} selectedColor={textStyles.color} />
+            </div>
             )}
         </div>
     )
