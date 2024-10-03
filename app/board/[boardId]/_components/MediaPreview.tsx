@@ -11,6 +11,7 @@ interface MediaPreviewProps {
   zoom: number;
   camera: { x: number; y: number };
   canvasState: CanvasState;
+  svgRef: React.RefObject<SVGSVGElement>;
 }
 
 export const MediaPreview = memo(({
@@ -21,6 +22,7 @@ export const MediaPreview = memo(({
     zoom,
     camera,
     canvasState,
+    svgRef,
 }: MediaPreviewProps) => {
 
   switch (layer.type) {
@@ -33,6 +35,8 @@ export const MediaPreview = memo(({
           focused={focused}
           zoom={zoom}
           camera={camera}
+          svgRef={svgRef}
+          canvasState={canvasState}
         />
       );
     case LayerType.Link:
@@ -45,6 +49,7 @@ export const MediaPreview = memo(({
           zoom={zoom}
           camera={camera}
           canvasState={canvasState}
+          svgRef={svgRef}
         />
       );
     default:
