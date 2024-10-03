@@ -70,10 +70,16 @@ export const InsertLink = ({
       onPointerDown={(e) => onPointerDown(e, id)}
       onPointerUp={(e) => setVisibleControls(true)}
     >
-      <Browser 
-        initialUrl={src} 
-        visibleControls={visibleControls} 
-        setVisibleControls={setVisibleControls}
+      <iframe
+        className="h-full w-full border border-black"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        title="Link"
+        allowFullScreen
+        src={src}
+        onBlur={() => setVisibleControls(false)}
+        style={{
+          pointerEvents: visibleControls ? "auto" : "none",
+        }}
       />
     </div>
   );
