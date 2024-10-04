@@ -1,7 +1,7 @@
 import { Eraser, Highlighter, Pen } from "lucide-react";
 import { ToolButton } from "./tool-button";
 import { CanvasMode } from "@/types/canvas";
-import { LaserIcon } from "@/public/custom-cursors/laser";
+import { LaserIcon } from "@/public/custom-icons/laser";
 
 interface PenEraserMenuProps {
     setCanvasState: (state: any) => void;

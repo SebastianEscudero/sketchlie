@@ -21,7 +21,7 @@ import { ArrowType, CanvasMode, CanvasState, Color, LayerType, Point } from "@/t
 import { ToolButton } from "./tool-button";
 import { MediaButton } from "./media-button";
 import { Dispatch, SetStateAction, useEffect } from "react";
-import { LaserIcon } from "@/public/custom-cursors/laser";
+import { LaserIcon } from "@/public/custom-icons/laser";
 import { Button } from "@/components/ui/button";
 import { Hint } from "@/components/hint";
 import { PenMenu } from "./pen-menu";
@@ -211,7 +211,7 @@ export const Toolbar = ({
           }
         />
         <ToolButton
-          label={!isArrowsMenuOpen ? (arrowTypeInserting === ArrowType.Straight ? "Straight" : arrowTypeInserting === ArrowType.Curved ? "Curved" : "Diagram") : undefined}
+          label="Arrow"
           icon={arrowTypeInserting === ArrowType.Straight ? MoveUpRight : arrowTypeInserting === ArrowType.Curved ? Redo : TrendingUp}
           onClick={() => {
             setCanvasState({

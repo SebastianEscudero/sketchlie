@@ -17,7 +17,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { ColorButton } from './color-picker';
 import { colorToCss } from '@/lib/utils';
-import { BaselineIcon } from '@/public/custom-cursors/baseline';
+import { BaselineIcon } from '@/public/custom-icons/baseline';
 
 interface TextOptionsProps {
     selectedLayers: any;

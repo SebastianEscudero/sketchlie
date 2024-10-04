@@ -13,7 +13,7 @@ import {
     Triangle,
 } from "lucide-react";
 import { ToolButton } from "./tool-button";
-import { LineIcon } from "@/public/custom-cursors/line";
+import { LineIcon } from "@/public/custom-icons/line";
 
 interface ShapesMenuProps {
     setCanvasState: (state: any) => void;

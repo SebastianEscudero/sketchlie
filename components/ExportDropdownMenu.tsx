@@ -8,11 +8,11 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { Download } from "lucide-react";
 import { useState } from "react";
 import { Button } from "./ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { ExportIcon } from "@/public/custom-icons/export";
 
 interface ExportDropdownMenuProps {
     id: string;
@@ -35,7 +35,7 @@ export const ExportDropdownMenu = ({ id, title }: ExportDropdownMenuProps) => {
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Button variant="infoIcons" className="p-2">
-                    <Download className="h-6 w-6" />
+                    <ExportIcon />
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent side="bottom" sideOffset={8} className="w-[160px]">
