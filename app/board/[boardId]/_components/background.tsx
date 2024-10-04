@@ -11,7 +11,7 @@ export const Background = ({
     camera,
     isDraggingOverCanvas
 }: BackgroundProps) => {
-    const showGrid = zoom >= 0.5;
+    const showGrid = zoom >= 0.6;
     const isDark = document.documentElement.classList.contains("dark");
     const gridColor = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)';
     const circularGridColor = isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)';
