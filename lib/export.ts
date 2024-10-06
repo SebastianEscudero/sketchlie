@@ -1,11 +1,26 @@
 import { jsPDF } from "jspdf";
 import { toast } from 'sonner';
 import { domToSvg, domToPng, domToJpeg } from 'modern-screenshot'
-import 'svg2pdf.js';
+import { Layer, Layers, LayerType } from "@/types/canvas";
+
+export const exportFramesToPdf = async (title: string, isTransparent: boolean, liveLayers: Layers, liveLayerIds: string[]) => {
+  const frames = Object.values(liveLayers).filter((layer: Layer) => layer.type === LayerType.Frame);
+  console.log(frames);
+}
 
 export const exportToPdf = async (title: string, isTransparent: boolean) => {
   try {
     const screenShot = document.querySelector("#canvas") as HTMLElement;
+
+    // Save the text content of the textarea elements
+    const textareas = screenShot.querySelectorAll('textarea');
+    const textareaContents = Array.from(textareas).map(textarea => textarea.textContent);
+
+    // Clear the text content of the textarea elements
+    textareas.forEach(textarea => {
+      textarea.textContent = '';
+    });
+
 
     // Convert the DOM to a JPEG
     const jpegDataUrl = await domToJpeg(screenShot, {
@@ -30,6 +45,11 @@ export const exportToPdf = async (title: string, isTransparent: boolean) => {
 
     // Save the PDF
     doc.save(`${title}.pdf`);
+
+    // Restore the text content of the textarea elements
+    textareas.forEach((textarea, index) => {
+      textarea.textContent = textareaContents[index];
+    });
 
   } catch (error) {
     toast.error('An error occurred while exporting the board, try again.');
