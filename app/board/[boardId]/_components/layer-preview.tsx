@@ -20,6 +20,7 @@ import { BigArrowDown } from "../canvas-objects/bigArrowDown";
 import { CommentBubble } from "../canvas-objects/commentBubble";
 import { Line } from "../canvas-objects/line";
 import { InsertImage } from "../canvas-objects/image";
+import { Frame } from "../canvas-objects/frame";
 
 interface LayerPreviewProps {
   id: string;
@@ -34,6 +35,7 @@ interface LayerPreviewProps {
   expired: boolean;
   boardId: string;
   forcedRender?: boolean;
+  frameNumber?: number;
 };
 
 export const LayerPreview = memo(({
@@ -48,6 +50,7 @@ export const LayerPreview = memo(({
   expired,
   boardId,
   forcedRender,
+  frameNumber,
 }: LayerPreviewProps) => {
 
   if (!layer) {
@@ -95,6 +98,7 @@ export const LayerPreview = memo(({
           expired={expired}
           focused={focused}
           boardId={boardId}
+          forcedRender={forcedRender}
         />
       );
     case LayerType.Ellipse:
@@ -277,6 +281,16 @@ export const LayerPreview = memo(({
           layer={layer}
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
+        />
+      );
+    case LayerType.Frame:
+      return (
+        <Frame
+          id={id}
+          layer={layer}
+          onPointerDown={onLayerPointerDown}
+          frameNumber={frameNumber ?? 0}
+          forcedRender={forcedRender}
         />
       );
     default:

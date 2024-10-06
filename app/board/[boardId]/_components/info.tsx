@@ -32,6 +32,7 @@ interface InfoProps {
     isShowingAIInput: any;
     setForcedRender(forcedRender: boolean): void;
     User: User;
+    svgRef: React.RefObject<SVGSVGElement>;
 }
 
 const TabSeparator = () => {
@@ -61,6 +62,7 @@ export const Info = ({
     User,
     setIsShowingAIInput,
     isShowingAIInput,
+    svgRef
 }: InfoProps) => {
 
     const proModal = useProModal();
@@ -228,7 +230,7 @@ export const Info = ({
             <div className="text-neutral-300 px-1 sm:flex hidden">
                 |
             </div>
-            <ExportDropdownMenu id={board._id} title={board.title} />
+            <ExportDropdownMenu id={board._id} title={board.title} svgRef={svgRef} />
             <TabSeparator />
             <Hint label="Upgrade" side="bottom" sideOffset={10}>
                 <Button 

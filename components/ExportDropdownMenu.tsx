@@ -1,4 +1,4 @@
-import { exportToJPG, exportToJSON, exportToPdf, exportToPNG, exportToSVG } from "@/lib/export";
+import { exportFramesToPdf, exportToJPG, exportToJSON, exportToPdf, exportToPNG, exportToSVG } from "@/lib/export";
 import { useRoom } from "./room";
 import {
     DropdownMenu,
@@ -17,9 +17,10 @@ import { ExportIcon } from "@/public/custom-icons/export";
 interface ExportDropdownMenuProps {
     id: string;
     title: string;
+    svgRef: React.RefObject<SVGSVGElement>;
 }
 
-export const ExportDropdownMenu = ({ id, title }: ExportDropdownMenuProps) => {
+export const ExportDropdownMenu = ({ id, title, svgRef }: ExportDropdownMenuProps) => {
     const { liveLayers, liveLayerIds } = useRoom();
     const [isTransparent, setIsTransparent] = useState(false); // State to manage transparency
 
@@ -29,6 +30,7 @@ export const ExportDropdownMenu = ({ id, title }: ExportDropdownMenuProps) => {
         { label: 'to JPG', action: () => exportToJPG(title, isTransparent) },
         { label: 'to SVG', action: () => exportToSVG(title, isTransparent) },
         { label: 'to JSON', action: () => exportToJSON(id, liveLayers, liveLayerIds) },
+        { label: 'to PDF (frames)', action: () => exportFramesToPdf(title, isTransparent, liveLayers, liveLayerIds, svgRef) },
     ];
 
     return (

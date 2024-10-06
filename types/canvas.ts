@@ -29,7 +29,8 @@ export enum LayerType {
   Image,
   Arrow,
   Video,
-  Link
+  Link,
+  Frame
 };
 
 export type ArrowLayer = {
@@ -314,6 +315,15 @@ export type NoteLayer = {
   connectedArrows?: string[];
 };
 
+export type FrameLayer = {
+  type: LayerType.Frame
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  connectedArrows?: string[];
+};
+
 
 export type Point = {
   x: number;
@@ -358,7 +368,7 @@ export type CanvasState =
     layerType: LayerType.Ellipse | LayerType.Rectangle | LayerType.Rhombus | LayerType.Triangle 
     | LayerType.Star | LayerType.Hexagon | LayerType.BigArrowDown | LayerType.BigArrowUp  | LayerType.Line
     | LayerType.BigArrowLeft | LayerType.BigArrowRight | LayerType.Text | LayerType.Note 
-    | LayerType.CommentBubble | LayerType.Path | LayerType.Arrow;
+    | LayerType.CommentBubble | LayerType.Path | LayerType.Arrow | LayerType.Frame;
   }
   | {
     mode: CanvasMode.Pencil,
@@ -407,7 +417,7 @@ export enum CanvasMode {
 
 export type Layer = RectangleLayer | EllipseLayer | RhombusLayer | TriangleLayer | StarLayer 
 | HexagonLayer | BigArrowDownLayer | BigArrowLeftLayer | BigArrowRightLayer | BigArrowUpLayer | PathLayer 
-| CommentBubbleLayer |TextLayer | NoteLayer | ImageLayer | ArrowLayer | LineLayer | VideoLayer | LinkLayer;
+| CommentBubbleLayer |TextLayer | NoteLayer | ImageLayer | ArrowLayer | LineLayer | VideoLayer | LinkLayer | FrameLayer;
 
 export interface Layers {
   [key: string]: Layer;
@@ -456,7 +466,7 @@ export enum ArrowOrientation {
 
 export type PreviewLayer = RectangleLayer | EllipseLayer | RhombusLayer | 
 TriangleLayer | StarLayer | HexagonLayer | BigArrowDownLayer | BigArrowLeftLayer | LineLayer
-| BigArrowRightLayer | BigArrowUpLayer | CommentBubbleLayer | TextLayer | NoteLayer | ArrowLayer;
+| BigArrowRightLayer | BigArrowUpLayer | CommentBubbleLayer | TextLayer | NoteLayer | ArrowLayer | FrameLayer;
 
 export enum SelectorType {
   Color,

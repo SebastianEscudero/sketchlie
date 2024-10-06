@@ -165,9 +165,9 @@ export const Text = memo(({
           style={{
             color: isTransparent
               ? (document.documentElement.classList.contains("dark") ? "#FFF" : "#000")
-              : fillColor, wordWrap: 'break-word',
+              : fillColor,
+            wordWrap: 'break-word',
             overflowWrap: 'break-word',
-            wordBreak: 'break-all',
             resize: "none",
             overflowY: "hidden",
             overflowX: "hidden",

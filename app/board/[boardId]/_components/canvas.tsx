@@ -1130,6 +1130,9 @@ export const Canvas = ({
                 case LayerType.Note:
                     setCurrentPreviewLayer({ x, y, width, height, textFontSize: 12, type: LayerType.Note, fill: { r: 252, g: 225, b: 156, a: 1 }, outlineFill: { r: 0, g: 0, b: 0, a: 0 } });
                     break;
+                case LayerType.Frame:
+                    setCurrentPreviewLayer({ x, y, width, height, type: LayerType.Frame });
+                    break;
                 case LayerType.Arrow:
                     let intersectingStartLayers: string[] = findIntersectingLayerForConnection(liveLayerIds, liveLayers, startPanPoint, zoom);
                     let intersectingEndLayers: string[] = findIntersectingLayerForConnection(liveLayerIds, liveLayers, point, zoom);
@@ -1940,6 +1943,8 @@ export const Canvas = ({
                     setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Line });
                 } else if (key === "r") {
                     setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Rectangle });
+                } else if (key === "f") {
+                    setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Frame });
                 } else if (key === "k") {
                     setCanvasState({ mode: CanvasMode.Laser });
                 } else if (key === "arrowup" || key === "arrowdown" || key === "arrowleft" || key === "arrowright") {
@@ -2129,6 +2134,7 @@ export const Canvas = ({
                             isShowingAIInput={isShowingAIInput}
                             setForcedRender={setForceLayerPreviewRender}
                             User={User}
+                            svgRef={svgRef}
                         />
                         <Participants
                             org={org}
@@ -2246,6 +2252,7 @@ export const Canvas = ({
                             className="z-20 relative pointer-events-none"
                         >
                             <svg
+                                id="test-svg"
                                 ref={svgRef}
                                 className="h-[100vh] w-[100vw]"
                                 viewBox={`0 0 ${window.innerWidth} ${window.innerHeight}`}
@@ -2260,6 +2267,13 @@ export const Canvas = ({
                                     {visibleLayers.map((layerId: string) => {
                                         const isFocused = selectedLayersRef.current.length === 1 && selectedLayersRef.current[0] === layerId && !justChanged;
                                         let layer = liveLayers[layerId];
+
+                                        // frame logic 
+                                        let frameNumber = 1;
+                                        if (layer && layer.type === LayerType.Frame) {
+                                            frameNumber = liveLayerIds.filter(id => liveLayers[id].type === LayerType.Frame).indexOf(layerId) + 1;
+                                        }
+
                                         return (
                                             <LayerPreview
                                                 selectionColor={layerIdsToColorSelection[layerId]}
@@ -2274,6 +2288,7 @@ export const Canvas = ({
                                                 expired={expired}
                                                 boardId={boardId}
                                                 forcedRender={forceLayerPreviewRender}
+                                                frameNumber={frameNumber}
                                             />
                                         );
                                     })}

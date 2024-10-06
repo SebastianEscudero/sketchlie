@@ -15,6 +15,7 @@ import { BigArrowUp } from "../canvas-objects/bigArrowUp";
 import { BigArrowDown } from "../canvas-objects/bigArrowDown";
 import { CommentBubble } from "../canvas-objects/commentBubble";
 import { Line } from "../canvas-objects/line";
+import { Frame } from "../canvas-objects/frame";
 
 interface PreviewLayerProps {
     layer: PreviewLayer;
@@ -128,6 +129,13 @@ export const CurrentPreviewLayer = memo(({
             return (
                 <Arrow
                     id="ArrowPreview"
+                    layer={layer}
+                />
+            )
+        case LayerType.Frame:
+            return (
+                <Frame
+                    id="FramePreview"
                     layer={layer}
                 />
             )
