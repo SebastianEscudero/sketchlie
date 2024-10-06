@@ -5,7 +5,7 @@ interface FrameProps {
     id: string;
     layer: FrameLayer;
     onPointerDown?: (e: any, id: string) => void;
-    frameNumber: number;
+    frameNumber?: number;
     forcedRender?: boolean;
 };
 

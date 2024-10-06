@@ -1,8 +1,8 @@
-import { exportFramesToPdf, exportToJPG, exportToJSON, exportToPdf, exportToPNG, exportToSVG, previewFramesToPdf, previewToPNG } from "@/lib/export";
+import { exportFramesToPdf, exportToJPG, exportToJSON, exportToPdf, exportToPNG, exportToSVG, previewFramesToPdf, previewToSVG } from "@/lib/export";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { ExportIcon } from "@/public/custom-icons/export";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRoom } from "@/components/room";
@@ -23,9 +23,10 @@ export const ExportDialog = ({ id, title, svgRef }: ExportDialogProps) => {
     const [isTransparent, setIsTransparent] = useState(false);
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
     const [selectedViewFormat, setSelectedViewFormat] = useState<string>('PDF');
-    const [selectedFramesFormat, setSelectedFramesFormat] = useState<string>('PDF (frames)');
+    const [selectedFramesFormat, setSelectedFramesFormat] = useState<string>('PDF');
     const [pdfPreviewUrls, setPdfPreviewUrls] = useState<string[]>([]);
     const [activeTab, setActiveTab] = useState<'view' | 'frames'>('view');
+    const [open, setOpen] = useState(false);
 
     const viewExportOptions = [
         { label: 'PDF', action: () => exportToPdf(title, isTransparent) },
@@ -36,12 +37,14 @@ export const ExportDialog = ({ id, title, svgRef }: ExportDialogProps) => {
     ];
 
     const framesExportOptions = [
-        { label: 'PDF (frames)', action: () => exportFramesToPdf(title, false, liveLayers, liveLayerIds, svgRef) },
+        { label: 'PDF', action: () => exportFramesToPdf(title, false, liveLayers, liveLayerIds, svgRef) },
     ];
 
     useEffect(() => {
-        generatePreview();
-    }, [isTransparent, theme, selectedViewFormat, selectedFramesFormat, activeTab]);
+        if (open) {
+            generatePreview();
+        }
+    }, [isTransparent, theme, selectedViewFormat, selectedFramesFormat, activeTab, open]);
 
     const generatePreview = async () => {
         const screenShot = document.querySelector("#canvas") as HTMLElement;
@@ -51,7 +54,7 @@ export const ExportDialog = ({ id, title, svgRef }: ExportDialogProps) => {
                 setPdfPreviewUrls(urls);
                 setPreviewUrl(null);
             } else {
-                const dataUrl = await previewToPNG(title, isTransparent);
+                const dataUrl = await previewToSVG(title, isTransparent);
                 if (dataUrl) {
                     setPreviewUrl(dataUrl);
                     setPdfPreviewUrls([]);
@@ -78,14 +81,83 @@ export const ExportDialog = ({ id, title, svgRef }: ExportDialogProps) => {
         }
     };
 
+    const renderExportOptions = () => {
+        const options = activeTab === 'view' ? viewExportOptions : framesExportOptions;
+        const selectedFormat = activeTab === 'view' ? selectedViewFormat : selectedFramesFormat;
+        const setSelectedFormat = activeTab === 'view' ? setSelectedViewFormat : setSelectedFramesFormat;
+
+        return (
+            <div className="space-y-6">
+                {activeTab === 'view' && (
+                    <div className="flex items-center space-x-2">
+                        <Switch
+                            id="transparent-mode"
+                            checked={isTransparent}
+                            onCheckedChange={setIsTransparent}
+                        />
+                        <Label htmlFor="transparent-mode">Transparent background</Label>
+                    </div>
+                )}
+                <div className="space-y-2">
+                    <Label htmlFor="export-format">Export format</Label>
+                    <Select onValueChange={setSelectedFormat} value={selectedFormat}>
+                        <SelectTrigger id="export-format">
+                            <SelectValue placeholder="Select format" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {options.map((option) => (
+                                <SelectItem key={option.label} value={option.label}>
+                                    {option.label}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
+            </div>
+        );
+    };
+
+    const renderPreview = () => (
+        <div className="space-y-4">
+            <Label>Preview</Label>
+            <div 
+                className="border rounded-md p-2 bg-zinc-100 dark:bg-zinc-700 overflow-y-auto max-h-[400px]"
+                onWheel={(e) => e.stopPropagation()}
+            >
+                {previewUrl && (
+                    <Image quality={100}src={previewUrl} alt="Preview" width={500} height={500} className="w-full h-auto object-contain" />
+                )}
+                {pdfPreviewUrls.length > 0 && (
+                    pdfPreviewUrls.map((url, index) => (
+                        <div key={index} className="mb-8 last:mb-0">
+                            <div className="text-zinc-800 dark:text-zinc-200 mb-2 text-sm text-left">
+                                Page {index + 1}
+                            </div>
+                            <div className="border rounded-md">
+                                <Image 
+                                    quality={100}   
+                                    src={url} 
+                                    alt={`Page ${index + 1}`} 
+                                    width={500} 
+                                    height={500} 
+                                    className="w-full h-auto object-contain" 
+                                />
+                            </div>
+                        </div>
+                    ))
+                )}
+            </div>
+        </div>
+    );
+
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button variant="infoIcons" className="p-2">
                     <ExportIcon />
                 </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[900px] bg-white dark:bg-gray-800 overflow-y-auto max-h-[90%]">
+            <DialogContent className="overflow-y-auto h-full max-h-[90%] pt-10 w-[90vw] max-w-[900px]">
                 <DialogHeader>
                     <DialogTitle className="text-2xl font-bold">Export Options</DialogTitle>
                 </DialogHeader>
@@ -96,98 +168,22 @@ export const ExportDialog = ({ id, title, svgRef }: ExportDialogProps) => {
                     </TabsList>
                     <TabsContent value="view">
                         <div className="flex flex-col gap-8 py-4">
-                            <div className="flex-1 space-y-6">
-                                <div className="flex items-center space-x-2">
-                                    <Switch
-                                        id="transparent-mode"
-                                        checked={isTransparent}
-                                        onCheckedChange={setIsTransparent}
-                                    />
-                                    <Label htmlFor="transparent-mode">Transparent background</Label>
-                                </div>
-                                <div className="space-y-2">
-                                    <Label htmlFor="export-format">Export format</Label>
-                                    <Select onValueChange={setSelectedViewFormat} value={selectedViewFormat}>
-                                        <SelectTrigger id="export-format">
-                                            <SelectValue placeholder="Select format" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {viewExportOptions.map((option) => (
-                                                <SelectItem key={option.label} value={option.label}>
-                                                    {option.label}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-                                <Button onClick={handleExport} variant="sketchlieBlue" className="w-full">
-                                    Export as {selectedViewFormat}
-                                </Button>
-                            </div>
-                            <div className="flex-1 space-y-4">
-                                <Label>Preview</Label>
-                                <div 
-                                    className="border rounded-md p-2 bg-gray-50 dark:bg-gray-700 overflow-y-auto max-h-[400px]"
-                                    onWheel={(e) => e.stopPropagation()}
-                                >
-                                    {previewUrl && (
-                                        <Image src={previewUrl} alt="Preview" width={500} height={300} className="w-full h-auto object-contain" />
-                                    )}
-                                </div>
-                            </div>
+                            <div className="flex-1">{renderExportOptions()}</div>
+                            <div className="flex-1">{renderPreview()}</div>
                         </div>
                     </TabsContent>
                     <TabsContent value="frames">
                         <div className="flex flex-col gap-8 py-4">
-                            <div className="flex-1 space-y-6">
-                                <div className="space-y-2">
-                                    <Label htmlFor="export-format">Export format</Label>
-                                    <Select onValueChange={setSelectedFramesFormat} value={selectedFramesFormat}>
-                                        <SelectTrigger id="export-format">
-                                            <SelectValue placeholder="Select format" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {framesExportOptions.map((option) => (
-                                                <SelectItem key={option.label} value={option.label}>
-                                                    {option.label}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-                                <Button onClick={handleExport} variant="sketchlieBlue" className="w-full">
-                                    Export as {selectedFramesFormat}
-                                </Button>
-                            </div>
-                            <div className="flex-1 space-y-4">
-                                <Label>Preview</Label>
-                                <div 
-                                    className="border rounded-md p-2 bg-gray-50 dark:bg-gray-700 overflow-y-auto max-h-[400px]"
-                                    onWheel={(e) => e.stopPropagation()}
-                                >
-                                    {pdfPreviewUrls.length > 0 && (
-                                        pdfPreviewUrls.map((url, index) => (
-                                            <div key={index} className="mb-8 last:mb-0">
-                                                <div className="text-black dark:text-white mb-2 text-sm text-left">
-                                                    Page {index + 1}
-                                                </div>
-                                                <div className="border border-gray-300 dark:border-gray-600 rounded-md">
-                                                    <Image 
-                                                        src={url} 
-                                                        alt={`Page ${index + 1}`} 
-                                                        width={500} 
-                                                        height={300} 
-                                                        className="w-full h-auto object-contain" 
-                                                    />
-                                                </div>
-                                            </div>
-                                        ))
-                                    )}
-                                </div>
-                            </div>
+                            <div className="flex-1">{renderExportOptions()}</div>
+                            <div className="flex-1">{renderPreview()}</div>
                         </div>
                     </TabsContent>
                 </Tabs>
+                <DialogFooter> 
+                <Button onClick={handleExport} variant="sketchlieBlue" className="w-full max-w-[200px]">
+                    Export as {activeTab === 'view' ? selectedViewFormat : selectedFramesFormat}
+                    </Button>
+                </DialogFooter>
             </DialogContent>
         </Dialog>
     );

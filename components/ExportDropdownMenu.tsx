@@ -7,12 +7,14 @@ import {
     DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuSeparator,
+    DropdownMenuGroup,
 } from "@/components/ui/dropdown-menu";
 import { useState } from "react";
 import { Button } from "./ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { ExportIcon } from "@/public/custom-icons/export";
+import { Hint } from "./hint";
 
 interface ExportDropdownMenuProps {
     id: string;
@@ -22,37 +24,63 @@ interface ExportDropdownMenuProps {
 
 export const ExportDropdownMenu = ({ id, title, svgRef }: ExportDropdownMenuProps) => {
     const { liveLayers, liveLayerIds } = useRoom();
-    const [isTransparent, setIsTransparent] = useState(false); // State to manage transparency
+    const [isTransparent, setIsTransparent] = useState(false);
 
-    const exportOptions = [
-        { label: 'to PDF', action: () => exportToPdf(title, isTransparent) },
-        { label: 'to PNG', action: () => exportToPNG(title, isTransparent) },
-        { label: 'to JPG', action: () => exportToJPG(title, isTransparent) },
-        { label: 'to SVG', action: () => exportToSVG(title, isTransparent) },
-        { label: 'to JSON', action: () => exportToJSON(id, liveLayers, liveLayerIds) },
-        { label: 'to PDF (frames)', action: () => exportFramesToPdf(title, isTransparent, liveLayers, liveLayerIds, svgRef) },
+    const imageExportOptions = [
+        { label: 'Export as PNG', action: () => exportToPNG(title, isTransparent) },
+        { label: 'Export as JPG', action: () => exportToJPG(title, isTransparent) },
+        { label: 'Export as SVG', action: () => exportToSVG(title, isTransparent) },
+    ];
+
+    const documentExportOptions = [
+        { label: 'Export as PDF', action: () => exportToPdf(title, isTransparent) },
+        { label: 'Export Frames as PDF', action: () => exportFramesToPdf(title, isTransparent, liveLayers, liveLayerIds, svgRef) },
+    ];
+
+    const dataExportOptions = [
+        { label: 'Export as JSON', action: () => exportToJSON(id, liveLayers, liveLayerIds) },
     ];
 
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <Button variant="infoIcons" className="p-2">
-                    <ExportIcon />
-                </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent side="bottom" sideOffset={8} className="w-[160px]">
-                <DropdownMenuLabel className="p-2 text-sm font-semibold">Export</DropdownMenuLabel>
+            <Hint label="Export" side="bottom" sideOffset={10}>
+                <DropdownMenuTrigger asChild>
+                    <Button variant="infoIcons" className="p-2">
+                        <ExportIcon />
+                    </Button>
+                </DropdownMenuTrigger>
+            </Hint>
+            <DropdownMenuContent side="bottom" sideOffset={8} className="w-[200px]">
+                <DropdownMenuLabel className="p-2 text-sm font-semibold">Export Options</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                {exportOptions.map((option, index) => (
-                    <DropdownMenuItem
-                        key={index}
-                        onClick={option.action}
-                        className="p-3 cursor-pointer"
-                    >
-                        {option.label}
-                    </DropdownMenuItem>
-                ))}
-                <div className="border-t dark:border-zinc-500 pt-2 pb-1">
+                <DropdownMenuGroup>
+                    <DropdownMenuLabel className="px-2 py-1 text-xs text-gray-500">Images</DropdownMenuLabel>
+                    {imageExportOptions.map((option, index) => (
+                        <DropdownMenuItem key={index} onClick={option.action} className="p-2 cursor-pointer">
+                            {option.label}
+                        </DropdownMenuItem>
+                    ))}
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                    <DropdownMenuLabel className="px-2 py-1 text-xs text-gray-500">Documents</DropdownMenuLabel>
+                    {documentExportOptions.map((option, index) => (
+                        <DropdownMenuItem key={index} onClick={option.action} className="p-2 cursor-pointer">
+                            {option.label}
+                        </DropdownMenuItem>
+                    ))}
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                    <DropdownMenuLabel className="px-2 py-1 text-xs text-gray-500">Data</DropdownMenuLabel>
+                    {dataExportOptions.map((option, index) => (
+                        <DropdownMenuItem key={index} onClick={option.action} className="p-2 cursor-pointer">
+                            {option.label}
+                        </DropdownMenuItem>
+                    ))}
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <div className="p-2">
                     <div className="flex items-center space-x-2">
                         <Switch
                             id="transparent-mode"
@@ -60,7 +88,7 @@ export const ExportDropdownMenu = ({ id, title, svgRef }: ExportDropdownMenuProp
                             onCheckedChange={setIsTransparent}
                             className="scale-75"
                         />
-                        <Label htmlFor="transparent-mode">Transparent</Label>
+                        <Label htmlFor="transparent-mode" className="text-sm">Transparent</Label>
                     </div>
                 </div>
             </DropdownMenuContent>

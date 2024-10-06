@@ -161,7 +161,7 @@ export const exportFramesToPdf = async (title: string, isTransparent: boolean, l
     }
 
     // Save the PDF
-    doc.save(`${title}_frames.pdf`);
+    doc.save(`${title}.pdf`);
 
   } catch (error) {
     toast.error('An error occurred while exporting the frames to PDF, try again.');
@@ -218,20 +218,22 @@ export const exportToPdf = async (title: string, isTransparent: boolean) => {
   }
 };
 
-export const previewToPNG = async (title: string, isTransparent: boolean) => {
+export const previewToSVG = async (title: string, isTransparent: boolean) => {
   try {
     const screenShot = document.querySelector("#canvas") as HTMLElement;
-    const result = await domToPng(screenShot, {
+    const result = await domToSvg(screenShot, {
       quality: 1,
       scale: 3,
       backgroundColor: isTransparent ? 'transparent' : (document.documentElement.classList.contains("dark") ? '#2C2C2C' : 'white'),
     });
+
     return result;
   } catch (error) {
-    toast.error('An error occurred while exporting the board, try again.');
+    toast.error('An error occurred while generating the preview, try again.');
+    console.error('Preview to SVG error:', error);
+    return null;
   }
 };
-
 
 export const exportToPNG = async (title: string, isTransparent: boolean) => {
   try {
