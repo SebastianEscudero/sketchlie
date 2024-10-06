@@ -1,42 +1,39 @@
 import { jsPDF } from "jspdf";
 import { toast } from 'sonner';
-import { domToJpeg, domToPng, domToSvg } from 'modern-screenshot'
+import { domToSvg, domToPng, domToJpeg } from 'modern-screenshot'
+import 'svg2pdf.js';
 
 export const exportToPdf = async (title: string, isTransparent: boolean) => {
   try {
     const screenShot = document.querySelector("#canvas") as HTMLElement;
 
-    // Save the text content of the textarea elements
-    const textareas = screenShot.querySelectorAll('textarea');
-    const textareaContents = Array.from(textareas).map(textarea => textarea.textContent);
-
-    // Clear the text content of the textarea elements
-    textareas.forEach(textarea => {
-      textarea.textContent = '';
+    // Convert the DOM to a JPEG
+    const jpegDataUrl = await domToJpeg(screenShot, {
+      quality: 1, // Adjust this value for size/quality trade-off
+      scale: 3, // Increase scale for better quality
+      backgroundColor: isTransparent ? '#FFFFFF' : (document.documentElement.classList.contains("dark") ? '#2C2C2C' : '#F4F4F4'),
     });
 
-    await domToPng(screenShot, {
-      quality: 0.8,
-      scale: 1,
-      backgroundColor: isTransparent ? 'transparent' : (document.documentElement.classList.contains("dark") ? '#2C2C2C' : '#F4F4F4'),
-    }).then((dataUrl) => {
-      const pdf = new jsPDF({
-        orientation: "landscape",
-        unit: "px",
-        format: [screenShot.clientWidth, screenShot.clientHeight]
-      });
-
-      pdf.addImage(dataUrl, 'PNG', 0, 0, screenShot.clientWidth, screenShot.clientHeight);
-      pdf.save(`${title}.pdf`);
+    // Create a new jsPDF instance
+    const doc = new jsPDF({
+      orientation: "landscape",
+      unit: 'px',
+      format: [screenShot.clientWidth, screenShot.clientHeight]
     });
 
-    // Restore the text content of the textarea elements
-    textareas.forEach((textarea, index) => {
-      textarea.textContent = textareaContents[index];
-    });
+    // Get PDF dimensions
+    const pdfWidth = doc.internal.pageSize.getWidth();
+    const pdfHeight = doc.internal.pageSize.getHeight();
+
+    // Add the JPEG to the PDF
+    doc.addImage(jpegDataUrl, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+
+    // Save the PDF
+    doc.save(`${title}.pdf`);
 
   } catch (error) {
-    toast.error('An error occurred while exporting the board. Please try a different browser.');
+    toast.error('An error occurred while exporting the board, try again.');
+    console.error('Export to PDF error:', error);
   }
 };
 
@@ -71,7 +68,7 @@ export const exportToPNG = async (title: string, isTransparent: boolean) => {
     });
 
   } catch (error) {
-    toast.error('An error occurred while exporting the board. Please try a different browser.');
+    toast.error('An error occurred while exporting the board, try again.');
   }
 };
 
@@ -106,7 +103,7 @@ export const exportToJPG = async (title: string, isTransparent: boolean) => {
     });
 
   } catch (error) {
-    toast.error('An error occurred while exporting the board. Please try a different browser.');
+    toast.error('An error occurred while exporting the board, try again.');
   }
 };
 
@@ -142,7 +139,7 @@ export const exportToSVG = async (title: string, isTransparent: boolean) => {
     });
 
   } catch (error) {
-    toast.error('An error occurred while exporting the board. Please try a different browser.');
+    toast.error('An error occurred while exporting the board, try again.');
   }
 };
 
