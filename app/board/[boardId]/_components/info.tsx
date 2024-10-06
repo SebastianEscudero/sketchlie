@@ -13,6 +13,7 @@ import { InsertLayerCommand } from "@/lib/commands";
 import { useState } from "react";
 import { RenameBoardDialog } from "@/components/modals/rename-modal";
 import { ExportDropdownMenu } from "@/components/ExportDropdownMenu";
+import { ExportDialog } from "./export-dialog";
 
 interface InfoProps {
     board: any;
@@ -230,7 +231,7 @@ export const Info = ({
             <div className="text-neutral-300 px-1 sm:flex hidden">
                 |
             </div>
-            <ExportDropdownMenu id={board._id} title={board.title} svgRef={svgRef} />
+            <ExportDialog id={board._id} title={board.title} svgRef={svgRef} />
             <TabSeparator />
             <Hint label="Upgrade" side="bottom" sideOffset={10}>
                 <Button 
