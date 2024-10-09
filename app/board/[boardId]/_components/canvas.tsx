@@ -237,7 +237,7 @@ export const Canvas = ({
                 fill: fillColor,
                 value: "",
                 outlineFill: { r: 0, g: 0, b: 0, a: 0 },
-                textFontSize: Math.min(width, height) * ratio,
+                textFontSize: width * ratio,
                 alignX: 'center',
                 alignY: 'center',
             };
@@ -304,7 +304,7 @@ export const Canvas = ({
                 fill: fillColor,
                 value: "",
                 outlineFill: { r: 29, g: 29, b: 29, a: 1 },
-                textFontSize: Math.min(width, height) * ratio,
+                textFontSize: width * ratio,
                 alignX: 'center',
                 alignY: 'center',
             };
