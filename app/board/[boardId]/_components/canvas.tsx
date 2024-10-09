@@ -72,6 +72,7 @@ import { CurrentSuggestedLayer } from "./current-suggested-layer";
 import { smoothLastPoint } from "@/lib/smooth-points";
 import { Background } from "./background";
 import { MediaPreview } from "./MediaPreview";
+import { MoveBackToContent } from "./move-back-to-content";
 
 const preventDefault = (e: any) => {
     if (e.scale !== 1) {
@@ -2071,6 +2072,8 @@ export const Canvas = ({
             document.body.style.cursor = 'url(/custom-cursors/hand.svg) 8 8, auto';
         } else if (canvasState.mode === CanvasMode.ArrowResizeHandler) {
             document.body.style.cursor = 'url(/custom-cursors/grab.svg) 12 12, auto';
+        } else if (canvasState.mode === CanvasMode.Translating) {
+            document.body.style.cursor = 'move';
         } else {
             document.body.style.cursor = 'default';
         }
@@ -2135,6 +2138,11 @@ export const Canvas = ({
                             setForcedRender={setForceLayerPreviewRender}
                             User={User}
                             svgRef={svgRef}
+                        />
+                        <MoveBackToContent 
+                            setCamera={setCamera}
+                            setZoom={setZoom}
+                            showButton={visibleLayers.length === 0}
                         />
                         <Participants
                             org={org}
@@ -2215,7 +2223,7 @@ export const Canvas = ({
                     </div>
                     <div
                         id="canvas"
-                        className="z-10 absolute"
+                        className="z-10 absolute selection-keep-text-color"
                         onWheel={onWheel}
                         onDragOver={onDragOver}
                         onDrop={onDrop}
@@ -2289,6 +2297,8 @@ export const Canvas = ({
                                                 boardId={boardId}
                                                 forcedRender={forceLayerPreviewRender}
                                                 frameNumber={frameNumber}
+                                                setCamera={setCamera}
+                                                setZoom={setZoom}
                                             />
                                         );
                                     })}

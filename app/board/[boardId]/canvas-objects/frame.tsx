@@ -1,9 +1,13 @@
 import { FrameLayer } from "@/types/canvas";
-import React, { memo, useRef, useEffect } from "react";
+import React, { memo, useRef, useEffect, useState } from "react";
+import { useUpdateValue } from "./canvas-objects-utils";
 
 interface FrameProps {
     id: string;
     layer: FrameLayer;
+    expired?: boolean;
+    socket?: any;
+    boardId?: string;
     onPointerDown?: (e: any, id: string) => void;
     frameNumber?: number;
     forcedRender?: boolean;
@@ -11,14 +15,19 @@ interface FrameProps {
 
 export const Frame = memo(({
     layer,
+    expired,
+    socket,
+    boardId,
     onPointerDown,
     id,
     frameNumber,
 }: FrameProps) => {
-    const { x, y, width, height } = layer;
+    const { x, y, width, height, value: initialValue } = layer;
     const fontSize = Math.min(width, height) * 0.05;
     const padding = fontSize * 0.5;
     const contentRef = useRef<SVGGElement>(null);
+    const [isEditing, setIsEditing] = useState(false);
+    const [value, setValue] = useState(initialValue || `Frame ${frameNumber}`);
 
     useEffect(() => {
         if (contentRef.current) {
@@ -26,22 +35,59 @@ export const Frame = memo(({
         }
     }, [frameNumber]);
 
+    const updateValue = useUpdateValue();
+
+    const handleDoubleClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setIsEditing(true);
+    };
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setValue(e.target.value);
+        updateValue(boardId!, id, layer, e.target.value, expired!, socket, setValue);
+    };
+
+    const handleInputBlur = () => {
+        setIsEditing(false);
+    };
+
     return (
         <g
             transform={`translate(${x}, ${y})`}
             onPointerDown={(e) => onPointerDown?.(e, id)}
+            onDoubleClick={handleDoubleClick}
             pointerEvents="auto"
             data-id={`frame-${frameNumber}`}
         >
-            <text
-                x={padding}
-                y={- (padding)}
-                fontSize={fontSize}
-                fill={document.documentElement.classList.contains("dark") ? "#FFFFFF" : "#000000"}
-                className="font-bold"
-            >
-                Frame {frameNumber}
-            </text>
+            {isEditing ? (
+                <foreignObject x={padding} y={-(padding + fontSize)} width={width - 2 * padding} height={fontSize + 10}>
+                    <input
+                        value={value}
+                        onChange={handleInputChange}
+                        onBlur={handleInputBlur}
+                        style={{
+                            width: '100%',
+                            height: '100%',
+                            fontSize: `${fontSize}px`,
+                            background: 'transparent',
+                            border: 'none',
+                            outline: 'none',
+                            color: document.documentElement.classList.contains("dark") ? "#FFFFFF" : "#000000",
+                        }}
+                        autoFocus
+                    />
+                </foreignObject>
+            ) : (
+                <text
+                    x={padding}
+                    y={-(padding)}
+                    fontSize={fontSize}
+                    fill={document.documentElement.classList.contains("dark") ? "#FFFFFF" : "#000000"}
+                    className="font-bold"
+                >
+                    {value}
+                </text>
+            )}
             <rect
                 width={width}
                 height={height}

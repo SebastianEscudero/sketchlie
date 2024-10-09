@@ -1,33 +1,22 @@
-import { Kalam } from "next/font/google";
 import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
-
-import { LayerType, BigArrowRightLayer } from "@/types/canvas";
-import { cn, colorToCss, getContrastingTextColor, removeHighlightFromText } from "@/lib/utils";
+import { BigArrowRightLayer } from "@/types/canvas";
+import { cn, colorToCss, getContrastingTextColor } from "@/lib/utils";
 import React, { memo, useCallback, useEffect, useRef, useState } from "react";
-import { throttle } from "lodash";
-import { updateR2Bucket } from "@/lib/r2-bucket-functions";
 import { DEFAULT_FONT, defaultFont } from "../selection-tools/selectionToolUtils";
-
-const font = Kalam({
-  subsets: ["latin"],
-  weight: ["400"],
-});
+import { useHandlePaste, useUpdateValue } from "./canvas-objects-utils";
+import { Socket } from "socket.io-client";
 
 interface BigArrowRightProps {
   id: string;
   layer: BigArrowRightLayer;
-  boardId?: string;
+ boardId?: string;
   onPointerDown?: (e: any, id: string) => void;
   selectionColor?: string;
   expired?: boolean;
-  socket?: any;
+  socket?: Socket;
   focused?: boolean;
   forcedRender?: boolean;
 };
-
-const throttledUpdateLayer = throttle((boardId, layerId, layerUpdates) => {
-  updateR2Bucket('/api/r2-bucket/updateLayer', boardId, layerId, layerUpdates);
-}, 1000);
 
 export const BigArrowRight = memo(({
   layer,
@@ -38,53 +27,29 @@ export const BigArrowRight = memo(({
   expired,
   socket,
   focused = false,
+  forcedRender = false,
 }: BigArrowRightProps) => {
-  const { x, y, width, height, fill, outlineFill, value: initialValue, textFontSize, fontFamily } = layer;
+  const { x, y, width, height, fill, outlineFill, value, textFontSize, fontFamily } = layer;
   const alignX = layer.alignX || "center";
   const alignY = layer.alignY || "center";
-  const [value, setValue] = useState(initialValue);
+  const [editableValue, setEditableValue] = useState(value);
+  const [strokeColor, setStrokeColor] = useState(selectionColor || colorToCss(outlineFill || fill));
   const fillColor = colorToCss(fill);
-  const BigArrowRightRef = useRef<any>(null);
+  const BigArrowRightRef = useRef<HTMLDivElement>(null);
+  const updateValue = useUpdateValue();
+  const handlePaste = useHandlePaste();
 
   useEffect(() => {
-    setValue(layer.value);
-  }, [id, layer]);
+    setEditableValue(value);
+  }, [value]);
 
   useEffect(() => {
-    if (!focused) {
-      removeHighlightFromText();
-    }
-  }, [focused])
-
-
-  const updateValue = useCallback((newValue: string) => {
-    if (layer && layer.type === LayerType.BigArrowRight) {
-      const BigArrowRightLayer = layer as BigArrowRightLayer;
-      BigArrowRightLayer.value = newValue;
-      setValue(newValue);
-      if (expired !== true) {
-        throttledUpdateLayer(boardId, id, layer);
-        if (socket) {
-          socket.emit('layer-update', id, layer);
-        }
-      }
-    }
-  }, [id, layer, expired, socket, boardId]);
+    setStrokeColor(selectionColor || colorToCss(outlineFill || fill));
+  }, [selectionColor, outlineFill, fill, forcedRender]);
 
   const handleContentChange = useCallback((e: ContentEditableEvent) => {
-    updateValue(e.target.value);
-  }, [updateValue]);
-
-  const handlePaste = useCallback(async (e: React.ClipboardEvent) => {
-    e.preventDefault();
-    const text = await navigator.clipboard.readText();
-    const selection = window.getSelection();
-    if (selection && selection.rangeCount > 0) {
-      const range = selection.getRangeAt(0);
-      range.deleteContents();
-      range.insertNode(document.createTextNode(text));
-    }
-  }, []);
+    updateValue(boardId!, id, layer, e.target.value, expired!, socket!, setEditableValue);
+  }, [updateValue, boardId, id, layer, expired, socket]);
 
   const contentEditablePointerDown = (e: React.PointerEvent) => {
     if (focused) {
@@ -97,8 +62,8 @@ export const BigArrowRight = memo(({
   const handlePointerDown = (e: React.PointerEvent) => {
     if (focused) {
       e.stopPropagation();
-      e.preventDefault(); 
-      BigArrowRightRef.current.focus();
+      e.preventDefault();
+      BigArrowRightRef.current?.focus();
     }
 
     if (onPointerDown) onPointerDown(e, id);
@@ -138,22 +103,20 @@ export const BigArrowRight = memo(({
   const foreignObjectX = (width - divWidth - arrowHeadWidth/2);
   const foreignObjectY = (height - divHeight) / 2;
 
-  if (!fill) {
-    return null;
-  }
-
   return (
     <g
       transform={`translate(${x}, ${y})`}
+      pointerEvents="auto"
       onPointerDown={(e) => handlePointerDown(e)}
       onTouchStart={(e) => handleTouchStart(e)}
-      pointerEvents="auto"
+      onPointerEnter={() => setStrokeColor("#3390FF")}
+      onPointerLeave={() => setStrokeColor(selectionColor || colorToCss(outlineFill || fill))}
     >
       <path
         d={`M ${width} ${height / 2} L ${width - arrowHeadWidth/2} ${0} L ${width - arrowHeadWidth/2} ${height / 4} L 0 ${height / 4} L 0 ${height * 3 / 4} L ${width - arrowHeadWidth/2} ${height * 3 / 4} L ${width - arrowHeadWidth/2} ${height} Z`}
         fill={fillColor}
-        stroke={selectionColor || colorToCss(outlineFill || fill)}
-        strokeWidth="1"
+        stroke={strokeColor}
+        strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -169,17 +132,17 @@ export const BigArrowRight = memo(({
         >
           <ContentEditable
             innerRef={BigArrowRightRef}
-            html={value || ""}
+            html={editableValue || ""}
             onChange={handleContentChange}
             onPaste={handlePaste}
             onPointerDown={contentEditablePointerDown}
             className={cn(
-              "outline-none w-full p-1",
+              "outline-none w-full p-1 text-wrap",
               defaultFont.className
-            )} style={{
+            )} 
+            style={{
               fontSize: textFontSize,
               color: fill ? getContrastingTextColor(fill) : "#000",
-              textWrap: "wrap",
               WebkitUserSelect: 'auto',
               textAlign: alignX,
               cursor: focused && 'text',

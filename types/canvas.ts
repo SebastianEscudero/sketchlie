@@ -322,6 +322,7 @@ export type FrameLayer = {
   width: number;
   height: number;
   connectedArrows?: string[];
+  value?: string;
 };
 
 

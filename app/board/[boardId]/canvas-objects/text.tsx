@@ -35,10 +35,12 @@ export const Text = memo(({
   socket,
   focused = false,
   boardId,
+  forcedRender = false,
 }: TextProps) => {
   const { x, y, width, height, fill, value: initialValue, textFontSize, fontFamily } = layer;
   const alignX = layer.alignX || "center";
   const [value, setValue] = useState(initialValue);
+  const [strokeColor, setStrokeColor] = useState(selectionColor || "none");
   const textRef = useRef<any>(null);
   const fillColor = colorToCss(fill);
   const isTransparent = fillColor === 'rgba(0,0,0,0)';
@@ -47,6 +49,10 @@ export const Text = memo(({
   useEffect(() => {
     setValue(layer.value);
   }, [id, layer]);
+
+  useEffect(() => {
+    setStrokeColor(selectionColor || "none");
+  }, [selectionColor, fill, forcedRender]);
 
   useEffect(() => {
     onRefChange?.(textRef);
@@ -136,13 +142,19 @@ export const Text = memo(({
     <g
       transform={`translate(${x}, ${y})`}
       pointerEvents="auto"
+      onPointerEnter={() => setStrokeColor("#3390FF")}
+      onPointerLeave={() => setStrokeColor(selectionColor || "none")}
     >
+      <rect
+        width={width}
+        height={height}
+        stroke={strokeColor}
+        strokeWidth={2}
+        className="fill-transparent"
+      />  
       <foreignObject
         width={width}
         height={height}
-        style={{
-          outline: selectionColor ? `2px solid ${selectionColor}` : "none",
-        }}
         onPointerDown={(e) => handlePointerDown(e)}
         onTouchStart={(e) => handleTouchStart(e)}
       >

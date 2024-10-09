@@ -1,33 +1,22 @@
-import { Kalam } from "next/font/google";
 import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
-
-import { LayerType, CommentBubbleLayer } from "@/types/canvas";
-import { cn, colorToCss, getContrastingTextColor, removeHighlightFromText } from "@/lib/utils";
+import { CommentBubbleLayer } from "@/types/canvas";
+import { cn, colorToCss, getContrastingTextColor } from "@/lib/utils";
 import React, { memo, useCallback, useEffect, useRef, useState } from "react";
-import { throttle } from "lodash";
-import { updateR2Bucket } from "@/lib/r2-bucket-functions";
 import { DEFAULT_FONT, defaultFont } from "../selection-tools/selectionToolUtils";
-
-const font = Kalam({
-  subsets: ["latin"],
-  weight: ["400"],
-});
+import { useHandlePaste, useUpdateValue } from "./canvas-objects-utils";
+import { Socket } from "socket.io-client";
 
 interface CommentBubbleProps {
   id: string;
   layer: CommentBubbleLayer;
-  boardId?: string;
+ boardId?: string;
   onPointerDown?: (e: any, id: string) => void;
   selectionColor?: string;
   expired?: boolean;
-  socket?: any;
+  socket?: Socket;
   focused?: boolean;
   forcedRender?: boolean;
 };
-
-const throttledUpdateLayer = throttle((boardId, layerId, layerUpdates) => {
-  updateR2Bucket('/api/r2-bucket/updateLayer', boardId, layerId, layerUpdates);
-}, 1000);
 
 export const CommentBubble = memo(({
   layer,
@@ -38,53 +27,29 @@ export const CommentBubble = memo(({
   expired,
   socket,
   focused = false,
+  forcedRender = false,
 }: CommentBubbleProps) => {
-  const { x, y, width, height, fill, outlineFill, value: initialValue, textFontSize, fontFamily } = layer;
+  const { x, y, width, height, fill, outlineFill, value, textFontSize, fontFamily } = layer;
   const alignX = layer.alignX || "center";
   const alignY = layer.alignY || "center";
-  const [value, setValue] = useState(initialValue);
+  const [editableValue, setEditableValue] = useState(value);
+  const [strokeColor, setStrokeColor] = useState(selectionColor || colorToCss(outlineFill || fill));
   const fillColor = colorToCss(fill);
-  const CommentBubbleRef = useRef<any>(null);
+  const CommentBubbleRef = useRef<HTMLDivElement>(null);
+  const updateValue = useUpdateValue();
+  const handlePaste = useHandlePaste();
 
   useEffect(() => {
-    setValue(layer.value);
-  }, [id, layer]);
+    setEditableValue(value);
+  }, [value]);
 
   useEffect(() => {
-    if (!focused) {
-      removeHighlightFromText();
-    }
-  }, [focused])
-
-
-  const updateValue = useCallback((newValue: string) => {
-    if (layer && layer.type === LayerType.CommentBubble) {
-      const CommentBubbleLayer = layer as CommentBubbleLayer;
-      CommentBubbleLayer.value = newValue;
-      setValue(newValue);
-      if (expired !== true) {
-        throttledUpdateLayer(boardId, id, layer);
-        if (socket) {
-          socket.emit('layer-update', id, layer);
-        }
-      }
-    }
-  }, [id, layer, expired, socket, boardId]);
+    setStrokeColor(selectionColor || colorToCss(outlineFill || fill));
+  }, [selectionColor, outlineFill, fill, forcedRender]);
 
   const handleContentChange = useCallback((e: ContentEditableEvent) => {
-    updateValue(e.target.value);
-  }, [updateValue]);
-
-  const handlePaste = useCallback(async (e: React.ClipboardEvent) => {
-    e.preventDefault();
-    const text = await navigator.clipboard.readText();
-    const selection = window.getSelection();
-    if (selection && selection.rangeCount > 0) {
-      const range = selection.getRangeAt(0);
-      range.deleteContents();
-      range.insertNode(document.createTextNode(text));
-    }
-  }, []);
+    updateValue(boardId!, id, layer, e.target.value, expired!, socket!, setEditableValue);
+  }, [updateValue, boardId, id, layer, expired, socket]);
 
   const contentEditablePointerDown = (e: React.PointerEvent) => {
     if (focused) {
@@ -97,8 +62,8 @@ export const CommentBubble = memo(({
   const handlePointerDown = (e: React.PointerEvent) => {
     if (focused) {
       e.stopPropagation();
-      e.preventDefault(); 
-      CommentBubbleRef.current.focus();
+      e.preventDefault();
+      CommentBubbleRef.current?.focus();
     }
 
     if (onPointerDown) onPointerDown(e, id);
@@ -137,21 +102,20 @@ export const CommentBubble = memo(({
   const foreignObjectX = (width - divWidth);
   const foreignObjectY = 0;
 
-  if (!fill) {
-    return null;
-  }
 
   return (
     <g
       transform={`translate(${x}, ${y})`}
+      pointerEvents="auto"
       onPointerDown={(e) => handlePointerDown(e)}
       onTouchStart={(e) => handleTouchStart(e)}
-      pointerEvents="auto"
+      onPointerEnter={() => setStrokeColor("#3390FF")}
+      onPointerLeave={() => setStrokeColor(selectionColor || colorToCss(outlineFill || fill))}
     >
       <path
         d={`M 0 ${0} L ${width} ${0} L ${width} ${height * 4 / 5} L ${width / 2.5} ${height * 4 / 5} L ${width / 5} ${height} L ${width / 5} ${height * 4 / 5} L 0 ${height * 4 / 5} Z`} fill={fillColor}
-        stroke={selectionColor || colorToCss(outlineFill || fill)}
-        strokeWidth="1"
+        stroke={strokeColor}
+        strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -167,14 +131,15 @@ export const CommentBubble = memo(({
         >
           <ContentEditable
             innerRef={CommentBubbleRef}
-            html={value || ""}
+            html={editableValue || ""}
             onChange={handleContentChange}
             onPaste={handlePaste}
             onPointerDown={contentEditablePointerDown}
             className={cn(
               "outline-none w-full p-1",
               defaultFont.className
-            )} style={{
+            )} 
+            style={{
               fontSize: textFontSize,
               color: fill ? getContrastingTextColor(fill) : "#000",
               textWrap: "wrap",

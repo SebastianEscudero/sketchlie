@@ -34,6 +34,8 @@ interface LayerPreviewProps {
   socket: any;
   expired: boolean;
   boardId: string;
+  setCamera: (camera: any) => void;
+  setZoom: (zoom: number) => void;
   forcedRender?: boolean;
   frameNumber?: number;
 };
@@ -51,6 +53,8 @@ export const LayerPreview = memo(({
   boardId,
   forcedRender,
   frameNumber,
+  setCamera,
+  setZoom,
 }: LayerPreviewProps) => {
 
   if (!layer) {
@@ -67,7 +71,7 @@ export const LayerPreview = memo(({
           x={layer.x}
           y={layer.y}
           fill={layer.fill ? colorToCss(layer.fill) : "#000"}
-          stroke={selectionColor}
+          selectionColor={selectionColor}
           strokeSize={layer.strokeSize}
         />
       )
@@ -206,6 +210,7 @@ export const LayerPreview = memo(({
           layer={layer}
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
+          forcedRender={forcedRender}
         />
       );
     case LayerType.BigArrowLeft:
@@ -272,6 +277,9 @@ export const LayerPreview = memo(({
           layer={layer}
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
+          setCamera={setCamera}
+          setZoom={setZoom}
+          focused={focused}
         />
       );
     case LayerType.Arrow:
@@ -281,6 +289,7 @@ export const LayerPreview = memo(({
           layer={layer}
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
+          forcedRender={forcedRender}
         />
       );
     case LayerType.Frame:
@@ -290,6 +299,9 @@ export const LayerPreview = memo(({
           layer={layer}
           onPointerDown={onLayerPointerDown}
           frameNumber={frameNumber ?? 0}
+          expired={expired}
+          socket={socket}
+          boardId={boardId}
           forcedRender={forcedRender}
         />
       );

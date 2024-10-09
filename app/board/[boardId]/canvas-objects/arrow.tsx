@@ -1,5 +1,6 @@
 import { colorToCss, getArrowHeadAngle, getArrowPath } from '@/lib/utils';
 import { ArrowHead, ArrowLayer, ArrowType, Layer } from '@/types/canvas';
+import { useState, useEffect } from 'react';
 
 interface ArrowProps {
   id: string;
@@ -8,6 +9,7 @@ interface ArrowProps {
   selectionColor?: string;
   startConnectedLayer?: Layer;
   endConnectedLayer?: Layer;
+  forcedRender?: boolean;
 };
 
 export const Arrow = ({
@@ -15,8 +17,14 @@ export const Arrow = ({
   layer,
   selectionColor,
   onPointerDown,
+  forcedRender = false,
 }: ArrowProps) => {
   const { fill, width, height, center, x, y, startArrowHead, endArrowHead, orientation } = layer;
+  const [strokeColor, setStrokeColor] = useState(selectionColor || colorToCss(fill));
+
+  useEffect(() => {
+    setStrokeColor(selectionColor || colorToCss(fill));
+  }, [selectionColor, fill, forcedRender]);
 
   let start = { x: x, y: y };
   let end = { x: x + width, y: y + height };
@@ -32,6 +40,7 @@ export const Arrow = ({
     pathData = getArrowPath(layer.arrowType || ArrowType.Straight, start, center, end, orientation);
   }
 
+
   const arrowheadPath = `M -6 -4 L 0 0 L -6 4`;
 
   return (
@@ -39,11 +48,11 @@ export const Arrow = ({
       {startArrowHead === ArrowHead.Triangle && (
         <path
           d={arrowheadPath}
-          stroke={selectionColor || (isTransparent ? "rgba(29, 29, 29, 1)" : fillColor)}
+          stroke={selectionColor || (isTransparent ? "rgba(29, 29, 29, 1)" : strokeColor)}
           fill="none"
           onPointerDown={onPointerDown ? (e) => onPointerDown(e, id) : undefined}
           transform={`translate(${start.x}, ${start.y}) rotate(${startAngle})`}
-          strokeWidth="1"
+          strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin='round'
           pointerEvents="auto"
@@ -53,20 +62,22 @@ export const Arrow = ({
         onPointerDown={onPointerDown ? (e) => onPointerDown(e, id) : undefined}
         d={pathData}
         fill="none"
-        stroke={selectionColor || (isTransparent ? "rgba(29, 29, 29, 1)" : fillColor)}
-        strokeWidth="1"
+        stroke={selectionColor || (isTransparent ? "rgba(29, 29, 29, 1)" : strokeColor)}
+        strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
         pointerEvents="auto"
+        onPointerEnter={() => setStrokeColor("#3390FF")}
+        onPointerLeave={() => setStrokeColor(selectionColor || colorToCss(fill))}
       />
       {endArrowHead === ArrowHead.Triangle && (
         <path
           d={arrowheadPath}
-          stroke={selectionColor || (isTransparent ? "rgba(29, 29, 29, 1)" : fillColor)}
+          stroke={selectionColor || (isTransparent ? "rgba(29, 29, 29, 1)" : strokeColor)}
           fill="none"
           onPointerDown={onPointerDown ? (e) => onPointerDown(e, id) : undefined}
           transform={`translate(${end.x}, ${end.y}) rotate(${endAngle})`}
-          strokeWidth="1"
+          strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin='round'
           pointerEvents="auto"

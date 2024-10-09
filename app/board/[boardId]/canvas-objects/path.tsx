@@ -1,4 +1,5 @@
 import { getSvgPathFromPoints } from "@/lib/utils";
+import { useState, useEffect } from "react";
 
 interface PathProps {
     x: number;
@@ -6,7 +7,7 @@ interface PathProps {
     points: number[][];
     fill: string;
     onPointerDown?: (e: React.PointerEvent) => void;
-    stroke?: string;
+    selectionColor?: string;
     strokeSize?: number | undefined;
 };
 
@@ -16,12 +17,16 @@ export const Path = ({
     points,
     fill,
     onPointerDown,
-    stroke,
+    selectionColor,
     strokeSize,
 }: PathProps) => {
-
+    const [strokeColor, setStrokeColor] = useState(selectionColor || fill);
     const isTransparent = fill === 'rgba(0,0,0,0)';
     const isHalfTransparent = /rgba\(\d+,\s*\d+,\s*\d+,\s*0.5\)/.test(fill);
+
+    useEffect(() => {
+        setStrokeColor(selectionColor || fill);
+    }, [selectionColor, fill]);
 
     if (!points || points.length === 0) {
         return null;
@@ -29,6 +34,8 @@ export const Path = ({
 
     return (
         <path
+            onPointerEnter={() => setStrokeColor("#3390FF")}
+            onPointerLeave={() => setStrokeColor(selectionColor || fill)}
             onPointerDown={onPointerDown}
             d={getSvgPathFromPoints(points)}
             style={{
@@ -40,7 +47,7 @@ export const Path = ({
             strokeLinecap="round"
             strokeLinejoin="round"
             fill="none"
-            stroke={stroke ? (isHalfTransparent ? `${stroke}80` : stroke) : (isTransparent ? '#000' : fill)}
+            stroke={strokeColor ? (isHalfTransparent ? `${strokeColor}80` : strokeColor) : (isTransparent ? '#000' : fill)}
             strokeWidth={strokeSize}
             pointerEvents="auto"
         />

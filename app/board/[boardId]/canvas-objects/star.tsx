@@ -1,33 +1,22 @@
-import { Kalam } from "next/font/google";
 import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
-
-import { LayerType, StarLayer } from "@/types/canvas";
-import { cn, colorToCss, getContrastingTextColor, removeHighlightFromText } from "@/lib/utils";
+import { StarLayer } from "@/types/canvas";
+import { cn, colorToCss, getContrastingTextColor } from "@/lib/utils";
 import React, { memo, useCallback, useEffect, useRef, useState } from "react";
-import { throttle } from "lodash";
-import { updateR2Bucket } from "@/lib/r2-bucket-functions";
 import { DEFAULT_FONT, defaultFont } from "../selection-tools/selectionToolUtils";
-
-const font = Kalam({
-  subsets: ["latin"],
-  weight: ["400"],
-});
+import { useHandlePaste, useUpdateValue } from "./canvas-objects-utils";
+import { Socket } from "socket.io-client";
 
 interface StarProps {
   id: string;
   layer: StarLayer;
-  boardId?: string;
+ boardId?: string;
   onPointerDown?: (e: any, id: string) => void;
   selectionColor?: string;
   expired?: boolean;
-  socket?: any;
+  socket?: Socket;
   focused?: boolean;
   forcedRender?: boolean;
 };
-
-const throttledUpdateLayer = throttle((boardId, layerId, layerUpdates) => {
-  updateR2Bucket('/api/r2-bucket/updateLayer', boardId, layerId, layerUpdates);
-}, 1000);
 
 export const Star = memo(({
   layer,
@@ -38,53 +27,29 @@ export const Star = memo(({
   expired,
   socket,
   focused = false,
+  forcedRender = false,
 }: StarProps) => {
-  const { x, y, width, height, fill, outlineFill, value: initialValue, textFontSize, fontFamily } = layer;
+  const { x, y, width, height, fill, outlineFill, value, textFontSize, fontFamily } = layer;
   const alignX = layer.alignX || "center";
   const alignY = layer.alignY || "center";
-  const [value, setValue] = useState(initialValue);
+  const [editableValue, setEditableValue] = useState(value);
+  const [strokeColor, setStrokeColor] = useState(selectionColor || colorToCss(outlineFill || fill));
   const fillColor = colorToCss(fill);
-  const StarRef = useRef<any>(null);
+  const StarRef = useRef<HTMLDivElement>(null);
+  const updateValue = useUpdateValue();
+  const handlePaste = useHandlePaste();
 
   useEffect(() => {
-    setValue(layer.value);
-  }, [id, layer]);
+    setEditableValue(value);
+  }, [value]);
 
   useEffect(() => {
-    if (!focused) {
-      removeHighlightFromText();
-    }
-  }, [focused])
-
-
-  const updateValue = useCallback((newValue: string) => {
-    if (layer && layer.type === LayerType.Star) {
-      const StarLayer = layer as StarLayer;
-      StarLayer.value = newValue;
-      setValue(newValue);
-      if (expired !== true) {
-        throttledUpdateLayer(boardId, id, layer);
-        if (socket) {
-          socket.emit('layer-update', id, layer);
-        }
-      }
-    }
-  }, [id, layer, expired, socket, boardId]);
+    setStrokeColor(selectionColor || colorToCss(outlineFill || fill));
+  }, [selectionColor, outlineFill, fill, forcedRender]);
 
   const handleContentChange = useCallback((e: ContentEditableEvent) => {
-    updateValue(e.target.value);
-  }, [updateValue]);
-
-  const handlePaste = useCallback(async (e: React.ClipboardEvent) => {
-    e.preventDefault();
-    const text = await navigator.clipboard.readText();
-    const selection = window.getSelection();
-    if (selection && selection.rangeCount > 0) {
-      const range = selection.getRangeAt(0);
-      range.deleteContents();
-      range.insertNode(document.createTextNode(text));
-    }
-  }, []);
+    updateValue(boardId!, id, layer, e.target.value, expired!, socket!, setEditableValue);
+  }, [updateValue, boardId, id, layer, expired, socket]);
 
   const contentEditablePointerDown = (e: React.PointerEvent) => {
     if (focused) {
@@ -97,8 +62,8 @@ export const Star = memo(({
   const handlePointerDown = (e: React.PointerEvent) => {
     if (focused) {
       e.stopPropagation();
-      e.preventDefault(); 
-      StarRef.current.focus();
+      e.preventDefault();
+      StarRef.current?.focus();
     }
 
     if (onPointerDown) onPointerDown(e, id);
@@ -137,21 +102,19 @@ export const Star = memo(({
   const foreignObjectX = (width - divWidth) / 2;
   const foreignObjectY = (height - divHeight) / 1.65;
 
-  if (!fill) {
-    return null;
-  }
-
   return (
     <g
       transform={`translate(${x}, ${y})`}
+      pointerEvents="auto"
       onPointerDown={(e) => handlePointerDown(e)}
       onTouchStart={(e) => handleTouchStart(e)}
-      pointerEvents="auto"
+      onPointerEnter={() => setStrokeColor("#3390FF")}
+      onPointerLeave={() => setStrokeColor(selectionColor || colorToCss(outlineFill || fill))}
     >
       <path
         d={`M ${width * 0.5}, 0 L ${width * 0.67},${height * 0.35} L ${width},${height * 0.38} L ${width * 0.72},${height * 0.6} L ${width * 0.83},${height} L ${width * 0.5},${height * 0.77} L ${width * 0.17},${height} L ${width * 0.28},${height * 0.6} L 0,${height * 0.38} L ${width * 0.33},${height * 0.35} Z`} fill={fillColor}
-        stroke={selectionColor || colorToCss(outlineFill || fill)}
-        strokeWidth="1"
+        stroke={strokeColor}
+        strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -167,17 +130,16 @@ export const Star = memo(({
         >
           <ContentEditable
             innerRef={StarRef}
-            html={value || ""}
+            html={editableValue || ""}
             onChange={handleContentChange}
             onPaste={handlePaste}
             onPointerDown={contentEditablePointerDown}
             className={cn(
-              "outline-none w-full p-1",
+              "outline-none w-full p-1 text-wrap",
               defaultFont.className
             )} style={{
               fontSize: textFontSize,
               color: fill ? getContrastingTextColor(fill) : "#000",
-              textWrap: "wrap",
               WebkitUserSelect: 'auto',
               textAlign: alignX,
               cursor: focused && 'text',

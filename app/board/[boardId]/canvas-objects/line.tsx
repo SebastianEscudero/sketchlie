@@ -1,12 +1,13 @@
 import { colorToCss } from '@/lib/utils';
 import { LineLayer } from '@/types/canvas';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface LineProps {
   id: string;
   layer: LineLayer;
   onPointerDown?: (e: React.PointerEvent, id: string) => void;
   selectionColor?: string;
+  forcedRender?: boolean;
 };
 
 export const Line = ({
@@ -14,12 +15,16 @@ export const Line = ({
   layer,
   selectionColor,
   onPointerDown,
+  forcedRender = false,
 }: LineProps) => {
   const { fill, x, y, width, height, center } = layer;
-
+  const fillColor = colorToCss(fill);
+  const [strokeColor, setStrokeColor] = useState(selectionColor || colorToCss(fill));
   const end = { x: x + width, y: y + height };
 
-  const fillColor = colorToCss(fill);
+  useEffect(() => {
+    setStrokeColor(selectionColor || colorToCss(fill));
+  }, [selectionColor, fill, forcedRender]);
 
   const isTransparent = fillColor === 'rgba(0,0,0,0)';
 
@@ -33,11 +38,13 @@ export const Line = ({
       onPointerDown={onPointerDown ? (e) => onPointerDown(e, id) : undefined}
       d={pathData}
       fill="none"
-      stroke={selectionColor || (isTransparent ? "#000" : fillColor)}
-      strokeWidth="1"
+      stroke={selectionColor || (isTransparent ? "rgba(29, 29, 29, 1)" : strokeColor)}
+      strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
       pointerEvents="auto"
+      onPointerEnter={() => setStrokeColor("#3390FF")}
+      onPointerLeave={() => setStrokeColor(selectionColor || colorToCss(fill))}
     />
   );
 };
