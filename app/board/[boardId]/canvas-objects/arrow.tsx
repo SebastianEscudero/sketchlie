@@ -40,8 +40,13 @@ export const Arrow = ({
     pathData = getArrowPath(layer.arrowType || ArrowType.Straight, start, center, end, orientation);
   }
 
-
   const arrowheadPath = `M -6 -4 L 0 0 L -6 4`;
+  const handlePointerDown = (e: React.PointerEvent) => {
+    setStrokeColor(selectionColor || colorToCss(fill));
+    if (onPointerDown) {
+      onPointerDown(e, id);
+    }
+  }
 
   return (
     <>
@@ -50,7 +55,7 @@ export const Arrow = ({
           d={arrowheadPath}
           stroke={selectionColor || (isTransparent ? "rgba(29, 29, 29, 1)" : strokeColor)}
           fill="none"
-          onPointerDown={onPointerDown ? (e) => onPointerDown(e, id) : undefined}
+          onPointerDown={handlePointerDown}
           transform={`translate(${start.x}, ${start.y}) rotate(${startAngle})`}
           strokeWidth="2"
           strokeLinecap="round"
@@ -59,7 +64,7 @@ export const Arrow = ({
         />
       )}
       <path
-        onPointerDown={onPointerDown ? (e) => onPointerDown(e, id) : undefined}
+        onPointerDown={handlePointerDown}
         d={pathData}
         fill="none"
         stroke={selectionColor || (isTransparent ? "rgba(29, 29, 29, 1)" : strokeColor)}
@@ -67,7 +72,7 @@ export const Arrow = ({
         strokeLinecap="round"
         strokeLinejoin="round"
         pointerEvents="auto"
-        onPointerEnter={() => setStrokeColor("#3390FF")}
+        onPointerEnter={(e) => {if (e.buttons === 0) {setStrokeColor("#3390FF")}}}
         onPointerLeave={() => setStrokeColor(selectionColor || colorToCss(fill))}
       />
       {endArrowHead === ArrowHead.Triangle && (
@@ -75,7 +80,7 @@ export const Arrow = ({
           d={arrowheadPath}
           stroke={selectionColor || (isTransparent ? "rgba(29, 29, 29, 1)" : strokeColor)}
           fill="none"
-          onPointerDown={onPointerDown ? (e) => onPointerDown(e, id) : undefined}
+          onPointerDown={handlePointerDown}
           transform={`translate(${end.x}, ${end.y}) rotate(${endAngle})`}
           strokeWidth="2"
           strokeLinecap="round"

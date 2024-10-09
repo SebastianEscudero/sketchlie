@@ -18,10 +18,11 @@ interface SelectionBoxProps {
   setCanvasState: (state: any) => void;
   setStartPanPoint: (point: Point) => void;
   setArrowTypeInserting: (arrowType: ArrowType) => void;
+  showHandles: boolean;
 };
 
 const HANDLE_SIZE = 8;
-const STROKE_WIDTH = 1.5;
+const STROKE_WIDTH = 2;
 
 export const SelectionBox = memo(({
   zoom,
@@ -35,6 +36,7 @@ export const SelectionBox = memo(({
   setCanvasState,
   setStartPanPoint,
   setArrowTypeInserting,
+  showHandles,
 }: SelectionBoxProps) => {
 
   const handleRightClick = (event: React.MouseEvent) => {
@@ -65,7 +67,7 @@ export const SelectionBox = memo(({
     return null;
   }
 
-  if (isArrowLayer && soleLayerId && selectedLayers.length === 1) {
+  if (isArrowLayer && soleLayerId && showHandles && selectedLayers.length === 1) {
     const arrowLayer = liveLayers[soleLayerId] as ArrowLayer;
     bounds.center = arrowLayer.center;
     bounds.centerEdited = arrowLayer.centerEdited;
@@ -171,7 +173,7 @@ export const SelectionBox = memo(({
         onContextMenu={handleRightClick}
         className="pointer-events-none stroke-blue-500 fill-transparent"
         style={{
-          strokeWidth: strokeWidth,
+          strokeWidth: "2",
           transform: `translate(${bounds.x}px, ${bounds.y}px)`,
         }}
         x={0}
@@ -179,175 +181,179 @@ export const SelectionBox = memo(({
         width={bounds.width}
         height={bounds.height}
       />
-      {soleLayerId && (
+      {showHandles && (
         <>
-          <circle
-            cx={bounds.x + bounds.width / 2}
-            cy={bounds.y - offset / zoom}
-            r={sideHandleSize}
-            className="pointer-events-auto fill-blue-500 stroke-white border hover:cursor-hand"
-            onPointerDown={(e) => arrowPreviewHandle(e, { x: bounds.x + bounds.width / 2, y: bounds.y }, mousePosition, ArrowOrientation.Vertical)}
-            strokeWidth={strokeWidth}
+          {soleLayerId && (
+            <>
+              <circle
+                cx={bounds.x + bounds.width / 2}
+                cy={bounds.y - offset / zoom}
+                r={sideHandleSize}
+                className="pointer-events-auto fill-blue-500 stroke-white border hover:cursor-hand"
+                onPointerDown={(e) => arrowPreviewHandle(e, { x: bounds.x + bounds.width / 2, y: bounds.y }, mousePosition, ArrowOrientation.Vertical)}
+                strokeWidth={strokeWidth}
+              />
+              {/* Middle Bottom Handle */}
+              <circle
+                cx={bounds.x + bounds.width / 2}
+                cy={bounds.y + bounds.height + offset / zoom}
+                r={sideHandleSize}
+                className="pointer-events-auto fill-blue-500 stroke-white border hover:cursor-hand"
+                onPointerDown={(e) => arrowPreviewHandle(e, { x: bounds.x + bounds.width / 2, y: bounds.y + bounds.height }, mousePosition, ArrowOrientation.Vertical)}
+                strokeWidth={strokeWidth}
+              />
+              {/* Middle Left Handle */}
+              <circle
+                cx={bounds.x - offset / zoom}
+                cy={bounds.y + bounds.height / 2}
+                r={sideHandleSize}
+                className="pointer-events-auto fill-blue-500 stroke-white border hover:cursor-hand"
+                onPointerDown={(e) => arrowPreviewHandle(e, { x: bounds.x, y: bounds.y + bounds.height / 2 }, mousePosition, ArrowOrientation.Horizontal)}
+                strokeWidth={strokeWidth}
+              />
+              {/* Middle Right Handle */}
+              <circle
+                cx={bounds.x + bounds.width + offset / zoom}
+                cy={bounds.y + bounds.height / 2}
+                r={sideHandleSize}
+                className="pointer-events-auto fill-blue-500 stroke-white border hover:cursor-hand"
+                onPointerDown={(e) => arrowPreviewHandle(e, { x: bounds.x + bounds.width, y: bounds.y + bounds.height / 2 }, mousePosition, ArrowOrientation.Horizontal)}
+                strokeWidth={strokeWidth}
+              />
+            </>
+          )}
+          <rect
+            className="pointer-events-auto fill-white stroke-blue-500 p-4"
+            x={0}
+            y={0}
+            style={{
+              strokeWidth: strokeWidth,
+              cursor: "nwse-resize",
+              width: `${handleSize}px`,
+              height: `${handleSize}px`,
+              transform: `translate(${bounds.x - handleSize / 2}px, ${bounds.y - handleSize / 2}px)`
+            }}
+            onPointerDown={(e) => {
+              e.stopPropagation();
+              onResizeHandlePointerDown(Side.Top + Side.Left, bounds);
+            }}
           />
-          {/* Middle Bottom Handle */}
-          <circle
-            cx={bounds.x + bounds.width / 2}
-            cy={bounds.y + bounds.height + offset / zoom}
-            r={sideHandleSize}
-            className="pointer-events-auto fill-blue-500 stroke-white border hover:cursor-hand"
-            onPointerDown={(e) => arrowPreviewHandle(e, { x: bounds.x + bounds.width / 2, y: bounds.y + bounds.height }, mousePosition, ArrowOrientation.Vertical)}
-            strokeWidth={strokeWidth}
-          />
-          {/* Middle Left Handle */}
-          <circle
-            cx={bounds.x - offset / zoom}
-            cy={bounds.y + bounds.height / 2}
-            r={sideHandleSize}
-            className="pointer-events-auto fill-blue-500 stroke-white border hover:cursor-hand"
-            onPointerDown={(e) => arrowPreviewHandle(e, { x: bounds.x, y: bounds.y + bounds.height / 2 }, mousePosition, ArrowOrientation.Horizontal)}
-            strokeWidth={strokeWidth}
-          />
-          {/* Middle Right Handle */}
-          <circle
-            cx={bounds.x + bounds.width + offset / zoom}
-            cy={bounds.y + bounds.height / 2}
-            r={sideHandleSize}
-            className="pointer-events-auto fill-blue-500 stroke-white border hover:cursor-hand"
-            onPointerDown={(e) => arrowPreviewHandle(e, { x: bounds.x + bounds.width, y: bounds.y + bounds.height / 2 }, mousePosition, ArrowOrientation.Horizontal)}
-            strokeWidth={strokeWidth}
-          />
-        </>
-      )}
-      <rect
-        className="pointer-events-auto fill-white stroke-blue-500 p-4"
-        x={0}
-        y={0}
-        style={{
-          strokeWidth: strokeWidth,
-          cursor: "nwse-resize",
-          width: `${handleSize}px`,
-          height: `${handleSize}px`,
-          transform: `translate(${bounds.x - handleSize / 2}px, ${bounds.y - handleSize / 2}px)`
-        }}
-        onPointerDown={(e) => {
-          e.stopPropagation();
-          onResizeHandlePointerDown(Side.Top + Side.Left, bounds);
-        }}
-      />
-      {!isTextLayer && (
-        <rect
-          className="pointer-events-auto fill-transparent cursor-ns-resize"
-          x={0}
-          y={-3 / zoom}
-          width={bounds.width}
-          height={sideHandleSize} // Adjust this value as needed
-          onPointerDown={(e) => {
-            e.stopPropagation();
-            onResizeHandlePointerDown(Side.Top, bounds);
-          }}
-          style={{
-            transform: `translate(${bounds.x}px, ${bounds.y}px)`,
-          }}
-        />
-      )}
-      <rect
-        className="pointer-events-auto fill-white stroke-blue-500"
-        x={0}
-        y={0}
-        style={{
-          strokeWidth: strokeWidth,
-          cursor: "nesw-resize",
-          width: `${handleSize}px`,
-          height: `${handleSize}px`,
-          transform: `
+          {!isTextLayer && (
+            <rect
+              className="pointer-events-auto fill-transparent cursor-ns-resize"
+              x={0}
+              y={-3 / zoom}
+              width={bounds.width}
+              height={sideHandleSize} // Adjust this value as needed
+              onPointerDown={(e) => {
+                e.stopPropagation();
+                onResizeHandlePointerDown(Side.Top, bounds);
+              }}
+              style={{
+                transform: `translate(${bounds.x}px, ${bounds.y}px)`,
+              }}
+            />
+          )}
+          <rect
+            className="pointer-events-auto fill-white stroke-blue-500"
+            x={0}
+            y={0}
+            style={{
+              strokeWidth: strokeWidth,
+              cursor: "nesw-resize",
+              width: `${handleSize}px`,
+              height: `${handleSize}px`,
+              transform: `
                 translate(${bounds.x - handleSize / 2 + bounds.width}px, ${bounds.y - handleSize / 2}px)`
-        }}
-        onPointerDown={(e) => {
-          e.stopPropagation();
-          onResizeHandlePointerDown(Side.Top + Side.Right, bounds);
-        }}
-      />
-      <rect
-        className="pointer-events-auto fill-transparent cursor-ew-resize"
-        x={bounds.width - sideHandleSize + 3 / zoom}
-        y={0}
-        width={sideHandleSize}
-        height={bounds.height}
-        onPointerDown={(e) => {
-          e.stopPropagation();
-          onResizeHandlePointerDown(Side.Right, bounds);
-        }}
-        style={{
-          transform: `translate(${bounds.x}px, ${bounds.y}px)`,
-        }}
-      />
-      <rect
-        className="pointer-events-auto fill-white stroke-blue-500"
-        x={0}
-        y={0}
-        style={{
-          strokeWidth: strokeWidth,
-          cursor: "nwse-resize",
-          width: `${handleSize}px`,
-          height: `${handleSize}px`,
-          transform: `
+            }}
+            onPointerDown={(e) => {
+              e.stopPropagation();
+              onResizeHandlePointerDown(Side.Top + Side.Right, bounds);
+            }}
+          />
+          <rect
+            className="pointer-events-auto fill-transparent cursor-ew-resize"
+            x={bounds.width - sideHandleSize + 3 / zoom}
+            y={0}
+            width={sideHandleSize}
+            height={bounds.height}
+            onPointerDown={(e) => {
+              e.stopPropagation();
+              onResizeHandlePointerDown(Side.Right, bounds);
+            }}
+            style={{
+              transform: `translate(${bounds.x}px, ${bounds.y}px)`,
+            }}
+          />
+          <rect
+            className="pointer-events-auto fill-white stroke-blue-500"
+            x={0}
+            y={0}
+            style={{
+              strokeWidth: strokeWidth,
+              cursor: "nwse-resize",
+              width: `${handleSize}px`,
+              height: `${handleSize}px`,
+              transform: `
                 translate(${bounds.x - handleSize / 2 + bounds.width}px, ${bounds.y - handleSize / 2 + bounds.height}px)`
-        }}
-        onPointerDown={(e) => {
-          e.stopPropagation();
-          onResizeHandlePointerDown(Side.Bottom + Side.Right, bounds);
-        }}
-      />
-      {!isTextLayer && (
-        <rect
-          className="pointer-events-auto fill-transparent cursor-ns-resize"
-          x={0}
-          y={bounds.height - sideHandleSize + 3 / zoom}
-          width={bounds.width}
-          height={sideHandleSize}
-          onPointerDown={(e) => {
-            e.stopPropagation();
-            onResizeHandlePointerDown(Side.Bottom, bounds);
-          }}
-          style={{
-            transform: `translate(${bounds.x}px, ${bounds.y}px)`,
-          }}
-        />
-      )}
-      <rect
-        className="pointer-events-auto fill-white stroke-blue-500"
-        x={0}
-        y={0}
-        style={{
-          strokeWidth: strokeWidth,
-          cursor: "nesw-resize",
-          width: `${handleSize}px`,
-          height: `${handleSize}px`,
-          transform: `
+            }}
+            onPointerDown={(e) => {
+              e.stopPropagation();
+              onResizeHandlePointerDown(Side.Bottom + Side.Right, bounds);
+            }}
+          />
+          {!isTextLayer && (
+            <rect
+              className="pointer-events-auto fill-transparent cursor-ns-resize"
+              x={0}
+              y={bounds.height - sideHandleSize + 3 / zoom}
+              width={bounds.width}
+              height={sideHandleSize}
+              onPointerDown={(e) => {
+                e.stopPropagation();
+                onResizeHandlePointerDown(Side.Bottom, bounds);
+              }}
+              style={{
+                transform: `translate(${bounds.x}px, ${bounds.y}px)`,
+              }}
+            />
+          )}
+          <rect
+            className="pointer-events-auto fill-white stroke-blue-500"
+            x={0}
+            y={0}
+            style={{
+              strokeWidth: strokeWidth,
+              cursor: "nesw-resize",
+              width: `${handleSize}px`,
+              height: `${handleSize}px`,
+              transform: `
                 translate(
                   ${bounds.x - handleSize / 2}px,
                   ${bounds.y - handleSize / 2 + bounds.height}px
                 )`
-        }}
-        onPointerDown={(e) => {
-          e.stopPropagation();
-          onResizeHandlePointerDown(Side.Bottom + Side.Left, bounds);
-        }}
-      />
-      <rect
-        className="pointer-events-auto fill-transparent cursor-ew-resize"
-        x={-3 / zoom}
-        y={0}
-        width={sideHandleSize}
-        height={bounds.height}
-        onPointerDown={(e) => {
-          e.stopPropagation();
-          onResizeHandlePointerDown(Side.Left, bounds);
-        }}
-        style={{
-          transform: `translate(${bounds.x}px, ${bounds.y}px)`,
-        }}
-      />
+            }}
+            onPointerDown={(e) => {
+              e.stopPropagation();
+              onResizeHandlePointerDown(Side.Bottom + Side.Left, bounds);
+            }}
+          />
+          <rect
+            className="pointer-events-auto fill-transparent cursor-ew-resize"
+            x={-3 / zoom}
+            y={0}
+            width={sideHandleSize}
+            height={bounds.height}
+            onPointerDown={(e) => {
+              e.stopPropagation();
+              onResizeHandlePointerDown(Side.Left, bounds);
+            }}
+            style={{
+              transform: `translate(${bounds.x}px, ${bounds.y}px)`,
+            }}
+          />
+        </>
+      )}
     </>
   );
 });

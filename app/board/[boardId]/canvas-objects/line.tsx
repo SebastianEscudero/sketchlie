@@ -33,9 +33,16 @@ export const Line = ({
     pathData = `M ${x} ${y} L ${center.x} ${center.y} L ${end.x} ${end.y}`;
   }
 
+  const handlePointerDown = (e: React.PointerEvent) => {
+    setStrokeColor(selectionColor || colorToCss(fill));
+    if (onPointerDown) {
+      onPointerDown(e, id);
+    }
+  }
+
   return (
     <path
-      onPointerDown={onPointerDown ? (e) => onPointerDown(e, id) : undefined}
+      onPointerDown={handlePointerDown}
       d={pathData}
       fill="none"
       stroke={selectionColor || (isTransparent ? "rgba(29, 29, 29, 1)" : strokeColor)}
@@ -43,7 +50,7 @@ export const Line = ({
       strokeLinecap="round"
       strokeLinejoin="round"
       pointerEvents="auto"
-      onPointerEnter={() => setStrokeColor("#3390FF")}
+      onPointerEnter={(e) => {if (e.buttons === 0) {setStrokeColor("#3390FF")}}}
       onPointerLeave={() => setStrokeColor(selectionColor || colorToCss(fill))}
     />
   );

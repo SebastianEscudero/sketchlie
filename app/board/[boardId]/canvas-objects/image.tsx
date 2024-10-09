@@ -24,9 +24,10 @@ export const InsertImage = ({
 }: ImageProps) => {
   const { x, y, width, height, src } = layer;
 
-  const [strokeColor, setStrokeColor] = useState(selectionColor);
+  const [strokeColor, setStrokeColor] = useState(selectionColor || "none");
 
   const handlePointerDown = useCallback((e: React.PointerEvent) => {
+    setStrokeColor(selectionColor || "none");
     if (focused) {
       e.preventDefault();
       const padding = 50; // Padding around the image in pixels
@@ -47,7 +48,7 @@ export const InsertImage = ({
     } else {
       onPointerDown(e, id);
     }
-  }, [focused, width, height, x, y, setCamera, setZoom, onPointerDown, id]);
+  }, [focused, width, height, x, y, setCamera, setZoom, onPointerDown, id, selectionColor]);
 
 
   if (!isUploading) {
@@ -75,7 +76,7 @@ export const InsertImage = ({
           height={height}
           onPointerDown={handlePointerDown}
           pointerEvents="auto"
-          onPointerEnter={() => setStrokeColor("#3390FF")}
+          onPointerEnter={(e) => {if (e.buttons === 0) {setStrokeColor("#3390FF")}}}
           onPointerLeave={() => setStrokeColor(selectionColor || "none")}
         />
       </>

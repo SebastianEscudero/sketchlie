@@ -2302,22 +2302,21 @@ export const Canvas = ({
                                             />
                                         );
                                     })}
-                                    {!isMoving && activeTouches < 2 && canvasState.mode !== CanvasMode.ArrowResizeHandler && (
-                                        <SelectionBox
-                                            zoom={zoom}
-                                            liveLayers={liveLayers}
-                                            selectedLayers={selectedLayersRef.current}
-                                            onResizeHandlePointerDown={onResizeHandlePointerDown}
-                                            onArrowResizeHandlePointerDown={onArrowResizeHandlePointerDown}
-                                            setLiveLayers={setLiveLayers}
-                                            forceRender={forceSelectionBoxRender}
-                                            setCurrentPreviewLayer={setCurrentPreviewLayer}
-                                            mousePosition={mousePosition}
-                                            setCanvasState={setCanvasState}
-                                            setStartPanPoint={setStartPanPoint}
-                                            setArrowTypeInserting={setArrowTypeInserting}
-                                        />
-                                    )}
+                                    <SelectionBox
+                                        zoom={zoom}
+                                        liveLayers={liveLayers}
+                                        selectedLayers={selectedLayersRef.current}
+                                        onResizeHandlePointerDown={onResizeHandlePointerDown}
+                                        onArrowResizeHandlePointerDown={onArrowResizeHandlePointerDown}
+                                        setLiveLayers={setLiveLayers}
+                                        forceRender={forceSelectionBoxRender}
+                                        setCurrentPreviewLayer={setCurrentPreviewLayer}
+                                        mousePosition={mousePosition}
+                                        setCanvasState={setCanvasState}
+                                        setStartPanPoint={setStartPanPoint}
+                                        setArrowTypeInserting={setArrowTypeInserting}
+                                        showHandles={!isMoving && activeTouches < 2 && canvasState.mode !== CanvasMode.ArrowResizeHandler}
+                                    />
                                     {currentPreviewLayer && (
                                         <CurrentPreviewLayer
                                             layer={currentPreviewLayer}

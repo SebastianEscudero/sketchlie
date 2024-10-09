@@ -67,6 +67,7 @@ export const CommentBubble = memo(({
     }
 
     if (onPointerDown) onPointerDown(e, id);
+    setStrokeColor(selectionColor || colorToCss(outlineFill || fill));
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -109,7 +110,7 @@ export const CommentBubble = memo(({
       pointerEvents="auto"
       onPointerDown={(e) => handlePointerDown(e)}
       onTouchStart={(e) => handleTouchStart(e)}
-      onPointerEnter={() => setStrokeColor("#3390FF")}
+      onPointerEnter={(e) => {if (e.buttons === 0) {setStrokeColor("#3390FF")}}}
       onPointerLeave={() => setStrokeColor(selectionColor || colorToCss(outlineFill || fill))}
     >
       <path

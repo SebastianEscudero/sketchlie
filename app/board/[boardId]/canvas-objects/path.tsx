@@ -32,11 +32,18 @@ export const Path = ({
         return null;
     }
 
+    const handlePointerDown = (e: React.PointerEvent) => {
+        setStrokeColor(selectionColor || fill);
+        if (onPointerDown) {
+          onPointerDown(e);
+        }
+      }
+
     return (
         <path
-            onPointerEnter={() => setStrokeColor("#3390FF")}
+            onPointerEnter={(e) => {if (e.buttons === 0) {setStrokeColor("#3390FF")}}}
             onPointerLeave={() => setStrokeColor(selectionColor || fill)}
-            onPointerDown={onPointerDown}
+            onPointerDown={handlePointerDown}
             d={getSvgPathFromPoints(points)}
             style={{
                 transform: `translate(${x}px, ${y}px)`,

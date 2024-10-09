@@ -59,7 +59,7 @@ export const Text = memo(({
   }, [onRefChange]);
 
   const handlePointerDown = useCallback((e: React.PointerEvent) => {
-
+    setStrokeColor(selectionColor || "none");
     if (e.pointerType === "touch") {
       return;
     }
@@ -84,7 +84,7 @@ export const Text = memo(({
     if (onPointerDown) {
       onPointerDown(e, id);
     }
-  }, [onPointerDown, id, onRefChange, focused]);
+  }, [onPointerDown, id, onRefChange, focused, selectionColor]);
 
   const handleTouchStart = (e: React.TouchEvent) => {
     if (e.touches.length > 1) {
@@ -142,7 +142,7 @@ export const Text = memo(({
     <g
       transform={`translate(${x}, ${y})`}
       pointerEvents="auto"
-      onPointerEnter={() => setStrokeColor("#3390FF")}
+      onPointerEnter={(e) => {if (e.buttons === 0) {setStrokeColor("#3390FF")}}}
       onPointerLeave={() => setStrokeColor(selectionColor || "none")}
     >
       <rect
