@@ -136,12 +136,11 @@ export const Canvas = ({
     const [pathStrokeSize, setPathStrokeSize] = useState(5);
     const [pinchStartDist, setPinchStartDist] = useState<number | null>(null);
     const [activeTouches, setActiveTouches] = useState(0);
-    const [layerWithAssistDraw, setLayerWithAssistDraw] = useState(false);
     const [forceSelectionBoxRender, setForceSelectionBoxRender] = useState(false);
     const [forceLayerPreviewRender, setForceLayerPreviewRender] = useState(false);
     const [suggestedLayers, setSuggestedLayers] = useState<Layers>({});
     const [suggestedLayerIds, setSuggestedLayerIds] = useState<string[]>([]);
-    const [lastPanPoint, setLastPanPoint] = useState<{ x: number, y: number } | null>(null);
+    const [justInsertedText, setJustInsertedText] = useState(false);
     const proModal = useProModal();
     const [background, setBackground] = useState(() => {
         const storedValue = localStorage.getItem('background');
@@ -185,8 +184,6 @@ export const Canvas = ({
         setRedoStack(redoStack.slice(0, -1));
         setHistory([...history, lastCommand]);
     }, [redoStack, liveLayerIds, liveLayers, history]);
-
-    const [justInsertedText, setJustInsertedText] = useState(false);
 
     const insertLayer = useCallback((layerType: LayerType, position: Point, width: number, height: number, center?: Point, startConnectedLayerId?: string, endConnectedLayerId?: string, arrowType?: ArrowType, orientation?: ArrowOrientation) => {
 
@@ -317,15 +314,12 @@ export const Canvas = ({
             selectedLayersRef.current = [layerId];
         }
 
-        if (layerWithAssistDraw) {
-            setLayerWithAssistDraw(false);
-            setCanvasState({ mode: CanvasMode.Pencil });
-        } else {
-            setCanvasState({ mode: CanvasMode.None });
-
+        if (layerType === LayerType.Frame) {
+            // Move the frame to the bottom of the layer stack
+            setLiveLayerIds(prevIds => [layerId, ...prevIds.filter(id => id !== layerId)]);
         }
 
-    }, [socket, org, proModal, setLiveLayers, setLiveLayerIds, boardId, arrowTypeInserting, liveLayers, performAction, layerWithAssistDraw, expired]);
+    }, [socket, org, proModal, setLiveLayers, setLiveLayerIds, boardId, arrowTypeInserting, liveLayers, performAction, expired]);
 
     useEffect(() => {
         if (justInsertedText && layerRef && layerRef.current) {
@@ -1318,7 +1312,7 @@ export const Canvas = ({
                 }
             }
         } else if (canvasState.mode === CanvasMode.Moving) {
-            document.body.style.cursor = 'url(/custom-cursors/hand.svg) 0 10, auto';
+            document.body.style.cursor = 'url(/custom-cursors/hand.svg) 12 12, auto';
             setIsPanning(false);
         } else if (canvasState.mode === CanvasMode.Translating) {
             const initialLayer = JSON.stringify(initialLayers[selectedLayersRef.current[0]]);
@@ -1625,7 +1619,6 @@ export const Canvas = ({
 
         if (e.touches.length < 2) {
             setPinchStartDist(null);
-            setLastPanPoint(null);
             return;
         }
 
@@ -2069,7 +2062,7 @@ export const Canvas = ({
             document.body.style.cursor = 'url(/custom-cursors/eraser.svg) 8 16, auto';
             selectedLayersRef.current = [];
         } else if (canvasState.mode === CanvasMode.Moving) {
-            document.body.style.cursor = 'url(/custom-cursors/hand.svg) 8 8, auto';
+            document.body.style.cursor = 'url(/custom-cursors/hand.svg) 12 12, auto';
         } else if (canvasState.mode === CanvasMode.ArrowResizeHandler) {
             document.body.style.cursor = 'url(/custom-cursors/grab.svg) 12 12, auto';
         } else if (canvasState.mode === CanvasMode.Translating) {
