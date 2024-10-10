@@ -6,8 +6,8 @@ interface ImageProps {
   id: string;
   layer: ImageLayer;
   onPointerDown: (e: React.PointerEvent, id: string) => void;
-  setCamera: (camera: any) => void;
-  setZoom: (zoom: number) => void;
+  setCamera?: (camera: any) => void;
+  setZoom?: (zoom: number) => void;
   focused?: boolean;
   selectionColor?: string;
 };
@@ -43,8 +43,8 @@ export const InsertImage = ({
       const newCameraX = -(x + width / 2 - viewportWidth / 2 / newZoom);
       const newCameraY = -(y + height / 2 - viewportHeight / 2 / newZoom);
 
-      setCamera({ x: newCameraX, y: newCameraY });
-      setZoom(newZoom);
+      setCamera && setCamera({ x: newCameraX, y: newCameraY });
+      setZoom && setZoom(newZoom);
     } else {
       onPointerDown(e, id);
     }

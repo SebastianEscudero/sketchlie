@@ -315,9 +315,10 @@ export const Canvas = ({
         }
 
         if (layerType === LayerType.Frame) {
-            // Move the frame to the bottom of the layer stack
             setLiveLayerIds(prevIds => [layerId, ...prevIds.filter(id => id !== layerId)]);
         }
+
+        setCanvasState({ mode: CanvasMode.None });
 
     }, [socket, org, proModal, setLiveLayers, setLiveLayerIds, boardId, arrowTypeInserting, liveLayers, performAction, expired]);
 
@@ -2132,7 +2133,7 @@ export const Canvas = ({
                             User={User}
                             svgRef={svgRef}
                         />
-                        <MoveBackToContent 
+                        <MoveBackToContent
                             setCamera={setCamera}
                             setZoom={setZoom}
                             showButton={visibleLayers.length === 0}
@@ -2253,7 +2254,6 @@ export const Canvas = ({
                             className="z-20 relative pointer-events-none"
                         >
                             <svg
-                                id="test-svg"
                                 ref={svgRef}
                                 className="h-[100vh] w-[100vw]"
                                 viewBox={`0 0 ${window.innerWidth} ${window.innerHeight}`}

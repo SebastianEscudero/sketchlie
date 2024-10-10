@@ -2,7 +2,7 @@
 
 import { memo } from "react";
 import { colorToCss } from "@/lib/utils";
-import { Layer, LayerType } from "@/types/canvas";
+import { Layer, Layers, LayerType } from "@/types/canvas";
 import { Path } from "../canvas-objects/path";
 import { Note } from "../canvas-objects/note";
 import { Text } from "../canvas-objects/text";
@@ -25,17 +25,17 @@ import { Frame } from "../canvas-objects/frame";
 interface LayerPreviewProps {
   id: string;
   onLayerPointerDown: (e: React.PointerEvent, layerId: string) => void;
-  focused?: boolean;
-  selectionColor?: string;
   layer: Layer;
   setLiveLayers: (layers: any) => void;
-  onRefChange?: (ref: React.RefObject<any>) => void;
-  zoomRef?: React.RefObject<any>;
   socket: any;
   expired: boolean;
   boardId: string;
-  setCamera: (camera: any) => void;
-  setZoom: (zoom: number) => void;
+  focused?: boolean;
+  setCamera?: (camera: any) => void;
+  setZoom?: (zoom: number) => void;
+  onRefChange?: (ref: React.RefObject<any>) => void;
+  selectionColor?: string;
+  zoomRef?: React.RefObject<any>;
   forcedRender?: boolean;
   frameNumber?: number;
 };
