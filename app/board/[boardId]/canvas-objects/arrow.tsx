@@ -72,7 +72,7 @@ export const Arrow = ({
         strokeLinecap="round"
         strokeLinejoin="round"
         pointerEvents="auto"
-        onPointerEnter={(e) => {if (e.buttons === 0) {setStrokeColor("#3390FF")}}}
+        onPointerEnter={(e) => {if (e.buttons === 0 && document.body.style.cursor === 'default') {setStrokeColor("#3390FF")}}}
         onPointerLeave={() => setStrokeColor(selectionColor || colorToCss(fill))}
       />
       {endArrowHead === ArrowHead.Triangle && (

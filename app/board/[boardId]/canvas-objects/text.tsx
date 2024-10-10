@@ -142,7 +142,7 @@ export const Text = memo(({
     <g
       transform={`translate(${x}, ${y})`}
       pointerEvents="auto"
-      onPointerEnter={(e) => {if (e.buttons === 0) {setStrokeColor("#3390FF")}}}
+      onPointerEnter={(e) => {if (e.buttons === 0 && document.body.style.cursor === 'default') {setStrokeColor("#3390FF")}}}
       onPointerLeave={() => setStrokeColor(selectionColor || "none")}
     >
       <rect
