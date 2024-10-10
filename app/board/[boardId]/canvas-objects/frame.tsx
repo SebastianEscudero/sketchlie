@@ -1,5 +1,5 @@
 import { FrameLayer } from "@/types/canvas";
-import React, { memo, useRef, useEffect, useState } from "react";
+import React, { memo, useState, useEffect } from "react";
 import { useUpdateValue } from "./canvas-objects-utils";
 
 interface FrameProps {
@@ -25,15 +25,12 @@ export const Frame = memo(({
     const { x, y, width, height, value: initialValue } = layer;
     const fontSize = Math.min(width, height) * 0.05;
     const padding = fontSize * 0.5;
-    const contentRef = useRef<SVGGElement>(null);
     const [isEditing, setIsEditing] = useState(false);
-    const [value, setValue] = useState(initialValue || `Frame ${frameNumber}`);
+    const [value, setValue] = useState(initialValue || `Frame ${frameNumber || ""}`);
 
     useEffect(() => {
-        if (contentRef.current) {
-            contentRef.current.setAttribute('data-frame-content', `frame-${frameNumber}-content`);
-        }
-    }, [frameNumber]);
+        setValue(initialValue || `Frame ${frameNumber || ""}`);
+    }, [frameNumber, initialValue]);
 
     const updateValue = useUpdateValue();
 
@@ -91,22 +88,12 @@ export const Frame = memo(({
             <rect
                 width={width}
                 height={height}
-                fill="transparent"
+                fill={document.documentElement.classList.contains("dark") ? "#2c2c2c" : "#FFFFFF"}
                 stroke={document.documentElement.classList.contains("dark") ? "#FFFFFF" : "#000000"}
                 strokeWidth="1"
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
-            <g ref={contentRef}>
-                <rect
-                    x={1}
-                    y={1}
-                    width={width - 2}
-                    height={height - 2}
-                    fill="transparent"
-                    pointerEvents="none"
-                />
-            </g>
         </g>
     );
 });

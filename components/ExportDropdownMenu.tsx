@@ -33,8 +33,7 @@ export const ExportDropdownMenu = ({ id, title, svgRef }: ExportDropdownMenuProp
     ];
 
     const documentExportOptions = [
-        { label: 'Export as PDF', action: () => exportToPdf(title, isTransparent) },
-        { label: 'Export Frames as PDF', action: () => exportFramesToPdf(title, isTransparent, liveLayers, liveLayerIds, svgRef) },
+        { label: 'Export as PDF', action: () => exportFramesToPdf(title, isTransparent, liveLayers, liveLayerIds, svgRef) },
     ];
 
     const dataExportOptions = [

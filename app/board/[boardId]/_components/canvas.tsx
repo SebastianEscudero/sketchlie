@@ -73,6 +73,7 @@ import { smoothLastPoint } from "@/lib/smooth-points";
 import { Background } from "./background";
 import { MediaPreview } from "./MediaPreview";
 import { MoveBackToContent } from "./move-back-to-content";
+import { Frame } from "../canvas-objects/frame";
 
 const preventDefault = (e: any) => {
     if (e.scale !== 1) {
@@ -315,7 +316,18 @@ export const Canvas = ({
         }
 
         if (layerType === LayerType.Frame) {
-            setLiveLayerIds(prevIds => [layerId, ...prevIds.filter(id => id !== layerId)]);
+            setLiveLayerIds(prevIds => {
+                const existingFrames = prevIds.filter(id => liveLayers[id] && liveLayers[id].type === LayerType.Frame);
+                const nonFrames = prevIds.filter(id => liveLayers[id] && liveLayers[id].type !== LayerType.Frame);
+                
+                if (existingFrames.length > 0) {
+                    // If there are existing frames, place the new frame as the last frame
+                    return [...existingFrames, layerId, ...nonFrames];
+                } else {
+                    // If there are no existing frames, place the new frame as the first element
+                    return [layerId, ...nonFrames];
+                }
+            });
         }
 
         setCanvasState({ mode: CanvasMode.None });
@@ -2265,6 +2277,12 @@ export const Canvas = ({
                                         willChange: 'transform',
                                     }}
                                 >
+                                    {currentPreviewLayer && currentPreviewLayer.type === LayerType.Frame && (
+                                        <Frame
+                                            id="FramePreview"
+                                            layer={currentPreviewLayer}
+                                        />
+                                    )}
                                     {visibleLayers.map((layerId: string) => {
                                         const isFocused = selectedLayersRef.current.length === 1 && selectedLayersRef.current[0] === layerId && !justChanged;
                                         let layer = liveLayers[layerId];

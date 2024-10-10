@@ -1,4 +1,4 @@
-import { Layers, LayerType, PreviewLayer } from "@/types/canvas";
+import { LayerType, PreviewLayer } from "@/types/canvas";
 import { memo } from "react";
 import { Rectangle } from "../canvas-objects/rectangle";
 import { Ellipse } from "../canvas-objects/ellipse";
@@ -15,7 +15,6 @@ import { BigArrowUp } from "../canvas-objects/bigArrowUp";
 import { BigArrowDown } from "../canvas-objects/bigArrowDown";
 import { CommentBubble } from "../canvas-objects/commentBubble";
 import { Line } from "../canvas-objects/line";
-import { Frame } from "../canvas-objects/frame";
 
 interface PreviewLayerProps {
     layer: PreviewLayer;
@@ -129,13 +128,6 @@ export const CurrentPreviewLayer = memo(({
             return (
                 <Arrow
                     id="ArrowPreview"
-                    layer={layer}
-                />
-            )
-        case LayerType.Frame:
-            return (
-                <Frame
-                    id="FramePreview"
                     layer={layer}
                 />
             )

@@ -9,7 +9,7 @@ import { Socket } from "socket.io-client";
 interface RectangleProps {
   id: string;
   layer: RectangleLayer;
- boardId?: string;
+  boardId?: string;
   onPointerDown?: (e: any, id: string) => void;
   selectionColor?: string;
   expired?: boolean;
@@ -109,7 +109,7 @@ export const Rectangle = memo(({
       pointerEvents="auto"
       onPointerDown={(e) => handlePointerDown(e)}
       onTouchStart={(e) => handleTouchStart(e)}
-      onPointerEnter={(e) => {if (e.buttons === 0 && document.body.style.cursor === 'default') {setStrokeColor("#3390FF")}}}
+      onPointerEnter={(e) => { if (e.buttons === 0 && document.body.style.cursor === 'default') { setStrokeColor("#3390FF") } }}
       onPointerLeave={() => setStrokeColor(selectionColor || colorToCss(outlineFill || fill))}
     >
       <rect
@@ -128,32 +128,32 @@ export const Rectangle = memo(({
         height={divHeight} // Adjust height to 80% of the Rectangle's height
         onDragStart={(e) => e.preventDefault()}
       >
-        <div
-          className={`h-full w-full flex ${alignY === 'top' ? 'items-start' : alignY === 'bottom' ? 'items-end' : 'items-center'} ${alignX === 'left' ? 'justify-start' : alignX === 'right' ? 'justify-end' : 'justify-center'} p-1`}
-        >
-          <ContentEditable
-            innerRef={RectangleRef}
-            html={editableValue || ""}
-            onChange={handleContentChange}
-            onPaste={handlePaste}
-            onPointerDown={contentEditablePointerDown}
-            className={cn(
-              "outline-none w-full p-1 text-wrap",
-              defaultFont.className
-            )}
-            style={{
-              fontSize: textFontSize,
-              color: fill ? getContrastingTextColor(fill) : "#000",
-              WebkitUserSelect: 'auto',
-              textAlign: alignX,
-              cursor: focused && 'text',
-              fontFamily: fontFamily || DEFAULT_FONT,
-            }}
-            spellCheck={false}
-            onDragStart={(e) => e.preventDefault()}
-          />
-        </div>
-      </foreignObject>
+          <div
+            className={`h-full w-full flex ${alignY === 'top' ? 'items-start' : alignY === 'bottom' ? 'items-end' : 'items-center'} ${alignX === 'left' ? 'justify-start' : alignX === 'right' ? 'justify-end' : 'justify-center'} p-1`}
+          >
+            <ContentEditable
+              innerRef={RectangleRef}
+              html={editableValue || ""}
+              onChange={handleContentChange}
+              onPaste={handlePaste}
+              onPointerDown={contentEditablePointerDown}
+              className={cn(
+                "outline-none w-full p-1 text-wrap",
+                defaultFont.className
+              )}
+              style={{
+                fontSize: textFontSize,
+                color: fill ? getContrastingTextColor(fill) : "#000",
+                WebkitUserSelect: 'auto',
+                textAlign: alignX,
+                cursor: focused && 'text',
+                fontFamily: fontFamily || DEFAULT_FONT,
+              }}
+              spellCheck={false}
+              onDragStart={(e) => e.preventDefault()}
+            />
+          </div>
+        </foreignObject>
     </g>
   );
 });

@@ -3,6 +3,9 @@ import { toast } from 'sonner';
 import { domToSvg, domToPng, domToJpeg, domToCanvas } from 'modern-screenshot'
 import { Layer, Layers, LayerType } from "@/types/canvas";
 import "svg2pdf.js"
+import { LayerPreview } from "@/app/board/[boardId]/_components/layer-preview";
+import React from "react";
+import ReactDOMServer from "react-dom/server";
 
 export const previewFramesToPdf = async (title: string, isTransparent: boolean, liveLayers: Layers, liveLayerIds: string[], svgRef: React.RefObject<SVGSVGElement>) => {
   try {
@@ -91,11 +94,10 @@ export const previewFramesToPdf = async (title: string, isTransparent: boolean, 
 
 export const exportFramesToPdf = async (title: string, isTransparent: boolean, liveLayers: Layers, liveLayerIds: string[], svgRef: React.RefObject<SVGSVGElement>) => {
   try {
-    const canvas = document.querySelector("#canvas") as HTMLElement;
     const frames = Object.values(liveLayers).filter((layer: Layer) => layer.type === LayerType.Frame);
 
     if (frames.length === 0) {
-      toast.error('Add frames to export');
+      toast.error('Make sure to add frames to export to PDF!');
       return;
     }
 
@@ -106,57 +108,62 @@ export const exportFramesToPdf = async (title: string, isTransparent: boolean, l
       format: 'a4'
     });
 
-    const pdfWidth = doc.internal.pageSize.getWidth();
-    const pdfHeight = doc.internal.pageSize.getHeight();
-
-    const scale = 4; // Increase scale for better quality
-    const quality = 1;
-
-    // Capture the entire canvas as a Canvas element
-    const capturedCanvas = await domToCanvas(canvas, {
-      backgroundColor: isTransparent ? 'rgba(0,0,0,0)' : (document.documentElement.classList.contains("dark") ? '#2C2C2C' : 'white'),
-      scale: scale,
-      quality: quality,
-    });
 
     for (let i = 0; i < frames.length; i++) {
-      const frameContentElement = canvas.querySelector(`[data-frame-content="frame-${i+1}-content"]`) as SVGGElement;
-      if (frameContentElement) {
-        const rect = frameContentElement.getBoundingClientRect();
-        const canvasRect = canvas.getBoundingClientRect();
+      const frame = frames[i];
+      const parser = new DOMParser();
 
-        // Calculate the relative position of the frame content within the canvas
-        const relativeLeft = (rect.left - canvasRect.left) * scale;
-        const relativeTop = (rect.top - canvasRect.top) * scale;
+      // Generate HTML content for the frame
+      const htmlContent = generateFrameSvg(frame, liveLayers, liveLayerIds);
+      const docParser = parser.parseFromString(htmlContent, 'text/html');
+      const simulatedCanvas = docParser.body.firstChild as HTMLElement;
 
-        // Create a new canvas for the cropped frame
-        const croppedCanvas = document.createElement('canvas');
-        croppedCanvas.width = rect.width * scale;
-        croppedCanvas.height = rect.height * scale;
-        const ctx = croppedCanvas.getContext('2d');
+      // Create a temporary container for the canvas
+      const container = document.createElement('div');
+      container.appendChild(simulatedCanvas);
+      document.body.appendChild(container);
 
-        // Draw the cropped portion of the captured canvas onto the new canvas
-        ctx?.drawImage(
-          capturedCanvas,
-          relativeLeft, relativeTop, rect.width * scale, rect.height * scale,
-          0, 0, rect.width * scale, rect.height * scale
-        );
+      try {
+        // Use domToCanvas to render the canvas
+        const canvas = await domToCanvas(container, {
+          backgroundColor: isTransparent ? 'rgba(0,0,0,0)' : (document.documentElement.classList.contains("dark") ? '#2C2C2C' : 'white'),
+          scale: 2,
+          quality: 1,
+        });
 
-        // Add a new page for each frame (except the first one)
-        if (i > 0) {
-          doc.addPage();
+        // Convert canvas to data URL
+        const imgData = canvas.toDataURL('image/jpeg', 1);
+
+        if (document.documentElement.classList.contains("dark")) {
+          doc.setFillColor("#2c2c2c");
+          doc.rect(0, 0, doc.internal.pageSize.getWidth(), doc.internal.pageSize.getHeight(), 'F');
         }
 
-        // Calculate scaling to fit the frame within the PDF page while maintaining aspect ratio
-        const pdfScale = Math.min(pdfWidth / rect.width, pdfHeight / rect.height);
-        const scaledWidth = rect.width * pdfScale;
-        const scaledHeight = rect.height * pdfScale;
-        const xOffset = (pdfWidth - scaledWidth) / 2;
-        const yOffset = (pdfHeight - scaledHeight) / 2;
+        // Add the image to the PDF
+        let imgWidth = doc.internal.pageSize.getWidth();
+        let imgHeight = (canvas.height * imgWidth) / canvas.width;
+        let x = 0
+        let y = 0
 
-        // Add the cropped canvas to the PDF
-        const imgData = croppedCanvas.toDataURL('image/jpeg', 1);
-        doc.addImage(imgData, 'JPEG', xOffset, yOffset, scaledWidth, scaledHeight, undefined, 'FAST');
+        if (imgHeight > doc.internal.pageSize.getHeight()) {
+          imgHeight = doc.internal.pageSize.getHeight();
+          imgWidth = (canvas.width * imgHeight) / canvas.height;
+          x = (doc.internal.pageSize.getWidth() - imgWidth) / 2;
+          y = (doc.internal.pageSize.getHeight() - imgHeight) / 2;
+        }
+
+
+        doc.addImage(imgData, 'JPEG', x, y, imgWidth, imgHeight);
+
+        // Add a new page for the next frame, if it's not the last frame
+        if (i < frames.length - 1) {
+          doc.addPage();
+        }
+      } catch (error) {
+        console.error(`Error in domToCanvas for frame ${i}:`, error);
+      } finally {
+        // Clean up: remove the temporary container
+        document.body.removeChild(container);
       }
     }
 
@@ -168,6 +175,43 @@ export const exportFramesToPdf = async (title: string, isTransparent: boolean, l
     console.error('Export frames to PDF error:', error);
   }
 };
+
+function generateFrameSvg(frame: Layer, liveLayers: Layers, liveLayerIds: string[]): string {
+  const layersInFrame = liveLayerIds
+    .map(id => liveLayers[id])
+    .filter(layer => 
+      layer !== frame && 
+      layer.x >= frame.x && 
+      layer.x + layer.width <= frame.x + frame.width && 
+      layer.y >= frame.y && 
+      layer.y + layer.height <= frame.y + frame.height
+    );
+
+  const layersHtml = layersInFrame.map(layer => 
+    ReactDOMServer.renderToStaticMarkup(
+      React.createElement(LayerPreview, {
+        id: "",
+        layer: layer,
+        onLayerPointerDown: () => {},
+        setLiveLayers: () => {},
+        socket: null,
+        expired: false,
+        boardId: "",
+        frameNumber: 0,
+        setCamera: () => {},
+        setZoom: () => {},
+      })
+    )
+  ).join('');
+
+  return `
+      <svg class="h-full w-full" viewBox="0 0 ${frame.width} ${frame.height}">
+        <g style="transform: translate(${-frame.x}px, ${-frame.y}px);">
+          ${layersHtml}
+        </g>
+      </svg>
+  `;
+}
 
 export const exportToPdf = async (title: string, isTransparent: boolean) => {
   try {
