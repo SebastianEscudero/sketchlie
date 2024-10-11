@@ -11,6 +11,8 @@ interface FrameProps {
     onPointerDown?: (e: any, id: string) => void;
     frameNumber?: number;
     forcedRender?: boolean;
+    selectionColor?: string;
+
 };
 
 export const Frame = memo(({
@@ -21,12 +23,14 @@ export const Frame = memo(({
     onPointerDown,
     id,
     frameNumber,
+    selectionColor,
 }: FrameProps) => {
     const { x, y, width, height, value: initialValue } = layer;
     const fontSize = Math.min(width, height) * 0.05;
     const padding = fontSize * 0.5;
     const [isEditing, setIsEditing] = useState(false);
     const [value, setValue] = useState(initialValue || `Frame ${frameNumber || ""}`);
+    const [strokeColor, setStrokeColor] = useState(selectionColor || document.documentElement.classList.contains("dark") ? "#FFFFFF" : "#000000");
 
     useEffect(() => {
         setValue(initialValue || `Frame ${frameNumber || ""}`);
@@ -55,6 +59,8 @@ export const Frame = memo(({
             onDoubleClick={handleDoubleClick}
             pointerEvents="auto"
             data-id={`frame-${frameNumber}`}
+            onPointerEnter={(e) => { if (e.buttons === 0 && document.body.style.cursor === 'default') { setStrokeColor("#3390FF") } }}
+            onPointerLeave={() => setStrokeColor(selectionColor || document.documentElement.classList.contains("dark") ? "#FFFFFF" : "#000000")}
         >
             {isEditing ? (
                 <foreignObject x={padding} y={-(padding + fontSize)} width={width - 2 * padding} height={fontSize + 10}>
@@ -79,7 +85,7 @@ export const Frame = memo(({
                     x={padding}
                     y={-(padding)}
                     fontSize={fontSize}
-                    fill={document.documentElement.classList.contains("dark") ? "#FFFFFF" : "#000000"}
+                    fill={strokeColor}
                     className="font-bold"
                 >
                     {value}
@@ -89,7 +95,7 @@ export const Frame = memo(({
                 width={width}
                 height={height}
                 fill={document.documentElement.classList.contains("dark") ? "#2c2c2c" : "#FFFFFF"}
-                stroke={document.documentElement.classList.contains("dark") ? "#FFFFFF" : "#000000"}
+                stroke={strokeColor}
                 strokeWidth="1"
                 strokeLinecap="round"
                 strokeLinejoin="round"

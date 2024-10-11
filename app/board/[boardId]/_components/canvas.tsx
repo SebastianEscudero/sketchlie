@@ -922,9 +922,9 @@ export const Canvas = ({
             // Zooming
             let newZoom = zoom;
             if (e.deltaY < 0) {
-                newZoom = Math.min(zoom * 1.1, 10);
+                newZoom = Math.min(zoom * 1.3, 10);
             } else {
-                newZoom = Math.max(zoom / 1.1, 0.3);
+                newZoom = Math.max(zoom / 1.3, 0.3);
             }
 
             const zoomFactor = newZoom / zoom;
@@ -2111,6 +2111,8 @@ export const Canvas = ({
         updateVisibleLayers();
     }, [liveLayerIds, liveLayers, camera, zoom]);
 
+    const [presenting, setPresenting] = useState(false);
+
     return (
         <>
             <Background background={background} zoom={zoom} camera={camera} isDraggingOverCanvas={isDraggingOverCanvas} />
@@ -2157,6 +2159,7 @@ export const Canvas = ({
                             socket={socket}
                             expired={expired}
                             board={board}
+                            setPresenting={setPresenting}
                         />
                         <Toolbar
                             pathColor={pathColor}
@@ -2310,6 +2313,8 @@ export const Canvas = ({
                                                 frameNumber={frameNumber}
                                                 setCamera={setCamera}
                                                 setZoom={setZoom}
+                                                cameraRef={cameraRef}
+                                                zoomRef={zoomRef}
                                             />
                                         );
                                     })}

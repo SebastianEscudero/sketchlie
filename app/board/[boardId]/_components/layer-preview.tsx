@@ -38,6 +38,7 @@ interface LayerPreviewProps {
   zoomRef?: React.RefObject<any>;
   forcedRender?: boolean;
   frameNumber?: number;
+  cameraRef?: React.RefObject<any>;
 };
 
 export const LayerPreview = memo(({
@@ -55,6 +56,8 @@ export const LayerPreview = memo(({
   frameNumber,
   setCamera,
   setZoom,
+  cameraRef,
+  zoomRef,
 }: LayerPreviewProps) => {
 
   if (!layer) {
@@ -280,6 +283,8 @@ export const LayerPreview = memo(({
           setCamera={setCamera}
           setZoom={setZoom}
           focused={focused}
+          cameraRef={cameraRef}
+          zoomRef={zoomRef}
         />
       );
     case LayerType.Arrow:

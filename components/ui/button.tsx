@@ -45,6 +45,7 @@ const buttonVariants = cva(
         navbar: "text-black hover:bg-slate-100 rounded-lg",
         sketchify: "hover:bg-blue-500/20 hover:text-blue-800 text-purple-700 dark:text-purple-600 p-2 fill-purple-700 dark:fill-purple-600 hover:text-purple-600",
         infoIcons: "hover:text-accent-foreground hover:bg-accent-foreground/10",
+        presentation: "hover:bg-blue-500/20 hover:text-blue-800 text-black dark:text-zinc-200 border border-black dark:border-white",
       },
       size: {
         default: "h-10 px-4 py-2",
