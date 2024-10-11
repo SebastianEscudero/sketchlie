@@ -40,13 +40,12 @@ export const InsertImage = ({
   }, [focused, selectionColor, id, onPointerDown]);
 
   const onDoubleClick = useCallback(() => {
-    const padding = 50*zoomRef?.current; // Padding around the image in pixels
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
 
     // Calculate the target zoom level to fit the image with padding
-    const zoomX = (viewportWidth - 2 * padding) / width;
-    const zoomY = (viewportHeight - 2 * padding) / height;
+    const zoomX = (viewportWidth) / width * 0.9;
+    const zoomY = (viewportHeight) / height * 0.9;
     let targetZoom = Math.min(zoomX, zoomY);
 
     // Adjust zoom for small images (zoom in if necessary)

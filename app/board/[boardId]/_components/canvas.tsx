@@ -2150,7 +2150,10 @@ export const Canvas = ({
                         <MoveBackToContent
                             setCamera={setCamera}
                             setZoom={setZoom}
-                            showButton={visibleLayers.length === 0}
+                            showButton={visibleLayers.length === 0 && liveLayerIds.length > 0}
+                            liveLayers={liveLayers}
+                            cameraRef={cameraRef}
+                            zoomRef={zoomRef}
                         />
                         <Participants
                             org={org}
