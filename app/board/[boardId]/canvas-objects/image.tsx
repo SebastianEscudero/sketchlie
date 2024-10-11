@@ -144,7 +144,6 @@ export const InsertImage = ({
           </g>
         ) : (
           <image
-            crossOrigin="anonymous"
             id={id}
             href={src}
             x={x}
