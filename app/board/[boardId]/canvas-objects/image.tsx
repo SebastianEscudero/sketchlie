@@ -1,5 +1,6 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { ImageLayer } from "@/types/canvas";
+import { LoaderCircle } from 'lucide-react';
 
 interface ImageProps {
   isUploading: boolean;
@@ -29,6 +30,14 @@ export const InsertImage = ({
   const { x, y, width, height, src } = layer;
 
   const [strokeColor, setStrokeColor] = useState(selectionColor || "none");
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const img = new Image();
+    img.onload = () => setIsLoading(false);
+    img.onerror = () => setIsLoading(false);
+    img.src = src;
+  }, [src]);
 
   const handlePointerDown = useCallback((e: React.PointerEvent) => {
     setStrokeColor(selectionColor || "none");
@@ -92,7 +101,13 @@ export const InsertImage = ({
 
   if (!isUploading) {
     return (
-      <>
+      <g
+        onPointerDown={handlePointerDown}
+        onDoubleClick={onDoubleClick}
+        pointerEvents="auto"
+        onPointerEnter={(e) => {if (e.buttons === 0 && document.body.style.cursor === 'default') {setStrokeColor("#3390FF")}}}
+        onPointerLeave={() => setStrokeColor(selectionColor || "none")}
+      >
         <rect
           x={x}
           y={y}
@@ -100,26 +115,45 @@ export const InsertImage = ({
           height={height}
           stroke={strokeColor}
           strokeWidth="2"
-          fill="none"
+          fill="white"
           strokeLinecap='round'
           strokeLinejoin='round'
           pointerEvents="auto"
         />
-        <image
-          crossOrigin="anonymous"
-          id={id}
-          href={src}
-          x={x}
-          y={y}
-          width={width}
-          height={height}
-          onPointerDown={handlePointerDown}
-          onDoubleClick={onDoubleClick}
-          pointerEvents="auto"
-          onPointerEnter={(e) => {if (e.buttons === 0 && document.body.style.cursor === 'default') {setStrokeColor("#3390FF")}}}
-          onPointerLeave={() => setStrokeColor(selectionColor || "none")}
-        />
-      </>
+        {isLoading ? (
+          <g>
+            <rect
+              x={x}
+              y={y}
+              width={width}
+              height={height}
+              stroke={strokeColor}
+              strokeWidth="2"
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              fill="#f0f0f0"
+            />
+            <foreignObject
+              x={x + width / 2 - width / 20}
+              y={y + height / 2 - height / 20}
+              width={width / 10}
+              height={height / 10}
+            >
+              <LoaderCircle className="animate-spin text-gray-500 w-full h-full" />
+            </foreignObject>
+          </g>
+        ) : (
+          <image
+            crossOrigin="anonymous"
+            id={id}
+            href={src}
+            x={x}
+            y={y}
+            width={width}
+            height={height}
+          />
+        )}
+      </g>
     );
   } else {
     return null;
