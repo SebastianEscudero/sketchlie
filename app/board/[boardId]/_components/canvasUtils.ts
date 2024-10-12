@@ -1,5 +1,5 @@
 import { getMaxImageSize } from "@/lib/planLimits";
-import { LayerType, Point, User } from "@/types/canvas";
+import { LayerType, Point } from "@/types/canvas";
 import { toast } from "sonner";
 
 let pdfjs: any;
@@ -166,7 +166,7 @@ async function processUploadedFiles(
   const baseHeight = processedItems[0].item.info.dimensions.height / zoom;
 
   // Calculate scaling factor to fit items in a square grid
-  const maxGridWidth = 1000 / zoom; // Adjust this value to change the overall grid size
+  const maxGridWidth = window.innerWidth / zoom / 2; // Adjust this value to change the overall grid size
   const scaleFactor = Math.min(
     maxGridWidth / (baseWidth * gridSize + padding * (gridSize - 1)),
     maxGridWidth / (baseHeight * gridSize + padding * (gridSize - 1))

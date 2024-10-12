@@ -75,6 +75,7 @@ import { MediaPreview } from "./MediaPreview";
 import { MoveBackToContent } from "./move-back-to-content";
 import { Frame } from "../canvas-objects/frame";
 import { uploadFilesAndInsertThemIntoCanvas } from "./canvasUtils";
+import { DragIndicatorOverlay } from "./drag-indicator-overlay";
 
 const preventDefault = (e: any) => {
     if (e.scale !== 1) {
@@ -319,7 +320,7 @@ export const Canvas = ({
             setLiveLayerIds(prevIds => {
                 const existingFrames = prevIds.filter(id => liveLayers[id] && liveLayers[id].type === LayerType.Frame);
                 const nonFrames = prevIds.filter(id => liveLayers[id] && liveLayers[id].type !== LayerType.Frame);
-                
+
                 if (existingFrames.length > 0) {
                     // If there are existing frames, place the new frame as the last frame
                     return [...existingFrames, layerId, ...nonFrames];
@@ -352,18 +353,18 @@ export const Canvas = ({
             setCanvasState({ mode: CanvasMode.None });
             return;
         }
-    
+
         const newLayers: Layer[] = [];
         const newLayerIds: string[] = [];
-    
+
         mediaItems.forEach(({ layerType, position, info }) => {
             const layerId = nanoid();
             newLayerIds.push(layerId);
-    
+
             if (!info || !info.url) {
                 return;
             }
-    
+
             const layer = {
                 type: layerType,
                 x: position.x,
@@ -372,19 +373,19 @@ export const Canvas = ({
                 width: info.dimensions.width,
                 src: info.url,
             };
-    
+
             newLayers.push(layer);
-    
+
         });
-    
+
         if (newLayers.length > 0) {
             const command = new InsertLayerCommand(newLayerIds, newLayers, setLiveLayers, setLiveLayerIds, boardId, socket, org, proModal);
             performAction(command);
             selectedLayersRef.current = newLayerIds;
         }
-    
+
         setCanvasState({ mode: CanvasMode.None });
-    
+
     }, [socket, org, proModal, setLiveLayers, setLiveLayerIds, boardId, performAction, expired]);
 
     const translateSelectedLayers = useCallback((point: Point) => {
@@ -1030,11 +1031,11 @@ export const Canvas = ({
 
     const [isNearBorder, setIsNearBorder] = useState(false);
     const [borderMove, setBorderMove] = useState({ x: 0, y: 0 });
-    
+
     // Add this new useEffect for continuous movement
     useEffect(() => {
         let animationFrameId: number;
-    
+
         const moveCameraLoop = () => {
             if (isNearBorder) {
                 setCamera(prevCamera => ({
@@ -1044,11 +1045,11 @@ export const Canvas = ({
                 animationFrameId = requestAnimationFrame(moveCameraLoop);
             }
         };
-    
+
         if (isNearBorder) {
             animationFrameId = requestAnimationFrame(moveCameraLoop);
         }
-    
+
         return () => {
             if (animationFrameId) {
                 cancelAnimationFrame(animationFrameId);
@@ -1063,7 +1064,7 @@ export const Canvas = ({
             setPencilDraft([]);
             return;
         }
-        
+
 
         setIsMoving(false);
         if (rightClickPanning || e.buttons === 2 || e.buttons === 4) {
@@ -1094,19 +1095,19 @@ export const Canvas = ({
         if (canvasState.mode !== CanvasMode.None) {
             const borderThreshold = 10; // pixels from the edge to start moving
             const moveSpeed = 5; // pixels to move per frame
-    
+
             const viewportWidth = window.innerWidth;
             const viewportHeight = window.innerHeight;
-    
+
             let newBorderMove = { x: 0, y: 0 };
-    
+
             if (e.clientX < borderThreshold) newBorderMove.x = moveSpeed;
             if (e.clientX > viewportWidth - borderThreshold) newBorderMove.x = -moveSpeed;
             if (e.clientY < borderThreshold) newBorderMove.y = moveSpeed;
             if (e.clientY > viewportHeight - borderThreshold) newBorderMove.y = -moveSpeed;
-    
+
             const isNearBorderNow = newBorderMove.x !== 0 || newBorderMove.y !== 0;
-    
+
             setIsNearBorder(isNearBorderNow);
             setBorderMove(newBorderMove);
         } else {
@@ -1590,7 +1591,18 @@ export const Canvas = ({
             return;
         }
 
-        setIsDraggingOverCanvas(false);
+        // Check if we're actually leaving the canvas
+        const rect = e.currentTarget.getBoundingClientRect();
+        const { clientX, clientY } = e;
+
+        if (
+            clientX <= rect.left ||
+            clientX >= rect.right ||
+            clientY <= rect.top ||
+            clientY >= rect.bottom
+        ) {
+            setIsDraggingOverCanvas(false);
+        }
 
     }, [setIsDraggingOverCanvas, expired]);
 
@@ -1856,7 +1868,7 @@ export const Canvas = ({
                                     img.src = url;
                                     const info = await imgLoad;
 
-                                    insertMedia([{layerType: LayerType.Image, position: {x: mousePosition.x, y: mousePosition.y}, info, zoom}]);
+                                    insertMedia([{ layerType: LayerType.Image, position: { x: mousePosition.x, y: mousePosition.y }, info, zoom }]);
                                     toast.dismiss(toastId);
                                     toast.success("Image uploaded successfully");
                                 } catch (err) {
@@ -2113,7 +2125,7 @@ export const Canvas = ({
 
     return (
         <>
-            <Background background={background} zoom={zoom} camera={camera} isDraggingOverCanvas={isDraggingOverCanvas} />
+            <Background background={background} zoom={zoom} camera={camera} />
             <main
                 className="fixed h-full w-full touch-none overscroll-none"
                 style={{
@@ -2399,6 +2411,7 @@ export const Canvas = ({
                     </div>
                 </div>
             </main>
+            <DragIndicatorOverlay isDraggingOverCanvas={isDraggingOverCanvas} />
         </>
     );
 };
