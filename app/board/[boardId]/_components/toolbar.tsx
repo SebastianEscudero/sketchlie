@@ -208,7 +208,11 @@ export const Toolbar = ({
             setIsShapesMenuOpen(!isShapesMenuOpen);
           }}
           isActive={
-            canvasState.mode === CanvasMode.Inserting && canvasState.layerType !== LayerType.Text && canvasState.layerType !== LayerType.Arrow && canvasState.layerType !== LayerType.Note
+            canvasState.mode === CanvasMode.Inserting &&
+            canvasState.layerType !== LayerType.Text &&
+            canvasState.layerType !== LayerType.Arrow &&
+            canvasState.layerType !== LayerType.Note &&
+            canvasState.layerType !== LayerType.Frame
           }
         />
         <ToolButton

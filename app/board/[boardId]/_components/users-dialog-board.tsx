@@ -1,8 +1,7 @@
 import React from 'react';
-import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { User } from "@/types/canvas";
-import { ChevronsDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { connectionIdToColor } from '@/lib/utils';
 import { UserAvatar } from './user-avatar';
@@ -16,6 +15,7 @@ interface UsersDialogBoardProps {
     otherUsers: User[] | null;
     orgId: string;
     socket: any
+    children: React.ReactNode;
 }
 
 const roles = ["Guest", "Member", "Admin"];
@@ -24,7 +24,8 @@ export const UsersDialogBoard = ({
     Me,
     otherUsers,
     orgId,
-    socket
+    socket,
+    children
 }: UsersDialogBoardProps) => {
     const allUsers = [Me, ...(otherUsers || [])];
     const { update } = useSession();
@@ -47,7 +48,7 @@ export const UsersDialogBoard = ({
     return (
         <Dialog>
             <DialogTrigger>
-                <ChevronsDown className="h-5 w-5" />
+                {children}
             </DialogTrigger>
             <DialogContent className="min-h-[500px] max-h-[90%] w-full max-w-[90%] lg:max-w-[50%] xl:max-w-[40%]">
                 <DialogTitle>Participants</DialogTitle>
