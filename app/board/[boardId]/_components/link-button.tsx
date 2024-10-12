@@ -14,7 +14,6 @@ import { convertToEmbedURL } from "@/lib/embedLinksUtils";
 interface MediaButtonProps {
     icon: LucideIcon;
     label: string;
-    org: any;
     camera: any;
     svgRef: any;
     zoom: number;
@@ -25,7 +24,6 @@ interface MediaButtonProps {
 
 export const LinkButton = ({
     icon: Icon,
-    org,
     label,
     camera,
     svgRef,

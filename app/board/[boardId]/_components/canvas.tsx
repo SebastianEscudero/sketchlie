@@ -57,7 +57,6 @@ import { SelectionBox } from "./selection-box";
 import { SelectionTools } from "./selection-tools";
 import { CursorsPresence } from "./cursors-presence";
 import { useProModal } from "@/hooks/use-pro-modal";
-import { getMaxImageSize } from "@/lib/planLimits";
 import { CurrentPreviewLayer } from "./current-preview-layer";
 import { useRoom } from "@/components/room";
 import { toast } from "sonner";
@@ -2241,7 +2240,15 @@ export const Canvas = ({
                                 setIsArrowPostInsertMenuOpen={setIsArrowPostInsertMenuOpen}
                             />
                         )}
-                        <ZoomToolbar zoom={zoom} setZoom={setZoom} setCamera={setCamera} camera={camera} />
+                        <ZoomToolbar
+                            zoom={zoom}
+                            setZoom={setZoom}
+                            setCamera={setCamera}
+                            camera={camera}
+                            liveLayers={liveLayers}
+                            liveLayerIds={liveLayerIds}
+                            setLiveLayerIds={setLiveLayerIds}
+                        />
                     </div>
                     <div
                         id="canvas"
@@ -2306,7 +2313,7 @@ export const Canvas = ({
                                         // frame logic 
                                         let frameNumber = 1;
                                         if (layer && layer.type === LayerType.Frame) {
-                                            frameNumber = liveLayerIds.filter(id => liveLayers[id].type === LayerType.Frame).indexOf(layerId) + 1;
+                                            frameNumber = liveLayerIds.filter(id => liveLayers[id] && liveLayers[id].type === LayerType.Frame).indexOf(layerId) + 1;
                                         }
 
                                         return (

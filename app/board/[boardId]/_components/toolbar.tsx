@@ -288,7 +288,6 @@ export const Toolbar = ({
         />
         <LinkButton 
           label="Link"
-          org={org}
           icon={Link}
           camera={camera}
           svgRef={svgRef}

@@ -7,91 +7,6 @@ import { LayerPreview } from "@/app/board/[boardId]/_components/layer-preview";
 import React from "react";
 import ReactDOMServer from "react-dom/server";
 
-export const previewFramesToPdf = async (title: string, isTransparent: boolean, liveLayers: Layers, liveLayerIds: string[], svgRef: React.RefObject<SVGSVGElement>) => {
-  try {
-    const canvas = document.querySelector("#canvas") as HTMLElement;
-    const frames = Object.values(liveLayers).filter((layer: Layer) => layer.type === LayerType.Frame);
-
-    if (frames.length === 0) {
-      toast.error('Add frames to export');
-      return [];
-    }
-
-    // Create a new jsPDF instance
-    const doc = new jsPDF({
-      orientation: "landscape",
-      unit: 'px',
-      format: 'a4'
-    });
-
-    const pdfWidth = doc.internal.pageSize.getWidth();
-    const pdfHeight = doc.internal.pageSize.getHeight();
-
-    const scale = 2; // Reduce scale for preview
-    const quality = 0.8; // Reduce quality for preview
-
-    // Capture the entire canvas as a Canvas element
-    const capturedCanvas = await domToCanvas(canvas, {
-      backgroundColor: isTransparent ? 'rgba(0,0,0,0)' : (document.documentElement.classList.contains("dark") ? '#2C2C2C' : 'white'),
-      scale: scale,
-      quality: quality,
-    });
-
-    const previewUrls: string[] = [];
-
-    for (let i = 0; i < frames.length; i++) {
-      const frameContentElement = canvas.querySelector(`[data-frame-content="frame-${i+1}-content"]`) as SVGGElement;
-      if (frameContentElement) {
-        const rect = frameContentElement.getBoundingClientRect();
-        const canvasRect = canvas.getBoundingClientRect();
-
-        // Calculate the relative position of the frame content within the canvas
-        const relativeLeft = (rect.left - canvasRect.left) * scale;
-        const relativeTop = (rect.top - canvasRect.top) * scale;
-
-        // Create a new canvas for the cropped frame
-        const croppedCanvas = document.createElement('canvas');
-        croppedCanvas.width = rect.width * scale;
-        croppedCanvas.height = rect.height * scale;
-        const ctx = croppedCanvas.getContext('2d');
-
-        // Draw the cropped portion of the captured canvas onto the new canvas
-        ctx?.drawImage(
-          capturedCanvas,
-          relativeLeft, relativeTop, rect.width * scale, rect.height * scale,
-          0, 0, rect.width * scale, rect.height * scale
-        );
-
-        // Add a new page for each frame (except the first one)
-        if (i > 0) {
-          doc.addPage();
-        }
-
-        // Calculate scaling to fit the frame within the PDF page while maintaining aspect ratio
-        const pdfScale = Math.min(pdfWidth / rect.width, pdfHeight / rect.height);
-        const scaledWidth = rect.width * pdfScale;
-        const scaledHeight = rect.height * pdfScale;
-        const xOffset = (pdfWidth - scaledWidth) / 2;
-        const yOffset = (pdfHeight - scaledHeight) / 2;
-
-        // Add the cropped canvas to the PDF
-        const imgData = croppedCanvas.toDataURL('image/jpeg', quality);
-        doc.addImage(imgData, 'JPEG', xOffset, yOffset, scaledWidth, scaledHeight, undefined, 'FAST');
-
-        // Use the cropped canvas as the preview
-        previewUrls.push(imgData);
-      }
-    }
-
-    return previewUrls;
-
-  } catch (error) {
-    toast.error('An error occurred while generating the preview, try again.');
-    console.error('Preview frames to PDF error:', error);
-    return [];
-  }
-};
-
 export const exportFramesToPdf = async (title: string, isTransparent: boolean, liveLayers: Layers, liveLayerIds: string[], svgRef: React.RefObject<SVGSVGElement>) => {
   try {
     const frames = Object.values(liveLayers).filter((layer: Layer) => layer.type === LayerType.Frame);
@@ -259,23 +174,6 @@ export const exportToPdf = async (title: string, isTransparent: boolean) => {
   } catch (error) {
     toast.error('An error occurred while exporting the board, try again.');
     console.error('Export to PDF error:', error);
-  }
-};
-
-export const previewToSVG = async (title: string, isTransparent: boolean) => {
-  try {
-    const screenShot = document.querySelector("#canvas") as HTMLElement;
-    const result = await domToSvg(screenShot, {
-      quality: 1,
-      scale: 3,
-      backgroundColor: isTransparent ? 'transparent' : (document.documentElement.classList.contains("dark") ? '#2C2C2C' : 'white'),
-    });
-
-    return result;
-  } catch (error) {
-    toast.error('An error occurred while generating the preview, try again.');
-    console.error('Preview to SVG error:', error);
-    return null;
   }
 };
 
