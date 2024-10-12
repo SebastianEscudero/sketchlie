@@ -1574,8 +1574,8 @@ export const Canvas = ({
         return layerIdsToColorSelection;
     }, [otherUsers]);
 
-    const onDragOver = useCallback((event: React.DragEvent) => {
-        event.preventDefault();
+    const onDragOver = useCallback((e: React.DragEvent) => {
+        e.preventDefault();
         if (expired) {
             return;
         }
@@ -1584,8 +1584,8 @@ export const Canvas = ({
 
     }, [setIsDraggingOverCanvas, expired]);
 
-    const onDragLeave = useCallback((event: React.DragEvent) => {
-        event.preventDefault();
+    const onDragLeave = useCallback((e: React.DragEvent) => {
+        e.preventDefault();
         if (expired) {
             return;
         }
@@ -1594,18 +1594,18 @@ export const Canvas = ({
 
     }, [setIsDraggingOverCanvas, expired]);
 
-    const onDrop = useCallback((event: React.DragEvent) => {
-        event.preventDefault();
+    const onDrop = useCallback((e: React.DragEvent) => {
+        e.preventDefault();
         if (expired) {
             return;
         }
 
         setIsDraggingOverCanvas(false);
-        let x = (Math.round(event.clientX) - camera.x) / zoom;
-        let y = (Math.round(event.clientY) - camera.y) / zoom;
-        const files = Array.from(event.dataTransfer.files);
+        let x = (Math.round(e.clientX) - camera.x) / zoom;
+        let y = (Math.round(e.clientY) - camera.y) / zoom;
+        const files = Array.from(e.dataTransfer.files);
         uploadFilesAndInsertThemIntoCanvas(files, org, User, zoom, x, y, insertMedia);
-    }, [setIsDraggingOverCanvas, camera, zoom, org, User.userId, insertMedia, expired]);
+    }, [setIsDraggingOverCanvas, camera, zoom, org, User, insertMedia, expired]);
 
     const onTouchDown = useCallback((e: React.TouchEvent) => {
         setIsMoving(false);

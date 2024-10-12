@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Loader2, LucideIcon, Search, Upload, X } from "lucide-react";
 import { toast } from "sonner"
 import { useRef, Dispatch, SetStateAction, useEffect, useCallback } from "react";
-import { getMaxImageSize } from "@/lib/planLimits";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { LayerType, Point } from "@/types/canvas";
 import { getCenterOfScreen } from "@/lib/utils";
@@ -16,6 +15,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useDebounce } from "usehooks-ts";
 import { themeCheck } from "@/lib/theme-utils";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { uploadFilesAndInsertThemIntoCanvas } from "./canvasUtils";
+import { cn } from "@/lib/utils";
 
 interface MediaButtonProps {
     isUploading: boolean;
@@ -46,12 +47,11 @@ export const MediaButton = ({
 
     const user = useCurrentUser();
     const inputFileRef = useRef<HTMLInputElement>(null);
-    const maxFileSize = org && getMaxImageSize(org) || 0;
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
     const debouncedSearchTerm = useDebounce(searchTerm, 500);
     const [isSearching, setIsSearching] = useState(false);
-    const [isDragging, setIsDragging] = useState(false);
+    const [isDraggingFiles, setIsDraggingFiles] = useState(false);
     const dialogRef = useRef<HTMLDivElement>(null);
     const [theme, setTheme] = useState("dark");
     const [activeTab, setActiveTab] = useState<"gifs" | "images" | "videos">("gifs");
@@ -119,97 +119,55 @@ export const MediaButton = ({
 
     const handleUpload = useCallback(async (e: React.ChangeEvent<HTMLInputElement> | { target: { files: File[] } }) => {
         setIsUploading(true);
-        if (!e.target.files?.[0]) {
+        if (!e.target.files || e.target.files.length === 0) {
             setIsUploading(false);
             toast.error("No file selected, please try again.");
             return;
         }
 
-        const file = e.target.files[0];
-        const fileSizeInMB = file.size / 1024 / 1024;
-        if (fileSizeInMB > maxFileSize) {
-            setIsUploading(false);
-            toast.error(`File size has to be lower than ${maxFileSize}MB. Please try again.`);
-            return;
-        }
+        const files = Array.from(e.target.files);
+        const centerPoint = getCenterOfScreen(camera, zoom, svgRef);
+        
+        setIsDialogOpen(false); // Close the dialog immediately
 
-        const toastId = toast.loading("Media is being processed, please wait...");
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('userId', user?.id || '');
+        await uploadFilesAndInsertThemIntoCanvas(
+            files,
+            org,
+            user!,
+            zoom,
+            centerPoint.x,
+            centerPoint.y,
+            insertMedia
+        );
 
-        fetch('/api/aws-s3-images', {
-            method: 'POST',
-            body: formData
-        })
-            .then(async (res: Response) => {
-                if (!res.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const url = await res.text();
+        setIsUploading(false);
+    }, [setIsUploading, insertMedia, camera, svgRef, zoom, org, user]);
 
-                if (file.type.startsWith('image/')) {
-                    const img = new Image();
-                    const imgLoad = new Promise<{ url: string, dimensions: { width: number, height: number }, type: string }>((resolve) => {
-                        img.onload = () => {
-                            const dimensions = { width: img.width, height: img.height };
-                            resolve({ url, dimensions, type: 'image' });
-                        };
-                    });
-                    img.src = url;
-                    const info = await imgLoad;
-                    const centerPoint = getCenterOfScreen(camera, zoom, svgRef);
-                    insertMedia([{layerType: LayerType.Image, position: centerPoint, info, zoom}]);
-                } else if (file.type.startsWith('video/')) {
-                    const video = document.createElement('video');
-                    const videoLoad = new Promise<{ url: string, dimensions: { width: number, height: number }, type: string }>((resolve) => {
-                        video.onloadedmetadata = () => {
-                            const dimensions = { width: video.videoWidth, height: video.videoHeight };
-                            resolve({ url, dimensions, type: 'video' });
-                        };
-                    });
-                    video.src = url;
-                    const info = await videoLoad;
-                    const centerPoint = getCenterOfScreen(camera, zoom, svgRef);
-                    insertMedia([{layerType: LayerType.Video, position: centerPoint, info, zoom}]);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            })
-            .finally(() => {
-                toast.dismiss(toastId);
-                setIsUploading(false);
-                setIsDialogOpen(false);
-                toast.success("Media uploaded successfully")
-            });
-    }, [setIsUploading, insertMedia, camera, svgRef, zoom, maxFileSize, user]);
-
-    const handleDragEnter = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+    const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();
-        setIsDragging(true);
+        if (e.dataTransfer.types.includes('Files')) {
+            setIsDraggingFiles(true);
+        }
     }, []);
 
     const handleDragLeave = useCallback((e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();
-        setIsDragging(false);
-    }, []);
-
-    const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        e.stopPropagation();
+        if (e.currentTarget === e.target) {
+            setIsDraggingFiles(false);
+        }
     }, []);
 
     const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();
-        setIsDragging(false);
+        setIsDraggingFiles(false);
 
         const files = Array.from(e.dataTransfer.files);
         if (files.length > 0) {
             handleUpload({ target: { files } } as any);
+            setIsDialogOpen(false);
         }
     }, [handleUpload]);
 
@@ -280,12 +238,19 @@ export const MediaButton = ({
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogContent
                     ref={dialogRef}
-                    className={`max-w-[90%] lg:max-w-[50%] xl:max-w-[30%] 2xl:max-w-[40%] w-full max-h-[90%] pt-10 ${isDragging ? 'border-2 border-dashed border-blue-500' : ''}`}
-                    onDragEnter={handleDragEnter}
-                    onDragLeave={handleDragLeave}
+                    className={cn(
+                        "max-w-[90%] lg:max-w-[50%] xl:max-w-[30%] 2xl:max-w-[40%] w-full max-h-[90%] pt-10 relative",
+                        isDraggingFiles && "border-2 border-dashed border-blue-500"
+                    )}
                     onDragOver={handleDragOver}
+                    onDragLeave={handleDragLeave}
                     onDrop={handleDrop}
                 >
+                    {isDraggingFiles && (
+                        <div className="absolute inset-0 bg-blue-100 bg-opacity-50 flex items-center justify-center z-10 pointer-events-none">
+                            <p className="text-blue-500 text-xl font-semibold">Drop files here</p>
+                        </div>
+                    )}
                     <DialogHeader>
                         <DialogTitle className="text-2xl font-bold">Images, Videos, and GIFs</DialogTitle>
                         <DialogDescription>
@@ -361,7 +326,7 @@ export const MediaButton = ({
                                         </p>
                                         <Button onClick={() => inputFileRef.current?.click()} variant="sketchlieBlue">
                                             <Upload className="w-4 h-4 mr-2" />
-                                            Import Image
+                                            Upload file
                                         </Button>
                                     </div>
                                 )}
@@ -387,7 +352,7 @@ export const MediaButton = ({
                 type="file"
                 onChange={handleUpload}
                 ref={inputFileRef}
-                accept="image/*,video/*"
+                accept="image/*,video/*,application/pdf"
                 style={{ display: 'none' }}
             />
         </>

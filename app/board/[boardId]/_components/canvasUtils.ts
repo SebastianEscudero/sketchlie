@@ -17,7 +17,7 @@ async function initPdfjs() {
 export const uploadFilesAndInsertThemIntoCanvas = async (
   files: File[],
   org: any,
-  user: User,
+  user: any,
   zoom: number,
   centerX: number,
   centerY: number,
@@ -77,7 +77,7 @@ async function processPDF(file: File, formData: FormData, pdfPages: PDFPage[]): 
 
 async function convertPDFPageToImage(pdf: any, pageNum: number, fileName: string): Promise<File> {
   const page = await pdf.getPage(pageNum);
-  const scale = 2; // Increase scale for better quality
+  const scale = 1.5; // Increase scale for better quality
   const viewport = page.getViewport({ scale });
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d')!;
