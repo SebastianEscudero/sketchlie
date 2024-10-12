@@ -100,7 +100,7 @@ export const InsertImage = ({
           width={width}
           height={height}
           stroke={strokeColor}
-          strokeWidth="2"
+          strokeWidth="1"
           fill="white"
           strokeLinecap='round'
           strokeLinejoin='round'
@@ -108,6 +108,7 @@ export const InsertImage = ({
         />
 
         <image
+          crossOrigin="anonymous"
           id={id}
           href={src}
           x={x}

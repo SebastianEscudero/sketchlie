@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, useRef } from 'react';
-import { Search, X, Loader2, Upload, LucideIcon } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Search, X, Loader2, LucideIcon } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -13,7 +13,7 @@ import { getCenterOfScreen } from "@/lib/utils";
 import { Hint } from "@/components/hint";
 
 interface IconButtonProps {
-    insertMedia: (layerType: LayerType.Image, position: Point, info: any, zoom: number, isIcon?: boolean) => void;
+    insertMedia: (mediaItems: {layerType: LayerType.Image | LayerType.Video | LayerType.Link, position: Point, info: any, zoom: number}[]) => void;
     icon: LucideIcon;
     label: string;
     org: any;
@@ -84,7 +84,7 @@ export const IconButton = ({
             type: LayerType.Image
           };
 
-          insertMedia(LayerType.Image, centerPoint, info, zoom, true);
+          insertMedia([{layerType: LayerType.Image, position: centerPoint, info, zoom}]);
           toast.success('Icon added successfully');
           setIsDialogOpen(false);
         } catch (error) {

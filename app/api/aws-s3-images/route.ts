@@ -1,4 +1,4 @@
-import { S3Client, PutObjectCommand, HeadObjectCommand } from "@aws-sdk/client-s3";
+import { S3Client, HeadObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
 import { NextResponse } from "next/server";
 
 export const POST = async (req: any) => {
@@ -8,7 +8,7 @@ export const POST = async (req: any) => {
     const secretAccessKey = process.env.AWS_SECRET;
 
     if (!bucketName || !bucketRegion || !accessKey || !secretAccessKey) {
-        return new NextResponse("No AWS credentials", {status: 500})
+        return new NextResponse("No AWS credentials", { status: 500 })
     }
 
     const s3 = new S3Client({
@@ -20,43 +20,52 @@ export const POST = async (req: any) => {
     });
 
     const formData = await req.formData();
-    const file = formData.get('file');
     const userId = formData.get('userId');
 
     if (!userId) {
-        return new NextResponse("No user id provided", {status: 400})
+        return new NextResponse("No user id provided", { status: 400 })
     }
 
-    const uniqueFileName = `${userId}_${file.name}`;
+    const files = formData.getAll('file');
+    const results = [];
 
-    // Check if file already exists
-    const headParams = {
-        Bucket: bucketName,
-        Key: uniqueFileName,
-    };
-    try {
-        await s3.send(new HeadObjectCommand(headParams));
-        // If the file exists, return the existing URL
-        const url = `https://${bucketName}.s3.${bucketRegion}.amazonaws.com/${encodeURIComponent(uniqueFileName)}`;
-        return new NextResponse(url, {status: 200});
-    } catch (error) {
-        // If the file doesn't exist, continue to upload
+    for (const file of files) {
+        const uniqueFileName = `${userId}_${file.name}`;
+
+        // Check if file already exists
+        const headParams = {
+            Bucket: bucketName,
+            Key: uniqueFileName,
+        };
+        try {
+            await s3.send(new HeadObjectCommand(headParams));
+
+            // If the file exists, return the existing URL
+            const url = `https://${bucketName}.s3.${bucketRegion}.amazonaws.com/${encodeURIComponent(uniqueFileName)}`;
+            results.push(url);
+            continue;
+        } catch (error) {
+            // If the file doesn't exist, continue to upload
+        }
+
+        try {
+            // Upload the file
+            const arrayBuffer = await file.arrayBuffer();
+            const uploadParams = {
+                Bucket: bucketName,
+                Key: uniqueFileName,
+                Body: Buffer.from(arrayBuffer),
+                ContentType: file.type,
+            };
+            await s3.send(new PutObjectCommand(uploadParams));
+
+            const url = `https://${bucketName}.s3.${bucketRegion}.amazonaws.com/${encodeURIComponent(uniqueFileName)}`;
+            results.push(url);
+        } catch (error) {
+            console.error(`Error uploading file to S3: ${uniqueFileName}`, error);
+            results.push(null);
+        }
     }
 
-    const buffer = Buffer.from(await file.arrayBuffer());
-
-    const putParams = {
-        Bucket: bucketName,
-        Key: uniqueFileName,
-        Body: buffer,
-        ContentType: file.type,
-    };
-
-    const command = new PutObjectCommand(putParams)
-
-    await s3.send(command)
-
-    const url = `https://${bucketName}.s3.${bucketRegion}.amazonaws.com/${encodeURIComponent(uniqueFileName)}`;
-
-    return new NextResponse(url, {status: 200})
+    return new NextResponse(JSON.stringify(results), { status: 200, headers: { 'Content-Type': 'application/json' } });
 }

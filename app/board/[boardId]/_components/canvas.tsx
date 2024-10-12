@@ -74,6 +74,7 @@ import { Background } from "./background";
 import { MediaPreview } from "./MediaPreview";
 import { MoveBackToContent } from "./move-back-to-content";
 import { Frame } from "../canvas-objects/frame";
+import { uploadFilesAndInsertThemIntoCanvas } from "./canvasUtils";
 
 const preventDefault = (e: any) => {
     if (e.scale !== 1) {
@@ -110,7 +111,6 @@ export const Canvas = ({
     const [redoStack, setRedoStack] = useState<Command[]>([]);
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
     const { liveLayers, liveLayerIds, User, otherUsers, setLiveLayers, setLiveLayerIds, org, socket, board, expired } = useRoom();
-    const maxFileSize = org && getMaxImageSize(org) || 0;
     const [isDraggingOverCanvas, setIsDraggingOverCanvas] = useState(false);
     const selectedLayersRef = useRef<string[]>([]);
     const [copiedLayerIds, setCopiedLayerIds] = useState<string[]>([]);
@@ -341,44 +341,51 @@ export const Canvas = ({
     }, [justInsertedText, layerRef]);
 
     const insertMedia = useCallback((
-        layerType: LayerType.Image | LayerType.Video | LayerType.Link,
-        position: Point,
-        info: any,
-        zoom: number,
+        mediaItems: Array<{
+            layerType: LayerType.Image | LayerType.Video | LayerType.Link,
+            position: Point,
+            info: any,
+            zoom: number
+        }>
     ) => {
-
-        const layerId = nanoid();
-
-        if (!info || !info.url) {
+        if (expired) {
+            setCanvasState({ mode: CanvasMode.None });
             return;
         }
-
-        if (!info.dimensions.width) {
-            info.dimensions.width = window.innerWidth / 2;
+    
+        const newLayers: Layer[] = [];
+        const newLayerIds: string[] = [];
+    
+        mediaItems.forEach(({ layerType, position, info }) => {
+            const layerId = nanoid();
+            newLayerIds.push(layerId);
+    
+            if (!info || !info.url) {
+                return;
+            }
+    
+            const layer = {
+                type: layerType,
+                x: position.x,
+                y: position.y,
+                height: info.dimensions.height,
+                width: info.dimensions.width,
+                src: info.url,
+            };
+    
+            newLayers.push(layer);
+    
+        });
+    
+        if (newLayers.length > 0) {
+            const command = new InsertLayerCommand(newLayerIds, newLayers, setLiveLayers, setLiveLayerIds, boardId, socket, org, proModal);
+            performAction(command);
+            selectedLayersRef.current = newLayerIds;
         }
-
-        if (!info.dimensions.height) {
-            info.dimensions.height = window.innerHeight / 2;
-        }
-
-        const aspectRatio = info.dimensions.width / info.dimensions.height;
-        const height = window.innerHeight / (2 * zoom);
-        const width = height * aspectRatio;
-
-
-        const layer = {
-            type: layerType,
-            x: position.x - width / 2,
-            y: position.y - height / 2,
-            height: height,
-            width: width,
-            src: info.url,
-        };
-
-        const command = new InsertLayerCommand([layerId], [layer], setLiveLayers, setLiveLayerIds, boardId, socket, org, proModal);
-        performAction(command);
+    
         setCanvasState({ mode: CanvasMode.None });
-    }, [socket, org, proModal, setLiveLayers, setLiveLayerIds, boardId, performAction]);
+    
+    }, [socket, org, proModal, setLiveLayers, setLiveLayerIds, boardId, performAction, expired]);
 
     const translateSelectedLayers = useCallback((point: Point) => {
 
@@ -1021,6 +1028,34 @@ export const Canvas = ({
         }
     }, [canvasState.mode, setCanvasState, startDrawing, setIsPanning, setIsRightClickPanning, activeTouches, expired, isPanning, unselectLayers, liveLayers, socket]);
 
+    const [isNearBorder, setIsNearBorder] = useState(false);
+    const [borderMove, setBorderMove] = useState({ x: 0, y: 0 });
+    
+    // Add this new useEffect for continuous movement
+    useEffect(() => {
+        let animationFrameId: number;
+    
+        const moveCameraLoop = () => {
+            if (isNearBorder) {
+                setCamera(prevCamera => ({
+                    x: prevCamera.x + borderMove.x,
+                    y: prevCamera.y + borderMove.y
+                }));
+                animationFrameId = requestAnimationFrame(moveCameraLoop);
+            }
+        };
+    
+        if (isNearBorder) {
+            animationFrameId = requestAnimationFrame(moveCameraLoop);
+        }
+    
+        return () => {
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
+        };
+    }, [isNearBorder, borderMove, setCamera]);
+
     const onPointerMove = useCallback((e: React.PointerEvent) => {
         e.preventDefault();
 
@@ -1028,6 +1063,7 @@ export const Canvas = ({
             setPencilDraft([]);
             return;
         }
+        
 
         setIsMoving(false);
         if (rightClickPanning || e.buttons === 2 || e.buttons === 4) {
@@ -1054,6 +1090,29 @@ export const Canvas = ({
         }
         const current = pointerEventToCanvasPoint(e, cameraRef.current, zoomRef.current, svgRef);
         setMousePosition(current);
+
+        if (canvasState.mode !== CanvasMode.None) {
+            const borderThreshold = 10; // pixels from the edge to start moving
+            const moveSpeed = 5; // pixels to move per frame
+    
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+    
+            let newBorderMove = { x: 0, y: 0 };
+    
+            if (e.clientX < borderThreshold) newBorderMove.x = moveSpeed;
+            if (e.clientX > viewportWidth - borderThreshold) newBorderMove.x = -moveSpeed;
+            if (e.clientY < borderThreshold) newBorderMove.y = moveSpeed;
+            if (e.clientY > viewportHeight - borderThreshold) newBorderMove.y = -moveSpeed;
+    
+            const isNearBorderNow = newBorderMove.x !== 0 || newBorderMove.y !== 0;
+    
+            setIsNearBorder(isNearBorderNow);
+            setBorderMove(newBorderMove);
+        } else {
+            setIsNearBorder(false);
+            setBorderMove({ x: 0, y: 0 });
+        }
 
         const newPresence: Presence = {
             ...myPresence,
@@ -1544,70 +1603,9 @@ export const Canvas = ({
         setIsDraggingOverCanvas(false);
         let x = (Math.round(event.clientX) - camera.x) / zoom;
         let y = (Math.round(event.clientY) - camera.y) / zoom;
-        const files = event.dataTransfer.files;
-
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i];
-            if (!file.type.startsWith('image/') && !file.type.startsWith('video/')) {
-                toast.error('File type not accepted. Please upload an image or video file.');
-                continue;
-            }
-
-            // Check file size
-            const fileSizeInMB = file.size / 1024 / 1024;
-            if (fileSizeInMB > maxFileSize) {
-                toast.error(`File size has to be lower than ${maxFileSize}MB. Please try again.`);
-                continue;
-            }
-
-            const toastId = toast.loading("Media is being processed, please wait...");
-            const formData = new FormData();
-            formData.append('file', file);
-            formData.append('userId', User.userId);
-
-            fetch('/api/aws-s3-images', {
-                method: 'POST',
-                body: formData
-            })
-                .then(async (res: Response) => {
-                    if (!res.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    const url = await res.text();
-
-                    if (file.type.startsWith('image/')) {
-                        const img = new Image();
-                        const imgLoad = new Promise<{ url: string, dimensions: { width: number, height: number }, type: string }>((resolve) => {
-                            img.onload = () => {
-                                const dimensions = { width: img.width, height: img.height };
-                                resolve({ url, dimensions, type: 'image' });
-                            };
-                        });
-                        img.src = url;
-                        const info = await imgLoad;
-                        insertMedia(LayerType.Image, { x, y }, info, zoom);
-                    } else if (file.type.startsWith('video/')) {
-                        const video = document.createElement('video');
-                        const videoLoad = new Promise<{ url: string, dimensions: { width: number, height: number }, type: string }>((resolve) => {
-                            video.onloadedmetadata = () => {
-                                const dimensions = { width: video.videoWidth, height: video.videoHeight };
-                                resolve({ url, dimensions, type: 'video' });
-                            };
-                        });
-                        video.src = url;
-                        const info = await videoLoad;
-                        insertMedia(LayerType.Video, { x, y }, info, zoom);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                })
-                .finally(() => {
-                    toast.dismiss(toastId);
-                    toast.success(`${file.type.startsWith('image/') ? 'Image' : 'Video'} uploaded successfully`);
-                });
-        }
-    }, [setIsDraggingOverCanvas, camera, zoom, maxFileSize, User.userId, insertMedia, expired]);
+        const files = Array.from(event.dataTransfer.files);
+        uploadFilesAndInsertThemIntoCanvas(files, org, User, zoom, x, y, insertMedia);
+    }, [setIsDraggingOverCanvas, camera, zoom, org, User.userId, insertMedia, expired]);
 
     const onTouchDown = useCallback((e: React.TouchEvent) => {
         setIsMoving(false);
@@ -1858,7 +1856,7 @@ export const Canvas = ({
                                     img.src = url;
                                     const info = await imgLoad;
 
-                                    insertMedia(LayerType.Image, mousePosition, info, zoom);
+                                    insertMedia([{layerType: LayerType.Image, position: {x: mousePosition.x, y: mousePosition.y}, info, zoom}]);
                                     toast.dismiss(toastId);
                                     toast.success("Image uploaded successfully");
                                 } catch (err) {

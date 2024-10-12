@@ -19,7 +19,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface MediaButtonProps {
     isUploading: boolean;
-    insertMedia: (layerType: LayerType.Image | LayerType.Video, position: Point, info: any, zoom: number) => void;
+    insertMedia: (mediaItems: {layerType: LayerType.Image | LayerType.Video | LayerType.Link, position: Point, info: any, zoom: number}[]) => void;
     icon: LucideIcon;
     isActive?: boolean;
     isDisabled?: boolean;
@@ -159,7 +159,7 @@ export const MediaButton = ({
                     img.src = url;
                     const info = await imgLoad;
                     const centerPoint = getCenterOfScreen(camera, zoom, svgRef);
-                    insertMedia(LayerType.Image, centerPoint, info, zoom);
+                    insertMedia([{layerType: LayerType.Image, position: centerPoint, info, zoom}]);
                 } else if (file.type.startsWith('video/')) {
                     const video = document.createElement('video');
                     const videoLoad = new Promise<{ url: string, dimensions: { width: number, height: number }, type: string }>((resolve) => {
@@ -171,7 +171,7 @@ export const MediaButton = ({
                     video.src = url;
                     const info = await videoLoad;
                     const centerPoint = getCenterOfScreen(camera, zoom, svgRef);
-                    insertMedia(LayerType.Video, centerPoint, info, zoom);
+                    insertMedia([{layerType: LayerType.Video, position: centerPoint, info, zoom}]);
                 }
             })
             .catch(error => {
@@ -255,7 +255,7 @@ export const MediaButton = ({
                     break;
             }
             const centerPoint = getCenterOfScreen(camera, zoom, svgRef);
-            insertMedia(activeTab === "videos" ? LayerType.Video : LayerType.Image, centerPoint, info, zoom);
+            insertMedia([{layerType: activeTab === "videos" ? LayerType.Video : LayerType.Image, position: centerPoint, info, zoom}]);
             toast.success(`${activeTab.slice(0, -1).charAt(0).toUpperCase() + activeTab.slice(0, -1).slice(1)} added successfully`);
         } catch (error) {
             console.error('Error:', error);

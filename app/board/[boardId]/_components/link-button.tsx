@@ -20,7 +20,7 @@ interface MediaButtonProps {
     zoom: number;
     isActive?: boolean;
     isDisabled?: boolean;
-    insertMedia: (layerType: LayerType.Image | LayerType.Video | LayerType.Link, position: Point, info: any, zoom: number) => void;
+    insertMedia: (mediaItems: {layerType: LayerType.Image | LayerType.Video | LayerType.Link, position: Point, info: any, zoom: number}[]) => void;
 };
 
 export const LinkButton = ({
@@ -53,7 +53,7 @@ export const LinkButton = ({
         const dimensions = { width: 1600, height: 900 };
         const info = { dimensions, url: convertedLink };
 
-        insertMedia(LayerType.Link, centerPoint, info, zoom);
+        insertMedia([{layerType: LayerType.Link, position: centerPoint, info, zoom}]);
         setIsDialogOpen(false);
     };
 

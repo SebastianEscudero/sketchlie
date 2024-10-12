@@ -173,7 +173,7 @@ export const SelectionBox = memo(({
         onContextMenu={handleRightClick}
         className="pointer-events-none stroke-blue-500 fill-transparent"
         style={{
-          strokeWidth: "2",
+          strokeWidth: strokeWidth,
           transform: `translate(${bounds.x}px, ${bounds.y}px)`,
         }}
         x={0}
