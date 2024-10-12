@@ -23,23 +23,30 @@ export const uploadFilesAndInsertThemIntoCanvas = async (
   centerY: number,
   insertMedia: (mediaItems: MediaItem[]) => void
 ) => {
-  const maxFileSize = getMaxImageSize(org);
-  const formData = new FormData();
-  const pdfPages: PDFPage[] = [];
+  const toastId = toast.loading("Uploading files, please wait...");
+  try {
+    const maxFileSize = getMaxImageSize(org);
+    const formData = new FormData();
+    const pdfPages: PDFPage[] = [];
 
-  await Promise.all(files.map(file => processFile(file, maxFileSize, formData, pdfPages)));
+    await Promise.all(files.map(file => processFile(file, maxFileSize, formData, pdfPages)));
 
-  formData.append('userId', user.userId);
+    formData.append('userId', user.userId);
 
-  const urls = await uploadFiles(formData);
-  if (!urls) return;
+    const urls = await uploadFiles(formData);
+    if (!urls) return;
 
-  const mediaItems = await processUploadedFiles(urls, pdfPages, files, centerX, centerY, zoom);
+    const mediaItems = await processUploadedFiles(urls, pdfPages, files, centerX, centerY, zoom);
 
-  insertMedia(mediaItems);
-  toast.success(`${mediaItems.length} items uploaded successfully`);
+    insertMedia(mediaItems);
+    toast.success(`${mediaItems.length} items uploaded successfully`);
+  } catch (error) {
+    console.error('Error in uploadFilesAndInsertThemIntoCanvas:', error);
+    toast.error('Failed to upload and insert files, try again.');
+  } finally {
+    toast.dismiss(toastId);
+  }
 };
-
 async function processFile(file: File, maxFileSize: number, formData: FormData, pdfPages: PDFPage[]): Promise<void> {
   if (!isValidFileType(file) || isFileTooLarge(file, maxFileSize)) {
     toast.error(`File ${file.name} is not valid or too large.`);
@@ -97,8 +104,6 @@ async function convertPDFPageToImage(pdf: any, pageNum: number, fileName: string
 }
 
 async function uploadFiles(formData: FormData): Promise<string[] | null> {
-  const toastId = toast.loading("Uploading files, please wait...");
-
   try {
     const res = await fetch('/api/aws-s3-images', { method: 'POST', body: formData });
     if (!res.ok) throw new Error('Network response was not ok');
@@ -109,8 +114,6 @@ async function uploadFiles(formData: FormData): Promise<string[] | null> {
     console.error('Error:', error);
     toast.error('Failed to upload media');
     return null;
-  } finally {
-    toast.dismiss(toastId);
   }
 }
 
