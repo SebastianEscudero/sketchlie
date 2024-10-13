@@ -80,7 +80,6 @@ export const Triangle = memo(({
 
       if (focused) {
         e.stopPropagation();
-        TriangleRef.current.focus();
       } else {
         e.preventDefault();
         if (onPointerDown) onPointerDown(e, id);

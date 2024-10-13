@@ -80,7 +80,6 @@ export const Hexagon = memo(({
 
       if (focused) {
         e.stopPropagation();
-        HexagonRef.current.focus();
       } else {
         e.preventDefault();
         if (onPointerDown) onPointerDown(e, id);

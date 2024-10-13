@@ -80,7 +80,6 @@ export const Star = memo(({
 
       if (focused) {
         e.stopPropagation();
-        StarRef.current.focus();
       } else {
         e.preventDefault();
         if (onPointerDown) onPointerDown(e, id);

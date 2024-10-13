@@ -80,7 +80,6 @@ export const BigArrowUp = memo(({
 
       if (focused) {
         e.stopPropagation();
-        BigArrowUpRef.current.focus();
       } else {
         e.preventDefault();
         if (onPointerDown) onPointerDown(e, id);

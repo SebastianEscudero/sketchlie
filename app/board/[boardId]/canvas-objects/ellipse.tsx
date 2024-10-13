@@ -80,7 +80,6 @@ export const Ellipse = memo(({
 
       if (focused) {
         e.stopPropagation();
-        EllipseRef.current.focus();
       } else {
         e.preventDefault();
         if (onPointerDown) onPointerDown(e, id);

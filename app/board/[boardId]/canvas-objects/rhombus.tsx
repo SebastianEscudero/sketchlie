@@ -80,7 +80,6 @@ export const Rhombus = memo(({
 
       if (focused) {
         e.stopPropagation();
-        RhombusRef.current.focus();
       } else {
         e.preventDefault();
         if (onPointerDown) onPointerDown(e, id);

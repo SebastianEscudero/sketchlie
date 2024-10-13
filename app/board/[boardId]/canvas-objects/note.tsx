@@ -80,7 +80,6 @@ export const Note = memo(({
 
       if (focused) {
         e.stopPropagation();
-        NoteRef.current.focus();
       } else {
         e.preventDefault();
         if (onPointerDown) onPointerDown(e, id);
