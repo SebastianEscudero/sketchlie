@@ -1,5 +1,6 @@
 import { Hint } from "@/components/hint";
 import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { FramesLayersIcon } from "@/public/custom-icons/frames";
 import { Minus, Plus, X } from "lucide-react";
 import React, { useState, useEffect, useRef } from "react";
@@ -241,29 +242,33 @@ export const ZoomToolbar = ({
             </div>
             {showFrames && (
                 <div
-                    onWheel={(e) => { e.stopPropagation(); }}
-                    className="pointer-events-auto absolute top-[64px] right-0 bottom-[80px] w-[320px] bg-white dark:bg-zinc-800 p-4 shadow-md overflow-y-auto"
+                    onWheel={(e) => e.stopPropagation()}
+                    className="border dark:border-zinc-800 pointer-events-auto absolute top-[64px] right-4 bottom-[80px] w-[320px] bg-white dark:bg-zinc-800 rounded-sm shadow-lg overflow-hidden"
                 >
-                    <div className="flex justify-between items-center mb-4">
+                    <div className="flex justify-between items-center p-4 border-b dark:border-zinc-700">
                         <h2 className="text-lg font-semibold">Frames</h2>
                         <Button onClick={() => setShowFrames(false)} variant="ghost" size="sm">
                             <X className="h-4 w-4" />
                         </Button>
                     </div>
-                    {frameIds.length > 0 ? (
-                        <div className="space-y-2">
-                            {frameIds.map((frameId, index) => (
-                                <div key={frameId} className="flex flex-col">
-                                    <h1 className="text-xs font-semibold text-left text-zinc-500">
-                                        {(liveLayers[frameId] as FrameLayer).value || `Frame ${index + 1}`}
-                                    </h1>
-                                    <FramePreview frameId={frameId} index={index} />
-                                </div>
-                            ))}
-                        </div>
-                    ) : (
-                        <p>No frames to preview.</p>
-                    )}
+                    <ScrollArea className="h-[calc(100%-60px)] p-4">
+                        {frameIds.length > 0 ? (
+                            <div className="space-y-4">
+                                {frameIds.map((frameId, index) => (
+                                    liveLayers[frameId] && (
+                                        <div key={frameId} className="flex flex-col">
+                                            <h1 className="text-xs font-semibold text-left text-zinc-500 mb-2">
+                                                {(liveLayers[frameId] as FrameLayer).value || `Frame ${index + 1}`}
+                                            </h1>
+                                            <FramePreview frameId={frameId} index={index} />
+                                        </div>
+                                    )
+                                ))}
+                            </div>
+                        ) : (
+                            <p className="text-center text-zinc-500">No frames to preview.</p>
+                        )}
+                    </ScrollArea>
                 </div>
             )}
         </>

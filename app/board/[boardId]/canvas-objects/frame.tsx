@@ -24,6 +24,7 @@ export const Frame = memo(({
     id,
     frameNumber,
     selectionColor,
+    forcedRender
 }: FrameProps) => {
     const { x, y, width, height, value: initialValue } = layer;
     const fontSize = Math.min(width, height) * 0.05;
@@ -35,6 +36,10 @@ export const Frame = memo(({
     useEffect(() => {
         setValue(initialValue || `Frame ${frameNumber || ""}`);
     }, [frameNumber, initialValue]);
+
+    useEffect(() => {
+        setStrokeColor(selectionColor || document.documentElement.classList.contains("dark") ? "#FFFFFF" : "#000000");
+    }, [selectionColor, forcedRender]);
 
     const updateValue = useUpdateValue();
 
