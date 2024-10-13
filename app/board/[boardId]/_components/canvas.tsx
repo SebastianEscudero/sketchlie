@@ -2123,7 +2123,7 @@ export const Canvas = ({
 
             const svg = svgRef.current as SVGSVGElement;
             const viewBox = svg.viewBox.baseVal;
-            let visibleRect;
+            let visibleRect: XYWH;
 
             // Check if we're in presentation mode and have frames
             if (presentationMode && frameIds.length > 0) {
