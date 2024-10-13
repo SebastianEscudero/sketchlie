@@ -1575,6 +1575,10 @@ export const Canvas = ({
     }, [otherUsers]);
 
     const onDragOver = useCallback((e: React.DragEvent) => {
+        if (e.dataTransfer.files.length === 0) {
+            return;
+        }
+
         e.preventDefault();
         if (expired) {
             return;
