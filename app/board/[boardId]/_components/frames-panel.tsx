@@ -202,7 +202,7 @@ export const FramesPanel = memo<FramesPanelProps>(({
     const [frameIds, setFrameIds] = useState<string[]>([]);
 
     useEffect(() => {
-        const frameIdsList = liveLayerIds.filter(id => liveLayers[id].type === LayerType.Frame);
+        const frameIdsList = liveLayerIds.filter(id => liveLayers[id] && liveLayers[id].type === LayerType.Frame);
         setFrameIds(frameIdsList);
     }, [liveLayers, liveLayerIds]);
 

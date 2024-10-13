@@ -2206,7 +2206,7 @@ export const Canvas = ({
                     try {
                         await document.documentElement.requestFullscreen();
                         // Wait a bit for the browser to update window dimensions
-                        await new Promise(resolve => setTimeout(resolve, 100));
+                        await new Promise(resolve => setTimeout(resolve, 10));
                         goToFrame(0);
                     } catch (error) {
                         console.error("Couldn't enter fullscreen:", error);
