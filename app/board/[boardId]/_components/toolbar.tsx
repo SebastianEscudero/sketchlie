@@ -59,7 +59,7 @@ interface ToolbarProps {
   pathColor: Color;
   isPlacingLayer: boolean;
   expired: boolean;
-  insertMedia: (mediaItems: {layerType: LayerType.Image | LayerType.Video | LayerType.Link, position: Point, info: any, zoom: number}[]) => void;
+  insertMedia: (mediaItems: { layerType: LayerType.Image | LayerType.Video | LayerType.Link, position: Point, info: any, zoom: number }[]) => void;
   camera: any;
   svgRef: any;
   zoom: number;
@@ -104,7 +104,7 @@ export const Toolbar = memo(({
   setPresentationMode,
   frameIds,
   currentFrameIndex,
-  goToFrame
+  goToFrame,
 }: ToolbarProps) => {
   const onPathColorChange = (color: any) => {
     setPathColor(color);
@@ -145,7 +145,7 @@ export const Toolbar = memo(({
 
   if (presentationMode) {
     return (
-      <PresentationModeToolbar 
+      <PresentationModeToolbar
         setPresentationMode={setPresentationMode}
         setCanvasState={setCanvasState}
         canvasState={canvasState}
@@ -314,7 +314,7 @@ export const Toolbar = memo(({
           zoom={zoom}
           insertMedia={insertMedia}
         />
-        <LinkButton 
+        <LinkButton
           label="Link"
           icon={Link}
           camera={camera}

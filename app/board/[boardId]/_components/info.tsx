@@ -33,6 +33,8 @@ interface InfoProps {
     setForcedRender(forcedRender: boolean): void;
     User: User;
     svgRef: React.RefObject<SVGSVGElement>;
+    returnToSelectionModeAfterInsert: boolean;
+    setReturnToSelectionModeAfterInsert: (returnToSelectionModeAfterInsert: boolean) => void;
 }
 
 const TabSeparator = () => {
@@ -62,7 +64,9 @@ export const Info = memo(({
     User,
     setIsShowingAIInput,
     isShowingAIInput,
-    svgRef
+    svgRef,
+    returnToSelectionModeAfterInsert,
+    setReturnToSelectionModeAfterInsert
 }: InfoProps) => {
 
     const proModal = useProModal();
@@ -193,6 +197,8 @@ export const Info = memo(({
                 setForcedRender={setForcedRender}
                 User={User}
                 isPrivate={board.private}
+                returnToSelectionModeAfterInsert={returnToSelectionModeAfterInsert}
+                setReturnToSelectionModeAfterInsert={setReturnToSelectionModeAfterInsert}
             >
                 <div className="w-10 flex justify-center items-center">
                     <Hint label="Main menu" side="bottom" sideOffset={10}>

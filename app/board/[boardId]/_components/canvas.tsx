@@ -2324,6 +2324,8 @@ export const Canvas = ({
                                     setForcedRender={setForceLayerPreviewRender}
                                     User={User}
                                     svgRef={svgRef}
+                                    returnToSelectionModeAfterInsert={returnToSelectionModeAfterInsert}
+                                    setReturnToSelectionModeAfterInsert={setReturnToSelectionModeAfterInsert}
                                 />
                                 <MoveBackToContent
                                     setCamera={setCamera}

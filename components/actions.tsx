@@ -25,6 +25,7 @@ import { Layers, User } from "@/types/canvas";
 import { KeyboardShortcutsDialog } from "@/app/board/[boardId]/_components/keyboard-shortcuts-dialog";
 import { HelpDropdownMenu } from "./help-dropdown-menu";
 import { PrivateBoardDialog } from "./private-board-dialog";
+import { PreferencesMenu } from "./preferences-menu";
 
 
 interface ActionsProps {
@@ -47,6 +48,8 @@ interface ActionsProps {
   setForcedRender?: (forcedRender: boolean) => void;
   User?: User;
   isPrivate: boolean;
+  returnToSelectionModeAfterInsert: boolean;
+  setReturnToSelectionModeAfterInsert: (returnToSelectionModeAfterInsert: boolean) => void;
 };
 
 export const Actions = ({
@@ -67,7 +70,9 @@ export const Actions = ({
   setCanvasState,
   setForcedRender,
   User,
-  isPrivate
+  isPrivate,
+  returnToSelectionModeAfterInsert,
+  setReturnToSelectionModeAfterInsert
 }: ActionsProps) => {
   const { mutate, pending } = useApiMutation(api.board.remove);
   const [isRenameModalOpen, setIsRenameModalOpen] = useState(false);
@@ -179,6 +184,7 @@ export const Actions = ({
                 User={User}
               />
               <BackgroundMenu setBackground={setBackground} background={Background} setForcedRender={setForcedRender} />
+              <PreferencesMenu setReturnToSelectionModeAfterInsert={setReturnToSelectionModeAfterInsert} returnToSelectionModeAfterInsert={returnToSelectionModeAfterInsert}/>
               <HelpDropdownMenu setCanvasState={setCanvasState} />
             </>
           }
