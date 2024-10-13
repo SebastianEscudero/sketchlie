@@ -147,6 +147,7 @@ export const Canvas = ({
     const [isNearBorder, setIsNearBorder] = useState(false);
     const [borderMove, setBorderMove] = useState({ x: 0, y: 0 });
     const [currentFrameIndex, setCurrentFrameIndex] = useState(0);
+    const [returnToSelectionModeAfterInsert, setReturnToSelectionModeAfterInsert] = useState(true);
     const frameIds = useMemo(() => {
         if (!liveLayerIds || !liveLayers) return [];
         return liveLayerIds.filter(id => {
@@ -342,9 +343,12 @@ export const Canvas = ({
             });
         }
 
-        setCanvasState({ mode: CanvasMode.None });
+        // return the user to the default mode
+        if (returnToSelectionModeAfterInsert) {
+            setCanvasState({ mode: CanvasMode.None });
+        }
 
-    }, [socket, org, proModal, setLiveLayers, setLiveLayerIds, boardId, arrowTypeInserting, liveLayers, performAction, expired]);
+    }, [socket, org, proModal, setLiveLayers, setLiveLayerIds, boardId, arrowTypeInserting, liveLayers, performAction, expired, returnToSelectionModeAfterInsert]);
 
     useEffect(() => {
         if (justInsertedText && layerRef && layerRef.current) {
@@ -1894,7 +1898,7 @@ export const Canvas = ({
                     });
                 }
             } else if (key === "a") {
-                if (!isInsideTextArea) {
+                if (!isInsideTextArea && !presentationMode) {
                     if ((e.ctrlKey || e.metaKey)) {
                         e.preventDefault();
                         selectedLayersRef.current = liveLayerIds;
@@ -2002,7 +2006,7 @@ export const Canvas = ({
             document.removeEventListener("keyup", onKeyUp);
         }
 
-    }, [copySelectedLayers, pasteCopiedLayers, camera, zoom, liveLayers, copiedLayerIds, liveLayerIds, myPresence, socket, User.userId, forceSelectionBoxRender, canvasState,
+    }, [copySelectedLayers, pasteCopiedLayers, camera, zoom, liveLayers, copiedLayerIds, liveLayerIds, myPresence, socket, User.userId, forceSelectionBoxRender, canvasState, presentationMode,
         boardId, history.length, mousePosition, performAction, redo, redoStack.length, setLiveLayerIds, setLiveLayers, undo, unselectLayers, expired, translateSelectedLayersWithDelta, initialLayers]);
 
     useEffect(() => {
@@ -2290,7 +2294,7 @@ export const Canvas = ({
                             isPlacingLayer={currentPreviewLayer !== null}
                             expired={expired}
                             insertMedia={insertMedia}
-                            camera={camera}
+                            camera={cameraRef.current}
                             svgRef={svgRef}
                             zoom={zoom}
                             presentationMode={presentationMode}

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { OrganizationInvite } from "@/components/auth/organization-invite";
 import { UsersDialogBoard } from "./users-dialog-board";
 import { ChevronDown, Play, UserPlus } from "lucide-react";
+import { memo } from "react";
 
 const MAX_SHOWN_USERS = 5;
 
@@ -20,7 +21,7 @@ interface ParticipantsProps {
     setPresentationMode: (mode: boolean) => void;
 }
 
-export const Participants = ({
+export const Participants = memo(({
     otherUsers,
     User,
     org,
@@ -95,7 +96,9 @@ export const Participants = ({
             )}
         </div>
     )
-}
+});
+
+Participants.displayName = "Participants";
 
 export const ParticipantsSkeleton = () => {
     return (

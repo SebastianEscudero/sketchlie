@@ -2,7 +2,7 @@ import { Hint } from "@/components/hint";
 import { Button } from "@/components/ui/button";
 import { Layers } from "@/types/canvas";
 import { ArrowRightIcon } from "lucide-react";
-import { useCallback } from "react";
+import { memo, useCallback } from "react";
 
 interface MoveBackToContentProps {
     setCamera: (camera: { x: number, y: number }) => void;
@@ -13,7 +13,7 @@ interface MoveBackToContentProps {
     zoomRef: React.RefObject<number>;
 }
 
-export const MoveBackToContent = ({ setCamera, setZoom, showButton, liveLayers, cameraRef, zoomRef }: MoveBackToContentProps) => {
+export const MoveBackToContent = memo(({ setCamera, setZoom, showButton, liveLayers, cameraRef, zoomRef }: MoveBackToContentProps) => {
     const goToCenter = useCallback(() => {
         const layerIds = Object.keys(liveLayers);
         if (layerIds.length === 0) return;
@@ -93,4 +93,6 @@ export const MoveBackToContent = ({ setCamera, setZoom, showButton, liveLayers, 
             </Hint>
         </div>
     )
-}
+});
+
+MoveBackToContent.displayName = "MoveBackToContent";

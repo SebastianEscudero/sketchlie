@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 interface BackgroundProps {
     background: string;
     zoom: number;
@@ -5,7 +7,7 @@ interface BackgroundProps {
     presentationMode: boolean;
 }
 
-export const Background = ({
+export const Background = memo(({
     background,
     zoom,
     camera,
@@ -57,4 +59,6 @@ export const Background = ({
             }}
         />
     )
-}
+});
+
+Background.displayName = "Background";

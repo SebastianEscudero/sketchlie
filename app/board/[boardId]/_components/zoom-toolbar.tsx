@@ -2,7 +2,7 @@ import { Hint } from "@/components/hint";
 import { Button } from "@/components/ui/button";
 import { FramesLayersIcon } from "@/public/custom-icons/frames";
 import { Minus, Plus } from "lucide-react";
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import { CanvasState, Layers } from "@/types/canvas";
 import { FramesPanel } from "./frames-panel";
 import { Socket } from "socket.io-client";
@@ -25,7 +25,7 @@ interface ZoomToolbarProps {
 
 const PREDEFINED_PERCENTAGES = [10, 25, 50, 100, 150, 200, 300, 400];
 
-export const ZoomToolbar = ({
+export const ZoomToolbar = memo(({
     zoom,
     setZoom,
     camera,
@@ -146,4 +146,6 @@ export const ZoomToolbar = ({
             )}
         </>
     );
-};
+});
+
+ZoomToolbar.displayName = "ZoomToolbar";

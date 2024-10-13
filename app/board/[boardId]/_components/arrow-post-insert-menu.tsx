@@ -1,7 +1,7 @@
 "use client";
 
 import { useSelectionBounds } from "@/hooks/use-selection-bounds";
-import { useCallback, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import { ArrowOrientation, ArrowType, Layers, LayerType, Point } from "@/types/canvas";
 import {
     ArrowBigDown,
@@ -37,7 +37,7 @@ interface ArrowPostInsertMenuProps {
     setIsArrowPostInsertMenuOpen: any;
 }
 
-export const ArrowPostInsertMenu = ({
+export const ArrowPostInsertMenu = memo(({
     selectedLayersRef,
     liveLayers,
     zoom,
@@ -268,4 +268,6 @@ export const ArrowPostInsertMenu = ({
             </div>
         </div>
     )
-}
+});
+
+ArrowPostInsertMenu.displayName = "ArrowPostInsertMenu";

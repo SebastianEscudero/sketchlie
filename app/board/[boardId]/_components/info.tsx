@@ -10,7 +10,7 @@ import { toast } from "sonner";
 import { ShowAllTemplates } from "@/app/dashboard/_components/show-all-templates";
 import { Layer, LayerType, User } from "@/types/canvas";
 import { InsertLayerCommand } from "@/lib/commands";
-import { useState } from "react";
+import { memo, useState } from "react";
 import { RenameBoardDialog } from "@/components/modals/rename-modal";
 import { ExportDropdownMenu } from "@/components/ExportDropdownMenu";
 
@@ -44,7 +44,7 @@ const TabSeparator = () => {
 }
 
 
-export const Info = ({
+export const Info = memo(({
     board,
     org,
     setBackground,
@@ -255,7 +255,9 @@ export const Info = ({
             </Hint> */}
         </div>
     )
-}
+});
+
+Info.displayName = "Info";
 
 export const InfoSkeleton = () => {
     return (

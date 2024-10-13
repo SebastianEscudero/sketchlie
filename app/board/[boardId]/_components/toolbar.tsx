@@ -21,7 +21,7 @@ import {
 import { ArrowType, CanvasMode, CanvasState, Color, LayerType, Point } from "@/types/canvas";
 import { ToolButton } from "./tool-button";
 import { MediaButton } from "./media-button";
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, memo, SetStateAction, useEffect } from "react";
 import { LaserIcon } from "@/public/custom-icons/laser";
 import { Button } from "@/components/ui/button";
 import { Hint } from "@/components/hint";
@@ -70,7 +70,7 @@ interface ToolbarProps {
   goToFrame: (index: number) => void;
 }
 
-export const Toolbar = ({
+export const Toolbar = memo(({
   isUploading,
   setIsUploading,
   canvasState,
@@ -368,7 +368,9 @@ export const Toolbar = ({
       }
     </div>
   );
-};
+});
+
+Toolbar.displayName = "Toolbar";
 
 export const ToolbarSkeleton = () => {
   return (
