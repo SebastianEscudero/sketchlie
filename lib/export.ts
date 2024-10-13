@@ -16,8 +16,6 @@ export const exportFramesToPdf = async (title: string, isTransparent: boolean, l
       return;
     }
 
-    console.log(`Number of frames: ${frames.length}`);
-
     // Create a new jsPDF instance with compression enabled
     const doc = new jsPDF({
       orientation: "landscape",
@@ -121,7 +119,6 @@ function generateFrameSvg(frame: Layer, liveLayers: Layers, liveLayerIds: string
         socket: null,
         expired: false,
         boardId: "",
-        frameNumber: 0,
         setCamera: () => {},
         setZoom: () => {},
       })

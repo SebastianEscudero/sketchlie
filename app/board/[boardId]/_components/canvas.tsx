@@ -2178,8 +2178,8 @@ export const Canvas = ({
         const toolbarHeight = 40; // Estimated height of the toolbar
         const adjustedViewportHeight = viewportHeight - toolbarHeight;
     
-        const zoomX = (viewportWidth) / frame.width * 0.9;
-        const zoomY = (adjustedViewportHeight) / frame.height * 0.9;
+        const zoomX = (viewportWidth) / frame.width * 0.95;
+        const zoomY = (adjustedViewportHeight) / frame.height * 0.95;
         const targetZoom = Math.min(zoomX, zoomY, 10);
     
         const targetCameraX = viewportWidth / 2 - (frame.x + frame.width / 2) * targetZoom;
