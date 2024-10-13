@@ -5,6 +5,7 @@ import { Minus, Plus } from "lucide-react";
 import React, { useState } from "react";
 import { Layers } from "@/types/canvas";
 import { FramesPanel } from "./frames-panel";
+import { Socket } from "socket.io-client";
 
 interface ZoomToolbarProps {
     zoom: number;
@@ -17,6 +18,8 @@ interface ZoomToolbarProps {
     cameraRef: React.RefObject<{ x: number; y: number }>;
     zoomRef: React.RefObject<number>;
     forcedRender: boolean;
+    boardId: string;
+    socket: Socket | null;
 }
 
 const PREDEFINED_PERCENTAGES = [10, 25, 50, 100, 150, 200, 300, 400];
@@ -31,7 +34,9 @@ export const ZoomToolbar = ({
     setLiveLayerIds,
     cameraRef,
     zoomRef,
-    forcedRender
+    forcedRender,
+    boardId,
+    socket
 }: ZoomToolbarProps) => {
     const [showFrames, setShowFrames] = useState(false);
 
@@ -132,6 +137,8 @@ export const ZoomToolbar = ({
                     cameraRef={cameraRef}
                     zoomRef={zoomRef}
                     forceRender={forcedRender}
+                    boardId={boardId}
+                    socket={socket}
                 />
             )}
         </>

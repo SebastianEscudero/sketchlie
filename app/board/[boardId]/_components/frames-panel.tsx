@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, memo } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
-import { Frame, X } from "lucide-react";
+import { Frame, Play, X } from "lucide-react";
 import { Layers, LayerType, FrameLayer } from "@/types/canvas";
 import { LayerPreview } from "@/app/board/[boardId]/_components/layer-preview";
 import {
@@ -21,6 +21,8 @@ import {
     useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { updateR2Bucket } from '@/lib/r2-bucket-functions';
+import { Socket } from "socket.io-client";
 
 interface FramesPanelProps {
     liveLayers: Layers;
@@ -32,6 +34,8 @@ interface FramesPanelProps {
     cameraRef: React.RefObject<{ x: number; y: number }>;
     zoomRef: React.RefObject<number>;
     forceRender: boolean;
+    boardId: string;
+    socket: Socket | null;
 }
 
 interface SortableFramePreviewProps {
@@ -44,6 +48,8 @@ interface SortableFramePreviewProps {
     cameraRef: React.RefObject<{ x: number; y: number }>;
     zoomRef: React.RefObject<number>;
     forceRender: boolean;
+    boardId: string;
+    socket: Socket | null;
 }
 
 const SortableFramePreview = memo<SortableFramePreviewProps>(({
@@ -55,7 +61,9 @@ const SortableFramePreview = memo<SortableFramePreviewProps>(({
     setZoom,
     cameraRef,
     zoomRef,
-    forceRender
+    forceRender,
+    boardId,
+    socket
 }) => {
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: frameId });
 
@@ -148,7 +156,7 @@ const SortableFramePreview = memo<SortableFramePreviewProps>(({
             className="hover:bg-blue-500/20 relative flex flex-col items-center border rounded-sm border-zinc-200 h-[180px] cursor-hand active:cursor-grab transition-colors duration-200"
         >
             {/* Frame number indicator */}
-            <div className="absolute top-1 left-1 w-6 h-6 bg-blue-500 rounded-sm flex items-center justify-center z-10">
+            <div className="absolute top-3 left-3 w-6 h-6 bg-blue-500 rounded-sm flex items-center justify-center z-10">
                 <span className="text-white text-xs font-semibold">{index + 1}</span>
             </div>
             <svg
@@ -189,7 +197,9 @@ export const FramesPanel = memo<FramesPanelProps>(({
     setZoom,
     cameraRef,
     zoomRef,
-    forceRender
+    forceRender,
+    boardId,
+    socket
 }) => {
     const [frameIds, setFrameIds] = useState<string[]>([]);
 
@@ -215,12 +225,22 @@ export const FramesPanel = memo<FramesPanelProps>(({
 
                 const newOrder = arrayMove(items, oldIndex, newIndex);
                 const nonFrameLayerIds = liveLayerIds.filter(id => liveLayers[id].type !== LayerType.Frame);
-                setLiveLayerIds([...newOrder, ...nonFrameLayerIds]);
+                const newLayerIds = [...newOrder, ...nonFrameLayerIds];
+                
+                setLiveLayerIds(newLayerIds);
+
+                // Update R2 bucket
+                updateR2Bucket('/api/r2-bucket/updateLayerIds', boardId, newLayerIds);
+
+                // Emit socket event
+                if (socket) {
+                    socket.emit('layer-send', newLayerIds);
+                }
 
                 return newOrder;
             });
         }
-    }, [liveLayerIds, liveLayers, setLiveLayerIds]);
+    }, [liveLayerIds, liveLayers, setLiveLayerIds, boardId, socket]);
 
     return (
         <div
@@ -233,7 +253,7 @@ export const FramesPanel = memo<FramesPanelProps>(({
                     <X className="h-4 w-4" />
                 </Button>
             </div>
-            <ScrollArea className="h-[calc(100%-60px)] p-4">
+            <ScrollArea className="h-[calc(100%-140px)] p-4">
                 {frameIds.length > 0 ? (
                     <DndContext
                         sensors={sensors}
@@ -261,6 +281,8 @@ export const FramesPanel = memo<FramesPanelProps>(({
                                                 cameraRef={cameraRef}
                                                 zoomRef={zoomRef}
                                                 forceRender={forceRender}
+                                                boardId={boardId}
+                                                socket={socket}
                                             />
                                         </div>
                                     )
@@ -276,6 +298,12 @@ export const FramesPanel = memo<FramesPanelProps>(({
                     </div>
                 )}
             </ScrollArea>
+            <div className="h-[65px] border-t dark:border-zinc-700 p-4 flex flex-row items-center justify-center w-full">
+                <Button variant="sketchlieBlue">
+                    <Play className="h-4 w-4 mr-2 fill-white" strokeWidth={3} />
+                    Present
+                </Button>
+            </div>
         </div>
     );
 });

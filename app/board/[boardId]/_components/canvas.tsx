@@ -2255,6 +2255,8 @@ export const Canvas = ({
                             cameraRef={cameraRef}
                             zoomRef={zoomRef}
                             forcedRender={forceLayerPreviewRender}
+                            boardId={boardId}
+                            socket={socket}
                         />
                     </div>
                     <div
