@@ -180,40 +180,68 @@ export const MediaButton = ({
 
         try {
             let info;
+            let originalWidth, originalHeight;
+            const maxWidth = window.innerWidth / 2;
+            const maxHeight = window.innerHeight / 2;
+
+            const calculateDimensions = (width: number, height: number) => {
+                const aspectRatio = width / height;
+                let newWidth, newHeight;
+
+                if (width > height) {
+                    newWidth = Math.min(width, maxWidth);
+                    newHeight = newWidth / aspectRatio;
+                } else {
+                    newHeight = Math.min(height, maxHeight);
+                    newWidth = newHeight * aspectRatio;
+                }
+
+                return { width: newWidth, height: newHeight };
+            };
+
             switch (activeTab) {
                 case "gifs":
+                    originalWidth = parseInt(media.images.original.width);
+                    originalHeight = parseInt(media.images.original.height);
                     info = {
                         url: media.images.original.url,
-                        dimensions: {
-                            width: media.images.original.width,
-                            height: media.images.original.height
-                        },
+                        dimensions: calculateDimensions(originalWidth, originalHeight),
                         type: 'image'
                     };
                     break;
                 case "images":
+                    originalWidth = media.width;
+                    originalHeight = media.height;
                     info = {
                         url: media.src.original,
-                        dimensions: {
-                            width: media.width,
-                            height: media.height
-                        },
+                        dimensions: calculateDimensions(originalWidth, originalHeight),
                         type: 'image'
                     };
                     break;
                 case "videos":
+                    originalWidth = media.width;
+                    originalHeight = media.height;
                     info = {
                         url: media.video_files.find((file: any) => file.quality === 'hd').link,
-                        dimensions: {
-                            width: media.width,
-                            height: media.height
-                        },
+                        dimensions: calculateDimensions(originalWidth, originalHeight),
                         type: 'video'
                     };
                     break;
             }
             const centerPoint = getCenterOfScreen(camera, zoom, svgRef);
-            insertMedia([{layerType: activeTab === "videos" ? LayerType.Video : LayerType.Image, position: centerPoint, info, zoom}]);
+            // Adjust the insertion point to account for the media's dimensions
+            const adjustedPoint = {
+                x: centerPoint.x - info.dimensions.width / 2,
+                y: centerPoint.y - info.dimensions.height / 2
+            };
+    
+            insertMedia([{
+                layerType: activeTab === "videos" ? LayerType.Video : LayerType.Image, 
+                position: adjustedPoint, 
+                info, 
+                zoom
+            }]);
+            
             toast.success(`${activeTab.slice(0, -1).charAt(0).toUpperCase() + activeTab.slice(0, -1).slice(1)} added successfully`);
         } catch (error) {
             console.error('Error:', error);

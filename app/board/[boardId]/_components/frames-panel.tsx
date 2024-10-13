@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, memo } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
+import { Frame, X } from "lucide-react";
 import { Layers, LayerType, FrameLayer } from "@/types/canvas";
 import { LayerPreview } from "@/app/board/[boardId]/_components/layer-preview";
 import {
@@ -48,6 +48,7 @@ interface SortableFramePreviewProps {
 
 const SortableFramePreview = memo<SortableFramePreviewProps>(({
     frameId,
+    index,
     liveLayers,
     liveLayerIds,
     setCamera,
@@ -77,8 +78,8 @@ const SortableFramePreview = memo<SortableFramePreviewProps>(({
 
     const a4Width = 842;
     const a4Height = 595;
-    const maxHeight = 180
-    const maxWidth = 200 * a4Width / a4Height;
+    const maxHeight = 200;
+    const maxWidth = maxHeight * a4Width / a4Height;
     const scaleX = maxWidth / frame.width;
     const scaleY = maxHeight / frame.height;
     const scale = Math.min(scaleX, scaleY, 1);
@@ -144,8 +145,12 @@ const SortableFramePreview = memo<SortableFramePreviewProps>(({
             {...attributes} 
             {...listeners}
             onDoubleClick={onDoubleClick}
-            className="relative flex flex-col items-center border rounded-sm border-zinc-200 h-[180px] cursor-hand active:cursor-grab transition-colors duration-200 hover:bg-zinc-100 dark:hover:bg-zinc-700"
+            className="hover:bg-blue-500/20 relative flex flex-col items-center border rounded-sm border-zinc-200 h-[180px] cursor-hand active:cursor-grab transition-colors duration-200"
         >
+            {/* Frame number indicator */}
+            <div className="absolute top-1 left-1 w-6 h-6 bg-blue-500 rounded-sm flex items-center justify-center z-10">
+                <span className="text-white text-xs font-semibold">{index + 1}</span>
+            </div>
             <svg
                 width={scaledWidth}
                 height={scaledHeight}
@@ -167,6 +172,8 @@ const SortableFramePreview = memo<SortableFramePreviewProps>(({
                     ))}
                 </g>
             </svg>
+            {/* Transparent overlay to prevent interactions */}
+            <div className="absolute inset-0" />
         </div>
     );
 });
@@ -262,7 +269,11 @@ export const FramesPanel = memo<FramesPanelProps>(({
                         </SortableContext>
                     </DndContext>
                 ) : (
-                    <p className="text-center text-zinc-500">No frames to preview.</p>
+                    <div className="flex flex-col items-center justify-center h-[calc(100vh-250px)] text-center">
+                        <Frame className="h-12 w-12 mb-4" />
+                        <h2 className="text-xl font-semibold mb-2">Start by creating your first frame</h2>
+                        <p className="text-sm text-zinc-500">Frames help you arrange your work for easy exporting and presenting.</p>
+                    </div>
                 )}
             </ScrollArea>
         </div>
