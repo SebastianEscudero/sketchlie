@@ -181,8 +181,8 @@ export const MediaButton = ({
         try {
             let info;
             let originalWidth, originalHeight;
-            const maxWidth = window.innerWidth / 2;
-            const maxHeight = window.innerHeight / 2;
+            const maxWidth = window.innerWidth / 4;
+            const maxHeight = window.innerHeight / 4;
 
             const calculateDimensions = (width: number, height: number) => {
                 const aspectRatio = width / height;
