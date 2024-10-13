@@ -48,8 +48,8 @@ interface ActionsProps {
   setForcedRender?: (forcedRender: boolean) => void;
   User?: User;
   isPrivate: boolean;
-  returnToSelectionModeAfterInsert: boolean;
-  setReturnToSelectionModeAfterInsert: (returnToSelectionModeAfterInsert: boolean) => void;
+  returnToSelectionModeAfterInsert?: boolean;
+  setReturnToSelectionModeAfterInsert?: (returnToSelectionModeAfterInsert: boolean) => void;
 };
 
 export const Actions = ({

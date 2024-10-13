@@ -10,8 +10,8 @@ import { ChevronRight, Settings } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 
 interface PreferencesMenuProps {
-    returnToSelectionModeAfterInsert: boolean;
-    setReturnToSelectionModeAfterInsert: (returnToSelectionModeAfterInsert: boolean) => void;
+    returnToSelectionModeAfterInsert?: boolean;
+    setReturnToSelectionModeAfterInsert?: (returnToSelectionModeAfterInsert: boolean) => void;
 }
 
 export const PreferencesMenu = ({
