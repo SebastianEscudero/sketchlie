@@ -37,8 +37,9 @@ interface LayerPreviewProps {
   selectionColor?: string;
   zoomRef?: React.RefObject<any>;
   forcedRender?: boolean;
-  frameNumber?: number;
   cameraRef?: React.RefObject<any>;
+  liveLayerIds?: string[];
+  liveLayers?: Layers;
 };
 
 export const LayerPreview = memo(({
@@ -53,15 +54,21 @@ export const LayerPreview = memo(({
   expired,
   boardId,
   forcedRender,
-  frameNumber,
   setCamera,
   setZoom,
   cameraRef,
   zoomRef,
+  liveLayerIds,
+  liveLayers,
 }: LayerPreviewProps) => {
 
   if (!layer) {
     return null;
+  }
+
+  let frameNumber;
+  if (layer.type === LayerType.Frame && liveLayerIds && liveLayers) {
+    frameNumber = liveLayerIds.filter(id => liveLayers[id] && liveLayers[id].type === LayerType.Frame).indexOf(id) + 1;
   }
 
   switch (layer.type) {

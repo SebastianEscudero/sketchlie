@@ -2,12 +2,14 @@ interface BackgroundProps {
     background: string;
     zoom: number;
     camera: { x: number; y: number };
+    presentationMode: boolean;
 }
 
 export const Background = ({
     background,
     zoom,
     camera,
+    presentationMode,
 }: BackgroundProps) => {
     const showGrid = zoom >= 0.6;
     const isDark = document.documentElement.classList.contains("dark");
@@ -17,6 +19,7 @@ export const Background = ({
     const adjustedDotSize = Math.max(1, baseDotSize * zoom ** (1 / 2));
 
     const getBackgroundImage = () => {
+        if (presentationMode) return 'none';
         if (!showGrid) return 'none';
 
         switch (background) {
@@ -33,14 +36,21 @@ export const Background = ({
     };
 
     const getBackgroundSize = () => {
+        if (presentationMode) return 'none';
         if (!showGrid) return 'none';
         return background === 'circular-grid' ? `${25 * zoom}px ${25 * zoom}px` : `${65 * zoom}px ${65 * zoom}px`;
     };
 
+    const getBackgroundColor = () => {
+        if (presentationMode) return 'black';
+        return isDark ? '#101011' : '#F9FAFB';
+    };
+
     return (
         <div
-            className={`absolute inset-0 bg-[#F9FAFB] dark:bg-[#101011]`}
+            className="absolute inset-0"
             style={{
+                backgroundColor: getBackgroundColor(),
                 backgroundImage: getBackgroundImage(),
                 backgroundSize: getBackgroundSize(),
                 backgroundPosition: `${camera.x}px ${camera.y}px`,

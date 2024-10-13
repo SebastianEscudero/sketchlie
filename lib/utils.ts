@@ -701,7 +701,7 @@ export function findIntersectingLayerForConnection(
   // Filter out ArrowLayer, LineLayer, and PathLayer before finding intersections
   const filteredLayerIds = layerIds.filter(id => {
     const layer = layers[id];
-    return layer.type !== LayerType.Arrow && layer.type !== LayerType.Line;
+    return layer && layer.type !== LayerType.Arrow && layer.type !== LayerType.Line;
   });
 
   // Use the same logic as before to find intersecting layers, but with filtered IDs

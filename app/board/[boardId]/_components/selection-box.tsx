@@ -169,18 +169,20 @@ export const SelectionBox = memo(({
 
   return (
     <>
-      <rect
-        onContextMenu={handleRightClick}
-        className="pointer-events-none stroke-blue-500 fill-transparent"
-        style={{
-          strokeWidth: strokeWidth,
-          transform: `translate(${bounds.x}px, ${bounds.y}px)`,
-        }}
-        x={0}
-        y={0}
-        width={bounds.width}
-        height={bounds.height}
-      />
+      {!isArrowLayer && (
+        <rect
+          onContextMenu={handleRightClick}
+          className="pointer-events-none stroke-blue-500 fill-transparent"
+          style={{
+            strokeWidth: strokeWidth,
+            transform: `translate(${bounds.x}px, ${bounds.y}px)`,
+          }}
+          x={0}
+          y={0}
+          width={bounds.width}
+          height={bounds.height}
+        />
+      )}
       {showHandles && (
         <>
           {soleLayerId && (

@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { FramesLayersIcon } from "@/public/custom-icons/frames";
 import { Minus, Plus } from "lucide-react";
 import React, { useState } from "react";
-import { Layers } from "@/types/canvas";
+import { CanvasState, Layers } from "@/types/canvas";
 import { FramesPanel } from "./frames-panel";
 import { Socket } from "socket.io-client";
 
@@ -20,6 +20,7 @@ interface ZoomToolbarProps {
     forcedRender: boolean;
     boardId: string;
     socket: Socket | null;
+    setPresentationMode: (mode: boolean) => void;
 }
 
 const PREDEFINED_PERCENTAGES = [10, 25, 50, 100, 150, 200, 300, 400];
@@ -36,7 +37,8 @@ export const ZoomToolbar = ({
     zoomRef,
     forcedRender,
     boardId,
-    socket
+    socket,
+    setPresentationMode
 }: ZoomToolbarProps) => {
     const [showFrames, setShowFrames] = useState(false);
 
@@ -139,6 +141,7 @@ export const ZoomToolbar = ({
                     forceRender={forcedRender}
                     boardId={boardId}
                     socket={socket}
+                    setPresentationMode={setPresentationMode}
                 />
             )}
         </>

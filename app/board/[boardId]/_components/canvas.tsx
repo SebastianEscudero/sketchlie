@@ -37,6 +37,7 @@ import {
     Camera,
     CanvasMode,
     CanvasState,
+    FrameLayer,
     Layer,
     Layers,
     LayerType,
@@ -143,6 +144,17 @@ export const Canvas = ({
     const [suggestedLayerIds, setSuggestedLayerIds] = useState<string[]>([]);
     const [justInsertedText, setJustInsertedText] = useState(false);
     const proModal = useProModal();
+    const [isNearBorder, setIsNearBorder] = useState(false);
+    const [borderMove, setBorderMove] = useState({ x: 0, y: 0 });
+    const [currentFrameIndex, setCurrentFrameIndex] = useState(0);
+    const frameIds = useMemo(() => {
+        if (!liveLayerIds || !liveLayers) return [];
+        return liveLayerIds.filter(id => {
+          const layer = liveLayers[id];
+          return layer && layer.type === LayerType.Frame;
+        });
+    }, [liveLayerIds, liveLayers]);
+    const [presentationMode, setPresentationMode] = useState(false);
     const [background, setBackground] = useState(() => {
         const storedValue = localStorage.getItem('background');
         return storedValue ? storedValue : 'circular-grid';
@@ -1016,6 +1028,7 @@ export const Canvas = ({
 
             setCanvasState({ origin: point, mode: CanvasMode.Pressing });
         } else if (e.button === 2 || e.button === 1) {
+            setPresentationMode(false);
             setIsRightClickPanning(true);
             setStartPanPoint({ x: e.clientX, y: e.clientY });
             document.body.style.cursor = 'url(/custom-cursors/grab.svg) 12 12, auto';
@@ -1026,35 +1039,7 @@ export const Canvas = ({
                 socket.emit('layer-update', selectedLayersRef.current, liveLayers);
             }
         }
-    }, [canvasState.mode, setCanvasState, startDrawing, setIsPanning, setIsRightClickPanning, activeTouches, expired, isPanning, unselectLayers, liveLayers, socket]);
-
-    const [isNearBorder, setIsNearBorder] = useState(false);
-    const [borderMove, setBorderMove] = useState({ x: 0, y: 0 });
-
-    // Add this new useEffect for continuous movement
-    useEffect(() => {
-        let animationFrameId: number;
-
-        const moveCameraLoop = () => {
-            if (isNearBorder) {
-                setCamera(prevCamera => ({
-                    x: prevCamera.x + borderMove.x,
-                    y: prevCamera.y + borderMove.y
-                }));
-                animationFrameId = requestAnimationFrame(moveCameraLoop);
-            }
-        };
-
-        if (isNearBorder) {
-            animationFrameId = requestAnimationFrame(moveCameraLoop);
-        }
-
-        return () => {
-            if (animationFrameId) {
-                cancelAnimationFrame(animationFrameId);
-            }
-        };
-    }, [isNearBorder, borderMove, setCamera]);
+    }, [canvasState.mode, setCanvasState, startDrawing, setIsPanning, setIsRightClickPanning, activeTouches, expired, isPanning, unselectLayers, liveLayers, socket, setPresentationMode]);
 
     const onPointerMove = useCallback((e: React.PointerEvent) => {
         e.preventDefault();
@@ -2019,17 +2004,50 @@ export const Canvas = ({
     }, [copySelectedLayers, pasteCopiedLayers, camera, zoom, liveLayers, copiedLayerIds, liveLayerIds, myPresence, socket, User.userId, forceSelectionBoxRender, canvasState,
         boardId, history.length, mousePosition, performAction, redo, redoStack.length, setLiveLayerIds, setLiveLayers, undo, unselectLayers, expired, translateSelectedLayersWithDelta, initialLayers]);
 
-
     useEffect(() => {
         // just to make sure there are no dangling points
         if (canvasState.mode === CanvasMode.None) {
             setPencilDraft([]);
         }
 
+        // stop presentation mode if we are moving
+        if (canvasState.mode === CanvasMode.Moving) {
+            setPresentationMode(false);
+        }
+
         canvasStateRef.current = canvasState;
         zoomRef.current = zoom;
         cameraRef.current = camera;
     }, [canvasState, zoom, camera]);
+
+    // This moves the camera when the user is near the border of the canvas
+    useEffect(() => {
+        let animationFrameId: number;
+
+        if (presentationMode || canvasState.mode === CanvasMode.None) {
+            return;
+        }
+
+        const moveCameraLoop = () => {
+            if (isNearBorder) {
+                setCamera(prevCamera => ({
+                    x: prevCamera.x + borderMove.x,
+                    y: prevCamera.y + borderMove.y
+                }));
+                animationFrameId = requestAnimationFrame(moveCameraLoop);
+            }
+        };
+
+        if (isNearBorder) {
+            animationFrameId = requestAnimationFrame(moveCameraLoop);
+        }
+
+        return () => {
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
+        };
+    }, [isNearBorder, borderMove, setCamera, canvasState.mode, presentationMode]);
 
     useEffect(() => {
         // prevent safari from going back/forward
@@ -2104,13 +2122,31 @@ export const Canvas = ({
 
             const svg = svgRef.current as SVGSVGElement;
             const viewBox = svg.viewBox.baseVal;
-            const visibleRect = {
-                x: -camera.x / zoom,
-                y: -camera.y / zoom,
-                width: viewBox.width / zoom,
-                height: viewBox.height / zoom
-            };
+            let visibleRect;
 
+            // Check if we're in presentation mode and have frames
+            if (presentationMode && frameIds.length > 0) {
+                const currentFrameId = frameIds[currentFrameIndex];
+                const currentFrame = liveLayers[currentFrameId] as FrameLayer;
+
+                // Set the visible rectangle to the current frame's dimensions
+                visibleRect = {
+                    x: currentFrame.x,
+                    y: currentFrame.y,
+                    width: currentFrame.width,
+                    height: currentFrame.height
+                };
+            } else {
+                // If not in presentation mode, calculate visible area based on camera and zoom
+                visibleRect = {
+                    x: -camera.x / zoom,
+                    y: -camera.y / zoom,
+                    width: viewBox.width / zoom,
+                    height: viewBox.height / zoom
+                };
+            }
+
+            // Filter layers to only include those visible within the current visible rectangle
             const newVisibleLayers = liveLayerIds.filter((layerId: string) => {
                 const layer = liveLayers[layerId];
                 if (layer) {
@@ -2122,13 +2158,67 @@ export const Canvas = ({
         };
 
         updateVisibleLayers();
-    }, [liveLayerIds, liveLayers, camera, zoom]);
+    }, [liveLayerIds, liveLayers, camera, zoom, presentationMode, frameIds, currentFrameIndex]);
 
-    const [presenting, setPresenting] = useState(false);
+    const goToFrame = useCallback((index: number) => {
+        const totalFrames = frameIds.length;
+        if (totalFrames === 0) return;
+
+        // Ensure the index is within bounds using modulo
+        const safeIndex = ((index % totalFrames) + totalFrames) % totalFrames;
+
+        const frameId = frameIds[safeIndex];
+        const frame = liveLayers[frameId] as FrameLayer;
+
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+
+        const zoomX = (viewportWidth) / frame.width * 0.9;
+        const zoomY = (viewportHeight) / frame.height * 0.9;
+        const targetZoom = Math.min(zoomX, zoomY, 10);
+
+        const targetCameraX = viewportWidth / 2 - (frame.x + frame.width / 2) * targetZoom;
+        const targetCameraY = viewportHeight / 2 - (frame.y + frame.height / 2) * targetZoom;
+
+        setZoom(targetZoom);
+        setCamera({ x: targetCameraX, y: targetCameraY });
+        setCurrentFrameIndex(safeIndex);
+    }, [frameIds, liveLayers, setZoom, setCamera]);
+
+    const goToNextFrame = useCallback(() => {
+        goToFrame(currentFrameIndex + 1);
+    }, [currentFrameIndex, goToFrame]);
+
+    const goToPreviousFrame = useCallback(() => {
+        goToFrame(currentFrameIndex - 1);
+    }, [currentFrameIndex, goToFrame]);
+
+    useEffect(() => {
+        if (presentationMode) {
+            goToFrame(0);
+        }
+    }, [presentationMode, goToFrame]);
+
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (presentationMode) {
+                if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                    goToNextFrame();
+                } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                    goToPreviousFrame();
+                } else if (e.key === 'Escape') {
+                    setPresentationMode(false);
+                }
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [presentationMode, goToNextFrame, goToPreviousFrame]);
 
     return (
         <>
-            <Background background={background} zoom={zoom} camera={camera} />
+            <Background background={background} zoom={zoom} camera={camera} presentationMode={presentationMode} />
             <main
                 className="fixed h-full w-full touch-none overscroll-none"
                 style={{
@@ -2175,7 +2265,7 @@ export const Canvas = ({
                             socket={socket}
                             expired={expired}
                             board={board}
-                            setPresenting={setPresenting}
+                            setPresentationMode={setPresentationMode}
                         />
                         <Toolbar
                             pathColor={pathColor}
@@ -2257,6 +2347,7 @@ export const Canvas = ({
                             forcedRender={forceLayerPreviewRender}
                             boardId={boardId}
                             socket={socket}
+                            setPresentationMode={setPresentationMode}
                         />
                     </div>
                     <div
@@ -2317,20 +2408,12 @@ export const Canvas = ({
                                     )}
                                     {visibleLayers.map((layerId: string) => {
                                         const isFocused = selectedLayersRef.current.length === 1 && selectedLayersRef.current[0] === layerId && !justChanged;
-                                        let layer = liveLayers[layerId];
-
-                                        // frame logic 
-                                        let frameNumber = 1;
-                                        if (layer && layer.type === LayerType.Frame) {
-                                            frameNumber = liveLayerIds.filter(id => liveLayers[id] && liveLayers[id].type === LayerType.Frame).indexOf(layerId) + 1;
-                                        }
-
                                         return (
                                             <LayerPreview
                                                 selectionColor={layerIdsToColorSelection[layerId]}
                                                 onLayerPointerDown={onLayerPointerDown}
                                                 focused={isFocused}
-                                                layer={layer}
+                                                layer={liveLayers[layerId]}
                                                 setLiveLayers={setLiveLayers}
                                                 key={layerId}
                                                 id={layerId}
@@ -2339,11 +2422,12 @@ export const Canvas = ({
                                                 expired={expired}
                                                 boardId={boardId}
                                                 forcedRender={forceLayerPreviewRender}
-                                                frameNumber={frameNumber}
                                                 setCamera={setCamera}
                                                 setZoom={setZoom}
                                                 cameraRef={cameraRef}
                                                 zoomRef={zoomRef}
+                                                liveLayerIds={liveLayerIds}
+                                                liveLayers={liveLayers}
                                             />
                                         );
                                     })}

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, memo } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { Frame, Play, X } from "lucide-react";
-import { Layers, LayerType, FrameLayer } from "@/types/canvas";
+import { CanvasState, Layers, LayerType, FrameLayer, CanvasMode } from "@/types/canvas";
 import { LayerPreview } from "@/app/board/[boardId]/_components/layer-preview";
 import {
     DndContext,
@@ -36,6 +36,7 @@ interface FramesPanelProps {
     forceRender: boolean;
     boardId: string;
     socket: Socket | null;
+    setPresentationMode: (mode: boolean) => void;
 }
 
 interface SortableFramePreviewProps {
@@ -48,8 +49,6 @@ interface SortableFramePreviewProps {
     cameraRef: React.RefObject<{ x: number; y: number }>;
     zoomRef: React.RefObject<number>;
     forceRender: boolean;
-    boardId: string;
-    socket: Socket | null;
 }
 
 const SortableFramePreview = memo<SortableFramePreviewProps>(({
@@ -62,8 +61,6 @@ const SortableFramePreview = memo<SortableFramePreviewProps>(({
     cameraRef,
     zoomRef,
     forceRender,
-    boardId,
-    socket
 }) => {
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: frameId });
 
@@ -199,7 +196,8 @@ export const FramesPanel = memo<FramesPanelProps>(({
     zoomRef,
     forceRender,
     boardId,
-    socket
+    socket,
+    setPresentationMode
 }) => {
     const [frameIds, setFrameIds] = useState<string[]>([]);
 
@@ -281,8 +279,6 @@ export const FramesPanel = memo<FramesPanelProps>(({
                                                 cameraRef={cameraRef}
                                                 zoomRef={zoomRef}
                                                 forceRender={forceRender}
-                                                boardId={boardId}
-                                                socket={socket}
                                             />
                                         </div>
                                     )
@@ -299,7 +295,7 @@ export const FramesPanel = memo<FramesPanelProps>(({
                 )}
             </ScrollArea>
             <div className="h-[65px] border-t dark:border-zinc-700 p-4 flex flex-row items-center justify-center w-full">
-                <Button variant="sketchlieBlue">
+                <Button variant="sketchlieBlue" onClick={() => setPresentationMode(true)}>
                     <Play className="h-4 w-4 mr-2 fill-white" strokeWidth={3} />
                     Present
                 </Button>

@@ -1,7 +1,7 @@
 "use client";
 
 import { connectionIdToColor } from "@/lib/utils";
-import { User } from "@/types/canvas";
+import { CanvasMode, CanvasState, User } from "@/types/canvas";
 import { UserAvatar } from "./user-avatar";
 import { Button } from "@/components/ui/button";
 import { OrganizationInvite } from "@/components/auth/organization-invite";
@@ -17,7 +17,7 @@ interface ParticipantsProps {
     socket: any;
     expired: boolean;
     board: any;
-    setPresenting: (presenting: boolean) => void;
+    setPresentationMode: (mode: boolean) => void;
 }
 
 export const Participants = ({
@@ -27,7 +27,7 @@ export const Participants = ({
     socket,
     expired,
     board,
-    setPresenting
+    setPresentationMode
 }: ParticipantsProps) => {
 
     const hasMoreUsers = otherUsers && otherUsers.length > MAX_SHOWN_USERS;
@@ -73,10 +73,14 @@ export const Participants = ({
                     <ChevronDown className="h-5 w-5" />
                 </div>
             </UsersDialogBoard>
-            {/*<Button variant="presentation" className="hidden md:flex ml-2 h-8 w-24 p-1 text-sm" onClick={() => setPresenting(true)}>
+            <Button 
+                variant="presentation" 
+                className="hidden md:flex ml-2 h-8 w-24 p-1 text-sm" 
+                onClick={() => setPresentationMode(true)}
+            >
                 <Play className="h-4 w-4 mr-1" strokeWidth={2} />
                 Present
-            </Button>*/}
+            </Button>
             {org && expired !== true && User.information.role === "Admin" && (
                 <OrganizationInvite
                     activeOrganization={org.id}
