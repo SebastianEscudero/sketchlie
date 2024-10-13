@@ -16,13 +16,17 @@ export const exportFramesToPdf = async (title: string, isTransparent: boolean, l
       return;
     }
 
-    // Create a new jsPDF instance
+    console.log(`Number of frames: ${frames.length}`);
+
+    // Create a new jsPDF instance with compression enabled
     const doc = new jsPDF({
       orientation: "landscape",
-      unit: 'px',
-      format: 'a4'
+      unit: 'pt',
+      format: 'a4',
+      compress: true  // Enable compression
     });
 
+    let totalImageSize = 0;
 
     for (let i = 0; i < frames.length; i++) {
       const frame = frames[i];
@@ -30,6 +34,7 @@ export const exportFramesToPdf = async (title: string, isTransparent: boolean, l
 
       // Generate HTML content for the frame
       const htmlContent = generateFrameSvg(frame, liveLayers, liveLayerIds);
+
       const docParser = parser.parseFromString(htmlContent, 'text/html');
       const simulatedCanvas = docParser.body.firstChild as HTMLElement;
 
@@ -42,19 +47,20 @@ export const exportFramesToPdf = async (title: string, isTransparent: boolean, l
         // Use domToCanvas to render the canvas
         const canvas = await domToCanvas(container, {
           backgroundColor: isTransparent ? 'rgba(0,0,0,0)' : (document.documentElement.classList.contains("dark") ? '#2C2C2C' : 'white'),
-          scale: 2,
+          scale: 1,
           quality: 1,
         });
 
         // Convert canvas to data URL
-        const imgData = canvas.toDataURL('image/jpeg', 1);
+        const imgData = canvas.toDataURL('image/jpeg', 0.8);
+        totalImageSize += imgData.length;
 
         if (document.documentElement.classList.contains("dark")) {
           doc.setFillColor("#2c2c2c");
           doc.rect(0, 0, doc.internal.pageSize.getWidth(), doc.internal.pageSize.getHeight(), 'F');
         }
 
-        // Add the image to the PDF
+        // Add the image to the PDF with compression
         let imgWidth = doc.internal.pageSize.getWidth();
         let imgHeight = (canvas.height * imgWidth) / canvas.width;
         let x = 0
@@ -67,8 +73,7 @@ export const exportFramesToPdf = async (title: string, isTransparent: boolean, l
           y = (doc.internal.pageSize.getHeight() - imgHeight) / 2;
         }
 
-
-        doc.addImage(imgData, 'JPEG', x, y, imgWidth, imgHeight);
+        doc.addImage(imgData, 'JPEG', x, y, imgWidth, imgHeight, '', 'FAST');
 
         // Add a new page for the next frame, if it's not the last frame
         if (i < frames.length - 1) {
@@ -82,7 +87,11 @@ export const exportFramesToPdf = async (title: string, isTransparent: boolean, l
       }
     }
 
+
     // Save the PDF
+    const pdfOutput = doc.output('datauristring');
+    console.log(`Final PDF size: ${pdfOutput.length / 1024} KB`);
+
     doc.save(`${title}.pdf`);
 
   } catch (error) {
