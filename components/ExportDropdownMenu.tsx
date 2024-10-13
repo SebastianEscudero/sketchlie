@@ -1,4 +1,4 @@
-import { exportFramesToPdf, exportToJPG, exportToJSON, exportToPdf, exportToPNG, exportToSVG } from "@/lib/export";
+import { exportFramesToPdf, exportToJPG, exportToJSON, exportToPNG, exportToSVG } from "@/lib/export";
 import { useRoom } from "./room";
 import {
     DropdownMenu,
