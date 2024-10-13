@@ -2252,6 +2252,9 @@ export const Canvas = ({
                             liveLayers={liveLayers}
                             liveLayerIds={liveLayerIds}
                             setLiveLayerIds={setLiveLayerIds}
+                            cameraRef={cameraRef}
+                            zoomRef={zoomRef}
+                            forcedRender={forceLayerPreviewRender}
                         />
                     </div>
                     <div
