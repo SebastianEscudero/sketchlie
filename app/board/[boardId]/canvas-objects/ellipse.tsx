@@ -16,6 +16,7 @@ interface EllipseProps {
   socket?: Socket;
   focused?: boolean;
   forcedRender?: boolean;
+  showOutlineOnHover?: boolean;
 };
 
 export const Ellipse = memo(({
@@ -28,6 +29,7 @@ export const Ellipse = memo(({
   socket,
   focused = false,
   forcedRender = false,
+  showOutlineOnHover = false,
 }: EllipseProps) => {
   const { x, y, width, height, fill, outlineFill, value, textFontSize, fontFamily } = layer;
   const alignX = layer.alignX || "center";
@@ -108,7 +110,7 @@ export const Ellipse = memo(({
       pointerEvents="auto"
       onPointerDown={(e) => handlePointerDown(e)}
       onTouchStart={(e) => handleTouchStart(e)}
-      onPointerEnter={(e) => {if (e.buttons === 0 && document.body.style.cursor === 'default') {setStrokeColor("#3390FF")}}}
+      onPointerEnter={() => { if (showOutlineOnHover) { setStrokeColor("#3390FF") } }}
       onPointerLeave={() => setStrokeColor(selectionColor || colorToCss(outlineFill || fill))}
     >
       <ellipse

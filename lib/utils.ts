@@ -728,6 +728,7 @@ export function findIntersectingLayersWithRectangle(
   layers: { [key: string]: Layer },
   a: Point,
   b: Point,
+  presentationMode?: boolean
 ) {
   const rect = {
     x: Math.min(a.x, b.x),
@@ -742,6 +743,11 @@ export function findIntersectingLayersWithRectangle(
     const layer = layers[layerId];
 
     if (layer == null) {
+      continue;
+    }
+
+    // Skip frames if in presentation mode
+    if (presentationMode && layer.type === LayerType.Frame) {
       continue;
     }
 

@@ -10,6 +10,7 @@ interface ArrowProps {
   startConnectedLayer?: Layer;
   endConnectedLayer?: Layer;
   forcedRender?: boolean;
+  showOutlineOnHover?: boolean;
 };
 
 export const Arrow = ({
@@ -18,6 +19,7 @@ export const Arrow = ({
   selectionColor,
   onPointerDown,
   forcedRender = false,
+  showOutlineOnHover = false,
 }: ArrowProps) => {
   const { fill, width, height, center, x, y, startArrowHead, endArrowHead, orientation } = layer;
   const [strokeColor, setStrokeColor] = useState(selectionColor || colorToCss(fill));
@@ -72,7 +74,7 @@ export const Arrow = ({
         strokeLinecap="round"
         strokeLinejoin="round"
         pointerEvents="auto"
-        onPointerEnter={(e) => {if (e.buttons === 0 && document.body.style.cursor === 'default') {setStrokeColor("#3390FF")}}}
+        onPointerEnter={() => { if (showOutlineOnHover) { setStrokeColor("#3390FF") } }}
         onPointerLeave={() => setStrokeColor(selectionColor || colorToCss(fill))}
       />
       {endArrowHead === ArrowHead.Triangle && (

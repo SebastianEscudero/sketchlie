@@ -150,8 +150,8 @@ export const Canvas = ({
     const frameIds = useMemo(() => {
         if (!liveLayerIds || !liveLayers) return [];
         return liveLayerIds.filter(id => {
-          const layer = liveLayers[id];
-          return layer && layer.type === LayerType.Frame;
+            const layer = liveLayers[id];
+            return layer && layer.type === LayerType.Frame;
         });
     }, [liveLayerIds, liveLayers]);
     const [presentationMode, setPresentationMode] = useState(false);
@@ -574,6 +574,7 @@ export const Canvas = ({
             liveLayers,
             origin,
             current,
+            presentationMode
         );
 
         selectedLayersRef.current = ids;
@@ -2163,27 +2164,32 @@ export const Canvas = ({
     const goToFrame = useCallback((index: number) => {
         const totalFrames = frameIds.length;
         if (totalFrames === 0) return;
-
+    
         // Ensure the index is within bounds using modulo
         const safeIndex = ((index % totalFrames) + totalFrames) % totalFrames;
-
+    
         const frameId = frameIds[safeIndex];
         const frame = liveLayers[frameId] as FrameLayer;
-
+    
         const viewportWidth = window.innerWidth;
         const viewportHeight = window.innerHeight;
-
+    
+        // Adjust the vertical space to account for the toolbar
+        const toolbarHeight = 40; // Estimated height of the toolbar
+        const adjustedViewportHeight = viewportHeight - toolbarHeight;
+    
         const zoomX = (viewportWidth) / frame.width * 0.9;
-        const zoomY = (viewportHeight) / frame.height * 0.9;
+        const zoomY = (adjustedViewportHeight) / frame.height * 0.9;
         const targetZoom = Math.min(zoomX, zoomY, 10);
-
+    
         const targetCameraX = viewportWidth / 2 - (frame.x + frame.width / 2) * targetZoom;
-        const targetCameraY = viewportHeight / 2 - (frame.y + frame.height / 2) * targetZoom;
-
+        // Adjust the Y position to move the frame up
+        const targetCameraY = (adjustedViewportHeight / 2 - (frame.y + frame.height / 2) * targetZoom) - toolbarHeight / 2;
+    
         setZoom(targetZoom);
         setCamera({ x: targetCameraX, y: targetCameraY });
         setCurrentFrameIndex(safeIndex);
-    }, [frameIds, liveLayers, setZoom, setCamera]);
+    }, [frameIds, liveLayers, setZoom, setCamera, presentationMode]);
 
     const goToNextFrame = useCallback(() => {
         goToFrame(currentFrameIndex + 1);
@@ -2194,9 +2200,27 @@ export const Canvas = ({
     }, [currentFrameIndex, goToFrame]);
 
     useEffect(() => {
-        if (presentationMode) {
-            goToFrame(0);
-        }
+        const enterFullscreenAndGoToFrame = async () => {
+            if (presentationMode) {
+                if (document.documentElement.requestFullscreen) {
+                    try {
+                        await document.documentElement.requestFullscreen();
+                        // Wait a bit for the browser to update window dimensions
+                        await new Promise(resolve => setTimeout(resolve, 100));
+                        goToFrame(0);
+                    } catch (error) {
+                        console.error("Couldn't enter fullscreen:", error);
+                        // If fullscreen fails, still go to the first frame
+                        goToFrame(0);
+                    }
+                } else {
+                    // If fullscreen is not supported, just go to the first frame
+                    goToFrame(0);
+                }
+            }
+        };
+    
+        enterFullscreenAndGoToFrame();
     }, [presentationMode, goToFrame]);
 
     useEffect(() => {
@@ -2206,15 +2230,24 @@ export const Canvas = ({
                     goToNextFrame();
                 } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
                     goToPreviousFrame();
-                } else if (e.key === 'Escape') {
-                    setPresentationMode(false);
                 }
             }
         };
-
+    
+        const handleFullscreenChange = () => {
+            if (!document.fullscreenElement && presentationMode) {
+                setPresentationMode(false);
+            }
+        };
+    
         window.addEventListener('keydown', handleKeyDown);
-        return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [presentationMode, goToNextFrame, goToPreviousFrame]);
+        document.addEventListener('fullscreenchange', handleFullscreenChange);
+    
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+            document.removeEventListener('fullscreenchange', handleFullscreenChange);
+        };
+    }, [presentationMode, goToNextFrame, goToPreviousFrame, setPresentationMode]);
 
     return (
         <>
@@ -2230,43 +2263,6 @@ export const Canvas = ({
                 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
                 <div className="h-full w-full">
                     <div className="z-20 absolute h-full w-full pointer-events-none">
-                        <Info
-                            board={board}
-                            org={org}
-                            setBackground={setBackground}
-                            Background={background}
-                            setLiveLayerIds={setLiveLayerIds}
-                            setLiveLayers={setLiveLayers}
-                            performAction={performAction}
-                            socket={socket}
-                            setCanvasState={setCanvasState}
-                            nanoid={nanoid}
-                            zoom={zoom}
-                            camera={camera}
-                            selectedLayersRef={selectedLayersRef}
-                            setIsShowingAIInput={setIsShowingAIInput}
-                            isShowingAIInput={isShowingAIInput}
-                            setForcedRender={setForceLayerPreviewRender}
-                            User={User}
-                            svgRef={svgRef}
-                        />
-                        <MoveBackToContent
-                            setCamera={setCamera}
-                            setZoom={setZoom}
-                            showButton={visibleLayers.length === 0 && liveLayerIds.length > 0}
-                            liveLayers={liveLayers}
-                            cameraRef={cameraRef}
-                            zoomRef={zoomRef}
-                        />
-                        <Participants
-                            org={org}
-                            otherUsers={otherUsers}
-                            User={User}
-                            socket={socket}
-                            expired={expired}
-                            board={board}
-                            setPresentationMode={setPresentationMode}
-                        />
                         <Toolbar
                             pathColor={pathColor}
                             pathStrokeSize={pathStrokeSize}
@@ -2297,58 +2293,104 @@ export const Canvas = ({
                             camera={camera}
                             svgRef={svgRef}
                             zoom={zoom}
-                        />
-                        {!IsArrowPostInsertMenuOpen && !isMoving && canvasState.mode !== CanvasMode.Resizing && canvasState.mode !== CanvasMode.ArrowResizeHandler && canvasState.mode !== CanvasMode.SelectionNet && activeTouches < 2 && (
-                            <SelectionTools
-                                board={board}
-                                boardId={boardId}
-                                setLiveLayerIds={setLiveLayerIds}
-                                setLiveLayers={setLiveLayers}
-                                liveLayerIds={liveLayerIds}
-                                liveLayers={liveLayers}
-                                selectedLayersRef={selectedLayersRef}
-                                zoom={zoom}
-                                camera={camera}
-                                socket={socket}
-                                performAction={performAction}
-                                org={org}
-                                proModal={proModal}
-                                myPresence={myPresence}
-                                setMyPresence={setMyPresence}
-                                canvasState={canvasState.mode}
-                            />
-                        )}
-                        {liveLayers[selectedLayersRef.current[0]] && IsArrowPostInsertMenuOpen && (
-                            <ArrowPostInsertMenu
-                                selectedLayersRef={selectedLayersRef}
-                                liveLayers={liveLayers}
-                                zoom={zoom}
-                                camera={camera}
-                                setLiveLayers={setLiveLayers}
-                                setLiveLayerIds={setLiveLayerIds}
-                                boardId={boardId}
-                                socket={socket}
-                                org={org}
-                                proModal={proModal}
-                                performAction={performAction}
-                                setIsArrowPostInsertMenuOpen={setIsArrowPostInsertMenuOpen}
-                            />
-                        )}
-                        <ZoomToolbar
-                            zoom={zoom}
-                            setZoom={setZoom}
-                            setCamera={setCamera}
-                            camera={camera}
-                            liveLayers={liveLayers}
-                            liveLayerIds={liveLayerIds}
-                            setLiveLayerIds={setLiveLayerIds}
-                            cameraRef={cameraRef}
-                            zoomRef={zoomRef}
-                            forcedRender={forceLayerPreviewRender}
-                            boardId={boardId}
-                            socket={socket}
+                            presentationMode={presentationMode}
                             setPresentationMode={setPresentationMode}
+                            frameIds={frameIds}
+                            currentFrameIndex={currentFrameIndex}
+                            goToFrame={goToFrame}
                         />
+                        {!presentationMode && (
+                            <>
+                                <Info
+                                    board={board}
+                                    org={org}
+                                    setBackground={setBackground}
+                                    Background={background}
+                                    setLiveLayerIds={setLiveLayerIds}
+                                    setLiveLayers={setLiveLayers}
+                                    performAction={performAction}
+                                    socket={socket}
+                                    setCanvasState={setCanvasState}
+                                    nanoid={nanoid}
+                                    zoom={zoom}
+                                    camera={camera}
+                                    selectedLayersRef={selectedLayersRef}
+                                    setIsShowingAIInput={setIsShowingAIInput}
+                                    isShowingAIInput={isShowingAIInput}
+                                    setForcedRender={setForceLayerPreviewRender}
+                                    User={User}
+                                    svgRef={svgRef}
+                                />
+                                <MoveBackToContent
+                                    setCamera={setCamera}
+                                    setZoom={setZoom}
+                                    showButton={visibleLayers.length === 0 && liveLayerIds.length > 0}
+                                    liveLayers={liveLayers}
+                                    cameraRef={cameraRef}
+                                    zoomRef={zoomRef}
+                                />
+                                <Participants
+                                    org={org}
+                                    otherUsers={otherUsers}
+                                    User={User}
+                                    socket={socket}
+                                    expired={expired}
+                                    board={board}
+                                    setPresentationMode={setPresentationMode}
+                                />
+                                {!IsArrowPostInsertMenuOpen && !isMoving && canvasState.mode !== CanvasMode.Resizing && canvasState.mode !== CanvasMode.ArrowResizeHandler && canvasState.mode !== CanvasMode.SelectionNet && activeTouches < 2 && (
+                                    <SelectionTools
+                                        board={board}
+                                        boardId={boardId}
+                                        setLiveLayerIds={setLiveLayerIds}
+                                        setLiveLayers={setLiveLayers}
+                                        liveLayerIds={liveLayerIds}
+                                        liveLayers={liveLayers}
+                                        selectedLayersRef={selectedLayersRef}
+                                        zoom={zoom}
+                                        camera={camera}
+                                        socket={socket}
+                                        performAction={performAction}
+                                        org={org}
+                                        proModal={proModal}
+                                        myPresence={myPresence}
+                                        setMyPresence={setMyPresence}
+                                        canvasState={canvasState.mode}
+                                    />
+                                )}
+                                {liveLayers[selectedLayersRef.current[0]] && IsArrowPostInsertMenuOpen && (
+                                    <ArrowPostInsertMenu
+                                        selectedLayersRef={selectedLayersRef}
+                                        liveLayers={liveLayers}
+                                        zoom={zoom}
+                                        camera={camera}
+                                        setLiveLayers={setLiveLayers}
+                                        setLiveLayerIds={setLiveLayerIds}
+                                        boardId={boardId}
+                                        socket={socket}
+                                        org={org}
+                                        proModal={proModal}
+                                        performAction={performAction}
+                                        setIsArrowPostInsertMenuOpen={setIsArrowPostInsertMenuOpen}
+                                    />
+                                )}
+                                <ZoomToolbar
+                                    zoom={zoom}
+                                    setZoom={setZoom}
+                                    setCamera={setCamera}
+                                    camera={camera}
+                                    liveLayers={liveLayers}
+                                    liveLayerIds={liveLayerIds}
+                                    setLiveLayerIds={setLiveLayerIds}
+                                    cameraRef={cameraRef}
+                                    zoomRef={zoomRef}
+                                    forcedRender={forceLayerPreviewRender}
+                                    boardId={boardId}
+                                    socket={socket}
+                                    setPresentationMode={setPresentationMode}
+                                />
+                            </>
+                        )}
                     </div>
                     <div
                         id="canvas"
@@ -2408,6 +2450,7 @@ export const Canvas = ({
                                     )}
                                     {visibleLayers.map((layerId: string) => {
                                         const isFocused = selectedLayersRef.current.length === 1 && selectedLayersRef.current[0] === layerId && !justChanged;
+                                        const showOutlineOnHover = canvasState.mode === CanvasMode.None && !presentationMode;
                                         return (
                                             <LayerPreview
                                                 selectionColor={layerIdsToColorSelection[layerId]}
@@ -2428,6 +2471,7 @@ export const Canvas = ({
                                                 zoomRef={zoomRef}
                                                 liveLayerIds={liveLayerIds}
                                                 liveLayers={liveLayers}
+                                                showOutlineOnHover={showOutlineOnHover}
                                             />
                                         );
                                     })}

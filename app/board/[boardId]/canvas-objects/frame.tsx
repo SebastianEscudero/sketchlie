@@ -12,7 +12,7 @@ interface FrameProps {
     frameNumber?: number;
     forcedRender?: boolean;
     selectionColor?: string;
-
+    showOutlineOnHover?: boolean;
 };
 
 export const Frame = memo(({
@@ -24,7 +24,8 @@ export const Frame = memo(({
     id,
     frameNumber,
     selectionColor,
-    forcedRender
+    forcedRender,
+    showOutlineOnHover
 }: FrameProps) => {
     const { x, y, width, height, value: initialValue } = layer;
     const fontSize = Math.min(width, height) * 0.05;
@@ -59,13 +60,14 @@ export const Frame = memo(({
 
     return (
         <g
+            style={{pointerEvents: showOutlineOnHover ? "auto" : "none"}}
             transform={`translate(${x}, ${y})`}
             onPointerDown={(e) => onPointerDown?.(e, id)}
             onDoubleClick={handleDoubleClick}
             pointerEvents="auto"
             data-id={`frame-${frameNumber}`}
-            onPointerEnter={(e) => { if (e.buttons === 0 && document.body.style.cursor === 'default') { setStrokeColor("#3390FF") } }}
-            onPointerLeave={() => setStrokeColor(selectionColor || document.documentElement.classList.contains("dark") ? "#FFFFFF" : "#000000")}
+            onPointerEnter={() => { if (showOutlineOnHover) { setStrokeColor("#3390FF") } }}
+            onPointerLeave={() => { setStrokeColor(selectionColor || document.documentElement.classList.contains("dark") ? "#FFFFFF" : "#000000") }}
         >
             {isEditing ? (
                 <foreignObject x={padding} y={-(padding + fontSize)} width={width - 2 * padding} height={fontSize + 10}>

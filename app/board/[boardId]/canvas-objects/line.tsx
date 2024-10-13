@@ -8,6 +8,7 @@ interface LineProps {
   onPointerDown?: (e: React.PointerEvent, id: string) => void;
   selectionColor?: string;
   forcedRender?: boolean;
+  showOutlineOnHover?: boolean;
 };
 
 export const Line = ({
@@ -16,6 +17,7 @@ export const Line = ({
   selectionColor,
   onPointerDown,
   forcedRender = false,
+  showOutlineOnHover = false,
 }: LineProps) => {
   const { fill, x, y, width, height, center } = layer;
   const fillColor = colorToCss(fill);
@@ -50,7 +52,7 @@ export const Line = ({
       strokeLinecap="round"
       strokeLinejoin="round"
       pointerEvents="auto"
-      onPointerEnter={(e) => {if (e.buttons === 0 && document.body.style.cursor === 'default') {setStrokeColor("#3390FF")}}}
+      onPointerEnter={() => { if (showOutlineOnHover) { setStrokeColor("#3390FF") } }}
       onPointerLeave={() => setStrokeColor(selectionColor || colorToCss(fill))}
     />
   );

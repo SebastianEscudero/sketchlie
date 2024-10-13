@@ -18,6 +18,7 @@ interface TextProps {
   focused?: boolean;
   boardId?: string;
   forcedRender?: boolean;
+  showOutlineOnHover?: boolean;
 };
 
 const throttledUpdateLayer = throttle((boardId, layerId, layerUpdates) => {
@@ -36,6 +37,7 @@ export const Text = memo(({
   focused = false,
   boardId,
   forcedRender = false,
+  showOutlineOnHover
 }: TextProps) => {
   const { x, y, width, height, fill, value: initialValue, textFontSize, fontFamily } = layer;
   const alignX = layer.alignX || "center";
@@ -142,15 +144,17 @@ export const Text = memo(({
     <g
       transform={`translate(${x}, ${y})`}
       pointerEvents="auto"
-      onPointerEnter={(e) => {if (e.buttons === 0 && document.body.style.cursor === 'default') {setStrokeColor("#3390FF")}}}
+      onPointerEnter={(e) => {if (showOutlineOnHover) {setStrokeColor("#3390FF")}}}
       onPointerLeave={() => setStrokeColor(selectionColor || "none")}
     >
       <rect
         width={width}
         height={height}
         stroke={strokeColor}
-        strokeWidth={2}
+        strokeWidth="1"
         className="fill-transparent"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />  
       <foreignObject
         width={width}

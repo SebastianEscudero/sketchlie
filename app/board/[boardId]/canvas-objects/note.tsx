@@ -16,6 +16,7 @@ interface NoteProps {
   socket?: Socket;
   focused?: boolean;
   forcedRender?: boolean;
+  showOutlineOnHover?: boolean;
 };
 
 export const Note = memo(({
@@ -28,6 +29,7 @@ export const Note = memo(({
   socket,
   focused = false,
   forcedRender = false,
+  showOutlineOnHover = false,
 }: NoteProps) => {
   const { x, y, width, height, fill, outlineFill, value, textFontSize, fontFamily } = layer;
   const alignX = layer.alignX || "center";
@@ -108,15 +110,15 @@ export const Note = memo(({
       pointerEvents="auto"
       onPointerDown={(e) => handlePointerDown(e)}
       onTouchStart={(e) => handleTouchStart(e)}
-      onPointerEnter={(e) => {if (e.buttons === 0 && document.body.style.cursor === 'default') {setStrokeColor("#3390FF")}}}
-      onPointerLeave={() => setStrokeColor(selectionColor || colorToCss(outlineFill || fill))}
+      onPointerEnter={() => { if (showOutlineOnHover) { setStrokeColor("#3390FF") } }}
+      onPointerLeave={() => { setStrokeColor(selectionColor || colorToCss(outlineFill || fill)) }}
     >
       <rect
         width={width}
         height={height}
         fill={fillColor}
         stroke={strokeColor}
-        strokeWidth="2"
+        strokeWidth="1"
         className="drop-shadow-md"
       />
       <foreignObject

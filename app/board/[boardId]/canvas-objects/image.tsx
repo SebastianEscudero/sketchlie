@@ -1,6 +1,5 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useState } from 'react';
 import { ImageLayer } from "@/types/canvas";
-import { LoaderCircle } from 'lucide-react';
 
 interface ImageProps {
   isUploading: boolean;
@@ -13,6 +12,7 @@ interface ImageProps {
   cameraRef?: React.RefObject<any>;
   zoomRef?: React.RefObject<any>;
   selectionColor?: string;
+  showOutlineOnHover?: boolean;
 };
 
 export const InsertImage = ({
@@ -26,6 +26,7 @@ export const InsertImage = ({
   focused,
   cameraRef,
   zoomRef,
+  showOutlineOnHover = false,
 }: ImageProps) => {
   const { x, y, width, height, src } = layer;
 
@@ -118,7 +119,7 @@ export const InsertImage = ({
           onPointerDown={handlePointerDown}
           onDoubleClick={onDoubleClick}
           pointerEvents="auto"
-          onPointerEnter={(e) => { if (e.buttons === 0 && document.body.style.cursor === 'default') { setStrokeColor("#3390FF") } }}
+          onPointerEnter={() => { if (showOutlineOnHover) { setStrokeColor("#3390FF") } }}
           onPointerLeave={() => setStrokeColor(selectionColor || "none")}
         />
       </>

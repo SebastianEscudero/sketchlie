@@ -31,6 +31,7 @@ import { PenEraserMenu } from "./pen-eraser-laser-menu";
 import { ArrowMenu } from "./arrow-menu";
 import { LinkButton } from "./link-button";
 import { IconButton } from "./icon-button";
+import { PresentationModeToolbar } from "./presentation-mode-toolbar";
 
 interface ToolbarProps {
   isUploading: boolean;
@@ -62,6 +63,11 @@ interface ToolbarProps {
   camera: any;
   svgRef: any;
   zoom: number;
+  presentationMode: boolean;
+  setPresentationMode: (mode: boolean) => void;
+  frameIds: string[];
+  currentFrameIndex: number;
+  goToFrame: (index: number) => void;
 }
 
 export const Toolbar = ({
@@ -93,7 +99,12 @@ export const Toolbar = ({
   insertMedia,
   camera,
   svgRef,
-  zoom
+  zoom,
+  presentationMode,
+  setPresentationMode,
+  frameIds,
+  currentFrameIndex,
+  goToFrame
 }: ToolbarProps) => {
   const onPathColorChange = (color: any) => {
     setPathColor(color);
@@ -130,6 +141,23 @@ export const Toolbar = ({
 
   if (expired) {
     return null;
+  }
+
+  if (presentationMode) {
+    return (
+      <PresentationModeToolbar 
+        setPresentationMode={setPresentationMode}
+        setCanvasState={setCanvasState}
+        canvasState={canvasState}
+        undo={undo}
+        redo={redo}
+        canUndo={canUndo}
+        canRedo={canRedo}
+        frameIds={frameIds}
+        currentFrameIndex={currentFrameIndex}
+        goToFrame={goToFrame}
+      />
+    )
   }
 
   return (

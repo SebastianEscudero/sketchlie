@@ -2,7 +2,7 @@
 
 import { memo } from "react";
 import { colorToCss } from "@/lib/utils";
-import { Layer, Layers, LayerType } from "@/types/canvas";
+import { CanvasMode, CanvasState, Layer, Layers, LayerType } from "@/types/canvas";
 import { Path } from "../canvas-objects/path";
 import { Note } from "../canvas-objects/note";
 import { Text } from "../canvas-objects/text";
@@ -40,6 +40,7 @@ interface LayerPreviewProps {
   cameraRef?: React.RefObject<any>;
   liveLayerIds?: string[];
   liveLayers?: Layers;
+  showOutlineOnHover?: boolean;
 };
 
 export const LayerPreview = memo(({
@@ -60,6 +61,7 @@ export const LayerPreview = memo(({
   zoomRef,
   liveLayerIds,
   liveLayers,
+  showOutlineOnHover,
 }: LayerPreviewProps) => {
 
   if (!layer) {
@@ -83,6 +85,7 @@ export const LayerPreview = memo(({
           fill={layer.fill ? colorToCss(layer.fill) : "#000"}
           selectionColor={selectionColor}
           strokeSize={layer.strokeSize}
+          showOutlineOnHover={showOutlineOnHover}
         />
       )
     case LayerType.Note:
@@ -97,6 +100,7 @@ export const LayerPreview = memo(({
           expired={expired}
           focused={focused}
           forcedRender={forcedRender}
+          showOutlineOnHover={showOutlineOnHover}
         />
       );
     case LayerType.Text:
@@ -113,6 +117,7 @@ export const LayerPreview = memo(({
           focused={focused}
           boardId={boardId}
           forcedRender={forcedRender}
+          showOutlineOnHover={showOutlineOnHover}
         />
       );
     case LayerType.Ellipse:
@@ -127,6 +132,7 @@ export const LayerPreview = memo(({
           expired={expired}
           focused={focused}
           forcedRender={forcedRender}
+          showOutlineOnHover={showOutlineOnHover}
         />
       );
     case LayerType.Rectangle:
@@ -141,6 +147,7 @@ export const LayerPreview = memo(({
           expired={expired}
           focused={focused}
           forcedRender={forcedRender}
+          showOutlineOnHover={showOutlineOnHover}
         />
       );
     case LayerType.Rhombus:
@@ -155,6 +162,7 @@ export const LayerPreview = memo(({
           expired={expired}
           focused={focused}
           forcedRender={forcedRender}
+          showOutlineOnHover={showOutlineOnHover}
         />
       );
     case LayerType.Triangle:
@@ -183,6 +191,7 @@ export const LayerPreview = memo(({
           expired={expired}
           focused={focused}
           forcedRender={forcedRender}
+          showOutlineOnHover={showOutlineOnHover}
         />
       );
     case LayerType.Hexagon:
@@ -221,6 +230,7 @@ export const LayerPreview = memo(({
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
           forcedRender={forcedRender}
+          showOutlineOnHover={showOutlineOnHover}
         />
       );
     case LayerType.BigArrowLeft:
@@ -235,6 +245,7 @@ export const LayerPreview = memo(({
           expired={expired}
           focused={focused}
           forcedRender={forcedRender}
+          showOutlineOnHover={showOutlineOnHover}
         />
       );
     case LayerType.BigArrowRight:
@@ -249,6 +260,7 @@ export const LayerPreview = memo(({
           expired={expired}
           focused={focused}
           forcedRender={forcedRender}
+          showOutlineOnHover={showOutlineOnHover}
         />
       );
     case LayerType.BigArrowUp:
@@ -263,6 +275,7 @@ export const LayerPreview = memo(({
           expired={expired}
           focused={focused}
           forcedRender={forcedRender}
+          showOutlineOnHover={showOutlineOnHover}
         />
       );
     case LayerType.BigArrowDown:
@@ -277,6 +290,7 @@ export const LayerPreview = memo(({
           expired={expired}
           focused={focused}
           forcedRender={forcedRender}
+          showOutlineOnHover={showOutlineOnHover}
         />
       );
     case LayerType.Image:
@@ -292,6 +306,7 @@ export const LayerPreview = memo(({
           focused={focused}
           cameraRef={cameraRef}
           zoomRef={zoomRef}
+          showOutlineOnHover={showOutlineOnHover}
         />
       );
     case LayerType.Arrow:
@@ -302,6 +317,7 @@ export const LayerPreview = memo(({
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
           forcedRender={forcedRender}
+          showOutlineOnHover={showOutlineOnHover}
         />
       );
     case LayerType.Frame:
@@ -315,6 +331,7 @@ export const LayerPreview = memo(({
           socket={socket}
           boardId={boardId}
           forcedRender={forcedRender}
+          showOutlineOnHover={showOutlineOnHover}
         />
       );
     default:

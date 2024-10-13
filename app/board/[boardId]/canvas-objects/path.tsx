@@ -9,6 +9,7 @@ interface PathProps {
     onPointerDown?: (e: React.PointerEvent) => void;
     selectionColor?: string;
     strokeSize?: number | undefined;
+    showOutlineOnHover?: boolean;
 };
 
 export const Path = ({
@@ -19,6 +20,7 @@ export const Path = ({
     onPointerDown,
     selectionColor,
     strokeSize,
+    showOutlineOnHover
 }: PathProps) => {
     const [strokeColor, setStrokeColor] = useState(selectionColor || fill);
     const isTransparent = fill === 'rgba(0,0,0,0)';
@@ -41,8 +43,8 @@ export const Path = ({
 
     return (
         <path
-            onPointerEnter={(e) => {if (e.buttons === 0 && document.body.style.cursor === 'default') {setStrokeColor("#3390FF")}}}
-            onPointerLeave={() => setStrokeColor(selectionColor || fill)}
+            onPointerEnter={() => { if (showOutlineOnHover) { setStrokeColor("#3390FF") } }}
+            onPointerLeave={() => { setStrokeColor(selectionColor || fill) }}
             onPointerDown={handlePointerDown}
             d={getSvgPathFromPoints(points)}
             style={{

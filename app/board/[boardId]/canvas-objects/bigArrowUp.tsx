@@ -16,6 +16,7 @@ interface BigArrowUpProps {
   socket?: Socket;
   focused?: boolean;
   forcedRender?: boolean;
+  showOutlineOnHover?: boolean;
 };
 
 export const BigArrowUp = memo(({
@@ -28,6 +29,7 @@ export const BigArrowUp = memo(({
   socket,
   focused = false,
   forcedRender = false,
+  showOutlineOnHover = false,
 }: BigArrowUpProps) => {
   const { x, y, width, height, fill, outlineFill, value, textFontSize, fontFamily } = layer;
   const alignX = layer.alignX || "center";
@@ -109,7 +111,7 @@ export const BigArrowUp = memo(({
       pointerEvents="auto"
       onPointerDown={(e) => handlePointerDown(e)}
       onTouchStart={(e) => handleTouchStart(e)}
-      onPointerEnter={(e) => {if (e.buttons === 0 && document.body.style.cursor === 'default') {setStrokeColor("#3390FF")}}}
+      onPointerEnter={() => { if (showOutlineOnHover) { setStrokeColor("#3390FF") } }}
       onPointerLeave={() => setStrokeColor(selectionColor || colorToCss(outlineFill || fill))}
     >
       <path
