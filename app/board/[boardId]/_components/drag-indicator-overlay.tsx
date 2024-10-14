@@ -20,7 +20,7 @@ export const DragIndicatorOverlay = ({ isDraggingOverCanvas }: DragIndicatorOver
                         </div>
                     </div>
                     <p className="text-xl font-semibold text-gray-700 dark:text-gray-300">
-                        Drop files to add to canvas
+                        Drop files to add to your board
                     </p>
                     <p className="text-sm text-gray-500 dark:text-gray-400">
                         Supports images, videos, and PDFs
