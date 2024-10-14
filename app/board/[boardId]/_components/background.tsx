@@ -5,6 +5,7 @@ interface BackgroundProps {
     zoom: number;
     camera: { x: number; y: number };
     presentationMode: boolean;
+    forcedRender: boolean;
 }
 
 export const Background = memo(({
