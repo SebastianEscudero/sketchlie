@@ -48,8 +48,10 @@ interface ActionsProps {
   setForcedRender?: (forcedRender: boolean) => void;
   User?: User;
   isPrivate: boolean;
-  returnToSelectionModeAfterInsert?: boolean;
-  setReturnToSelectionModeAfterInsert?: (returnToSelectionModeAfterInsert: boolean) => void;
+  quickInserting?: boolean;
+  setQuickInserting?: (quickInserting: boolean) => void;
+  eraserDeleteAnyLayer?: boolean;
+  setEraserDeleteAnyLayer?: (eraserDeleteAnyLayer: boolean) => void;
 };
 
 export const Actions = ({
@@ -71,8 +73,10 @@ export const Actions = ({
   setForcedRender,
   User,
   isPrivate,
-  returnToSelectionModeAfterInsert,
-  setReturnToSelectionModeAfterInsert
+  quickInserting,
+  setQuickInserting,
+  eraserDeleteAnyLayer,
+  setEraserDeleteAnyLayer
 }: ActionsProps) => {
   const { mutate, pending } = useApiMutation(api.board.remove);
   const [isRenameModalOpen, setIsRenameModalOpen] = useState(false);
@@ -184,7 +188,12 @@ export const Actions = ({
                 User={User}
               />
               <BackgroundMenu setBackground={setBackground} background={Background} setForcedRender={setForcedRender} />
-              <PreferencesMenu setReturnToSelectionModeAfterInsert={setReturnToSelectionModeAfterInsert} returnToSelectionModeAfterInsert={returnToSelectionModeAfterInsert}/>
+              <PreferencesMenu 
+                  setQuickInserting={setQuickInserting} 
+                  quickInserting={quickInserting}
+                  eraserDeleteAnyLayer={eraserDeleteAnyLayer}
+                  setEraserDeleteAnyLayer={setEraserDeleteAnyLayer}
+              />
               <HelpDropdownMenu setCanvasState={setCanvasState} />
             </>
           }

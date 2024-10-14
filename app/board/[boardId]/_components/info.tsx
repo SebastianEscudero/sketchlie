@@ -33,8 +33,10 @@ interface InfoProps {
     setForcedRender(forcedRender: boolean): void;
     User: User;
     svgRef: React.RefObject<SVGSVGElement>;
-    returnToSelectionModeAfterInsert: boolean;
-    setReturnToSelectionModeAfterInsert: (returnToSelectionModeAfterInsert: boolean) => void;
+    quickInserting: boolean;
+    setQuickInserting: (quickInserting: boolean) => void;
+    eraserDeleteAnyLayer: boolean;
+    setEraserDeleteAnyLayer: (eraserDeleteAnyLayer: boolean) => void;
 }
 
 const TabSeparator = () => {
@@ -65,8 +67,10 @@ export const Info = memo(({
     setIsShowingAIInput,
     isShowingAIInput,
     svgRef,
-    returnToSelectionModeAfterInsert,
-    setReturnToSelectionModeAfterInsert
+    quickInserting,
+    setQuickInserting,
+    eraserDeleteAnyLayer,
+    setEraserDeleteAnyLayer
 }: InfoProps) => {
 
     const proModal = useProModal();
@@ -197,8 +201,10 @@ export const Info = memo(({
                 setForcedRender={setForcedRender}
                 User={User}
                 isPrivate={board.private}
-                returnToSelectionModeAfterInsert={returnToSelectionModeAfterInsert}
-                setReturnToSelectionModeAfterInsert={setReturnToSelectionModeAfterInsert}
+                quickInserting={quickInserting}
+                setQuickInserting={setQuickInserting}
+                eraserDeleteAnyLayer={eraserDeleteAnyLayer}
+                setEraserDeleteAnyLayer={setEraserDeleteAnyLayer}
             >
                 <div className="w-10 flex justify-center items-center">
                     <Hint label="Main menu" side="bottom" sideOffset={10}>

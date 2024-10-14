@@ -6,17 +6,21 @@ import {
     DropdownMenuSeparator,
     DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
-import { ChevronRight, Settings } from "lucide-react";
+import { ChevronRight, EraserIcon, MousePointer2, Settings } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 
 interface PreferencesMenuProps {
-    returnToSelectionModeAfterInsert?: boolean;
-    setReturnToSelectionModeAfterInsert?: (returnToSelectionModeAfterInsert: boolean) => void;
+    quickInserting?: boolean;
+    setQuickInserting?: (quickInserting: boolean) => void;
+    eraserDeleteAnyLayer?: boolean;
+    setEraserDeleteAnyLayer?: (eraserDeleteAnyLayer: boolean) => void;
 }
 
 export const PreferencesMenu = ({
-    returnToSelectionModeAfterInsert,
-    setReturnToSelectionModeAfterInsert
+    quickInserting,
+    setQuickInserting,
+    eraserDeleteAnyLayer,
+    setEraserDeleteAnyLayer
 }: PreferencesMenuProps) => {
 
     return (
@@ -35,14 +39,33 @@ export const PreferencesMenu = ({
                 <DropdownMenuSeparator />
                 <div className="p-2 flex flex-col">
                     <div className="flex items-center justify-between mb-1">
-                        <span className="text-sm font-medium">Quick mode</span>
+                        <div className="flex items-center">
+                            <MousePointer2 className="h-4 w-4 mr-2" />
+                            <span className="text-sm font-medium">Quick insert</span>
+                        </div>
                         <Switch
-                            checked={returnToSelectionModeAfterInsert}
-                            onCheckedChange={setReturnToSelectionModeAfterInsert}
+                            checked={quickInserting}
+                            onCheckedChange={setQuickInserting}
                         />
                     </div>
                     <p className="text-xs text-muted-foreground">
-                        Return to selection mode after inserting an element
+                        Lets you add layers continuously
+                    </p>
+                </div>
+                <DropdownMenuSeparator />
+                <div className="p-2 flex flex-col">
+                    <div className="flex items-center justify-between mb-1">
+                        <div className="flex items-center">
+                            <EraserIcon className="h-4 w-4 mr-2" />
+                            <span className="text-sm font-medium">Eraser mode</span>
+                        </div>
+                        <Switch
+                            checked={eraserDeleteAnyLayer}
+                            onCheckedChange={setEraserDeleteAnyLayer}
+                        />
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                        Delete <span className="font-semibold underline">any</span> type of layer when using the eraser
                     </p>
                 </div>
             </DropdownMenuContent>

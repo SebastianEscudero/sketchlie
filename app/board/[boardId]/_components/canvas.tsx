@@ -97,57 +97,79 @@ interface CanvasProps {
 export const Canvas = ({
     boardId
 }: CanvasProps) => {
+    // Room and user-related states
+    const { liveLayers, liveLayerIds, User, otherUsers, setLiveLayers, setLiveLayerIds, org, socket, board, expired } = useRoom();
+    const [myPresence, setMyPresence] = useState<Presence | null>(null);
+    const proModal = useProModal();
+
+    // Canvas state and controls
+    const [canvasState, setCanvasState] = useState<CanvasState>({ mode: CanvasMode.None });
+    const [camera, setCamera] = useState<Camera>({ x: 0, y: 0 });
+    const [zoom, setZoom] = useState(1);
+    const [isPanning, setIsPanning] = useState(false);
+    const [rightClickPanning, setIsRightClickPanning] = useState(false);
+    const [startPanPoint, setStartPanPoint] = useState({ x: 0, y: 0 });
+    const [isNearBorder, setIsNearBorder] = useState(false);
+    const [borderMove, setBorderMove] = useState({ x: 0, y: 0 });
+    const [presentationMode, setPresentationMode] = useState(false);
+    const [background, setBackground] = useState(() => localStorage.getItem('background') || 'circular-grid');
+
+    // Layer management
+    const [initialLayers, setInitialLayers] = useState<Layers>({});
+    const [visibleLayers, setVisibleLayers] = useState<string[]>([]);
+    const selectedLayersRef = useRef<string[]>([]);
+    const [copiedLayerIds, setCopiedLayerIds] = useState<string[]>([]);
+    const [currentPreviewLayer, setCurrentPreviewLayer] = useState<PreviewLayer | null>(null);
+    const [suggestedLayers, setSuggestedLayers] = useState<Layers>({});
+    const [suggestedLayerIds, setSuggestedLayerIds] = useState<string[]>([]);
+
+    // Drawing and editing tools
+    const [pencilDraft, setPencilDraft] = useState<[number, number, number][]>([]);
     const [erasePath, setErasePath] = useState<[number, number][]>([]);
-    const [IsArrowPostInsertMenuOpen, setIsArrowPostInsertMenuOpen] = useState(false);
+    const [pathColor, setPathColor] = useState({ r: 29, g: 29, b: 29, a: 1 });
+    const [pathStrokeSize, setPathStrokeSize] = useState(5);
+    const [arrowTypeInserting, setArrowTypeInserting] = useState<ArrowType>(ArrowType.Straight);
+
+    // UI states
     const [isShowingAIInput, setIsShowingAIInput] = useState(false);
     const [isMoving, setIsMoving] = useState(false);
     const [justChanged, setJustChanged] = useState(false);
-    const [arrowTypeInserting, setArrowTypeInserting] = useState<ArrowType>(ArrowType.Straight);
     const [isArrowsMenuOpen, setIsArrowsMenuOpen] = useState(false);
     const [isPenMenuOpen, setIsPenMenuOpen] = useState(false);
     const [isShapesMenuOpen, setIsShapesMenuOpen] = useState(false);
     const [isPenEraserSwitcherOpen, setIsPenEraserSwitcherOpen] = useState(false);
-    const [initialLayers, setInitialLayers] = useState<Layers>({}); // used for undo/redo
+    const [isDraggingOverCanvas, setIsDraggingOverCanvas] = useState(false);
+    const [isUploading, setIsUploading] = useState(false);
+    const [justInsertedText, setJustInsertedText] = useState(false);
+    const [IsArrowPostInsertMenuOpen, setIsArrowPostInsertMenuOpen] = useState(false);
+
+    // Undo/Redo
     const [history, setHistory] = useState<Command[]>([]);
     const [redoStack, setRedoStack] = useState<Command[]>([]);
+
+    // Touch and mobile-related states
+    const [pinchStartDist, setPinchStartDist] = useState<number | null>(null);
+    const [activeTouches, setActiveTouches] = useState(0);
+
+    // Misc
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-    const { liveLayers, liveLayerIds, User, otherUsers, setLiveLayers, setLiveLayerIds, org, socket, board, expired } = useRoom();
-    const [isDraggingOverCanvas, setIsDraggingOverCanvas] = useState(false);
-    const selectedLayersRef = useRef<string[]>([]);
-    const [copiedLayerIds, setCopiedLayerIds] = useState<string[]>([]);
-    const [pencilDraft, setPencilDraft] = useState<[number, number, number][]>([]);
     const [layerRef, setLayerRef] = useState<any>(null);
-    const layersToDeleteEraserRef = useRef<Set<string>>(new Set());
-    const [canvasState, setCanvasState] = useState<CanvasState>({
-        mode: CanvasMode.None,
-    });
-    const [camera, setCamera] = useState<Camera>({ x: 0, y: 0 });
-    const [zoom, setZoom] = useState(1);
+    const [currentFrameIndex, setCurrentFrameIndex] = useState(0);
+    const [forceSelectionBoxRender, setForceSelectionBoxRender] = useState(false);
+    const [forceLayerPreviewRender, setForceLayerPreviewRender] = useState(false);
+
+    // Preferences
+    const [quickInserting, setQuickInserting] = useState(false);
+    const [eraserDeleteAnyLayer, setEraserDeleteAnyLayer] = useState(false);
+
+    // Refs
     const zoomRef = useRef(zoom);
     const cameraRef = useRef(camera);
     const canvasStateRef = useRef(canvasState);
     const svgRef = useRef(null);
-    const [visibleLayers, setVisibleLayers] = useState<string[]>([]);
-    const [isPanning, setIsPanning] = useState(false);
-    const [rightClickPanning, setIsRightClickPanning] = useState(false);
-    const [startPanPoint, setStartPanPoint] = useState({ x: 0, y: 0 });
-    const [isUploading, setIsUploading] = useState(false);
-    const [currentPreviewLayer, setCurrentPreviewLayer] = useState<PreviewLayer | null>(null);
-    const [myPresence, setMyPresence] = useState<Presence | null>(null);
-    const [pathColor, setPathColor] = useState({ r: 29, g: 29, b: 29, a: 1 });
-    const [pathStrokeSize, setPathStrokeSize] = useState(5);
-    const [pinchStartDist, setPinchStartDist] = useState<number | null>(null);
-    const [activeTouches, setActiveTouches] = useState(0);
-    const [forceSelectionBoxRender, setForceSelectionBoxRender] = useState(false);
-    const [forceLayerPreviewRender, setForceLayerPreviewRender] = useState(false);
-    const [suggestedLayers, setSuggestedLayers] = useState<Layers>({});
-    const [suggestedLayerIds, setSuggestedLayerIds] = useState<string[]>([]);
-    const [justInsertedText, setJustInsertedText] = useState(false);
-    const proModal = useProModal();
-    const [isNearBorder, setIsNearBorder] = useState(false);
-    const [borderMove, setBorderMove] = useState({ x: 0, y: 0 });
-    const [currentFrameIndex, setCurrentFrameIndex] = useState(0);
-    const [returnToSelectionModeAfterInsert, setReturnToSelectionModeAfterInsert] = useState(true);
+    const layersToDeleteEraserRef = useRef<Set<string>>(new Set());
+
+    // Computed values
     const frameIds = useMemo(() => {
         if (!liveLayerIds || !liveLayers) return [];
         return liveLayerIds.filter(id => {
@@ -155,11 +177,6 @@ export const Canvas = ({
             return layer && layer.type === LayerType.Frame;
         });
     }, [liveLayerIds, liveLayers]);
-    const [presentationMode, setPresentationMode] = useState(false);
-    const [background, setBackground] = useState(() => {
-        const storedValue = localStorage.getItem('background');
-        return storedValue ? storedValue : 'circular-grid';
-    });
 
     useDisableScrollBounce();
 
@@ -344,11 +361,11 @@ export const Canvas = ({
         }
 
         // return the user to the default mode
-        if (returnToSelectionModeAfterInsert) {
+        if (!quickInserting) {
             setCanvasState({ mode: CanvasMode.None });
         }
 
-    }, [socket, org, proModal, setLiveLayers, setLiveLayerIds, boardId, arrowTypeInserting, liveLayers, performAction, expired, returnToSelectionModeAfterInsert]);
+    }, [socket, org, proModal, setLiveLayers, setLiveLayerIds, boardId, arrowTypeInserting, liveLayers, performAction, expired, quickInserting]);
 
     useEffect(() => {
         if (justInsertedText && layerRef && layerRef.current) {
@@ -601,6 +618,8 @@ export const Canvas = ({
             liveLayerIds,
             liveLayers,
             erasePath,
+            eraserDeleteAnyLayer,
+            zoom
         );
 
         const unprocessedIds = ids.filter(id => !layersToDeleteEraserRef.current.has(id));
@@ -614,7 +633,7 @@ export const Canvas = ({
             setLiveLayers(newLiveLayers);
         }
 
-    }, [liveLayerIds, liveLayers, setLiveLayers, setErasePath, erasePath]);
+    }, [liveLayerIds, liveLayers, setLiveLayers, setErasePath, erasePath, eraserDeleteAnyLayer, zoom]);
 
     const startMultiSelection = useCallback((
         current: Point,
@@ -1538,7 +1557,7 @@ export const Canvas = ({
             return;
         }
 
-        let newSelection: string[] 
+        let newSelection: string[]
 
         if (e.ctrlKey || e.metaKey) {
             console.log('ctrl o meta')
@@ -2184,28 +2203,28 @@ export const Canvas = ({
     const goToFrame = useCallback((index: number) => {
         const totalFrames = frameIds.length;
         if (totalFrames === 0) return;
-    
+
         // Ensure the index is within bounds using modulo
         const safeIndex = ((index % totalFrames) + totalFrames) % totalFrames;
-    
+
         const frameId = frameIds[safeIndex];
         const frame = liveLayers[frameId] as FrameLayer;
-    
+
         const viewportWidth = window.innerWidth;
         const viewportHeight = window.innerHeight;
-    
+
         // Adjust the vertical space to account for the toolbar
         const toolbarHeight = 40; // Estimated height of the toolbar
         const adjustedViewportHeight = viewportHeight - toolbarHeight;
-    
+
         const zoomX = (viewportWidth) / frame.width * 0.95;
         const zoomY = (adjustedViewportHeight) / frame.height * 0.95;
         const targetZoom = Math.min(zoomX, zoomY, 10);
-    
+
         const targetCameraX = viewportWidth / 2 - (frame.x + frame.width / 2) * targetZoom;
         // Adjust the Y position to move the frame up
         const targetCameraY = (adjustedViewportHeight / 2 - (frame.y + frame.height / 2) * targetZoom) - toolbarHeight / 2;
-    
+
         setZoom(targetZoom);
         setCamera({ x: targetCameraX, y: targetCameraY });
         setCurrentFrameIndex(safeIndex);
@@ -2239,7 +2258,7 @@ export const Canvas = ({
                 }
             }
         };
-    
+
         enterFullscreenAndGoToFrame();
     }, [presentationMode, goToFrame]);
 
@@ -2253,16 +2272,16 @@ export const Canvas = ({
                 }
             }
         };
-    
+
         const handleFullscreenChange = () => {
             if (!document.fullscreenElement && presentationMode) {
                 setPresentationMode(false);
             }
         };
-    
+
         window.addEventListener('keydown', handleKeyDown);
         document.addEventListener('fullscreenchange', handleFullscreenChange);
-    
+
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
             document.removeEventListener('fullscreenchange', handleFullscreenChange);
@@ -2340,8 +2359,10 @@ export const Canvas = ({
                                     setForcedRender={setForceLayerPreviewRender}
                                     User={User}
                                     svgRef={svgRef}
-                                    returnToSelectionModeAfterInsert={returnToSelectionModeAfterInsert}
-                                    setReturnToSelectionModeAfterInsert={setReturnToSelectionModeAfterInsert}
+                                    quickInserting={quickInserting}
+                                    setQuickInserting={setQuickInserting}
+                                    eraserDeleteAnyLayer={eraserDeleteAnyLayer}
+                                    setEraserDeleteAnyLayer={setEraserDeleteAnyLayer}
                                 />
                                 <MoveBackToContent
                                     setCamera={setCamera}

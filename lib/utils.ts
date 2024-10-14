@@ -604,34 +604,50 @@ export function findIntersectingLayersWithPath(
   layerIds: readonly string[],
   layers: { [key: string]: Layer },
   eraserPathPoints: [number, number][],
+  eraserDeleteAnyLayer: boolean,
+  zoom: number
 ): string[] {
   const intersectingLayerIds: string[] = [];
 
   layerIds.forEach(layerId => {
     const layer = layers[layerId];
-    if (!layer || layer.type !== LayerType.Path || !layer.points) return;
     
-    if (layer.points.length < 2) {
-      for (let j = 0; j < eraserPathPoints.length - 1; j++) {
-        const startEraserPoint = eraserPathPoints[j];
-        const endEraserPoint = eraserPathPoints[j + 1];
+    if (!layer) return;
 
-        if (doLinesIntersect([layer.x-2, layer.y-2], [layer.x+2, layer.y+2], startEraserPoint, endEraserPoint)) {
-          intersectingLayerIds.push(layerId);
-          break;
+    if (layer.type === LayerType.Path && layer.points) {
+      // Always check points for Path layers
+      if (layer.points.length < 2) {
+        for (let j = 0; j < eraserPathPoints.length - 1; j++) {
+          const startEraserPoint = eraserPathPoints[j];
+          const endEraserPoint = eraserPathPoints[j + 1];
+
+          if (doLinesIntersect([layer.x-2, layer.y-2], [layer.x+2, layer.y+2], startEraserPoint, endEraserPoint)) {
+            intersectingLayerIds.push(layerId);
+            break;
+          }
+        }
+      } else {
+        for (let i = 0; i < layer.points.length - 1; i++) {
+          const startLayerPoint = [layer.points[i][0] + layer.x, layer.points[i][1] + layer.y];
+          const endLayerPoint = [layer.points[i + 1][0] + layer.x, layer.points[i + 1][1] + layer.y];
+
+          for (let j = 0; j < eraserPathPoints.length - 1; j++) {
+            const startEraserPoint = eraserPathPoints[j];
+            const endEraserPoint = eraserPathPoints[j + 1];
+
+            if (doLinesIntersect(startLayerPoint, endLayerPoint, startEraserPoint, endEraserPoint)) {
+              intersectingLayerIds.push(layerId);
+              break;
+            }
+          }
+          if (intersectingLayerIds.includes(layerId)) break;
         }
       }
-    }
-
-    for (let i = 0; i < layer.points.length - 1; i++) {
-      const startLayerPoint = [layer.points[i][0] + layer.x, layer.points[i][1] + layer.y];
-      const endLayerPoint = [layer.points[i + 1][0] + layer.x, layer.points[i + 1][1] + layer.y];
-
-      for (let j = 0; j < eraserPathPoints.length - 1; j++) {
-        const startEraserPoint = eraserPathPoints[j];
-        const endEraserPoint = eraserPathPoints[j + 1];
-
-        if (doLinesIntersect(startLayerPoint, endLayerPoint, startEraserPoint, endEraserPoint)) {
+    } else if (eraserDeleteAnyLayer) {
+      // Check other layer types only if eraserDeleteAnyLayer is false
+      for (const point of eraserPathPoints) {
+        const intersectingIds = findIntersectingLayersWithPoint([layerId], layers, { x: point[0], y: point[1] }, zoom);
+        if (intersectingIds.length > 0) {
           intersectingLayerIds.push(layerId);
           break;
         }
