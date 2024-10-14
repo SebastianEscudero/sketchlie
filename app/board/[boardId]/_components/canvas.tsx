@@ -2255,7 +2255,7 @@ export const Canvas = ({
 
     return (
         <>
-            <Background background={background} zoom={zoom} camera={camera} presentationMode={presentationMode} />
+            <Background background={background} zoom={zoom} camera={camera} presentationMode={presentationMode} forcedRender={forceLayerPreviewRender} />
             <main
                 className="fixed h-full w-full touch-none overscroll-none"
                 style={{

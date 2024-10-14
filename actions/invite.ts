@@ -5,7 +5,6 @@ import { OrganizationInviteSchema } from "@/schemas";
 import { currentUser } from "@/lib/auth";
 import { sendOrganizationInvite } from "@/lib/mail";
 import { db } from "@/lib/db";
-import { update } from "@/auth";
 
 export const invite = async (
   validMembers: z.infer<typeof OrganizationInviteSchema>,
