@@ -1386,6 +1386,12 @@ export const Canvas = ({
             });
 
             if (!changed && selectedLayersRef.current.length > 1) {
+
+                // If the user is pressing ctrl or command, we don't want to unselect the others
+                if (e.ctrlKey || e.metaKey) {
+                    return;
+                }
+
                 const intersectingLayers = findIntersectingLayersWithPoint(liveLayerIds, liveLayers, point, zoom);
                 const id = intersectingLayers[intersectingLayers.length - 1];
                 if (selectedLayersRef.current.includes(id)) {
@@ -1532,14 +1538,24 @@ export const Canvas = ({
             return;
         }
 
+        let newSelection: string[] 
+
+        if (e.ctrlKey || e.metaKey) {
+            console.log('ctrl o meta')
+            newSelection = [...selectedLayersRef.current, layerId];
+        } else {
+            newSelection = [layerId];
+        }
+
         const newPresence: Presence = {
-            selection: [layerId],
+            selection: newSelection,
             cursor: point
         };
 
         setMyPresence(newPresence);
 
-        selectedLayersRef.current = [layerId];
+        selectedLayersRef.current = newSelection;
+        console.log(selectedLayersRef.current)
 
         if (socket) {
             socket.emit('presence', newPresence, User.userId);
