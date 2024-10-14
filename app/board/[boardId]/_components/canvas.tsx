@@ -1560,7 +1560,6 @@ export const Canvas = ({
         let newSelection: string[]
 
         if (e.ctrlKey || e.metaKey) {
-            console.log('ctrl o meta')
             newSelection = [...selectedLayersRef.current, layerId];
         } else {
             newSelection = [layerId];
@@ -1574,7 +1573,6 @@ export const Canvas = ({
         setMyPresence(newPresence);
 
         selectedLayersRef.current = newSelection;
-        console.log(selectedLayersRef.current)
 
         if (socket) {
             socket.emit('presence', newPresence, User.userId);
@@ -1600,9 +1598,6 @@ export const Canvas = ({
     }, [otherUsers]);
 
     const onDragOver = useCallback((e: React.DragEvent) => {
-        if (e.dataTransfer.files.length === 0) {
-            return;
-        }
 
         e.preventDefault();
         if (expired) {
