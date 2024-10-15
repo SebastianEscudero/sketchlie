@@ -959,9 +959,7 @@ export const Canvas = ({
         const x = e.clientX - svgRect.left;
         const y = e.clientY - svgRect.top;
 
-        console.log(e.deltaY)
         const isMouseWheel = Math.abs(e.deltaY) % 100 === 0 && e.deltaX === 0;
-        console.log(isMouseWheel)
 
         if (isMouseWheel || e.ctrlKey) {
             // Zooming
