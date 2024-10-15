@@ -22,7 +22,7 @@ const Sidebar = ({ translations, lang }: { translations: any, lang: string }) =>
                             width={75}
                             height={75}
                             alt="Logo"
-                            src="/logo.svg"
+                            src="/logos/logo.svg"
                         />
                     </div>
                     <h1 className="text-2xl font-semibold">

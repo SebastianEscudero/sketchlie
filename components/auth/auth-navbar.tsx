@@ -23,7 +23,7 @@ export const AuthNavbar = () => {
                                 height={50}
                                 width={50}
                                 alt="Logo"
-                                src="/logo.svg"    
+                                src="/logos/logo.svg"    
                             />
                         </div>
                         <p className="text-2xl font-bold text-[#38322C] ">

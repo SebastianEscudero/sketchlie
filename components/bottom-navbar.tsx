@@ -179,7 +179,7 @@ export const BotNavbar = () => {
                     title="Sketchlie"
                 >
                     <Image
-                        src="/logo.svg"
+                        src="/logos/logo-dark-mode.svg"
                         width={40}
                         height={40}
                         alt="Logo"
