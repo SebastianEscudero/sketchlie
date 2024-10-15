@@ -1,9 +1,9 @@
 import { Hint } from "@/components/hint";
 import { Button } from "@/components/ui/button";
 import { FramesLayersIcon } from "@/public/custom-icons/frames";
-import { Minus, Plus } from "lucide-react";
-import React, { memo, useState } from "react";
-import { CanvasState, Layers } from "@/types/canvas";
+import { Minus, Plus, Maximize2, Minimize2 } from "lucide-react";
+import React, { memo, useState, useCallback, useEffect } from "react";
+import { Layers } from "@/types/canvas";
 import { FramesPanel } from "./frames-panel";
 import { Socket } from "socket.io-client";
 
@@ -41,6 +41,7 @@ export const ZoomToolbar = memo(({
     setPresentationMode
 }: ZoomToolbarProps) => {
     const [showFrames, setShowFrames] = useState(false);
+    const [isFullscreen, setIsFullscreen] = useState(false);
 
     const baseZoom = 1;
 
@@ -104,11 +105,38 @@ export const ZoomToolbar = memo(({
 
     const zoomPercentage = zoomToPercentage(zoom);
 
+    const toggleFullscreen = useCallback(() => {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen();
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+        }
+    }, []);
+
+    useEffect(() => {
+        const fullscreenChangeHandler = () => {
+            setIsFullscreen(!!document.fullscreenElement);
+        };
+
+        document.addEventListener('fullscreenchange', fullscreenChangeHandler);
+
+        return () => {
+            document.removeEventListener('fullscreenchange', fullscreenChangeHandler);
+        };
+    }, []);
+
     return (
         <>
             <div className="border dark:border-zinc-800 shadow-md absolute h-[52px] bottom-4 right-4 rounded-xl py-2 items-center lg:flex hidden bg-white dark:bg-zinc-800 pointer-events-auto">
+                <Hint label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"} sideOffset={4}>
+                    <Button onClick={toggleFullscreen} className="ml-2 px-2" variant="board">
+                        {isFullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
+                    </Button>
+                </Hint>
                 <Hint label="Zoom out" sideOffset={4}>
-                    <Button onClick={handleZoomOut} className="ml-2 px-2" variant="board">
+                    <Button onClick={handleZoomOut} className="px-2" variant="board">
                         <Minus className="h-4 w-4" />
                     </Button>
                 </Hint>
