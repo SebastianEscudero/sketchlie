@@ -14,8 +14,8 @@ export const AuthNavbar = () => {
     const buttonText = pathname === "/auth/login/" ? "Sign Up" : "Login";
 
     return (
-        <nav className="py-3 bg-white text-black shadow-custom-1 sticky top-0 z-50 h-[71px] xl:px-[10%] lg:px-[7%] md:px-[5%] px-[3%]">
-            <div className="flex items-center justify-between xl:mx-[5%] lg:mx-[3%] md:mx-[2%] mx-[1%]">
+        <nav className="border-b border-black bg-amber-50 sticky top-0 z-50 h-[88px] flex items-center transition-transform duration-300">
+            <div className="flex items-center w-full h-full xl:px-[15%] lg:px-[7%] md:px-[5%] px-[5%] justify-between">
                 <div className="flex items-center">
                     <Link href="/" className="flex items-center mr-3">
                         <div className="mr-4">
@@ -23,7 +23,7 @@ export const AuthNavbar = () => {
                                 height={50}
                                 width={50}
                                 alt="Logo"
-                                src="/logos/logo.svg"    
+                                src="/logos/logo.svg"
                             />
                         </div>
                         <p className="text-2xl font-bold text-[#38322C] ">
@@ -32,7 +32,7 @@ export const AuthNavbar = () => {
                     </Link>
                 </div>
                 <Link href={linkPath}>
-                    <Button variant="auth" className="rounded-lg text-md">
+                    <Button variant="golden" className="rounded-lg text-md">
                         {user ? "Ir al Tablero" : buttonText}
                     </Button>
                 </Link>

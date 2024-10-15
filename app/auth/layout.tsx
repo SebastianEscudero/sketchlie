@@ -17,7 +17,7 @@ const AuthLayout = ({
   return ( 
     <div className="h-full flex flex-col">
       <AuthNavbar />
-      <div className="flex-grow flex items-center justify-center bg-[#F9FAFB] p-3">
+      <div className="flex-grow flex items-center justify-center bg-amber-50 p-3">
         <h1 className="hidden">Sketchlie register, Sketchlie login, Sketchlie new passord, Sketchlie</h1>
         {children}
       </div>
