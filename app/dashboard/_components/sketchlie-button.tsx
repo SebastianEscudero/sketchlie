@@ -3,32 +3,6 @@ import { useProModal } from "@/hooks/use-pro-modal";
 import { ChevronsLeft, CircleAlert } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
-import { useState, useEffect } from "react"
-
-// Custom hook to force re-render on theme change
-const useTheme = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  useEffect(() => {
-    const updateTheme = () => {
-      setIsDarkMode(document.documentElement.classList.contains("dark"));
-    };
-
-    // Set initial theme
-    updateTheme();
-
-    // Watch for theme changes
-    const observer = new MutationObserver(updateTheme);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['class'],
-    });
-
-    return () => observer.disconnect();
-  }, []);
-
-  return isDarkMode;
-};
 
 interface SketchlieButtonProps {
     activeOrg: any;
@@ -37,9 +11,7 @@ interface SketchlieButtonProps {
 export const SketchlieButton = ({
     activeOrg
 }: SketchlieButtonProps) => {
-    const isDarkMode = useTheme();
     const proModal = useProModal();
-
     const onClick = () => {
         proModal.onOpen(activeOrg.id);
     }
@@ -64,12 +36,20 @@ export const SketchlieButton = ({
             <Link href="/">
                 <div className="flex items-center gap-x-2">
                     <ChevronsLeft className="h-5 w-5 flex-shrink-0" />
-                        <Image
-                            src={isDarkMode ? "/logos/logo-dark-mode.svg" : "/logos/logo.svg"}
-                            alt="Logo"
-                            height={50}
-                            width={50}
-                        />
+                    <Image
+                        src="/logos/logo.svg"
+                        alt="Logo"
+                        height={50}
+                        width={50}
+                        className="dark:hidden"
+                    />
+                    <Image
+                        src="/logos/logo-dark-mode.svg"
+                        alt="Logo"
+                        height={50}
+                        width={50}
+                        className="hidden dark:block"
+                    />
                     <span className="text-lg font-semibold">
                         Sketchlie
                     </span>
