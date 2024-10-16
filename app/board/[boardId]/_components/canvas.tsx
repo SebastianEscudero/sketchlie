@@ -959,15 +959,16 @@ export const Canvas = ({
         const x = e.clientX - svgRect.left;
         const y = e.clientY - svgRect.top;
 
-        const isMouseWheel = Math.abs(e.deltaY) % 100 === 0 && e.deltaX === 0;
+        const isMouseWheel = 100 > Math.abs(e.deltaY) && Math.abs(e.deltaY) > 90 && e.deltaX === 0;
 
-        if (isMouseWheel || e.ctrlKey) {
+        if (e.ctrlKey || isMouseWheel) {
             // Zooming
+            const zoomSpeed = isMouseWheel ? 1.3 : 1.13;
             let newZoom = zoom;
             if (e.deltaY < 0) {
-                newZoom = Math.min(zoom * 1.3, 10);
+                newZoom = Math.min(zoom * zoomSpeed, 10);
             } else {
-                newZoom = Math.max(zoom / 1.3, 0.3);
+                newZoom = Math.max(zoom / zoomSpeed, 0.3);
             }
 
             const zoomFactor = newZoom / zoom;
@@ -976,14 +977,6 @@ export const Canvas = ({
 
             setZoom(newZoom);
             setCamera({ x: newX, y: newY });
-        } else if (e.shiftKey) {
-            // Panning horizontally
-            const newCameraPosition = {
-                y: camera.y - e.deltaX,
-                x: camera.x - e.deltaY,
-            };
-
-            setCamera(newCameraPosition);
         } else {
             // Panning
             const newCameraPosition = {
