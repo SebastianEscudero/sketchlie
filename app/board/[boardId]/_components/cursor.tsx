@@ -40,17 +40,17 @@ export const Cursor = memo(({
             className="relative overflow-visible"
             transform={`translate(${x}, ${y}) scale(${1/zoom})`}
         >
-            <div className="flex flex-col items-start max-w-[400px] truncate">
+            <div className="flex flex-col items-start max-w-[250px] truncate">
                 <MousePointer2
                     style={{
                         fill: color,
                         color: color,
-                        height: 20,
-                        width: 20,
+                        height: window.innerWidth > 768 ? 20 : 15,
+                        width: window.innerWidth > 768 ? 20 : 15,
                     }}
                 />
                 <span
-                    className="text-white font-semibold truncate text-sm rounded-md px-2 py-[2px] ml-5 max-w-[350px]"
+                    className="text-white font-semibold truncate text-xs sm:text-sm rounded-md px-2 py-[2px] ml-5 max-w-[200px]"
                     style={{
                         backgroundColor: color,
                     }}
