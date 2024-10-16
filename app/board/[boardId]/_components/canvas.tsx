@@ -432,7 +432,7 @@ export const Canvas = ({
             return;
         }
 
-        if (canvasState.mode !== CanvasMode.Translating) {
+        if (canvasState.mode !== CanvasMode.Translating || activeTouches > 1) {
             return;
         }
 
@@ -499,7 +499,7 @@ export const Canvas = ({
 
         setLiveLayers(newLayers);
         setCanvasState({ mode: CanvasMode.Translating, current: point });
-    }, [canvasState, setCanvasState, setLiveLayers, socket, liveLayers, expired, zoom, setMyPresence, myPresence]);
+    }, [canvasState, setCanvasState, setLiveLayers, socket, liveLayers, expired, zoom, setMyPresence, myPresence, activeTouches]);
 
     const translateSelectedLayersWithDelta = useCallback((delta: Point) => {
         if (expired) {
