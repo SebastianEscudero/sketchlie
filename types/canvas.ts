@@ -30,7 +30,8 @@ export enum LayerType {
   Arrow,
   Video,
   Link,
-  Frame
+  Frame,
+  Svg
 };
 
 export type ArrowLayer = {
@@ -263,6 +264,17 @@ export type ImageLayer = {
   connectedArrows?: string[];
 };
 
+export type SvgLayer = {
+  type: LayerType.Svg;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  src: string;
+  fill: Color;
+  connectedArrows?: string[];
+};
+
 export type VideoLayer = {
   type: LayerType.Video;
   x: number;
@@ -418,7 +430,7 @@ export enum CanvasMode {
 
 export type Layer = RectangleLayer | EllipseLayer | RhombusLayer | TriangleLayer | StarLayer 
 | HexagonLayer | BigArrowDownLayer | BigArrowLeftLayer | BigArrowRightLayer | BigArrowUpLayer | PathLayer 
-| CommentBubbleLayer |TextLayer | NoteLayer | ImageLayer | ArrowLayer | LineLayer | VideoLayer | LinkLayer | FrameLayer;
+| CommentBubbleLayer |TextLayer | NoteLayer | ImageLayer | ArrowLayer | LineLayer | VideoLayer | LinkLayer | FrameLayer | SvgLayer;
 
 export interface Layers {
   [key: string]: Layer;

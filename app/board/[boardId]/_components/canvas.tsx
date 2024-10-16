@@ -45,6 +45,7 @@ import {
     Presence,
     PreviewLayer,
     Side,
+    SvgLayer,
     XYWH,
 } from "@/types/canvas";
 
@@ -375,7 +376,7 @@ export const Canvas = ({
 
     const insertMedia = useCallback((
         mediaItems: Array<{
-            layerType: LayerType.Image | LayerType.Video | LayerType.Link,
+            layerType: LayerType.Image | LayerType.Video | LayerType.Link | LayerType.Svg,
             position: Point,
             info: any,
             zoom: number
@@ -397,7 +398,7 @@ export const Canvas = ({
                 return;
             }
 
-            const layer = {
+            let layer: any = {
                 type: layerType,
                 x: position.x,
                 y: position.y,
@@ -405,6 +406,11 @@ export const Canvas = ({
                 width: info.dimensions.width,
                 src: info.url,
             };
+
+              // Add fill color for SVG layers
+            if (layerType === LayerType.Svg) {
+                (layer as SvgLayer).fill = { r: 29, g: 29, b: 29, a: 1 }; // Default to black
+            }
 
             newLayers.push(layer);
 
@@ -804,7 +810,8 @@ export const Canvas = ({
         let hasMediaOrText = selectedLayersRef.current.some(id =>
             liveLayers[id].type === LayerType.Image ||
             liveLayers[id].type === LayerType.Text ||
-            liveLayers[id].type === LayerType.Video
+            liveLayers[id].type === LayerType.Video ||
+            liveLayers[id].type === LayerType.Svg
         );
         let mantainAspectRatio = hasMediaOrText
         let singleLayer = selectedLayersRef.current.length === 1
