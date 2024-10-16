@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect, memo } from 'react';
 import { ImageLayer } from "@/types/canvas";
 
 interface ImageProps {
@@ -15,7 +15,7 @@ interface ImageProps {
   showOutlineOnHover?: boolean;
 };
 
-export const InsertImage = ({
+export const InsertImage = memo(({
   isUploading,
   id,
   layer,
@@ -31,6 +31,10 @@ export const InsertImage = ({
   const { x, y, width, height, src } = layer;
 
   const [strokeColor, setStrokeColor] = useState(selectionColor || "none");
+
+  useEffect(() => {
+    setStrokeColor(selectionColor || "none");
+  }, [selectionColor]);
 
   const handlePointerDown = useCallback((e: React.PointerEvent) => {
     setStrokeColor(selectionColor || "none");
@@ -92,39 +96,47 @@ export const InsertImage = ({
     requestAnimationFrame(animate);
   }, [cameraRef, zoomRef, height, width, x, y, setCamera, setZoom]);
 
-  if (!isUploading) {
-    return (
-      <>
-        <rect
-          x={x}
-          y={y}
-          width={width}
-          height={height}
-          stroke={strokeColor}
-          strokeWidth="1"
-          fill="white"
-          strokeLinecap='round'
-          strokeLinejoin='round'
-          pointerEvents="auto"
-        />
+  const handlePointerEnter = useCallback(() => {
+    if (showOutlineOnHover) {
+      setStrokeColor("#3390FF");
+    }
+  }, [showOutlineOnHover]);
 
-        <image
-          crossOrigin="anonymous"
-          id={id}
-          href={src}
-          x={x}
-          y={y}
-          width={width}
-          height={height}
-          onPointerDown={handlePointerDown}
-          onDoubleClick={onDoubleClick}
-          pointerEvents="auto"
-          onPointerEnter={() => { if (showOutlineOnHover) { setStrokeColor("#3390FF") } }}
-          onPointerLeave={() => setStrokeColor(selectionColor || "none")}
-        />
-      </>
-    );
-  } else {
-    return null;
-  }
-};
+  const handlePointerLeave = useCallback(() => {
+    setStrokeColor(selectionColor || "none");
+  }, [selectionColor]);
+
+  return (
+    <>
+      <rect
+        x={x}
+        y={y}
+        width={width}
+        height={height}
+        stroke={strokeColor}
+        strokeWidth="1"
+        fill="white"
+        strokeLinecap='round'
+        strokeLinejoin='round'
+        pointerEvents="auto"
+      />
+
+      <image
+        crossOrigin="anonymous"
+        id={id}
+        href={src}
+        x={x}
+        y={y}
+        width={width}
+        height={height}
+        onPointerDown={handlePointerDown}
+        onDoubleClick={onDoubleClick}
+        pointerEvents="auto"
+        onPointerEnter={handlePointerEnter}
+        onPointerLeave={handlePointerLeave}
+      />
+    </>
+  );
+});
+
+InsertImage.displayName = 'InsertImage';

@@ -959,11 +959,11 @@ export const Canvas = ({
         const x = e.clientX - svgRect.left;
         const y = e.clientY - svgRect.top;
 
-        const isMouseWheel = 100 > Math.abs(e.deltaY) && Math.abs(e.deltaY) > 90 && e.deltaX === 0;
+        const isMouseWheel = Math.abs(e.deltaY) > 90 && e.deltaX === 0;
 
         if (e.ctrlKey || isMouseWheel) {
             // Zooming
-            const zoomSpeed = isMouseWheel ? 1.3 : 1.13;
+            const zoomSpeed = isMouseWheel ? 1.3 : 1.2;
             let newZoom = zoom;
             if (e.deltaY < 0) {
                 newZoom = Math.min(zoom * zoomSpeed, 10);
@@ -2567,7 +2567,9 @@ export const Canvas = ({
                                             height={Math.abs(canvasState.origin.y - canvasState.current.y)}
                                         />
                                     )}
-                                    {otherUsers && <CursorsPresence otherUsers={otherUsers} zoom={zoom} />}
+                                    {otherUsers && 
+                                        <CursorsPresence otherUsers={otherUsers} zoom={zoom} />
+                                    }
                                     {
                                         pencilDraft && !pencilDraft.some(array => array.some(isNaN)) && (
                                             <Path
