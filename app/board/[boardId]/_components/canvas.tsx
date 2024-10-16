@@ -1635,83 +1635,94 @@ export const Canvas = ({
         uploadFilesAndInsertThemIntoCanvas(files, org, User, zoom, x, y, insertMedia);
     }, [setIsDraggingOverCanvas, camera, zoom, org, User, insertMedia, expired]);
 
-    const onTouchDown = useCallback((e: React.TouchEvent) => {
+    const onTouchStart = useCallback((e: React.TouchEvent) => {
         setIsMoving(false);
         setActiveTouches(e.touches.length);
-
+    
         if (e.touches.length > 1) {
             selectedLayersRef.current = [];
         }
-
+    
+        // Reset pinch and pan values at the start of a new touch interaction
+        setPinchStartDist(null);
+        setStartPanPoint({ x: 0, y: 0 });
+    
     }, []);
-
-    const onTouchUp = useCallback((e: React.TouchEvent) => {
-        setIsMoving(false);
-        setActiveTouches(e.changedTouches.length);
-    }, []);
-
+    
     const onTouchMove = useCallback((e: React.TouchEvent) => {
         if (canvasState.mode === CanvasMode.Translating) {
             setIsMoving(true);
         }
         setActiveTouches(e.touches.length);
-
+    
         if (e.touches.length < 2) {
             setPinchStartDist(null);
             return;
         }
-
+    
         const touch1 = e.touches[0];
         const touch2 = e.touches[1];
-
+    
         const dist = Math.hypot(
             touch1.clientX - touch2.clientX,
             touch1.clientY - touch2.clientY
         );
-
+    
         const svgRect = e.currentTarget.getBoundingClientRect();
         const x = ((touch1.clientX + touch2.clientX) / 2) - svgRect.left;
         const y = ((touch1.clientY + touch2.clientY) / 2) - svgRect.top;
-
+    
         if (pinchStartDist === null) {
             setPinchStartDist(dist);
             setStartPanPoint({ x, y });
             return;
         }
-
+    
         const isZooming = Math.abs(dist - pinchStartDist) > 10;
-
+    
         if (isZooming) {
             const zoomSpeed = 1; // Adjust this value to control zoom sensitivity
             const zoomFactor = dist / pinchStartDist;
             const targetZoom = zoom * zoomFactor;
             const newZoom = zoom + (targetZoom - zoom) * zoomSpeed;
-
+    
             // Clamp zoom level
             const clampedZoom = Math.max(0.3, Math.min(newZoom, 10));
-
+    
             const zoomRatio = clampedZoom / zoom;
             const newX = x - (x - camera.x) * zoomRatio;
             const newY = y - (y - camera.y) * zoomRatio;
-
+    
             setZoom(clampedZoom);
             setCamera({ x: newX, y: newY });
         } else if (startPanPoint) { // Panning
             const dx = x - startPanPoint.x;
             const dy = y - startPanPoint.y;
-
+    
             const newCameraPosition = {
                 x: camera.x + dx,
                 y: camera.y + dy,
             };
-
+    
             setCamera(newCameraPosition);
         }
-
+    
         setPinchStartDist(dist);
         setStartPanPoint({ x, y });
     }, [zoom, pinchStartDist, camera, startPanPoint, canvasState]);
-
+    
+    const onTouchEnd = useCallback((e: React.TouchEvent) => {
+        setIsMoving(false);
+        setActiveTouches(e.changedTouches.length);
+    
+        // Reset pinch and pan values when the touch interaction ends
+        if (e.touches.length < 2) {
+            setPinchStartDist(null);
+        }
+        if (e.touches.length === 0) {
+            setStartPanPoint({ x: 0, y: 0 });
+        }
+    }, []);
     const copySelectedLayers = useCallback(() => {
         setCopiedLayerIds(selectedLayersRef.current);
     }, [selectedLayersRef]);
@@ -2430,9 +2441,9 @@ export const Canvas = ({
                         onDragOver={onDragOver}
                         onDrop={onDrop}
                         onDragLeave={onDragLeave}
-                        onTouchStart={onTouchDown}
+                        onTouchStart={onTouchStart}
                         onTouchMove={onTouchMove}
-                        onTouchEnd={onTouchUp}
+                        onTouchEnd={onTouchEnd}
                         onPointerMove={onPointerMove}
                         onPointerLeave={onPointerLeave}
                         onPointerDown={onPointerDown}
