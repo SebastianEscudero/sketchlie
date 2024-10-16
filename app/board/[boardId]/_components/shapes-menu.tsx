@@ -25,7 +25,7 @@ export const ShapesMenu = ({
     canvasState,
 }: ShapesMenuProps) => {
     return (
-        <div className="absolute left-[60px] bottom-16 p-2 bg-white dark:bg-[#383838] rounded-lg shadow-custom-1 grid grid-cols-4 grid-rows-3 gap-2 h-[144px] w-[160px] sm:w-[192px] items-center cursor-default">
+        <div className="absolute left-[60px] bottom-16 p-2 bg-white dark:bg-[#383838] rounded-lg shadow-sm grid grid-cols-4 grid-rows-3 gap-2 h-[144px] w-[160px] sm:w-[192px] items-center cursor-default">
           <ToolButton
             icon={Square}
             onClick={() => setCanvasState({

@@ -93,7 +93,7 @@ export const Frame = memo(({
                     y={-(padding)}
                     fontSize={fontSize}
                     fill={strokeColor}
-                    className="font-bold"
+                    className="font-semibold"
                 >
                     {value}
                 </text>

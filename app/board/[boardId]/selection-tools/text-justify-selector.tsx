@@ -97,7 +97,7 @@ export const TextJustifySelector = ({
             </Hint>
 
             {openSelector === SelectorType.TextJustify && (
-                <div className={`p-3 absolute ${getSelectorPositionClass(expandUp)} left-1/2 transform -translate-x-1/2 w-[140px] rounded-lg shadow-custom-1 bg-white dark:bg-zinc-800 ring-1 ring-black ring-opacity-5`}>
+                <div className={`p-3 absolute ${getSelectorPositionClass(expandUp)} left-1/2 transform -translate-x-1/2 w-[140px] rounded-lg shadow-sm bg-white dark:bg-zinc-800 ring-1 ring-black ring-opacity-5`}>
                     <div className='flex flex-row justify-center items-center mb-1'>
                         {/* Horizontal Alignment Buttons */}
                         <Button onClick={() => updateAlignment('left', null)} variant={alignX === 'left' ? "alignedActive" : "aligned"} className='px-1'>

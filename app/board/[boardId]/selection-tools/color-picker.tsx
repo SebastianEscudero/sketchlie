@@ -39,7 +39,7 @@ export const ColorPicker = ({
       <ColorPickerButton color={colorButtonColor} onClick={() => setOpenSelector(openSelector === SelectorType.Color ? null : SelectorType.Color)} />
       {openSelector === SelectorType.Color && (
         <div
-          className={`p-3 pt-5 pb-2 origin-top-right absolute right-0 ${getSelectorPositionClass(expandUp)} w-[165px] translate-x-1/3 rounded-lg shadow-custom-1 bg-white dark:bg-zinc-800`}
+          className={`p-3 pt-5 pb-2 origin-top-right absolute right-0 ${getSelectorPositionClass(expandUp)} w-[165px] translate-x-1/3 rounded-lg shadow-sm bg-white dark:bg-zinc-800`}
         >
           <Slider
 
@@ -118,8 +118,8 @@ export const ColorPickerButton = ({
         size="icon"
       >
         <div
-          className="h-5 w-5 rounded-[50%] border dark:border-zinc-600 border-zinc-800 relative"
-          style={{ background: colorToCss(color) }}
+          className="h-5 w-5 rounded-[50%] relative"
+          style={{ background: colorToCss(color), border: color.a === 0 ? '1px solid #d4d4d4' : 'none' }}
         >
           {color.r === 0 && color.g === 0 && color.b === 0 && color.a === 0 && (
             <svg className="absolute top-0 left-0 w-full h-full bg-white rounded-xl" viewBox="0 0 1 1">

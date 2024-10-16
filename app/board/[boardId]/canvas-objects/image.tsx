@@ -29,28 +29,11 @@ export const InsertImage = memo(({
   showOutlineOnHover = false,
 }: ImageProps) => {
   const { x, y, width, height, src } = layer;
-
   const [strokeColor, setStrokeColor] = useState(selectionColor || "none");
-  const [isSvg, setIsSvg] = useState(false);
-  const [svgContent, setSvgContent] = useState<string | null>(null);
 
   useEffect(() => {
     setStrokeColor(selectionColor || "none");
   }, [selectionColor]);
-
-  useEffect(() => {
-    if (src && src.trim().startsWith('<?xml') || src.trim().startsWith('<svg')) {
-      setIsSvg(true);
-      // Extract the content inside the <svg> tag
-      const svgMatch = src.match(/<svg[^>]*>([\s\S]*?)<\/svg>/i);
-      if (svgMatch && svgMatch[1]) {
-        setSvgContent(svgMatch[1]);
-      }
-    } else {
-      setIsSvg(false);
-      setSvgContent(null);
-    }
-  }, [src]);
 
   const handlePointerDown = useCallback((e: React.PointerEvent) => {
     setStrokeColor(selectionColor || "none");
@@ -122,30 +105,6 @@ export const InsertImage = memo(({
     setStrokeColor(selectionColor || "none");
   }, [selectionColor]);
 
-  const renderContent = () => {
-    if (isSvg && svgContent) {
-      return (
-        <g
-          dangerouslySetInnerHTML={{ __html: svgContent }}
-          transform={`translate(${x},${y}) scale(${width / 100},${height / 100})`}
-          className='pointer-events-none'
-        />
-      );
-    } else {
-      return (
-        <image
-          crossOrigin="anonymous"
-          id={id}
-          href={src}
-          x={x}
-          y={y}
-          width={width}
-          height={height}
-        />
-      );
-    }
-  };
-
   return (
     <g
       onPointerDown={handlePointerDown}
@@ -165,9 +124,16 @@ export const InsertImage = memo(({
         strokeLinecap='round'
         strokeLinejoin='round'
       />
-      {renderContent()}
+      <image
+          crossOrigin="anonymous"
+          id={id}
+          href={src}
+          x={x}
+          y={y}
+          width={width}
+          height={height}
+        />
     </g>
-  );
-});
+)});
 
 InsertImage.displayName = 'InsertImage';

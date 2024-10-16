@@ -293,7 +293,7 @@ export const TextOptions = ({
             </div>
             {openSelector === SelectorType.FontSize && (
                 <div
-                    className={`shadow-custom-1 rounded-lg absolute ${getSelectorPositionClass(expandUp)} w-[55px] bg-white dark:bg-zinc-800 ring-1 ring-black ring-opacity-5`}
+                    className={`shadow-sm rounded-lg absolute ${getSelectorPositionClass(expandUp)} w-[55px] bg-white dark:bg-zinc-800 ring-1 ring-black ring-opacity-5`}
                 >
                     <div className="py-4 grid grid-cols-1 gap-5 w-full text-xs" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                         {fontSizes.slice(5).map(fontSize => (
@@ -306,7 +306,7 @@ export const TextOptions = ({
             )}
             {openSelector === SelectorType.TextColor && (
             <div 
-                className={`p-3 pb-2 origin-top-right absolute right-0 grid grid-cols-4 gap-x-1 ${getSelectorPositionClass(expandUp)} w-[165px] translate-x-1/3 rounded-lg shadow-custom-1 bg-white dark:bg-zinc-800`}>
+                className={`p-3 pb-2 origin-top-right absolute right-0 grid grid-cols-4 gap-x-1 ${getSelectorPositionClass(expandUp)} w-[165px] translate-x-1/3 rounded-lg shadow-sm bg-white dark:bg-zinc-800`}>
                 <ColorButton color={{ r: 0, g: 0, b: 0, a: 0 }} onClick={handleColorChange} selectedColor={textStyles.color} />
                 <ColorButton color={{ r: 255, g: 255, b: 255, a: 1 }} onClick={handleColorChange} selectedColor={textStyles.color} />
                 <ColorButton color={{ r: 29, g: 29, b: 29, a: 1 }} onClick={handleColorChange} selectedColor={textStyles.color} />

@@ -273,6 +273,6 @@ Info.displayName = "Info";
 
 export const InfoSkeleton = () => {
     return (
-        <div className="absolute bg-white rounded-lg px-1 h-12 flex items-center shadow-custom-3 w-[300px]" />
+        <div className="absolute bg-white rounded-lg px-1 h-12 flex items-center shadow-md w-[300px]" />
     );
 };

@@ -30,7 +30,6 @@ import { ShapesMenu } from "./shapes-menu";
 import { PenEraserMenu } from "./pen-eraser-laser-menu";
 import { ArrowMenu } from "./arrow-menu";
 import { LinkButton } from "./link-button";
-import { IconButton } from "./icon-button";
 import { PresentationModeToolbar } from "./presentation-mode-toolbar";
 
 interface ToolbarProps {
@@ -59,7 +58,7 @@ interface ToolbarProps {
   pathColor: Color;
   isPlacingLayer: boolean;
   expired: boolean;
-  insertMedia: (mediaItems: { layerType: LayerType.Image | LayerType.Video | LayerType.Link, position: Point, info: any, zoom: number }[]) => void;
+  insertMedia: (mediaItems: { layerType: LayerType.Image | LayerType.Video | LayerType.Link | LayerType.Svg, position: Point, info: any, zoom: number }[]) => void;
   camera: any;
   svgRef: any;
   zoom: number;

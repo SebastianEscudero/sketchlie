@@ -21,6 +21,7 @@ import { CommentBubble } from "../canvas-objects/commentBubble";
 import { Line } from "../canvas-objects/line";
 import { InsertImage } from "../canvas-objects/image";
 import { Frame } from "../canvas-objects/frame";
+import { SVGLayer } from "../canvas-objects/svg-layer";
 
 interface LayerPreviewProps {
   id: string;
@@ -296,6 +297,22 @@ export const LayerPreview = memo(({
     case LayerType.Image:
       return (
         <InsertImage
+          isUploading={false}
+          id={id}
+          layer={layer}
+          onPointerDown={onLayerPointerDown}
+          selectionColor={selectionColor}
+          setCamera={setCamera}
+          setZoom={setZoom}
+          focused={focused}
+          cameraRef={cameraRef}
+          zoomRef={zoomRef}
+          showOutlineOnHover={showOutlineOnHover}
+        />
+      );
+    case LayerType.Svg:
+      return (
+        <SVGLayer
           isUploading={false}
           id={id}
           layer={layer}

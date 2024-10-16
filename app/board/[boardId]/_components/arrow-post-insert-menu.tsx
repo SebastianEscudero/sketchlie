@@ -170,7 +170,7 @@ export const ArrowPostInsertMenu = memo(({
 
     return (
         <div
-            className="pointer-events-auto absolute p-3 rounded-lg shadow-custom-1 h-[180px] w-[172px] cursor-default bg-white dark:bg-[#383838] border dark:border-zinc-500 select-none gap-x-2 items-center"
+            className="pointer-events-auto absolute p-3 rounded-lg shadow-sm h-[180px] w-[172px] cursor-default bg-white dark:bg-[#383838] border dark:border-zinc-500 select-none gap-x-2 items-center"
             style={{
                 transform: initialPosition
                     ? `translate(

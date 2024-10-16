@@ -8,7 +8,7 @@ import { SketchlieButton } from "./sketchlie-button";
 
 export const EmptyOrgSidebar = () => {
     return (
-        <div className="hidden lg:flex flex-col dark:bg-[#2C2C2C] text-black dark:text-white bg-zinc-100 space-y-2 shadow-custom-2 justify-between w-[240px] px-5 pt-5 select-none">
+        <div className="hidden lg:flex flex-col dark:bg-[#2C2C2C] text-black dark:text-white bg-zinc-100 space-y-2 justify-between w-[240px] px-5 pt-5 select-none">
             <div className="flex flex-col space-y-4">
                 <SketchlieButton activeOrg={null} />
                 <div className="w-full relative">
