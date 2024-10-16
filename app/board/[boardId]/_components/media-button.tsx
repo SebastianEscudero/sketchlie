@@ -54,7 +54,7 @@ export const MediaButton = ({
     const [isDraggingFiles, setIsDraggingFiles] = useState(false);
     const dialogRef = useRef<HTMLDivElement>(null);
     const [theme, setTheme] = useState("dark");
-    const [activeTab, setActiveTab] = useState<"gifs" | "images" | "videos">("gifs");
+    const [activeTab, setActiveTab] = useState<"gifs" | "images" | "videos" | "icons">("images");
     const [searchResults, setSearchResults] = useState<any[]>([]);
     const giphyLogo = theme === "dark" ? "/watermarks/giphy-black.png" : "/watermarks/giphy-white.png";
 
@@ -97,12 +97,15 @@ export const MediaButton = ({
                         case "videos":
                             response = await fetch(`/api/media/pexels/videos?q=${encodeURIComponent(debouncedSearchTerm)}`);
                             break;
+                        case "icons":
+                            response = await fetch(`/api/media/icons?q=${encodeURIComponent(debouncedSearchTerm)}`);
+                            break;
                     }
                     if (!response.ok) {
                         throw new Error(`Failed to fetch ${activeTab}`);
                     }
                     const data = await response.json();
-                    setSearchResults(activeTab === "gifs" ? data.data : data.videos || data.photos);
+                    setSearchResults(data.icons || data.data || data.videos || data.photos);
                 } catch (error) {
                     console.error('Error:', error);
                     toast.error(`Failed to search ${activeTab}`);
@@ -227,6 +230,9 @@ export const MediaButton = ({
                         type: 'video'
                     };
                     break;
+                // we handle the icons in a different way
+                case "icons":
+                    return;
             }
             const centerPoint = getCenterOfScreen(camera, zoom, svgRef);
             // Adjust the insertion point to account for the media's dimensions
@@ -249,6 +255,45 @@ export const MediaButton = ({
         } finally {
             setIsUploading(false);
             setIsDialogOpen(false);
+        }
+    };
+
+    const handleIconSelect = async (icon: any) => {
+        try {
+            setIsUploading(true);
+    
+            if (!icon.icon_url) {
+                throw new Error('Icon URL is missing');
+            }
+    
+            // Fetch SVG data
+            const response = await fetch(icon.icon_url);
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch SVG data');
+            }
+            const svgData = await response.text();
+    
+            const centerPoint = getCenterOfScreen(camera, zoom, svgRef);
+    
+            const desiredSize = 100;
+            const info = {
+                url: svgData, // Pass SVG data instead of URL
+                dimensions: {
+                    width: desiredSize * zoom,
+                    height: desiredSize * zoom
+                },
+                type: LayerType.Image
+            };
+    
+            insertMedia([{layerType: LayerType.Image, position: centerPoint, info, zoom}]);
+            toast.success('Icon added successfully');
+            setIsDialogOpen(false);
+        } catch (error) {
+            console.error('Error:', error);
+            toast.error('Failed to add icon');
+        } finally {
+            setIsUploading(false);
         }
     };
 
@@ -280,23 +325,25 @@ export const MediaButton = ({
                         </div>
                     )}
                     <DialogHeader>
-                        <DialogTitle className="text-2xl font-bold">Images, Videos, and GIFs</DialogTitle>
+                        <DialogTitle className="text-2xl font-bold">Images, Videos, GIFs, and Icons</DialogTitle>
                         <DialogDescription>
-                            We know you&apos;re a creative, so we&apos;ve made it easy to add images, videos, and GIFs to your boards.
+                            We know you&apos;re a creative, so we&apos;ve made it as easy as possible to add images, videos, and GIFs to your boards.
                         </DialogDescription>
                     </DialogHeader>
                     <div className="flex flex-col gap-4">
-                        <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "gifs" | "images" | "videos")}>
-                            <TabsList className="grid w-full grid-cols-3">
-                                <TabsTrigger value="gifs">GIFs</TabsTrigger>
-                                <TabsTrigger value="images">Images</TabsTrigger>
-                                <TabsTrigger value="videos">Videos</TabsTrigger>
+                        <Tabs value={activeTab} onValueChange={(value) => {
+                            setActiveTab(value as "gifs" | "images" | "videos" | "icons");
+                            setSearchTerm("");
+                        }}>
+                            <TabsList className="grid w-full grid-cols-4">
+                                <TabsTrigger value="images" className="data-[state=active]:border-b-2 border-blue-500">Images</TabsTrigger>
+                                <TabsTrigger value="gifs" className="data-[state=active]:border-b-2 border-blue-500">GIFs</TabsTrigger>
+                                <TabsTrigger value="videos" className="data-[state=active]:border-b-2 border-blue-500">Videos</TabsTrigger>
+                                <TabsTrigger value="icons" className="data-[state=active]:border-b-2 border-blue-500">Icons</TabsTrigger>
                             </TabsList>
                         </Tabs>
                         <div className="relative flex items-center">
-                            <Search
-                                className="absolute left-3 text-muted-foreground h-4 w-4"
-                            />
+                            <Search className="absolute left-3 text-muted-foreground h-4 w-4" />
                             <Input
                                 className="pl-9 pr-10"
                                 placeholder={`Search ${activeTab}...`}
@@ -319,31 +366,43 @@ export const MediaButton = ({
                                         <Loader2 className="w-10 h-10 animate-spin text-blue-600" />
                                     </div>
                                 ) : searchResults.length > 0 ? (
-                                    <div className="grid grid-cols-3 gap-2 p-2">
+                                    <div className="grid grid-cols-4 gap-2 p-2">
                                         {searchResults.map((item) => {
-                                            const mediaSrc = getMediaSrc(item);
-                                            return activeTab === "videos" ? (
-                                                mediaSrc ? (
-                                                    <video
+                                            if (activeTab === "icons") {
+                                                return (
+                                                    <img
+                                                        key={item.id}
+                                                        src={item.thumbnail_url}
+                                                        alt={item.term}
+                                                        onClick={() => handleIconSelect(item)}
+                                                        className="cursor-pointer object-contain w-full h-16"
+                                                    />
+                                                );
+                                            } else {
+                                                const mediaSrc = getMediaSrc(item);
+                                                return activeTab === "videos" ? (
+                                                    mediaSrc ? (
+                                                        <video
+                                                            key={item.id}
+                                                            src={mediaSrc}
+                                                            onClick={() => handleMediaSelect(item)}
+                                                            className="cursor-pointer object-cover w-full h-32"
+                                                            muted
+                                                            loop
+                                                            onMouseOver={(e) => e.currentTarget.play()}
+                                                            onMouseOut={(e) => e.currentTarget.pause()}
+                                                        />
+                                                    ) : null
+                                                ) : (
+                                                    <img
                                                         key={item.id}
                                                         src={mediaSrc}
+                                                        alt={activeTab === "gifs" ? item.title : item.alt}
                                                         onClick={() => handleMediaSelect(item)}
                                                         className="cursor-pointer object-cover w-full h-32"
-                                                        muted
-                                                        loop
-                                                        onMouseOver={(e) => e.currentTarget.play()}
-                                                        onMouseOut={(e) => e.currentTarget.pause()}
                                                     />
-                                                ) : null
-                                            ) : (
-                                                <img
-                                                    key={item.id}
-                                                    src={mediaSrc}
-                                                    alt={activeTab === "gifs" ? item.title : item.alt}
-                                                    onClick={() => handleMediaSelect(item)}
-                                                    className="cursor-pointer object-cover w-full h-32"
-                                                />
-                                            );
+                                                );
+                                            }
                                         })}
                                     </div>
                                 ) : (
@@ -354,7 +413,7 @@ export const MediaButton = ({
                                         </p>
                                         <Button onClick={() => inputFileRef.current?.click()} variant="sketchlieBlue">
                                             <Upload className="w-4 h-4 mr-2" />
-                                            Upload file
+                                            Upload {activeTab.slice(0, -1)}
                                         </Button>
                                     </div>
                                 )}
@@ -362,15 +421,17 @@ export const MediaButton = ({
                         </div>
                         {activeTab === "gifs" && searchTerm && (
                             <div className="pt-2 border-t">
-                                <img
-                                    src={giphyLogo}
-                                    alt="Powered by GIPHY"
-                                />
+                                <img src={giphyLogo} alt="Powered by GIPHY" />
                             </div>
                         )}
                         {(activeTab === "images" || activeTab === "videos") && searchTerm && (
                             <div className="pt-2 border-t text-sm text-gray-500">
                                 {activeTab === "images" ? "Photos" : "Videos"} provided by <a href="https://pexels.com" target="_blank" rel="noopener noreferrer">Pexels</a>
+                            </div>
+                        )}
+                        {activeTab === "icons" && searchTerm && (
+                            <div className="pt-2 border-t text-sm text-gray-500">
+                                Icons provided by The Noun Project
                             </div>
                         )}
                     </div>

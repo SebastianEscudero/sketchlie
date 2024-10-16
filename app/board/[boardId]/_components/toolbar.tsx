@@ -177,7 +177,7 @@ export const Toolbar = memo(({
             canvasState.mode === CanvasMode.Resizing
           }
         />
-        <ToolButton
+        {/* <ToolButton
           label="Move"
           icon={Hand}
           onClick={() => setCanvasState({
@@ -186,7 +186,7 @@ export const Toolbar = memo(({
           isActive={
             canvasState.mode === CanvasMode.Moving
           }
-        />
+        /> */}
         <ToolButton
           label={
             !isPenEraserSwitcherOpen
@@ -305,7 +305,7 @@ export const Toolbar = memo(({
           svgRef={svgRef}
           zoom={zoom}
         />
-        <IconButton
+        {/* <IconButton
           label="Icon"
           org={org}
           icon={Lightbulb}
@@ -313,7 +313,7 @@ export const Toolbar = memo(({
           svgRef={svgRef}
           zoom={zoom}
           insertMedia={insertMedia}
-        />
+        /> */}
         <LinkButton
           label="Link"
           icon={Link}

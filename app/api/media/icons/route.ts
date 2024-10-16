@@ -22,7 +22,7 @@ export async function GET(request: Request): Promise<NextResponse> {
     return NextResponse.json({ error: 'Query parameter is required' }, { status: 400 });
   }
 
-  const url = `https://api.thenounproject.com/v2/icon?limit=20&query=${encodeURIComponent(query)}`;
+  const url = `https://api.thenounproject.com/v2/icon?limit=20&query=${encodeURIComponent(query)}&include_svg=1&limit_to_public_domain=1`;
 
   return new Promise<NextResponse>((resolve) => {
     oauth.get(
@@ -36,11 +36,7 @@ export async function GET(request: Request): Promise<NextResponse> {
         } else {
           try {
             const parsedData = JSON.parse(data as string);
-            const icons = parsedData.icons.map((icon: any) => ({
-              ...icon,
-              svg_url: icon.icon_url || '' // Provide a default empty string if icon_url is undefined
-            }));
-            resolve(NextResponse.json({ icons }));
+            resolve(NextResponse.json({ icons: parsedData.icons }));
           } catch (parseError) {
             console.error('Error parsing Noun Project API response:', parseError);
             resolve(NextResponse.json({ error: 'Failed to parse API response', details: parseError }, { status: 500 }));
