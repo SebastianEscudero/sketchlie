@@ -3,9 +3,8 @@ import { CanvasMode, Color } from "@/types/canvas";
 import { LaserIcon } from "@/public/custom-icons/laser";
 import { Slider } from "@/components/ui/slider";
 import { ColorButton } from "../selection-tools/color-picker";
-import { Button } from "@/components/ui/button";
-import { ElementType } from "react";
 import { SmallToolButton } from "./tool-button";
+import { AnimatedToolbarMenu } from "./toolbar";
 
 interface PenEraserLaserMenuProps {
     setCanvasState: (state: any) => void;
@@ -14,6 +13,7 @@ interface PenEraserLaserMenuProps {
     pathStrokeSize: number;
     onPathColorChange: (color: Color) => void;
     handleStrokeSizeChange: (value: number[]) => void;
+    isPenEraserLaserMenuOpen: boolean;
 }
 
 export const PenEraserLaserMenu = ({
@@ -23,10 +23,14 @@ export const PenEraserLaserMenu = ({
     pathStrokeSize,
     onPathColorChange,
     handleStrokeSizeChange,
+    isPenEraserLaserMenuOpen,
 }: PenEraserLaserMenuProps) => {
     return (
-        <div className="pt-3 absolute left-5 bottom-16 bg-white dark:bg-zinc-800 rounded-lg shadow-md flex flex-col items-center cursor-default">
-            <div className="flex flex-row space-x-1 pb-1 items-center border-b">
+        <AnimatedToolbarMenu
+            isOpen={isPenEraserLaserMenuOpen}
+            className="left-5 bottom-16 flex flex-col items-center cursor-default pt-3"
+        >
+            <div className="flex flex-row space-x-1 pb-1 items-center border-b dark:border-zinc-300">
                 <SmallToolButton
                     label="Pen"
                     icon={Pen}
@@ -52,7 +56,7 @@ export const PenEraserLaserMenu = ({
                     isActive={canvasState.mode === CanvasMode.Laser}
                 />
             </div>
-            <div className="p-1 pt-2 pb-1 w-[165px] flex flex-col items-center">
+            <div className="p-1 pt-3 pb-0 w-[150px] flex flex-col items-center">
                 <Slider
                     defaultValue={[pathStrokeSize]}
                     min={1}
@@ -61,7 +65,7 @@ export const PenEraserLaserMenu = ({
                     className='bg-white dark:bg-[#383838] w-[90%] cursor-pointer'
                     onValueChange={handleStrokeSizeChange}
                 />
-                <div className="grid grid-cols-4 gap-x-1 pt-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                <div className="grid grid-cols-4 gap-x-1 pt-2" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                     <ColorButton color={{ r: 0, g: 0, b: 0, a: 0 }} onClick={onPathColorChange} selectedColor={pathColor} />
                     <ColorButton color={{ r: 255, g: 255, b: 255, a: 1 }} onClick={onPathColorChange} selectedColor={pathColor} />
                     <ColorButton color={{ r: 29, g: 29, b: 29, a: 1 }} onClick={onPathColorChange} selectedColor={pathColor} />
@@ -80,6 +84,6 @@ export const PenEraserLaserMenu = ({
                     <ColorButton color={{ r: 224, g: 49, b: 49, a: 1 }} onClick={onPathColorChange} selectedColor={pathColor} />
                 </div>
             </div>
-        </div>
+        </AnimatedToolbarMenu>
     )
 }

@@ -1,20 +1,26 @@
 import { ArrowType, CanvasMode, LayerType } from "@/types/canvas";
 import { ToolButton } from "./tool-button";
 import { MoveUpRight, Redo, TrendingUp } from "lucide-react";
+import { AnimatedToolbarMenu } from "./toolbar";
 
 interface ArrowMenuProps {
     setCanvasState: (state: any) => void;
     setArrowTypeInserting: (type: ArrowType) => void;
     arrowTypeInserting: ArrowType;
+    isArrowsMenuOpen: boolean;
 }
 
 export const ArrowMenu = ({
     setCanvasState,
     setArrowTypeInserting,
     arrowTypeInserting,
+    isArrowsMenuOpen,
 }: ArrowMenuProps) => {
     return (
-        <div className="absolute left-32 bottom-16 p-2 bg-white dark:bg-zinc-800 rounded-lg shadow-md flex flex-row space-x-1 items-center cursor-default">
+        <AnimatedToolbarMenu
+            isOpen={isArrowsMenuOpen}
+            className="left-32 bottom-16 flex flex-row space-x-1 items-center cursor-default"
+        >
             <ToolButton
                 label="Straight"
                 icon={MoveUpRight}
@@ -25,9 +31,7 @@ export const ArrowMenu = ({
                     });
                     setArrowTypeInserting(ArrowType.Straight);
                 }}
-                isActive={
-                    arrowTypeInserting === ArrowType.Straight
-                }
+                isActive={arrowTypeInserting === ArrowType.Straight}
             />
             <ToolButton
                 label="Curved"
@@ -39,9 +43,7 @@ export const ArrowMenu = ({
                     });
                     setArrowTypeInserting(ArrowType.Curved);
                 }}
-                isActive={
-                    arrowTypeInserting === ArrowType.Curved
-                }
+                isActive={arrowTypeInserting === ArrowType.Curved}
             />
             <ToolButton
                 label="Diagram"
@@ -53,10 +55,8 @@ export const ArrowMenu = ({
                     });
                     setArrowTypeInserting(ArrowType.Diagram);
                 }}
-                isActive={
-                    arrowTypeInserting === ArrowType.Diagram
-                }
+                isActive={arrowTypeInserting === ArrowType.Diagram}
             />
-        </div>
+        </AnimatedToolbarMenu>
     )
 };

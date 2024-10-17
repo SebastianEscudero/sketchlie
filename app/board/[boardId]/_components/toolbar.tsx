@@ -50,8 +50,8 @@ interface ToolbarProps {
   setIsArrowsMenuOpen: Dispatch<SetStateAction<boolean>>;
   isShapesMenuOpen: boolean;
   setIsShapesMenuOpen: Dispatch<SetStateAction<boolean>>;
-  isPenEraserSwitcherOpen: boolean;
-  setIsPenEraserSwitcherOpen: Dispatch<SetStateAction<boolean>>;
+  isPenEraserLaserMenuOpen: boolean;
+  setisPenEraserLaserMenuOpen: Dispatch<SetStateAction<boolean>>;
   pathColor: Color;
   isPlacingLayer: boolean;
   expired: boolean;
@@ -85,8 +85,8 @@ export const Toolbar = memo(({
   setIsArrowsMenuOpen,
   isShapesMenuOpen,
   setIsShapesMenuOpen,
-  isPenEraserSwitcherOpen,
-  setIsPenEraserSwitcherOpen,
+  isPenEraserLaserMenuOpen,
+  setisPenEraserLaserMenuOpen,
   pathColor,
   isPlacingLayer,
   expired,
@@ -110,7 +110,7 @@ export const Toolbar = memo(({
 
   useEffect(() => {
     if (canvasState.mode !== CanvasMode.Pencil && canvasState.mode !== CanvasMode.Eraser && canvasState.mode !== CanvasMode.Laser && canvasState.mode !== CanvasMode.Highlighter) {
-      setIsPenEraserSwitcherOpen(false);
+      setisPenEraserLaserMenuOpen(false);
     }
 
     if (canvasState.mode !== CanvasMode.Inserting || isPlacingLayer) {
@@ -182,7 +182,7 @@ export const Toolbar = memo(({
         /> */}
         <ToolButton
           label={
-            !isPenEraserSwitcherOpen
+            !isPenEraserLaserMenuOpen
               ? canvasState.mode === CanvasMode.Laser
                 ? "Laser"
                 : canvasState.mode === CanvasMode.Eraser
@@ -202,12 +202,12 @@ export const Toolbar = memo(({
                   : Pen
           }
           onClick={() => {
-            if (!isPenEraserSwitcherOpen) {
+            if (!isPenEraserLaserMenuOpen) {
               setCanvasState({
                 mode: CanvasMode.Pencil,
               });
             }
-            setIsPenEraserSwitcherOpen(!isPenEraserSwitcherOpen);
+            setisPenEraserLaserMenuOpen(!isPenEraserLaserMenuOpen);
           }}
           isActive={
             canvasState.mode === CanvasMode.Pencil ||
@@ -332,9 +332,10 @@ export const Toolbar = memo(({
         <ShapesMenu
           setCanvasState={setCanvasState}
           canvasState={canvasState}
+          isShapesMenuOpen={isShapesMenuOpen}
         />
       }
-      {isPenEraserSwitcherOpen && (canvasState.mode === CanvasMode.Pencil || canvasState.mode === CanvasMode.Eraser || canvasState.mode === CanvasMode.Laser || canvasState.mode === CanvasMode.Highlighter) &&
+      {isPenEraserLaserMenuOpen && (canvasState.mode === CanvasMode.Pencil || canvasState.mode === CanvasMode.Eraser || canvasState.mode === CanvasMode.Laser || canvasState.mode === CanvasMode.Highlighter) &&
         <PenEraserLaserMenu
           setCanvasState={setCanvasState}
           canvasState={canvasState}
@@ -342,6 +343,7 @@ export const Toolbar = memo(({
           pathStrokeSize={pathStrokeSize}
           onPathColorChange={onPathColorChange}
           handleStrokeSizeChange={handleStrokeSizeChange}
+          isPenEraserLaserMenuOpen={isPenEraserLaserMenuOpen}
         />
       }
       {isArrowsMenuOpen && canvasState.mode === CanvasMode.Inserting && canvasState.layerType === LayerType.Arrow &&
@@ -349,6 +351,7 @@ export const Toolbar = memo(({
           setCanvasState={setCanvasState}
           arrowTypeInserting={arrowTypeInserting}
           setArrowTypeInserting={setArrowTypeInserting}
+          isArrowsMenuOpen={isArrowsMenuOpen}
         />
       }
     </div>
@@ -360,5 +363,31 @@ Toolbar.displayName = "Toolbar";
 export const ToolbarSkeleton = () => {
   return (
     <div className="border dark:border-zinc-800 shadow-md absolute top-[50%] -translate-y-[50%] left-2 flex flex-col gap-y-4 bg-white dark:bg-zinc-800 h-[360px] w-[52px] rounded-xl" />
+  );
+};
+
+interface AnimatedToolbarMenuProps {
+  isOpen: boolean;
+  children: React.ReactNode;
+  className?: string;
+}
+
+export const AnimatedToolbarMenu: React.FC<AnimatedToolbarMenuProps> = ({
+  isOpen,
+  children,
+  className = '',
+}) => {
+  return (
+    <div
+      className={`
+        absolute p-2 bg-white dark:bg-zinc-800 rounded-lg shadow-md
+        transition-all duration-300 border dark:border-zinc-800
+        ${isOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
+        animate-in fade-in slide-in-from-bottom-4
+        ${className}
+      `}
+    >
+      {children}
+    </div>
   );
 };
