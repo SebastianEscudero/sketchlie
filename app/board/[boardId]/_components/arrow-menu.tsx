@@ -14,7 +14,7 @@ export const ArrowMenu = ({
     arrowTypeInserting,
 }: ArrowMenuProps) => {
     return (
-        <div className="absolute left-32 bottom-16 p-2 bg-white dark:bg-zinc-800 rounded-lg shadow-sm flex flex-row space-x-1 items-center cursor-default">
+        <div className="absolute left-32 bottom-16 p-2 bg-white dark:bg-zinc-800 rounded-lg shadow-md flex flex-row space-x-1 items-center cursor-default">
             <ToolButton
                 label="Straight"
                 icon={MoveUpRight}
