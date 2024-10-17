@@ -2204,8 +2204,14 @@ export const Canvas = ({
             }
         };
 
+        if (frameIds && frameIds.length === 0) {
+            toast.info("Add a frame to start presenting!");
+            setPresentationMode(false);
+            return;
+        }
+
         enterFullscreenAndGoToFrame();
-    }, [presentationMode, goToFrame]);
+    }, [presentationMode, goToFrame, frameIds]);
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
