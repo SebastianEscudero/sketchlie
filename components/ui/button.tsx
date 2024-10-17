@@ -36,7 +36,7 @@ const buttonVariants = cva(
         starter: "bg-yellow-500 text-black hover:bg-yellow-600",
         business: "bg-[#1C1C1E] text-white hover:text-accent-foreground hover:bg-accent/90 border dark:border-zinc-500",
         icon: "hover:text-accent-foreground hover:bg-accent-foreground/10",
-        iconActive: "bg-blue-500/20 text-blue-600 fill-white",
+        iconActive: "bg-blue-500/20 text-blue-600 fill-white dark:bg-blue-500/30 dark:text-blue-400 dark:fill-white",
         magicAssist: "text-black hover:text-custom-blue",
         magicAssistActive: "text-custom-blue",
         aligned: "bg-white dark:bg-zinc-800 dark:hover:bg-zinc-700",

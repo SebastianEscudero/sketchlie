@@ -14,6 +14,7 @@ interface SVGLayerProps {
     zoomRef?: React.RefObject<any>;
     selectionColor?: string;
     showOutlineOnHover?: boolean;
+    forcedRender?: boolean;
 }
 
 const parseSVGContent = (svgString: string): React.ReactNode[] => {
@@ -57,7 +58,8 @@ export const SVGLayer = memo(({
     focused,
     cameraRef,
     zoomRef,
-    showOutlineOnHover
+    showOutlineOnHover,
+    forcedRender
 }: SVGLayerProps) => {
     const { x, y, width, height, src, fill } = layer;
     const [strokeColor, setStrokeColor] = useState(selectionColor || "none");

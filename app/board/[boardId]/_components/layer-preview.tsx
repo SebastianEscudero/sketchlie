@@ -324,6 +324,7 @@ export const LayerPreview = memo(({
           cameraRef={cameraRef}
           zoomRef={zoomRef}
           showOutlineOnHover={showOutlineOnHover}
+          forcedRender={forcedRender}
         />
       );
     case LayerType.Arrow:
