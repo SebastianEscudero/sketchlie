@@ -2186,6 +2186,13 @@ export const Canvas = ({
     useEffect(() => {
         const enterFullscreenAndGoToFrame = async () => {
             if (presentationMode) {
+
+                if (frameIds && frameIds.length === 0) {
+                    toast.info("Add a frame to start presenting!");
+                    setPresentationMode(false);
+                    return;
+                }
+
                 if (document.documentElement.requestFullscreen) {
                     try {
                         await document.documentElement.requestFullscreen();
@@ -2203,12 +2210,6 @@ export const Canvas = ({
                 }
             }
         };
-
-        if (frameIds && frameIds.length === 0) {
-            toast.info("Add a frame to start presenting!");
-            setPresentationMode(false);
-            return;
-        }
 
         enterFullscreenAndGoToFrame();
     }, [presentationMode, goToFrame, frameIds]);
@@ -2447,7 +2448,7 @@ export const Canvas = ({
                                     )}
                                     {visibleLayers.map((layerId: string) => {
                                         const isFocused = selectedLayersRef.current.length === 1 && selectedLayersRef.current[0] === layerId && !justChanged;
-                                        const showOutlineOnHover = canvasState.mode === CanvasMode.None && !presentationMode;
+                                        const showOutlineOnHover = (canvasState.mode === CanvasMode.None || (canvasState.mode === CanvasMode.Inserting && canvasState.layerType === LayerType.Arrow)) && !presentationMode;
                                         return (
                                             <LayerPreview
                                                 selectionColor={layerIdsToColorSelection[layerId]}
