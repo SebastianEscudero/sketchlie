@@ -33,3 +33,22 @@ export const ToolButton = ({
         button
     );
 }
+
+interface SmallToolButtonProps {
+    icon: ElementType;
+    onClick: () => void;
+    label: string;
+    isActive?: boolean;
+}
+
+export const SmallToolButton = ({ icon: Icon, onClick, isActive, label }: SmallToolButtonProps) => (
+    <Hint side="top" label={label} sideOffset={8}>
+        <Button
+            onClick={onClick}
+            className="h-8 w-8 p-1"
+            variant={isActive ? "iconActive" : "icon"}
+        >
+            <Icon className="h-5 w-5" />
+        </Button>
+    </Hint>
+);

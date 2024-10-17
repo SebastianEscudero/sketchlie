@@ -25,9 +25,8 @@ import { Dispatch, memo, SetStateAction, useEffect } from "react";
 import { LaserIcon } from "@/public/custom-icons/laser";
 import { Button } from "@/components/ui/button";
 import { Hint } from "@/components/hint";
-import { PenMenu } from "./pen-menu";
 import { ShapesMenu } from "./shapes-menu";
-import { PenEraserMenu } from "./pen-eraser-laser-menu";
+import { PenEraserLaserMenu } from "./pen-eraser-laser-menu";
 import { ArrowMenu } from "./arrow-menu";
 import { LinkButton } from "./link-button";
 import { PresentationModeToolbar } from "./presentation-mode-toolbar";
@@ -49,8 +48,6 @@ interface ToolbarProps {
   setArrowTypeInserting: (type: ArrowType) => void;
   isArrowsMenuOpen: boolean;
   setIsArrowsMenuOpen: Dispatch<SetStateAction<boolean>>;
-  isPenMenuOpen: boolean;
-  setIsPenMenuOpen: Dispatch<SetStateAction<boolean>>;
   isShapesMenuOpen: boolean;
   setIsShapesMenuOpen: Dispatch<SetStateAction<boolean>>;
   isPenEraserSwitcherOpen: boolean;
@@ -86,8 +83,6 @@ export const Toolbar = memo(({
   setArrowTypeInserting,
   isArrowsMenuOpen,
   setIsArrowsMenuOpen,
-  isPenMenuOpen,
-  setIsPenMenuOpen,
   isShapesMenuOpen,
   setIsShapesMenuOpen,
   isPenEraserSwitcherOpen,
@@ -115,7 +110,6 @@ export const Toolbar = memo(({
 
   useEffect(() => {
     if (canvasState.mode !== CanvasMode.Pencil && canvasState.mode !== CanvasMode.Eraser && canvasState.mode !== CanvasMode.Laser && canvasState.mode !== CanvasMode.Highlighter) {
-      setIsPenMenuOpen(false);
       setIsPenEraserSwitcherOpen(false);
     }
 
@@ -334,16 +328,6 @@ export const Toolbar = memo(({
           </Button>
         </Hint>
       </div>
-
-      {isPenMenuOpen && (canvasState.mode === CanvasMode.Highlighter || canvasState.mode === CanvasMode.Pencil) && isPenEraserSwitcherOpen &&
-        <PenMenu
-          pathColor={pathColor}
-          pathStrokeSize={pathStrokeSize}
-          onPathColorChange={onPathColorChange}
-          handleStrokeSizeChange={handleStrokeSizeChange}
-        />
-      }
-
       {isShapesMenuOpen && canvasState.mode === CanvasMode.Inserting && canvasState.layerType !== LayerType.Text && canvasState.layerType !== LayerType.Arrow && canvasState.layerType !== LayerType.Note &&
         <ShapesMenu
           setCanvasState={setCanvasState}
@@ -351,11 +335,13 @@ export const Toolbar = memo(({
         />
       }
       {isPenEraserSwitcherOpen && (canvasState.mode === CanvasMode.Pencil || canvasState.mode === CanvasMode.Eraser || canvasState.mode === CanvasMode.Laser || canvasState.mode === CanvasMode.Highlighter) &&
-        <PenEraserMenu
+        <PenEraserLaserMenu
           setCanvasState={setCanvasState}
           canvasState={canvasState}
-          setIsPenMenuOpen={setIsPenMenuOpen}
-          isPenMenuOpen={isPenMenuOpen}
+          pathColor={pathColor}
+          pathStrokeSize={pathStrokeSize}
+          onPathColorChange={onPathColorChange}
+          handleStrokeSizeChange={handleStrokeSizeChange}
         />
       }
       {isArrowsMenuOpen && canvasState.mode === CanvasMode.Inserting && canvasState.layerType === LayerType.Arrow &&

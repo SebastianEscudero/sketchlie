@@ -136,7 +136,6 @@ export const Canvas = ({
     const [isMoving, setIsMoving] = useState(false);
     const [justChanged, setJustChanged] = useState(false);
     const [isArrowsMenuOpen, setIsArrowsMenuOpen] = useState(false);
-    const [isPenMenuOpen, setIsPenMenuOpen] = useState(false);
     const [isShapesMenuOpen, setIsShapesMenuOpen] = useState(false);
     const [isPenEraserSwitcherOpen, setIsPenEraserSwitcherOpen] = useState(false);
     const [isDraggingOverCanvas, setIsDraggingOverCanvas] = useState(false);
@@ -1025,13 +1024,11 @@ export const Canvas = ({
         if (e.button === 0 && !isPanning) {
             if (canvasState.mode === CanvasMode.Eraser) {
                 setIsPenEraserSwitcherOpen(false);
-                setIsPenMenuOpen(false);
                 return;
             }
 
             if (canvasState.mode === CanvasMode.Laser || canvasState.mode === CanvasMode.Pencil || canvasState.mode === CanvasMode.Highlighter) {
                 setIsPenEraserSwitcherOpen(false);
-                setIsPenMenuOpen(false);
                 startDrawing(point, e.pressure);
                 return;
             }
@@ -2329,8 +2326,6 @@ export const Canvas = ({
                             setArrowTypeInserting={setArrowTypeInserting}
                             isArrowsMenuOpen={isArrowsMenuOpen}
                             setIsArrowsMenuOpen={setIsArrowsMenuOpen}
-                            isPenMenuOpen={isPenMenuOpen}
-                            setIsPenMenuOpen={setIsPenMenuOpen}
                             isShapesMenuOpen={isShapesMenuOpen}
                             setIsShapesMenuOpen={setIsShapesMenuOpen}
                             isPenEraserSwitcherOpen={isPenEraserSwitcherOpen}
