@@ -16,7 +16,7 @@ export const PenMenu = ({
     handleStrokeSizeChange,
 }: PenMenuProps) => {
     return (
-        <div className="p-3 pt-5 pb-2 absolute left-8 bottom-32 bg-white dark:bg-[#383838] rounded-lg shadow-sm w-[165px] flex flex-col items-center cursor-default">
+        <div className="p-3 pt-5 pb-2 absolute left-8 bottom-32 bg-white dark:bg-zinc-800 rounded-lg shadow-sm w-[165px] flex flex-col items-center cursor-default">
             <Slider
                 defaultValue={[pathStrokeSize]}
                 min={1}

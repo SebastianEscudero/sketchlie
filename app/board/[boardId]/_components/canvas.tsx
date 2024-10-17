@@ -408,7 +408,6 @@ export const Canvas = ({
                 src: info.url,
             };
 
-              // Add fill color for SVG layers
             if (layerType === LayerType.Svg) {
                 (layer as SvgLayer).fill = { r: 29, g: 29, b: 29, a: 1 }; // Default to black
             }
@@ -1102,7 +1101,7 @@ export const Canvas = ({
         setMousePosition(current);
 
         if (canvasState.mode !== CanvasMode.None) {
-            const borderThreshold = 10; // pixels from the edge to start moving
+            const borderThreshold = 2; // pixels from the edge to start moving
             const moveSpeed = 5; // pixels to move per frame
 
             const viewportWidth = window.innerWidth;
@@ -2071,7 +2070,10 @@ export const Canvas = ({
     useEffect(() => {
         let animationFrameId: number;
 
-        if (presentationMode || canvasState.mode === CanvasMode.None) {
+        if (presentationMode || 
+            (canvasState.mode !== CanvasMode.Inserting && 
+             canvasState.mode !== CanvasMode.Translating && 
+             canvasState.mode !== CanvasMode.SelectionNet)) {
             return;
         }
 
@@ -2586,7 +2588,7 @@ export const Canvas = ({
                                                 points={pencilDraft}
                                                 fill={
                                                     canvasState.mode === CanvasMode.Laser
-                                                        ? '#F35223'
+                                                        ? '#FF0000'
                                                         : canvasState.mode === CanvasMode.Highlighter
                                                             ? colorToCss({ ...pathColor, a: 0.7 }) // Semi-transparent yellow
                                                             : colorToCss(pathColor)

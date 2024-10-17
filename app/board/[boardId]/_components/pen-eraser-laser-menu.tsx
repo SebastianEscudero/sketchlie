@@ -17,7 +17,7 @@ export const PenEraserMenu = ({
     isPenMenuOpen,
 }: PenEraserMenuProps) => {
     return (
-        <div className="absolute left-5 bottom-16 p-2 bg-white dark:bg-[#383838] rounded-lg shadow-sm flex flex-row space-x-1 items-center cursor-default">
+        <div className="absolute left-5 bottom-16 p-2 bg-white dark:bg-zinc-800 rounded-lg shadow-sm flex flex-row space-x-1 items-center cursor-default">
             <ToolButton
                 label={!isPenMenuOpen ? "Pen" : undefined}
                 icon={Pen}
