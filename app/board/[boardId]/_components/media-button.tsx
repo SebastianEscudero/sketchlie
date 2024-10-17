@@ -20,7 +20,7 @@ import { cn } from "@/lib/utils";
 
 interface MediaButtonProps {
     isUploading: boolean;
-    insertMedia: (mediaItems: {layerType: LayerType.Image | LayerType.Video | LayerType.Link, position: Point, info: any, zoom: number}[]) => void;
+    insertMedia: (mediaItems: {layerType: LayerType.Image | LayerType.Video | LayerType.Link | LayerType.Svg, position: Point, info: any, zoom: number}[]) => void;
     icon: LucideIcon;
     isActive?: boolean;
     isDisabled?: boolean;
@@ -269,6 +269,8 @@ export const MediaButton = ({
             // Fetch SVG data
             const response = await fetch(icon.icon_url);
 
+            console.log(response);
+
             if (!response.ok) {
                 throw new Error('Failed to fetch SVG data');
             }
@@ -283,10 +285,10 @@ export const MediaButton = ({
                     width: desiredSize * zoom,
                     height: desiredSize * zoom
                 },
-                type: LayerType.Image
+                type: LayerType.Svg
             };
     
-            insertMedia([{layerType: LayerType.Image, position: centerPoint, info, zoom}]);
+            insertMedia([{layerType: LayerType.Svg, position: centerPoint, info, zoom}]);
             toast.success('Icon added successfully');
             setIsDialogOpen(false);
         } catch (error) {

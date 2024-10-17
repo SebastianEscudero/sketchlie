@@ -1,7 +1,7 @@
 import { Hint } from "@/components/hint";
 import { Button } from "@/components/ui/button";
 import { FramesLayersIcon } from "@/public/custom-icons/frames";
-import { Minus, Plus, Maximize2, Minimize2 } from "lucide-react";
+import { Minus, Plus, Maximize2, Minimize2, Headphones } from "lucide-react";
 import React, { memo, useState, useCallback, useEffect } from "react";
 import { Layers } from "@/types/canvas";
 import { FramesPanel } from "./frames-panel";
@@ -21,6 +21,8 @@ interface ZoomToolbarProps {
     boardId: string;
     socket: Socket | null;
     setPresentationMode: (mode: boolean) => void;
+    focusMode: boolean;
+    setFocusMode: (mode: boolean) => void;
 }
 
 const PREDEFINED_PERCENTAGES = [10, 25, 50, 100, 150, 200, 300, 400];
@@ -38,7 +40,9 @@ export const ZoomToolbar = memo(({
     forcedRender,
     boardId,
     socket,
-    setPresentationMode
+    setPresentationMode,
+    focusMode,
+    setFocusMode
 }: ZoomToolbarProps) => {
     const [showFrames, setShowFrames] = useState(false);
     const [isFullscreen, setIsFullscreen] = useState(false);
@@ -103,6 +107,10 @@ export const ZoomToolbar = memo(({
         setShowFrames(!showFrames);
     };
 
+    const handleFocusMode = () => {
+        setFocusMode(!focusMode);
+    };
+
     const zoomPercentage = zoomToPercentage(zoom);
 
     const toggleFullscreen = useCallback(() => {
@@ -129,9 +137,14 @@ export const ZoomToolbar = memo(({
 
     return (
         <>
-            <div className="border dark:border-zinc-800 shadow-md absolute h-[52px] bottom-4 right-4 rounded-xl py-2 items-center lg:flex hidden bg-white dark:bg-zinc-800 pointer-events-auto">
+            <div className="border dark:border-zinc-800 space-x-1 px-2 shadow-md absolute h-[52px] bottom-4 right-4 rounded-xl py-2 items-center lg:flex hidden bg-white dark:bg-zinc-800 pointer-events-auto">
+                <Hint label="Focus Mode" sideOffset={4}>
+                    <Button onClick={handleFocusMode} className="px-2 border-r" variant="board">
+                        <Headphones className="h-4 w-4" />
+                    </Button>
+                </Hint>
                 <Hint label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"} sideOffset={4}>
-                    <Button onClick={toggleFullscreen} className="ml-2 px-2" variant="board">
+                    <Button onClick={toggleFullscreen} className="px-2" variant="board">
                         {isFullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
                     </Button>
                 </Hint>
@@ -146,12 +159,12 @@ export const ZoomToolbar = memo(({
                     </Button>
                 </Hint>
                 <Hint label="Zoom in" sideOffset={4}>
-                    <Button onClick={handleZoomIn} className="mr-2 px-2" variant="board">
+                    <Button onClick={handleZoomIn} className="px-2" variant="board">
                         <Plus className="h-4 w-4" />
                     </Button>
                 </Hint>
                 <Hint label="Frames" sideOffset={4}>
-                    <Button onClick={handleFramesClick} className="mr-2 px-2" variant="board">
+                    <Button onClick={handleFramesClick} className="px-2 border-l" variant="board">
                         <FramesLayersIcon />
                     </Button>
                 </Hint>

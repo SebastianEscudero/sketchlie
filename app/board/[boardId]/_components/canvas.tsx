@@ -143,6 +143,7 @@ export const Canvas = ({
     const [isUploading, setIsUploading] = useState(false);
     const [justInsertedText, setJustInsertedText] = useState(false);
     const [IsArrowPostInsertMenuOpen, setIsArrowPostInsertMenuOpen] = useState(false);
+    const [focusMode, setFocusMode] = useState(false);
 
     // Undo/Redo
     const [history, setHistory] = useState<Command[]>([]);
@@ -2437,6 +2438,8 @@ export const Canvas = ({
                                     boardId={boardId}
                                     socket={socket}
                                     setPresentationMode={setPresentationMode}
+                                    focusMode={focusMode}
+                                    setFocusMode={setFocusMode}
                                 />
                             </>
                         )}
