@@ -269,8 +269,6 @@ export const MediaButton = ({
             // Fetch SVG data
             const response = await fetch(icon.icon_url);
 
-            console.log(response);
-
             if (!response.ok) {
                 throw new Error('Failed to fetch SVG data');
             }
@@ -282,11 +280,13 @@ export const MediaButton = ({
             const info = {
                 url: svgData, // Pass SVG data instead of URL
                 dimensions: {
-                    width: desiredSize * zoom,
-                    height: desiredSize * zoom
+                    width: desiredSize / zoom,
+                    height: desiredSize / zoom
                 },
                 type: LayerType.Svg
             };
+
+            console.log(info);
     
             insertMedia([{layerType: LayerType.Svg, position: centerPoint, info, zoom}]);
             toast.success('Icon added successfully');

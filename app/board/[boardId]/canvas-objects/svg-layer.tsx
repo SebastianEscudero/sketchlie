@@ -142,6 +142,10 @@ export const SVGLayer = memo(({
         setStrokeColor(selectionColor || "none");
     }, [selectionColor]);
 
+    if (!fill) {
+        return;
+    }
+
     const fillColor = fill.a === 0 ? 'currentColor' : colorToCss(fill);
 
     return (
