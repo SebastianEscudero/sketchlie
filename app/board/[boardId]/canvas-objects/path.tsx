@@ -25,6 +25,7 @@ export const Path = ({
     const [strokeColor, setStrokeColor] = useState(selectionColor || fill);
     const isTransparent = fill === 'rgba(0,0,0,0)';
     const isHalfTransparent = /rgba\(\d+,\s*\d+,\s*\d+,\s*0.5\)/.test(fill);
+    const isLaser = fill === "#FF0000";
 
     useEffect(() => {
         setStrokeColor(selectionColor || fill);
@@ -39,8 +40,47 @@ export const Path = ({
         if (onPointerDown) {
           onPointerDown(e);
         }
-      }
+    }
 
+    if (isLaser) {
+        const glowColor = "#FF6666"; // Lighter red for the glow effect
+
+        return (
+            <>
+                {/* Glow effect */}
+                <path
+                    d={getSvgPathFromPoints(points)}
+                    style={{
+                        transform: `translate(${x}px, ${y}px)`,
+                        filter: "blur(3px)",
+                        opacity: 0.7,
+                    }}
+                    stroke={glowColor}
+                    strokeWidth={(strokeSize || 1) * 3}
+                    fill="none"
+                />
+                {/* Main laser path */}
+                <path
+                    onPointerEnter={() => { if (showOutlineOnHover) { setStrokeColor("#3390FF") } }}
+                    onPointerLeave={() => { setStrokeColor(selectionColor || fill) }}
+                    onPointerDown={handlePointerDown}
+                    d={getSvgPathFromPoints(points)}
+                    style={{
+                        transform: `translate(${x}px, ${y}px)`,
+                        pointerEvents: "all"
+                    }}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    fill="none"
+                    stroke={strokeColor}
+                    strokeWidth={strokeSize}
+                    pointerEvents="auto"
+                />
+            </>
+        );
+    }
+
+    // Original path rendering for non-laser paths
     return (
         <path
             onPointerEnter={() => { if (showOutlineOnHover) { setStrokeColor("#3390FF") } }}
