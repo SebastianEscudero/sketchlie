@@ -17,6 +17,7 @@ interface StarProps {
   focused?: boolean;
   forcedRender?: boolean;
   showOutlineOnHover?: boolean;
+  setAddedByLabel?: (addedBy: string) => void;
 };
 
 export const Star = memo(({
@@ -30,8 +31,9 @@ export const Star = memo(({
   focused = false,
   forcedRender = false,
   showOutlineOnHover = false,
+  setAddedByLabel,
 }: StarProps) => {
-  const { x, y, width, height, fill, outlineFill, value, textFontSize, fontFamily } = layer;
+  const { x, y, width, height, fill, outlineFill, value, textFontSize, fontFamily, addedBy } = layer;
   const alignX = layer.alignX || "center";
   const alignY = layer.alignY || "center";
   const [editableValue, setEditableValue] = useState(value);
@@ -110,8 +112,8 @@ export const Star = memo(({
       pointerEvents="auto"
       onPointerDown={(e) => handlePointerDown(e)}
       onTouchStart={(e) => handleTouchStart(e)}
-      onPointerEnter={() => { if (showOutlineOnHover) { setStrokeColor("#3390FF") } }}
-      onPointerLeave={() => setStrokeColor(selectionColor || colorToCss(outlineFill || fill))}
+      onPointerEnter={() => { if (showOutlineOnHover) { setStrokeColor("#3390FF"); setAddedByLabel?.(addedBy || '') } }}
+      onPointerLeave={() => { setStrokeColor(selectionColor || colorToCss(outlineFill || fill)); setAddedByLabel?.('') }}
     >
       <path
         d={`M ${width * 0.5}, 0 L ${width * 0.67},${height * 0.35} L ${width},${height * 0.38} L ${width * 0.72},${height * 0.6} L ${width * 0.83},${height} L ${width * 0.5},${height * 0.77} L ${width * 0.17},${height} L ${width * 0.28},${height * 0.6} L 0,${height * 0.38} L ${width * 0.33},${height * 0.35} Z`} fill={fillColor}

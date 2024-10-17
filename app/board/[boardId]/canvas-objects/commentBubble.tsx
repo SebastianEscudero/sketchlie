@@ -17,6 +17,7 @@ interface CommentBubbleProps {
   focused?: boolean;
   forcedRender?: boolean;
   showOutlineOnHover?: boolean;
+  setAddedByLabel?: (addedBy: string) => void;
 };
 
 export const CommentBubble = memo(({
@@ -30,8 +31,9 @@ export const CommentBubble = memo(({
   focused = false,
   forcedRender = false,
   showOutlineOnHover = false,
+  setAddedByLabel,
 }: CommentBubbleProps) => {
-  const { x, y, width, height, fill, outlineFill, value, textFontSize, fontFamily } = layer;
+  const { x, y, width, height, fill, outlineFill, value, textFontSize, fontFamily, addedBy } = layer;
   const alignX = layer.alignX || "center";
   const alignY = layer.alignY || "center";
   const [editableValue, setEditableValue] = useState(value);
@@ -111,8 +113,8 @@ export const CommentBubble = memo(({
       pointerEvents="auto"
       onPointerDown={(e) => handlePointerDown(e)}
       onTouchStart={(e) => handleTouchStart(e)}
-      onPointerEnter={() => { if (showOutlineOnHover) { setStrokeColor("#3390FF") } }}
-      onPointerLeave={() => setStrokeColor(selectionColor || colorToCss(outlineFill || fill))}
+      onPointerEnter={() => { if (showOutlineOnHover) { setStrokeColor("#3390FF"); setAddedByLabel?.(addedBy || '') } }}
+      onPointerLeave={() => { setStrokeColor(selectionColor || colorToCss(outlineFill || fill)); setAddedByLabel?.('') }}
     >
       <path
         d={`M 0 ${0} L ${width} ${0} L ${width} ${height * 4 / 5} L ${width / 2.5} ${height * 4 / 5} L ${width / 5} ${height} L ${width / 5} ${height * 4 / 5} L 0 ${height * 4 / 5} Z`} fill={fillColor}

@@ -9,6 +9,7 @@ interface LineProps {
   selectionColor?: string;
   forcedRender?: boolean;
   showOutlineOnHover?: boolean;
+  setAddedByLabel?: (addedBy: string) => void;
 };
 
 export const Line = ({
@@ -18,8 +19,9 @@ export const Line = ({
   onPointerDown,
   forcedRender = false,
   showOutlineOnHover = false,
+  setAddedByLabel,
 }: LineProps) => {
-  const { fill, x, y, width, height, center } = layer;
+  const { fill, x, y, width, height, center, addedBy } = layer;
   const fillColor = colorToCss(fill);
   const [strokeColor, setStrokeColor] = useState(selectionColor || colorToCss(fill));
   const end = { x: x + width, y: y + height };
@@ -52,8 +54,8 @@ export const Line = ({
       strokeLinecap="round"
       strokeLinejoin="round"
       pointerEvents="auto"
-      onPointerEnter={() => { if (showOutlineOnHover) { setStrokeColor("#3390FF") } }}
-      onPointerLeave={() => setStrokeColor(selectionColor || colorToCss(fill))}
+      onPointerEnter={() => { if (showOutlineOnHover) { setStrokeColor("#3390FF"); setAddedByLabel?.(addedBy || '') } }}
+      onPointerLeave={() => { setStrokeColor(selectionColor || colorToCss(fill)); setAddedByLabel?.('') }}
     />
   );
 };

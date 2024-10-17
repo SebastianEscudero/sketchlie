@@ -17,6 +17,7 @@ interface HexagonProps {
   focused?: boolean;
   forcedRender?: boolean;
   showOutlineOnHover?: boolean;
+  setAddedByLabel?: (addedBy: string) => void;
 };
 
 export const Hexagon = memo(({
@@ -30,8 +31,9 @@ export const Hexagon = memo(({
   focused = false,
   forcedRender = false,
   showOutlineOnHover = false,
+  setAddedByLabel,
 }: HexagonProps) => {
-  const { x, y, width, height, fill, outlineFill, value, textFontSize, fontFamily } = layer;
+  const { x, y, width, height, fill, outlineFill, value, textFontSize, fontFamily, addedBy } = layer;
   const alignX = layer.alignX || "center";
   const alignY = layer.alignY || "center";
   const [editableValue, setEditableValue] = useState(value);
@@ -110,8 +112,8 @@ export const Hexagon = memo(({
       pointerEvents="auto"
       onPointerDown={(e) => handlePointerDown(e)}
       onTouchStart={(e) => handleTouchStart(e)}
-      onPointerEnter={() => { if (showOutlineOnHover) { setStrokeColor("#3390FF") } }}
-      onPointerLeave={() => setStrokeColor(selectionColor || colorToCss(outlineFill || fill))}
+      onPointerEnter={() => { if (showOutlineOnHover) { setStrokeColor("#3390FF"); setAddedByLabel?.(addedBy || '') } }}
+      onPointerLeave={() => { setStrokeColor(selectionColor || colorToCss(outlineFill || fill)); setAddedByLabel?.('') }}
     >
       <path
         d={`M ${width * 0.5},${0} L ${width}, ${height * 0.25} L ${width}, ${height * 0.75} L ${width * 0.5}, ${height} L 0, ${height * 0.75} L 0, ${height * 0.25} Z`} fill={fillColor}

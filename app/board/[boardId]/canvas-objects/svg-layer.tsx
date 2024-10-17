@@ -15,6 +15,7 @@ interface SVGLayerProps {
     selectionColor?: string;
     showOutlineOnHover?: boolean;
     forcedRender?: boolean;
+    setAddedByLabel?: (addedBy: string) => void;
 }
 
 const parseSVGContent = (svgString: string): React.ReactNode[] => {
@@ -59,9 +60,9 @@ export const SVGLayer = memo(({
     cameraRef,
     zoomRef,
     showOutlineOnHover,
-    forcedRender
+    setAddedByLabel
 }: SVGLayerProps) => {
-    const { x, y, width, height, src, fill } = layer;
+    const { x, y, width, height, src, fill, addedBy } = layer;
     const [strokeColor, setStrokeColor] = useState(selectionColor || "none");
     const [svgContent, setSvgContent] = useState<React.ReactNode[]>([]);
 
@@ -134,16 +135,6 @@ export const SVGLayer = memo(({
         requestAnimationFrame(animate);
     }, [cameraRef, zoomRef, height, width, x, y, setCamera, setZoom]);
 
-    const handlePointerEnter = useCallback(() => {
-        if (showOutlineOnHover) {
-            setStrokeColor("#3390FF");
-        }
-    }, [showOutlineOnHover]);
-
-    const handlePointerLeave = useCallback(() => {
-        setStrokeColor(selectionColor || "none");
-    }, [selectionColor]);
-
     if (!fill) {
         return;
     }
@@ -154,8 +145,8 @@ export const SVGLayer = memo(({
         <g
             onPointerDown={handlePointerDown}
             onDoubleClick={onDoubleClick}
-            onPointerEnter={handlePointerEnter}
-            onPointerLeave={handlePointerLeave}
+            onPointerEnter={() => { if (showOutlineOnHover) { setStrokeColor("#3390FF"); setAddedByLabel?.(addedBy || '') } }}
+            onPointerLeave={() => { setStrokeColor(selectionColor || "none"); setAddedByLabel?.('') }}
             pointerEvents="auto"
         >
             <rect

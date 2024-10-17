@@ -17,6 +17,7 @@ interface BigArrowUpProps {
   focused?: boolean;
   forcedRender?: boolean;
   showOutlineOnHover?: boolean;
+  setAddedByLabel?: (addedBy: string) => void;
 };
 
 export const BigArrowUp = memo(({
@@ -30,8 +31,9 @@ export const BigArrowUp = memo(({
   focused = false,
   forcedRender = false,
   showOutlineOnHover = false,
+  setAddedByLabel,
 }: BigArrowUpProps) => {
-  const { x, y, width, height, fill, outlineFill, value, textFontSize, fontFamily } = layer;
+  const { x, y, width, height, fill, outlineFill, value, textFontSize, fontFamily, addedBy } = layer;
   const alignX = layer.alignX || "center";
   const alignY = layer.alignY || "center";
   const [editableValue, setEditableValue] = useState(value);
@@ -111,8 +113,8 @@ export const BigArrowUp = memo(({
       pointerEvents="auto"
       onPointerDown={(e) => handlePointerDown(e)}
       onTouchStart={(e) => handleTouchStart(e)}
-      onPointerEnter={() => { if (showOutlineOnHover) { setStrokeColor("#3390FF") } }}
-      onPointerLeave={() => setStrokeColor(selectionColor || colorToCss(outlineFill || fill))}
+      onPointerEnter={() => { if (showOutlineOnHover) { setStrokeColor("#3390FF"); setAddedByLabel?.(addedBy || '') } }}
+      onPointerLeave={() => { setStrokeColor(selectionColor || colorToCss(outlineFill || fill)); setAddedByLabel?.('') }}
     >
       <path
         d={`M ${width / 2} ${0} L 0 ${arrowHeadHeight / 2} L ${width / 4} ${arrowHeadHeight / 2} L ${width / 4} ${height} L ${width * 3 / 4} ${height} L ${width * 3 / 4} ${arrowHeadHeight / 2} L ${width} ${arrowHeadHeight / 2} Z`} fill={fillColor}

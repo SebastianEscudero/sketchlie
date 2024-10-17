@@ -1,6 +1,6 @@
 import { colorToCss, getArrowHeadAngle, getArrowPath } from '@/lib/utils';
 import { ArrowHead, ArrowLayer, ArrowType, Layer } from '@/types/canvas';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 
 interface ArrowProps {
   id: string;
@@ -11,17 +11,19 @@ interface ArrowProps {
   endConnectedLayer?: Layer;
   forcedRender?: boolean;
   showOutlineOnHover?: boolean;
+  setAddedByLabel?: (addedBy: string) => void;
 };
 
-export const Arrow = ({
+export const Arrow = memo(({
   id,
   layer,
   selectionColor,
   onPointerDown,
   forcedRender = false,
   showOutlineOnHover = false,
+  setAddedByLabel,
 }: ArrowProps) => {
-  const { fill, width, height, center, x, y, startArrowHead, endArrowHead, orientation } = layer;
+  const { fill, width, height, center, x, y, startArrowHead, endArrowHead, orientation, addedBy } = layer;
   const [strokeColor, setStrokeColor] = useState(selectionColor || colorToCss(fill));
 
   useEffect(() => {
@@ -74,8 +76,8 @@ export const Arrow = ({
         strokeLinecap="round"
         strokeLinejoin="round"
         pointerEvents="auto"
-        onPointerEnter={() => { if (showOutlineOnHover) { setStrokeColor("#3390FF") } }}
-        onPointerLeave={() => setStrokeColor(selectionColor || colorToCss(fill))}
+        onPointerEnter={() => { if (showOutlineOnHover) { setStrokeColor("#3390FF"); setAddedByLabel?.(addedBy || '') } }}
+        onPointerLeave={() => { setStrokeColor(selectionColor || colorToCss(fill)); setAddedByLabel?.('') }}
       />
       {endArrowHead === ArrowHead.Triangle && (
         <path
@@ -92,4 +94,6 @@ export const Arrow = ({
       )}
     </>
   );
-};
+});
+
+Arrow.displayName = 'Arrow';

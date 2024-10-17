@@ -42,6 +42,7 @@ interface LayerPreviewProps {
   liveLayerIds?: string[];
   liveLayers?: Layers;
   showOutlineOnHover?: boolean;
+  setAddedByLabel?: (label: string) => void;
 };
 
 export const LayerPreview = memo(({
@@ -63,6 +64,7 @@ export const LayerPreview = memo(({
   liveLayerIds,
   liveLayers,
   showOutlineOnHover,
+  setAddedByLabel
 }: LayerPreviewProps) => {
 
   if (!layer) {
@@ -78,7 +80,6 @@ export const LayerPreview = memo(({
     case LayerType.Path:
       return (
         <Path
-          key={id}
           points={layer.points}
           onPointerDown={(e) => onLayerPointerDown(e, id)}
           x={layer.x}
@@ -87,6 +88,8 @@ export const LayerPreview = memo(({
           selectionColor={selectionColor}
           strokeSize={layer.strokeSize}
           showOutlineOnHover={showOutlineOnHover}
+          addedBy={layer.addedBy}
+          setAddedByLabel={setAddedByLabel}
         />
       )
     case LayerType.Note:
@@ -102,6 +105,7 @@ export const LayerPreview = memo(({
           focused={focused}
           forcedRender={forcedRender}
           showOutlineOnHover={showOutlineOnHover}
+          setAddedByLabel={setAddedByLabel}
         />
       );
     case LayerType.Text:
@@ -119,6 +123,7 @@ export const LayerPreview = memo(({
           boardId={boardId}
           forcedRender={forcedRender}
           showOutlineOnHover={showOutlineOnHover}
+          setAddedByLabel={setAddedByLabel}
         />
       );
     case LayerType.Ellipse:
@@ -134,6 +139,7 @@ export const LayerPreview = memo(({
           focused={focused}
           forcedRender={forcedRender}
           showOutlineOnHover={showOutlineOnHover}
+          setAddedByLabel={setAddedByLabel}
         />
       );
     case LayerType.Rectangle:
@@ -149,6 +155,7 @@ export const LayerPreview = memo(({
           focused={focused}
           forcedRender={forcedRender}
           showOutlineOnHover={showOutlineOnHover}
+          setAddedByLabel={setAddedByLabel}
         />
       );
     case LayerType.Rhombus:
@@ -164,6 +171,7 @@ export const LayerPreview = memo(({
           focused={focused}
           forcedRender={forcedRender}
           showOutlineOnHover={showOutlineOnHover}
+          setAddedByLabel={setAddedByLabel}
         />
       );
     case LayerType.Triangle:
@@ -193,6 +201,7 @@ export const LayerPreview = memo(({
           focused={focused}
           forcedRender={forcedRender}
           showOutlineOnHover={showOutlineOnHover}
+          setAddedByLabel={setAddedByLabel}
         />
       );
     case LayerType.Hexagon:
@@ -207,6 +216,8 @@ export const LayerPreview = memo(({
           expired={expired}
           focused={focused}
           forcedRender={forcedRender}
+          showOutlineOnHover={showOutlineOnHover}
+          setAddedByLabel={setAddedByLabel}
         />
       );
     case LayerType.CommentBubble:
@@ -221,6 +232,8 @@ export const LayerPreview = memo(({
           expired={expired}
           focused={focused}
           forcedRender={forcedRender}
+          showOutlineOnHover={showOutlineOnHover}
+          setAddedByLabel={setAddedByLabel}
         />
       );
     case LayerType.Line:
@@ -232,6 +245,7 @@ export const LayerPreview = memo(({
           selectionColor={selectionColor}
           forcedRender={forcedRender}
           showOutlineOnHover={showOutlineOnHover}
+          setAddedByLabel={setAddedByLabel}
         />
       );
     case LayerType.BigArrowLeft:
@@ -247,6 +261,7 @@ export const LayerPreview = memo(({
           focused={focused}
           forcedRender={forcedRender}
           showOutlineOnHover={showOutlineOnHover}
+          setAddedByLabel={setAddedByLabel}
         />
       );
     case LayerType.BigArrowRight:
@@ -262,6 +277,7 @@ export const LayerPreview = memo(({
           focused={focused}
           forcedRender={forcedRender}
           showOutlineOnHover={showOutlineOnHover}
+          setAddedByLabel={setAddedByLabel}
         />
       );
     case LayerType.BigArrowUp:
@@ -277,6 +293,7 @@ export const LayerPreview = memo(({
           focused={focused}
           forcedRender={forcedRender}
           showOutlineOnHover={showOutlineOnHover}
+          setAddedByLabel={setAddedByLabel}
         />
       );
     case LayerType.BigArrowDown:
@@ -292,6 +309,7 @@ export const LayerPreview = memo(({
           focused={focused}
           forcedRender={forcedRender}
           showOutlineOnHover={showOutlineOnHover}
+          setAddedByLabel={setAddedByLabel}
         />
       );
     case LayerType.Image:
@@ -308,6 +326,7 @@ export const LayerPreview = memo(({
           cameraRef={cameraRef}
           zoomRef={zoomRef}
           showOutlineOnHover={showOutlineOnHover}
+          setAddedByLabel={setAddedByLabel}
         />
       );
     case LayerType.Svg:
@@ -325,6 +344,7 @@ export const LayerPreview = memo(({
           zoomRef={zoomRef}
           showOutlineOnHover={showOutlineOnHover}
           forcedRender={forcedRender}
+          setAddedByLabel={setAddedByLabel}
         />
       );
     case LayerType.Arrow:
@@ -336,6 +356,7 @@ export const LayerPreview = memo(({
           selectionColor={selectionColor}
           forcedRender={forcedRender}
           showOutlineOnHover={showOutlineOnHover}
+          setAddedByLabel={setAddedByLabel}
         />
       );
     case LayerType.Frame:
@@ -350,6 +371,7 @@ export const LayerPreview = memo(({
           boardId={boardId}
           forcedRender={forcedRender}
           showOutlineOnHover={showOutlineOnHover}
+          setAddedByLabel={setAddedByLabel}
         />
       );
     default:

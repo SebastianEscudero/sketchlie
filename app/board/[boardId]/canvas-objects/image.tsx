@@ -13,6 +13,7 @@ interface ImageProps {
   zoomRef?: React.RefObject<any>;
   selectionColor?: string;
   showOutlineOnHover?: boolean;
+  setAddedByLabel?: (addedBy: string) => void;
 };
 
 export const InsertImage = memo(({
@@ -27,8 +28,9 @@ export const InsertImage = memo(({
   cameraRef,
   zoomRef,
   showOutlineOnHover = false,
+  setAddedByLabel,
 }: ImageProps) => {
-  const { x, y, width, height, src } = layer;
+  const { x, y, width, height, src, addedBy } = layer;
   const [strokeColor, setStrokeColor] = useState(selectionColor || "none");
 
   useEffect(() => {
@@ -95,22 +97,12 @@ export const InsertImage = memo(({
     requestAnimationFrame(animate);
   }, [cameraRef, zoomRef, height, width, x, y, setCamera, setZoom]);
 
-  const handlePointerEnter = useCallback(() => {
-    if (showOutlineOnHover) {
-      setStrokeColor("#3390FF");
-    }
-  }, [showOutlineOnHover]);
-
-  const handlePointerLeave = useCallback(() => {
-    setStrokeColor(selectionColor || "none");
-  }, [selectionColor]);
-
   return (
     <g
       onPointerDown={handlePointerDown}
       onDoubleClick={onDoubleClick}
-      onPointerEnter={handlePointerEnter}
-      onPointerLeave={handlePointerLeave}
+      onPointerEnter={() => { if (showOutlineOnHover) { setStrokeColor("#3390FF"); setAddedByLabel?.(addedBy || '') } }}
+      onPointerLeave={() => { setStrokeColor(selectionColor || "none"); setAddedByLabel?.('') }}
       pointerEvents="auto"
     >
       <rect

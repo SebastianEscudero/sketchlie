@@ -19,6 +19,7 @@ interface TextProps {
   boardId?: string;
   forcedRender?: boolean;
   showOutlineOnHover?: boolean;
+  setAddedByLabel?: (addedBy: string) => void;
 };
 
 const throttledUpdateLayer = throttle((boardId, layerId, layerUpdates) => {
@@ -37,9 +38,10 @@ export const Text = memo(({
   focused = false,
   boardId,
   forcedRender = false,
-  showOutlineOnHover
+  showOutlineOnHover,
+  setAddedByLabel,
 }: TextProps) => {
-  const { x, y, width, height, fill, value: initialValue, textFontSize, fontFamily } = layer;
+  const { x, y, width, height, fill, value: initialValue, textFontSize, fontFamily, addedBy } = layer;
   const alignX = layer.alignX || "center";
   const [value, setValue] = useState(initialValue);
   const [strokeColor, setStrokeColor] = useState(selectionColor || "none");
@@ -144,8 +146,8 @@ export const Text = memo(({
     <g
       transform={`translate(${x}, ${y})`}
       pointerEvents="auto"
-      onPointerEnter={(e) => {if (showOutlineOnHover) {setStrokeColor("#3390FF")}}}
-      onPointerLeave={() => setStrokeColor(selectionColor || "none")}
+      onPointerEnter={(e) => {if (showOutlineOnHover) {setStrokeColor("#3390FF"); setAddedByLabel?.(addedBy || '')}}}
+      onPointerLeave={() => {setStrokeColor(selectionColor || "none"); setAddedByLabel?.('')}}
     >
       <rect
         width={width}

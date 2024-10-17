@@ -34,6 +34,75 @@ export enum LayerType {
   Svg
 };
 
+export type BaseShapeLayer = {
+  type: LayerType;
+  x: number;
+  y: number;
+  height: number;
+  width: number;
+  fill: Color;
+  outlineFill: Color | null;
+  textFontSize: number;
+  value?: string;
+  fontFamily?: string;
+  alignX?: "left" | "center" | "right";
+  alignY?: "top" | "center" | "bottom";
+  connectedArrows?: string[];
+  addedBy?: string;
+};
+
+export type RectangleLayer = BaseShapeLayer & {
+  type: LayerType.Rectangle;
+};
+
+export type EllipseLayer = BaseShapeLayer & {
+  type: LayerType.Ellipse;
+};
+
+export type RhombusLayer = BaseShapeLayer & {
+  type: LayerType.Rhombus;
+};
+
+export type TriangleLayer = BaseShapeLayer & {
+  type: LayerType.Triangle;
+};
+
+export type StarLayer = BaseShapeLayer & {
+  type: LayerType.Star;
+};
+
+export type HexagonLayer = BaseShapeLayer & {
+  type: LayerType.Hexagon;
+};
+
+export type BigArrowLeftLayer = BaseShapeLayer & {
+  type: LayerType.BigArrowLeft;
+};
+
+export type BigArrowRightLayer = BaseShapeLayer & {
+  type: LayerType.BigArrowRight;
+};
+
+export type BigArrowDownLayer = BaseShapeLayer & {
+  type: LayerType.BigArrowDown;
+};
+
+export type BigArrowUpLayer = BaseShapeLayer & {
+  type: LayerType.BigArrowUp;
+};
+
+export type CommentBubbleLayer = BaseShapeLayer & {
+  type: LayerType.CommentBubble;
+};
+
+export type TextLayer = BaseShapeLayer & {
+  type: LayerType.Text;
+};
+
+export type NoteLayer = BaseShapeLayer & {
+  type: LayerType.Note;
+};
+
 export type ArrowLayer = {
   type: LayerType.Arrow;
   x: number;
@@ -49,182 +118,7 @@ export type ArrowLayer = {
   centerEdited?: boolean;
   arrowType?: ArrowType;
   orientation?: ArrowOrientation;
-};
-
-export type RectangleLayer = {
-  type: LayerType.Rectangle;
-  x: number;
-  y: number;
-  height: number;
-  width: number;
-  fill: Color;
-  outlineFill: Color | null;
-  textFontSize: number;
-  value?: string;
-  fontFamily?: string;
-  alignX?: "left" | "center" | "right";
-  alignY?: "top" | "center" | "bottom";
-  connectedArrows?: string[];
-};
-
-export type EllipseLayer = {
-  type: LayerType.Ellipse;
-  x: number;
-  y: number;
-  height: number;
-  width: number;
-  fill: Color;
-  outlineFill: Color | null;
-  textFontSize: number;
-  value?: string;
-  fontFamily?: string;
-  alignX?: "left" | "center" | "right";
-  alignY?: "top" | "center" | "bottom";
-  connectedArrows?: string[];
-};
-
-export type RhombusLayer = {
-  type: LayerType.Rhombus;
-  x: number;
-  y: number;
-  height: number;
-  width: number;
-  fill: Color;
-  outlineFill: Color | null;
-  textFontSize: number;
-  value?: string;
-  fontFamily?: string;
-  alignX?: "left" | "center" | "right";
-  alignY?: "top" | "center" | "bottom";
-  connectedArrows?: string[];
-};
-
-export type TriangleLayer = {
-  type: LayerType.Triangle;
-  x: number;
-  y: number;
-  height: number;
-  width: number;
-  fill: Color;
-  outlineFill: Color | null;
-  textFontSize: number;
-  value?: string;
-  fontFamily?: string;
-  alignX?: "left" | "center" | "right";
-  alignY?: "top" | "center" | "bottom";
-  connectedArrows?: string[];
-};
-
-export type StarLayer = {
-  type: LayerType.Star;
-  x: number;
-  y: number;
-  height: number;
-  width: number;
-  fill: Color;
-  outlineFill: Color | null;
-  textFontSize: number;
-  value?: string;
-  fontFamily?: string;
-  alignX?: "left" | "center" | "right";
-  alignY?: "top" | "center" | "bottom";
-  connectedArrows?: string[];
-};
-
-export type HexagonLayer = {
-  type: LayerType.Hexagon;
-  x: number;
-  y: number;
-  height: number;
-  width: number;
-  fill: Color;
-  outlineFill: Color | null;
-  textFontSize: number;
-  value?: string;
-  fontFamily?: string;
-  alignX?: "left" | "center" | "right";
-  alignY?: "top" | "center" | "bottom";
-  connectedArrows?: string[];
-};
-
-export type BigArrowLeftLayer = {
-  type: LayerType.BigArrowLeft;
-  x: number;
-  y: number;
-  height: number;
-  width: number;
-  fill: Color;
-  outlineFill: Color | null;
-  textFontSize: number;
-  value?: string;
-  fontFamily?: string;
-  alignX?: "left" | "center" | "right";
-  alignY?: "top" | "center" | "bottom";
-  connectedArrows?: string[];
-};
-
-export type BigArrowRightLayer = {
-  type: LayerType.BigArrowRight;
-  x: number;
-  y: number;
-  height: number;
-  width: number;
-  fill: Color;
-  outlineFill: Color | null;
-  textFontSize: number;
-  value?: string;
-  fontFamily?: string;
-  alignX?: "left" | "center" | "right";
-  alignY?: "top" | "center" | "bottom";
-  connectedArrows?: string[];
-};
-
-export type BigArrowDownLayer = {
-  type: LayerType.BigArrowDown;
-  x: number;
-  y: number;
-  height: number;
-  width: number;
-  fill: Color;
-  outlineFill: Color | null;
-  textFontSize: number;
-  value?: string;
-  fontFamily?: string;
-  alignX?: "left" | "center" | "right";
-  alignY?: "top" | "center" | "bottom";
-  connectedArrows?: string[];
-};
-
-export type BigArrowUpLayer = {
-  type: LayerType.BigArrowUp;
-  x: number;
-  y: number;
-  height: number;
-  width: number;
-  fill: Color;
-  outlineFill: Color | null;
-  textFontSize: number;
-  value?: string;
-  fontFamily?: string;
-  alignX?: "left" | "center" | "right";
-  alignY?: "top" | "center" | "bottom";
-  connectedArrows?: string[];
-};
-
-export type CommentBubbleLayer = {
-  type: LayerType.CommentBubble;
-  x: number;
-  y: number;
-  height: number;
-  width: number;
-  fill: Color;
-  outlineFill: Color | null;
-  textFontSize: number;
-  value?: string;
-  fontFamily?: string;
-  alignX?: "left" | "center" | "right";
-  alignY?: "top" | "center" | "bottom";
-  connectedArrows?: string[];
+  addedBy?: string;
 };
 
 export type LineLayer = {
@@ -240,6 +134,7 @@ export type LineLayer = {
   centerEdited?: boolean;
   arrowType?: ArrowType;
   orientation?: ArrowOrientation;
+  addedBy?: string;
 };
 
 export type PathLayer = {
@@ -252,6 +147,7 @@ export type PathLayer = {
   points: number[][];
   strokeSize?: number;
   connectedArrows?: string[];
+  addedBy?: string;
 };
 
 export type ImageLayer = {
@@ -262,6 +158,7 @@ export type ImageLayer = {
   height: number;
   src: string;
   connectedArrows?: string[];
+  addedBy?: string;
 };
 
 export type SvgLayer = {
@@ -273,6 +170,7 @@ export type SvgLayer = {
   src: string;
   fill: Color;
   connectedArrows?: string[];
+  addedBy?: string;
 };
 
 export type VideoLayer = {
@@ -283,6 +181,7 @@ export type VideoLayer = {
   height: number;
   src: string;
   connectedArrows?: string[];
+  addedBy?: string;
 };
 
 export type LinkLayer = {
@@ -293,38 +192,7 @@ export type LinkLayer = {
   height: number;
   src: string;
   connectedArrows?: string[];
-};
-
-export type TextLayer = {
-  type: LayerType.Text;
-  x: number;
-  y: number;
-  height: number;
-  width: number;
-  fill: Color;
-  outlineFill: Color | null;
-  value?: string;
-  fontFamily?: string;
-  textFontSize: number;
-  alignX?: "left" | "center" | "right";
-  alignY?: "top" | "center" | "bottom";
-  connectedArrows?: string[];
-};
-
-export type NoteLayer = {
-  type: LayerType.Note;
-  x: number;
-  y: number;
-  height: number;
-  width: number;
-  fill: Color;
-  outlineFill: Color | null;
-  value?: string;
-  fontFamily?: string;
-  textFontSize: number;
-  alignX?: "left" | "center" | "right";
-  alignY?: "top" | "center" | "bottom";
-  connectedArrows?: string[];
+  addedBy?: string;
 };
 
 export type FrameLayer = {
@@ -335,6 +203,7 @@ export type FrameLayer = {
   height: number;
   connectedArrows?: string[];
   value?: string;
+  addedBy?: string;
 };
 
 

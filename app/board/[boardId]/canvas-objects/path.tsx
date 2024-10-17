@@ -1,5 +1,5 @@
 import { getSvgPathFromPoints } from "@/lib/utils";
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 
 interface PathProps {
     x: number;
@@ -10,9 +10,11 @@ interface PathProps {
     selectionColor?: string;
     strokeSize?: number | undefined;
     showOutlineOnHover?: boolean;
+    addedBy?: string;
+    setAddedByLabel?: (label: string) => void;
 };
 
-export const Path = ({
+export const Path = memo(({
     x,
     y,
     points,
@@ -20,7 +22,9 @@ export const Path = ({
     onPointerDown,
     selectionColor,
     strokeSize,
-    showOutlineOnHover
+    showOutlineOnHover,
+    addedBy,
+    setAddedByLabel
 }: PathProps) => {
     const [strokeColor, setStrokeColor] = useState(selectionColor || fill);
     const isTransparent = fill === 'rgba(0,0,0,0)';
@@ -61,8 +65,6 @@ export const Path = ({
                 />
                 {/* Main laser path */}
                 <path
-                    onPointerEnter={() => { if (showOutlineOnHover) { setStrokeColor("#3390FF") } }}
-                    onPointerLeave={() => { setStrokeColor(selectionColor || fill) }}
                     onPointerDown={handlePointerDown}
                     d={getSvgPathFromPoints(points)}
                     style={{
@@ -83,8 +85,8 @@ export const Path = ({
     // Original path rendering for non-laser paths
     return (
         <path
-            onPointerEnter={() => { if (showOutlineOnHover) { setStrokeColor("#3390FF") } }}
-            onPointerLeave={() => { setStrokeColor(selectionColor || fill) }}
+            onPointerEnter={() => { if (showOutlineOnHover) { setStrokeColor("#3390FF"); setAddedByLabel?.(addedBy || '') } }}
+            onPointerLeave={() => { setStrokeColor(selectionColor || fill); setAddedByLabel?.('') }}
             onPointerDown={handlePointerDown}
             d={getSvgPathFromPoints(points)}
             style={{
@@ -101,4 +103,6 @@ export const Path = ({
             pointerEvents="auto"
         />
     );
-};
+});
+
+Path.displayName = 'Path';

@@ -17,6 +17,7 @@ interface TriangleProps {
   focused?: boolean;
   forcedRender?: boolean;
   showOutlineOnHover?: boolean;
+  setAddedByLabel?: (addedBy: string) => void;
 };
 
 export const Triangle = memo(({
@@ -30,8 +31,9 @@ export const Triangle = memo(({
   focused = false,
   forcedRender = false,
   showOutlineOnHover = false,
+  setAddedByLabel,
 }: TriangleProps) => {
-  const { x, y, width, height, fill, outlineFill, value, textFontSize, fontFamily } = layer;
+  const { x, y, width, height, fill, outlineFill, value, textFontSize, fontFamily, addedBy } = layer;
   const alignX = layer.alignX || "center";
   const alignY = layer.alignY || "center";
   const [editableValue, setEditableValue] = useState(value);
@@ -110,8 +112,8 @@ export const Triangle = memo(({
       pointerEvents="auto"
       onPointerDown={(e) => handlePointerDown(e)}
       onTouchStart={(e) => handleTouchStart(e)}
-      onPointerEnter={() => { if (showOutlineOnHover) { setStrokeColor("#3390FF") } }}
-      onPointerLeave={() => setStrokeColor(selectionColor || colorToCss(outlineFill || fill))}
+      onPointerEnter={() => { if (showOutlineOnHover) { setStrokeColor("#3390FF"); setAddedByLabel?.(addedBy || '') } }}
+      onPointerLeave={() => { setStrokeColor(selectionColor || colorToCss(outlineFill || fill)); setAddedByLabel?.('') }}
     >
       <polygon
         points={`${width / 2}, 0 ${width},${height} 0,${height}`}

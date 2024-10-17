@@ -867,6 +867,7 @@ export function penPointsToPathLayer(
   points: number[][],
   color: Color,
   pathStrokeSize: number,
+  addedBy?: string
 ): PathLayer {
 
   let left = Number.POSITIVE_INFINITY;
@@ -904,6 +905,7 @@ export function penPointsToPathLayer(
     strokeSize: pathStrokeSize,
     points: points
       .map(([x, y, pressure]) => [x - left, y - top, pressure]),
+    addedBy: addedBy
   };
 };
 

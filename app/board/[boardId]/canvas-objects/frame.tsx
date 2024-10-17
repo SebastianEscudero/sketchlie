@@ -13,6 +13,7 @@ interface FrameProps {
     forcedRender?: boolean;
     selectionColor?: string;
     showOutlineOnHover?: boolean;
+    setAddedByLabel?: (addedBy: string) => void;
 };
 
 export const Frame = memo(({
@@ -25,9 +26,10 @@ export const Frame = memo(({
     frameNumber,
     selectionColor,
     forcedRender,
-    showOutlineOnHover
+    showOutlineOnHover,
+    setAddedByLabel
 }: FrameProps) => {
-    const { x, y, width, height, value: initialValue } = layer;
+    const { x, y, width, height, value: initialValue, addedBy } = layer;
     const fontSize = Math.min(width, height) * 0.05;
     const padding = fontSize * 0.5;
     const [isEditing, setIsEditing] = useState(false);
@@ -66,8 +68,8 @@ export const Frame = memo(({
             onDoubleClick={handleDoubleClick}
             pointerEvents="auto"
             data-id={`frame-${frameNumber}`}
-            onPointerEnter={() => { if (showOutlineOnHover) { setStrokeColor("#3390FF") } }}
-            onPointerLeave={() => { setStrokeColor(selectionColor || document.documentElement.classList.contains("dark") ? "#FFFFFF" : "#000000") }}
+            onPointerEnter={() => { if (showOutlineOnHover) { setStrokeColor("#3390FF"); setAddedByLabel?.(addedBy || '') } }}
+            onPointerLeave={() => { setStrokeColor(selectionColor || document.documentElement.classList.contains("dark") ? "#FFFFFF" : "#000000"); setAddedByLabel?.('') }}
         >
             {isEditing ? (
                 <foreignObject x={padding} y={-(padding + fontSize)} width={width - 2 * padding} height={fontSize + 10}>

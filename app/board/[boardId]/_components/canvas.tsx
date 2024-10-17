@@ -34,6 +34,7 @@ import {
     ArrowLayer,
     ArrowOrientation,
     ArrowType,
+    BaseShapeLayer,
     Camera,
     CanvasMode,
     CanvasState,
@@ -77,6 +78,7 @@ import { MoveBackToContent } from "./move-back-to-content";
 import { Frame } from "../canvas-objects/frame";
 import { uploadFilesAndInsertThemIntoCanvas } from "./canvasUtils";
 import { DragIndicatorOverlay } from "./drag-indicator-overlay";
+import { AddedLayerByLabel } from "./added-layer-by-label";
 
 const preventDefault = (e: any) => {
     if (e.scale !== 1) {
@@ -121,8 +123,6 @@ export const Canvas = ({
     const selectedLayersRef = useRef<string[]>([]);
     const [copiedLayerIds, setCopiedLayerIds] = useState<string[]>([]);
     const [currentPreviewLayer, setCurrentPreviewLayer] = useState<PreviewLayer | null>(null);
-    const [suggestedLayers, setSuggestedLayers] = useState<Layers>({});
-    const [suggestedLayerIds, setSuggestedLayerIds] = useState<string[]>([]);
 
     // Drawing and editing tools
     const [pencilDraft, setPencilDraft] = useState<[number, number, number][]>([]);
@@ -143,6 +143,7 @@ export const Canvas = ({
     const [justInsertedText, setJustInsertedText] = useState(false);
     const [IsArrowPostInsertMenuOpen, setIsArrowPostInsertMenuOpen] = useState(false);
     const [focusMode, setFocusMode] = useState(false);
+    const [addedByLabel, setAddedByLabel] = useState('');
 
     // Undo/Redo
     const [history, setHistory] = useState<Command[]>([]);
@@ -181,26 +182,10 @@ export const Canvas = ({
 
     useDisableScrollBounce();
 
-    // const throttledSketchlieCopilot = throttle(
-    //     (liveLayers, visibleLayers, title) => SketchlieCopilot(liveLayers, visibleLayers, title),
-    //     1000
-    // );
-
     const performAction = useCallback(async (command: Command) => {
         command.execute(liveLayerIds, liveLayers);
         setHistory([...history, command]);
-        setRedoStack([]); // clear redo stack when new action is performed
-
-        // const data = await throttledSketchlieCopilot(liveLayers, visibleLayers, board.title);
-        // console.log(data);
-
-        // if (data) {
-        //     const layerId = data.layerId[0];
-        //     const layer = data.layer;
-        //     console.log(layer);
-        //     setSuggestedLayers({ ...layer });
-        //     setSuggestedLayerIds([layerId]);
-        // }
+        setRedoStack([]);
     }, [liveLayerIds, liveLayers, history]);
 
     const undo = useCallback(() => {
@@ -254,6 +239,7 @@ export const Canvas = ({
                 value: "",
                 outlineFill: null,
                 alignX: 'left',
+                addedBy: User?.information.name
             };
             setJustInsertedText(true);
         } else if (layerType === LayerType.Note) {
@@ -269,6 +255,7 @@ export const Canvas = ({
                 textFontSize: width * ratio,
                 alignX: 'center',
                 alignY: 'center',
+                addedBy: User?.information.name
             };
         } else if (layerType === LayerType.Arrow) {
             layer = {
@@ -284,7 +271,8 @@ export const Canvas = ({
                 startConnectedLayerId: startConnectedLayerId,
                 endConnectedLayerId: endConnectedLayerId,
                 arrowType: arrowTypeInserting,
-                orientation: orientation
+                orientation: orientation,
+                addedBy: User?.information.name
             };
 
             if (startConnectedLayerId && !endConnectedLayerId) {
@@ -318,6 +306,7 @@ export const Canvas = ({
                 height: height,
                 width: width,
                 fill: { r: 29, g: 29, b: 29, a: 1 },
+                addedBy: User?.information.name
             };
         } else {
             if (width < 10 && height < 10) {
@@ -336,6 +325,7 @@ export const Canvas = ({
                 textFontSize: width * ratio,
                 alignX: 'center',
                 alignY: 'center',
+                addedBy: User?.information.name
             };
         }
 
@@ -405,6 +395,7 @@ export const Canvas = ({
                 height: info.dimensions.height,
                 width: info.dimensions.width,
                 src: info.url,
+                addedBy: User?.information.name
             };
 
             if (layerType === LayerType.Svg) {
@@ -702,7 +693,7 @@ export const Canvas = ({
 
     }, [canvasState.mode, pencilDraft, myPresence, setMyPresence, pathColor, pathStrokeSize, zoom, expired]);
 
-    const insertPath = useCallback(() => {
+    const insertPath = useCallback((isHighlight: boolean) => {
         if (
             pencilDraft.length === 0 ||
             (pencilDraft[0] && pencilDraft[0].length < 2) ||
@@ -710,18 +701,16 @@ export const Canvas = ({
             expired
         ) {
             setPencilDraft([]);
-            const newPresence: Presence = {
-                ...myPresence,
-                pencilDraft: null,
-            };
-            setMyPresence(newPresence);
+            setMyPresence({ ...myPresence, pencilDraft: null });
             return;
         }
-
+    
         const id = nanoid();
-        liveLayers[id] = penPointsToPathLayer(pencilDraft, pathColor, pathStrokeSize);
-
-        // Create a new InsertLayerCommand
+        const color = isHighlight ? { ...pathColor, a: 0.7 } : pathColor;
+        const strokeSize = isHighlight ? 30 / zoom : pathStrokeSize;
+    
+        liveLayers[id] = penPointsToPathLayer(pencilDraft, color, strokeSize, User?.information.name);
+    
         const command = new InsertLayerCommand(
             [id],
             [liveLayers[id]],
@@ -732,65 +721,16 @@ export const Canvas = ({
             org,
             proModal
         );
-
-        // Add the command to the command stack    
-        setPencilDraft([]);
+    
         performAction(command);
-
-        const newPresence: Presence = {
-            ...myPresence,
-            pencilDraft: null,
-        };
-
-        setMyPresence(newPresence);
-
-        setCanvasState({ mode: CanvasMode.Pencil });
-    }, [expired, pencilDraft, liveLayers, setLiveLayers, setLiveLayerIds, myPresence, org, proModal, socket, boardId, pathColor, performAction, pathStrokeSize, activeTouches]);
-
-    const insertHighlight = useCallback(() => {
-        if (
-            pencilDraft.length === 0 ||
-            (pencilDraft[0] && pencilDraft[0].length < 2) ||
-            activeTouches > 1 ||
-            expired
-        ) {
-            setPencilDraft([]);
-            const newPresence: Presence = {
-                ...myPresence,
-                pencilDraft: null,
-            };
-            setMyPresence(newPresence);
-            return;
-        }
-
-
-        const id = nanoid();
-        liveLayers[id] = penPointsToPathLayer(pencilDraft, { ...pathColor, a: 0.7 }, 30 / zoom);
-
-        // Create a new InsertLayerCommand
-        const command = new InsertLayerCommand(
-            [id],
-            [liveLayers[id]],
-            setLiveLayers,
-            setLiveLayerIds,
-            boardId,
-            socket,
-            org,
-            proModal
-        );
-
-        // Add the command to the command stack    
-        performAction(command);
-
-        const newPresence: Presence = {
-            ...myPresence,
-            pencilDraft: null,
-        };
-
-        setMyPresence(newPresence);
         setPencilDraft([]);
-        setCanvasState({ mode: CanvasMode.Highlighter });
-    }, [expired, pencilDraft, liveLayers, setLiveLayers, setLiveLayerIds, myPresence, org, proModal, socket, zoom, activeTouches, boardId, pathColor, performAction]);
+        setMyPresence({ ...myPresence, pencilDraft: null });
+        setCanvasState({ mode: isHighlight ? CanvasMode.Highlighter : CanvasMode.Pencil });
+    }, [
+        expired, pencilDraft, liveLayers, setLiveLayers, setLiveLayerIds, 
+        myPresence, org, proModal, socket, boardId, pathColor, 
+        performAction, pathStrokeSize, activeTouches, zoom
+    ]);
 
     const resizeSelectedLayers = useCallback((point: Point) => {
 
@@ -1330,10 +1270,10 @@ export const Canvas = ({
             });
         } else if (canvasState.mode === CanvasMode.Pencil) {
             document.body.style.cursor = 'url(/custom-cursors/pencil.svg) 1 16, auto';
-            insertPath();
+            insertPath(false);
         } else if (canvasState.mode === CanvasMode.Highlighter) {
             document.body.style.cursor = 'url(/custom-cursors/highlighter.svg) 2 18, auto';
-            insertHighlight();
+            insertPath(true);
         } else if (canvasState.mode === CanvasMode.Laser) {
             document.body.style.cursor = 'url(/custom-cursors/laser.svg) 4 18, auto';
             setPencilDraft([]);
@@ -1504,7 +1444,6 @@ export const Canvas = ({
             User.userId,
             boardId,
             expired,
-            insertHighlight,
             liveLayerIds,
             performAction,
             setLiveLayerIds,
@@ -2376,6 +2315,9 @@ export const Canvas = ({
                                     cameraRef={cameraRef}
                                     zoomRef={zoomRef}
                                 />
+                                <AddedLayerByLabel
+                                    addedByLabel={addedByLabel}
+                                />
                                 <Participants
                                     org={org}
                                     otherUsers={otherUsers}
@@ -2521,6 +2463,7 @@ export const Canvas = ({
                                                 liveLayerIds={liveLayerIds}
                                                 liveLayers={liveLayers}
                                                 showOutlineOnHover={showOutlineOnHover}
+                                                setAddedByLabel={setAddedByLabel}
                                             />
                                         );
                                     })}
@@ -2542,11 +2485,6 @@ export const Canvas = ({
                                     {currentPreviewLayer && (
                                         <CurrentPreviewLayer
                                             layer={currentPreviewLayer}
-                                        />
-                                    )}
-                                    {suggestedLayers && (
-                                        <CurrentSuggestedLayer
-                                            layer={suggestedLayers}
                                         />
                                     )}
                                     {((canvasState.mode === CanvasMode.ArrowResizeHandler && selectedLayersRef.current.length === 1) || (currentPreviewLayer?.type === LayerType.Arrow)) && (
@@ -2578,7 +2516,7 @@ export const Canvas = ({
                                         <CursorsPresence otherUsers={otherUsers} zoom={zoom} />
                                     }
                                     {
-                                        pencilDraft && !pencilDraft.some(array => array.some(isNaN)) && (
+                                        pencilDraft.length > 0 && !pencilDraft.some(array => array.some(isNaN)) && (
                                             <Path
                                                 points={pencilDraft}
                                                 fill={
