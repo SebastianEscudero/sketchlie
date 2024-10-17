@@ -30,7 +30,7 @@ export const ShapesMenu = ({
   return (
     <AnimatedToolbarMenu
       isOpen={isShapesMenuOpen}
-      className="left-[60px] bottom-16 grid grid-cols-4 grid-rows-3 gap-2 h-[144px] w-[160px] sm:w-[192px] items-center cursor-default"
+      className="left-[20px] bottom-16 grid grid-cols-4 grid-rows-3 gap-2 h-[144px] w-[160px] sm:w-[192px] items-center cursor-default"
     >
       <ToolButton
         icon={Square}

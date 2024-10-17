@@ -19,7 +19,7 @@ export const ArrowMenu = ({
     return (
         <AnimatedToolbarMenu
             isOpen={isArrowsMenuOpen}
-            className="left-32 bottom-16 flex flex-row space-x-1 items-center cursor-default"
+            className="left-[86px] bottom-16 flex flex-row space-x-1 items-center cursor-default"
         >
             <ToolButton
                 label="Straight"

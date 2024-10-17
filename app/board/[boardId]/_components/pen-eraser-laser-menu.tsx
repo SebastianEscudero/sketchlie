@@ -28,7 +28,7 @@ export const PenEraserLaserMenu = ({
     return (
         <AnimatedToolbarMenu
             isOpen={isPenEraserLaserMenuOpen}
-            className="left-5 bottom-16 flex flex-col items-center cursor-default pt-3"
+            className="left-[-10px] bottom-16 flex flex-col items-center cursor-default pt-3"
         >
             <div className="flex flex-row space-x-1 pb-1 items-center border-b dark:border-zinc-300">
                 <SmallToolButton
