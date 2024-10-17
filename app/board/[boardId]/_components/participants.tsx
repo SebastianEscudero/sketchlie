@@ -79,7 +79,7 @@ export const Participants = memo(({
                 className="hidden md:flex ml-2 h-8 w-24 p-1 text-sm" 
                 onClick={() => setPresentationMode(true)}
             >
-                <Play className="h-4 w-4 mr-1 fill-white" strokeWidth={2} />
+                <Play className="h-4 w-4 mr-1 fill-inherit" strokeWidth={2} />
                 Present
             </Button>
             {org && expired !== true && User.information.role === "Admin" && (
