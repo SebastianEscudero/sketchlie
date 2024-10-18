@@ -7,7 +7,6 @@ import {
   ArrowOrientation,
   ArrowType,
   Camera,
-  CanvasState,
   Color,
   Layer,
   Layers,
@@ -21,24 +20,22 @@ import { Readable } from "stream";
 import { toast } from "sonner";
 
 const COLORS = [
-  "#FF3B30", // Bright Red
-  "#FF9500", // Orange
-  "#FFCC00", // Yellow
-  "#34C759", // Green
-  "#00C7BE", // Teal
-  "#007AFF", // Blue
-  "#5856D6", // Indigo
-  "#AF52DE", // Purple
-  "#FF2D55", // Pink
-  "#A2845E", // Brown
-  "#5AC8FA", // Light Blue
-  "#FF6B22", // Vermilion
-  "#C7C729", // Lime
-  "#28CD41", // Emerald
-  "#59ADC4", // Steel Blue
-  "#4B0082", // Indigo
-  "#8B4513", // Saddle Brown
-  "#FF1493", // Deep Pink
+  "#D32F2F", // Red
+  "#C2185B", // Pink
+  "#7B1FA2", // Purple
+  "#512DA8", // Deep Purple
+  "#303F9F", // Indigo
+  "#1976D2", // Blue
+  "#0288D1", // Light Blue
+  "#0097A7", // Cyan
+  "#00796B", // Teal
+  "#388E3C", // Green
+  "#689F38", // Light Green
+  "#FBC02D", // Yellow
+  "#FFA000", // Amber
+  "#F57C00", // Orange
+  "#E64A19", // Deep Orange
+  "#5D4037", // Brown
 ];
 
 export function cn(...inputs: ClassValue[]) {
