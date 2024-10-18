@@ -50,7 +50,7 @@ export const Cursor = memo(({
                     }}
                 />
                 <span
-                    className="text-white font-semibold truncate text-xs sm:text-sm rounded-md px-2 py-[2px] ml-5 max-w-[200px]"
+                    className="text-white font-bold truncate text-xs rounded-md px-2 py-[2px] ml-5 max-w-[200px]"
                     style={{
                         backgroundColor: color,
                     }}
