@@ -16,6 +16,7 @@ interface PresentationModeToolbarProps {
     frameIds: string[];
     currentFrameIndex: number;
     goToFrame: (index: number) => void;
+    showToolbar: boolean;
 }
 
 export const PresentationModeToolbar = ({
@@ -28,10 +29,19 @@ export const PresentationModeToolbar = ({
     canRedo,
     frameIds,
     currentFrameIndex,
-    goToFrame
+    goToFrame,
+    showToolbar
 }: PresentationModeToolbarProps) => {
+    console.log(showToolbar)
+
     return (
-        <div className="absolute bottom-4 left-[50%] translate-x-[-50%] flex flex-row gap-x-4 pointer-events-auto">
+        <div
+            className={`
+            absolute bottom-4 left-[50%] translate-x-[-50%] flex flex-row gap-x-4 pointer-events-auto
+            transition-all duration-300 ease-in-out
+            ${showToolbar ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
+        `}
+        >
             <div className="border dark:border-zinc-800 shadow-md bg-white dark:bg-zinc-800 rounded-xl p-1.5 flex gap-x-1 flex-row items-center">
                 <ToolButton
                     label="Select"
@@ -88,8 +98,8 @@ export const PresentationModeToolbar = ({
                     </Hint>
                 </div>
                 <Hint label="Exit Presentation" sideOffset={14}>
-                    <Button 
-                        onClick={() => setPresentationMode(false)} 
+                    <Button
+                        onClick={() => setPresentationMode(false)}
                         variant="destructive"
                         size="sm"
                     >

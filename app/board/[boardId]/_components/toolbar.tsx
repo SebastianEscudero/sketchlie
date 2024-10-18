@@ -64,6 +64,7 @@ interface ToolbarProps {
   frameIds: string[];
   currentFrameIndex: number;
   goToFrame: (index: number) => void;
+  showToolbar: boolean;
 }
 
 export const Toolbar = memo(({
@@ -99,6 +100,7 @@ export const Toolbar = memo(({
   frameIds,
   currentFrameIndex,
   goToFrame,
+  showToolbar,
 }: ToolbarProps) => {
   const onPathColorChange = (color: any) => {
     setPathColor(color);
@@ -149,12 +151,19 @@ export const Toolbar = memo(({
         frameIds={frameIds}
         currentFrameIndex={currentFrameIndex}
         goToFrame={goToFrame}
+        showToolbar={showToolbar}
       />
     )
   }
 
   return (
-    <div className="absolute bottom-4 left-[50%] translate-x-[-50%] flex sm:flex-row flex-col-reverse sm:gap-x-4 gap-x-0 sm:gap-y-0 gap-y-2 pointer-events-auto">
+    <div
+      className={`
+      absolute bottom-4 left-[50%] translate-x-[-50%] flex sm:flex-row flex-col-reverse sm:gap-x-4 gap-x-0 sm:gap-y-0 gap-y-2 pointer-events-auto
+      transition-all duration-300 ease-in-out
+      ${showToolbar ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
+    `}
+    >      
       <div className="border dark:border-zinc-800 shadow-md bg-white dark:bg-zinc-800 rounded-xl p-1.5 flex gap-x-1 flex-row items-center">
         <ToolButton
           label="Select"
