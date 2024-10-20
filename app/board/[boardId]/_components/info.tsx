@@ -134,7 +134,7 @@ export const Info = memo(({
                     } else {
                         layer.endConnectedLayerId = "";
                     }
-                } else if (layer.type !== LayerType.Image && layer.type !== LayerType.Line) {
+                } else if (layer.type !== LayerType.Image && layer.type !== LayerType.Line && layer.type !== LayerType.Comment) {
                     if (layer.connectedArrows) {
                         layer.connectedArrows = layer.connectedArrows.map((arrowId: string) => idMap.get(arrowId) || arrowId);
                     }

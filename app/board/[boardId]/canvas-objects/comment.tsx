@@ -319,7 +319,7 @@ export const CommentBox = memo(({
     };
 
     const handleReplySubmit = () => {
-        if (replyContent.replace(/<[^>]*>?/gm, '').trim() && socket) {
+        if (replyContent.trim() && socket) {
             const newReply: Reply = {
                 id: Date.now().toString(),
                 author: user,
@@ -328,7 +328,6 @@ export const CommentBox = memo(({
             };
             updateReplies(boardId, id, layer, newReply, expired, socket);
             setReplyContent('');
-            setMentionListVisible(false);
         }
     }
 
@@ -480,7 +479,7 @@ export const CommentBox = memo(({
                 <div className="relative">
                     <ContentEditable
                         innerRef={contentEditableRef}
-                        className="ml-2 p-2 text-zinc-400 flex flex-col text-xs cursor-text outline-none min-h-10 bg-zinc-700 rounded-lg"
+                        className="ml-2 p-2 text-zinc-400 text-xs cursor-text outline-none min-h-10 bg-zinc-700 rounded-lg"
                         html={isEditing ? replyContent : replyContent || 'Add a comment...'}
                         onChange={handleReplyChange}
                         onFocus={() => setIsEditing(true)}
