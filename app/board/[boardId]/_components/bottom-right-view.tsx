@@ -1,51 +1,30 @@
 import { Hint } from "@/components/hint";
 import { Button } from "@/components/ui/button";
 import { FramesLayersIcon } from "@/public/custom-icons/frames";
-import { Minus, Plus, Maximize2, Minimize2, Headphones, Focus } from "lucide-react";
+import { Minus, Plus, Maximize2, Minimize2, Focus } from "lucide-react";
 import React, { memo, useState, useCallback, useEffect } from "react";
-import { Layers } from "@/types/canvas";
-import { FramesPanel } from "./frames-panel";
-import { Socket } from "socket.io-client";
-import { FocusModeIcon } from "@/public/custom-icons/focus-mode";
 
-interface ZoomToolbarProps {
+interface BottomRightViewProps {
     zoom: number;
     setZoom: (zoom: number) => void;
     camera: { x: number, y: number };
     setCamera: (camera: { x: number, y: number }) => void;
-    liveLayers: Layers;
-    liveLayerIds: string[];
-    setLiveLayerIds: (frameIds: string[]) => void;
-    cameraRef: React.RefObject<{ x: number; y: number }>;
-    zoomRef: React.RefObject<number>;
-    forcedRender: boolean;
-    boardId: string;
-    socket: Socket | null;
-    setPresentationMode: (mode: boolean) => void;
-    focusMode: boolean;
     setFocusMode: (mode: boolean) => void;
+    focusMode: boolean;
+    setRightMiddleContainerView: (view: string | null) => void;
 }
 
 const PREDEFINED_PERCENTAGES = [10, 25, 50, 100, 150, 200, 300, 400];
 
-export const ZoomToolbar = memo(({
+export const BottomRightView = memo(({
     zoom,
     setZoom,
     camera,
     setCamera,
-    liveLayers,
-    liveLayerIds,
-    setLiveLayerIds,
-    cameraRef,
-    zoomRef,
-    forcedRender,
-    boardId,
-    socket,
-    setPresentationMode,
+    setFocusMode,
     focusMode,
-    setFocusMode
-}: ZoomToolbarProps) => {
-    const [showFrames, setShowFrames] = useState(false);
+    setRightMiddleContainerView,
+}: BottomRightViewProps) => {
     const [isFullscreen, setIsFullscreen] = useState(false);
 
     const baseZoom = 1;
@@ -105,10 +84,12 @@ export const ZoomToolbar = memo(({
     };
 
     const handleFramesClick = () => {
-        setShowFrames(!showFrames);
+        //just to suppress the type error
+        setRightMiddleContainerView(((prev: any) => prev === "frames" ? null : "frames") as any);
     };
 
     const handleFocusMode = () => {
+        toggleFullscreen();
         setFocusMode(!focusMode);
     };
 
@@ -149,61 +130,43 @@ export const ZoomToolbar = memo(({
     }
 
     return (
-        <>
-            <div className="border dark:border-zinc-800 space-x-1 px-2 shadow-md absolute h-[52px] bottom-4 right-4 rounded-xl py-2 items-center lg:flex hidden bg-white dark:bg-zinc-800 pointer-events-auto">
-                <div className="flex items-center border-r pr-1">
-                    <Hint label="Focus Mode" sideOffset={4}>
-                        <Button onClick={handleFocusMode} className="px-2" variant="board">
-                            <Focus className="h-4 w-4" />
-                        </Button>
-                    </Hint>
-                </div>
-                <Hint label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"} sideOffset={4}>
-                    <Button onClick={toggleFullscreen} className="px-2" variant="board">
-                        {isFullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
+        <div className="border dark:border-zinc-800 space-x-1 px-2 shadow-md absolute h-[52px] bottom-4 right-4 rounded-xl py-2 items-center lg:flex hidden bg-white dark:bg-zinc-800 pointer-events-auto">
+            <div className="flex items-center border-r pr-1">
+                <Hint label="Focus Mode" sideOffset={4}>
+                    <Button onClick={handleFocusMode} className="px-2" variant="board">
+                        <Focus className="h-4 w-4" />
                     </Button>
                 </Hint>
-                <Hint label="Zoom out" sideOffset={4}>
-                    <Button onClick={handleZoomOut} className="px-2" variant="board">
-                        <Minus className="h-4 w-4" />
-                    </Button>
-                </Hint>
-                <Hint label="Reset zoom" sideOffset={4}>
-                    <Button onClick={handleResetZoom} variant="board" className="px-2 text-xs">
-                        {zoomPercentage}%
-                    </Button>
-                </Hint>
-                <Hint label="Zoom in" sideOffset={4}>
-                    <Button onClick={handleZoomIn} className="px-2" variant="board">
-                        <Plus className="h-4 w-4" />
-                    </Button>
-                </Hint>
-                <div className="flex items-center border-l pl-1">
-                    <Hint label="Frames" sideOffset={4}>
-                        <Button onClick={handleFramesClick} className="px-2" variant="board">
-                            <FramesLayersIcon />
-                        </Button>
-                    </Hint>
-                </div>
             </div>
-            {showFrames && (
-                <FramesPanel
-                    liveLayers={liveLayers}
-                    liveLayerIds={liveLayerIds}
-                    setLiveLayerIds={setLiveLayerIds}
-                    onClose={() => setShowFrames(false)}
-                    setCamera={setCamera}
-                    setZoom={setZoom}
-                    cameraRef={cameraRef}
-                    zoomRef={zoomRef}
-                    forceRender={forcedRender}
-                    boardId={boardId}
-                    socket={socket}
-                    setPresentationMode={setPresentationMode}
-                />
-            )}
-        </>
+            <Hint label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"} sideOffset={4}>
+                <Button onClick={toggleFullscreen} className="px-2" variant="board">
+                    {isFullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
+                </Button>
+            </Hint>
+            <Hint label="Zoom out" sideOffset={4}>
+                <Button onClick={handleZoomOut} className="px-2" variant="board">
+                    <Minus className="h-4 w-4" />
+                </Button>
+            </Hint>
+            <Hint label="Reset zoom" sideOffset={4}>
+                <Button onClick={handleResetZoom} variant="board" className="px-2 text-xs">
+                    {zoomPercentage}%
+                </Button>
+            </Hint>
+            <Hint label="Zoom in" sideOffset={4}>
+                <Button onClick={handleZoomIn} className="px-2" variant="board">
+                    <Plus className="h-4 w-4" />
+                </Button>
+            </Hint>
+            <div className="flex items-center border-l pl-1">
+                <Hint label="Frames" sideOffset={4}>
+                    <Button onClick={handleFramesClick} className="px-2" variant="board">
+                        <FramesLayersIcon />
+                    </Button>
+                </Hint>
+            </div>
+        </div>
     );
 });
 
-ZoomToolbar.displayName = "ZoomToolbar";
+BottomRightView.displayName = "BottomRightView";

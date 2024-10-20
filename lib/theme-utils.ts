@@ -18,18 +18,21 @@ export const themeSwitch = () => {
     return "dark";
 }
 
-export function setCursorWithFill(svgUrl: any, fillColor: any, x: any, y: any) {
-    fetch(svgUrl)
+export function setCursorWithFill(svgUrl: string, fillColor: string, x: number, y: number): Promise<string> {
+    return fetch(svgUrl)
         .then(response => response.text())
         .then(svgText => {
-            // Replace the fill color in the SVG text
-            const updatedSvgText = svgText.replace(/stroke="[^"]*"/g, `stroke="${fillColor}"`);
-            const svgBlob = new Blob([updatedSvgText], { type: 'image/svg+xml' });
-            const url = URL.createObjectURL(svgBlob);
-            // Set the cursor
-            document.body.style.cursor = `url(${url}) ${x} ${y}, auto`;
+            // Replace the stroke color in the SVG text
+            const updatedSvgText = svgText.replace(/stroke="currentColor"/g, `stroke="${fillColor}"`);
+            // Encode the SVG for use in CSS
+            const encodedSvg = encodeURIComponent(updatedSvgText);
+            // Return the cursor style
+            return `url("data:image/svg+xml,${encodedSvg}") ${x} ${y}, auto`;
         })
-        .catch(error => console.error('Error setting the cursor:', error));
+        .catch(error => {
+            console.error('Error setting the cursor:', error);
+            return 'default'; // Fallback cursor
+        });
 }
 
 export const themeColors = {

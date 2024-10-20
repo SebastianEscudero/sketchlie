@@ -31,7 +31,8 @@ export enum LayerType {
   Video,
   Link,
   Frame,
-  Svg
+  Svg,
+  Comment
 };
 
 export type BaseShapeLayer = {
@@ -206,6 +207,32 @@ export type FrameLayer = {
   addedBy?: string;
 };
 
+export type Comment = {
+  type: LayerType.Comment
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  author?: Author;
+  content?: string;
+  createdAt?: Date;
+  replies?: Reply[];
+}
+
+export type Reply = {
+  id: string;
+  author: Author;
+  content: string;
+  createdAt: Date;
+}
+
+export type Author = {
+  userId: string;
+  information: {
+      name?: string;
+      picture?: string;
+    };
+};
 
 export type Point = {
   x: number;
@@ -250,7 +277,7 @@ export type CanvasState =
     layerType: LayerType.Ellipse | LayerType.Rectangle | LayerType.Rhombus | LayerType.Triangle 
     | LayerType.Star | LayerType.Hexagon | LayerType.BigArrowDown | LayerType.BigArrowUp  | LayerType.Line
     | LayerType.BigArrowLeft | LayerType.BigArrowRight | LayerType.Text | LayerType.Note 
-    | LayerType.CommentBubble | LayerType.Path | LayerType.Arrow | LayerType.Frame;
+    | LayerType.CommentBubble | LayerType.Path | LayerType.Arrow | LayerType.Frame | LayerType.Comment;
   }
   | {
     mode: CanvasMode.Pencil,
@@ -299,7 +326,7 @@ export enum CanvasMode {
 
 export type Layer = RectangleLayer | EllipseLayer | RhombusLayer | TriangleLayer | StarLayer 
 | HexagonLayer | BigArrowDownLayer | BigArrowLeftLayer | BigArrowRightLayer | BigArrowUpLayer | PathLayer 
-| CommentBubbleLayer |TextLayer | NoteLayer | ImageLayer | ArrowLayer | LineLayer | VideoLayer | LinkLayer | FrameLayer | SvgLayer;
+| CommentBubbleLayer |TextLayer | NoteLayer | ImageLayer | ArrowLayer | LineLayer | VideoLayer | LinkLayer | FrameLayer | SvgLayer | Comment;
 
 export interface Layers {
   [key: string]: Layer;
@@ -348,7 +375,7 @@ export enum ArrowOrientation {
 
 export type PreviewLayer = RectangleLayer | EllipseLayer | RhombusLayer | 
 TriangleLayer | StarLayer | HexagonLayer | BigArrowDownLayer | BigArrowLeftLayer | LineLayer
-| BigArrowRightLayer | BigArrowUpLayer | CommentBubbleLayer | TextLayer | NoteLayer | ArrowLayer | FrameLayer;
+| BigArrowRightLayer | BigArrowUpLayer | CommentBubbleLayer | TextLayer | NoteLayer | ArrowLayer | FrameLayer | Comment;
 
 export enum SelectorType {
   Color,

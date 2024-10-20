@@ -39,8 +39,6 @@ interface LayerPreviewProps {
   zoomRef?: React.RefObject<any>;
   forcedRender?: boolean;
   cameraRef?: React.RefObject<any>;
-  liveLayerIds?: string[];
-  liveLayers?: Layers;
   showOutlineOnHover?: boolean;
   setAddedByLabel?: (label: string) => void;
 };
@@ -61,19 +59,12 @@ export const LayerPreview = memo(({
   setZoom,
   cameraRef,
   zoomRef,
-  liveLayerIds,
-  liveLayers,
   showOutlineOnHover,
   setAddedByLabel
 }: LayerPreviewProps) => {
 
   if (!layer) {
     return null;
-  }
-
-  let frameNumber;
-  if (layer.type === LayerType.Frame && liveLayerIds && liveLayers) {
-    frameNumber = liveLayerIds.filter(id => liveLayers[id] && liveLayers[id].type === LayerType.Frame).indexOf(id) + 1;
   }
 
   switch (layer.type) {
@@ -354,21 +345,6 @@ export const LayerPreview = memo(({
           layer={layer}
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
-          forcedRender={forcedRender}
-          showOutlineOnHover={showOutlineOnHover}
-          setAddedByLabel={setAddedByLabel}
-        />
-      );
-    case LayerType.Frame:
-      return (
-        <Frame
-          id={id}
-          layer={layer}
-          onPointerDown={onLayerPointerDown}
-          frameNumber={frameNumber}
-          expired={expired}
-          socket={socket}
-          boardId={boardId}
           forcedRender={forcedRender}
           showOutlineOnHover={showOutlineOnHover}
           setAddedByLabel={setAddedByLabel}

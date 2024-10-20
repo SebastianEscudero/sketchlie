@@ -2,6 +2,7 @@ import { throttle } from "lodash";
 import { updateR2Bucket } from "@/lib/r2-bucket-functions";
 import { useCallback } from "react";
 import { Socket } from "socket.io-client";
+import { Comment, Reply, User } from "@/types/canvas";
 
 const throttledUpdateLayer = throttle((boardId, layerId, layerUpdates) => {
   updateR2Bucket('/api/r2-bucket/updateLayer', boardId, layerId, layerUpdates);
@@ -20,6 +21,74 @@ export const useUpdateValue = () => {
     }
   }, []);
 };
+
+export const useUpdateReplies = () => {
+  return useCallback((
+    boardId: string, 
+    id: string, 
+    layer: Comment, 
+    newReply: Reply, 
+    expired: boolean, 
+    socket: Socket, 
+  ) => {
+    const updatedReplies = [...(layer.replies || []), newReply];
+    const updatedLayer = { ...layer, replies: updatedReplies };
+    layer.replies = updatedReplies;
+
+    if (!expired) {
+      throttledUpdateLayer(boardId, id, updatedLayer);
+      if (socket) {
+        socket.emit('layer-update', id, updatedLayer);
+      }
+    }
+  }, []);
+};
+
+export const useMarkCommentAsReload = () => {
+  return useCallback((
+    boardId: string,
+    id: string,
+    layer: Comment,
+    currentUser: User,
+    expired: boolean,
+    socket: Socket | null,
+  ) => {
+    const parser = new DOMParser();
+    const serializer = new XMLSerializer();
+
+    const updateContent = (content: string) => {
+      const doc = parser.parseFromString(content, 'text/html');
+      const mentions = doc.querySelectorAll(`span.mention[data-user-id="${currentUser.userId}"]`);
+      mentions.forEach(mention => {
+        mention.removeAttribute('data-user-id');
+      });
+      return serializer.serializeToString(doc.body).replace(/<\/?body>/g, '');
+    };
+
+    const updatedContent = updateContent(layer?.content || '');
+
+    const updatedReplies = layer?.replies?.map(reply => ({
+      ...reply,
+      content: updateContent(reply.content)
+    }));
+
+    const updatedLayer = {
+      ...layer,
+      content: updatedContent,
+      replies: updatedReplies
+    };
+
+    if (!expired) {
+      throttledUpdateLayer(boardId, id, updatedLayer);
+      if (socket) {
+        socket.emit('layer-update', id, updatedLayer);
+      }
+    }
+
+    return updatedLayer;
+  }, []);
+};
+
 
 export const useHandlePaste = () => {
   return useCallback(async (e: React.ClipboardEvent) => {

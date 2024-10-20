@@ -37,7 +37,7 @@ export const Cursor = memo(({
         <foreignObject
             height={50}
             width={name.length * 10 + 24}
-            className="relative overflow-visible"
+            className="relative overflow-visible pointer-events-none"
             transform={`translate(${x}, ${y}) scale(${1/zoom})`}
         >
             <div className="flex flex-col items-start max-w-[250px] truncate">

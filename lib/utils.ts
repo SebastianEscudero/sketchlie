@@ -1180,7 +1180,8 @@ export function resizeBox(
     newLayer.type !== LayerType.Video &&
     newLayer.type !== LayerType.Link &&
     newLayer.type !== LayerType.Frame &&
-    newLayer.type !== LayerType.Svg
+    newLayer.type !== LayerType.Svg &&
+    newLayer.type !== LayerType.Comment
   ) {
     if (!singleLayer) {
       textFontSize = newLayer.textFontSize * scaleY;

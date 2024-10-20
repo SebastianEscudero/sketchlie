@@ -63,22 +63,24 @@ import { useProModal } from "@/hooks/use-pro-modal";
 import { CurrentPreviewLayer } from "./current-preview-layer";
 import { useRoom } from "@/components/room";
 import { toast } from "sonner";
-import { ZoomToolbar } from "./zoom-toolbar";
+import { BottomRightView } from "./bottom-right-view";
 import { Command, DeleteLayerCommand, InsertLayerCommand, TranslateLayersCommand } from "@/lib/commands";
-import { SketchlieAiInput } from "./sketchlie-ai-input";
 import { ArrowConnectionOutlinePreview } from "./arrow-connection-outline-preview";
 import { setCursorWithFill } from "@/lib/theme-utils";
 import { ArrowPostInsertMenu } from "./arrow-post-insert-menu";
 import { EraserTrail } from "./eraser-trail";
-import { CurrentSuggestedLayer } from "./current-suggested-layer";
 import { smoothLastPoint } from "@/lib/smooth-points";
 import { Background } from "./background";
 import { MediaPreview } from "./MediaPreview";
 import { MoveBackToContent } from "./move-back-to-content";
 import { Frame } from "../canvas-objects/frame";
-import { uploadFilesAndInsertThemIntoCanvas } from "./canvasUtils";
+import { MoveCameraToLayer, uploadFilesAndInsertThemIntoCanvas } from "./canvasUtils";
 import { DragIndicatorOverlay } from "./drag-indicator-overlay";
 import { AddedLayerByLabel } from "./added-layer-by-label";
+import { Comment, CommentBox } from "../canvas-objects/comment";
+import { Comment as CommentType } from "@/types/canvas";
+import { RightMiddleContainer } from "./right-middle-container";
+import { CommentPreview } from "../canvas-objects/comment-preview";
 
 const preventDefault = (e: any) => {
     if (e.scale !== 1) {
@@ -124,6 +126,10 @@ export const Canvas = ({
     const [copiedLayerIds, setCopiedLayerIds] = useState<string[]>([]);
     const [currentPreviewLayer, setCurrentPreviewLayer] = useState<PreviewLayer | null>(null);
 
+    // this is the current comment box that is open
+    const [openCommentBoxId, setOpenCommentBoxId] = useState<string | null>(null);
+    const [activeHoveredCommentId, setActiveHoveredCommentId] = useState<string | null>(null);
+
     // Drawing and editing tools
     const [pencilDraft, setPencilDraft] = useState<[number, number, number][]>([]);
     const [erasePath, setErasePath] = useState<[number, number][]>([]);
@@ -146,6 +152,8 @@ export const Canvas = ({
     const [addedByLabel, setAddedByLabel] = useState('');
     const [showToolbar, setShowToolbar] = useState(true);
     const [lastMouseMove, setLastMouseMove] = useState(Date.now());
+    const [isPointerDown, setIsPointerDown] = useState(false);
+    const [rightMiddleContainerView, setRightMiddleContainerView] = useState<string | null>(null);
 
     // Undo/Redo
     const [history, setHistory] = useState<Command[]>([]);
@@ -161,6 +169,7 @@ export const Canvas = ({
     const [currentFrameIndex, setCurrentFrameIndex] = useState(0);
     const [forceSelectionBoxRender, setForceSelectionBoxRender] = useState(false);
     const [forceLayerPreviewRender, setForceLayerPreviewRender] = useState(false);
+    const [canvasCursor, setCanvasCursor] = useState('default');
 
     // Preferences
     const [quickInserting, setQuickInserting] = useState(false);
@@ -182,12 +191,27 @@ export const Canvas = ({
         });
     }, [liveLayerIds, liveLayers]);
 
+    const commentIds = useMemo(() => {
+        if (!liveLayerIds || !liveLayers) return [];
+        return liveLayerIds.filter(id => {
+            const layer = liveLayers[id];
+            return layer && layer.type === LayerType.Comment;
+        });
+    }, [liveLayerIds, liveLayers]);
+
+    const filteredOrgTeammates = useMemo(() =>
+        org.users.filter((user: typeof org.users[0]) => user.id !== User.userId),
+        [org.users, User.userId]
+    );
+
     useDisableScrollBounce();
 
-    const performAction = useCallback(async (command: Command) => {
+    const performAction = useCallback(async (command: Command, addToHistory = true) => {
         command.execute(liveLayerIds, liveLayers);
-        setHistory([...history, command]);
-        setRedoStack([]);
+        if (addToHistory) {
+            setHistory([...history, command]);
+            setRedoStack([]);
+        }
     }, [liveLayerIds, liveLayers, history]);
 
     const undo = useCallback(() => {
@@ -204,7 +228,7 @@ export const Canvas = ({
         setHistory([...history, lastCommand]);
     }, [redoStack, liveLayerIds, liveLayers, history]);
 
-    const insertLayer = useCallback((layerType: LayerType, position: Point, width: number, height: number, center?: Point, startConnectedLayerId?: string, endConnectedLayerId?: string, arrowType?: ArrowType, orientation?: ArrowOrientation) => {
+    const insertLayer = useCallback((layerType: LayerType, position: Point, width: number, height: number, center?: Point, startConnectedLayerId?: string, endConnectedLayerId?: string, arrowType?: ArrowType, orientation?: ArrowOrientation, commentContent?: string) => {
 
         if (expired) {
             setCanvasState({ mode: CanvasMode.None });
@@ -310,6 +334,24 @@ export const Canvas = ({
                 fill: { r: 29, g: 29, b: 29, a: 1 },
                 addedBy: User?.information.name
             };
+        } else if (layerType === LayerType.Comment) {
+            layer = {
+                type: LayerType.Comment,
+                x: position.x,
+                y: position.y,
+                width: width,
+                height: height,
+                author: {
+                    userId: User.userId,
+                    information: {
+                        name: User.information.name,
+                        picture: User.information.picture,
+                    }
+                },
+                content: commentContent,
+                createdAt: new Date(),
+                replies: []
+            }
         } else {
             if (width < 10 && height < 10) {
                 width = 80
@@ -333,24 +375,10 @@ export const Canvas = ({
 
         const command = new InsertLayerCommand([layerId], [layer], setLiveLayers, setLiveLayerIds, boardId, socket, org, proModal);
         performAction(command);
+        setCurrentPreviewLayer(null);
 
         if (layer.type !== LayerType.Text) {
             selectedLayersRef.current = [layerId];
-        }
-
-        if (layerType === LayerType.Frame) {
-            setLiveLayerIds(prevIds => {
-                const existingFrames = prevIds.filter(id => liveLayers[id] && liveLayers[id].type === LayerType.Frame);
-                const nonFrames = prevIds.filter(id => liveLayers[id] && liveLayers[id].type !== LayerType.Frame);
-
-                if (existingFrames.length > 0) {
-                    // If there are existing frames, place the new frame as the last frame
-                    return [...existingFrames, layerId, ...nonFrames];
-                } else {
-                    // If there are no existing frames, place the new frame as the first element
-                    return [layerId, ...nonFrames];
-                }
-            });
         }
 
         // return the user to the default mode
@@ -358,7 +386,7 @@ export const Canvas = ({
             setCanvasState({ mode: CanvasMode.None });
         }
 
-    }, [socket, org, proModal, setLiveLayers, setLiveLayerIds, boardId, arrowTypeInserting, liveLayers, performAction, expired, quickInserting]);
+    }, [socket, org, proModal, setLiveLayers, setLiveLayerIds, boardId, arrowTypeInserting, liveLayers, performAction, expired, quickInserting, setCurrentPreviewLayer]);
 
     useEffect(() => {
         if (justInsertedText && layerRef && layerRef.current) {
@@ -473,7 +501,7 @@ export const Canvas = ({
                 newLayers[id] = newLayer;
 
                 // Update connected arrows
-                if (layer.type !== LayerType.Arrow && layer.type !== LayerType.Line && selectedLayersRef.current.length === 1) {
+                if (layer.type !== LayerType.Arrow && layer.type !== LayerType.Line && layer.type !== LayerType.Comment && selectedLayersRef.current.length === 1) {
                     if (layer.connectedArrows) {
                         layer.connectedArrows.forEach(arrowId => {
                             const arrowLayer = newLayers[arrowId] as ArrowLayer;
@@ -544,7 +572,7 @@ export const Canvas = ({
                 newLayers[id] = newLayer;
 
                 // Update connected arrows
-                if (layer.type !== LayerType.Arrow && layer.type !== LayerType.Line && selectedLayersRef.current.length === 1) {
+                if (layer.type !== LayerType.Arrow && layer.type !== LayerType.Line && layer.type !== LayerType.Comment && selectedLayersRef.current.length === 1) {
                     if (layer.connectedArrows) {
                         layer.connectedArrows.forEach(arrowId => {
                             const arrowLayer = newLayers[arrowId] as ArrowLayer;
@@ -855,7 +883,7 @@ export const Canvas = ({
             updatedLayers[id] = newLayer;
 
             // Update connected arrows
-            if (newLayer.type !== LayerType.Arrow && newLayer.type !== LayerType.Line && newLayer.connectedArrows) {
+            if (newLayer.type !== LayerType.Arrow && newLayer.type !== LayerType.Line && newLayer.type !== LayerType.Comment && newLayer.connectedArrows) {
                 newLayer.connectedArrows.forEach(arrowId => {
                     if (!updatedLayerIds.includes(arrowId)) {
                         const arrowLayer = liveLayers[arrowId] as ArrowLayer;
@@ -942,7 +970,7 @@ export const Canvas = ({
         e: React.PointerEvent,
     ) => {
 
-        if (expired) {
+        if (expired || activeTouches > 1) {
             return;
         }
 
@@ -961,11 +989,18 @@ export const Canvas = ({
         removeHighlightFromText();
         unselectLayers();
 
-        if (activeTouches > 1) {
-            return;
+        if (e.button === 0) {
+            // and this is to just close the comment box when the user clicks anywhere else
+            setOpenCommentBoxId(null);
+            // when the user is inserting a comment and then clicks somewhere else, we close the comment preview
+            if (currentPreviewLayer) {
+                setCurrentPreviewLayer(null);
+                return;
+            }
         }
 
         if (e.button === 0 && !isPanning) {
+            //.When inserting a comment layer and we click anywhere else with left click, we close the comment layer preview
             if (canvasState.mode === CanvasMode.Eraser) {
                 setisPenEraserLaserMenuOpen(false);
                 return;
@@ -980,12 +1015,32 @@ export const Canvas = ({
             if (canvasState.mode === CanvasMode.Moving) {
                 setIsPanning(true);
                 setStartPanPoint({ x: e.clientX, y: e.clientY });
-                document.body.style.cursor = 'url(/custom-cursors/grab.svg) 12 12, auto';
                 return;
             }
 
             if (canvasState.mode === CanvasMode.Inserting) {
                 const point = pointerEventToCanvasPoint(e, cameraRef.current, zoomRef.current, svgRef);
+
+                // If the layer type is comment, set the current preview layer to the comment layer (we insert it once the user writes something)
+                if (canvasState.layerType === LayerType.Comment) {
+                    const commentSize = 36;
+                    setCurrentPreviewLayer({
+                        type: LayerType.Comment,
+                        x: point.x,
+                        y: point.y - commentSize,
+                        width: commentSize,
+                        height: commentSize,
+                        author: {
+                            userId: User.userId,
+                            information: {
+                                name: User.information.name,
+                                picture: User.information.picture,
+                            }
+                        }
+                    })
+                    return;
+                }
+
                 setStartPanPoint(point);
                 setIsPanning(false);
                 return;
@@ -996,7 +1051,6 @@ export const Canvas = ({
             setPresentationMode(false);
             setIsRightClickPanning(true);
             setStartPanPoint({ x: e.clientX, y: e.clientY });
-            document.body.style.cursor = 'url(/custom-cursors/grab.svg) 12 12, auto';
         }
 
         if (selectedLayersRef.current.length > 0) {
@@ -1004,7 +1058,7 @@ export const Canvas = ({
                 socket.emit('layer-update', selectedLayersRef.current, liveLayers);
             }
         }
-    }, [canvasState.mode, setCanvasState, startDrawing, setIsPanning, setIsRightClickPanning, activeTouches, expired, isPanning, unselectLayers, liveLayers, socket, setPresentationMode]);
+    }, [canvasState.mode, setCanvasState, startDrawing, setIsPanning, setIsRightClickPanning, activeTouches, expired, isPanning, unselectLayers, liveLayers, socket, setPresentationMode, User, zoom, setCurrentPreviewLayer, currentPreviewLayer]);
 
     const onPointerMove = useCallback((e: React.PointerEvent) => {
         e.preventDefault();
@@ -1270,24 +1324,25 @@ export const Canvas = ({
 
     const onPointerUp = useCallback((e: React.PointerEvent) => {
         setIsRightClickPanning(false);
+        setIsPointerDown(false);
         const point = pointerEventToCanvasPoint(e, camera, zoom, svgRef);
+
+        if (e.button === 2) {
+            return;
+        }
 
         if (
             canvasState.mode === CanvasMode.None ||
             canvasState.mode === CanvasMode.Pressing
         ) {
-            document.body.style.cursor = 'default';
             setCanvasState({
                 mode: CanvasMode.None,
             });
         } else if (canvasState.mode === CanvasMode.Pencil) {
-            document.body.style.cursor = 'url(/custom-cursors/pencil.svg) 1 16, auto';
             insertPath(false);
         } else if (canvasState.mode === CanvasMode.Highlighter) {
-            document.body.style.cursor = 'url(/custom-cursors/highlighter.svg) 2 18, auto';
             insertPath(true);
         } else if (canvasState.mode === CanvasMode.Laser) {
-            document.body.style.cursor = 'url(/custom-cursors/laser.svg) 4 18, auto';
             setPencilDraft([]);
             const newPresence: Presence = {
                 ...myPresence,
@@ -1299,7 +1354,6 @@ export const Canvas = ({
             }
         } else if (canvasState.mode === CanvasMode.Eraser) {
             setErasePath([]);
-            document.body.style.cursor = 'url(/custom-cursors/eraser.svg) 8 16, auto';
             if (layersToDeleteEraserRef.current.size > 0) {
                 const command = new DeleteLayerCommand(Array.from(layersToDeleteEraserRef.current), initialLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, boardId, socket);
                 performAction(command);
@@ -1308,21 +1362,21 @@ export const Canvas = ({
             }
             return;
         } else if (canvasState.mode === CanvasMode.Inserting) {
-            if (e.button === 2 || e.button === 1) {
-                setCursorWithFill('/custom-cursors/inserting.svg', document.documentElement.classList.contains("dark") ? '#ffffff' : '#000000', 10, 10);
-            }
-
             const layerType = canvasState.layerType;
             setIsPanning(false);
+
+            if (canvasState.layerType === LayerType.Comment) {
+                // we handle the comment layer insert in the comment component
+                return;
+            }
+
             if (isPanning && currentPreviewLayer) {
                 if (layerType === LayerType.Arrow && currentPreviewLayer.type === LayerType.Arrow
                     || layerType === LayerType.Line && currentPreviewLayer.type === LayerType.Line
                 ) {
                     insertLayer(layerType, { x: currentPreviewLayer.x, y: currentPreviewLayer.y }, currentPreviewLayer.width, currentPreviewLayer.height, currentPreviewLayer.center, currentPreviewLayer.startConnectedLayerId, currentPreviewLayer.endConnectedLayerId, currentPreviewLayer.arrowType, currentPreviewLayer.orientation)
-                    setCurrentPreviewLayer(null);
                 } else {
                     insertLayer(layerType, { x: currentPreviewLayer.x, y: currentPreviewLayer.y }, currentPreviewLayer.width, currentPreviewLayer.height);
-                    setCurrentPreviewLayer(null);
                 }
             } else if (layerType !== LayerType.Arrow && layerType !== LayerType.Line) {
                 let width
@@ -1342,7 +1396,6 @@ export const Canvas = ({
                 }
             }
         } else if (canvasState.mode === CanvasMode.Moving) {
-            document.body.style.cursor = 'url(/custom-cursors/hand.svg) 12 12, auto';
             setIsPanning(false);
         } else if (canvasState.mode === CanvasMode.Translating) {
             const initialLayer = JSON.stringify(initialLayers[selectedLayersRef.current[0]]);
@@ -1374,7 +1427,7 @@ export const Canvas = ({
                 const updatedLayerIds: string[] = [...selectedLayersRef.current];
                 selectedLayersRef.current.forEach(id => {
                     const layer = liveLayers[id];
-                    if (layer.type !== LayerType.Arrow && layer.type !== LayerType.Line && layer.type !== LayerType.Path && selectedLayersRef.current.length === 1) {
+                    if (layer.type !== LayerType.Arrow && layer.type !== LayerType.Line && layer.type !== LayerType.Path && layer.type !== LayerType.Comment && selectedLayersRef.current.length === 1) {
                         if (layer.connectedArrows) {
                             layer.connectedArrows.forEach(arrowId => {
                                 updatedLayerIds.push(arrowId);
@@ -1405,7 +1458,6 @@ export const Canvas = ({
                 mode: CanvasMode.None,
             });
         } else {
-            document.body.style.cursor = 'default';
             setCanvasState({
                 mode: CanvasMode.None,
             });
@@ -1731,7 +1783,7 @@ export const Canvas = ({
                 } else {
                     layer.endConnectedLayerId = "";
                 }
-            } else if (layer.type !== LayerType.Line && layer.connectedArrows) {
+            } else if (layer.type !== LayerType.Line && layer.type !== LayerType.Comment && layer.connectedArrows) {
                 layer.connectedArrows = layer.connectedArrows.map(arrowId => idMap.get(arrowId) || arrowId);
             }
         });
@@ -1752,6 +1804,17 @@ export const Canvas = ({
         setMyPresence(newPresence);
 
     }, [copiedLayerIds, myPresence, setLiveLayers, setLiveLayerIds, setMyPresence, org, proModal, socket, boardId, performAction, liveLayers]);
+
+    const deleteLayers = useCallback((layerIds: string[]) => {
+        const command = new DeleteLayerCommand(layerIds, liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, boardId, socket);
+        performAction(command, true);
+    }, [liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, boardId, socket, performAction]);
+
+    const forceUpdateLayerLocalLayerState = useCallback((layerId: string, updatedLayer: Layer) => {
+        const updatedLayers = { ...liveLayers };
+        updatedLayers[layerId] = updatedLayer;
+        setLiveLayers(updatedLayers);
+    }, [liveLayers, setLiveLayers]);
 
     useEffect(() => {
         const onPointerDown = (e: PointerEvent) => {
@@ -1803,7 +1866,7 @@ export const Canvas = ({
                             console.error("Failed to clear clipboard:", err);
                         });
                     } else {
-                        setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Ellipse });
+                        setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Comment });
                     }
                 }
             } else if (key === "v") {
@@ -1921,9 +1984,7 @@ export const Canvas = ({
                 // }
             } else if (key === "backspace" || key === "delete") {
                 if (selectedLayersRef.current.length > 0 && !isInsideTextArea) {
-                    const command = new DeleteLayerCommand(selectedLayersRef.current, liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, boardId, socket);
-                    performAction(command);
-                    unselectLayers();
+                    deleteLayers(selectedLayersRef.current);
                 }
             } else if (!isInsideTextArea) {
                 if (key === "s") {
@@ -2018,10 +2079,15 @@ export const Canvas = ({
     useEffect(() => {
         let animationFrameId: number;
 
+        if (!isPointerDown) {
+            return;
+        }
+
         if (presentationMode ||
             (canvasState.mode !== CanvasMode.Inserting &&
                 canvasState.mode !== CanvasMode.Translating &&
-                canvasState.mode !== CanvasMode.SelectionNet)) {
+                canvasState.mode !== CanvasMode.SelectionNet
+            )) {
             return;
         }
 
@@ -2044,7 +2110,7 @@ export const Canvas = ({
                 cancelAnimationFrame(animationFrameId);
             }
         };
-    }, [isNearBorder, borderMove, setCamera, canvasState.mode, presentationMode]);
+    }, [isNearBorder, borderMove, setCamera, canvasState.mode, presentationMode, isPointerDown]);
 
     useEffect(() => {
         // prevent safari from going back/forward
@@ -2078,40 +2144,52 @@ export const Canvas = ({
     }, []);
 
     useEffect(() => {
-        if (rightClickPanning) {
-            document.body.style.cursor = 'url(/custom-cursors/grab.svg) 12 12, auto';
-            return;
+        const updateCursor = async () => {
+            if (rightClickPanning) {
+                setCanvasCursor('url(/custom-cursors/grab.svg) 12 12, auto');
+                return;
+            }
+
+            if (canvasState.mode === CanvasMode.Inserting) {
+                selectedLayersRef.current = [];
+                if (canvasState.layerType === LayerType.Text) {
+                    const fillColor = document.documentElement.classList.contains("dark") ? '#ffffff' : '#000000';
+                    const cursorStyle = await setCursorWithFill('/custom-cursors/text-cursor.svg', fillColor, 8, 0);
+                    setCanvasCursor(cursorStyle);
+                } else if (canvasState.layerType === LayerType.Note) {
+                    setCanvasCursor('url(/custom-cursors/add-note.svg) 10 10, auto');
+                } else if (canvasState.layerType === LayerType.Comment) {
+                    setCanvasCursor('url(/custom-cursors/add-comment.svg) 4 16, auto');
+                } else {
+                    const fillColor = document.documentElement.classList.contains("dark") ? '#ffffff' : '#000000';
+                    const cursorStyle = await setCursorWithFill('/custom-cursors/inserting.svg', fillColor, 10, 10);
+                    setCanvasCursor(cursorStyle);
+                }
+            } else if (canvasState.mode === CanvasMode.Pencil) {
+                setCanvasCursor('url(/custom-cursors/pencil.svg) 1 16, auto');
+                selectedLayersRef.current = [];
+            } else if (canvasState.mode === CanvasMode.Highlighter) {
+                setCanvasCursor('url(/custom-cursors/highlighter.svg) 2 18, auto');
+                selectedLayersRef.current = [];
+            } else if (canvasState.mode === CanvasMode.Laser) {
+                setCanvasCursor('url(/custom-cursors/laser.svg) 4 18, auto');
+                selectedLayersRef.current = [];
+            } else if (canvasState.mode === CanvasMode.Eraser) {
+                setCanvasCursor('url(/custom-cursors/eraser.svg) 8 16, auto');
+                selectedLayersRef.current = [];
+            } else if (canvasState.mode === CanvasMode.Moving) {
+                setCanvasCursor('url(/custom-cursors/hand.svg) 12 12, auto');
+            } else if (canvasState.mode === CanvasMode.ArrowResizeHandler) {
+                setCanvasCursor('url(/custom-cursors/grab.svg) 12 12, auto');
+            } else if (canvasState.mode === CanvasMode.Translating) {
+                setCanvasCursor('move');
+            } else {
+                setCanvasCursor('default');
+            }
         }
 
-        if (canvasState.mode === CanvasMode.Inserting) {
-            selectedLayersRef.current = [];
-            if (canvasState.layerType === LayerType.Text) {
-                setCursorWithFill('/custom-cursors/text-cursor.svg', document.documentElement.classList.contains("dark") ? '#ffffff' : '#000000', 8, 0);
-            } else {
-                setCursorWithFill('/custom-cursors/inserting.svg', document.documentElement.classList.contains("dark") ? '#ffffff' : '#000000', 10, 10);
-            }
-        } else if (canvasState.mode === CanvasMode.Pencil) {
-            document.body.style.cursor = 'url(/custom-cursors/pencil.svg) 1 16, auto';
-            selectedLayersRef.current = [];
-        } else if (canvasState.mode === CanvasMode.Highlighter) {
-            document.body.style.cursor = 'url(/custom-cursors/highlighter.svg) 2 18, auto';
-            selectedLayersRef.current = [];
-        } else if (canvasState.mode === CanvasMode.Laser) {
-            document.body.style.cursor = 'url(/custom-cursors/laser.svg) 4 18, auto';
-            selectedLayersRef.current = [];
-        } else if (canvasState.mode === CanvasMode.Eraser) {
-            document.body.style.cursor = 'url(/custom-cursors/eraser.svg) 8 16, auto';
-            selectedLayersRef.current = [];
-        } else if (canvasState.mode === CanvasMode.Moving) {
-            document.body.style.cursor = 'url(/custom-cursors/hand.svg) 12 12, auto';
-        } else if (canvasState.mode === CanvasMode.ArrowResizeHandler) {
-            document.body.style.cursor = 'url(/custom-cursors/grab.svg) 12 12, auto';
-        } else if (canvasState.mode === CanvasMode.Translating) {
-            document.body.style.cursor = 'move';
-        } else {
-            document.body.style.cursor = 'default';
-        }
-    }, [canvasState.mode, canvasState, rightClickPanning]);
+        updateCursor();
+    }, [canvasState, rightClickPanning]);
 
     useEffect(() => {
         const updateVisibleLayers = () => {
@@ -2167,23 +2245,20 @@ export const Canvas = ({
         const frameId = frameIds[safeIndex];
         const frame = liveLayers[frameId] as FrameLayer;
 
-        const viewportWidth = window.innerWidth;
-        const viewportHeight = window.innerHeight;
+        MoveCameraToLayer({
+            targetX: frame.x,
+            targetY: frame.y,
+            targetWidth: frame.width,
+            targetHeight: frame.height,
+            setCamera,
+            setZoom,
+            cameraRef: { current: camera },
+            zoomRef: { current: zoom },
+            padding: 0.95,
+            toolbarHeight: 40,
+            duration: 0
+        });
 
-        // Adjust the vertical space to account for the toolbar
-        const toolbarHeight = 40; // Estimated height of the toolbar
-        const adjustedViewportHeight = viewportHeight - toolbarHeight;
-
-        const zoomX = (viewportWidth) / frame.width * 0.95;
-        const zoomY = (adjustedViewportHeight) / frame.height * 0.95;
-        const targetZoom = Math.min(zoomX, zoomY, 10);
-
-        const targetCameraX = viewportWidth / 2 - (frame.x + frame.width / 2) * targetZoom;
-        // Adjust the Y position to move the frame up
-        const targetCameraY = (adjustedViewportHeight / 2 - (frame.y + frame.height / 2) * targetZoom) - toolbarHeight / 2;
-
-        setZoom(targetZoom);
-        setCamera({ x: targetCameraX, y: targetCameraY });
         setCurrentFrameIndex(safeIndex);
     }, [frameIds, liveLayers, setZoom, setCamera, presentationMode]);
 
@@ -2283,6 +2358,24 @@ export const Canvas = ({
                 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
                 <div className="h-full w-full">
                     <div className="z-20 absolute h-full w-full pointer-events-none">
+                        {/* We render the comment box first so its below the canvas overlay */}
+                        {openCommentBoxId && (
+                            <CommentBox
+                                id={openCommentBoxId}
+                                layer={liveLayers[openCommentBoxId] as CommentType}
+                                setOpenCommentBoxId={setOpenCommentBoxId}
+                                zoomRef={zoomRef}
+                                cameraRef={cameraRef}
+                                socket={socket}
+                                boardId={boardId}
+                                expired={expired}
+                                user={User}
+                                isMoving={isMoving}
+                                orgTeammates={filteredOrgTeammates}
+                                deleteLayers={deleteLayers}
+                                forceUpdateLayerLocalLayerState={forceUpdateLayerLocalLayerState}
+                            />
+                        )}
                         <Toolbar
                             pathColor={pathColor}
                             pathStrokeSize={pathStrokeSize}
@@ -2354,14 +2447,22 @@ export const Canvas = ({
                                             expired={expired}
                                             board={board}
                                             setPresentationMode={setPresentationMode}
+                                            setRightMiddleContainerView={setRightMiddleContainerView}
                                         />
                                     </>
                                 )}
-                                <ZoomToolbar
+                                <BottomRightView
                                     zoom={zoom}
                                     setZoom={setZoom}
                                     setCamera={setCamera}
                                     camera={camera}
+                                    focusMode={focusMode}
+                                    setFocusMode={setFocusMode}
+                                    setRightMiddleContainerView={setRightMiddleContainerView}
+                                />
+                                {/* this contains frames/comments preview */}
+                                <RightMiddleContainer
+                                    rightMiddleContainerView={rightMiddleContainerView}
                                     liveLayers={liveLayers}
                                     liveLayerIds={liveLayerIds}
                                     setLiveLayerIds={setLiveLayerIds}
@@ -2371,8 +2472,13 @@ export const Canvas = ({
                                     boardId={boardId}
                                     socket={socket}
                                     setPresentationMode={setPresentationMode}
-                                    focusMode={focusMode}
-                                    setFocusMode={setFocusMode}
+                                    setRightMiddleContainerView={setRightMiddleContainerView}
+                                    setCamera={setCamera}
+                                    setZoom={setZoom}
+                                    commentIds={commentIds}
+                                    openCommentBoxId={openCommentBoxId}
+                                    setOpenCommentBoxId={setOpenCommentBoxId}
+                                    user={User}
                                 />
                                 <AddedLayerByLabel
                                     addedByLabel={addedByLabel}
@@ -2389,13 +2495,12 @@ export const Canvas = ({
                         )}
                         {!IsArrowPostInsertMenuOpen && !isMoving && canvasState.mode !== CanvasMode.Resizing && canvasState.mode !== CanvasMode.ArrowResizeHandler && canvasState.mode !== CanvasMode.SelectionNet && activeTouches < 2 && (
                             <SelectionTools
-                                board={board}
                                 boardId={boardId}
                                 setLiveLayerIds={setLiveLayerIds}
                                 setLiveLayers={setLiveLayers}
                                 liveLayerIds={liveLayerIds}
                                 liveLayers={liveLayers}
-                                selectedLayersRef={selectedLayersRef}
+                                selectedLayers={selectedLayersRef.current.filter(layerId => liveLayers[layerId] && liveLayers[layerId].type !== LayerType.Comment)}
                                 zoom={zoom}
                                 camera={camera}
                                 socket={socket}
@@ -2405,6 +2510,7 @@ export const Canvas = ({
                                 myPresence={myPresence}
                                 setMyPresence={setMyPresence}
                                 canvasState={canvasState.mode}
+                                deleteLayers={deleteLayers}
                             />
                         )}
                         {liveLayers[selectedLayersRef.current[0]] && IsArrowPostInsertMenuOpen && (
@@ -2459,14 +2565,27 @@ export const Canvas = ({
                                 }
                             })}
                         </div>
-                        <div
-                            className="z-20 relative pointer-events-none"
-                        >
+                        <div className="z-20 relative pointer-events-auto">
                             <svg
                                 ref={svgRef}
-                                className="h-[100vh] w-[100vw]"
+                                className="h-[100vh] w-[100vw] absolute top-0 left-0"
                                 viewBox={`0 0 ${window.innerWidth} ${window.innerHeight}`}
+                                style={{
+                                    cursor: canvasCursor
+                                }}
                             >
+                                <defs>
+                                    <filter id={`drop-shadow`} x="-50%" y="-50%" width="200%" height="200%">
+                                        <feGaussianBlur in="SourceAlpha" stdDeviation="2" />
+                                        <feOffset dx="2" dy="2" result="offsetblur" />
+                                        <feFlood floodColor="rgba(0,0,0,0.5)" />
+                                        <feComposite in2="offsetblur" operator="in" />
+                                        <feMerge>
+                                            <feMergeNode />
+                                            <feMergeNode in="SourceGraphic" />
+                                        </feMerge>
+                                    </filter>
+                                </defs>
                                 <g
                                     style={{
                                         transform: `translate(${camera.x}px, ${camera.y}px) scale(${zoom})`,
@@ -2480,6 +2599,26 @@ export const Canvas = ({
                                             layer={currentPreviewLayer}
                                         />
                                     )}
+                                    {/* We render the frames first so they are always shown below the other layers */}
+                                    {frameIds.map((frameId: string) => {
+                                        const frameNumber = liveLayerIds.filter(id => liveLayers[id] && liveLayers[id].type === LayerType.Frame).indexOf(frameId) + 1;
+                                        const showOutlineOnHover = (canvasState.mode === CanvasMode.None || (canvasState.mode === CanvasMode.Inserting && canvasState.layerType === LayerType.Arrow)) && !presentationMode;
+                                        return (
+                                            <Frame
+                                                key={frameId}
+                                                id={frameId}
+                                                layer={liveLayers[frameId] as FrameLayer}
+                                                onPointerDown={onLayerPointerDown}
+                                                frameNumber={frameNumber}
+                                                expired={expired}
+                                                socket={socket}
+                                                boardId={boardId}
+                                                forcedRender={forceLayerPreviewRender}
+                                                showOutlineOnHover={showOutlineOnHover}
+                                                setAddedByLabel={setAddedByLabel}
+                                            />
+                                        );
+                                    })}
                                     {visibleLayers.map((layerId: string) => {
                                         const isFocused = selectedLayersRef.current.length === 1 && selectedLayersRef.current[0] === layerId && !justChanged;
                                         const showOutlineOnHover = (canvasState.mode === CanvasMode.None || (canvasState.mode === CanvasMode.Inserting && canvasState.layerType === LayerType.Arrow)) && !presentationMode;
@@ -2501,8 +2640,6 @@ export const Canvas = ({
                                                 setZoom={setZoom}
                                                 cameraRef={cameraRef}
                                                 zoomRef={zoomRef}
-                                                liveLayerIds={liveLayerIds}
-                                                liveLayers={liveLayers}
                                                 showOutlineOnHover={showOutlineOnHover}
                                                 setAddedByLabel={setAddedByLabel}
                                             />
@@ -2511,7 +2648,7 @@ export const Canvas = ({
                                     <SelectionBox
                                         zoom={zoom}
                                         liveLayers={liveLayers}
-                                        selectedLayers={selectedLayersRef.current}
+                                        selectedLayers={selectedLayersRef.current.filter(layerId => liveLayers[layerId] && liveLayers[layerId].type !== LayerType.Comment)}
                                         onResizeHandlePointerDown={onResizeHandlePointerDown}
                                         onArrowResizeHandlePointerDown={onArrowResizeHandlePointerDown}
                                         setLiveLayers={setLiveLayers}
@@ -2523,9 +2660,11 @@ export const Canvas = ({
                                         setArrowTypeInserting={setArrowTypeInserting}
                                         showHandles={!isMoving && activeTouches < 2 && canvasState.mode !== CanvasMode.ArrowResizeHandler}
                                     />
-                                    {currentPreviewLayer && (
+                                    {currentPreviewLayer && currentPreviewLayer.type !== LayerType.Comment && (
                                         <CurrentPreviewLayer
                                             layer={currentPreviewLayer}
+                                            zoom={zoom}
+                                            insertLayer={insertLayer}
                                         />
                                     )}
                                     {((canvasState.mode === CanvasMode.ArrowResizeHandler && selectedLayersRef.current.length === 1) || (currentPreviewLayer?.type === LayerType.Arrow)) && (
@@ -2553,9 +2692,52 @@ export const Canvas = ({
                                             height={Math.abs(canvasState.origin.y - canvasState.current.y)}
                                         />
                                     )}
-                                    {otherUsers &&
-                                        <CursorsPresence otherUsers={otherUsers} zoom={zoom} />
-                                    }
+                                    {/* We render the comments last so they always show on top of other layers */}
+                                    <>
+                                        {/* This approach is just to make sure the hovered comment is always on top of the other comments */}
+                                        {commentIds.filter((commentId) => commentId !== activeHoveredCommentId).map((commentId) => (
+                                            <Comment
+                                                key={commentId}
+                                                id={commentId}
+                                                layer={liveLayers[commentId] as CommentType}
+                                                zoom={zoom}
+                                                onPointerDown={onLayerPointerDown}
+                                                selectionColor={layerIdsToColorSelection[commentId]}
+                                                isCommentBoxOpen={openCommentBoxId === commentId}
+                                                setOpenCommentBoxId={setOpenCommentBoxId}
+                                                user={User}
+                                                orgTeammates={filteredOrgTeammates}
+                                                isMoving={isMoving}
+                                                setActiveHoveredCommentId={setActiveHoveredCommentId}
+                                            />
+                                        ))}
+
+                                        {/* Render the hovered comment again on top */}
+                                        {activeHoveredCommentId && (
+                                            <Comment
+                                                id={activeHoveredCommentId}
+                                                layer={liveLayers[activeHoveredCommentId] as CommentType}
+                                                zoom={zoom}
+                                                onPointerDown={onLayerPointerDown}
+                                                selectionColor={layerIdsToColorSelection[activeHoveredCommentId]}
+                                                isCommentBoxOpen={openCommentBoxId === activeHoveredCommentId}
+                                                setOpenCommentBoxId={setOpenCommentBoxId}
+                                                user={User}
+                                                orgTeammates={filteredOrgTeammates}
+                                                isMoving={isMoving}
+                                                setActiveHoveredCommentId={setActiveHoveredCommentId}
+                                            />
+                                        )}
+                                    </>                         
+                                    {/* We render the comment preview here so its above every layer and the existing comments */}
+                                    {currentPreviewLayer && currentPreviewLayer.type === LayerType.Comment && (
+                                        <CommentPreview
+                                            layer={currentPreviewLayer}
+                                            zoom={zoom}
+                                            insertLayer={insertLayer}
+                                            orgTeammates={filteredOrgTeammates}
+                                        />
+                                    )}
                                     {
                                         pencilDraft.length > 0 && !pencilDraft.some(array => array.some(isNaN)) && (
                                             <Path
@@ -2578,6 +2760,9 @@ export const Canvas = ({
                                                 }
                                             />
                                         )
+                                    }
+                                    {otherUsers &&
+                                        <CursorsPresence otherUsers={otherUsers} zoom={zoom} />
                                     }
                                 </g>
                             </svg>

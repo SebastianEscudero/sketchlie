@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback, memo } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
-import { Frame, Play, X } from "lucide-react";
-import { CanvasState, Layers, LayerType, FrameLayer, CanvasMode } from "@/types/canvas";
+import { Frame, Play } from "lucide-react";
+import { Layers, LayerType, FrameLayer } from "@/types/canvas";
 import { LayerPreview } from "@/app/board/[boardId]/_components/layer-preview";
 import {
     DndContext,
@@ -23,12 +23,12 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import { updateR2Bucket } from '@/lib/r2-bucket-functions';
 import { Socket } from "socket.io-client";
+import { MoveCameraToLayer } from "./canvasUtils";
 
 interface FramesPanelProps {
     liveLayers: Layers;
     liveLayerIds: string[];
     setLiveLayerIds: (frameIds: string[]) => void;
-    onClose: () => void;
     setCamera: (camera: { x: number; y: number }) => void;
     setZoom: (zoom: number) => void;
     cameraRef: React.RefObject<{ x: number; y: number }>;
@@ -93,54 +93,18 @@ const SortableFramePreview = memo<SortableFramePreviewProps>(({
     const scaledHeight = frame.height * scale;
 
     const onDoubleClick = useCallback(() => {
-        const viewportWidth = window.innerWidth;
-        const viewportHeight = window.innerHeight;
-
-        // Calculate the target zoom level to fit the frame with padding
-        const zoomX = (viewportWidth) / frame.width * 0.9;
-        const zoomY = (viewportHeight) / frame.height * 0.9;
-        let targetZoom = Math.min(zoomX, zoomY);
-
-        // Adjust zoom for small frames (zoom in if necessary)
-        const minZoom = 0.3;
-        const maxZoom = 10;
-        targetZoom = Math.max(minZoom, Math.min(maxZoom, targetZoom));
-
-        // Calculate the target camera position
-        const targetCameraX = viewportWidth / 2 - (frame.x + frame.width / 2) * targetZoom;
-        const targetCameraY = viewportHeight / 2 - (frame.y + frame.height / 2) * targetZoom;
-
-        // Get current camera and zoom
-        const startCamera = cameraRef?.current || { x: 0, y: 0 };
-        const startZoom = zoomRef?.current || 1;
-
-        const animationDuration = 500; // 0.5 seconds
-        const startTime = Date.now();
-
-        const animate = () => {
-            const elapsedTime = Date.now() - startTime;
-            const progress = Math.min(elapsedTime / animationDuration, 1);
-
-            // Easing function (ease-out cubic)
-            const easeProgress = 1 - Math.pow(1 - progress, 3);
-
-            const currentZoom = startZoom + (targetZoom - startZoom) * easeProgress;
-            const currentCamera = {
-                x: startCamera.x + (targetCameraX - startCamera.x) * easeProgress,
-                y: startCamera.y + (targetCameraY - startCamera.y) * easeProgress
-            };
-
-            // Update camera and zoom
-            setCamera(currentCamera);
-            setZoom(currentZoom);
-
-            // Continue animation if not finished
-            if (progress < 1) {
-                requestAnimationFrame(animate);
-            }
-        };
-
-        requestAnimationFrame(animate);
+        MoveCameraToLayer({
+            targetX: frame.x,
+            targetY: frame.y,
+            targetWidth: frame.width,
+            targetHeight: frame.height,
+            setCamera: setCamera!,
+            setZoom: setZoom!,
+            cameraRef: cameraRef!,
+            zoomRef: zoomRef!,
+            padding: 0.8,
+            duration: 300
+        });
     }, [frame, cameraRef, zoomRef, setCamera, setZoom]);
 
     return (
@@ -189,7 +153,6 @@ export const FramesPanel = memo<FramesPanelProps>(({
     liveLayers,
     liveLayerIds,
     setLiveLayerIds,
-    onClose,
     setCamera,
     setZoom,
     cameraRef,
@@ -241,16 +204,7 @@ export const FramesPanel = memo<FramesPanelProps>(({
     }, [liveLayerIds, liveLayers, setLiveLayerIds, boardId, socket]);
 
     return (
-        <div
-            onWheel={(e) => e.stopPropagation()}
-            className="border dark:border-zinc-800 pointer-events-auto absolute top-[64px] right-4 bottom-[80px] w-[320px] bg-white dark:bg-zinc-800 rounded-sm shadow-lg overflow-hidden"
-        >
-            <div className="flex justify-between items-center p-4 border-b dark:border-zinc-700">
-                <h2 className="text-lg font-semibold">Frames</h2>
-                <Button onClick={onClose} variant="ghost" size="sm">
-                    <X className="h-4 w-4" />
-                </Button>
-            </div>
+        <>
             <ScrollArea className="h-[calc(100%-140px)] p-4">
                 {frameIds.length > 0 ? (
                     <DndContext
@@ -300,7 +254,7 @@ export const FramesPanel = memo<FramesPanelProps>(({
                     Present
                 </Button>
             </div>
-        </div>
+        </>
     );
 });
 

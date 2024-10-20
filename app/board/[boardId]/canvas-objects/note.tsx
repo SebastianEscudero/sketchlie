@@ -108,6 +108,7 @@ export const Note = memo(({
 
   return (
     <g
+      filter={`url(#drop-shadow)`}
       transform={`translate(${x}, ${y})`}
       pointerEvents="auto"
       onPointerDown={(e) => handlePointerDown(e)}
@@ -121,7 +122,6 @@ export const Note = memo(({
         fill={fillColor}
         stroke={strokeColor}
         strokeWidth="1"
-        className="drop-shadow-md"
       />
       <foreignObject
         x={foreignObjectX} // Adjust x position to center the foreignObject

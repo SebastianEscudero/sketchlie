@@ -158,7 +158,7 @@ export const OrganizationInvite = ({
 
     return (
         <Dialog>
-            <DialogTrigger asChild className="xs:ml-3">
+            <DialogTrigger asChild>
                 {children}
             </DialogTrigger>
             <DialogContent className="max-h-[90%] w-full max-w-[100%] lg:max-w-[50%] xl:max-w-[40%] overflow-y-auto">

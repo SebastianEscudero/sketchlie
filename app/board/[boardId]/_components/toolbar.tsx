@@ -6,6 +6,7 @@ import {
   Image,
   Lightbulb,
   Link,
+  MessageCircle,
   MousePointer2,
   MoveUpRight,
   Pen,
@@ -242,7 +243,8 @@ export const Toolbar = memo(({
             canvasState.layerType !== LayerType.Text &&
             canvasState.layerType !== LayerType.Arrow &&
             canvasState.layerType !== LayerType.Note &&
-            canvasState.layerType !== LayerType.Frame
+            canvasState.layerType !== LayerType.Frame &&
+            canvasState.layerType !== LayerType.Comment
           }
         />
         <ToolButton
@@ -282,6 +284,18 @@ export const Toolbar = memo(({
           isActive={
             canvasState.mode === CanvasMode.Inserting &&
             canvasState.layerType === LayerType.Text
+          }
+        />
+        <ToolButton
+          label="Comment"
+          icon={MessageCircle}
+          onClick={() => setCanvasState({
+            mode: CanvasMode.Inserting,
+            layerType: LayerType.Comment,
+          })}
+          isActive={
+            canvasState.mode === CanvasMode.Inserting &&
+            canvasState.layerType === LayerType.Comment
           }
         />
         <ToolButton

@@ -1,13 +1,15 @@
 "use client";
 
 import { connectionIdToColor } from "@/lib/utils";
-import { CanvasMode, CanvasState, User } from "@/types/canvas";
+import { User } from "@/types/canvas";
 import { UserAvatar } from "./user-avatar";
 import { Button } from "@/components/ui/button";
 import { OrganizationInvite } from "@/components/auth/organization-invite";
 import { UsersDialogBoard } from "./users-dialog-board";
 import { ChevronDown, Play, UserPlus } from "lucide-react";
 import { memo } from "react";
+import { Hint } from "@/components/hint";
+import { CommentsIcon } from "@/public/custom-icons/comments";
 
 const MAX_SHOWN_USERS = 5;
 
@@ -19,6 +21,7 @@ interface ParticipantsProps {
     expired: boolean;
     board: any;
     setPresentationMode: (mode: boolean) => void;
+    setRightMiddleContainerView: (view: string | null) => void;
 }
 
 export const Participants = memo(({
@@ -28,13 +31,27 @@ export const Participants = memo(({
     socket,
     expired,
     board,
-    setPresentationMode
+    setPresentationMode,
+    setRightMiddleContainerView,
 }: ParticipantsProps) => {
 
     const hasMoreUsers = otherUsers && otherUsers.length > MAX_SHOWN_USERS;
+    const handleCommentsClick = () => {
+        setRightMiddleContainerView(((prev: any) => prev === "comments" ? null : "comments") as any);
+    };
 
     return (
-        <div className="border dark:border-zinc-800 shadow-md absolute h-12 right-4 top-2 bg-white dark:bg-zinc-800 rounded-xl px-2 flex items-center pointer-events-auto">
+        <div className="space-x-2 border dark:border-zinc-800 shadow-md absolute h-12 right-4 top-2 bg-white dark:bg-zinc-800 rounded-xl px-2 flex items-center pointer-events-auto">
+            <Hint label="Comments" sideOffset={14}>
+                <Button
+                    variant="board"
+                    size="default"
+                    className="px-2"
+                    onClick={handleCommentsClick}
+                >
+                    <CommentsIcon className="h-7 w-7" />
+                </Button>
+            </Hint>
             <UsersDialogBoard
                 Me={User}
                 otherUsers={otherUsers}
@@ -74,9 +91,9 @@ export const Participants = memo(({
                     <ChevronDown className="h-5 w-5" />
                 </div>
             </UsersDialogBoard>
-            <Button 
-                variant="presentation" 
-                className="hidden md:flex ml-2 h-8 w-24 p-1 text-sm" 
+            <Button
+                variant="presentation"
+                className="hidden md:flex h-8 w-24 p-1 text-sm"
                 onClick={() => setPresentationMode(true)}
             >
                 <Play className="h-4 w-4 mr-1 fill-inherit" strokeWidth={2} />
