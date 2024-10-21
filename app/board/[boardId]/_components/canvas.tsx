@@ -377,6 +377,10 @@ export const Canvas = ({
         performAction(command);
         setCurrentPreviewLayer(null);
 
+        if (layer.type === LayerType.Comment) {
+            setOpenCommentBoxId(layerId);
+        }
+
         if (layer.type !== LayerType.Text) {
             selectedLayersRef.current = [layerId];
         }
@@ -386,7 +390,7 @@ export const Canvas = ({
             setCanvasState({ mode: CanvasMode.None });
         }
 
-    }, [socket, org, proModal, setLiveLayers, setLiveLayerIds, boardId, arrowTypeInserting, liveLayers, performAction, expired, quickInserting, setCurrentPreviewLayer]);
+    }, [socket, org, proModal, setLiveLayers, setLiveLayerIds, boardId, arrowTypeInserting, liveLayers, performAction, expired, quickInserting, setCurrentPreviewLayer, setOpenCommentBoxId]);
 
     useEffect(() => {
         if (justInsertedText && layerRef && layerRef.current) {
@@ -2546,8 +2550,11 @@ export const Canvas = ({
                         onPointerLeave={onPointerLeave}
                         onPointerDown={onPointerDown}
                         onPointerUp={onPointerUp}
+                        style={{
+                            cursor: canvasCursor
+                        }}
                     >
-                        <div className="z-10">
+                        <div className="z-10 pointer-events-auto">
                             {visibleLayers.map((layerId: string) => {
                                 const layer = liveLayers[layerId];
                                 if (layer && (layer.type === LayerType.Video || layer.type === LayerType.Link)) {
@@ -2567,20 +2574,17 @@ export const Canvas = ({
                                 }
                             })}
                         </div>
-                        <div className="z-20 relative pointer-events-auto">
+                        <div className="z-20 relative pointer-events-none">
                             <svg
                                 ref={svgRef}
-                                className="h-[100vh] w-[100vw] absolute top-0 left-0"
+                                className="h-[100vh] w-[100vw]"
                                 viewBox={`0 0 ${window.innerWidth} ${window.innerHeight}`}
-                                style={{
-                                    cursor: canvasCursor
-                                }}
                             >
                                 <defs>
-                                    <filter id={`drop-shadow`} x="-50%" y="-50%" width="200%" height="200%">
+                                    <filter id="drop-shadow" x="-10%" y="-10%" width="120%" height="130%">
                                         <feGaussianBlur in="SourceAlpha" stdDeviation="2" />
-                                        <feOffset dx="2" dy="2" result="offsetblur" />
-                                        <feFlood floodColor="rgba(0,0,0,0.5)" />
+                                        <feOffset dx="0" dy="4" result="offsetblur" />
+                                        <feFlood floodColor="rgba(0,0,0,0.3)" />
                                         <feComposite in2="offsetblur" operator="in" />
                                         <feMerge>
                                             <feMergeNode />
@@ -2730,7 +2734,7 @@ export const Canvas = ({
                                                 setActiveHoveredCommentId={setActiveHoveredCommentId}
                                             />
                                         )}
-                                    </>                         
+                                    </>
                                     {/* We render the comment preview here so its above every layer and the existing comments */}
                                     {currentPreviewLayer && currentPreviewLayer.type === LayerType.Comment && (
                                         <CommentPreview

@@ -109,16 +109,20 @@ const CommentAvatar = memo(({ id, layer, initial, onPointerDown, setOpenCommentB
 
     const getBackgroundColor = () => {
         if (isMentioned) {
-            return isHovered && !isMoving ? 'bg-blue-50' : 'bg-zinc-800';
+            return isHovered && !isMoving ? 'bg-blue-50 dark:bg-blue-900' : 'bg-zinc-100 dark:bg-zinc-800';
         }
-        return 'bg-zinc-800';
+
+        return isHovered ? 'bg-zinc-100 dark:bg-zinc-800' : 'bg-zinc-300 dark:bg-zinc-800';
     };
 
     const getStrokeColor = (): string => {
-        if (isMentioned || (isHovered && !isMoving)) {
-            return selectionColor || '#3390FF'; // blue-500
+        if (selectionColor) {
+            return selectionColor;
         }
-        return selectionColor || 'none';
+        if (isMentioned || isHovered || isMoving) {
+            return '#3390FF'; // blue-500
+        }
+        return document.documentElement.classList.contains("dark") ? '#e4e4e7' : '#a1a1aa'; // zinc-200 for dark, zinc-400 for light
     };
 
     return (
@@ -146,7 +150,7 @@ const CommentAvatar = memo(({ id, layer, initial, onPointerDown, setOpenCommentB
             }}
         >
             <Avatar
-                className={`border-4 z-[1] ${isMentioned && isHovered ? 'border-blue-500' : 'border-zinc-800'}`}
+                className={`border-4 z-[1] ${isMentioned && isHovered ? 'border-blue-500' : 'border-zinc-300 dark:border-zinc-800'}`}
                 style={{ height: height, width: width }}
             >
                 <AvatarImage src={author?.information.picture || ''} />
@@ -164,10 +168,10 @@ const CommentAvatar = memo(({ id, layer, initial, onPointerDown, setOpenCommentB
                     ref={contentRef}
                     className="absolute left-12 w-[190px]"
                 >
-                    <div className={`text-xs overflow-hidden ${isMentioned ? 'text-blue-800' : 'text-zinc-200'}`}>
+                    <div className={`text-xs overflow-hidden ${isMentioned ? 'text-blue-800' : 'text-zinc-800 dark:text-zinc-200'}`}>
                         <div className="flex flex-row items-center space-x-1 truncate">
                             <p className="font-bold w-[120px] truncate">{author?.information.name}</p>
-                            <p className={`text-xs ${isMentioned ? 'text-blue-600' : 'text-zinc-300'}`}>{formatTimeAgo(createdAt!)} </p>
+                            <p className={`text-xs ${isMentioned ? 'text-blue-600' : 'text-zinc-900 dark:text-zinc-300'}`}>{formatTimeAgo(createdAt!)} </p>
                         </div>
                         <p className="w-[200px] overflow-x-hidden">
                             {content ? (
@@ -382,7 +386,7 @@ export const CommentBox = memo(({
         <div
             onKeyDown={handleKeyDown}
             ref={commentBoxRef}
-            className={`bg-zinc-800 rounded-xl text-sm flex flex-col shadow-xl pointer-events-auto border-2 ${isDragging ? "border-blue-500" : "border-zinc-700"}`}
+            className={`bg-zinc-100 dark:bg-zinc-800 rounded-xl text-sm flex flex-col shadow-xl pointer-events-auto border-2 ${isDragging ? "border-blue-500" : "border-zinc-300 dark:border-zinc-700"}`}
             style={{
                 transform: `translate(${position.x}px, ${position.y}px)`,
                 width: "370px",
@@ -391,27 +395,27 @@ export const CommentBox = memo(({
         >
             {/* Header - remains outside ScrollArea */}
             <div
-                className={`flex justify-between items-center p-3 border-b border-zinc-700 ${isDragging ? 'cursor-grab' : 'cursor-hand'}`}
+                className={`flex justify-between items-center p-3 border-b border-zinc-300 dark:border-zinc-700 ${isDragging ? 'cursor-grab' : 'cursor-hand'}`}
                 onPointerDown={onPointerDown}
                 onPointerMove={onPointerMove}
                 onPointerUp={onPointerUp}
                 onPointerCancel={onPointerUp}
             >
-                <span className="font-semibold text-zinc-200">Comment</span>
+                <span className="font-semibold text-zinc-800 dark:text-zinc-200">Comment</span>
                 <div className="flex items-center space-x-3">
                     <Hint label="Mark as resolved" sideOffset={8} side="bottom">
                         <CircleCheck
-                            className="w-4 h-4 text-zinc-400 cursor-pointer hover:text-green-500 transition-colors"
+                            className="w-4 h-4 text-zinc-600 dark:text-zinc-400 cursor-pointer hover:text-green-500 transition-colors"
                             onClick={handleResolve}
                         />
                     </Hint>
                     <Hint label="Mark as read" sideOffset={8} side="bottom">
                         <MailCheck
-                            className="w-4 h-4 text-zinc-400 cursor-pointer hover:text-blue-500 transition-colors"
+                            className="w-4 h-4 text-zinc-600 dark:text-zinc-400 cursor-pointer hover:text-blue-500 transition-colors"
                             onClick={handleMarkAsRead}
                         />
                     </Hint>
-                    <X className="w-4 h-4 text-zinc-400 cursor-pointer" onClick={() => setOpenCommentBoxId(null)} />
+                    <X className="w-4 h-4 text-zinc-600 dark:text-zinc-400 cursor-pointer" onClick={() => setOpenCommentBoxId(null)} />
                 </div>
             </div>
 
@@ -467,18 +471,18 @@ export const CommentBox = memo(({
             </ScrollArea>
 
             {/* Reply input - remains outside ScrollArea */}
-            <div className="p-3 flex flex-col space-y-2 border-t border-zinc-700" >
+            <div className="p-3 flex flex-col space-y-2 border-t border-zinc-300 dark:border-zinc-700" >
                 <div className="relative">
                     <ContentEditable
                         innerRef={replyContentRef}
-                        className="p-2 text-zinc-200 text-xs cursor-text outline-none min-h-10 bg-zinc-700 rounded-lg"
+                        className="p-2 text-zinc-800 dark:text-zinc-200 text-xs cursor-text outline-none min-h-10 bg-zinc-200 dark:bg-zinc-700 rounded-lg"
                         html={isEditing ? replyContent : replyContent || 'Add a comment...'}
                         onChange={handleReplyChange}
                         onFocus={() => setIsEditing(true)}
                         onBlur={() => setIsEditing(false)}
                     />
                 </div>
-                <div className='flex items-center justify-between pt-2 border-t border-zinc-700 px-1'>
+                <div className='flex items-center justify-between pt-2 border-t border-zinc-300 dark:border-zinc-700 px-1'>
                     <div className='flex items-center space-x-2'>
                         <EmojiPicker onEmojiSelect={handleEmojiSelect} />
                         <MentionUser
@@ -490,10 +494,10 @@ export const CommentBox = memo(({
                         />
                     </div>
                     <div
-                        className={`flex items-center justify-center rounded-full p-0.5 cursor-pointer ${replyContent ? 'bg-blue-500' : 'bg-zinc-400'}`}
+                        className={`flex items-center justify-center rounded-full p-0.5 cursor-pointer ${replyContent ? 'bg-blue-500' : 'bg-zinc-400 dark:bg-zinc-600'}`}
                         onClick={handleReplySubmit}
                     >
-                        <ArrowUp className='w-4 h-4 text-zinc-200' />
+                        <ArrowUp className='w-4 h-4 text-white dark:text-zinc-200' />
                     </div>
                 </div>
             </div>
@@ -624,17 +628,17 @@ const CommentContent = ({
         <div className={`flex items-start space-x-2 ${isReply ? 'mb-3' : 'mb-4'}`}>
             <Avatar className={isReply ? "w-7 h-7" : "w-8 h-8"}>
                 <AvatarImage src={author?.information?.picture} alt={authorName} />
-                <AvatarFallback className="text-xs font-semibold">{authorInitial}</AvatarFallback>
+                <AvatarFallback className="text-xs font-semibold bg-zinc-300 dark:bg-zinc-700 text-zinc-800 dark:text-zinc-200">{authorInitial}</AvatarFallback>
             </Avatar>
             <div className="flex-grow space-y-1">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
-                        <span className={`font-semibold text-zinc-200 truncate ${isReply ? 'w-[144px]' : 'w-[140px]'}`}>{authorName}</span>
-                        <span className="text-zinc-400 text-xs">{formattedTime}</span>
+                        <span className={`font-semibold text-zinc-800 dark:text-zinc-200 truncate ${isReply ? 'w-[144px]' : 'w-[140px]'}`}>{authorName}</span>
+                        <span className="text-zinc-600 dark:text-zinc-400 text-xs">{formattedTime}</span>
                     </div>
                     {isAuthor && (
                         <div className="flex items-center space-x-2">
-                            <PencilIcon className="w-4 h-4 text-zinc-400 cursor-pointer" onPointerDown={() => editingId === null ? setEditingId(id) : setEditingId(null)} />
+                            <PencilIcon className="w-4 h-4 text-zinc-600 dark:text-zinc-400 cursor-pointer" onPointerDown={() => editingId === null ? setEditingId(id) : setEditingId(null)} />
                             {isReply && <Trash2 className="w-4 h-4 text-red-500 cursor-pointer" onPointerDown={handleDelete} />}
                         </div>
                     )}
@@ -643,7 +647,7 @@ const CommentContent = ({
                     <div className="space-y-2" onKeyDown={handleKeyDown}>
                         <ContentEditable
                             innerRef={contentEditableRef}
-                            className="p-2 text-zinc-200 text-xs cursor-text outline-none min-h-10 bg-zinc-700 rounded-lg"
+                            className="p-2 text-zinc-800 dark:text-zinc-200 text-xs cursor-text outline-none min-h-10 bg-zinc-200 dark:bg-zinc-700 rounded-lg"
                             html={editContent}
                             onChange={handleContentChange}
                         />
@@ -676,7 +680,7 @@ const CommentContent = ({
                     </div>
                 ) : (
                     <div
-                        className={`text-zinc-200 ${isReply ? 'text-xs' : 'text-sm'}`}
+                        className={`text-zinc-800 dark:text-zinc-200 ${isReply ? 'text-xs' : 'text-sm'}`}
                         dangerouslySetInnerHTML={{ __html: content || 'No comment' }}
                     />
                 )}

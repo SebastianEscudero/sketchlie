@@ -60,10 +60,10 @@ export const CommentPreview = memo(({ layer, zoom, insertLayer, orgTeammates }: 
 const CommentAvatar = ({ author, initial, height, width }: { author?: Author, initial: string, height: number, width: number }) => {
     return (
         <div 
-            className="flex flex-row rounded-tr-[18px] rounded-tl-[18px] rounded-br-[18px] bg-zinc-800 overflow-hidden"
+            className="flex flex-row rounded-tr-[18px] rounded-tl-[18px] rounded-br-[18px] dark:bg-zinc-800 bg-zinc-300 overflow-hidden"
             style={{ outline: '2px solid #3390FF' }}
         >
-            <Avatar className="border-4 border-zinc-800 z-[1]" style={{ height: height, width: width }}>
+            <Avatar className="border-4 border-zinc-300 dark:border-zinc-800 z-[1]" style={{ height: height, width: width }}>
                 <AvatarImage src={author?.information.picture || ''} />
                 <AvatarFallback className="text-xs font-semibold">
                     {initial}
@@ -156,7 +156,7 @@ const CommentBox = ({ content, onInsert, orgTeammates }: { content?: string, onI
 
     return (
         <div 
-            className="ml-2 p-2 bg-zinc-800 text-zinc-400 font-semibold w-[300px] rounded-xl text-xs flex flex-col"
+            className="ml-2 p-2 dark:bg-zinc-800 bg-zinc-100 text-zinc-800 dark:text-zinc-400 font-semibold w-[300px] rounded-xl text-xs flex flex-col"
             style={{ outline: '2px solid #3390FF' }}
             onKeyDown={handleKeyDown}
         >

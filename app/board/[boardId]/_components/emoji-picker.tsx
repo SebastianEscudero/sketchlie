@@ -51,7 +51,7 @@ export const EmojiPicker = ({ onEmojiSelect }: EmojiPickerProps) => {
         <>
             <div className="relative" ref={buttonRef}>
                 <div onClick={togglePicker} className="cursor-pointer">
-                    <Laugh className='w-4 h-4 text-zinc-400' />
+                    <Laugh className='w-4 h-4 text-zinc-500' />
                 </div>
             </div>
             {showPicker && createPortal(
@@ -63,7 +63,7 @@ export const EmojiPicker = ({ onEmojiSelect }: EmojiPickerProps) => {
                     <Picker
                         data={data}
                         onEmojiSelect={handleEmojiSelect}
-                        theme="dark"
+                        theme={document.documentElement.classList.contains("dark") ? "dark" : "light"}
                         previewPosition="none"
                         skinTonePosition="none"
                         perLine={8}

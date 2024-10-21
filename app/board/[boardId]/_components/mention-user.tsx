@@ -39,13 +39,17 @@ export const MentionUser = ({ orgTeammates, onMentionSelect, mentionFilter, ment
 
     const handleKeyDown = useCallback((e: KeyboardEvent) => {
         if (!mentionListVisible) return;
-        e.stopPropagation();
-        e.preventDefault();
         if (e.key === 'ArrowDown') {
+            e.stopPropagation();
+            e.preventDefault();
             setMentionIndex((prev) => (prev + 1) % filteredUsers.length);
         } else if (e.key === 'ArrowUp') {
+            e.stopPropagation();
+            e.preventDefault();
             setMentionIndex((prev) => (prev - 1 + filteredUsers.length) % filteredUsers.length);
         } else if (e.key === 'Enter' || e.key === 'Tab') {
+            e.stopPropagation();
+            e.preventDefault();
             onMentionSelect(filteredUsers[mentionIndex]);
             setMentionListVisible(false);
         } else if (e.key === 'Escape') {
@@ -71,12 +75,12 @@ export const MentionUser = ({ orgTeammates, onMentionSelect, mentionFilter, ment
     return (
         <div className="relative">
             <div ref={buttonRef} onClick={(e) => { e.preventDefault(); setMentionListVisible(!mentionListVisible); }}>
-                <AtSign className='w-4 h-4 text-zinc-400 cursor-pointer' />
+                <AtSign className='w-4 h-4 text-zinc-500 cursor-pointer' />
             </div>
             {mentionListVisible && createPortal(
                 <div 
                     ref={listRef} 
-                    className={`absolute -left-8 bg-zinc-700 rounded-lg z-50 w-64`}
+                    className={`absolute -left-8 bg-zinc-200 dark:bg-zinc-700 rounded-lg z-50 w-64`}
                     style={{
                         position: 'fixed',
                         left: buttonRef.current ? `${buttonRef.current.getBoundingClientRect().left - 32}px` : '-32px',
@@ -91,7 +95,7 @@ export const MentionUser = ({ orgTeammates, onMentionSelect, mentionFilter, ment
                         {filteredUsers.map((user: any, index: number) => (
                             <div
                                 key={user.id}
-                                className={`p-2 cursor-pointer flex items-center hover:bg-zinc-600 space-x-2 ${index === mentionIndex ? 'bg-zinc-600' : ''}`}
+                                className={`p-2 cursor-pointer flex items-center hover:bg-zinc-300 dark:hover:bg-zinc-600 space-x-2 ${index === mentionIndex ? 'bg-zinc-300 dark:bg-zinc-600' : ''}`}
                                 onPointerDown={(e) => {
                                     e.preventDefault();
                                     onMentionSelect(user);
@@ -105,8 +109,8 @@ export const MentionUser = ({ orgTeammates, onMentionSelect, mentionFilter, ment
                                     </AvatarFallback>
                                 </Avatar>
                                 <div className="flex flex-col overflow-hidden">
-                                    <span className="text-sm font-medium text-zinc-200 truncate">{user.name}</span>
-                                    <span className="text-xs text-zinc-400 truncate">{user.email}</span>
+                                    <span className="text-sm font-medium text-zinc-800 dark:text-zinc-200 truncate">{user.name}</span>
+                                    <span className="text-xs text-zinc-500 dark:text-zinc-300 truncate">{user.email}</span>
                                 </div>
                             </div>
                         ))}
