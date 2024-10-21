@@ -1,10 +1,10 @@
 import React, { memo, useEffect, useState, useRef, useCallback, useMemo } from 'react';
-import { Camera, Comment as CommentType, Reply, User } from '@/types/canvas';
+import { Author, Camera, Comment as CommentType, Reply, User } from '@/types/canvas';
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import ContentEditable from 'react-contenteditable';
-import { ArrowUp, MoreHorizontal, X, CircleCheck, MailCheck } from 'lucide-react';
+import { ArrowUp, X, CircleCheck, MailCheck, PencilIcon, Trash2 } from 'lucide-react';
 import { formatDistanceToNowStrict } from 'date-fns';
-import { useMarkCommentAsReload, useUpdateReplies } from './canvas-objects-utils';
+import { useDeleteReply, useMarkCommentAsReload, useUpdateComment, useUpdateReplies } from './canvas-objects-utils';
 import { Socket } from 'socket.io-client';
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { EmojiPicker } from '../_components/emoji-picker';
@@ -28,7 +28,7 @@ interface CommentProps {
 
 export const Comment = memo(({ id, layer, zoom, onPointerDown, selectionColor, setOpenCommentBoxId, isCommentBoxOpen, user, isMoving, setActiveHoveredCommentId }: CommentProps) => {
     const [isCommentPreviewOpen, setIsCommentPreviewOpen] = useState(false);
-    
+
     useEffect(() => {
         setIsCommentPreviewOpen(false);
     }, [isCommentBoxOpen]);
@@ -221,18 +221,23 @@ export const CommentBox = memo(({
     const [value, setValue] = useState(layer?.content || '');
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [isDragging, setIsDragging] = useState(false);
-    const [replyContent, setReplyContent] = useState('');
     const lastPosition = useRef({ x: 0, y: 0 });
     const commentBoxRef = useRef<HTMLDivElement>(null);
-    const contentEditableRef = useRef<HTMLElement>(null);
+
     const [mentionListVisible, setMentionListVisible] = useState(false);
     const [mentionFilter, setMentionFilter] = useState('');
+
     const updateReplies = useUpdateReplies();
     const markCommentAsRead = useMarkCommentAsReload();
 
+    const replyContentRef = useRef<HTMLElement>(null);
+    const [replyContent, setReplyContent] = useState('');
+
+    const [editingId, setEditingId] = useState<string | null>(null);
+
     const focusTextInput = () => {
-        if (contentEditableRef.current) {
-            contentEditableRef.current.focus();
+        if (replyContentRef.current) {
+            replyContentRef.current.focus();
         }
     }
 
@@ -339,6 +344,7 @@ export const CommentBox = memo(({
 
     const handleEmojiSelect = (emoji: string) => {
         setReplyContent(replyContent + emoji);
+        replyContentRef.current?.focus();
     }
 
     const handleMentionSelect = (user: User) => {
@@ -351,24 +357,7 @@ export const CommentBox = memo(({
         const newValue = replyContent.replace(/@\w*$/, '') + mentionHtml;
         setReplyContent(newValue);
         setMentionListVisible(false);
-
-        // Focus and move cursor to the end
-        setTimeout(() => {
-            if (contentEditableRef.current) {
-                contentEditableRef.current.focus();
-                const range = document.createRange();
-                range.selectNodeContents(contentEditableRef.current);
-                range.collapse(false);
-                const selection = window.getSelection();
-                selection?.removeAllRanges();
-                selection?.addRange(range);
-            }
-        }, 0);
     };
-
-    const authorName = layer?.author?.information?.name || "Anonymous";
-    const authorInitial = authorName[0]?.toUpperCase() || "?";
-    const createdAt = layer?.createdAt ? formatDistanceToNowStrict(new Date(layer?.createdAt), { addSuffix: true }) : "";
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
         if (e.key === 'Enter') {
@@ -393,10 +382,10 @@ export const CommentBox = memo(({
         <div
             onKeyDown={handleKeyDown}
             ref={commentBoxRef}
-            className={`absolute bg-zinc-800 rounded-xl text-sm flex flex-col shadow-xl pointer-events-auto border-2 ${isDragging ? "border-blue-500" : "border-zinc-700"}`}
+            className={`bg-zinc-800 rounded-xl text-sm flex flex-col shadow-xl pointer-events-auto border-2 ${isDragging ? "border-blue-500" : "border-zinc-700"}`}
             style={{
                 transform: `translate(${position.x}px, ${position.y}px)`,
-                width: "350px",
+                width: "370px",
                 maxHeight: `calc(100vh - 180px)`
             }}
         >
@@ -411,14 +400,14 @@ export const CommentBox = memo(({
                 <span className="font-semibold text-zinc-200">Comment</span>
                 <div className="flex items-center space-x-3">
                     <Hint label="Mark as resolved" sideOffset={8} side="bottom">
-                        <CircleCheck 
-                            className="w-4 h-4 text-zinc-400 cursor-pointer hover:text-green-500 transition-colors" 
+                        <CircleCheck
+                            className="w-4 h-4 text-zinc-400 cursor-pointer hover:text-green-500 transition-colors"
                             onClick={handleResolve}
                         />
                     </Hint>
                     <Hint label="Mark as read" sideOffset={8} side="bottom">
                         <MailCheck
-                            className="w-4 h-4 text-zinc-400 cursor-pointer hover:text-blue-500 transition-colors" 
+                            className="w-4 h-4 text-zinc-400 cursor-pointer hover:text-blue-500 transition-colors"
                             onClick={handleMarkAsRead}
                         />
                     </Hint>
@@ -427,47 +416,50 @@ export const CommentBox = memo(({
             </div>
 
             {/* ScrollArea for the rest of the content */}
-            <ScrollArea
+            <ScrollArea 
                 className="flex-1 h-full flex flex-col"
                 onWheel={(e) => e.stopPropagation()}
             >
                 <div className="p-3">
-                    {/* Comment content */}
-                    <div className="flex items-start space-x-3 mb-3">
-                        <Avatar className="w-8 h-8">
-                            <AvatarImage src={layer?.author?.information?.picture} alt={authorName} />
-                            <AvatarFallback className="text-xs font-semibold">{authorInitial}</AvatarFallback>
-                        </Avatar>
-                        <div className="flex-grow text-zinc-200">
-                            <div className="flex items-center space-x-2">
-                                <span className="font-bold w-[140px] truncate">{authorName}</span>
-                                <span className="text-zinc-400 text-xs">{createdAt}</span>
-                                <MoreHorizontal className="w-4 h-4 text-zinc-400 cursor-pointer" />
-                            </div>
-                            <div
-                                className="mt-1 outline-none"
-                                dangerouslySetInnerHTML={{ __html: value || 'No comment' }}
-                            />
-                        </div>
-                    </div>
+                    <CommentContent
+                        commentId={id}
+                        id={id}
+                        author={layer.author}
+                        content={value}
+                        createdAt={layer.createdAt}
+                        editingId={editingId}
+                        setEditingId={setEditingId}
+                        orgTeammates={orgTeammates}
+                        boardId={boardId}
+                        layer={layer}
+                        expired={expired}
+                        socket={socket}
+                        forceUpdateLayerLocalLayerState={forceUpdateLayerLocalLayerState}
+                        currentUser={user}
+                    />
 
                     {/* Replies */}
                     {layer?.replies && layer?.replies.length > 0 && (
-                        <div className="space-y-4 mb-3">
-                            {layer?.replies.map((reply) => (
-                                <div key={reply.id} className="flex items-start space-x-2">
-                                    <Avatar className="w-7 h-7">
-                                        <AvatarImage src={reply.author?.information?.picture} alt={reply.author?.information?.name} />
-                                        <AvatarFallback className="text-xs font-semibold">{reply.author?.information?.name?.[0]?.toUpperCase() || "?"}</AvatarFallback>
-                                    </Avatar>
-                                    <div className="flex-grow space-y-2">
-                                        <div className="flex items-center space-x-2">
-                                            <span className="font-semibold text-xs text-zinc-200 w-[170px] truncate">{reply.author?.information?.name || "Anonymous"}</span>
-                                            <span className="text-zinc-400 text-xs">{formatDistanceToNowStrict(new Date(reply.createdAt), { addSuffix: true })}</span>
-                                        </div>
-                                        <div className="text-zinc-200 text-xs" dangerouslySetInnerHTML={{ __html: reply.content }} />
-                                    </div>
-                                </div>
+                        <div className="space-y-3">
+                            {layer.replies.map((reply) => (
+                                <CommentContent
+                                    commentId={id}
+                                    id={reply.id}
+                                    key={reply.id}
+                                    author={reply.author}
+                                    content={reply.content}
+                                    createdAt={reply.createdAt}
+                                    isReply={true}
+                                    editingId={editingId}
+                                    setEditingId={setEditingId}
+                                    orgTeammates={orgTeammates}
+                                    boardId={boardId}
+                                    layer={layer}
+                                    expired={expired}
+                                    socket={socket}
+                                    forceUpdateLayerLocalLayerState={forceUpdateLayerLocalLayerState}
+                                    currentUser={user}
+                                />
                             ))}
                         </div>
                     )}
@@ -478,8 +470,8 @@ export const CommentBox = memo(({
             <div className="p-3 flex flex-col space-y-2 border-t border-zinc-700" >
                 <div className="relative">
                     <ContentEditable
-                        innerRef={contentEditableRef}
-                        className="ml-2 p-2 text-zinc-400 text-xs cursor-text outline-none min-h-10 bg-zinc-700 rounded-lg"
+                        innerRef={replyContentRef}
+                        className="p-2 text-zinc-200 text-xs cursor-text outline-none min-h-10 bg-zinc-700 rounded-lg"
                         html={isEditing ? replyContent : replyContent || 'Add a comment...'}
                         onChange={handleReplyChange}
                         onFocus={() => setIsEditing(true)}
@@ -489,7 +481,7 @@ export const CommentBox = memo(({
                 <div className='flex items-center justify-between pt-2 border-t border-zinc-700 px-1'>
                     <div className='flex items-center space-x-2'>
                         <EmojiPicker onEmojiSelect={handleEmojiSelect} />
-                        <MentionUser 
+                        <MentionUser
                             orgTeammates={orgTeammates}
                             onMentionSelect={handleMentionSelect}
                             mentionFilter={mentionFilter}
@@ -509,6 +501,190 @@ export const CommentBox = memo(({
     )
 })
 
+const CommentContent = ({ 
+    commentId,
+    id,
+    author, 
+    content, 
+    createdAt, 
+    isReply = false,
+    editingId,
+    setEditingId,
+    orgTeammates,
+    boardId,
+    layer,
+    expired,
+    socket,
+    forceUpdateLayerLocalLayerState,
+    currentUser, // Add this prop
+}: {
+    commentId: string,
+    id: string, 
+    author: Author,
+    content: string,
+    createdAt: Date,
+    isReply?: boolean,
+    editingId: string | null,
+    setEditingId: (id: string | null) => void,
+    orgTeammates: any[],
+    boardId: string,
+    layer: CommentType,
+    expired: boolean,
+    socket: Socket | null,
+    forceUpdateLayerLocalLayerState: (layerId: string, updatedLayer: CommentType) => void,
+    currentUser: User, // Add this type
+}) => {
+    const [editContent, setEditContent] = useState(content);
+    const [mentionListVisible, setMentionListVisible] = useState(false);
+    const [mentionFilter, setMentionFilter] = useState('');
+    const contentEditableRef = useRef<HTMLDivElement>(null);
+    const updateComment = useUpdateComment();
+    const deleteReply = useDeleteReply();
+
+    useEffect(() => {
+        if (contentEditableRef.current && editingId === id) {
+            setTimeout(() => contentEditableRef.current?.focus(), 0);
+            
+            // Move cursor to the end
+            const range = document.createRange();
+            const selection = window.getSelection();
+            range.selectNodeContents(contentEditableRef.current);
+            range.collapse(false);  // false means collapse to end
+            selection?.removeAllRanges();
+            selection?.addRange(range);
+        }
+    }, [editingId, id]);
+
+    const authorName = author?.information?.name || "Anonymous";
+    const authorInitial = authorName[0]?.toUpperCase() || "?";
+    const formattedTime = formatDistanceToNowStrict(new Date(createdAt), { addSuffix: true });
+
+    const isAuthor = currentUser.userId === author.userId;
+
+    const handleEmojiSelect = (emoji: string) => {
+        setEditContent(editContent + emoji);
+        contentEditableRef.current?.focus();
+    };
+
+    const handleMentionSelect = (user: User) => {
+        insertMention(user);
+        setMentionListVisible(false);
+    };
+
+    const insertMention = (user: typeof orgTeammates[0]) => {
+        const mentionHtml = `<span class="mention text-blue-500" contenteditable="false" data-user-id="${user.id}">@${user.name}</span>&nbsp;`;
+        const newValue = editContent.replace(/@\w*$/, '') + mentionHtml;
+        setEditContent(newValue);
+        setMentionListVisible(false);
+    };
+
+    const handleContentChange = (e: React.FormEvent<HTMLDivElement>) => {
+        const newContent = e.currentTarget.innerHTML;
+        setEditContent(newContent);
+
+        const textContent = e.currentTarget.textContent || '';
+        const lastWord = textContent.split(/\s/).pop() || '';
+
+        if (lastWord.startsWith('@')) {
+            setMentionListVisible(true);
+            setMentionFilter(lastWord.slice(1));
+        } else {
+            setMentionListVisible(false);
+        }
+    };
+
+    const handleSave = () => {
+        if (isReply) {
+            updateComment(boardId, commentId, layer, editContent, id, expired, socket, forceUpdateLayerLocalLayerState);
+        } else {
+            updateComment(boardId, commentId, layer, editContent, null, expired, socket, forceUpdateLayerLocalLayerState);
+        }
+        setEditingId(null);
+    };
+
+    const handleDelete = () => {
+        deleteReply(boardId, commentId, id, layer, expired, socket, forceUpdateLayerLocalLayerState);
+        toast.success('Reply deleted');
+        setEditingId(null);
+    }
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+        e.stopPropagation();
+        if (e.key === 'Enter') {
+            if (mentionListVisible) {
+                e.preventDefault();
+                return;
+            } else {
+                handleSave();
+            }
+        }
+    }
+
+    return (
+        <div className={`flex items-start space-x-2 ${isReply ? 'mb-3' : 'mb-4'}`}>
+            <Avatar className={isReply ? "w-7 h-7" : "w-8 h-8"}>
+                <AvatarImage src={author?.information?.picture} alt={authorName} />
+                <AvatarFallback className="text-xs font-semibold">{authorInitial}</AvatarFallback>
+            </Avatar>
+            <div className="flex-grow space-y-1">
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                        <span className={`font-semibold text-zinc-200 truncate ${isReply ? 'w-[144px]' : 'w-[140px]'}`}>{authorName}</span>
+                        <span className="text-zinc-400 text-xs">{formattedTime}</span>
+                    </div>
+                    {isAuthor && (
+                        <div className="flex items-center space-x-2">
+                            <PencilIcon className="w-4 h-4 text-zinc-400 cursor-pointer" onPointerDown={() => editingId === null ? setEditingId(id) : setEditingId(null)} />
+                            {isReply && <Trash2 className="w-4 h-4 text-red-500 cursor-pointer" onPointerDown={handleDelete} />}
+                        </div>
+                    )}
+                </div>
+                {editingId === id && isAuthor ? (
+                    <div className="space-y-2" onKeyDown={handleKeyDown}>
+                        <ContentEditable
+                            innerRef={contentEditableRef}
+                            className="p-2 text-zinc-200 text-xs cursor-text outline-none min-h-10 bg-zinc-700 rounded-lg"
+                            html={editContent}
+                            onChange={handleContentChange}
+                        />
+                        <div className="flex items-center justify-between">
+                            <div className="flex items-center space-x-2">
+                                <EmojiPicker onEmojiSelect={handleEmojiSelect} />
+                                <MentionUser
+                                    orgTeammates={orgTeammates}
+                                    onMentionSelect={handleMentionSelect}
+                                    mentionFilter={mentionFilter}
+                                    mentionListVisible={mentionListVisible}
+                                    setMentionListVisible={setMentionListVisible}
+                                />
+                            </div>
+                            <div className="flex items-center space-x-2">
+                                <button 
+                                    className="bg-zinc-700 text-zinc-200 text-xs px-2 py-1 rounded-md cursor-pointer hover:bg-zinc-600" 
+                                    onPointerDown={() => setEditingId(null)} 
+                                >
+                                    Close
+                                </button>
+                                <button 
+                                    className="bg-blue-500 text-zinc-200 text-xs px-2 py-1 rounded-md cursor-pointer hover:bg-blue-600" 
+                                    onPointerDown={handleSave} 
+                                >
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                ) : (
+                    <div
+                        className={`text-zinc-200 ${isReply ? 'text-xs' : 'text-sm'}`}
+                        dangerouslySetInnerHTML={{ __html: content || 'No comment' }}
+                    />
+                )}
+            </div>
+        </div>
+    );
+};
+
 export function formatTimeAgo(date: Date | number): string {
     const distance = formatDistanceToNowStrict(date, { addSuffix: true });
     return distance
@@ -520,3 +696,4 @@ export function formatTimeAgo(date: Date | number): string {
 Comment.displayName = "Comment";
 CommentAvatar.displayName = "CommentAvatar";
 CommentBox.displayName = "CommentBox";
+

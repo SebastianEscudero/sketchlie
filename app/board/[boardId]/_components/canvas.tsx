@@ -1036,7 +1036,9 @@ export const Canvas = ({
                                 name: User.information.name,
                                 picture: User.information.picture,
                             }
-                        }
+                        },
+                        content: '',
+                        createdAt: new Date(),
                     })
                     return;
                 }

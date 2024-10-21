@@ -2,6 +2,7 @@ import { AtSign } from "lucide-react"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { createPortal } from 'react-dom'
 
 interface MentionUserProps {
   orgTeammates: any;
@@ -34,50 +35,58 @@ export const MentionUser = ({ orgTeammates, onMentionSelect, mentionFilter, ment
             listRef.current && !listRef.current.contains(event.target as Node)) {
             setMentionListVisible(false);
         }
-    }, []);
+    }, [setMentionListVisible]);
+
+    const handleKeyDown = useCallback((e: KeyboardEvent) => {
+        if (!mentionListVisible) return;
+        e.stopPropagation();
+        e.preventDefault();
+        if (e.key === 'ArrowDown') {
+            setMentionIndex((prev) => (prev + 1) % filteredUsers.length);
+        } else if (e.key === 'ArrowUp') {
+            setMentionIndex((prev) => (prev - 1 + filteredUsers.length) % filteredUsers.length);
+        } else if (e.key === 'Enter' || e.key === 'Tab') {
+            onMentionSelect(filteredUsers[mentionIndex]);
+            setMentionListVisible(false);
+        } else if (e.key === 'Escape') {
+            setMentionListVisible(false);
+        }
+    }, [mentionListVisible, filteredUsers, mentionIndex, onMentionSelect, setMentionListVisible]);
 
     useEffect(() => {
         checkPosition();
     }, [mentionListVisible]);
 
     useEffect(() => {
-        document.addEventListener('mousedown', handleClickOutside);
+        if (mentionListVisible) {
+            document.addEventListener('keydown', handleKeyDown, true);
+            document.addEventListener('mousedown', handleClickOutside);
+        }
         return () => {
+            document.removeEventListener('keydown', handleKeyDown, true);
             document.removeEventListener('mousedown', handleClickOutside);
         };
-    }, [handleClickOutside]);
-
-    const handleKeyDown = useCallback((e: KeyboardEvent) => {
-        if (!mentionListVisible) return;
-        if (e.key === 'ArrowDown') {
-            e.preventDefault();
-            setMentionIndex((prev) => (prev + 1) % filteredUsers.length);
-        } else if (e.key === 'ArrowUp') {
-            e.preventDefault();
-            setMentionIndex((prev) => (prev - 1 + filteredUsers.length) % filteredUsers.length);
-        } else if (e.key === 'Enter' || e.key === 'Tab') {
-            e.preventDefault();
-            onMentionSelect(filteredUsers[mentionIndex]);
-            setMentionListVisible(false);
-        } else if (e.key === 'Escape') {
-            setMentionListVisible(false);
-        }
-    }, [mentionListVisible, filteredUsers, mentionIndex, onMentionSelect]);
-
-    useEffect(() => {
-        document.addEventListener('keydown', handleKeyDown);
-        return () => {
-            document.removeEventListener('keydown', handleKeyDown);
-        };
-    }, [handleKeyDown]);
+    }, [mentionListVisible, handleClickOutside, handleKeyDown]);
 
     return (
-        <div>
-            <div ref={buttonRef} onClick={() => setMentionListVisible(!mentionListVisible)}>
+        <div className="relative">
+            <div ref={buttonRef} onClick={(e) => { e.preventDefault(); setMentionListVisible(!mentionListVisible); }}>
                 <AtSign className='w-4 h-4 text-zinc-400 cursor-pointer' />
             </div>
-            {mentionListVisible && (
-                <div ref={listRef} className={`absolute left-0 ${openUpwards ? 'bottom-60' : 'top-full'} bg-zinc-700 rounded-lg z-50 w-64`}>
+            {mentionListVisible && createPortal(
+                <div 
+                    ref={listRef} 
+                    className={`absolute -left-8 bg-zinc-700 rounded-lg z-50 w-64`}
+                    style={{
+                        position: 'fixed',
+                        left: buttonRef.current ? `${buttonRef.current.getBoundingClientRect().left - 32}px` : '-32px',
+                        [openUpwards ? 'bottom' : 'top']: buttonRef.current 
+                            ? `${openUpwards 
+                                ? window.innerHeight - buttonRef.current.getBoundingClientRect().top + 12
+                                : buttonRef.current.getBoundingClientRect().bottom + 12}px` 
+                            : (openUpwards ? '12px' : '12px')
+                    }}
+                >
                     <ScrollArea className="max-h-[300px] flex-1 h-full flex flex-col" onWheel={(e) => e.stopPropagation()}>
                         {filteredUsers.map((user: any, index: number) => (
                             <div
@@ -102,7 +111,8 @@ export const MentionUser = ({ orgTeammates, onMentionSelect, mentionFilter, ment
                             </div>
                         ))}
                     </ScrollArea>
-                </div>
+                </div>,
+                document.body
             )}
         </div>
     )

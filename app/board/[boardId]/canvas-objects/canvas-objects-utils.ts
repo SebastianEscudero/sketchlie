@@ -44,6 +44,61 @@ export const useUpdateReplies = () => {
   }, []);
 };
 
+export const useUpdateComment = () => {
+  return useCallback((
+    boardId: string,
+    commentId: string,
+    layer: Comment,
+    newContent: string,
+    replyId: string | null,
+    expired: boolean,
+    socket: Socket | null,
+    forceUpdateLayerLocalLayerState: (layerId: string, updatedLayer: Comment) => void
+  ) => {
+    let updatedLayer: Comment;
+
+    if (replyId) {
+      // Updating a reply
+      const updatedReplies = layer.replies?.map(reply => 
+        reply.id === replyId ? { ...reply, content: newContent } : reply
+      ) || [];
+      updatedLayer = { ...layer, replies: updatedReplies };
+    } else {
+      // Updating the main comment
+      updatedLayer = { ...layer, content: newContent };
+    }
+
+    if (!expired && socket) {
+      throttledUpdateLayer(boardId, commentId, updatedLayer);
+      socket.emit('layer-update', commentId, updatedLayer);
+    }
+
+    forceUpdateLayerLocalLayerState(commentId, updatedLayer);
+  }, []);
+};
+
+export const useDeleteReply = () => {
+  return useCallback((
+    boardId: string,
+    commentId: string,
+    replyId: string,
+    layer: Comment,
+    expired: boolean,
+    socket: Socket | null,
+    forceUpdateLayerLocalLayerState: (layerId: string, updatedLayer: Comment) => void
+  ) => {
+    const updatedReplies = layer.replies?.filter(reply => reply.id !== replyId) || [];
+    const updatedLayer = { ...layer, replies: updatedReplies };
+
+    if (!expired && socket) {
+      throttledUpdateLayer(boardId, commentId, updatedLayer);
+      socket.emit('layer-update', commentId, updatedLayer);
+    }
+
+    forceUpdateLayerLocalLayerState(commentId, updatedLayer);
+  }, []);
+};
+
 export const useMarkCommentAsReload = () => {
   return useCallback((
     boardId: string,

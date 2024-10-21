@@ -213,9 +213,9 @@ export type Comment = {
   y: number;
   width: number;
   height: number;
-  author?: Author;
-  content?: string;
-  createdAt?: Date;
+  author: Author;
+  content: string;
+  createdAt: Date;
   replies?: Reply[];
 }
 
