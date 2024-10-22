@@ -94,7 +94,7 @@ const CommentAvatar = memo(({ id, layer, initial, onPointerDown, setOpenCommentB
             setActiveHoveredCommentId(null);
             setIsCommentPreviewOpen(false);
         }
-    }, [isMoving, setIsCommentPreviewOpen]);
+    }, [isMoving, setIsCommentPreviewOpen, setActiveHoveredCommentId]);
 
     const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
         e.stopPropagation();
@@ -119,7 +119,7 @@ const CommentAvatar = memo(({ id, layer, initial, onPointerDown, setOpenCommentB
         if (selectionColor) {
             return selectionColor;
         }
-        if (isMentioned || isHovered || isMoving) {
+        if (isMentioned || isHovered) {
             return '#3390FF'; // blue-500
         }
         return document.documentElement.classList.contains("dark") ? '#e4e4e7' : '#a1a1aa'; // zinc-200 for dark, zinc-400 for light
