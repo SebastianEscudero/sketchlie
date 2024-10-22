@@ -133,6 +133,7 @@ const CommentAvatar = memo(({ id, layer, initial, onPointerDown, setOpenCommentB
                 height: isCommentPreviewOpen ? `${hoverHeight}px` : `${height}px`,
                 padding: isCommentPreviewOpen ? '6px' : '0px',
                 outline: getStrokeColor() !== 'none' ? `2px solid ${getStrokeColor()}` : 'none',
+                filter: 'drop-shadow(0 4px 3px rgb(0 0 0 / 0.07)) drop-shadow(0 2px 2px rgb(0 0 0 / 0.06))', // Add this line
             }}
             onPointerDown={handlePointerDown}
             onPointerUp={handlePointerUp}
