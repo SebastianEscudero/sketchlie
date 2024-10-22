@@ -1,16 +1,17 @@
 interface ExportIconProps {
-    color?: string;
+    className?: string;
 }
 
-export const ExportIcon: React.FC<ExportIconProps> = ({ color = 'currentColor' }) => (
+export const ExportIcon: React.FC<ExportIconProps> = ({ className }) => (
     <svg xmlns="http://www.w3.org/2000/svg"
         width="24" height="24"
         viewBox="0 0 24 24"
         fill="none"
-        stroke={color}
+        stroke="currentColor"
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
+        className={className}
     >
         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
         <polyline points="7 9 12 4 17 9" />

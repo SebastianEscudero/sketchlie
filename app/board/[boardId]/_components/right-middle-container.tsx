@@ -24,6 +24,8 @@ interface RightMiddleContainerProps {
     openCommentBoxId: string | null;
     setOpenCommentBoxId: (commentId: string | null) => void;
     user: User;
+    svgRef: React.RefObject<SVGSVGElement>;
+    title: string;
 }
 
 export const RightMiddleContainer = memo(({
@@ -43,7 +45,9 @@ export const RightMiddleContainer = memo(({
     commentIds,
     openCommentBoxId,
     setOpenCommentBoxId,
-    user
+    user,
+    svgRef,
+    title
 }: RightMiddleContainerProps) => {
     if (rightMiddleContainerView === null) return null;
 
@@ -71,6 +75,8 @@ export const RightMiddleContainer = memo(({
                     boardId={boardId}
                     socket={socket}
                     setPresentationMode={setPresentationMode}
+                    svgRef={svgRef}
+                    title={title}
                 />
             )}
             {rightMiddleContainerView === "comments" && 

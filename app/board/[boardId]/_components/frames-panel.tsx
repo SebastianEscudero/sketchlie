@@ -24,6 +24,8 @@ import { CSS } from "@dnd-kit/utilities";
 import { updateR2Bucket } from '@/lib/r2-bucket-functions';
 import { Socket } from "socket.io-client";
 import { MoveCameraToLayer } from "./canvasUtils";
+import { exportFramesToPdf } from "@/lib/export";
+import { ExportIcon } from "@/public/custom-icons/export";
 
 interface FramesPanelProps {
     liveLayers: Layers;
@@ -37,7 +39,124 @@ interface FramesPanelProps {
     boardId: string;
     socket: Socket | null;
     setPresentationMode: (mode: boolean) => void;
+    svgRef: React.RefObject<SVGSVGElement>;
+    title: string;
 }
+
+export const FramesPanel = memo<FramesPanelProps>(({
+    liveLayers,
+    liveLayerIds,
+    setLiveLayerIds,
+    setCamera,
+    setZoom,
+    cameraRef,
+    zoomRef,
+    forceRender,
+    boardId,
+    socket,
+    setPresentationMode,
+    svgRef,
+    title
+}) => {
+    const [frameIds, setFrameIds] = useState<string[]>([]);
+
+    useEffect(() => {
+        const frameIdsList = liveLayerIds.filter(id => liveLayers[id] && liveLayers[id].type === LayerType.Frame);
+        setFrameIds(frameIdsList);
+    }, [liveLayers, liveLayerIds]);
+
+    const sensors = useSensors(
+        useSensor(PointerSensor),
+        useSensor(KeyboardSensor, {
+            coordinateGetter: sortableKeyboardCoordinates,
+        })
+    );
+
+    const handleDragEnd = useCallback((event: DragEndEvent) => {
+        const { active, over } = event;
+
+        if (active.id !== over?.id) {
+            setFrameIds((items) => {
+                const oldIndex = items.indexOf(active.id as string);
+                const newIndex = items.indexOf(over?.id as string);
+
+                const newOrder = arrayMove(items, oldIndex, newIndex);
+                const nonFrameLayerIds = liveLayerIds.filter(id => liveLayers[id].type !== LayerType.Frame);
+                const newLayerIds = [...newOrder, ...nonFrameLayerIds];
+                
+                setLiveLayerIds(newLayerIds);
+
+                // Update R2 bucket
+                updateR2Bucket('/api/r2-bucket/updateLayerIds', boardId, newLayerIds);
+
+                // Emit socket event
+                if (socket) {
+                    socket.emit('layer-send', newLayerIds);
+                }
+
+                return newOrder;
+            });
+        }
+    }, [liveLayerIds, liveLayers, setLiveLayerIds, boardId, socket]);
+
+    return (
+        <>
+            <ScrollArea className="h-[calc(100%-140px)] p-4">
+                {frameIds.length > 0 ? (
+                    <DndContext
+                        sensors={sensors}
+                        collisionDetection={closestCenter}
+                        onDragEnd={handleDragEnd}
+                    >
+                        <SortableContext
+                            items={frameIds}
+                            strategy={verticalListSortingStrategy}
+                        >
+                            <div className="space-y-4">
+                                {frameIds.map((frameId, index) => (
+                                    liveLayers[frameId] && (
+                                        <div key={frameId} className="flex flex-col">
+                                            <h1 className="text-xs font-semibold text-left text-zinc-500 mb-2">
+                                                {(liveLayers[frameId] as FrameLayer).value || `Frame ${index + 1}`}
+                                            </h1>
+                                            <SortableFramePreview
+                                                frameId={frameId}
+                                                index={index}
+                                                liveLayers={liveLayers}
+                                                liveLayerIds={liveLayerIds}
+                                                setCamera={setCamera}
+                                                setZoom={setZoom}
+                                                cameraRef={cameraRef}
+                                                zoomRef={zoomRef}
+                                                forceRender={forceRender}
+                                            />
+                                        </div>
+                                    )
+                                ))}
+                            </div>
+                        </SortableContext>
+                    </DndContext>
+                ) : (
+                    <div className="flex flex-col items-center justify-center h-[calc(100vh-250px)] text-center">
+                        <Frame className="h-12 w-12 mb-4" />
+                        <h2 className="text-xl font-semibold mb-2">Start by creating your first frame</h2>
+                        <p className="text-sm text-zinc-500">Frames help you arrange your work for easy exporting and presenting.</p>
+                    </div>
+                )}
+            </ScrollArea>
+            <div className="h-[65px] border-t dark:border-zinc-700 space-x-2 p-4 flex flex-row items-center justify-center w-full">
+                <Button variant="sketchlieBlue" onClick={() => setPresentationMode(true)}>
+                    <Play className="h-4 w-4 mr-2 fill-white" strokeWidth={3} />
+                    Present
+                </Button>
+                <Button variant="outline" onClick={() => exportFramesToPdf(title, false, liveLayers, liveLayerIds, svgRef)}>
+                    <ExportIcon className="h-4 w-4 mr-2" />
+                    Export
+                </Button>
+            </div>
+        </>
+    );
+});
 
 interface SortableFramePreviewProps {
     frameId: string;
@@ -148,114 +267,4 @@ const SortableFramePreview = memo<SortableFramePreviewProps>(({
 });
 
 SortableFramePreview.displayName = 'SortableFramePreview';
-
-export const FramesPanel = memo<FramesPanelProps>(({
-    liveLayers,
-    liveLayerIds,
-    setLiveLayerIds,
-    setCamera,
-    setZoom,
-    cameraRef,
-    zoomRef,
-    forceRender,
-    boardId,
-    socket,
-    setPresentationMode
-}) => {
-    const [frameIds, setFrameIds] = useState<string[]>([]);
-
-    useEffect(() => {
-        const frameIdsList = liveLayerIds.filter(id => liveLayers[id] && liveLayers[id].type === LayerType.Frame);
-        setFrameIds(frameIdsList);
-    }, [liveLayers, liveLayerIds]);
-
-    const sensors = useSensors(
-        useSensor(PointerSensor),
-        useSensor(KeyboardSensor, {
-            coordinateGetter: sortableKeyboardCoordinates,
-        })
-    );
-
-    const handleDragEnd = useCallback((event: DragEndEvent) => {
-        const { active, over } = event;
-
-        if (active.id !== over?.id) {
-            setFrameIds((items) => {
-                const oldIndex = items.indexOf(active.id as string);
-                const newIndex = items.indexOf(over?.id as string);
-
-                const newOrder = arrayMove(items, oldIndex, newIndex);
-                const nonFrameLayerIds = liveLayerIds.filter(id => liveLayers[id].type !== LayerType.Frame);
-                const newLayerIds = [...newOrder, ...nonFrameLayerIds];
-                
-                setLiveLayerIds(newLayerIds);
-
-                // Update R2 bucket
-                updateR2Bucket('/api/r2-bucket/updateLayerIds', boardId, newLayerIds);
-
-                // Emit socket event
-                if (socket) {
-                    socket.emit('layer-send', newLayerIds);
-                }
-
-                return newOrder;
-            });
-        }
-    }, [liveLayerIds, liveLayers, setLiveLayerIds, boardId, socket]);
-
-    return (
-        <>
-            <ScrollArea className="h-[calc(100%-140px)] p-4">
-                {frameIds.length > 0 ? (
-                    <DndContext
-                        sensors={sensors}
-                        collisionDetection={closestCenter}
-                        onDragEnd={handleDragEnd}
-                    >
-                        <SortableContext
-                            items={frameIds}
-                            strategy={verticalListSortingStrategy}
-                        >
-                            <div className="space-y-4">
-                                {frameIds.map((frameId, index) => (
-                                    liveLayers[frameId] && (
-                                        <div key={frameId} className="flex flex-col">
-                                            <h1 className="text-xs font-semibold text-left text-zinc-500 mb-2">
-                                                {(liveLayers[frameId] as FrameLayer).value || `Frame ${index + 1}`}
-                                            </h1>
-                                            <SortableFramePreview
-                                                frameId={frameId}
-                                                index={index}
-                                                liveLayers={liveLayers}
-                                                liveLayerIds={liveLayerIds}
-                                                setCamera={setCamera}
-                                                setZoom={setZoom}
-                                                cameraRef={cameraRef}
-                                                zoomRef={zoomRef}
-                                                forceRender={forceRender}
-                                            />
-                                        </div>
-                                    )
-                                ))}
-                            </div>
-                        </SortableContext>
-                    </DndContext>
-                ) : (
-                    <div className="flex flex-col items-center justify-center h-[calc(100vh-250px)] text-center">
-                        <Frame className="h-12 w-12 mb-4" />
-                        <h2 className="text-xl font-semibold mb-2">Start by creating your first frame</h2>
-                        <p className="text-sm text-zinc-500">Frames help you arrange your work for easy exporting and presenting.</p>
-                    </div>
-                )}
-            </ScrollArea>
-            <div className="h-[65px] border-t dark:border-zinc-700 p-4 flex flex-row items-center justify-center w-full">
-                <Button variant="sketchlieBlue" onClick={() => setPresentationMode(true)}>
-                    <Play className="h-4 w-4 mr-2 fill-white" strokeWidth={3} />
-                    Present
-                </Button>
-            </div>
-        </>
-    );
-});
-
 FramesPanel.displayName = 'FramesPanel';
