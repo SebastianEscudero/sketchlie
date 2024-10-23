@@ -1,14 +1,17 @@
+"use client";
+
 import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
-import { RectangleLayer } from "@/types/canvas";
+import { BaseShapeLayer } from "@/types/canvas";
 import { cn, colorToCss, getContrastingTextColor } from "@/lib/utils";
 import React, { memo, useCallback, useEffect, useRef, useState } from "react";
-import { DEFAULT_FONT, defaultFont } from "../selection-tools/selectionToolUtils";
-import { useHandlePaste, useUpdateValue } from "./canvas-objects-utils";
+import { DEFAULT_FONT, defaultFont } from "../../selection-tools/selectionToolUtils";
+import { useHandlePaste, useUpdateValue } from "../utils/canvas-objects-utils";
 import { Socket } from "socket.io-client";
+import { useLayerTextEditingStore } from "../utils/use-layer-text-editing";
 
-interface RectangleProps {
+interface BaseShapeProps {
   id: string;
-  layer: RectangleLayer;
+  layer: BaseShapeLayer;
   boardId?: string;
   onPointerDown?: (e: any, id: string) => void;
   selectionColor?: string;
@@ -18,9 +21,16 @@ interface RectangleProps {
   forcedRender?: boolean;
   showOutlineOnHover?: boolean;
   setAddedByLabel?: (addedBy: string) => void;
-};
+  renderShape: (fillColor: string, strokeColor: string) => React.ReactNode;
+  foreignObjectDimensions: {
+    width: number;
+    height: number;
+    x: number;
+    y: number;
+  };
+}
 
-export const Rectangle = memo(({
+export const BaseShape = memo(({
   layer,
   boardId,
   onPointerDown,
@@ -32,16 +42,19 @@ export const Rectangle = memo(({
   forcedRender = false,
   showOutlineOnHover = false,
   setAddedByLabel,
-}: RectangleProps) => {
+  renderShape,
+  foreignObjectDimensions
+}: BaseShapeProps) => {
   const { x, y, width, height, fill, outlineFill, value, textFontSize, fontFamily, addedBy } = layer;
   const alignX = layer.alignX || "center";
   const alignY = layer.alignY || "center";
   const [editableValue, setEditableValue] = useState(value);
   const [strokeColor, setStrokeColor] = useState(selectionColor || colorToCss(outlineFill || fill));
   const fillColor = colorToCss(fill);
-  const RectangleRef = useRef<HTMLDivElement>(null);
+  const shapeRef = useRef<HTMLDivElement>(null);
   const updateValue = useUpdateValue();
   const handlePaste = useHandlePaste();
+  const setIsEditing = useLayerTextEditingStore(state => state.setIsEditing);
 
   useEffect(() => {
     setEditableValue(value);
@@ -57,6 +70,7 @@ export const Rectangle = memo(({
 
   const contentEditablePointerDown = (e: React.PointerEvent) => {
     if (focused) {
+      setIsEditing(true);
       e.stopPropagation();
     } else {
       e.preventDefault();
@@ -65,9 +79,10 @@ export const Rectangle = memo(({
 
   const handlePointerDown = (e: React.PointerEvent) => {
     if (focused) {
+      setIsEditing(true);
       e.stopPropagation();
       e.preventDefault();
-      RectangleRef.current?.focus();
+      shapeRef.current?.focus();
     }
 
     if (onPointerDown) onPointerDown(e, id);
@@ -75,14 +90,11 @@ export const Rectangle = memo(({
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
+    if (e.touches.length > 1) return;
 
-    if (e.touches.length > 1) {
-      return;
-    }
-
-    if (e.target === RectangleRef.current) {
-
+    if (e.target === shapeRef.current) {
       if (focused) {
+        setIsEditing(true);
         e.stopPropagation();
       } else {
         e.preventDefault();
@@ -94,71 +106,52 @@ export const Rectangle = memo(({
       e.stopPropagation();
     }
 
-    if (onPointerDown) {
-      onPointerDown(e, id);
-    }
+    if (onPointerDown) onPointerDown(e, id);
   }
 
-  const divWidth = width * 1;
-  const divHeight = height * 1;
-
-  // Calculate the position to center the foreignObject within the Rectangle
-  const foreignObjectX = (width - divWidth) / 2;
-  const foreignObjectY = (height - divHeight) / 2;
+  const { width: divWidth, height: divHeight, x: foreignObjectX, y: foreignObjectY } = foreignObjectDimensions;
 
   return (
     <g
       transform={`translate(${x}, ${y})`}
       pointerEvents="auto"
-      onPointerDown={(e) => handlePointerDown(e)}
-      onTouchStart={(e) => handleTouchStart(e)}
+      onPointerDown={handlePointerDown}
+      onTouchStart={handleTouchStart}
       onPointerEnter={() => { if (showOutlineOnHover) { setStrokeColor("#3390FF"); setAddedByLabel?.(addedBy || '') } }}
       onPointerLeave={() => { setStrokeColor(selectionColor || colorToCss(outlineFill || fill)); setAddedByLabel?.('') }}
     >
-      <rect
-        width={width}
-        height={height}
-        fill={fillColor}
-        stroke={strokeColor}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      {renderShape(fillColor, strokeColor)}
       <foreignObject
-        x={foreignObjectX} // Adjust x position to center the foreignObject
-        y={foreignObjectY} // Adjust y position to center the foreignObject
-        width={divWidth} // Adjust width to 80% of the Rectangle's width
-        height={divHeight} // Adjust height to 80% of the Rectangle's height
+        x={foreignObjectX}
+        y={foreignObjectY}
+        width={divWidth}
+        height={divHeight}
         onDragStart={(e) => e.preventDefault()}
       >
-          <div
-            className={`h-full w-full flex ${alignY === 'top' ? 'items-start' : alignY === 'bottom' ? 'items-end' : 'items-center'} ${alignX === 'left' ? 'justify-start' : alignX === 'right' ? 'justify-end' : 'justify-center'} p-1`}
-          >
-            <ContentEditable
-              innerRef={RectangleRef}
-              html={editableValue || ""}
-              onChange={handleContentChange}
-              onPaste={handlePaste}
-              onPointerDown={contentEditablePointerDown}
-              className={cn(
-                "outline-none w-full p-1 text-wrap",
-                defaultFont.className
-              )}
-              style={{
-                fontSize: textFontSize,
-                color: fill ? getContrastingTextColor(fill) : "#000",
-                WebkitUserSelect: 'auto',
-                textAlign: alignX,
-                cursor: focused && 'text',
-                fontFamily: fontFamily || DEFAULT_FONT,
-              }}
-              spellCheck={false}
-              onDragStart={(e) => e.preventDefault()}
-            />
-          </div>
-        </foreignObject>
+        <div className={`h-full w-full flex ${alignY === 'top' ? 'items-start' : alignY === 'bottom' ? 'items-end' : 'items-center'} ${alignX === 'left' ? 'justify-start' : alignX === 'right' ? 'justify-end' : 'justify-center'} p-1`}>
+          <ContentEditable
+            id={id}
+            innerRef={shapeRef}
+            html={editableValue || ""}
+            onChange={handleContentChange}
+            onPaste={handlePaste}
+            onPointerDown={contentEditablePointerDown}
+            className={cn("outline-none w-full p-1 text-wrap", defaultFont.className)}
+            style={{
+              fontSize: textFontSize,
+              color: fill ? getContrastingTextColor(fill) : "#000",
+              WebkitUserSelect: 'auto',
+              textAlign: alignX,
+              cursor: focused && 'text',
+              fontFamily: fontFamily || DEFAULT_FONT,
+            }}
+            spellCheck={false}
+            onDragStart={(e) => e.preventDefault()}
+          />
+        </div>
+      </foreignObject>
     </g>
   );
 });
 
-Rectangle.displayName = 'Rectangle';
+BaseShape.displayName = 'BaseShape';
