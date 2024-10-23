@@ -4,7 +4,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import ContentEditable from 'react-contenteditable';
 import { ArrowUp, X, CircleCheck, MailCheck, PencilIcon, Trash2 } from 'lucide-react';
 import { formatDistanceToNowStrict } from 'date-fns';
-import { useDeleteReply, useMarkCommentAsReload, useUpdateComment, useUpdateReplies } from './canvas-objects-utils';
+import { useDeleteReply, useMarkCommentAsReload, useUpdateComment, useUpdateReplies } from './utils/canvas-objects-utils';
 import { Socket } from 'socket.io-client';
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { EmojiPicker } from '../_components/emoji-picker';
@@ -109,10 +109,10 @@ const CommentAvatar = memo(({ id, layer, initial, onPointerDown, setOpenCommentB
 
     const getBackgroundColor = () => {
         if (isMentioned) {
-            return isHovered && !isMoving ? 'bg-blue-50 dark:bg-blue-900' : 'bg-zinc-100 dark:bg-zinc-800';
+            return isHovered && !isMoving ? 'bg-blue-50 dark:bg-blue-900' : 'bg-zinc-300 dark:bg-zinc-800';
         }
 
-        return isHovered ? 'bg-zinc-100 dark:bg-zinc-800' : 'bg-zinc-300 dark:bg-zinc-800';
+        return isHovered ? 'bg-white dark:bg-zinc-800' : 'bg-zinc-300 dark:bg-zinc-800';
     };
 
     const getStrokeColor = (): string => {
@@ -160,7 +160,7 @@ const CommentAvatar = memo(({ id, layer, initial, onPointerDown, setOpenCommentB
                 </AvatarFallback>
             </Avatar>
             {isMentioned && (
-                <div className="absolute -top-1 -right-1 bg-blue-500 text-white text-xs font-bold px-1 rounded-full z-10">
+                <div className="absolute -top-1 -right-1 bg-blue-500 text-white text-xs font-bold px-1 py-0.5 rounded-full z-10">
                     @
                 </div>
             )}
