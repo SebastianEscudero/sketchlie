@@ -2501,6 +2501,7 @@ export const Canvas = ({
                                     setZoom={setZoom}
                                     showButton={visibleLayers.length === 0 && liveLayerIds.length > 0}
                                     liveLayers={liveLayers}
+                                    liveLayerIds={liveLayerIds}
                                     cameraRef={cameraRef}
                                     zoomRef={zoomRef}
                                 />

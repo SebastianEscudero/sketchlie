@@ -9,23 +9,26 @@ interface MoveBackToContentProps {
     setZoom: (zoom: number) => void;
     showButton: boolean;
     liveLayers: Layers;
+    liveLayerIds: string[];
     cameraRef: React.RefObject<{ x: number, y: number }>;
     zoomRef: React.RefObject<number>;
 }
 
-export const MoveBackToContent = memo(({ setCamera, setZoom, showButton, liveLayers, cameraRef, zoomRef }: MoveBackToContentProps) => {
+export const MoveBackToContent = memo(({ setCamera, setZoom, showButton, liveLayers, liveLayerIds, cameraRef, zoomRef }: MoveBackToContentProps) => {
     const goToCenter = useCallback(() => {
-        const layerIds = Object.keys(liveLayers);
-        if (layerIds.length === 0) return;
+        if (liveLayerIds.length === 0) return;
 
         let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
 
-        layerIds.forEach(id => {
+        console.log(liveLayerIds)
+
+        liveLayerIds.forEach(id => {
             const layer = liveLayers[id];
+            if (!layer || !layer.x || !layer.y || !layer.width || !layer.height) return;
             minX = Math.min(minX, layer.x);
             minY = Math.min(minY, layer.y);
-            maxX = Math.max(maxX, layer.x + layer.width);
-            maxY = Math.max(maxY, layer.y + layer.height);
+            maxX = Math.max(maxX, layer.x + Math.abs(layer.width));
+            maxY = Math.max(maxY, layer.y + Math.abs(layer.height));
         });
 
         const contentWidth = maxX - minX;
@@ -42,7 +45,7 @@ export const MoveBackToContent = memo(({ setCamera, setZoom, showButton, liveLay
         let targetZoom = Math.min(zoomX, zoomY);
 
         // Adjust zoom (limit between 0.1 and 1)
-        targetZoom = Math.max(0.1, Math.min(1, targetZoom));
+        targetZoom = Math.max(0.3, Math.min(10, targetZoom));
 
         // Calculate the target camera position
         const targetCameraX = viewportWidth/2 - centerX * targetZoom;
