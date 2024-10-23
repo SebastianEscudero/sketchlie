@@ -1,5 +1,7 @@
 import { getSvgPathFromPoints } from "@/lib/utils";
 import { useState, useEffect, memo } from "react";
+import { Laser } from "./laser";
+import { colorToCss } from "@/lib/utils";
 
 interface PathProps {
     x: number;
@@ -8,10 +10,13 @@ interface PathProps {
     fill: string;
     onPointerDown?: (e: React.PointerEvent) => void;
     selectionColor?: string;
-    strokeSize?: number | undefined;
+    strokeSize?: number;
     showOutlineOnHover?: boolean;
     addedBy?: string;
     setAddedByLabel?: (label: string) => void;
+    isLaser?: boolean;
+    isHighlighter?: boolean;
+    zoom?: number;
 };
 
 export const Path = memo(({
@@ -21,15 +26,16 @@ export const Path = memo(({
     fill,
     onPointerDown,
     selectionColor,
-    strokeSize,
+    strokeSize = 1,
     showOutlineOnHover,
     addedBy,
-    setAddedByLabel
+    setAddedByLabel,
+    isLaser = false,
+    isHighlighter = false,
+    zoom = 1
 }: PathProps) => {
-    const [strokeColor, setStrokeColor] = useState(selectionColor || fill);
+    const [strokeColor, setStrokeColor] = useState(selectionColor || "none");
     const isTransparent = fill === 'rgba(0,0,0,0)';
-    const isHalfTransparent = /rgba\(\d+,\s*\d+,\s*\d+,\s*0.5\)/.test(fill);
-    const isLaser = fill === "#FF0000";
 
     useEffect(() => {
         setStrokeColor(selectionColor || fill);
@@ -39,54 +45,41 @@ export const Path = memo(({
         return null;
     }
 
-    const handlePointerDown = (e: React.PointerEvent) => {
-        setStrokeColor(selectionColor || fill);
-        if (onPointerDown) {
-          onPointerDown(e);
-        }
+    const getFinalStrokeSize = () => {
+        if (isLaser) return 5 / Math.sqrt(zoom);
+        if (isHighlighter) return 30 / zoom;
+        return strokeSize;
+    }
+
+    const getFinalFill = () => {
+        if (isLaser) return '#FF0000';
+        if (isHighlighter) {
+            const [r, g, b] = fill.match(/\d+/g)!.map(Number);
+            return `rgba(${r}, ${g}, ${b}, 0.7)`;
+        } return fill;
     }
 
     if (isLaser) {
-        const glowColor = "#FF6666"; // Lighter red for the glow effect
-
         return (
-            <>
-                {/* Glow effect */}
-                <path
-                    d={getSvgPathFromPoints(points)}
-                    style={{
-                        transform: `translate(${x}px, ${y}px)`,
-                        filter: "blur(3px)",
-                        opacity: 0.7,
-                    }}
-                    stroke={glowColor}
-                    strokeWidth={(strokeSize || 1) * 3}
-                    fill="none"
-                />
-                {/* Main laser path */}
-                <path
-                    onPointerDown={handlePointerDown}
-                    d={getSvgPathFromPoints(points)}
-                    style={{
-                        transform: `translate(${x}px, ${y}px)`,
-                        pointerEvents: "all"
-                    }}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    fill="none"
-                    stroke={strokeColor}
-                    strokeWidth={strokeSize}
-                    pointerEvents="auto"
-                />
-            </>
+            <Laser
+                x={x}
+                y={y}
+                points={points}
+                fill={getFinalFill()}
+                strokeSize={getFinalStrokeSize()}
+            />
         );
     }
 
-    // Original path rendering for non-laser paths
+    const handlePointerDown = (e: React.PointerEvent) => {
+        if (onPointerDown) onPointerDown(e);
+        setStrokeColor(selectionColor || "none");
+    }
+
     return (
         <path
             onPointerEnter={() => { if (showOutlineOnHover) { setStrokeColor("#3390FF"); setAddedByLabel?.(addedBy || '') } }}
-            onPointerLeave={() => { setStrokeColor(selectionColor || fill); setAddedByLabel?.('') }}
+            onPointerLeave={() => { setStrokeColor(selectionColor || "none"); setAddedByLabel?.('') }}
             onPointerDown={handlePointerDown}
             d={getSvgPathFromPoints(points)}
             style={{
@@ -98,8 +91,8 @@ export const Path = memo(({
             strokeLinecap="round"
             strokeLinejoin="round"
             fill="none"
-            stroke={strokeColor ? (isHalfTransparent ? `${strokeColor}80` : strokeColor) : (isTransparent ? '#000' : fill)}
-            strokeWidth={strokeSize}
+            stroke={strokeColor !== "none" ? (isTransparent ? '#000' : strokeColor) : (isTransparent ? '#000' : getFinalFill())}
+            strokeWidth={getFinalStrokeSize()}
             pointerEvents="auto"
         />
     );

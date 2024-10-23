@@ -29,12 +29,18 @@ const Cursors = ({
 };
 
 const Drafts = ({
-    otherUsers
+    otherUsers,
+    zoom
 }: CursorsProps) => {
     return (
         <>
             {otherUsers.map((otherUser) => {
                 if (otherUser.presence?.pencilDraft) {
+                    const isLaser = otherUser.presence.pathStrokeColor?.r === 255 && 
+                                  otherUser.presence.pathStrokeColor?.g === 0 && 
+                                  otherUser.presence.pathStrokeColor?.b === 0 &&
+                                  otherUser.presence.pathStrokeColor?.a === 1;
+
                     return (
                         <Path
                             key={otherUser.userId}
@@ -43,6 +49,8 @@ const Drafts = ({
                             points={otherUser.presence.pencilDraft}
                             strokeSize={otherUser.presence.pathStrokeSize}
                             fill={colorToCss(otherUser.presence.pathStrokeColor || { r: 1, g: 1, b: 1, a: 1 })}
+                            isLaser={isLaser}
+                            zoom={zoom}
                         />
                     );
                 }
@@ -59,7 +67,7 @@ export const CursorsPresence = memo(({
 }: CursorsProps) => {
     return (
         <>
-            <Drafts otherUsers={otherUsers} />
+            <Drafts otherUsers={otherUsers} zoom={zoom} />
             <Cursors otherUsers={otherUsers} zoom={zoom} />
         </>
     );

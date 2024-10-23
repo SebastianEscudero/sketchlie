@@ -719,7 +719,7 @@ export const Canvas = ({
                     ? 30 / zoom // Increase stroke size for highlighter
                     : pathStrokeSize,
             pathStrokeColor: canvasState.mode === CanvasMode.Laser
-                ? { r: 243, g: 82, b: 35, a: 1 }
+                ? { r: 255, g: 0, b: 0, a: 1 }
                 : canvasState.mode === CanvasMode.Highlighter
                     ? { ...pathColor, a: 0.7 } // Semi-transparent yellow
                     : pathColor,
@@ -2751,27 +2751,18 @@ export const Canvas = ({
                                         />
                                     )}
                                     {
-                                        pencilDraft.length > 0 && !pencilDraft.some(array => array.some(isNaN)) && (
-                                            <Path
-                                                points={pencilDraft}
-                                                fill={
-                                                    canvasState.mode === CanvasMode.Laser
-                                                        ? '#FF0000'
-                                                        : canvasState.mode === CanvasMode.Highlighter
-                                                            ? colorToCss({ ...pathColor, a: 0.7 }) // Semi-transparent yellow
-                                                            : colorToCss(pathColor)
-                                                }
-                                                x={0}
-                                                y={0}
-                                                strokeSize={
-                                                    canvasState.mode === CanvasMode.Laser
-                                                        ? 5 / zoom
-                                                        : canvasState.mode === CanvasMode.Highlighter
-                                                            ? 30 / zoom // Increase stroke size for highlighter
-                                                            : pathStrokeSize
-                                                }
-                                            />
-                                        )
+                                     pencilDraft.length > 0 && !pencilDraft.some(array => array.some(isNaN)) && (
+                                        <Path
+                                            points={pencilDraft}
+                                            fill={colorToCss(pathColor)}
+                                            x={0}
+                                            y={0}
+                                            strokeSize={pathStrokeSize}
+                                            isLaser={canvasState.mode === CanvasMode.Laser}
+                                            isHighlighter={canvasState.mode === CanvasMode.Highlighter}
+                                            zoom={zoom}
+                                        />
+                                    )
                                     }
                                     {otherUsers &&
                                         <CursorsPresence otherUsers={otherUsers} zoom={zoom} />
