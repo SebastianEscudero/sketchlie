@@ -32,8 +32,6 @@ export const PresentationModeToolbar = ({
     goToFrame,
     showToolbar
 }: PresentationModeToolbarProps) => {
-    console.log(showToolbar)
-
     return (
         <div
             className={`
@@ -90,6 +88,7 @@ export const PresentationModeToolbar = ({
                     <Hint label="Next Frame" sideOffset={14}>
                         <Button
                             onClick={() => goToFrame(currentFrameIndex + 1)}
+                            disabled={currentFrameIndex === frameIds.length - 1}
                             size="sm"
                             variant="ghost"
                         >

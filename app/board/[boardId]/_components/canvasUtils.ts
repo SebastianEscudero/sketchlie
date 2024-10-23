@@ -237,8 +237,8 @@ interface MoveCameraToLayerProps {
   targetHeight: number;
   setCamera: (camera: { x: number; y: number }) => void;
   setZoom: (zoom: number) => void;
-  cameraRef: React.RefObject<{ x: number; y: number }>;
-  zoomRef: React.RefObject<number>;
+  cameraRef?: React.RefObject<{ x: number; y: number }>;
+  zoomRef?: React.RefObject<number>;
   padding?: number;
   minZoom?: number;
   maxZoom?: number;
@@ -274,8 +274,8 @@ export const MoveCameraToLayer = ({
     const targetCameraX = viewportWidth / 2 - (targetX + targetWidth / 2) * targetZoom;
     const targetCameraY = viewportHeight / 2 - (targetY + targetHeight / 2) * targetZoom - toolbarHeight / 2;
 
-    const startCamera = cameraRef.current || { x: 0, y: 0 };
-    const startZoom = zoomRef.current || 1;
+    const startCamera = cameraRef?.current || { x: 0, y: 0 };
+    const startZoom = zoomRef?.current || 1;
 
     const startTime = Date.now();
 

@@ -286,8 +286,6 @@ export const MediaButton = ({
                 type: LayerType.Svg
             };
 
-            console.log(info);
-    
             insertMedia([{layerType: LayerType.Svg, position: centerPoint, info, zoom}]);
             toast.success('Icon added successfully');
             setIsDialogOpen(false);

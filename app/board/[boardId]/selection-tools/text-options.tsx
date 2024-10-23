@@ -323,9 +323,7 @@ const rgbStringToColor = (rgbString: string): Color => {
     const defaultColor: Color = { r: 0, g: 0, b: 0, a: 0.7 };
 
     try {
-        console.log(rgbString)
         const matches = rgbString.match(/\d*\.?\d+/g);
-        console.log(matches)
         if (!matches) return defaultColor;
 
         return {

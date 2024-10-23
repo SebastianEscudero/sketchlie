@@ -20,8 +20,6 @@ export const MoveBackToContent = memo(({ setCamera, setZoom, showButton, liveLay
 
         let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
 
-        console.log(liveLayerIds)
-
         liveLayerIds.forEach(id => {
             const layer = liveLayers[id];
             if (!layer || !layer.x || !layer.y || !layer.width || !layer.height) return;
@@ -82,7 +80,7 @@ export const MoveBackToContent = memo(({ setCamera, setZoom, showButton, liveLay
         };
 
         requestAnimationFrame(animate);
-    }, [liveLayers, setCamera, setZoom, cameraRef, zoomRef]);
+    }, [liveLayers, setCamera, setZoom, cameraRef, zoomRef, liveLayerIds]);
 
     if (!showButton) return;
 

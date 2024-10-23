@@ -13,8 +13,6 @@ export const Browser: React.FC<BrowserProps> = ({ initialUrl, visibleControls, s
     const [proxyUrl, setProxyUrl] = useState('');
     const iFrameRef = useRef<HTMLIFrameElement>(null);
 
-    console.log(iFrameRef.current?.src, 'iFrameRef.current?.src')
-
     useEffect(() => {
         if (initialUrl) {
             navigateToUrl(initialUrl);

@@ -88,9 +88,15 @@ export const BottomRightView = memo(({
         setRightMiddleContainerView(((prev: any) => prev === "frames" ? null : "frames") as any);
     };
 
-    const handleFocusMode = () => {
-        toggleFullscreen();
-        setFocusMode(!focusMode);
+    const toggleFocusMode = () => {
+        const newFocusMode = !focusMode;
+        setFocusMode(newFocusMode);
+
+        if (newFocusMode && !document.fullscreenElement) {
+            document.documentElement.requestFullscreen();
+        } else if (!newFocusMode && document.fullscreenElement) {
+            document.exitFullscreen();
+        }
     };
 
     const zoomPercentage = zoomToPercentage(zoom);
@@ -121,7 +127,7 @@ export const BottomRightView = memo(({
         return (
             <div className="border dark:border-zinc-800 space-x-1 px-2 shadow-md absolute h-[52px] bottom-4 right-4 rounded-xl py-2 items-center lg:flex hidden bg-white dark:bg-zinc-800 pointer-events-auto">
                 <Hint label="Exit Focus Mode" sideOffset={4}>
-                    <Button onClick={handleFocusMode} variant="boardActive">
+                    <Button onClick={toggleFocusMode} variant="boardActive">
                         <Focus className="h-4 w-4" />
                     </Button>
                 </Hint>
@@ -133,7 +139,7 @@ export const BottomRightView = memo(({
         <div className="border dark:border-zinc-800 space-x-1 px-2 shadow-md absolute h-[52px] bottom-4 right-4 rounded-xl py-2 items-center lg:flex hidden bg-white dark:bg-zinc-800 pointer-events-auto">
             <div className="flex items-center border-r pr-1">
                 <Hint label="Focus Mode" sideOffset={4}>
-                    <Button onClick={handleFocusMode} className="px-2" variant="board">
+                    <Button onClick={toggleFocusMode} className="px-2" variant="board">
                         <Focus className="h-4 w-4" />
                     </Button>
                 </Hint>

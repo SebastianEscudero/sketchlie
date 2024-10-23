@@ -1627,10 +1627,10 @@ export const isLayerVisible = (layer: Layer, visibleRect: any) => {
 
   // Check visibility based on effective bounds
   return (
-    effectiveX < visibleRect.x + visibleRect.width &&
-    effectiveX + effectiveWidth > visibleRect.x &&
-    effectiveY < visibleRect.y + visibleRect.height &&
-    effectiveY + effectiveHeight > visibleRect.y
+    effectiveX <= visibleRect.x + visibleRect.width &&
+    effectiveX + effectiveWidth >= visibleRect.x &&
+    effectiveY <= visibleRect.y + visibleRect.height &&
+    effectiveY + effectiveHeight >= visibleRect.y
   );
 };
 

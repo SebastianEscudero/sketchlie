@@ -203,7 +203,7 @@ export const Canvas = ({
 
     const filteredOrgTeammates = useMemo(() =>
         org.users.filter((user: typeof org.users[0]) => user.id !== User.userId),
-        [org.users, User.userId]
+        [User.userId, org]
     );
 
     useDisableScrollBounce();
@@ -392,7 +392,7 @@ export const Canvas = ({
             setCanvasState({ mode: CanvasMode.None });
         }
 
-    }, [socket, org, proModal, setLiveLayers, setLiveLayerIds, boardId, arrowTypeInserting, liveLayers, performAction, expired, quickInserting, setCurrentPreviewLayer, setOpenCommentBoxId]);
+    }, [User, socket, org, proModal, setLiveLayers, setLiveLayerIds, boardId, arrowTypeInserting, liveLayers, performAction, expired, quickInserting, setCurrentPreviewLayer, setOpenCommentBoxId]);
 
     useEffect(() => {
         if (justInsertedText && layerRef && layerRef.current) {
@@ -450,7 +450,7 @@ export const Canvas = ({
 
         setCanvasState({ mode: CanvasMode.None });
 
-    }, [socket, org, proModal, setLiveLayers, setLiveLayerIds, boardId, performAction, expired]);
+    }, [socket, org, proModal, setLiveLayers, setLiveLayerIds, boardId, performAction, expired, User]);
 
     const translateSelectedLayers = useCallback((point: Point) => {
 
@@ -639,7 +639,7 @@ export const Canvas = ({
         };
 
         setMyPresence(newPresence);
-    }, [liveLayers, liveLayerIds, setMyPresence, myPresence]);
+    }, [liveLayers, liveLayerIds, setMyPresence, myPresence, presentationMode]);
 
     const EraserDeleteLayers = useCallback((current: Point) => {
 
@@ -765,7 +765,7 @@ export const Canvas = ({
     }, [
         expired, pencilDraft, liveLayers, setLiveLayers, setLiveLayerIds,
         myPresence, org, proModal, socket, boardId, pathColor,
-        performAction, pathStrokeSize, activeTouches, zoom
+        performAction, pathStrokeSize, activeTouches, zoom, User
     ]);
 
     const resizeSelectedLayers = useCallback((point: Point) => {
@@ -1068,7 +1068,7 @@ export const Canvas = ({
                 socket.emit('layer-update', selectedLayersRef.current, liveLayers);
             }
         }
-    }, [canvasState.mode, setCanvasState, startDrawing, setIsPanning, setIsRightClickPanning, activeTouches, expired, isPanning, unselectLayers, liveLayers, socket, setPresentationMode, User, zoom, setCurrentPreviewLayer, currentPreviewLayer]);
+    }, [canvasState.mode, setCanvasState, startDrawing, setIsPanning, setIsRightClickPanning, activeTouches, expired, isPanning, unselectLayers, liveLayers, socket, setPresentationMode, User, zoom, setCurrentPreviewLayer, currentPreviewLayer, setIsEditing]);
 
     const onPointerMove = useCallback((e: React.PointerEvent) => {
         e.preventDefault();
@@ -1589,7 +1589,7 @@ export const Canvas = ({
             socket.emit('presence', newPresence, User.userId);
         }
 
-    }, [selectedLayersRef, expired, socket, User.userId]);
+    }, [selectedLayersRef, expired, socket, User.userId, setIsEditing]);
 
     const layerIdsToColorSelection = useMemo(() => {
         const layerIdsToColorSelection: Record<string, string> = {};
@@ -1845,232 +1845,6 @@ export const Canvas = ({
     }, [liveLayers]);
 
     useEffect(() => {
-        function onKeyDown(e: KeyboardEvent) {
-
-            if (!e.key || expired) {
-                return;
-            }
-
-            const isInsideTextArea = checkIfTextarea();
-            const key = e.key.toLocaleLowerCase();
-
-            if (key === "z") {
-                if (e.ctrlKey || e.metaKey) {
-                    if (!isInsideTextArea) {
-                        e.preventDefault();
-                        if (e.shiftKey && redoStack.length > 0) {
-                            redo();
-                            return;
-                        } else if (!e.shiftKey && history.length > 0) {
-                            selectedLayersRef.current = [];
-                            undo();
-                            return;
-                        }
-                    }
-                }
-            } else if (key === "c") {
-                if (!isInsideTextArea) {
-                    if (e.ctrlKey || e.metaKey) {
-                        e.preventDefault();
-                        copySelectedLayers();
-                        navigator.clipboard.writeText('').catch(err => {
-                            console.error("Failed to clear clipboard:", err);
-                        });
-                    } else {
-                        setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Comment });
-                    }
-                }
-            } else if (key === "v") {
-                if (!isInsideTextArea && (e.ctrlKey || e.metaKey)) {
-                    e.preventDefault();
-
-                    // First, check the system clipboard for content
-                    navigator.clipboard.read().then(async items => {
-                        let hasImage = false;
-                        let hasText = false;
-
-                        for (const item of items) {
-                            // Check for image
-                            if (item.types.includes('image/png') || item.types.includes('image/jpeg')) {
-                                hasImage = true;
-                                try {
-                                    const blob = await item.getType('image/png');
-                                    const randomImageId = nanoid();
-                                    const file = new File([blob], `${randomImageId}.png`, { type: "image/png" });
-
-                                    const toastId = toast.loading("Image is being processed, please wait...");
-                                    const formData = new FormData();
-                                    formData.append('file', file);
-                                    formData.append('userId', User.userId);
-                                    formData.append('imageId', randomImageId);
-
-                                    const res = await fetch('/api/aws-s3-images', {
-                                        method: 'POST',
-                                        body: formData
-                                    });
-
-                                    if (!res.ok) {
-                                        throw new Error('Network response was not ok');
-                                    }
-
-                                    const url = await res.text();
-                                    const img = new Image();
-                                    const imgLoad = new Promise<{ url: string, dimensions: { width: number, height: number }, type: string }>((resolve) => {
-                                        img.onload = () => {
-                                            const dimensions = { width: img.width, height: img.height };
-                                            resolve({ url, dimensions, type: 'image' });
-                                        };
-                                    });
-                                    img.src = url;
-                                    const info = await imgLoad;
-
-                                    insertMedia([{ layerType: LayerType.Image, position: { x: mousePosition.x, y: mousePosition.y }, info, zoom }]);
-                                    toast.dismiss(toastId);
-                                    toast.success("Image uploaded successfully");
-                                } catch (err) {
-                                    console.error("Error processing image from clipboard:", err);
-                                    toast.error("Failed to process image from clipboard");
-                                }
-                                break; // Exit the loop after handling the first image
-                            }
-
-                            // Check for text
-                            //if (item.types.includes('text/plain')) {
-                            //  hasText = true;
-                            //  try {
-                            //    const text = await item.getType('text/plain');
-                            //   const textContent = await text.text();
-                            //    insertLayer(LayerType.Text, mousePosition, 100, 18, undefined, undefined, undefined, undefined, undefined, textContent);
-                            //  } catch (err) {
-                            //    console.error("Error reading text from clipboard:", err);
-                            //  }
-                            //  break; // Exit the loop after handling the text
-                            //}
-                        }
-
-                        // If no image or text was found in the clipboard, paste copied layers
-                        if (!hasImage && !hasText && copiedLayerIds.length > 0) {
-                            pasteCopiedLayers(mousePosition);
-                        }
-                    }).catch(err => {
-                        console.error("Error accessing clipboard:", err);
-                        // If there was an error accessing the clipboard, fall back to pasting copied layers
-                        if (copiedLayerIds.length > 0) {
-                            pasteCopiedLayers(mousePosition);
-                        }
-                    });
-                }
-            } else if (key === "a") {
-                if (!isInsideTextArea && !presentationMode) {
-                    if ((e.ctrlKey || e.metaKey)) {
-                        e.preventDefault();
-                        selectedLayersRef.current = liveLayerIds;
-
-                        if (socket) {
-                            const newPresence: Presence = {
-                                ...myPresence,
-                                selection: liveLayerIds
-                            };
-                            socket.emit('presence', newPresence, User.userId);
-                            setMyPresence(newPresence);
-                        }
-
-                        setForceSelectionBoxRender(!forceSelectionBoxRender);
-                    } else {
-                        setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Arrow });
-                    }
-                }
-            } else if (key === "tab") {
-                if (expired) {
-                    e.preventDefault();
-                    return;
-                }
-                // if (!isInsideTextArea) {
-                //     e.preventDefault();
-                //     const layerId = nanoid();
-                //     const command = new InsertLayerCommand([layerId], [suggestedLayers], setLiveLayers, setLiveLayerIds, boardId, socket, org, proModal);
-                //     performAction(command);
-                //     selectedLayersRef.current = [layerId];
-                //     setSuggestedLayers({});
-                // }
-            } else if (key === "backspace" || key === "delete") {
-                if (selectedLayersRef.current.length > 0 && !isInsideTextArea) {
-                    deleteLayers(selectedLayersRef.current);
-                }
-            } else if (!isInsideTextArea) {
-                if (key === "s") {
-                    setCanvasState({ mode: CanvasMode.None })
-                } else if (key === "d") {
-                    setCanvasState({ mode: CanvasMode.Pencil });
-                } else if (key === "e") {
-                    setCanvasState({ mode: CanvasMode.Eraser });
-                } else if (key === "h") {
-                    setCanvasState({ mode: CanvasMode.Moving });
-                } else if (key === "n") {
-                    setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Note });
-                } else if (key === "t") {
-                    setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Text });
-                } else if (key === "l") {
-                    setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Line });
-                } else if (key === "r") {
-                    setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Rectangle });
-                } else if (key === "f") {
-                    setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Frame });
-                } else if (key === "k") {
-                    setCanvasState({ mode: CanvasMode.Laser });
-                } else if (key === "arrowup" || key === "arrowdown" || key === "arrowleft" || key === "arrowright") {
-                    if (selectedLayersRef.current.length > 0) {
-                        const moveAmount = 1; // You can adjust this value to change the movement speed
-                        let deltaX = 0;
-                        let deltaY = 0;
-
-                        switch (key) {
-                            case "arrowup":
-                                deltaY = -moveAmount;
-                                break;
-                            case "arrowdown":
-                                deltaY = moveAmount;
-                                break;
-                            case "arrowleft":
-                                deltaX = -moveAmount;
-                                break;
-                            case "arrowright":
-                                deltaX = moveAmount;
-                                break;
-                        }
-
-                        setCanvasState({ mode: CanvasMode.Translating, current: { x: deltaX, y: deltaY } });
-                        setIsMoving(true);
-                        translateSelectedLayersWithDelta({ x: deltaX, y: deltaY });
-                    }
-                }
-            }
-        }
-
-        function onKeyUp(e: KeyboardEvent) {
-            const key = e.key.toLowerCase();
-            if (key === "arrowup" || key === "arrowdown" || key === "arrowleft" || key === "arrowright") {
-                if (canvasState.mode === CanvasMode.Translating) {
-                    const command = new TranslateLayersCommand(selectedLayersRef.current, initialLayers, liveLayers, setLiveLayers, boardId, socket);
-                    performAction(command);
-                    setCanvasState({ mode: CanvasMode.None });
-                    setIsMoving(false);
-                }
-            }
-        }
-
-        document.addEventListener("keydown", onKeyDown);
-        document.addEventListener("keyup", onKeyUp);
-
-        return () => {
-            document.removeEventListener("keydown", onKeyDown);
-            document.removeEventListener("keyup", onKeyUp);
-        }
-
-    }, [copySelectedLayers, pasteCopiedLayers, camera, zoom, liveLayers, copiedLayerIds, liveLayerIds, myPresence, socket, User.userId, forceSelectionBoxRender, canvasState, presentationMode,
-        boardId, history.length, mousePosition, performAction, redo, redoStack.length, setLiveLayerIds, setLiveLayers, undo, unselectLayers, expired, translateSelectedLayersWithDelta, initialLayers]);
-
-    useEffect(() => {
         // just to make sure there are no dangling points
         if (canvasState.mode === CanvasMode.None) {
             setPencilDraft([]);
@@ -2250,8 +2024,7 @@ export const Canvas = ({
         const totalFrames = frameIds.length;
         if (totalFrames === 0) return;
 
-        // Ensure the index is within bounds using modulo
-        const safeIndex = ((index % totalFrames) + totalFrames) % totalFrames;
+        const safeIndex = Math.max(0, Math.min(index, totalFrames - 1));
 
         const frameId = frameIds[safeIndex];
         const frame = liveLayers[frameId] as FrameLayer;
@@ -2263,15 +2036,13 @@ export const Canvas = ({
             targetHeight: frame.height,
             setCamera,
             setZoom,
-            cameraRef: { current: camera },
-            zoomRef: { current: zoom },
             padding: 0.95,
             toolbarHeight: 40,
             duration: 0
         });
 
         setCurrentFrameIndex(safeIndex);
-    }, [frameIds, liveLayers, setZoom, setCamera, presentationMode]);
+    }, [setZoom, setCamera, liveLayers, frameIds]);
 
     const goToNextFrame = useCallback(() => {
         goToFrame(currentFrameIndex + 1);
@@ -2282,35 +2053,239 @@ export const Canvas = ({
     }, [currentFrameIndex, goToFrame]);
 
     useEffect(() => {
-        const enterFullscreenAndGoToFrame = async () => {
-            if (presentationMode) {
+        function onKeyDown(e: KeyboardEvent) {
 
-                if (frameIds && frameIds.length === 0) {
-                    toast.info("Add a frame to start presenting!");
-                    setPresentationMode(false);
+            if (!e.key || expired) {
+                return;
+            }
+
+            const isInsideTextArea = checkIfTextarea();
+            const key = e.key.toLocaleLowerCase();
+
+            if (key === "z") {
+                if (e.ctrlKey || e.metaKey) {
+                    if (!isInsideTextArea) {
+                        e.preventDefault();
+                        if (e.shiftKey && redoStack.length > 0) {
+                            redo();
+                            return;
+                        } else if (!e.shiftKey && history.length > 0) {
+                            selectedLayersRef.current = [];
+                            undo();
+                            return;
+                        }
+                    }
+                }
+            } else if (key === "c") {
+                if (!isInsideTextArea) {
+                    if (e.ctrlKey || e.metaKey) {
+                        e.preventDefault();
+                        copySelectedLayers();
+                        navigator.clipboard.writeText('').catch(err => {
+                            console.error("Failed to clear clipboard:", err);
+                        });
+                    } else {
+                        setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Comment });
+                    }
+                }
+            } else if (key === "v") {
+                if (!isInsideTextArea && (e.ctrlKey || e.metaKey)) {
+                    e.preventDefault();
+
+                    navigator.clipboard.read().then(async items => {
+                        let hasImage = false;
+                        let hasText = false;
+
+                        for (const item of items) {
+                            if (item.types.includes('image/png') || item.types.includes('image/jpeg')) {
+                                hasImage = true;
+                                try {
+                                    const blob = await item.getType('image/png');
+                                    const randomImageId = nanoid();
+                                    const file = new File([blob], `${randomImageId}.png`, { type: "image/png" });
+
+                                    const toastId = toast.loading("Image is being processed, please wait...");
+                                    const formData = new FormData();
+                                    formData.append('file', file);
+                                    formData.append('userId', User.userId);
+                                    formData.append('imageId', randomImageId);
+
+                                    const res = await fetch('/api/aws-s3-images', {
+                                        method: 'POST',
+                                        body: formData
+                                    });
+
+                                    if (!res.ok) {
+                                        throw new Error('Network response was not ok');
+                                    }
+
+                                    const url = await res.text();
+                                    const img = new Image();
+                                    const imgLoad = new Promise<{ url: string, dimensions: { width: number, height: number }, type: string }>((resolve) => {
+                                        img.onload = () => {
+                                            const dimensions = { width: img.width, height: img.height };
+                                            resolve({ url, dimensions, type: 'image' });
+                                        };
+                                    });
+                                    img.src = url;
+                                    const info = await imgLoad;
+
+                                    insertMedia([{ layerType: LayerType.Image, position: { x: mousePosition.x, y: mousePosition.y }, info, zoom }]);
+                                    toast.dismiss(toastId);
+                                    toast.success("Image uploaded successfully");
+                                } catch (err) {
+                                    console.error("Error processing image from clipboard:", err);
+                                    toast.error("Failed to process image from clipboard");
+                                }
+                                break;
+                            }
+                        }
+
+                        if (!hasImage && !hasText && copiedLayerIds.length > 0) {
+                            pasteCopiedLayers(mousePosition);
+                        }
+                    }).catch(err => {
+                        console.error("Error accessing clipboard:", err);
+                        if (copiedLayerIds.length > 0) {
+                            pasteCopiedLayers(mousePosition);
+                        }
+                    });
+                }
+            } else if (key === "a") {
+                if (!isInsideTextArea && !presentationMode) {
+                    if ((e.ctrlKey || e.metaKey)) {
+                        e.preventDefault();
+                        selectedLayersRef.current = liveLayerIds;
+
+                        if (socket) {
+                            const newPresence: Presence = {
+                                ...myPresence,
+                                selection: liveLayerIds
+                            };
+                            socket.emit('presence', newPresence, User.userId);
+                            setMyPresence(newPresence);
+                        }
+
+                        setForceSelectionBoxRender(!forceSelectionBoxRender);
+                    } else {
+                        setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Arrow });
+                    }
+                }
+            } else if (key === "tab") {
+                if (expired) {
+                    e.preventDefault();
                     return;
                 }
-
-                if (document.documentElement.requestFullscreen) {
-                    try {
-                        await document.documentElement.requestFullscreen();
-                        // Wait a bit for the browser to update window dimensions
-                        await new Promise(resolve => setTimeout(resolve, 10));
-                        goToFrame(0);
-                    } catch (error) {
-                        console.error("Couldn't enter fullscreen:", error);
-                        // If fullscreen fails, still go to the first frame
-                        goToFrame(0);
+            } else if (key === "backspace" || key === "delete") {
+                if (selectedLayersRef.current.length > 0 && !isInsideTextArea) {
+                    deleteLayers(selectedLayersRef.current);
+                }
+            } else if (!isInsideTextArea) {
+                if (key === "s") {
+                    setCanvasState({ mode: CanvasMode.None })
+                } else if (key === "d") {
+                    setCanvasState({ mode: CanvasMode.Pencil });
+                } else if (key === "e") {
+                    setCanvasState({ mode: CanvasMode.Eraser });
+                } else if (key === "h") {
+                    setCanvasState({ mode: CanvasMode.Moving });
+                } else if (key === "n") {
+                    setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Note });
+                } else if (key === "t") {
+                    setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Text });
+                } else if (key === "l") {
+                    setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Line });
+                } else if (key === "r") {
+                    setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Rectangle });
+                } else if (key === "f") {
+                    setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Frame });
+                } else if (key === "k") {
+                    setCanvasState({ mode: CanvasMode.Laser });
+                } else if (key === "arrowup" || key === "arrowdown" || key === "arrowleft" || key === "arrowright") {
+                    if (presentationMode) {
+                        if (key === "arrowright") {
+                            e.stopPropagation();
+                            goToNextFrame();
+                            return;
+                        } else if (key === "arrowleft") {
+                            e.stopPropagation();
+                            goToPreviousFrame();
+                            return;
+                        }
                     }
-                } else {
-                    // If fullscreen is not supported, just go to the first frame
-                    goToFrame(0);
+
+                    if (selectedLayersRef.current.length > 0) {
+                        const moveAmount = 1;
+                        let deltaX = 0;
+                        let deltaY = 0;
+
+                        switch (key) {
+                            case "arrowup":
+                                deltaY = -moveAmount;
+                                break;
+                            case "arrowdown":
+                                deltaY = moveAmount;
+                                break;
+                            case "arrowleft":
+                                deltaX = -moveAmount;
+                                break;
+                            case "arrowright":
+                                deltaX = moveAmount;
+                                break;
+                        }
+
+                        setCanvasState({ mode: CanvasMode.Translating, current: { x: deltaX, y: deltaY } });
+                        setIsMoving(true);
+                        translateSelectedLayersWithDelta({ x: deltaX, y: deltaY });
+                    }
                 }
             }
-        };
+        }
 
-        enterFullscreenAndGoToFrame();
-    }, [presentationMode, goToFrame, frameIds]);
+        function onKeyUp(e: KeyboardEvent) {
+            const key = e.key.toLowerCase();
+
+            if (presentationMode) {
+                return;
+            }
+
+            if (key === "arrowup" || key === "arrowdown" || key === "arrowleft" || key === "arrowright") {
+                if (canvasState.mode === CanvasMode.Translating) {
+                    const command = new TranslateLayersCommand(selectedLayersRef.current, initialLayers, liveLayers, setLiveLayers, boardId, socket);
+                    performAction(command);
+                    setCanvasState({ mode: CanvasMode.None });
+                    setIsMoving(false);
+                }
+            }
+        }
+
+        document.addEventListener("keydown", onKeyDown);
+        document.addEventListener("keyup", onKeyUp);
+
+        return () => {
+            document.removeEventListener("keydown", onKeyDown);
+            document.removeEventListener("keyup", onKeyUp);
+        }
+
+    }, [deleteLayers, insertMedia, copySelectedLayers, pasteCopiedLayers, camera, zoom, liveLayers, copiedLayerIds, liveLayerIds, myPresence, socket, User.userId, forceSelectionBoxRender, canvasState, presentationMode,
+        boardId, history.length, mousePosition, performAction, redo, redoStack.length, setLiveLayerIds, setLiveLayers, undo, unselectLayers, expired, translateSelectedLayersWithDelta, initialLayers, goToNextFrame, goToPreviousFrame]);
+
+    useEffect(() => {
+        if (presentationMode) {
+
+            if (frameIds && frameIds.length === 0) {
+                toast.info("Add a frame to start presenting!");
+                setPresentationMode(false);
+                return;
+            }
+
+            if (currentFrameIndex === 0) {
+                goToFrame(0);
+            }
+        } else {
+            setCurrentFrameIndex(0);
+        }
+    }, [presentationMode, frameIds, goToFrame, currentFrameIndex]);
 
 
     // in presentation mode or if we are in focus mode we hide the toolbar
@@ -2328,32 +2303,6 @@ export const Canvas = ({
 
         return () => clearTimeout(hideToolbarTimer);
     }, [focusMode, lastMouseMove, presentationMode]);
-
-    useEffect(() => {
-        const handleKeyDown = (e: KeyboardEvent) => {
-            if (presentationMode) {
-                if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-                    goToNextFrame();
-                } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-                    goToPreviousFrame();
-                }
-            }
-        };
-
-        const handleFullscreenChange = () => {
-            if (!document.fullscreenElement && presentationMode) {
-                setPresentationMode(false);
-            }
-        };
-
-        window.addEventListener('keydown', handleKeyDown);
-        document.addEventListener('fullscreenchange', handleFullscreenChange);
-
-        return () => {
-            window.removeEventListener('keydown', handleKeyDown);
-            document.removeEventListener('fullscreenchange', handleFullscreenChange);
-        };
-    }, [presentationMode, goToNextFrame, goToPreviousFrame, setPresentationMode]);
 
     return (
         <>
@@ -2615,7 +2564,7 @@ export const Canvas = ({
                                         />
                                     )}
                                     {/* We render the frames first so they are always shown below the other layers */}
-                                    {frameIds.map((frameId: string) => {
+                                    {visibleLayers.filter(layerId => liveLayers[layerId] && liveLayers[layerId].type === LayerType.Frame).map((frameId: string) => {
                                         const frameNumber = liveLayerIds.filter(id => liveLayers[id] && liveLayers[id].type === LayerType.Frame).indexOf(frameId) + 1;
                                         const showOutlineOnHover = (canvasState.mode === CanvasMode.None || (canvasState.mode === CanvasMode.Inserting && canvasState.layerType === LayerType.Arrow)) && !presentationMode;
                                         return (
