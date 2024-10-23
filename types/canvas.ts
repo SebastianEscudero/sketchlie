@@ -382,10 +382,10 @@ export enum SelectorType {
   OutlineColor,
   ArrowHead,
   TextJustify,
-  FontSize,
   ArrowType,
-  TextStyle,
-  TextColor
+  TextColor,
+  TextHighlightColor,
+  FontFamily,
 };
 
 export type Language = 'en' | 'pt' | 'es';

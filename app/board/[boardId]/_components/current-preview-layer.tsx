@@ -1,33 +1,28 @@
 import { LayerType, PreviewLayer } from "@/types/canvas";
 import { memo } from "react";
-import { Rectangle } from "../canvas-objects/rectangle";
-import { Ellipse } from "../canvas-objects/ellipse";
-import { Note } from "../canvas-objects/note";
+import { Rectangle } from "../canvas-objects/shapes/rectangle";
+import { Ellipse } from "../canvas-objects/shapes/ellipse";
+import { Note } from "../canvas-objects/shapes/note";
 import { Text } from "../canvas-objects/text";
 import { Arrow } from "../canvas-objects/arrow";
-import { Rhombus } from "../canvas-objects/rhombus";
-import { Triangle } from "../canvas-objects/triangle";
-import { Star } from "../canvas-objects/star";
-import { Hexagon } from "../canvas-objects/hexagon";
-import { BigArrowLeft } from "../canvas-objects/bigArrowLeft";
-import { BigArrowRight } from "../canvas-objects/bigArrowRight";
-import { BigArrowUp } from "../canvas-objects/bigArrowUp";
-import { BigArrowDown } from "../canvas-objects/bigArrowDown";
-import { CommentBubble } from "../canvas-objects/commentBubble";
+import { Rhombus } from "../canvas-objects/shapes/rhombus";
+import { Triangle } from "../canvas-objects/shapes/triangle";
+import { Star } from "../canvas-objects/shapes/star";
+import { Hexagon } from "../canvas-objects/shapes/hexagon";
+import { BigArrowLeft } from "../canvas-objects/shapes/bigArrowLeft";
+import { BigArrowRight } from "../canvas-objects/shapes/bigArrowRight";
+import { BigArrowUp } from "../canvas-objects/shapes/bigArrowUp";
+import { BigArrowDown } from "../canvas-objects/shapes/bigArrowDown";
+import { CommentBubble } from "../canvas-objects/shapes/commentBubble";
 import { Line } from "../canvas-objects/line";
-import { CommentPreview } from "../canvas-objects/comment-preview";
 
 interface PreviewLayerProps {
     layer: PreviewLayer;
-    zoom: number;
-    insertLayer: any;
 };
 
 
 export const CurrentPreviewLayer = memo(({
     layer,
-    zoom,
-    insertLayer,
 }: PreviewLayerProps) => {
 
     switch (layer.type) {

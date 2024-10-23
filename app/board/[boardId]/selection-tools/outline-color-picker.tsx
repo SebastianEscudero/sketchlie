@@ -89,7 +89,7 @@ const OutlineColorButton = ({
         onClick={() => onClick(color)}
       >
       <div
-        className="w-6 h-6 my-1 items-center flex justify-center transition mx-2 border border-neutral-300 dark:border-zinc-600 rounded-[50%] bg-white dark:bg-[#383838]"
+        className="w-[22px] h-[22px] my-1 items-center flex justify-center transition mx-2 border border-neutral-300 dark:border-zinc-600 rounded-[50%] bg-white dark:bg-[#383838]"
         style={buttonStyle}
       >
         <div

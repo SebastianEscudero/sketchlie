@@ -1,6 +1,6 @@
 import { FrameLayer } from "@/types/canvas";
 import React, { memo, useState, useEffect } from "react";
-import { useUpdateValue } from "./canvas-objects-utils";
+import { useUpdateValue } from "./utils/canvas-objects-utils";
 
 interface FrameProps {
     id: string;

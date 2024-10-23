@@ -81,6 +81,7 @@ import { Comment, CommentBox } from "../canvas-objects/comment";
 import { Comment as CommentType } from "@/types/canvas";
 import { RightMiddleContainer } from "./right-middle-container";
 import { CommentPreview } from "../canvas-objects/comment-preview";
+import { useLayerTextEditingStore } from "../canvas-objects/utils/use-layer-text-editing";
 
 const preventDefault = (e: any) => {
     if (e.scale !== 1) {
@@ -118,6 +119,7 @@ export const Canvas = ({
     const [borderMove, setBorderMove] = useState({ x: 0, y: 0 });
     const [presentationMode, setPresentationMode] = useState(false);
     const [background, setBackground] = useState(() => localStorage.getItem('background') || 'circular-grid');
+    const setIsEditing = useLayerTextEditingStore(state => state.setIsEditing);
 
     // Layer management
     const [initialLayers, setInitialLayers] = useState<Layers>({});
@@ -978,6 +980,7 @@ export const Canvas = ({
             return;
         }
 
+        setIsEditing(false);
         const point = pointerEventToCanvasPoint(e, cameraRef.current, zoomRef.current, svgRef);
         if (point && selectedLayersRef.current.length > 0) {
             const bounds = calculateBoundingBox(selectedLayersRef.current.map(id => liveLayers[id]));
@@ -986,6 +989,7 @@ export const Canvas = ({
                 point.y > bounds.y &&
                 point.y < bounds.y + bounds.height) {
                 setCanvasState({ mode: CanvasMode.Translating, current: point });
+                setIsEditing(false);
                 return;
             }
         }
@@ -1558,6 +1562,7 @@ export const Canvas = ({
         e.stopPropagation();
         const point = pointerEventToCanvasPoint(e, cameraRef.current, zoomRef.current, svgRef);
         setCanvasState({ mode: CanvasMode.Translating, current: point });
+        setIsEditing(false);
 
         if (selectedLayersRef.current.includes(layerId)) {
             return;
@@ -2195,7 +2200,7 @@ export const Canvas = ({
         }
 
         updateCursor();
-    }, [canvasState, rightClickPanning]);
+    }, [canvasState, rightClickPanning, setIsEditing]);
 
     useEffect(() => {
         const updateVisibleLayers = () => {
@@ -2509,6 +2514,7 @@ export const Canvas = ({
                                 liveLayerIds={liveLayerIds}
                                 liveLayers={liveLayers}
                                 selectedLayers={selectedLayersRef.current.filter(layerId => liveLayers[layerId] && liveLayers[layerId].type !== LayerType.Comment)}
+                                selectedLayersRef={selectedLayersRef}
                                 zoom={zoom}
                                 camera={camera}
                                 socket={socket}
@@ -2671,8 +2677,6 @@ export const Canvas = ({
                                     {currentPreviewLayer && currentPreviewLayer.type !== LayerType.Comment && (
                                         <CurrentPreviewLayer
                                             layer={currentPreviewLayer}
-                                            zoom={zoom}
-                                            insertLayer={insertLayer}
                                         />
                                     )}
                                     {((canvasState.mode === CanvasMode.ArrowResizeHandler && selectedLayersRef.current.length === 1) || (currentPreviewLayer?.type === LayerType.Arrow)) && (

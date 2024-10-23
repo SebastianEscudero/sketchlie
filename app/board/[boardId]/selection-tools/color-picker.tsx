@@ -88,7 +88,7 @@ export const ColorButton = ({
   const isSelected = color.r === selectedColor?.r && color.g === selectedColor?.g && color.b === selectedColor?.b && color.a === selectedColor?.a;
   return (
     <button
-      className={`w-8 h-8 my-1 items-center flex justify-center transition ${isSelected && 'bg-neutral-100 dark:bg-zinc-700 rounded-lg'}`}
+      className={`w-8 h-8 my-1 items-center flex justify-center rounded-full transition ${isSelected && 'bg-neutral-100 dark:bg-zinc-700'}`}
       onClick={() => onClick(color)}
     >
       <div

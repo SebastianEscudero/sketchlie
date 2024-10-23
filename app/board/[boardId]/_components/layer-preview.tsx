@@ -2,25 +2,24 @@
 
 import { memo } from "react";
 import { colorToCss } from "@/lib/utils";
-import { CanvasMode, CanvasState, Layer, Layers, LayerType } from "@/types/canvas";
+import { Layer, LayerType } from "@/types/canvas";
 import { Path } from "../canvas-objects/path";
-import { Note } from "../canvas-objects/note";
+import { Note } from "../canvas-objects/shapes/note";
 import { Text } from "../canvas-objects/text";
-import { Ellipse } from "../canvas-objects/ellipse";
-import { Rectangle } from "../canvas-objects/rectangle";
+import { Ellipse } from "../canvas-objects/shapes/ellipse";
+import { Rectangle } from "../canvas-objects/shapes/rectangle";
 import { Arrow } from "../canvas-objects/arrow";
-import { Rhombus } from "../canvas-objects/rhombus";
-import { Triangle } from "../canvas-objects/triangle";
-import { Star } from "../canvas-objects/star";
-import { Hexagon } from "../canvas-objects/hexagon";
-import { BigArrowLeft } from "../canvas-objects/bigArrowLeft";
-import { BigArrowRight } from "../canvas-objects/bigArrowRight";
-import { BigArrowUp } from "../canvas-objects/bigArrowUp";
-import { BigArrowDown } from "../canvas-objects/bigArrowDown";
-import { CommentBubble } from "../canvas-objects/commentBubble";
+import { Rhombus } from "../canvas-objects/shapes/rhombus";
+import { Triangle } from "../canvas-objects/shapes/triangle";
+import { Star } from "../canvas-objects/shapes/star";
+import { Hexagon } from "../canvas-objects/shapes/hexagon";
+import { BigArrowLeft } from "../canvas-objects/shapes/bigArrowLeft";
+import { BigArrowRight } from "../canvas-objects/shapes/bigArrowRight";
+import { BigArrowUp } from "../canvas-objects/shapes/bigArrowUp";
+import { BigArrowDown } from "../canvas-objects/shapes/bigArrowDown";
+import { CommentBubble } from "../canvas-objects/shapes/commentBubble";
 import { Line } from "../canvas-objects/line";
 import { InsertImage } from "../canvas-objects/image";
-import { Frame } from "../canvas-objects/frame";
 import { SVGLayer } from "../canvas-objects/svg-layer";
 
 interface LayerPreviewProps {
