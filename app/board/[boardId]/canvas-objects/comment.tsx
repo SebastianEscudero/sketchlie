@@ -174,7 +174,7 @@ const CommentAvatar = memo(({ id, layer, initial, onPointerDown, setOpenCommentB
                             <p className="font-bold w-[120px] truncate">{author?.information.name}</p>
                             <p className={`text-xs ${isMentioned ? 'text-blue-600' : 'text-zinc-900 dark:text-zinc-300'}`}>{formatTimeAgo(createdAt!)} </p>
                         </div>
-                        <p className="w-[200px] overflow-x-hidden">
+                        <p className="w-[190px] overflow-x-hidden">
                             {content ? (
                                 <span dangerouslySetInnerHTML={{ __html: content }} />
                             ) : (
