@@ -91,7 +91,7 @@ export const CommentsPanel = ({
 
     return (
         <div className="flex flex-col h-full">
-            <div className="px-2 py-1">
+            <div className="px-2 py-1 flex-shrink-0">
                 <Select
                     value={commentFilter}
                     onValueChange={(value: 'all' | 'mentions') => setCommentFilter(value)}
@@ -105,73 +105,75 @@ export const CommentsPanel = ({
                     </SelectContent>
                 </Select>
             </div>
-            <ScrollArea className="flex-1 p-1">
-                {filteredCommentIds.map((commentId) => {
-                    const comment = liveLayers[commentId] as CommentType;
-                    if (!comment) return null;
+            <ScrollArea className="h-[calc(100vh-270px)] px-1">
+                <div className="pr-4 space-y-2">
+                    {filteredCommentIds.map((commentId) => {
+                        const comment = liveLayers[commentId] as CommentType;
+                        if (!comment) return null;
 
-                    const replyCount = comment.replies?.length || 0;
-                    const uniqueRepliers = comment.replies
-                        ? Array.from(new Set(comment.replies.map(reply => reply.author?.userId)))
-                            .slice(0, MAX_SHOWN_REPLIES)
-                            .map(userId => comment.replies!.find(reply => reply.author?.userId === userId)!)
-                        : [];
+                        const replyCount = comment.replies?.length || 0;
+                        const uniqueRepliers = comment.replies
+                            ? Array.from(new Set(comment.replies.map(reply => reply.author?.userId)))
+                                .slice(0, MAX_SHOWN_REPLIES)
+                                .map(userId => comment.replies!.find(reply => reply.author?.userId === userId)!)
+                            : [];
 
-                    const userMentioned = isUserMentioned(comment);
+                        const userMentioned = isUserMentioned(comment);
 
-                    return (
-                        <div
-                            key={commentId}
-                            className={cn(
-                                "mb-3 border-b border-zinc-200 dark:border-zinc-400 p-3 last:border-b-0 overflow-hidden relative",
-                                userMentioned && "bg-blue-50",
-                                openCommentBoxId === commentId && "bg-blue-500/20 border-l-4 border-l-blue-500"
-                            )}
-                            onPointerDown={() => handleCommentClick(commentId)}
-                        >
-                            {userMentioned && (
-                                <span className="absolute -top-1 -right-1 bg-blue-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
-                                    @
-                                </span>
-                            )}
-                            <div className="flex items-start space-x-2">
-                                <Avatar className="w-8 h-8 border-2 border-blue-500">
-                                    <AvatarImage src={comment.author?.information?.picture} />
-                                    <AvatarFallback className="text-xs font-semibold">{comment.author?.information?.name?.[0]?.toUpperCase() || '?'}</AvatarFallback>
-                                </Avatar>
-                                <div className="flex-1">
-                                    <div className="flex items-center justify-between">
-                                        <div className="flex items-center space-x-1">
-                                            <span className="font-semibold text-sm w-[165px] truncate">{comment.author?.information?.name || 'Anonymous'}</span>
-                                        </div>
-                                        <span className="text-xs text-zinc-500 dark:text-zinc-400">
-                                            {formatTimeAgo(new Date(comment.createdAt!))}
-                                        </span>
-                                    </div>
-                                    <p
-                                        className="text-sm mt-1"
-                                        dangerouslySetInnerHTML={{ __html: comment.content || '' }}
-                                    />                                
-                                    {replyCount > 0 && (
-                                        <div className="mt-2 flex items-center">
-                                            <div className="flex -space-x-2 mr-2">
-                                                {uniqueRepliers.map((reply) => (
-                                                    <Avatar key={reply.id} className="w-7 h-7 border border-zinc-300 dark:border-zinc-600">
-                                                        <AvatarImage src={reply.author?.information?.picture} />
-                                                        <AvatarFallback className="text-xs font-semibold border-2">{reply.author?.information?.name?.[0]?.toUpperCase() || '?'}</AvatarFallback>
-                                                    </Avatar>
-                                                ))}
+                        return (
+                            <div
+                                key={commentId}
+                                className={cn(
+                                    "mb-3 border-b border-zinc-200 dark:border-zinc-400 p-3 last:border-b-0 overflow-hidden relative",
+                                    userMentioned && "bg-blue-50",
+                                    openCommentBoxId === commentId && "bg-blue-500/20 border-l-4 border-l-blue-500"
+                                )}
+                                onPointerDown={() => handleCommentClick(commentId)}
+                            >
+                                {userMentioned && (
+                                    <span className="absolute top-0 right-0 bg-blue-500 text-white text-[10px] font-bold p-0.5 px-1 rounded-full">
+                                        @
+                                    </span>
+                                )}
+                                <div className="flex items-start space-x-2">
+                                    <Avatar className="w-8 h-8 border-2 border-blue-500">
+                                        <AvatarImage src={comment.author?.information?.picture} />
+                                        <AvatarFallback className="text-xs font-semibold">{comment.author?.information?.name?.[0]?.toUpperCase() || '?'}</AvatarFallback>
+                                    </Avatar>
+                                    <div className="flex-1">
+                                        <div className="flex items-center justify-between">
+                                            <div className="flex items-center space-x-1">
+                                                <span className="font-semibold text-sm w-[165px] truncate">{comment.author?.information?.name || 'Anonymous'}</span>
                                             </div>
-                                            <span className="text-xs text-blue-500 dark:text-blue-400 font-semibold">
-                                                {replyCount} {replyCount === 1 ? 'reply' : 'replies'}
+                                            <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                                                {formatTimeAgo(new Date(comment.createdAt!))}
                                             </span>
                                         </div>
-                                    )}
+                                        <p
+                                            className="text-sm mt-1"
+                                            dangerouslySetInnerHTML={{ __html: comment.content || '' }}
+                                        />                                
+                                        {replyCount > 0 && (
+                                            <div className="mt-2 flex items-center">
+                                                <div className="flex -space-x-2 mr-2">
+                                                    {uniqueRepliers.map((reply) => (
+                                                        <Avatar key={reply.id} className="w-7 h-7 border border-zinc-300 dark:border-zinc-600">
+                                                            <AvatarImage src={reply.author?.information?.picture} />
+                                                            <AvatarFallback className="text-xs font-semibold border-2">{reply.author?.information?.name?.[0]?.toUpperCase() || '?'}</AvatarFallback>
+                                                        </Avatar>
+                                                    ))}
+                                                </div>
+                                                <span className="text-xs text-blue-500 dark:text-blue-400 font-semibold">
+                                                    {replyCount} {replyCount === 1 ? 'reply' : 'replies'}
+                                                </span>
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    );
-                })}
+                        );
+                    })}
+                </div>
             </ScrollArea>
         </div>
     );
