@@ -32,6 +32,7 @@ export const InsertImage = memo(({
 }: ImageProps) => {
   const { x, y, width, height, src, addedBy } = layer;
   const [strokeColor, setStrokeColor] = useState(selectionColor || "none");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setStrokeColor(selectionColor || "none");
@@ -76,10 +77,31 @@ export const InsertImage = memo(({
         height={height}
         stroke={strokeColor}
         strokeWidth="1"
-        fill="transparent"
+        fill={isLoading ? "#f4f4f5" : "none"}
         strokeLinecap='round'
         strokeLinejoin='round'
       />
+      {isLoading && (
+        <svg
+          x={x + width / 2 - 12}
+          y={y + height / 2 - 12}
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+        >
+          <path d="M21 12a9 9 0 1 1-6.219-8.56" stroke="#3390FF">
+            <animateTransform
+              attributeName="transform"
+              type="rotate"
+              from="0 12 12"
+              to="360 12 12"
+              dur="1s"
+              repeatCount="indefinite"
+            />
+          </path>
+        </svg>
+      )}
       <image
         crossOrigin="anonymous"
         id={id}
@@ -88,8 +110,10 @@ export const InsertImage = memo(({
         y={y}
         width={width}
         height={height}
+        onLoad={() => setIsLoading(false)}
       />
     </g>
-)});
+  );
+});
 
 InsertImage.displayName = 'InsertImage';
