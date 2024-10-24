@@ -12,7 +12,6 @@ import {
     pointerEventToCanvasPoint,
     resizeBounds,
     findIntersectingLayersWithPoint,
-    getShapeType,
     resizeBox,
     calculateBoundingBox,
     removeHighlightFromText,
@@ -25,7 +24,6 @@ import {
     findIntersectingLayersWithPath,
     isLayerVisible,
     applyStraightnessAssist,
-    SketchlieCopilot,
 } from "@/lib/utils";
 
 import {
@@ -34,7 +32,6 @@ import {
     ArrowLayer,
     ArrowOrientation,
     ArrowType,
-    BaseShapeLayer,
     Camera,
     CanvasMode,
     CanvasState,
@@ -83,6 +80,7 @@ import { Comment as CommentType } from "@/types/canvas";
 import { RightMiddleContainer } from "./right-middle-container";
 import { CommentPreview } from "../canvas-objects/comment-preview";
 import { useLayerTextEditingStore } from "../canvas-objects/utils/use-layer-text-editing";
+import { SelectionNet } from "./selection-net";
 
 const preventDefault = (e: any) => {
     if (e.scale !== 1) {
@@ -2533,18 +2531,11 @@ export const Canvas = ({
                                 className="h-[100vh] w-[100vw]"
                                 viewBox={`0 0 ${window.innerWidth} ${window.innerHeight}`}
                             >
-                                <defs>
-                                    <filter id="drop-shadow" x="-10%" y="-10%" width="120%" height="130%">
-                                        <feGaussianBlur in="SourceAlpha" stdDeviation="2" />
-                                        <feOffset dx="0" dy="4" result="offsetblur" />
-                                        <feFlood floodColor="rgba(0,0,0,0.3)" />
-                                        <feComposite in2="offsetblur" operator="in" />
-                                        <feMerge>
-                                            <feMergeNode />
-                                            <feMergeNode in="SourceGraphic" />
-                                        </feMerge>
-                                    </filter>
-                                </defs>
+                            <defs >
+                                <filter id="drop-shadow" x="-20%" y="-20%" width="140%" height="140%">
+                                    <feDropShadow dx="0" dy="2" stdDeviation="2" floodColor="rgba(0, 0, 0, 0.25)" />
+                                </filter>
+                            </defs>
                                 <g
                                     style={{
                                         transform: `translate(${camera.x}px, ${camera.y}px) scale(${zoom})`,
@@ -2562,6 +2553,8 @@ export const Canvas = ({
                                     {visibleLayers.filter(layerId => liveLayers[layerId] && liveLayers[layerId].type === LayerType.Frame).map((frameId: string) => {
                                         const frameNumber = liveLayerIds.filter(id => liveLayers[id] && liveLayers[id].type === LayerType.Frame).indexOf(frameId) + 1;
                                         const showOutlineOnHover = (canvasState.mode === CanvasMode.None || (canvasState.mode === CanvasMode.Inserting && canvasState.layerType === LayerType.Arrow)) && !presentationMode;
+                                        const isFocused = selectedLayersRef.current.length === 1 && selectedLayersRef.current[0] === frameId && !justChanged;
+
                                         return (
                                             <Frame
                                                 key={frameId}
@@ -2575,6 +2568,7 @@ export const Canvas = ({
                                                 forcedRender={forceLayerPreviewRender}
                                                 showOutlineOnHover={showOutlineOnHover}
                                                 setAddedByLabel={setAddedByLabel}
+                                                focused={isFocused}
                                             />
                                         );
                                     })}
@@ -2637,16 +2631,10 @@ export const Canvas = ({
                                         <EraserTrail mousePosition={mousePosition} zoom={zoom} />
                                     )}
                                     {canvasState.mode === CanvasMode.SelectionNet && canvasState.current != null && activeTouches < 2 && (
-                                        <rect
-                                            style={{
-                                                fill: 'rgba(59, 130, 246, 0.3)',
-                                                stroke: '#3B82F6',
-                                                strokeWidth: 1 / zoom,
-                                            }}
-                                            x={Math.min(canvasState.origin.x, canvasState.current.x)}
-                                            y={Math.min(canvasState.origin.y, canvasState.current.y)}
-                                            width={Math.abs(canvasState.origin.x - canvasState.current.x)}
-                                            height={Math.abs(canvasState.origin.y - canvasState.current.y)}
+                                        <SelectionNet
+                                            origin={canvasState.origin}
+                                            current={canvasState.current}
+                                            zoom={zoom}
                                         />
                                     )}
                                     {/* We render the comments last so they always show on top of other layers */}

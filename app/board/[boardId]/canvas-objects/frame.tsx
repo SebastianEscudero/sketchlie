@@ -14,6 +14,7 @@ interface FrameProps {
     selectionColor?: string;
     showOutlineOnHover?: boolean;
     setAddedByLabel?: (addedBy: string) => void;
+    focused?: boolean; // Added focused prop
 };
 
 export const Frame = memo(({
@@ -27,21 +28,22 @@ export const Frame = memo(({
     selectionColor,
     forcedRender,
     showOutlineOnHover,
-    setAddedByLabel
+    setAddedByLabel,
+    focused // Destructure focused prop
 }: FrameProps) => {
     const { x, y, width, height, value: initialValue, addedBy } = layer;
     const fontSize = Math.min(width, height) * 0.05;
     const padding = fontSize * 0.5;
     const [isEditing, setIsEditing] = useState(false);
     const [value, setValue] = useState(initialValue || `Frame ${frameNumber || ""}`);
-    const [strokeColor, setStrokeColor] = useState(selectionColor || document.documentElement.classList.contains("dark") ? "#FFFFFF" : "#000000");
+    const [strokeColor, setStrokeColor] = useState(selectionColor || "none");
 
     useEffect(() => {
         setValue(initialValue || `Frame ${frameNumber || ""}`);
     }, [frameNumber, initialValue]);
 
     useEffect(() => {
-        setStrokeColor(selectionColor || document.documentElement.classList.contains("dark") ? "#FFFFFF" : "#000000");
+        setStrokeColor(selectionColor || "none");
     }, [selectionColor, forcedRender]);
 
     const updateValue = useUpdateValue();
@@ -69,7 +71,7 @@ export const Frame = memo(({
             pointerEvents="auto"
             data-id={`frame-${frameNumber}`}
             onPointerEnter={() => { if (showOutlineOnHover) { setStrokeColor("#3390FF"); setAddedByLabel?.(addedBy || '') } }}
-            onPointerLeave={() => { setStrokeColor(selectionColor || document.documentElement.classList.contains("dark") ? "#FFFFFF" : "#000000"); setAddedByLabel?.('') }}
+            onPointerLeave={() => { setStrokeColor(selectionColor || "none"); setAddedByLabel?.('') }}
         >
             {isEditing ? (
                 <foreignObject x={padding} y={-(padding + fontSize)} width={width - 2 * padding} height={fontSize + 10}>
@@ -90,16 +92,23 @@ export const Frame = memo(({
                     />
                 </foreignObject>
             ) : (
-                <text
-                    x={padding}
-                    y={-(padding)}
-                    fontSize={fontSize}
-                    fill={strokeColor}
-                    className="font-semibold"
-                >
-                    {value}
-                </text>
+                focused && ( // Conditionally render text based on focused
+                    <text
+                        x={padding}
+                        y={-(padding)}
+                        fontSize={fontSize}
+                        fill={document.documentElement.classList.contains("dark") ? "#FFFFFF" : "#000000"}
+                        className="font-semibold"
+                    >
+                        {value}
+                    </text>
+                )
             )}
+        <defs>
+            <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="0" dy="2" stdDeviation="2" floodColor="rgba(0, 0, 0, 0.25)" />
+            </filter>
+        </defs>
             <rect
                 width={width}
                 height={height}
@@ -108,6 +117,7 @@ export const Frame = memo(({
                 strokeWidth="1"
                 strokeLinecap="round"
                 strokeLinejoin="round"
+                filter="url(#shadow)"
             />
         </g>
     );
