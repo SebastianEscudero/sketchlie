@@ -45,7 +45,7 @@ export const BaseShape = memo(({
   renderShape,
   foreignObjectDimensions
 }: BaseShapeProps) => {
-  const { x, y, width, height, fill, outlineFill, value, textFontSize, fontFamily, addedBy } = layer;
+  const { x, y, fill, outlineFill, value, textFontSize, fontFamily, addedBy } = layer;
   const alignX = layer.alignX || "center";
   const alignY = layer.alignY || "center";
   const [editableValue, setEditableValue] = useState(value);
