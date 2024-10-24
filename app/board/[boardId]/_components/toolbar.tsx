@@ -1,10 +1,8 @@
 import {
   Eraser,
   Frame,
-  Hand,
   Highlighter,
   Image,
-  Lightbulb,
   Link,
   MessageCircle,
   MousePointer2,
@@ -19,7 +17,7 @@ import {
   Undo2,
 } from "lucide-react";
 
-import { ArrowType, CanvasMode, CanvasState, Color, LayerType, Point } from "@/types/canvas";
+import { ArrowType, CanvasMode, CanvasState, Color, LayerType, Point, ToolbarMenu } from "@/types/canvas";
 import { ToolButton } from "./tool-button";
 import { MediaButton } from "./media-button";
 import { Dispatch, memo, SetStateAction, useEffect } from "react";
@@ -31,6 +29,7 @@ import { PenEraserLaserMenu } from "./pen-eraser-laser-menu";
 import { ArrowMenu } from "./arrow-menu";
 import { LinkButton } from "./link-button";
 import { PresentationModeToolbar } from "./presentation-mode-toolbar";
+import { FrameMenu } from "./frame-menu";
 
 interface ToolbarProps {
   isUploading: boolean;
@@ -47,14 +46,7 @@ interface ToolbarProps {
   canRedo: boolean;
   arrowTypeInserting: ArrowType;
   setArrowTypeInserting: (type: ArrowType) => void;
-  isArrowsMenuOpen: boolean;
-  setIsArrowsMenuOpen: Dispatch<SetStateAction<boolean>>;
-  isShapesMenuOpen: boolean;
-  setIsShapesMenuOpen: Dispatch<SetStateAction<boolean>>;
-  isPenEraserLaserMenuOpen: boolean;
-  setisPenEraserLaserMenuOpen: Dispatch<SetStateAction<boolean>>;
   pathColor: Color;
-  isPlacingLayer: boolean;
   expired: boolean;
   insertMedia: (mediaItems: { layerType: LayerType.Image | LayerType.Video | LayerType.Link | LayerType.Svg, position: Point, info: any, zoom: number }[]) => void;
   camera: any;
@@ -66,6 +58,9 @@ interface ToolbarProps {
   currentFrameIndex: number;
   goToFrame: (index: number) => void;
   showToolbar: boolean;
+  insertLayer: (layerType: LayerType, position: any, width: number, height: number) => void;
+  toolbarMenu: ToolbarMenu;
+  setToolbarMenu: (menu: ToolbarMenu) => void;
 }
 
 export const Toolbar = memo(({
@@ -83,14 +78,7 @@ export const Toolbar = memo(({
   canRedo,
   arrowTypeInserting,
   setArrowTypeInserting,
-  isArrowsMenuOpen,
-  setIsArrowsMenuOpen,
-  isShapesMenuOpen,
-  setIsShapesMenuOpen,
-  isPenEraserLaserMenuOpen,
-  setisPenEraserLaserMenuOpen,
   pathColor,
-  isPlacingLayer,
   expired,
   insertMedia,
   camera,
@@ -102,6 +90,9 @@ export const Toolbar = memo(({
   currentFrameIndex,
   goToFrame,
   showToolbar,
+  toolbarMenu,
+  setToolbarMenu,
+  insertLayer,
 }: ToolbarProps) => {
   const onPathColorChange = (color: any) => {
     setPathColor(color);
@@ -112,28 +103,10 @@ export const Toolbar = memo(({
   }
 
   useEffect(() => {
-    if (canvasState.mode !== CanvasMode.Pencil && canvasState.mode !== CanvasMode.Eraser && canvasState.mode !== CanvasMode.Laser && canvasState.mode !== CanvasMode.Highlighter) {
-      setisPenEraserLaserMenuOpen(false);
+    if (canvasState.mode !== CanvasMode.Inserting && toolbarMenu !== ToolbarMenu.PenEraserLaser) {
+      setToolbarMenu(ToolbarMenu.None);
     }
-
-    if (canvasState.mode !== CanvasMode.Inserting || isPlacingLayer) {
-      setIsShapesMenuOpen(false);
-    } else {
-      if (canvasState.layerType === LayerType.Arrow || canvasState.layerType === LayerType.Note || canvasState.layerType === LayerType.Text) {
-        setIsShapesMenuOpen(false);
-      }
-    }
-
-    if (canvasState.mode !== CanvasMode.Inserting || isPlacingLayer) {
-      setIsArrowsMenuOpen(false);
-    } else {
-      if (canvasState.layerType !== LayerType.Arrow) {
-        setIsArrowsMenuOpen(false
-        );
-      }
-    }
-
-  }, [canvasState, isPlacingLayer]);
+  }, [canvasState.mode, toolbarMenu, setToolbarMenu]);
 
   if (expired) {
     return null;
@@ -180,19 +153,9 @@ export const Toolbar = memo(({
             canvasState.mode === CanvasMode.Resizing
           }
         />
-        {/* <ToolButton
-          label="Move"
-          icon={Hand}
-          onClick={() => setCanvasState({
-            mode: CanvasMode.Moving
-          })}
-          isActive={
-            canvasState.mode === CanvasMode.Moving
-          }
-        /> */}
         <ToolButton
           label={
-            !isPenEraserLaserMenuOpen
+            toolbarMenu !== ToolbarMenu.PenEraserLaser
               ? canvasState.mode === CanvasMode.Laser
                 ? "Laser"
                 : canvasState.mode === CanvasMode.Eraser
@@ -212,12 +175,22 @@ export const Toolbar = memo(({
                   : Pen
           }
           onClick={() => {
-            if (!isPenEraserLaserMenuOpen) {
+            if (toolbarMenu !== ToolbarMenu.PenEraserLaser) {
+              const newMode = (
+                canvasState.mode !== CanvasMode.Highlighter &&
+                canvasState.mode !== CanvasMode.Eraser &&
+                canvasState.mode !== CanvasMode.Laser
+              ) ? CanvasMode.Pencil : canvasState.mode;
+
               setCanvasState({
-                mode: CanvasMode.Pencil,
+                mode: newMode,
               });
             }
-            setisPenEraserLaserMenuOpen(!isPenEraserLaserMenuOpen);
+            setToolbarMenu(
+              toolbarMenu === ToolbarMenu.PenEraserLaser 
+                ? ToolbarMenu.None 
+                : ToolbarMenu.PenEraserLaser
+            );
           }}
           isActive={
             canvasState.mode === CanvasMode.Pencil ||
@@ -227,16 +200,20 @@ export const Toolbar = memo(({
           }
         />
         <ToolButton
-          label={!isShapesMenuOpen ? "Shapes" : undefined}
+          label={toolbarMenu !== ToolbarMenu.Shapes ? "Shapes" : undefined}
           icon={Shapes}
           onClick={() => {
-            if (!isShapesMenuOpen) {
+            if (toolbarMenu !== ToolbarMenu.Shapes) {
               setCanvasState({
                 mode: CanvasMode.Inserting,
                 layerType: LayerType.Rectangle
               });
             }
-            setIsShapesMenuOpen(!isShapesMenuOpen);
+            setToolbarMenu(
+              toolbarMenu === ToolbarMenu.Shapes 
+                ? ToolbarMenu.None 
+                : ToolbarMenu.Shapes
+            );
           }}
           isActive={
             canvasState.mode === CanvasMode.Inserting &&
@@ -255,7 +232,11 @@ export const Toolbar = memo(({
               mode: CanvasMode.Inserting,
               layerType: LayerType.Arrow,
             });
-            setIsArrowsMenuOpen(!isArrowsMenuOpen);
+            setToolbarMenu(
+              toolbarMenu === ToolbarMenu.Arrows 
+                ? ToolbarMenu.None 
+                : ToolbarMenu.Arrows
+            );
           }}
           isActive={
             canvasState.mode === CanvasMode.Inserting &&
@@ -301,10 +282,17 @@ export const Toolbar = memo(({
         <ToolButton
           label="Frame"
           icon={Frame}
-          onClick={() => setCanvasState({
-            mode: CanvasMode.Inserting,
-            layerType: LayerType.Frame,
-          })}
+          onClick={() => {
+            setCanvasState({
+              mode: CanvasMode.Inserting,
+              layerType: LayerType.Frame,
+            });
+            setToolbarMenu(
+              toolbarMenu === ToolbarMenu.Frames 
+                ? ToolbarMenu.None 
+                : ToolbarMenu.Frames
+            );
+          }}
           isActive={
             canvasState.mode === CanvasMode.Inserting &&
             canvasState.layerType === LayerType.Frame
@@ -351,14 +339,14 @@ export const Toolbar = memo(({
           </Button>
         </Hint>
       </div>
-      {isShapesMenuOpen && canvasState.mode === CanvasMode.Inserting && canvasState.layerType !== LayerType.Text && canvasState.layerType !== LayerType.Arrow && canvasState.layerType !== LayerType.Note &&
+      {toolbarMenu === ToolbarMenu.Shapes && canvasState.mode === CanvasMode.Inserting && canvasState.layerType !== LayerType.Text && canvasState.layerType !== LayerType.Arrow && canvasState.layerType !== LayerType.Note &&
         <ShapesMenu
           setCanvasState={setCanvasState}
           canvasState={canvasState}
-          isShapesMenuOpen={isShapesMenuOpen}
+          isShapesMenuOpen={toolbarMenu === ToolbarMenu.Shapes}
         />
       }
-      {isPenEraserLaserMenuOpen && (canvasState.mode === CanvasMode.Pencil || canvasState.mode === CanvasMode.Eraser || canvasState.mode === CanvasMode.Laser || canvasState.mode === CanvasMode.Highlighter) &&
+      {toolbarMenu === ToolbarMenu.PenEraserLaser && (canvasState.mode === CanvasMode.Pencil || canvasState.mode === CanvasMode.Eraser || canvasState.mode === CanvasMode.Laser || canvasState.mode === CanvasMode.Highlighter) &&
         <PenEraserLaserMenu
           setCanvasState={setCanvasState}
           canvasState={canvasState}
@@ -366,15 +354,24 @@ export const Toolbar = memo(({
           pathStrokeSize={pathStrokeSize}
           onPathColorChange={onPathColorChange}
           handleStrokeSizeChange={handleStrokeSizeChange}
-          isPenEraserLaserMenuOpen={isPenEraserLaserMenuOpen}
+          isPenEraserLaserMenuOpen={toolbarMenu === ToolbarMenu.PenEraserLaser}
         />
       }
-      {isArrowsMenuOpen && canvasState.mode === CanvasMode.Inserting && canvasState.layerType === LayerType.Arrow &&
+      {toolbarMenu === ToolbarMenu.Arrows && canvasState.mode === CanvasMode.Inserting && canvasState.layerType === LayerType.Arrow &&
         <ArrowMenu
           setCanvasState={setCanvasState}
           arrowTypeInserting={arrowTypeInserting}
           setArrowTypeInserting={setArrowTypeInserting}
-          isArrowsMenuOpen={isArrowsMenuOpen}
+          isArrowsMenuOpen={toolbarMenu === ToolbarMenu.Arrows}
+        />
+      }
+      {toolbarMenu === ToolbarMenu.Frames && canvasState.mode === CanvasMode.Inserting && canvasState.layerType === LayerType.Frame &&
+        <FrameMenu
+          isFrameMenuOpen={toolbarMenu === ToolbarMenu.Frames}
+          camera={camera}
+          zoom={zoom}
+          insertLayer={insertLayer}
+          svgRef={svgRef}
         />
       }
     </div>

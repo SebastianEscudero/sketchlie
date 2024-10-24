@@ -388,4 +388,12 @@ export enum SelectorType {
   FontFamily,
 };
 
+export enum ToolbarMenu {
+  None,
+  Shapes,
+  Arrows,
+  PenEraserLaser,
+  Frames,
+}
+
 export type Language = 'en' | 'pt' | 'es';

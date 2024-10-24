@@ -47,6 +47,7 @@ import {
     PreviewLayer,
     Side,
     SvgLayer,
+    ToolbarMenu,
     XYWH,
 } from "@/types/canvas";
 
@@ -109,6 +110,7 @@ export const Canvas = ({
     const proModal = useProModal();
 
     // Canvas state and controls
+    const [toolbarMenu, setToolbarMenu] = useState<ToolbarMenu>(ToolbarMenu.None);
     const [canvasState, setCanvasState] = useState<CanvasState>({ mode: CanvasMode.None });
     const [camera, setCamera] = useState<Camera>({ x: 0, y: 0 });
     const [zoom, setZoom] = useState(1);
@@ -143,9 +145,6 @@ export const Canvas = ({
     const [isShowingAIInput, setIsShowingAIInput] = useState(false);
     const [isMoving, setIsMoving] = useState(false);
     const [justChanged, setJustChanged] = useState(false);
-    const [isArrowsMenuOpen, setIsArrowsMenuOpen] = useState(false);
-    const [isShapesMenuOpen, setIsShapesMenuOpen] = useState(false);
-    const [isPenEraserLaserMenuOpen, setisPenEraserLaserMenuOpen] = useState(false);
     const [isDraggingOverCanvas, setIsDraggingOverCanvas] = useState(false);
     const [isUploading, setIsUploading] = useState(false);
     const [justInsertedText, setJustInsertedText] = useState(false);
@@ -1010,12 +1009,12 @@ export const Canvas = ({
         if (e.button === 0 && !isPanning) {
             //.When inserting a comment layer and we click anywhere else with left click, we close the comment layer preview
             if (canvasState.mode === CanvasMode.Eraser) {
-                setisPenEraserLaserMenuOpen(false);
+                setToolbarMenu(ToolbarMenu.None);
                 return;
             }
 
             if (canvasState.mode === CanvasMode.Laser || canvasState.mode === CanvasMode.Pencil || canvasState.mode === CanvasMode.Highlighter) {
-                setisPenEraserLaserMenuOpen(false);
+                setToolbarMenu(ToolbarMenu.None);
                 startDrawing(point, e.pressure);
                 return;
             }
@@ -2352,13 +2351,6 @@ export const Canvas = ({
                             canRedo={redoStack.length > 0}
                             arrowTypeInserting={arrowTypeInserting}
                             setArrowTypeInserting={setArrowTypeInserting}
-                            isArrowsMenuOpen={isArrowsMenuOpen}
-                            setIsArrowsMenuOpen={setIsArrowsMenuOpen}
-                            isShapesMenuOpen={isShapesMenuOpen}
-                            setIsShapesMenuOpen={setIsShapesMenuOpen}
-                            isPenEraserLaserMenuOpen={isPenEraserLaserMenuOpen}
-                            setisPenEraserLaserMenuOpen={setisPenEraserLaserMenuOpen}
-                            isPlacingLayer={currentPreviewLayer !== null}
                             expired={expired}
                             insertMedia={insertMedia}
                             camera={cameraRef.current}
@@ -2370,6 +2362,9 @@ export const Canvas = ({
                             currentFrameIndex={currentFrameIndex}
                             goToFrame={goToFrame}
                             showToolbar={showToolbar}
+                            insertLayer={insertLayer}
+                            toolbarMenu={toolbarMenu}
+                            setToolbarMenu={setToolbarMenu}
                         />
                         {!presentationMode && (
                             <>
