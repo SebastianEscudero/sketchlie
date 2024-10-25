@@ -70,8 +70,8 @@ export const Frame = memo(({
             onDoubleClick={handleDoubleClick}
             pointerEvents="auto"
             data-id={`frame-${frameNumber}`}
-            onPointerEnter={() => { if (showOutlineOnHover) { setStrokeColor("#3390FF"); setAddedByLabel?.(addedBy || '') } }}
-            onPointerLeave={() => { setStrokeColor(selectionColor || "none"); setAddedByLabel?.('') }}
+            onPointerEnter={() => { if (showOutlineOnHover) { setAddedByLabel?.(addedBy || '') } }}
+            onPointerLeave={() => { setAddedByLabel?.('') }}
         >
             {isEditing ? (
                 <foreignObject x={padding} y={-(padding + fontSize)} width={width - 2 * padding} height={fontSize + 10}>
