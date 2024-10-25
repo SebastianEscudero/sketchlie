@@ -1,7 +1,7 @@
 "use client";
 
 import { customAlphabet } from "nanoid";
-import React, { useCallback, useMemo, useState, useEffect, useRef } from "react";
+import React, { useCallback, useMemo, useState, useEffect, useRef, memo } from "react";
 
 import {
     colorToCss,
@@ -123,7 +123,6 @@ export const Canvas = ({
 
     // Layer management
     const [initialLayers, setInitialLayers] = useState<Layers>({});
-    const [visibleLayers, setVisibleLayers] = useState<string[]>([]);
     const selectedLayersRef = useRef<string[]>([]);
     const [copiedLayerIds, setCopiedLayerIds] = useState<string[]>([]);
     const [currentPreviewLayer, setCurrentPreviewLayer] = useState<PreviewLayer | null>(null);
@@ -197,6 +196,37 @@ export const Canvas = ({
             return layer && layer.type === LayerType.Comment;
         });
     }, [liveLayerIds, liveLayers]);
+
+    const visibleLayerIds = useMemo(() => {
+        if (!svgRef.current || !liveLayerIds || !liveLayers) return [];
+    
+        const visibleRect = presentationMode && frameIds.length > 0
+            ? {
+                x: liveLayers[frameIds[currentFrameIndex]].x,
+                y: liveLayers[frameIds[currentFrameIndex]].y,
+                width: liveLayers[frameIds[currentFrameIndex]].width,
+                height: liveLayers[frameIds[currentFrameIndex]].height
+            }
+            : {
+                x: -camera.x / zoom,
+                y: -camera.y / zoom,
+                width: window.innerWidth / zoom,
+                height: window.innerHeight / zoom
+            };
+    
+        return liveLayerIds.filter((layerId: string) => {
+            const layer = liveLayers[layerId];
+            return layer && isLayerVisible(layer, visibleRect);
+        });
+    }, [
+        liveLayerIds, 
+        liveLayers, 
+        camera, 
+        zoom, 
+        presentationMode, 
+        frameIds, 
+        currentFrameIndex
+    ]);
 
     const filteredOrgTeammates = useMemo(() =>
         org.users.filter((user: typeof org.users[0]) => user.id !== User.userId),
@@ -933,41 +963,47 @@ export const Canvas = ({
         });
     }, []);
 
-    const onWheel = useCallback((e: React.WheelEvent) => {
-        setPresentationMode(false);
+  const onWheel = useCallback((e: React.WheelEvent) => {
+    setPresentationMode(false);
+    e.preventDefault();
 
-        const svgRect = e.currentTarget.getBoundingClientRect();
-        const x = e.clientX - svgRect.left;
-        const y = e.clientY - svgRect.top;
+    const svgRect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - svgRect.left;
+    const y = e.clientY - svgRect.top;
 
-        const isMouseWheel = Math.abs(e.deltaY) > 90 && e.deltaX === 0;
+    const isMouseWheel = Math.abs(e.deltaY) > 90 && e.deltaX === 0;
 
-        if (e.ctrlKey || isMouseWheel) {
-            // Zooming
-            const zoomSpeed = isMouseWheel ? 1.3 : 1.2;
-            let newZoom = zoom;
-            if (e.deltaY < 0) {
-                newZoom = Math.min(zoom * zoomSpeed, 10);
-            } else {
-                newZoom = Math.max(zoom / zoomSpeed, 0.3);
-            }
+    if (e.ctrlKey || isMouseWheel) {
+        const delta = -e.deltaY;
+        
+        // Adjust delta multiplier based on input type
+        const multiplier = isMouseWheel ? 0.0015 : 0.02;  // Much smaller for mouse wheel
+        const normalizedDelta = delta * multiplier * zoom;
+        
+        const nextZoom = Math.min(
+            Math.max(
+                zoom + normalizedDelta,
+                0.3
+            ),
+            10
+        );
 
-            const zoomFactor = newZoom / zoom;
-            const newX = x - (x - camera.x) * zoomFactor;
-            const newY = y - (y - camera.y) * zoomFactor;
+        const wx = (x - camera.x) / zoom;
+        const wy = (y - camera.y) / zoom;
 
-            setZoom(newZoom);
-            setCamera({ x: newX, y: newY });
-        } else {
-            // Panning
-            const newCameraPosition = {
-                x: camera.x - e.deltaX,
-                y: camera.y - e.deltaY,
-            };
-
-            setCamera(newCameraPosition);
-        }
-    }, [zoom, camera]);
+        setCamera({
+            x: x - wx * nextZoom,
+            y: y - wy * nextZoom
+        });
+        
+        setZoom(nextZoom);
+    } else {
+        setCamera(prev => ({
+            x: prev.x - e.deltaX,
+            y: prev.y - e.deltaY,
+        }));
+    }
+}, [zoom, camera]);
 
     const onPointerDown = useCallback((
         e: React.PointerEvent,
@@ -1973,50 +2009,6 @@ export const Canvas = ({
         updateCursor();
     }, [canvasState, rightClickPanning, setIsEditing]);
 
-    useEffect(() => {
-        const updateVisibleLayers = () => {
-            if (!svgRef.current) return;
-
-            const svg = svgRef.current as SVGSVGElement;
-            const viewBox = svg.viewBox.baseVal;
-            let visibleRect: XYWH;
-
-            // Check if we're in presentation mode and have frames
-            if (presentationMode && frameIds.length > 0) {
-                const currentFrameId = frameIds[currentFrameIndex];
-                const currentFrame = liveLayers[currentFrameId] as FrameLayer;
-
-                // Set the visible rectangle to the current frame's dimensions
-                visibleRect = {
-                    x: currentFrame.x,
-                    y: currentFrame.y,
-                    width: currentFrame.width,
-                    height: currentFrame.height
-                };
-            } else {
-                // If not in presentation mode, calculate visible area based on camera and zoom
-                visibleRect = {
-                    x: -camera.x / zoom,
-                    y: -camera.y / zoom,
-                    width: viewBox.width / zoom,
-                    height: viewBox.height / zoom
-                };
-            }
-
-            // Filter layers to only include those visible within the current visible rectangle
-            const newVisibleLayers = liveLayerIds.filter((layerId: string) => {
-                const layer = liveLayers[layerId];
-                if (layer) {
-                    return isLayerVisible(layer, visibleRect);
-                }
-            });
-
-            setVisibleLayers(newVisibleLayers);
-        };
-
-        updateVisibleLayers();
-    }, [liveLayerIds, liveLayers, camera, zoom, presentationMode, frameIds, currentFrameIndex]);
-
     const goToFrame = useCallback((index: number) => {
         const totalFrames = frameIds.length;
         if (totalFrames === 0) return;
@@ -2310,6 +2302,7 @@ export const Canvas = ({
                     WebkitOverflowScrolling: 'touch',
                     WebkitUserSelect: 'none',
                     touchAction: 'none',
+                    contain: 'strict'
                 }}
             >
                 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
@@ -2441,7 +2434,7 @@ export const Canvas = ({
                                 <MoveBackToContent
                                     setCamera={setCamera}
                                     setZoom={setZoom}
-                                    showButton={visibleLayers.length === 0 && liveLayerIds.length > 0}
+                                    showButton={visibleLayerIds.length === 0 && liveLayerIds.length > 0}
                                     liveLayers={liveLayers}
                                     liveLayerIds={liveLayerIds}
                                     cameraRef={cameraRef}
@@ -2502,11 +2495,12 @@ export const Canvas = ({
                         onPointerDown={onPointerDown}
                         onPointerUp={onPointerUp}
                         style={{
-                            cursor: canvasCursor
+                            cursor: canvasCursor,
+                            contain: 'paint layout'
                         }}
                     >
                         <div className="z-10 pointer-events-auto">
-                            {visibleLayers.map((layerId: string) => {
+                            {visibleLayerIds.map((layerId: string) => {
                                 const layer = liveLayers[layerId];
                                 if (layer && (layer.type === LayerType.Video || layer.type === LayerType.Link)) {
                                     return (
@@ -2531,11 +2525,11 @@ export const Canvas = ({
                                 className="h-[100vh] w-[100vw]"
                                 viewBox={`0 0 ${window.innerWidth} ${window.innerHeight}`}
                             >
-                            <defs >
-                                <filter id="drop-shadow" x="-20%" y="-20%" width="140%" height="140%">
-                                    <feDropShadow dx="0" dy="2" stdDeviation="2" floodColor="rgba(0, 0, 0, 0.25)" />
-                                </filter>
-                            </defs>
+                                <defs >
+                                    <filter id="drop-shadow" x="-20%" y="-20%" width="140%" height="140%">
+                                        <feDropShadow dx="0" dy="2" stdDeviation="2" floodColor="rgba(0, 0, 0, 0.25)" />
+                                    </filter>
+                                </defs>
                                 <g
                                     style={{
                                         transform: `translate(${camera.x}px, ${camera.y}px) scale(${zoom})`,
@@ -2550,7 +2544,7 @@ export const Canvas = ({
                                         />
                                     )}
                                     {/* We render the frames first so they are always shown below the other layers */}
-                                    {visibleLayers.filter(layerId => liveLayers[layerId] && liveLayers[layerId].type === LayerType.Frame).map((frameId: string) => {
+                                    {visibleLayerIds.filter(layerId => liveLayers[layerId] && liveLayers[layerId].type === LayerType.Frame).map((frameId: string) => {
                                         const frameNumber = liveLayerIds.filter(id => liveLayers[id] && liveLayers[id].type === LayerType.Frame).indexOf(frameId) + 1;
                                         const showOutlineOnHover = (canvasState.mode === CanvasMode.None || (canvasState.mode === CanvasMode.Inserting && canvasState.layerType === LayerType.Arrow)) && !presentationMode;
                                         const isFocused = selectedLayersRef.current.length === 1 && selectedLayersRef.current[0] === frameId && !justChanged;
@@ -2572,7 +2566,7 @@ export const Canvas = ({
                                             />
                                         );
                                     })}
-                                    {visibleLayers.map((layerId: string) => {
+                                    {visibleLayerIds.map((layerId: string) => {
                                         const isFocused = selectedLayersRef.current.length === 1 && selectedLayersRef.current[0] === layerId && !justChanged;
                                         const showOutlineOnHover = (canvasState.mode === CanvasMode.None || (canvasState.mode === CanvasMode.Inserting && canvasState.layerType === LayerType.Arrow)) && !presentationMode;
                                         return (
@@ -2684,18 +2678,18 @@ export const Canvas = ({
                                         />
                                     )}
                                     {
-                                     pencilDraft.length > 0 && !pencilDraft.some(array => array.some(isNaN)) && (
-                                        <Path
-                                            points={pencilDraft}
-                                            fill={colorToCss(pathColor)}
-                                            x={0}
-                                            y={0}
-                                            strokeSize={pathStrokeSize}
-                                            isLaser={canvasState.mode === CanvasMode.Laser}
-                                            isHighlighter={canvasState.mode === CanvasMode.Highlighter}
-                                            zoom={zoom}
-                                        />
-                                    )
+                                        pencilDraft.length > 0 && !pencilDraft.some(array => array.some(isNaN)) && (
+                                            <Path
+                                                points={pencilDraft}
+                                                fill={colorToCss(pathColor)}
+                                                x={0}
+                                                y={0}
+                                                strokeSize={pathStrokeSize}
+                                                isLaser={canvasState.mode === CanvasMode.Laser}
+                                                isHighlighter={canvasState.mode === CanvasMode.Highlighter}
+                                                zoom={zoom}
+                                            />
+                                        )
                                     }
                                     {otherUsers &&
                                         <CursorsPresence otherUsers={otherUsers} zoom={zoom} />

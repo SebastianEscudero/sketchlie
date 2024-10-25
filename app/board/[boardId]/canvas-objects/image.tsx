@@ -1,6 +1,21 @@
-import React, { useCallback, useState, useEffect, memo } from 'react';
+import React, { useCallback, useState, useEffect, memo, useMemo } from 'react';
 import { ImageLayer } from "@/types/canvas";
 import { MoveCameraToLayer } from '../_components/canvasUtils';
+
+// Image cache for preloading
+const imageCache = new Map<string, HTMLImageElement>();
+
+const preloadImage = (src: string) => {
+  if (!imageCache.has(src)) {
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.src = src;
+    imageCache.set(src, img);
+    return img;
+  }
+  return imageCache.get(src)!;
+};
+
 interface ImageProps {
   isUploading: boolean;
   id: string;
@@ -34,9 +49,11 @@ export const InsertImage = memo(({
   const [strokeColor, setStrokeColor] = useState(selectionColor || "none");
   const [isLoading, setIsLoading] = useState(true);
 
+  // Preload image
   useEffect(() => {
-    setStrokeColor(selectionColor || "none");
-  }, [selectionColor]);
+    const img = preloadImage(src);
+    img.onload = () => setIsLoading(false);
+  }, [src]);
 
   const handlePointerDown = useCallback((e: React.PointerEvent) => {
     setStrokeColor(selectionColor || "none");
