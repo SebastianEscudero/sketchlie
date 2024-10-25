@@ -198,7 +198,7 @@ export const Canvas = ({
     }, [liveLayerIds, liveLayers]);
 
     const visibleLayerIds = useMemo(() => {
-        if (!svgRef.current || !liveLayerIds || !liveLayers) return [];
+        if (!liveLayerIds?.length || !liveLayers) return liveLayerIds || [];
     
         const visibleRect = presentationMode && frameIds.length > 0
             ? {
@@ -965,7 +965,6 @@ export const Canvas = ({
 
   const onWheel = useCallback((e: React.WheelEvent) => {
     setPresentationMode(false);
-    e.preventDefault();
 
     const svgRect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - svgRect.left;
