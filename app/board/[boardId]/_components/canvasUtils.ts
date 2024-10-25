@@ -26,20 +26,29 @@ export const uploadFilesAndInsertThemIntoCanvas = async (
   const toastId = toast.loading("Uploading files, please wait...");
   try {
     const maxFileSize = getMaxImageSize(org);
-    const formData = new FormData();
-    const pdfPages: PDFPage[] = [];
+    const batchSize = 5; // Process files in smaller batches
+    const allMediaItems: MediaItem[] = [];
 
-    await Promise.all(files.map(file => processFile(file, maxFileSize, formData, pdfPages)));
+    // Process files in batches
+    for (let i = 0; i < files.length; i += batchSize) {
+      const batch = files.slice(i, i + batchSize);
+      const formData = new FormData();
+      const pdfPages: PDFPage[] = [];
 
-    formData.append('userId', user.userId);
+      await Promise.all(batch.map(file => processFile(file, maxFileSize, formData, pdfPages)));
+      formData.append('userId', user.userId);
 
-    const urls = await uploadFiles(formData);
-    if (!urls) return;
+      const urls = await uploadFiles(formData);
+      if (!urls) continue;
 
-    const mediaItems = await processUploadedFiles(urls, pdfPages, files, centerX, centerY, zoom);
+      const mediaItems = await processUploadedFiles(urls, pdfPages, batch, centerX, centerY, zoom);
+      allMediaItems.push(...mediaItems);
+    }
 
-    insertMedia(mediaItems);
-    toast.success(`${mediaItems.length} items uploaded successfully`);
+    if (allMediaItems.length > 0) {
+      insertMedia(allMediaItems);
+      toast.success(`${allMediaItems.length} items uploaded successfully`);
+    }
   } catch (error) {
     console.error('Error in uploadFilesAndInsertThemIntoCanvas:', error);
     toast.error('Failed to upload and insert files, try again.');
@@ -47,6 +56,7 @@ export const uploadFilesAndInsertThemIntoCanvas = async (
     toast.dismiss(toastId);
   }
 };
+
 async function processFile(file: File, maxFileSize: number, formData: FormData, pdfPages: PDFPage[]): Promise<void> {
   if (!isValidFileType(file) || isFileTooLarge(file, maxFileSize)) {
     toast.error(`File ${file.name} is not valid or too large.`);
@@ -105,14 +115,29 @@ async function convertPDFPageToImage(pdf: any, pageNum: number, fileName: string
 
 async function uploadFiles(formData: FormData): Promise<string[] | null> {
   try {
-    const res = await fetch('/api/aws-s3-images', { method: 'POST', body: formData });
+    const res = await fetch('/api/aws-s3-images', { 
+      method: 'POST', 
+      body: formData,
+      // Add timeout to prevent hanging requests
+      signal: AbortSignal.timeout(30000) // 30 second timeout
+    });
+    
+    if (res.status === 413) {
+      toast.error('Files are too large. Try uploading fewer files at once.');
+      return null;
+    }
+    
     if (!res.ok) throw new Error('Network response was not ok');
 
     const urls = await res.json();
     return urls;
   } catch (error) {
     console.error('Error:', error);
-    toast.error('Failed to upload media');
+    if (error instanceof DOMException && error.name === 'AbortError') {
+      toast.error('Upload timed out. Try uploading fewer files or smaller files.');
+    } else {
+      toast.error('Failed to upload media');
+    }
     return null;
   }
 }
