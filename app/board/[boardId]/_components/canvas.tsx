@@ -72,7 +72,7 @@ import { Background } from "./background";
 import { MediaPreview } from "./MediaPreview";
 import { MoveBackToContent } from "./move-back-to-content";
 import { Frame } from "../canvas-objects/frame";
-import { MoveCameraToLayer, uploadFilesAndInsertThemIntoCanvas } from "./canvasUtils";
+import { getRestrictedZoom, MoveCameraToLayer, uploadFilesAndInsertThemIntoCanvas } from "./canvasUtils";
 import { DragIndicatorOverlay } from "./drag-indicator-overlay";
 import { AddedLayerByLabel } from "./added-layer-by-label";
 import { Comment, CommentBox } from "../canvas-objects/comment";
@@ -975,27 +975,21 @@ export const Canvas = ({
     if (e.ctrlKey || isMouseWheel) {
         const delta = -e.deltaY;
         
-        // Adjust delta multiplier based on input type
         const multiplier = isMouseWheel ? 0.0015 : 0.02;  // Much smaller for mouse wheel
         const normalizedDelta = delta * multiplier * zoom;
-        
-        const nextZoom = Math.min(
-            Math.max(
-                zoom + normalizedDelta,
-                0.3
-            ),
-            10
-        );
+        const newZoom = zoom + normalizedDelta;
+
+        const clampedZoom = getRestrictedZoom(newZoom);
 
         const wx = (x - camera.x) / zoom;
         const wy = (y - camera.y) / zoom;
 
         setCamera({
-            x: x - wx * nextZoom,
-            y: y - wy * nextZoom
+            x: x - wx * clampedZoom,
+            y: y - wy * clampedZoom
         });
         
-        setZoom(nextZoom);
+        setZoom(clampedZoom);
     } else {
         setCamera(prev => ({
             x: prev.x - e.deltaX,
@@ -1731,13 +1725,12 @@ export const Canvas = ({
         const isZooming = Math.abs(dist - pinchStartDist) > 10;
 
         if (isZooming) {
-            const zoomSpeed = 1; // Adjust this value to control zoom sensitivity
+            const zoomSpeed = 1;
             const zoomFactor = dist / pinchStartDist;
             const targetZoom = zoom * zoomFactor;
             const newZoom = zoom + (targetZoom - zoom) * zoomSpeed;
 
-            // Clamp zoom level
-            const clampedZoom = Math.max(0.3, Math.min(newZoom, 10));
+            const clampedZoom = getRestrictedZoom(newZoom);
 
             const zoomRatio = clampedZoom / zoom;
             const newX = x - (x - camera.x) * zoomRatio;

@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { FramesLayersIcon } from "@/public/custom-icons/frames";
 import { Minus, Plus, Maximize2, Minimize2, Focus } from "lucide-react";
 import React, { memo, useState, useCallback, useEffect } from "react";
+import { getRestrictedZoom, maxZoom, minZoom } from "./canvasUtils";
 
 interface BottomRightViewProps {
     zoom: number;
@@ -31,17 +32,17 @@ export const BottomRightView = memo(({
 
     const zoomToPercentage = (zoom: number) => {
         if (zoom < baseZoom) {
-            return Math.round(((zoom - 0.3) / (baseZoom - 0.3)) * (100 - 10) + 10);
+            return Math.round(((zoom - minZoom) / (baseZoom - minZoom)) * (100 - 10) + 10);
         } else {
-            return Math.round(((zoom - baseZoom) / (10 - baseZoom)) * (400 - 100) + 100);
+            return Math.round(((zoom - baseZoom) / (maxZoom - baseZoom)) * (400 - 100) + 100);
         }
     };
 
     const percentageToZoom = (percentage: number) => {
         if (percentage <= 100) {
-            return ((percentage - 10) / (100 - 10)) * (baseZoom - 0.3) + 0.3;
+            return ((percentage - 10) / (100 - 10)) * (baseZoom - minZoom) + minZoom;
         } else {
-            return ((percentage - 100) / (400 - 100)) * (10 - baseZoom) + baseZoom;
+            return ((percentage - 100) / (400 - 100)) * (maxZoom - baseZoom) + baseZoom;
         }
     };
 
@@ -59,7 +60,7 @@ export const BottomRightView = memo(({
     };
 
     const setZoomAndCamera = (newZoom: number) => {
-        newZoom = Math.max(0.3, Math.min(10, newZoom));
+        newZoom = getRestrictedZoom(newZoom);
 
         const zoomFactor = newZoom / zoom;
         const newX = window.innerWidth / 2 - (window.innerWidth / 2 - camera.x) * zoomFactor;

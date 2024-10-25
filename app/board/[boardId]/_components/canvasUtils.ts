@@ -26,7 +26,7 @@ export const uploadFilesAndInsertThemIntoCanvas = async (
   const toastId = toast.loading("Uploading files, please wait...");
   try {
     const maxFileSize = getMaxImageSize(org);
-    const batchSize = 5; // Process files in smaller batches
+    const batchSize = 2; // Process files in smaller batches
     const allMediaItems: MediaItem[] = [];
 
     // Process files in batches
@@ -100,7 +100,7 @@ async function convertPDFPageToImage(pdf: any, pageNum: number, fileName: string
   const context = canvas.getContext('2d')!;
   canvas.height = viewport.height;
   canvas.width = viewport.width;
-  const quality = 1;
+  const quality = 0.95;
 
   await page.render({ canvasContext: context, viewport }).promise;
 
@@ -255,6 +255,13 @@ type PDFPage = { file: File, pageNum: number, totalPages: number };
 type MediaInfo = { url: string, dimensions: { width: number, height: number }, type: string };
 type MediaItem = { layerType: LayerType.Image | LayerType.Video | LayerType.Link, position: Point, info: MediaInfo, zoom: number };
 
+export const minZoom = 0.2;
+export const maxZoom = 10;
+
+export const getRestrictedZoom = (proposedZoom: number): number => {
+  return Math.min(Math.max(proposedZoom, minZoom), maxZoom);
+};
+
 interface MoveCameraToLayerProps {
   targetX: number;
   targetY: number;
@@ -265,8 +272,6 @@ interface MoveCameraToLayerProps {
   cameraRef?: React.RefObject<{ x: number; y: number }>;
   zoomRef?: React.RefObject<number>;
   padding?: number;
-  minZoom?: number;
-  maxZoom?: number;
   duration?: number;
   toolbarHeight?: number;
 }
@@ -281,8 +286,6 @@ export const MoveCameraToLayer = ({
   cameraRef,
   zoomRef,
   padding = 0.9,
-  minZoom = 0.3,
-  maxZoom = 10,
   duration = 500,
   toolbarHeight = 0,
 }: MoveCameraToLayerProps): Promise<void> => {

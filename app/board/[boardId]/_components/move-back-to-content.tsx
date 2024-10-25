@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Layers } from "@/types/canvas";
 import { ArrowRightIcon } from "lucide-react";
 import { memo, useCallback } from "react";
+import { getRestrictedZoom } from "./canvasUtils";
 
 interface MoveBackToContentProps {
     setCamera: (camera: { x: number, y: number }) => void;
@@ -37,30 +38,25 @@ export const MoveBackToContent = memo(({ setCamera, setZoom, showButton, liveLay
         const viewportWidth = window.innerWidth;
         const viewportHeight = window.innerHeight;
 
-        // Calculate the target zoom level to fit the content with padding
         const zoomX = (viewportWidth) / contentWidth * 0.9;
         const zoomY = (viewportHeight) / contentHeight * 0.9;
         let targetZoom = Math.min(zoomX, zoomY);
 
-        // Adjust zoom (limit between 0.1 and 1)
-        targetZoom = Math.max(0.3, Math.min(10, targetZoom));
+        targetZoom = getRestrictedZoom(targetZoom);
 
-        // Calculate the target camera position
         const targetCameraX = viewportWidth/2 - centerX * targetZoom;
         const targetCameraY = viewportHeight/2 - centerY * targetZoom;
 
-        // Get current camera and zoom
         const startCamera = cameraRef.current || { x: 0, y: 0 };
         const startZoom = zoomRef.current || 1;
 
-        const animationDuration = 500; // 0.5 seconds
+        const animationDuration = 500;
         const startTime = Date.now();
 
         const animate = () => {
             const elapsedTime = Date.now() - startTime;
             const progress = Math.min(elapsedTime / animationDuration, 1);
             
-            // Easing function (ease-out cubic)
             const easeProgress = 1 - Math.pow(1 - progress, 3);
 
             const currentZoom = startZoom + (targetZoom - startZoom) * easeProgress;
@@ -69,11 +65,9 @@ export const MoveBackToContent = memo(({ setCamera, setZoom, showButton, liveLay
                 y: startCamera.y + (targetCameraY - startCamera.y) * easeProgress
             };
 
-            // Update camera and zoom
             setCamera(currentCamera);
             setZoom(currentZoom);
 
-            // Continue animation if not finished
             if (progress < 1) {
                 requestAnimationFrame(animate);
             }
