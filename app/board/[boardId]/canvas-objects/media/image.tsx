@@ -1,9 +1,39 @@
-import React, { useCallback, useState, useEffect, memo, useMemo } from 'react';
+import React, { useCallback, useState, useEffect, memo } from 'react';
 import { ImageLayer } from "@/types/canvas";
 import { MoveCameraToLayer } from '../../_components/canvasUtils';
 
 // Image cache for preloading
 const imageCache = new Map<string, HTMLImageElement>();
+
+// Signed URL cache
+const signedUrlCache = new Map<string, { url: string, expiry: number }>();
+
+const MAX_PRESIGNED_URL_DURATION = 604800; // 7 days in seconds
+
+const isS3Image = (src: string): boolean => {
+  const s3Patterns = [
+    'sketchlie.s3.us-east-2.amazonaws.com',
+    's3.us-east-2.amazonaws.com/sketchlie'
+  ];
+  return s3Patterns.some(pattern => src.includes(pattern));
+};
+
+const getSignedUrl = async (key: string): Promise<string> => {
+  const now = Date.now();
+  const cached = signedUrlCache.get(key);
+  
+  if (cached && cached.expiry > now) {
+    return cached.url;
+  }
+
+  const response = await fetch(`/api/get-presigned-url?key=${encodeURIComponent(key)}`);
+  if (!response.ok) throw new Error('Failed to fetch presigned URL');
+  const data = await response.json();
+  
+  signedUrlCache.set(key, { url: data.url, expiry: now + MAX_PRESIGNED_URL_DURATION * 1000 });
+
+  return data.url;
+};
 
 const preloadImage = (src: string) => {
   if (!imageCache.has(src)) {
@@ -48,11 +78,31 @@ export const InsertImage = memo(({
   const { x, y, width, height, src, addedBy } = layer;
   const [strokeColor, setStrokeColor] = useState(selectionColor || "none");
   const [isLoading, setIsLoading] = useState(true);
+  const [imageSrc, setImageSrc] = useState("");
 
-  // Preload image
   useEffect(() => {
-    const img = preloadImage(src);
-    img.onload = () => setIsLoading(false);
+    const fetchAndPreloadImage = async () => {
+      try {
+        let finalSrc = src;
+        if (isS3Image(src)) {
+          const key = src.split('.com/')[1];
+          finalSrc = await getSignedUrl(key);
+        }
+        setImageSrc(finalSrc);
+
+        const img = preloadImage(finalSrc);
+        if (img.complete) {
+          setIsLoading(false);
+        } else {
+          img.onload = () => setIsLoading(false);
+        }
+      } catch (error) {
+        console.error('Error fetching or preloading image:', error);
+        setIsLoading(false);
+      }
+    };
+
+    fetchAndPreloadImage();
   }, [src]);
 
   const handlePointerDown = useCallback((e: React.PointerEvent) => {
@@ -119,18 +169,22 @@ export const InsertImage = memo(({
           </path>
         </svg>
       )}
-      <image
-        crossOrigin="anonymous"
-        id={id}
-        href={src}
-        x={x}
-        y={y}
-        width={width}
-        height={height}
-        onLoad={() => setIsLoading(false)}
-      />
+      {imageSrc && (
+        <image
+          crossOrigin="anonymous"
+          id={id}
+          href={imageSrc}
+          x={x}
+          y={y}
+          width={width}
+          height={height}
+          onLoad={() => setIsLoading(false)}
+        />
+      )}
     </g>
   );
 });
 
 InsertImage.displayName = 'InsertImage';
+
+export default InsertImage;

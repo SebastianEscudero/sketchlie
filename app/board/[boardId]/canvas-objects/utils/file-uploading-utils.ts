@@ -1,15 +1,19 @@
 import { getMaxImageSize } from "@/lib/planLimits";
 import { LayerType, Point } from "@/types/canvas";
 import { toast } from "sonner";
-import { pdfjs } from 'react-pdf';
 
-// Initialize PDF.js once
-export const initPdfjs = () => {
-  if (!pdfjs.GlobalWorkerOptions.workerSrc) {
+let pdfjs: any;
+
+// Function to dynamically import and initialize pdfjs
+async function initPdfjs() {
+  if (!pdfjs) {
+    const pdfModule = await import('react-pdf');
+    pdfjs = pdfModule.pdfjs;
     pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
   }
   return pdfjs;
-};
+}
+
 
 export const uploadFilesAndInsertThemIntoCanvas = async (
   files: File[],
@@ -102,6 +106,23 @@ async function convertPDFPageToImage(pdf: any, pageNum: number, fileName: string
 
 async function uploadFiles(formData: FormData): Promise<string[] | null> {
   try {
+    let totalSize = 0;
+    for (const pair of Array.from(formData.entries())) {
+      if (pair[1] instanceof File) {
+        totalSize += pair[1].size;
+      } else {
+        totalSize += new Blob([pair[1]]).size;
+      }
+    }
+    console.log(`Total FormData size: ${totalSize} bytes (${(totalSize / (1024 * 1024)).toFixed(2)} MB)`);
+
+    // Log individual file sizes
+    for (const file of formData.getAll('file')) {
+      if (file instanceof File) {
+        console.log(`File: ${file.name}, Size: ${file.size} bytes (${(file.size / (1024 * 1024)).toFixed(2)} MB)`);
+      }
+    }
+
     const res = await fetch('/api/aws-s3-images', { 
       method: 'POST', 
       body: formData 
