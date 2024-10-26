@@ -1,5 +1,4 @@
 import { CanvasMode, CanvasState, LinkLayer } from "@/types/canvas";
-import { Browser } from "./browser";
 import { useEffect, useState } from "react";
 
 interface LinkProps {
