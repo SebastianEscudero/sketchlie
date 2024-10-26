@@ -12,6 +12,7 @@ import {
   Redo2,
   Shapes,
   StickyNote,
+  Table2,
   TrendingUp,
   Type,
   Undo2,
@@ -221,7 +222,8 @@ export const Toolbar = memo(({
             canvasState.layerType !== LayerType.Arrow &&
             canvasState.layerType !== LayerType.Note &&
             canvasState.layerType !== LayerType.Frame &&
-            canvasState.layerType !== LayerType.Comment
+            canvasState.layerType !== LayerType.Comment &&
+            canvasState.layerType !== LayerType.Table
           }
         />
         <ToolButton
@@ -298,6 +300,18 @@ export const Toolbar = memo(({
             canvasState.layerType === LayerType.Frame
           }
         />
+        {/*<ToolButton
+          label="Table"
+          icon={Table2}
+          onClick={() => setCanvasState({
+            mode: CanvasMode.Inserting,
+            layerType: LayerType.Table,
+          })}
+          isActive={
+            canvasState.mode === CanvasMode.Inserting &&
+            canvasState.layerType === LayerType.Table
+          }
+        />*/}
         <MediaButton
           label="Media"
           org={org}
@@ -309,15 +323,6 @@ export const Toolbar = memo(({
           svgRef={svgRef}
           zoom={zoom}
         />
-        {/* <IconButton
-          label="Icon"
-          org={org}
-          icon={Lightbulb}
-          camera={camera}
-          svgRef={svgRef}
-          zoom={zoom}
-          insertMedia={insertMedia}
-        /> */}
         <LinkButton
           label="Link"
           icon={Link}

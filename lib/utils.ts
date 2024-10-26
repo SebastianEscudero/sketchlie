@@ -1181,7 +1181,8 @@ export function resizeBox(
     newLayer.type !== LayerType.Link &&
     newLayer.type !== LayerType.Frame &&
     newLayer.type !== LayerType.Svg &&
-    newLayer.type !== LayerType.Comment
+    newLayer.type !== LayerType.Comment &&
+    newLayer.type !== LayerType.Table
   ) {
     if (!singleLayer) {
       textFontSize = newLayer.textFontSize * scaleY;

@@ -69,10 +69,10 @@ import { ArrowPostInsertMenu } from "./arrow-post-insert-menu";
 import { EraserTrail } from "./eraser-trail";
 import { smoothLastPoint } from "@/lib/smooth-points";
 import { Background } from "./background";
-import { MediaPreview } from "./MediaPreview";
+import { MediaPreview } from "./media-preview";
 import { MoveBackToContent } from "./move-back-to-content";
 import { Frame } from "../canvas-objects/frame";
-import { getRestrictedZoom, MoveCameraToLayer, uploadFilesAndInsertThemIntoCanvas } from "./canvasUtils";
+import { getRestrictedZoom, MoveCameraToLayer } from "./canvasUtils";
 import { DragIndicatorOverlay } from "./drag-indicator-overlay";
 import { AddedLayerByLabel } from "./added-layer-by-label";
 import { Comment, CommentBox } from "../canvas-objects/comment";
@@ -81,6 +81,8 @@ import { RightMiddleContainer } from "./right-middle-container";
 import { CommentPreview } from "../canvas-objects/comment-preview";
 import { useLayerTextEditingStore } from "../canvas-objects/utils/use-layer-text-editing";
 import { SelectionNet } from "./selection-net";
+import { TableColumnType } from "../canvas-objects/table";
+import { uploadFilesAndInsertThemIntoCanvas } from "../canvas-objects/utils/file-uploading-utils";
 
 const preventDefault = (e: any) => {
     if (e.scale !== 1) {
@@ -199,7 +201,7 @@ export const Canvas = ({
 
     const visibleLayerIds = useMemo(() => {
         if (!liveLayerIds?.length || !liveLayers) return liveLayerIds || [];
-    
+
         const visibleRect = presentationMode && frameIds.length > 0
             ? {
                 x: liveLayers[frameIds[currentFrameIndex]].x,
@@ -213,19 +215,19 @@ export const Canvas = ({
                 width: window.innerWidth / zoom,
                 height: window.innerHeight / zoom
             };
-    
+
         return liveLayerIds.filter((layerId: string) => {
             const layer = liveLayers[layerId];
             return layer && isLayerVisible(layer, visibleRect);
         });
     }, [
-        liveLayerIds, 
-        liveLayers, 
-        camera, 
-        zoom, 
-        presentationMode, 
-        frameIds, 
-        currentFrameIndex
+        liveLayerIds,
+        liveLayers,
+        camera,
+        zoom,
+        presentationMode,
+        frameIds,
+        currentFrameIndex,
     ]);
 
     const filteredOrgTeammates = useMemo(() =>
@@ -365,7 +367,7 @@ export const Canvas = ({
             };
         } else if (layerType === LayerType.Comment) {
             layer = {
-                type: LayerType.Comment,
+                type: layerType,
                 x: position.x,
                 y: position.y,
                 width: width,
@@ -381,6 +383,60 @@ export const Canvas = ({
                 createdAt: new Date(),
                 replies: []
             }
+        } else if (layerType === LayerType.Table) {
+            const ratio = 3;
+            const width = innerWidth / (2 * zoom);
+            const height = width / ratio;
+
+            // Define columns first
+            const columns = [
+                { type: TableColumnType.Text, key: 'title', title: 'Title' },
+                { type: TableColumnType.Text, key: 'description', title: 'Description' },
+                { type: TableColumnType.Person, key: 'assignee', title: 'Assignee' },
+                { type: TableColumnType.Tag, key: 'status', title: 'Status' },
+                { type: TableColumnType.Date, key: 'startDate', title: 'Start Date' },
+                { type: TableColumnType.Date, key: 'dueDate', title: 'Due Date' },
+            ];
+
+            // Create data based on columns
+            const sampleData = [
+                {
+                    title: "My first task",
+                    description: "",
+                    assignee: {
+                        userId: User.userId,
+                        name: User.information.name,
+                        picture: User.information.picture
+                    },
+                    status: "To do",
+                    startDate: "Oct 24",
+                    dueDate: "Oct 30"
+                },
+                {
+                    title: "My second task",
+                    description: "",
+                    status: "In progress",
+                    startDate: "Oct 30",
+                    dueDate: "Nov 5"
+                },
+                {
+                    title: "My third task",
+                    description: "",
+                    status: "Done",
+                    startDate: "Nov 5",
+                    dueDate: "Nov 11"
+                }
+            ];
+
+            layer = {
+                type: layerType,
+                x: position.x,
+                y: position.y,
+                width: width,
+                height: height,
+                columns: columns,
+                data: sampleData
+            };
         } else {
             if (width < 10 && height < 10) {
                 width = 80
@@ -429,7 +485,7 @@ export const Canvas = ({
 
     const insertMedia = useCallback((
         mediaItems: Array<{
-            layerType: LayerType.Image | LayerType.Video | LayerType.Link | LayerType.Svg,
+            layerType: LayerType.Image | LayerType.Video | LayerType.Link | LayerType.Svg
             position: Point,
             info: any,
             zoom: number
@@ -813,7 +869,8 @@ export const Canvas = ({
             liveLayers[id].type === LayerType.Image ||
             liveLayers[id].type === LayerType.Text ||
             liveLayers[id].type === LayerType.Video ||
-            liveLayers[id].type === LayerType.Svg
+            liveLayers[id].type === LayerType.Svg ||
+            liveLayers[id].type === LayerType.Table
         );
         let mantainAspectRatio = hasMediaOrText
         let singleLayer = selectedLayersRef.current.length === 1
@@ -963,40 +1020,40 @@ export const Canvas = ({
         });
     }, []);
 
-  const onWheel = useCallback((e: React.WheelEvent) => {
-    setPresentationMode(false);
+    const onWheel = useCallback((e: React.WheelEvent) => {
+        setPresentationMode(false);
 
-    const svgRect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - svgRect.left;
-    const y = e.clientY - svgRect.top;
+        const svgRect = e.currentTarget.getBoundingClientRect();
+        const x = e.clientX - svgRect.left;
+        const y = e.clientY - svgRect.top;
 
-    const isMouseWheel = Math.abs(e.deltaY) > 90 && e.deltaX === 0;
+        const isMouseWheel = Math.abs(e.deltaY) > 90 && e.deltaX === 0;
 
-    if (e.ctrlKey || isMouseWheel) {
-        const delta = -e.deltaY;
-        
-        const multiplier = isMouseWheel ? 0.0015 : 0.02;  // Much smaller for mouse wheel
-        const normalizedDelta = delta * multiplier * zoom;
-        const newZoom = zoom + normalizedDelta;
+        if (e.ctrlKey || isMouseWheel) {
+            const delta = -e.deltaY;
 
-        const clampedZoom = getRestrictedZoom(newZoom);
+            const multiplier = isMouseWheel ? 0.0015 : 0.02;  // Much smaller for mouse wheel
+            const normalizedDelta = delta * multiplier * zoom;
+            const newZoom = zoom + normalizedDelta;
 
-        const wx = (x - camera.x) / zoom;
-        const wy = (y - camera.y) / zoom;
+            const clampedZoom = getRestrictedZoom(newZoom);
 
-        setCamera({
-            x: x - wx * clampedZoom,
-            y: y - wy * clampedZoom
-        });
-        
-        setZoom(clampedZoom);
-    } else {
-        setCamera(prev => ({
-            x: prev.x - e.deltaX,
-            y: prev.y - e.deltaY,
-        }));
-    }
-}, [zoom, camera]);
+            const wx = (x - camera.x) / zoom;
+            const wy = (y - camera.y) / zoom;
+
+            setCamera({
+                x: x - wx * clampedZoom,
+                y: y - wy * clampedZoom
+            });
+
+            setZoom(clampedZoom);
+        } else {
+            setCamera(prev => ({
+                x: prev.x - e.deltaX,
+                y: prev.y - e.deltaY,
+            }));
+        }
+    }, [zoom, camera]);
 
     const onPointerDown = useCallback((
         e: React.PointerEvent,
@@ -1007,6 +1064,7 @@ export const Canvas = ({
         }
 
         setIsEditing(false);
+        setIsPointerDown(true);
         const point = pointerEventToCanvasPoint(e, cameraRef.current, zoomRef.current, svgRef);
         if (point && selectedLayersRef.current.length > 0) {
             const bounds = calculateBoundingBox(selectedLayersRef.current.map(id => liveLayers[id]));
@@ -2581,6 +2639,8 @@ export const Canvas = ({
                                                 zoomRef={zoomRef}
                                                 showOutlineOnHover={showOutlineOnHover}
                                                 setAddedByLabel={setAddedByLabel}
+                                                orgTeammates={filteredOrgTeammates}
+                                                forceUpdateLayerLocalLayerState={forceUpdateLayerLocalLayerState}
                                             />
                                         );
                                     })}

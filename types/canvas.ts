@@ -1,3 +1,5 @@
+import { TableColumn, TableRow } from "@/app/board/[boardId]/canvas-objects/table";
+
 export type Color = {
   r: number;
   g: number;
@@ -32,7 +34,8 @@ export enum LayerType {
   Link,
   Frame,
   Svg,
-  Comment
+  Comment,
+  Table,
 };
 
 export type BaseShapeLayer = {
@@ -219,6 +222,18 @@ export type Comment = {
   replies?: Reply[];
 }
 
+export type TableLayer = {
+  type: LayerType.Table;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  data: TableRow[];
+  columns: TableColumn[];
+  connectedArrows?: string[];
+  availableStatuses?: { label: string; color: string; }[];
+};
+
 export type Reply = {
   id: string;
   author: Author;
@@ -277,7 +292,7 @@ export type CanvasState =
     layerType: LayerType.Ellipse | LayerType.Rectangle | LayerType.Rhombus | LayerType.Triangle 
     | LayerType.Star | LayerType.Hexagon | LayerType.BigArrowDown | LayerType.BigArrowUp  | LayerType.Line
     | LayerType.BigArrowLeft | LayerType.BigArrowRight | LayerType.Text | LayerType.Note 
-    | LayerType.CommentBubble | LayerType.Path | LayerType.Arrow | LayerType.Frame | LayerType.Comment;
+    | LayerType.CommentBubble | LayerType.Path | LayerType.Arrow | LayerType.Frame | LayerType.Comment | LayerType.Table;
   }
   | {
     mode: CanvasMode.Pencil,
@@ -325,8 +340,9 @@ export enum CanvasMode {
 };
 
 export type Layer = RectangleLayer | EllipseLayer | RhombusLayer | TriangleLayer | StarLayer 
-| HexagonLayer | BigArrowDownLayer | BigArrowLeftLayer | BigArrowRightLayer | BigArrowUpLayer | PathLayer 
-| CommentBubbleLayer |TextLayer | NoteLayer | ImageLayer | ArrowLayer | LineLayer | VideoLayer | LinkLayer | FrameLayer | SvgLayer | Comment;
+| HexagonLayer | BigArrowDownLayer | BigArrowLeftLayer | BigArrowRightLayer | BigArrowUpLayer 
+| PathLayer | CommentBubbleLayer |TextLayer | NoteLayer | ImageLayer | ArrowLayer | LineLayer 
+| VideoLayer | LinkLayer | FrameLayer | SvgLayer | Comment | TableLayer;
 
 export interface Layers {
   [key: string]: Layer;

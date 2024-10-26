@@ -15,8 +15,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useDebounce } from "usehooks-ts";
 import { themeCheck } from "@/lib/theme-utils";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { uploadFilesAndInsertThemIntoCanvas } from "./canvasUtils";
 import { cn } from "@/lib/utils";
+import { uploadFilesAndInsertThemIntoCanvas } from "../canvas-objects/utils/file-uploading-utils";
 
 interface MediaButtonProps {
     isUploading: boolean;

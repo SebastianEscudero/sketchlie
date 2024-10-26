@@ -1,6 +1,6 @@
 import { memo } from "react";
-import { InsertVideo } from "../canvas-objects/video";
-import { InsertLink } from "../canvas-objects/link";
+import { InsertVideo } from "../canvas-objects/media/video";
+import { InsertLink } from "../canvas-objects/media/link";
 import { CanvasState, Layer, LayerType } from "@/types/canvas";
 
 interface MediaPreviewProps {

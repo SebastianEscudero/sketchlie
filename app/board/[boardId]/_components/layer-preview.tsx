@@ -19,8 +19,9 @@ import { BigArrowUp } from "../canvas-objects/shapes/bigArrowUp";
 import { BigArrowDown } from "../canvas-objects/shapes/bigArrowDown";
 import { CommentBubble } from "../canvas-objects/shapes/commentBubble";
 import { Line } from "../canvas-objects/line";
-import { InsertImage } from "../canvas-objects/image";
-import { SVGLayer } from "../canvas-objects/svg-layer";
+import { InsertImage } from "../canvas-objects/media/image";
+import { SVGLayer } from "../canvas-objects/media/svg-layer";
+import { Table } from "../canvas-objects/table";
 
 interface LayerPreviewProps {
   id: string;
@@ -40,6 +41,8 @@ interface LayerPreviewProps {
   cameraRef?: React.RefObject<any>;
   showOutlineOnHover?: boolean;
   setAddedByLabel?: (label: string) => void;
+  orgTeammates: any;
+  forceUpdateLayerLocalLayerState: (layerId: string, updatedLayer: any) => void;
 };
 
 export const LayerPreview = memo(({
@@ -59,7 +62,9 @@ export const LayerPreview = memo(({
   cameraRef,
   zoomRef,
   showOutlineOnHover,
-  setAddedByLabel
+  setAddedByLabel,
+  orgTeammates,
+  forceUpdateLayerLocalLayerState
 }: LayerPreviewProps) => {
 
   if (!layer) {
@@ -67,6 +72,24 @@ export const LayerPreview = memo(({
   }
 
   switch (layer.type) {
+    case LayerType.Table:
+      return (
+        <Table
+          x={layer.x}
+          y={layer.y}
+          width={layer.width}
+          height={layer.height}
+          data={layer.data}
+          columns={layer.columns}
+          orgTeammates={orgTeammates}
+          boardId={boardId}
+          layerId={id}
+          layer={layer}
+          expired={expired}
+          socket={socket}
+          forceUpdateLayerLocalLayerState={forceUpdateLayerLocalLayerState}
+        />
+      );
     case LayerType.Path:
       return (
         <Path

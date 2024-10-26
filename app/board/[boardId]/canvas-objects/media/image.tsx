@@ -1,6 +1,6 @@
 import React, { useCallback, useState, useEffect, memo, useMemo } from 'react';
 import { ImageLayer } from "@/types/canvas";
-import { MoveCameraToLayer } from '../_components/canvasUtils';
+import { MoveCameraToLayer } from '../../_components/canvasUtils';
 
 // Image cache for preloading
 const imageCache = new Map<string, HTMLImageElement>();
