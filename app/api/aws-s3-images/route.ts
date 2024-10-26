@@ -3,8 +3,14 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { NextResponse } from "next/server";
 import sharp from 'sharp';
 
-// Maximum file size for optimization (5MB)
-const MAX_OPTIMIZATION_SIZE = 5 * 1024 * 1024;
+export const config = {
+    api: {
+        bodyParser: {
+            sizeLimit: '10mb'
+        },
+        responseLimit: '10mb'
+    }
+};
 
 export const POST = async (req: any) => {
     const bucketName = process.env.AWS_BUCKET_NAME;
@@ -39,11 +45,11 @@ export const POST = async (req: any) => {
 
             // Check if file exists in S3 (keep existing caching logic)
             try {
-                const headResponse = await s3.send(new HeadObjectCommand({ 
-                    Bucket: bucketName, 
-                    Key: uniqueFileName 
+                const headResponse = await s3.send(new HeadObjectCommand({
+                    Bucket: bucketName,
+                    Key: uniqueFileName
                 }));
-                
+
                 if (headResponse.ETag) {
                     return finalUrl;
                 }
@@ -66,7 +72,7 @@ export const POST = async (req: any) => {
                     });
 
                     const presignedUrl = await getSignedUrl(s3, command, { expiresIn: 3600 });
-                    
+
                     // Return both URLs for client-side upload
                     return {
                         finalUrl,
@@ -75,8 +81,8 @@ export const POST = async (req: any) => {
                     };
                 } else {
                     // Use existing optimization logic for smaller files
-                    let processedBuffer = file.type.startsWith('image/') ? 
-                        await optimizeImage(buffer, file.type) : 
+                    let processedBuffer = file.type.startsWith('image/') ?
+                        await optimizeImage(buffer, file.type) :
                         buffer;
 
                     const command = new PutObjectCommand({
@@ -106,13 +112,13 @@ export const POST = async (req: any) => {
             }
         }));
 
-        return new NextResponse(JSON.stringify(results), { 
-            status: 200, 
-            headers: { 
+        return new NextResponse(JSON.stringify(results), {
+            status: 200,
+            headers: {
                 'Content-Type': 'application/json',
                 'Cache-Control': 'public, max-age=3600',
                 'ETag': `W/"${Date.now()}"`,
-            } 
+            }
         });
 
     } catch (error) {
@@ -128,7 +134,7 @@ async function optimizeImage(buffer: Buffer, mimeType: string): Promise<Buffer> 
 
     // Only resize if image is larger than 2000px
     if (width > 2000) {
-        image.resize(2000, undefined, { 
+        image.resize(2000, undefined, {
             withoutEnlargement: true,
             fit: 'inside'
         });
@@ -138,23 +144,23 @@ async function optimizeImage(buffer: Buffer, mimeType: string): Promise<Buffer> 
     switch (mimeType) {
         case 'image/jpeg':
             return image
-                .jpeg({ 
-                    quality: 80, 
+                .jpeg({
+                    quality: 80,
                     progressive: true,
                     optimizeScans: true
                 })
                 .toBuffer();
         case 'image/png':
             return image
-                .png({ 
-                    compressionLevel: 9, 
+                .png({
+                    compressionLevel: 9,
                     progressive: true,
                     palette: true
                 })
                 .toBuffer();
         case 'image/webp':
             return image
-                .webp({ 
+                .webp({
                     quality: 80,
                     effort: 6 // Higher compression effort
                 })
