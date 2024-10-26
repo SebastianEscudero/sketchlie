@@ -12,8 +12,7 @@ async function initPdfjs() {
     pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
   }
   return pdfjs;
-}
-
+};
 
 export const uploadFilesAndInsertThemIntoCanvas = async (
   files: File[],
@@ -85,13 +84,13 @@ async function processPDF(file: File, formData: FormData, pdfPages: PDFPage[]): 
 
 async function convertPDFPageToImage(pdf: any, pageNum: number, fileName: string): Promise<File> {
   const page = await pdf.getPage(pageNum);
-  const scale = 1.5; // Increase scale for better quality
+  const scale = 1.1; // Increase scale for better quality
   const viewport = page.getViewport({ scale });
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d')!;
   canvas.height = viewport.height;
   canvas.width = viewport.width;
-  const quality = 0.9;
+  const quality = 0.8;
 
   await page.render({ canvasContext: context, viewport }).promise;
 
@@ -105,24 +104,16 @@ async function convertPDFPageToImage(pdf: any, pageNum: number, fileName: string
 }
 
 async function uploadFiles(formData: FormData): Promise<string[] | null> {
+  let totalSize = 0;
+  for (const [key, value] of Array.from(formData.entries())) {
+    if (value instanceof File) {
+      totalSize += value.size;
+    }
+  }
+  const payloadSizeMB = (totalSize / (1024 * 1024)).toFixed(2);
+  console.log(`Uploading payload size: ${payloadSizeMB} MB`);
+
   try {
-    let totalSize = 0;
-    for (const pair of Array.from(formData.entries())) {
-      if (pair[1] instanceof File) {
-        totalSize += pair[1].size;
-      } else {
-        totalSize += new Blob([pair[1]]).size;
-      }
-    }
-    console.log(`Total FormData size: ${totalSize} bytes (${(totalSize / (1024 * 1024)).toFixed(2)} MB)`);
-
-    // Log individual file sizes
-    for (const file of formData.getAll('file')) {
-      if (file instanceof File) {
-        console.log(`File: ${file.name}, Size: ${file.size} bytes (${(file.size / (1024 * 1024)).toFixed(2)} MB)`);
-      }
-    }
-
     const res = await fetch('/api/aws-s3-images', { 
       method: 'POST', 
       body: formData 
