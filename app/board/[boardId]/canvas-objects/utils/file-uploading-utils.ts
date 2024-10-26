@@ -102,43 +102,50 @@ async function convertPDFPageToImage(pdf: any, pageNum: number, fileName: string
 
 async function uploadFiles(formData: FormData): Promise<string[] | null> {
   try {
-    const res = await fetch('/api/aws-s3-images', { 
-      method: 'POST', 
-      body: formData 
-    });
-    if (!res.ok) throw new Error('Network response was not ok');
-
-    const results = await res.json();
+    const files = Array.from(formData.getAll('file'));
+    const userId = formData.get('userId');
     
-    // Handle direct uploads if necessary
-    const finalUrls = await Promise.all(results.map(async (result: string | { finalUrl: string, presignedUrl: string, requiresDirectUpload: boolean }) => {
-      if (typeof result === 'string') {
-        return result; // Already uploaded file
-      }
-      
-      if (result.requiresDirectUpload) {
-        // Get the corresponding file from formData
-        const fileName = result.finalUrl.split('/').pop();
-        const file = Array.from(formData.getAll('file'))
-          .find((f: any) => f.name === decodeURIComponent(fileName?.split('_').slice(1).join('_') || '')) as File;
+    // Test payload size
+    const testPayload = {
+      fileName: (files[0] as File).name,
+      fileType: (files[0] as File).type,
+      userId: userId
+    };
 
-        // Upload directly to S3
-        await fetch(result.presignedUrl, {
-          method: 'PUT',
-          body: file,
-          headers: {
-            'Content-Type': file.type,
-            'Cache-Control': 'public, max-age=31536000',
-          },
-        });
+    console.log('Metadata payload size:', JSON.stringify(testPayload).length, 'bytes');
+    console.log('Actual file size:', (files[0] as File).size, 'bytes');
 
-        return result.finalUrl;
-      }
+    const results = await Promise.all(files.map(async (file: FormDataEntryValue) => {
+      const fileObj = file as File;
+      // Get presigned URL first (tiny payload)
+      const urlRes = await fetch('/api/get-upload-url', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          fileName: fileObj.name,
+          fileType: fileObj.type,
+          userId: userId
+        })
+      });
       
-      return result.finalUrl;
+      const { presignedUrl, finalUrl } = await urlRes.json();
+      
+      // Upload directly to S3
+      await fetch(presignedUrl, {
+        method: 'PUT',
+        body: fileObj,
+        headers: {
+          'Content-Type': fileObj.type,
+          'Cache-Control': 'public, max-age=31536000',
+        },
+      });
+      
+      return finalUrl;
     }));
-
-    return finalUrls;
+    
+    return results;
   } catch (error) {
     console.error('Error:', error);
     toast.error('Failed to upload media');

@@ -3,15 +3,6 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { NextResponse } from "next/server";
 import sharp from 'sharp';
 
-export const config = {
-    api: {
-        bodyParser: {
-            sizeLimit: '10mb'
-        },
-        responseLimit: '10mb'
-    }
-};
-
 export const POST = async (req: any) => {
     const bucketName = process.env.AWS_BUCKET_NAME;
     const bucketRegion = process.env.AWS_BUCKET_REGION;
