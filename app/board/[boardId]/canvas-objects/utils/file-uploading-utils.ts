@@ -23,29 +23,20 @@ export const uploadFilesAndInsertThemIntoCanvas = async (
   const toastId = toast.loading("Uploading files, please wait...");
   try {
     const maxFileSize = getMaxImageSize(org);
-    const batchSize = 3; // Process files in smaller batches
-    const allMediaItems: MediaItem[] = [];
+    const formData = new FormData();
+    const pdfPages: PDFPage[] = [];
 
-    // Process files in batches
-    for (let i = 0; i < files.length; i += batchSize) {
-      const batch = files.slice(i, i + batchSize);
-      const formData = new FormData();
-      const pdfPages: PDFPage[] = [];
+    await Promise.all(files.map(file => processFile(file, maxFileSize, formData, pdfPages)));
 
-      await Promise.all(batch.map(file => processFile(file, maxFileSize, formData, pdfPages)));
-      formData.append('userId', user.userId);
+    formData.append('userId', user.userId);
 
-      const urls = await uploadFiles(formData);
-      if (!urls) continue;
+    const urls = await uploadFiles(formData);
+    if (!urls) return;
 
-      const mediaItems = await processUploadedFiles(urls, pdfPages, batch, centerX, centerY, zoom);
-      allMediaItems.push(...mediaItems);
-    }
+    const mediaItems = await processUploadedFiles(urls, pdfPages, files, centerX, centerY, zoom);
 
-    if (allMediaItems.length > 0) {
-      insertMedia(allMediaItems);
-      toast.success(`${allMediaItems.length} items uploaded successfully`);
-    }
+    insertMedia(mediaItems);
+    toast.success(`${mediaItems.length} items uploaded successfully`);
   } catch (error) {
     console.error('Error in uploadFilesAndInsertThemIntoCanvas:', error);
     toast.error('Failed to upload and insert files, try again.');
@@ -53,7 +44,6 @@ export const uploadFilesAndInsertThemIntoCanvas = async (
     toast.dismiss(toastId);
   }
 };
-
 async function processFile(file: File, maxFileSize: number, formData: FormData, pdfPages: PDFPage[]): Promise<void> {
   if (!isValidFileType(file) || isFileTooLarge(file, maxFileSize)) {
     toast.error(`File ${file.name} is not valid or too large.`);
@@ -77,131 +67,16 @@ async function processPDF(file: File, formData: FormData, pdfPages: PDFPage[]): 
   const pdfjs = await initPdfjs()
   const pdf = await pdfjs.getDocument(URL.createObjectURL(file)).promise;
   const numPages = pdf.numPages;
-  
-  // Process PDF pages in smaller batches
-  for (let i = 0; i < numPages; i += PDF_BATCH_SIZE) {
-    const batchEnd = Math.min(i + PDF_BATCH_SIZE, numPages);
-    const pagePromises = [];
-    
-    for (let pageNum = i + 1; pageNum <= batchEnd; pageNum++) {
-      pagePromises.push(
-        convertPDFPageToImage(pdf, pageNum, file.name)
-          .then(imageFile => {
-            // Optimize the image size before adding to formData
-            return compressImage(imageFile);
-          })
-          .then(compressedFile => {
-            formData.append('file', compressedFile);
-            pdfPages.push({ 
-              file: compressedFile, 
-              pageNum: pageNum, 
-              totalPages: numPages 
-            });
-          })
-      );
-    }
-    
-    await Promise.all(pagePromises);
-    
-    // If formData gets too large, trigger an upload
-    if (getFormDataSize(formData) > 8 * 1024 * 1024) { // 8MB threshold
-      const urls = await uploadFiles(formData);
-      if (!urls) throw new Error('Failed to upload PDF pages');
-      // Clear formData for next batch
-      formData = new FormData();
-    }
-  }
-}
 
-// Helper function to compress images
-async function compressImage(file: File): Promise<File> {
-  if (!file.type.startsWith('image/')) return file;
-  
-  return new Promise((resolve) => {
-    const img = new Image();
-    img.onload = () => {
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d')!;
-      
-      // Calculate new dimensions (max 1500px width/height)
-      const maxDim = 1500;
-      let width = img.width;
-      let height = img.height;
-      
-      if (width > maxDim || height > maxDim) {
-        if (width > height) {
-          height = (height / width) * maxDim;
-          width = maxDim;
-        } else {
-          width = (width / height) * maxDim;
-          height = maxDim;
-        }
-      }
-      
-      canvas.width = width;
-      canvas.height = height;
-      ctx.drawImage(img, 0, 0, width, height);
-      
-      canvas.toBlob(
-        (blob) => {
-          resolve(new File([blob!], file.name, { type: 'image/jpeg' }));
-        },
-        'image/jpeg',
-        0.7 // Reduced quality for PDF pages
-      );
-    };
-    img.src = URL.createObjectURL(file);
-  });
-}
+  const pagePromises = Array.from({ length: numPages }, (_, i) =>
+    convertPDFPageToImage(pdf, i + 1, file.name)
+      .then(imageFile => {
+        formData.append('file', imageFile);
+        pdfPages.push({ file: imageFile, pageNum: i + 1, totalPages: numPages });
+      })
+  );
 
-// Helper function to estimate formData size
-function getFormDataSize(formData: FormData): number {
-  let size = 0;
-  const entries = Array.from(formData.entries());
-  for (const [_, value] of entries) {
-    if (value instanceof File) {
-      size += value.size;
-    } else {
-      size += new Blob([String(value)]).size;
-    }
-  }
-  return size;
-}
-
-// Update the uploadFiles function to handle retries
-async function uploadFiles(formData: FormData, retries = 3): Promise<string[] | null> {
-  for (let attempt = 0; attempt < retries; attempt++) {
-    try {
-      const res = await fetch('/api/aws-s3-images', { 
-        method: 'POST', 
-        body: formData,
-        signal: AbortSignal.timeout(30000)
-      });
-      
-      if (res.status === 413) {
-        // If payload is too large, try with fewer files next time
-        toast.error('Reducing batch size and retrying...');
-        return null;
-      }
-      
-      if (!res.ok) throw new Error('Network response was not ok');
-      
-      return await res.json();
-    } catch (error) {
-      console.error(`Upload attempt ${attempt + 1} failed:`, error);
-      if (attempt === retries - 1) {
-        if (error instanceof DOMException && error.name === 'AbortError') {
-          toast.error('Upload timed out. Try uploading fewer files or smaller files.');
-        } else {
-          toast.error('Failed to upload media');
-        }
-        return null;
-      }
-      // Wait before retrying
-      await new Promise(resolve => setTimeout(resolve, 1000 * (attempt + 1)));
-    }
-  }
-  return null;
+  await Promise.all(pagePromises);
 }
 
 async function convertPDFPageToImage(pdf: any, pageNum: number, fileName: string): Promise<File> {
@@ -212,7 +87,7 @@ async function convertPDFPageToImage(pdf: any, pageNum: number, fileName: string
   const context = canvas.getContext('2d')!;
   canvas.height = viewport.height;
   canvas.width = viewport.width;
-  const quality = 0.95;
+  const quality = 0.9;
 
   await page.render({ canvasContext: context, viewport }).promise;
 
@@ -223,6 +98,52 @@ async function convertPDFPageToImage(pdf: any, pageNum: number, fileName: string
       quality // Use high quality (1) for JPEG compression
     )
   );
+}
+
+async function uploadFiles(formData: FormData): Promise<string[] | null> {
+  try {
+    const res = await fetch('/api/aws-s3-images', { 
+      method: 'POST', 
+      body: formData 
+    });
+    if (!res.ok) throw new Error('Network response was not ok');
+
+    const results = await res.json();
+    
+    // Handle direct uploads if necessary
+    const finalUrls = await Promise.all(results.map(async (result: string | { finalUrl: string, presignedUrl: string, requiresDirectUpload: boolean }) => {
+      if (typeof result === 'string') {
+        return result; // Already uploaded file
+      }
+      
+      if (result.requiresDirectUpload) {
+        // Get the corresponding file from formData
+        const fileName = result.finalUrl.split('/').pop();
+        const file = Array.from(formData.getAll('file'))
+          .find((f: any) => f.name === decodeURIComponent(fileName?.split('_').slice(1).join('_') || '')) as File;
+
+        // Upload directly to S3
+        await fetch(result.presignedUrl, {
+          method: 'PUT',
+          body: file,
+          headers: {
+            'Content-Type': file.type,
+            'Cache-Control': 'public, max-age=31536000',
+          },
+        });
+
+        return result.finalUrl;
+      }
+      
+      return result.finalUrl;
+    }));
+
+    return finalUrls;
+  } catch (error) {
+    console.error('Error:', error);
+    toast.error('Failed to upload media');
+    return null;
+  }
 }
 
 async function processUploadedFiles(
@@ -337,7 +258,3 @@ async function processVideo(url: string, x: number, y: number, zoom: number): Pr
 type PDFPage = { file: File, pageNum: number, totalPages: number };
 type MediaInfo = { url: string, dimensions: { width: number, height: number }, type: string };
 type MediaItem = { layerType: LayerType.Image | LayerType.Video | LayerType.Link, position: Point, info: MediaInfo, zoom: number };
-
-// Constants for chunking
-const PDF_BATCH_SIZE = 5; // Process 5 PDF pages at a time
-const UPLOAD_CHUNK_SIZE = 3; // Upload 3 files at a time

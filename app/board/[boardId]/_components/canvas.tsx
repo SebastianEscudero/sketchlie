@@ -2140,38 +2140,19 @@ export const Canvas = ({
                                 hasImage = true;
                                 try {
                                     const blob = await item.getType('image/png');
-                                    const randomImageId = nanoid();
-                                    const file = new File([blob], `${randomImageId}.png`, { type: "image/png" });
+                                    const file = new File([blob], `clipboard_${nanoid()}.png`, { type: "image/png" });
 
-                                    const toastId = toast.loading("Image is being processed, please wait...");
-                                    const formData = new FormData();
-                                    formData.append('file', file);
-                                    formData.append('userId', User.userId);
-                                    formData.append('imageId', randomImageId);
-
-                                    const res = await fetch('/api/aws-s3-images', {
-                                        method: 'POST',
-                                        body: formData
-                                    });
-
-                                    if (!res.ok) {
-                                        throw new Error('Network response was not ok');
-                                    }
-
-                                    const url = await res.text();
-                                    const img = new Image();
-                                    const imgLoad = new Promise<{ url: string, dimensions: { width: number, height: number }, type: string }>((resolve) => {
-                                        img.onload = () => {
-                                            const dimensions = { width: img.width, height: img.height };
-                                            resolve({ url, dimensions, type: 'image' });
-                                        };
-                                    });
-                                    img.src = url;
-                                    const info = await imgLoad;
-
-                                    insertMedia([{ layerType: LayerType.Image, position: { x: mousePosition.x, y: mousePosition.y }, info, zoom }]);
-                                    toast.dismiss(toastId);
-                                    toast.success("Image uploaded successfully");
+                                    // Use the same upload function as drag & drop
+                                    uploadFilesAndInsertThemIntoCanvas(
+                                        [file],
+                                        org,
+                                        User,
+                                        zoom,
+                                        mousePosition.x,
+                                        mousePosition.y,
+                                        insertMedia
+                                    );
+                                    break;
                                 } catch (err) {
                                     console.error("Error processing image from clipboard:", err);
                                     toast.error("Failed to process image from clipboard");

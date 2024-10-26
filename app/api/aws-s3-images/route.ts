@@ -35,69 +35,83 @@ export const POST = async (req: any) => {
     try {
         const results = await Promise.all(files.map(async (file: File) => {
             const uniqueFileName = `${userId}_${file.name}`;
-
-            // Generate the final URL upfront
             const finalUrl = `https://${bucketName}.s3.${bucketRegion}.amazonaws.com/${encodeURIComponent(uniqueFileName)}`;
 
-            // Check if file exists in S3
+            // Check if file exists in S3 (keep existing caching logic)
             try {
                 const headResponse = await s3.send(new HeadObjectCommand({ 
                     Bucket: bucketName, 
                     Key: uniqueFileName 
                 }));
                 
-                // If ETag matches, return cached URL
-                const eTag = headResponse.ETag;
-                if (eTag) {
+                if (headResponse.ETag) {
                     return finalUrl;
                 }
             } catch {
-                // File doesn't exist, process and upload
-                let processedBuffer: Buffer;
+                // File doesn't exist, determine upload strategy
                 const arrayBuffer = await file.arrayBuffer();
                 const buffer = Buffer.from(arrayBuffer);
 
-                // Optimize images if they're not too large
-                if (file.type.startsWith('image/') && buffer.length < MAX_OPTIMIZATION_SIZE) {
-                    processedBuffer = await optimizeImage(buffer, file.type);
+                if (buffer.length > 5 * 1024 * 1024) { // If file is larger than 5MB
+                    // Generate presigned URL for direct upload
+                    const command = new PutObjectCommand({
+                        Bucket: bucketName,
+                        Key: uniqueFileName,
+                        ContentType: file.type,
+                        CacheControl: 'public, max-age=31536000',
+                        Metadata: {
+                            'original-name': file.name,
+                            'upload-date': new Date().toISOString(),
+                        }
+                    });
+
+                    const presignedUrl = await getSignedUrl(s3, command, { expiresIn: 3600 });
+                    
+                    // Return both URLs for client-side upload
+                    return {
+                        finalUrl,
+                        presignedUrl,
+                        requiresDirectUpload: true
+                    };
                 } else {
-                    processedBuffer = buffer;
+                    // Use existing optimization logic for smaller files
+                    let processedBuffer = file.type.startsWith('image/') ? 
+                        await optimizeImage(buffer, file.type) : 
+                        buffer;
+
+                    const command = new PutObjectCommand({
+                        Bucket: bucketName,
+                        Key: uniqueFileName,
+                        ContentType: file.type,
+                        CacheControl: 'public, max-age=31536000',
+                        Metadata: {
+                            'original-name': file.name,
+                            'upload-date': new Date().toISOString(),
+                        }
+                    });
+
+                    const presignedUrl = await getSignedUrl(s3, command, { expiresIn: 300 });
+
+                    await fetch(presignedUrl, {
+                        method: 'PUT',
+                        body: processedBuffer,
+                        headers: {
+                            'Content-Type': file.type,
+                            'Cache-Control': 'public, max-age=31536000',
+                        },
+                    });
+
+                    return finalUrl;
                 }
-
-                // Generate presigned URL with metadata
-                const command = new PutObjectCommand({
-                    Bucket: bucketName,
-                    Key: uniqueFileName,
-                    ContentType: file.type,
-                    CacheControl: 'public, max-age=31536000', // 1 year cache
-                    Metadata: {
-                        'original-name': file.name,
-                        'upload-date': new Date().toISOString(),
-                    }
-                });
-
-                const presignedUrl = await getSignedUrl(s3, command, { expiresIn: 300 });
-
-                // Upload to S3 with optimized settings
-                await fetch(presignedUrl, {
-                    method: 'PUT',
-                    body: processedBuffer,
-                    headers: {
-                        'Content-Type': file.type,
-                        'Cache-Control': 'public, max-age=31536000',
-                    },
-                });
             }
-
-            return finalUrl;
         }));
 
         return new NextResponse(JSON.stringify(results), { 
             status: 200, 
             headers: { 
                 'Content-Type': 'application/json',
-                'Cache-Control': 'public, max-age=3600', // Cache API response for 1 hour
-                'ETag': `W/"${Date.now()}"`, // Add ETag for browser caching
+                'Cache-Control': 'public, max-age=3600',
+                'ETag': `W/"${Date.now()}"`,
             } 
         });
 
