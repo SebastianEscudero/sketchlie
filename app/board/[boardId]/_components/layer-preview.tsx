@@ -41,8 +41,8 @@ interface LayerPreviewProps {
   cameraRef?: React.RefObject<any>;
   showOutlineOnHover?: boolean;
   setAddedByLabel?: (label: string) => void;
-  orgTeammates: any;
-  forceUpdateLayerLocalLayerState: (layerId: string, updatedLayer: any) => void;
+  orgTeammates?: any;
+  forceUpdateLayerLocalLayerState?: (layerId: string, updatedLayer: any) => void;
 };
 
 export const LayerPreview = memo(({
@@ -87,7 +87,7 @@ export const LayerPreview = memo(({
           layer={layer}
           expired={expired}
           socket={socket}
-          forceUpdateLayerLocalLayerState={forceUpdateLayerLocalLayerState}
+          forceUpdateLayerLocalLayerState={forceUpdateLayerLocalLayerState || (() => { })}
         />
       );
     case LayerType.Path:
