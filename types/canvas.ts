@@ -410,6 +410,7 @@ export enum ToolbarMenu {
   Arrows,
   PenEraserLaser,
   Frames,
+  Media,
 }
 
 export type Language = 'en' | 'pt' | 'es';

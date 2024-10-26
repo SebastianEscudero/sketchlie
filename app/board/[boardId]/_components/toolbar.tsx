@@ -31,6 +31,7 @@ import { ArrowMenu } from "./arrow-menu";
 import { LinkButton } from "./link-button";
 import { PresentationModeToolbar } from "./presentation-mode-toolbar";
 import { FrameMenu } from "./frame-menu";
+import { MediaMenu } from "./media-menu";
 
 interface ToolbarProps {
   isUploading: boolean;
@@ -104,7 +105,7 @@ export const Toolbar = memo(({
   }
 
   useEffect(() => {
-    if (canvasState.mode !== CanvasMode.Inserting && toolbarMenu !== ToolbarMenu.PenEraserLaser) {
+    if (canvasState.mode !== CanvasMode.None && canvasState.mode !== CanvasMode.Inserting && toolbarMenu !== ToolbarMenu.PenEraserLaser) {
       setToolbarMenu(ToolbarMenu.None);
     }
   }, [canvasState.mode, toolbarMenu, setToolbarMenu]);
@@ -300,7 +301,8 @@ export const Toolbar = memo(({
             canvasState.layerType === LayerType.Frame
           }
         />
-        {/*<ToolButton
+        {/*
+        <ToolButton
           label="Table"
           icon={Table2}
           onClick={() => setCanvasState({
@@ -311,17 +313,15 @@ export const Toolbar = memo(({
             canvasState.mode === CanvasMode.Inserting &&
             canvasState.layerType === LayerType.Table
           }
-        />*/}
+        />
+        */}
         <MediaButton
           label="Media"
-          org={org}
-          isUploading={isUploading}
-          setIsUploading={setIsUploading}
-          insertMedia={insertMedia}
           icon={Image}
-          camera={camera}
-          svgRef={svgRef}
-          zoom={zoom}
+          toolbarMenu={toolbarMenu}
+          setToolbarMenu={setToolbarMenu}
+          isActive={toolbarMenu === ToolbarMenu.Media}
+          setCanvasState={setCanvasState}
         />
         <LinkButton
           label="Link"
@@ -377,6 +377,18 @@ export const Toolbar = memo(({
           zoom={zoom}
           insertLayer={insertLayer}
           svgRef={svgRef}
+        />
+      }
+      {toolbarMenu === ToolbarMenu.Media &&
+        <MediaMenu
+          isMediaMenuOpen={toolbarMenu === ToolbarMenu.Media}
+          org={org}
+          isUploading={isUploading}
+          setIsUploading={setIsUploading}
+          insertMedia={insertMedia}
+          camera={camera}
+          svgRef={svgRef}
+          zoom={zoom}
         />
       }
     </div>

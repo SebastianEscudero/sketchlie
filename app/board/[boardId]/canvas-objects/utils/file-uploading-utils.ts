@@ -249,8 +249,33 @@ async function processMediaItem(url: string, fileType: string, x: number, y: num
 
 async function processImage(url: string, x: number, y: number, zoom: number): Promise<MediaItem> {
   const img = new Image();
+  
   const info = await new Promise<MediaInfo>(resolve => {
-    img.onload = () => resolve({ url, dimensions: { width: img.width, height: img.height }, type: 'image' });
+    img.onload = () => {
+      let width = img.width;
+      let height = img.height;
+
+      // Set maximum dimensions to a percentage of the viewport
+      const maxWidth = window.innerWidth * 0.8;  // 80% of viewport width
+      const maxHeight = window.innerHeight * 0.8;  // 80% of viewport height
+
+      // Calculate the scaling factor
+      const scaleFactor = Math.min(
+        1,
+        maxWidth / width,
+        maxHeight / height
+      );
+
+      // Apply the scaling factor
+      width *= scaleFactor;
+      height *= scaleFactor;
+
+      resolve({ 
+        url, 
+        dimensions: { width, height }, 
+        type: 'image',
+      });
+    };
     img.src = url;
   });
 
