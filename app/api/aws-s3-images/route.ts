@@ -34,7 +34,6 @@ export const POST = async (req: any) => {
             const uniqueFileName = `${userId}_${file.name}`;
             const finalUrl = `https://${bucketName}.s3.${bucketRegion}.amazonaws.com/${encodeURIComponent(uniqueFileName)}`;
 
-            // Check if file exists in S3 (keep existing caching logic)
             try {
                 const headResponse = await s3.send(new HeadObjectCommand({
                     Bucket: bucketName,
@@ -42,7 +41,6 @@ export const POST = async (req: any) => {
                 }));
 
                 if (headResponse.ETag) {
-                    console.log(`File already exists in S3: ${uniqueFileName}`);
                     return finalUrl;
                 }
             } catch {
@@ -55,7 +53,7 @@ export const POST = async (req: any) => {
                 if (file.type.startsWith('image/')) {
                     const optimizationResult = await optimizeImage(buffer, file.type);
                     buffer = optimizationResult.buffer;
-                    
+
                     console.log(`Image optimization results for ${file.name}:`);
                     console.log(`  Original size: ${originalSize / 1024} KB`);
                     console.log(`  Optimized size: ${buffer.length / 1024} KB`);
@@ -68,11 +66,6 @@ export const POST = async (req: any) => {
                     Key: uniqueFileName,
                     Body: buffer,
                     ContentType: file.type,
-                    CacheControl: 'public, max-age=31536000',
-                    Metadata: {
-                        'original-name': file.name,
-                        'upload-date': new Date().toISOString(),
-                    }
                 });
 
                 await s3.send(command);
@@ -81,14 +74,7 @@ export const POST = async (req: any) => {
             }
         }));
 
-        return new NextResponse(JSON.stringify(results), {
-            status: 200,
-            headers: {
-                'Content-Type': 'application/json',
-                'Cache-Control': 'public, max-age=3600',
-                'ETag': `W/"${Date.now()}"`,
-            }
-        });
+        return new NextResponse(JSON.stringify(results), { status: 200, headers: { 'Content-Type': 'application/json' } });
 
     } catch (error) {
         console.error('Error processing uploads:', error);

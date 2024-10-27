@@ -8,6 +8,7 @@ const imageCache = new Map<string, HTMLImageElement>();
 const preloadImage = (src: string) => {
   if (!imageCache.has(src)) {
     const img = new Image();
+    img.crossOrigin = "anonymous";
     img.src = src;
     imageCache.set(src, img);
     return img;
@@ -119,6 +120,7 @@ export const InsertImage = memo(({
         </svg>
       )}
       <image
+        crossOrigin="anonymous"
         id={id}
         href={src}
         x={x}

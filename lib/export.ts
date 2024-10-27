@@ -16,12 +16,11 @@ export const exportFramesToPdf = async (title: string, isTransparent: boolean, l
       return;
     }
 
-    // Create a new jsPDF instance with compression enabled
     const doc = new jsPDF({
       orientation: "landscape",
       unit: 'pt',
       format: 'a4',
-      compress: true  // Enable compression
+      compress: true
     });
 
     let totalImageSize = 0;
@@ -30,19 +29,16 @@ export const exportFramesToPdf = async (title: string, isTransparent: boolean, l
       const frame = frames[i];
       const parser = new DOMParser();
 
-      // Generate HTML content for the frame
       const htmlContent = generateFrameSvg(frame, liveLayers, liveLayerIds);
 
       const docParser = parser.parseFromString(htmlContent, 'text/html');
       const simulatedCanvas = docParser.body.firstChild as HTMLElement;
 
-      // Create a temporary container for the canvas
       const container = document.createElement('div');
       container.appendChild(simulatedCanvas);
       document.body.appendChild(container);
 
       try {
-        // Use domToCanvas to render the canvas
         const canvas = await domToCanvas(container, {
           backgroundColor: isTransparent ? 'rgba(0,0,0,0)' : (document.documentElement.classList.contains("dark") ? '#2C2C2C' : 'white'),
           scale: 1,
