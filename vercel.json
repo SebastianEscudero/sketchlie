@@ -1,0 +1,7 @@
+{
+    "functions": {
+      "api/aws-s3-images/*.ts": {
+        "maxDuration": 60
+      }
+    }
+  }
