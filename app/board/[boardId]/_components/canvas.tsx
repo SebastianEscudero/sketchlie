@@ -2427,11 +2427,8 @@ export const Canvas = ({
                                             zoom={zoom}
                                             camera={camera}
                                             selectedLayersRef={selectedLayersRef}
-                                            setIsShowingAIInput={setIsShowingAIInput}
-                                            isShowingAIInput={isShowingAIInput}
                                             setForcedRender={setForceLayerPreviewRender}
                                             User={User}
-                                            svgRef={svgRef}
                                             quickInserting={quickInserting}
                                             setQuickInserting={setQuickInserting}
                                             eraserDeleteAnyLayer={eraserDeleteAnyLayer}
@@ -2477,7 +2474,6 @@ export const Canvas = ({
                                     openCommentBoxId={openCommentBoxId}
                                     setOpenCommentBoxId={setOpenCommentBoxId}
                                     user={User}
-                                    svgRef={svgRef}
                                     title={board.title}
                                 />
                                 <AddedLayerByLabel

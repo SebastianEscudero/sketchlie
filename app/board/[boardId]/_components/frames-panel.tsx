@@ -39,7 +39,6 @@ interface FramesPanelProps {
     boardId: string;
     socket: Socket | null;
     setPresentationMode: (mode: boolean) => void;
-    svgRef: React.RefObject<SVGSVGElement>;
     title: string;
 }
 
@@ -55,7 +54,6 @@ export const FramesPanel = memo<FramesPanelProps>(({
     boardId,
     socket,
     setPresentationMode,
-    svgRef,
     title
 }) => {
     // Calculate frameIds directly instead of using state
@@ -143,7 +141,7 @@ export const FramesPanel = memo<FramesPanelProps>(({
                     <Play className="h-4 w-4 mr-2 fill-white" strokeWidth={3} />
                     Present
                 </Button>
-                <Button variant="outline" onClick={() => exportFramesToPdf(title, false, liveLayers, liveLayerIds, svgRef)}>
+                <Button variant="outline" onClick={() => exportFramesToPdf(title, false, liveLayers, liveLayerIds)}>
                     <ExportIcon className="h-4 w-4 mr-2" />
                     Export
                 </Button>

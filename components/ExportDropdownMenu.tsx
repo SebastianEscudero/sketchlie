@@ -19,10 +19,9 @@ import { Hint } from "./hint";
 interface ExportDropdownMenuProps {
     id: string;
     title: string;
-    svgRef: React.RefObject<SVGSVGElement>;
 }
 
-export const ExportDropdownMenu = ({ id, title, svgRef }: ExportDropdownMenuProps) => {
+export const ExportDropdownMenu = ({ id, title }: ExportDropdownMenuProps) => {
     const { liveLayers, liveLayerIds } = useRoom();
     const [isTransparent, setIsTransparent] = useState(false);
 
@@ -33,7 +32,7 @@ export const ExportDropdownMenu = ({ id, title, svgRef }: ExportDropdownMenuProp
     ];
 
     const documentExportOptions = [
-        { label: 'Export as PDF', action: () => exportFramesToPdf(title, isTransparent, liveLayers, liveLayerIds, svgRef) },
+        { label: 'Export as PDF', action: () => exportFramesToPdf(title, isTransparent, liveLayers, liveLayerIds) },
     ];
 
     const dataExportOptions = [

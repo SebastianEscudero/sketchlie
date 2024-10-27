@@ -28,11 +28,8 @@ interface InfoProps {
     zoom: any;
     setCanvasState: any;
     selectedLayersRef: any;
-    setIsShowingAIInput: any;
-    isShowingAIInput: any;
     setForcedRender(forcedRender: boolean): void;
     User: User;
-    svgRef: React.RefObject<SVGSVGElement>;
     quickInserting: boolean;
     setQuickInserting: (quickInserting: boolean) => void;
     eraserDeleteAnyLayer: boolean;
@@ -64,9 +61,6 @@ export const Info = memo(({
     selectedLayersRef,
     setForcedRender,
     User,
-    setIsShowingAIInput,
-    isShowingAIInput,
-    svgRef,
     quickInserting,
     setQuickInserting,
     eraserDeleteAnyLayer,
@@ -242,7 +236,7 @@ export const Info = memo(({
             <div className="text-neutral-300 px-1 sm:flex hidden">
                 |
             </div>
-            <ExportDropdownMenu id={board._id} title={board.title} svgRef={svgRef} />
+            <ExportDropdownMenu id={board._id} title={board.title} />
             <TabSeparator />
             <Hint label="Upgrade" side="bottom" sideOffset={10}>
                 <Button 
