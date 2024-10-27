@@ -1065,23 +1065,24 @@ export const Canvas = ({
 
         setIsEditing(false);
         setIsPointerDown(true);
-        const point = pointerEventToCanvasPoint(e, cameraRef.current, zoomRef.current, svgRef);
-        if (point && selectedLayersRef.current.length > 0) {
-            const bounds = calculateBoundingBox(selectedLayersRef.current.map(id => liveLayers[id]));
-            if (bounds && point.x > bounds.x &&
-                point.x < bounds.x + bounds.width &&
-                point.y > bounds.y &&
-                point.y < bounds.y + bounds.height) {
-                setCanvasState({ mode: CanvasMode.Translating, current: point });
-                setIsEditing(false);
-                return;
-            }
-        }
 
         removeHighlightFromText();
         unselectLayers();
 
-        if (e.button === 0) {
+        if (e.button === 0 && !isPanning) {
+            const point = pointerEventToCanvasPoint(e, cameraRef.current, zoomRef.current, svgRef);
+            if (point && selectedLayersRef.current.length > 0) {
+                const bounds = calculateBoundingBox(selectedLayersRef.current.map(id => liveLayers[id]));
+                if (bounds && point.x > bounds.x &&
+                    point.x < bounds.x + bounds.width &&
+                    point.y > bounds.y &&
+                    point.y < bounds.y + bounds.height) {
+                    setCanvasState({ mode: CanvasMode.Translating, current: point });
+                    setIsEditing(false);
+                    return;
+                }
+            }
+
             // and this is to just close the comment box when the user clicks anywhere else
             setOpenCommentBoxId(null);
             // when the user is inserting a comment and then clicks somewhere else, we close the comment preview
@@ -1089,9 +1090,7 @@ export const Canvas = ({
                 setCurrentPreviewLayer(null);
                 return;
             }
-        }
 
-        if (e.button === 0 && !isPanning) {
             //.When inserting a comment layer and we click anywhere else with left click, we close the comment layer preview
             if (canvasState.mode === CanvasMode.Eraser) {
                 setToolbarMenu(ToolbarMenu.None);
@@ -1111,8 +1110,6 @@ export const Canvas = ({
             }
 
             if (canvasState.mode === CanvasMode.Inserting) {
-                const point = pointerEventToCanvasPoint(e, cameraRef.current, zoomRef.current, svgRef);
-
                 // If the layer type is comment, set the current preview layer to the comment layer (we insert it once the user writes something)
                 if (canvasState.layerType === LayerType.Comment) {
                     const commentSize = 36;
