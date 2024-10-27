@@ -529,7 +529,7 @@ export const Canvas = ({
                 newLayerIds.push(frameLayerId);
 
                 // Add some padding around the content
-                const framePadding = 5/zoom;
+                const framePadding = 10/zoom;
                 
                 const frameLayer: FrameLayer = {
                     type: LayerType.Frame,

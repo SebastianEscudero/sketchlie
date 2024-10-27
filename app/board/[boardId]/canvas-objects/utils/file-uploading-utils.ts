@@ -186,7 +186,7 @@ async function processUploadedFiles(
 
   // Calculate grid dimensions
   const gridSize = Math.ceil(Math.sqrt(urls.length));
-  const padding = 10 / zoom;
+  const padding = 20 / zoom;
 
   // Use the first item for base dimensions
   const baseWidth = processedItems[0].item.info.dimensions.width / zoom;
