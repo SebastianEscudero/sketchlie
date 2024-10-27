@@ -113,9 +113,6 @@ async function optimizeImage(buffer: Buffer, mimeType: string): Promise<{ buffer
         height = resizedMetadata.height || 0;
     }
 
-    // Apply mild sharpening
-    image.sharpen({ sigma: 1, m1: 0.5, m2: 0.3, x1: 2, y2: 10, y3: 20 });
-
     // Optimize based on image type
     let optimizedBuffer: Buffer;
     switch (mimeType) {
