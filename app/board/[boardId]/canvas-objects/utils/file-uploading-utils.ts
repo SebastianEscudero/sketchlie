@@ -84,13 +84,13 @@ async function processPDF(file: File, formData: FormData, pdfPages: PDFPage[]): 
 
 async function convertPDFPageToImage(pdf: any, pageNum: number, fileName: string): Promise<File> {
   const page = await pdf.getPage(pageNum);
-  const scale = 1.2; // Increase scale for better quality
+  const scale = 1.5; // Increase scale for better quality
   const viewport = page.getViewport({ scale });
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d')!;
   canvas.height = viewport.height;
   canvas.width = viewport.width;
-  const quality = 0.9;
+  const quality = 1;
 
   await page.render({ canvasContext: context, viewport }).promise;
 
@@ -104,53 +104,53 @@ async function convertPDFPageToImage(pdf: any, pageNum: number, fileName: string
 }
 
 async function uploadFiles(formData: FormData): Promise<string[] | null> {
-  let totalSize = 0;
-  for (const [key, value] of Array.from(formData.entries())) {
-    if (value instanceof File) {
-      totalSize += value.size;
+  const maxPayloadSize = 4 * 1024 * 1024; // 4MB
+  const files = formData.getAll('file') as File[];
+  const userId = formData.get('userId') as string;
+
+  const chunks: File[][] = [[]];
+  let currentChunkSize = 0;
+  let chunkIndex = 0;
+
+  for (const file of files) {
+    if (currentChunkSize + file.size > maxPayloadSize) {
+      chunkIndex++;
+      chunks[chunkIndex] = [];
+      currentChunkSize = 0;
     }
+    chunks[chunkIndex].push(file);
+    currentChunkSize += file.size;
   }
-  const payloadSizeMB = (totalSize / (1024 * 1024)).toFixed(2);
-  console.log(`Uploading payload size: ${payloadSizeMB} MB`);
 
   try {
-    const res = await fetch('/api/aws-s3-images', { 
-      method: 'POST', 
-      body: formData 
-    });
-    if (!res.ok) throw new Error('Network response was not ok');
+    const allResults: string[] = [];
 
-    const results = await res.json();
-    
-    // Handle direct uploads if necessary
-    const finalUrls = await Promise.all(results.map(async (result: string | { finalUrl: string, presignedUrl: string, requiresDirectUpload: boolean }) => {
-      if (typeof result === 'string') {
-        return result; // Already uploaded file
-      }
-      
-      if (result.requiresDirectUpload) {
-        // Get the corresponding file from formData
-        const fileName = result.finalUrl.split('/').pop();
-        const file = Array.from(formData.getAll('file'))
-          .find((f: any) => f.name === decodeURIComponent(fileName?.split('_').slice(1).join('_') || '')) as File;
+    for (let i = 0; i < chunks.length; i++) {
+      const chunk = chunks[i];
+      const chunkFormData = new FormData();
+      let chunkSize = 0;
+      chunk.forEach(file => {
+        chunkFormData.append('file', file);
+        chunkSize += file.size;
+      });
+      chunkFormData.append('userId', userId);
 
-        // Upload directly to S3
-        await fetch(result.presignedUrl, {
-          method: 'PUT',
-          body: file,
-          headers: {
-            'Content-Type': file.type,
-            'Cache-Control': 'public, max-age=31536000',
-          },
-        });
+      const payloadSizeMB = (chunkSize / (1024 * 1024)).toFixed(2);
+      console.log(`Uploading chunk ${i + 1}/${chunks.length}, payload size: ${payloadSizeMB} MB`);
 
-        return result.finalUrl;
-      }
-      
-      return result.finalUrl;
-    }));
+      const res = await fetch('/api/aws-s3-images', {
+        method: 'POST',
+        body: chunkFormData
+      });
 
-    return finalUrls;
+      if (!res.ok) throw new Error('Network response was not ok');
+
+      const results = await res.json();
+      allResults.push(...results);
+    }
+
+    console.log(`Total files uploaded: ${allResults.length}`);
+    return allResults;
   } catch (error) {
     console.error('Error:', error);
     toast.error('Failed to upload media');
