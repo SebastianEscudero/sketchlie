@@ -166,24 +166,9 @@ async function processUploadedFiles(
   centerY: number,
   zoom: number
 ): Promise<MediaItem[]> {
-  const mediaItems: MediaItem[] = [];
-  if (urls.length === 0) return mediaItems;
+  if (urls.length === 0) return [];
 
-  // If there's only one image, scale it by 0.5
-  if (urls.length === 1) {
-    const file = pdfPages[0]?.file || files[0];
-    const item = await processMediaItem(urls[0], file.type, 0, 0, zoom);
-    item.info.dimensions.width *= 0.5;
-    item.info.dimensions.height *= 0.5;
-    
-    // Adjust position so that the center of the image is at the mouse position
-    item.position.x = centerX - item.info.dimensions.width / 2;
-    item.position.y = centerY - item.info.dimensions.height / 2;
-    
-    return [item];
-  }
-
-  // Process all items first
+  // Process all items in parallel
   const processedItems = await Promise.all(urls.map(async (url, index) => {
     const file = pdfPages[index]?.file || files[index - pdfPages.length];
     const item = await processMediaItem(url, file.type, 0, 0, zoom);
@@ -219,6 +204,8 @@ async function processUploadedFiles(
   const startX = centerX - (itemWidth * gridSize + padding * (gridSize - 1)) / 2;
   const startY = centerY - (itemHeight * gridSize + padding * (gridSize - 1)) / 2;
 
+  const mediaItems: MediaItem[] = [];
+
   processedItems.forEach(({ item }, i) => {
     const row = Math.floor(i / gridSize);
     const col = i % gridSize;
@@ -248,38 +235,24 @@ async function processMediaItem(url: string, fileType: string, x: number, y: num
 }
 
 async function processImage(url: string, x: number, y: number, zoom: number): Promise<MediaItem> {
-  const img = new Image();
-  
-  const info = await new Promise<MediaInfo>(resolve => {
+  return new Promise<MediaItem>(resolve => {
+    const img = new Image();
     img.onload = () => {
-      let width = img.width;
-      let height = img.height;
+      const maxWidth = window.innerWidth * 0.8;
+      const maxHeight = window.innerHeight * 0.8;
+      const scaleFactor = Math.min(1, maxWidth / img.width, maxHeight / img.height);
+      const width = img.width * scaleFactor;
+      const height = img.height * scaleFactor;
 
-      // Set maximum dimensions to a percentage of the viewport
-      const maxWidth = window.innerWidth * 0.8;  // 80% of viewport width
-      const maxHeight = window.innerHeight * 0.8;  // 80% of viewport height
-
-      // Calculate the scaling factor
-      const scaleFactor = Math.min(
-        1,
-        maxWidth / width,
-        maxHeight / height
-      );
-
-      // Apply the scaling factor
-      width *= scaleFactor;
-      height *= scaleFactor;
-
-      resolve({ 
-        url, 
-        dimensions: { width, height }, 
-        type: 'image',
+      resolve({
+        layerType: LayerType.Image,
+        position: { x, y },
+        info: { url, dimensions: { width, height }, type: 'image' },
+        zoom
       });
     };
     img.src = url;
   });
-
-  return { layerType: LayerType.Image, position: { x, y }, info, zoom };
 }
 
 async function processVideo(url: string, x: number, y: number, zoom: number): Promise<MediaItem> {
@@ -295,3 +268,4 @@ async function processVideo(url: string, x: number, y: number, zoom: number): Pr
 type PDFPage = { file: File, pageNum: number, totalPages: number };
 type MediaInfo = { url: string, dimensions: { width: number, height: number }, type: string };
 type MediaItem = { layerType: LayerType.Image | LayerType.Video | LayerType.Link, position: Point, info: MediaInfo, zoom: number };
+
