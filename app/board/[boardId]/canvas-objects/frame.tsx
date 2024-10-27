@@ -36,14 +36,18 @@ export const Frame = memo(({
     const padding = fontSize * 0.5;
     const [isEditing, setIsEditing] = useState(false);
     const [value, setValue] = useState(initialValue || `Frame ${frameNumber || ""}`);
-    const [strokeColor, setStrokeColor] = useState(selectionColor || "none");
+    const [strokeColor, setStrokeColor] = useState(
+        selectionColor || (document.documentElement.classList.contains("dark") ? "#404040" : "#e5e5e5")
+    );
 
     useEffect(() => {
         setValue(initialValue || `Frame ${frameNumber || ""}`);
     }, [frameNumber, initialValue]);
 
     useEffect(() => {
-        setStrokeColor(selectionColor || "none");
+        setStrokeColor(
+            selectionColor || (document.documentElement.classList.contains("dark") ? "#404040" : "#e5e5e5")
+        );
     }, [selectionColor, forcedRender]);
 
     const updateValue = useUpdateValue();
