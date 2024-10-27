@@ -488,7 +488,8 @@ export const Canvas = ({
             layerType: LayerType.Image | LayerType.Video | LayerType.Link | LayerType.Svg
             position: Point,
             info: any,
-            zoom: number
+            zoom: number,
+            isPdfPage?: boolean
         }>
     ) => {
         if (expired) {
@@ -499,7 +500,7 @@ export const Canvas = ({
         const newLayers: Layer[] = [];
         const newLayerIds: string[] = [];
 
-        mediaItems.forEach(({ layerType, position, info }) => {
+        mediaItems.forEach(({ layerType, position, info, isPdfPage }) => {
             const layerId = nanoid();
             newLayerIds.push(layerId);
 
@@ -523,6 +524,24 @@ export const Canvas = ({
 
             newLayers.push(layer);
 
+            if (isPdfPage) {
+                const frameLayerId = nanoid();
+                newLayerIds.push(frameLayerId);
+
+                // Add some padding around the content
+                const framePadding = 5/zoom;
+                
+                const frameLayer: FrameLayer = {
+                    type: LayerType.Frame,
+                    x: position.x - framePadding/2,
+                    y: position.y - framePadding/2,
+                    height: info.dimensions.height + framePadding,
+                    width: info.dimensions.width + framePadding,
+                    addedBy: User?.information.name
+                };
+                
+                newLayers.push(frameLayer);
+            }
         });
 
         if (newLayers.length > 0) {

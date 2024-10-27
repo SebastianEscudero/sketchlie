@@ -171,7 +171,8 @@ async function processUploadedFiles(
   // Process all items in parallel
   const processedItems = await Promise.all(urls.map(async (url, index) => {
     const file = pdfPages[index]?.file || files[index - pdfPages.length];
-    const item = await processMediaItem(url, file.type, 0, 0, zoom);
+    const isPdfPage = !!pdfPages[index]; // Check if this item is a PDF page
+    const item = await processMediaItem(url, file.type, 0, 0, zoom, isPdfPage);
     return { item, originalIndex: index, pageNum: pdfPages[index]?.pageNum };
   }));
 
@@ -224,9 +225,16 @@ async function processUploadedFiles(
   return mediaItems;
 }
 
-async function processMediaItem(url: string, fileType: string, x: number, y: number, zoom: number): Promise<MediaItem> {
+async function processMediaItem(
+  url: string, 
+  fileType: string, 
+  x: number, 
+  y: number, 
+  zoom: number,
+  isPdfPage?: boolean
+): Promise<MediaItem> {
   if (fileType.startsWith('image/')) {
-    return processImage(url, x, y, zoom);
+    return processImage(url, x, y, zoom, isPdfPage);
   } else if (fileType.startsWith('video/')) {
     return processVideo(url, x, y, zoom);
   } else {
@@ -234,7 +242,13 @@ async function processMediaItem(url: string, fileType: string, x: number, y: num
   }
 }
 
-async function processImage(url: string, x: number, y: number, zoom: number): Promise<MediaItem> {
+async function processImage(
+  url: string, 
+  x: number, 
+  y: number, 
+  zoom: number,
+  isPdfPage?: boolean
+): Promise<MediaItem> {
   return new Promise<MediaItem>(resolve => {
     const img = new Image();
     img.onload = () => {
@@ -248,7 +262,8 @@ async function processImage(url: string, x: number, y: number, zoom: number): Pr
         layerType: LayerType.Image,
         position: { x, y },
         info: { url, dimensions: { width, height }, type: 'image' },
-        zoom
+        zoom,
+        isPdfPage // Add the flag to indicate if this is a PDF page
       });
     };
     img.src = url;
@@ -267,5 +282,10 @@ async function processVideo(url: string, x: number, y: number, zoom: number): Pr
 
 type PDFPage = { file: File, pageNum: number, totalPages: number };
 type MediaInfo = { url: string, dimensions: { width: number, height: number }, type: string };
-type MediaItem = { layerType: LayerType.Image | LayerType.Video | LayerType.Link, position: Point, info: MediaInfo, zoom: number };
-
+type MediaItem = { 
+    layerType: LayerType.Image | LayerType.Video | LayerType.Link, 
+    position: Point, 
+    info: MediaInfo, 
+    zoom: number,
+    isPdfPage?: boolean 
+};
