@@ -4,6 +4,7 @@ import { ToolButton } from "./tool-button";
 import { MousePointer2, Pen, StickyNote, Undo2, Redo2, ChevronLeft, ChevronRight } from "lucide-react";
 import { LaserIcon } from "@/public/custom-icons/laser";
 import { CanvasMode, CanvasState, LayerType } from "@/types/canvas";
+import { toast } from "sonner";
 
 interface PresentationModeToolbarProps {
     setPresentationMode: (mode: boolean) => void;
@@ -98,7 +99,10 @@ export const PresentationModeToolbar = ({
                 </div>
                 <Hint label="Exit Presentation" sideOffset={14}>
                     <Button
-                        onClick={() => setPresentationMode(false)}
+                        onClick={() => {
+                            setPresentationMode(false);
+                            toast.success("Exited presentation mode");
+                        }}
                         variant="destructive"
                         size="sm"
                     >

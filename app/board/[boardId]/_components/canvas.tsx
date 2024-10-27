@@ -2207,6 +2207,11 @@ export const Canvas = ({
                         setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Arrow });
                     }
                 }
+            } else if (key === "escape") {
+                if (presentationMode) {
+                    setPresentationMode(false);
+                    toast.success("Exited presentation mode");
+                }
             } else if (key === "tab") {
                 if (expired) {
                     e.preventDefault();
@@ -2304,7 +2309,7 @@ export const Canvas = ({
         }
 
     }, [deleteLayers, insertMedia, copySelectedLayers, pasteCopiedLayers, camera, zoom, liveLayers, copiedLayerIds, liveLayerIds, myPresence, socket, User.userId, forceSelectionBoxRender, canvasState, presentationMode,
-        boardId, history.length, mousePosition, performAction, redo, redoStack.length, setLiveLayerIds, setLiveLayers, undo, unselectLayers, expired, translateSelectedLayersWithDelta, initialLayers, goToNextFrame, goToPreviousFrame]);
+        boardId, history.length, mousePosition, performAction, redo, redoStack.length, setLiveLayerIds, setLiveLayers, undo, unselectLayers, expired, translateSelectedLayersWithDelta, initialLayers, goToNextFrame, goToPreviousFrame, User, org]);
 
     useEffect(() => {
         if (presentationMode) {
