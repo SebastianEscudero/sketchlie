@@ -59,9 +59,9 @@ export const PenEraserLaserMenu = ({
             <div className="p-1 pt-3 pb-0 w-[150px] flex flex-col items-center">
                 <Slider
                     defaultValue={[pathStrokeSize]}
-                    min={1}
+                    min={0.5}
                     max={8}
-                    step={1}
+                    step={0.5}
                     className='bg-white dark:bg-[#383838] w-[90%] cursor-pointer'
                     onValueChange={handleStrokeSizeChange}
                 />
