@@ -42,64 +42,42 @@ export const POST = async (req: any) => {
                 }));
 
                 if (headResponse.ETag) {
+                    console.log(`File already exists in S3: ${uniqueFileName}`);
                     return finalUrl;
                 }
             } catch {
-                // File doesn't exist, determine upload strategy
+                // File doesn't exist, proceed with upload
                 const arrayBuffer = await file.arrayBuffer();
-                const buffer = Buffer.from(arrayBuffer);
+                let buffer = Buffer.from(arrayBuffer);
+                const originalSize = buffer.length;
 
-                if (buffer.length > 5 * 1024 * 1024) { // If file is larger than 5MB
-                    // Generate presigned URL for direct upload
-                    const command = new PutObjectCommand({
-                        Bucket: bucketName,
-                        Key: uniqueFileName,
-                        ContentType: file.type,
-                        CacheControl: 'public, max-age=31536000',
-                        Metadata: {
-                            'original-name': file.name,
-                            'upload-date': new Date().toISOString(),
-                        }
-                    });
-
-                    const presignedUrl = await getSignedUrl(s3, command, { expiresIn: 3600 });
-
-                    // Return both URLs for client-side upload
-                    return {
-                        finalUrl,
-                        presignedUrl,
-                        requiresDirectUpload: true
-                    };
-                } else {
-                    // Use existing optimization logic for smaller files
-                    let processedBuffer = file.type.startsWith('image/') ?
-                        await optimizeImage(buffer, file.type) :
-                        buffer;
-
-                    const command = new PutObjectCommand({
-                        Bucket: bucketName,
-                        Key: uniqueFileName,
-                        ContentType: file.type,
-                        CacheControl: 'public, max-age=31536000',
-                        Metadata: {
-                            'original-name': file.name,
-                            'upload-date': new Date().toISOString(),
-                        }
-                    });
-
-                    const presignedUrl = await getSignedUrl(s3, command, { expiresIn: 300 });
-
-                    await fetch(presignedUrl, {
-                        method: 'PUT',
-                        body: processedBuffer,
-                        headers: {
-                            'Content-Type': file.type,
-                            'Cache-Control': 'public, max-age=31536000',
-                        },
-                    });
-
-                    return finalUrl;
+                // Optimize image if it's an image file
+                if (file.type.startsWith('image/')) {
+                    const optimizationResult = await optimizeImage(buffer, file.type);
+                    buffer = optimizationResult.buffer;
+                    
+                    console.log(`Image optimization results for ${file.name}:`);
+                    console.log(`  Original size: ${originalSize / 1024} KB`);
+                    console.log(`  Optimized size: ${buffer.length / 1024} KB`);
+                    console.log(`  Size reduction: ${((originalSize - buffer.length) / originalSize * 100).toFixed(2)}%`);
+                    console.log(`  Dimensions: ${optimizationResult.width}x${optimizationResult.height}`);
                 }
+
+                const command = new PutObjectCommand({
+                    Bucket: bucketName,
+                    Key: uniqueFileName,
+                    Body: buffer,
+                    ContentType: file.type,
+                    CacheControl: 'public, max-age=31536000',
+                    Metadata: {
+                        'original-name': file.name,
+                        'upload-date': new Date().toISOString(),
+                    }
+                });
+
+                await s3.send(command);
+
+                return finalUrl;
             }
         }));
 
@@ -118,45 +96,73 @@ export const POST = async (req: any) => {
     }
 }
 
-async function optimizeImage(buffer: Buffer, mimeType: string): Promise<Buffer> {
+async function optimizeImage(buffer: Buffer, mimeType: string): Promise<{ buffer: Buffer, width: number, height: number }> {
     const image = sharp(buffer);
     const metadata = await image.metadata();
-    const width = metadata.width || 0;
+    let width = metadata.width || 0;
+    let height = metadata.height || 0;
 
-    // Only resize if image is larger than 2000px
-    if (width > 2000) {
-        image.resize(2000, undefined, {
+    // Resize if image is larger than 2000px
+    if (width > 2000 || height > 2000) {
+        image.resize(2000, 2000, {
             withoutEnlargement: true,
             fit: 'inside'
         });
+        const resizedMetadata = await image.metadata();
+        width = resizedMetadata.width || 0;
+        height = resizedMetadata.height || 0;
     }
 
+    // Apply mild sharpening
+    image.sharpen({ sigma: 1, m1: 0.5, m2: 0.3, x1: 2, y2: 10, y3: 20 });
+
     // Optimize based on image type
+    let optimizedBuffer: Buffer;
     switch (mimeType) {
         case 'image/jpeg':
-            return image
+            optimizedBuffer = await image
                 .jpeg({
-                    quality: 80,
+                    quality: 85,
                     progressive: true,
-                    optimizeScans: true
+                    optimizeScans: true,
+                    mozjpeg: true,
+                    trellisQuantisation: true,
+                    overshootDeringing: true,
+                    quantisationTable: 3
                 })
                 .toBuffer();
+            break;
         case 'image/png':
-            return image
+            optimizedBuffer = await image
                 .png({
                     compressionLevel: 9,
                     progressive: true,
-                    palette: true
-                })
-                .toBuffer();
-        case 'image/webp':
-            return image
-                .webp({
+                    palette: true,
                     quality: 80,
-                    effort: 6 // Higher compression effort
+                    effort: 10,
+                    adaptiveFiltering: true,
+                    colors: 256
                 })
                 .toBuffer();
+            break;
+        case 'image/webp':
+            optimizedBuffer = await image
+                .webp({
+                    quality: 82,
+                    effort: 6,
+                    lossless: false,
+                    nearLossless: true
+                })
+                .toBuffer();
+            break;
         default:
-            return buffer;
+            optimizedBuffer = buffer;
     }
+
+    // If the optimized version is larger, return the original
+    if (optimizedBuffer.length > buffer.length) {
+        return { buffer, width, height };
+    }
+
+    return { buffer: optimizedBuffer, width, height };
 }

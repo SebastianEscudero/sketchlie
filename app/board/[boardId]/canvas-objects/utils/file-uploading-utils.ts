@@ -84,13 +84,13 @@ async function processPDF(file: File, formData: FormData, pdfPages: PDFPage[]): 
 
 async function convertPDFPageToImage(pdf: any, pageNum: number, fileName: string): Promise<File> {
   const page = await pdf.getPage(pageNum);
-  const scale = 1.1; // Increase scale for better quality
+  const scale = 1.2; // Increase scale for better quality
   const viewport = page.getViewport({ scale });
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d')!;
   canvas.height = viewport.height;
   canvas.width = viewport.width;
-  const quality = 0.8;
+  const quality = 0.9;
 
   await page.render({ canvasContext: context, viewport }).promise;
 
@@ -98,7 +98,7 @@ async function convertPDFPageToImage(pdf: any, pageNum: number, fileName: string
     canvas.toBlob(
       blob => resolve(new File([blob!], `${fileName}_page_${pageNum}.jpg`, { type: 'image/jpeg' })),
       'image/jpeg',
-      quality // Use high quality (1) for JPEG compression
+      quality
     )
   );
 }
