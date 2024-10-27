@@ -7,7 +7,7 @@ import { LayerPreview } from "@/app/board/[boardId]/_components/layer-preview";
 import React from "react";
 import ReactDOMServer from "react-dom/server";
 
-export const exportFramesToPdf = async (title: string, isTransparent: boolean, liveLayers: Layers, liveLayerIds: string[], svgRef: React.RefObject<SVGSVGElement>) => {
+export const exportFramesToPdf = async (title: string, isTransparent: boolean, liveLayers: Layers, liveLayerIds: string[]) => {
   try {
     const frames = Object.values(liveLayers).filter((layer: Layer) => layer.type === LayerType.Frame);
 
@@ -16,8 +16,11 @@ export const exportFramesToPdf = async (title: string, isTransparent: boolean, l
       return;
     }
 
+    const A4_WIDTH = 595.276; // A4 width in points
+    const A4_HEIGHT = 841.890; // A4 height in points
+
     const doc = new jsPDF({
-      orientation: "landscape",
+      orientation: "portrait",
       unit: 'pt',
       format: 'a4',
       compress: true
@@ -27,10 +30,29 @@ export const exportFramesToPdf = async (title: string, isTransparent: boolean, l
 
     for (let i = 0; i < frames.length; i++) {
       const frame = frames[i];
+      
+      // If not the first page, add a new page
+      if (i > 0) {
+        doc.addPage('a4');
+      }
+
+      // Calculate aspect ratio and dimensions
+      const frameAspectRatio = frame.width / frame.height;
+      let finalWidth = A4_WIDTH;
+      let finalHeight = A4_WIDTH / frameAspectRatio;
+
+      // If height exceeds page height, scale down based on height
+      if (finalHeight > A4_HEIGHT) {
+        finalHeight = A4_HEIGHT;
+        finalWidth = A4_HEIGHT * frameAspectRatio;
+      }
+
+      // Calculate centering offsets
+      const xOffset = (A4_WIDTH - finalWidth) / 2;
+      const yOffset = (A4_HEIGHT - finalHeight) / 2;
+
       const parser = new DOMParser();
-
       const htmlContent = generateFrameSvg(frame, liveLayers, liveLayerIds);
-
       const docParser = parser.parseFromString(htmlContent, 'text/html');
       const simulatedCanvas = docParser.body.firstChild as HTMLElement;
 
@@ -45,48 +67,27 @@ export const exportFramesToPdf = async (title: string, isTransparent: boolean, l
           quality: 1,
         });
 
-        // Convert canvas to data URL
         const imgData = canvas.toDataURL('image/jpeg', 0.8);
         totalImageSize += imgData.length;
 
         if (document.documentElement.classList.contains("dark")) {
           doc.setFillColor("#2c2c2c");
-          doc.rect(0, 0, doc.internal.pageSize.getWidth(), doc.internal.pageSize.getHeight(), 'F');
+          doc.rect(xOffset, yOffset, finalWidth, finalHeight, 'F');
         }
 
-        // Add the image to the PDF with compression
-        let imgWidth = doc.internal.pageSize.getWidth();
-        let imgHeight = (canvas.height * imgWidth) / canvas.width;
-        let x = 0
-        let y = 0
+        // Add image with calculated dimensions and positioning
+        doc.addImage(imgData, 'JPEG', xOffset, yOffset, finalWidth, finalHeight, '', 'FAST');
 
-        if (imgHeight > doc.internal.pageSize.getHeight()) {
-          imgHeight = doc.internal.pageSize.getHeight();
-          imgWidth = (canvas.width * imgHeight) / canvas.height;
-          x = (doc.internal.pageSize.getWidth() - imgWidth) / 2;
-          y = (doc.internal.pageSize.getHeight() - imgHeight) / 2;
-        }
-
-        doc.addImage(imgData, 'JPEG', x, y, imgWidth, imgHeight, '', 'FAST');
-
-        // Add a new page for the next frame, if it's not the last frame
-        if (i < frames.length - 1) {
-          doc.addPage();
-        }
       } catch (error) {
         console.error(`Error in domToCanvas for frame ${i}:`, error);
       } finally {
-        // Clean up: remove the temporary container
         document.body.removeChild(container);
       }
     }
 
-
-    // Save the PDF
-    const pdfOutput = doc.output('datauristring');
-    console.log(`Final PDF size: ${pdfOutput.length / 1024} KB`);
-
+    // Save single PDF with all frames
     doc.save(`${title}.pdf`);
+    console.log(`Total image data size: ${totalImageSize / 1024} KB`);
 
   } catch (error) {
     toast.error('An error occurred while exporting the frames to PDF, try again.');
