@@ -58,12 +58,10 @@ export const FramesPanel = memo<FramesPanelProps>(({
     svgRef,
     title
 }) => {
-    const [frameIds, setFrameIds] = useState<string[]>([]);
-
-    useEffect(() => {
-        const frameIdsList = liveLayerIds.filter(id => liveLayers[id] && liveLayers[id].type === LayerType.Frame);
-        setFrameIds(frameIdsList);
-    }, [liveLayers, liveLayerIds]);
+    // Calculate frameIds directly instead of using state
+    const frameIds = liveLayerIds.filter(id => 
+        liveLayers[id] && liveLayers[id].type === LayerType.Frame
+    );
 
     const sensors = useSensors(
         useSensor(PointerSensor),
@@ -76,28 +74,24 @@ export const FramesPanel = memo<FramesPanelProps>(({
         const { active, over } = event;
 
         if (active.id !== over?.id) {
-            setFrameIds((items) => {
-                const oldIndex = items.indexOf(active.id as string);
-                const newIndex = items.indexOf(over?.id as string);
+            const oldIndex = frameIds.indexOf(active.id as string);
+            const newIndex = frameIds.indexOf(over?.id as string);
 
-                const newOrder = arrayMove(items, oldIndex, newIndex);
-                const nonFrameLayerIds = liveLayerIds.filter(id => liveLayers[id].type !== LayerType.Frame);
-                const newLayerIds = [...newOrder, ...nonFrameLayerIds];
-                
-                setLiveLayerIds(newLayerIds);
+            const newOrder = arrayMove(frameIds, oldIndex, newIndex);
+            const nonFrameLayerIds = liveLayerIds.filter(id => liveLayers[id].type !== LayerType.Frame);
+            const newLayerIds = [...newOrder, ...nonFrameLayerIds];
+            
+            setLiveLayerIds(newLayerIds);
 
-                // Update R2 bucket
-                updateR2Bucket('/api/r2-bucket/updateLayerIds', boardId, newLayerIds);
+            // Update R2 bucket
+            updateR2Bucket('/api/r2-bucket/updateLayerIds', boardId, newLayerIds);
 
-                // Emit socket event
-                if (socket) {
-                    socket.emit('layer-send', newLayerIds);
-                }
-
-                return newOrder;
-            });
+            // Emit socket event
+            if (socket) {
+                socket.emit('layer-send', newLayerIds);
+            }
         }
-    }, [liveLayerIds, liveLayers, setLiveLayerIds, boardId, socket]);
+    }, [frameIds, liveLayerIds, liveLayers, setLiveLayerIds, boardId, socket]);
 
     return (
         <>
