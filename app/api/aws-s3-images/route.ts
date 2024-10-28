@@ -1,5 +1,4 @@
 import { S3Client, HeadObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { NextResponse } from "next/server";
 import sharp from 'sharp';
 
@@ -8,6 +7,7 @@ export const POST = async (req: any) => {
     const bucketRegion = process.env.AWS_BUCKET_REGION;
     const accessKey = process.env.AWS_ACCESS;
     const secretAccessKey = process.env.AWS_SECRET;
+    const cloudFrontDomain = process.env.CLOUDFRONT_DOMAIN;
 
     if (!bucketName || !bucketRegion || !accessKey || !secretAccessKey) {
         return new NextResponse("No AWS credentials", { status: 500 })
@@ -32,7 +32,8 @@ export const POST = async (req: any) => {
     try {
         const results = await Promise.all(files.map(async (file: File) => {
             const uniqueFileName = `${userId}_${file.name}`;
-            const finalUrl = `https://${bucketName}.s3.${bucketRegion}.amazonaws.com/${encodeURIComponent(uniqueFileName)}`;
+            // Usar CloudFront en lugar de S3 directo
+            const finalUrl = `https://${cloudFrontDomain}/${encodeURIComponent(uniqueFileName)}`;
 
             try {
                 const headResponse = await s3.send(new HeadObjectCommand({
@@ -44,21 +45,12 @@ export const POST = async (req: any) => {
                     return finalUrl;
                 }
             } catch {
-                // File doesn't exist, proceed with upload
                 const arrayBuffer = await file.arrayBuffer();
                 let buffer = Buffer.from(arrayBuffer);
-                const originalSize = buffer.length;
-
-                // Optimize image if it's an image file
+                
                 if (file.type.startsWith('image/')) {
                     const optimizationResult = await optimizeImage(buffer, file.type);
                     buffer = optimizationResult.buffer;
-
-                    console.log(`Image optimization results for ${file.name}:`);
-                    console.log(`  Original size: ${originalSize / 1024} KB`);
-                    console.log(`  Optimized size: ${buffer.length / 1024} KB`);
-                    console.log(`  Size reduction: ${((originalSize - buffer.length) / originalSize * 100).toFixed(2)}%`);
-                    console.log(`  Dimensions: ${optimizationResult.width}x${optimizationResult.height}`);
                 }
 
                 const command = new PutObjectCommand({
@@ -69,12 +61,16 @@ export const POST = async (req: any) => {
                 });
 
                 await s3.send(command);
-
                 return finalUrl;
             }
         }));
 
-        return new NextResponse(JSON.stringify(results), { status: 200, headers: { 'Content-Type': 'application/json' } });
+        return new NextResponse(JSON.stringify(results), { 
+            status: 200, 
+            headers: { 
+                'Content-Type': 'application/json',
+            } 
+        });
 
     } catch (error) {
         console.error('Error processing uploads:', error);

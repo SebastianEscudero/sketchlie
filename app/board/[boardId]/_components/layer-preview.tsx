@@ -328,14 +328,12 @@ export const LayerPreview = memo(({
     case LayerType.Image:
       return (
         <InsertImage
-          isUploading={false}
           id={id}
           layer={layer}
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
           setCamera={setCamera}
           setZoom={setZoom}
-          focused={focused}
           cameraRef={cameraRef}
           zoomRef={zoomRef}
           showOutlineOnHover={showOutlineOnHover}

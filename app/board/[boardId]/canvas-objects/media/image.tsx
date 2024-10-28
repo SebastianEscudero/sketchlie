@@ -17,13 +17,11 @@ const preloadImage = (src: string) => {
 };
 
 interface ImageProps {
-  isUploading: boolean;
   id: string;
   layer: ImageLayer;
   onPointerDown: (e: React.PointerEvent, id: string) => void;
   setCamera?: (camera: any) => void;
   setZoom?: (zoom: number) => void;
-  focused?: boolean;
   cameraRef?: React.RefObject<any>;
   zoomRef?: React.RefObject<any>;
   selectionColor?: string;
@@ -32,14 +30,12 @@ interface ImageProps {
 };
 
 export const InsertImage = memo(({
-  isUploading,
   id,
   layer,
   onPointerDown,
   selectionColor,
   setCamera,
   setZoom,
-  focused,
   cameraRef,
   zoomRef,
   showOutlineOnHover = false,
@@ -57,12 +53,8 @@ export const InsertImage = memo(({
 
   const handlePointerDown = useCallback((e: React.PointerEvent) => {
     setStrokeColor(selectionColor || "none");
-    if (focused) {
-      e.preventDefault();
-    } else {
-      onPointerDown(e, id);
-    }
-  }, [focused, selectionColor, id, onPointerDown]);
+    onPointerDown(e, id);
+  }, [selectionColor, id, onPointerDown]);
 
   const onDoubleClick = useCallback(() => {
     MoveCameraToLayer({
