@@ -56,25 +56,9 @@ export const InsertImage = memo(({
     onPointerDown(e, id);
   }, [selectionColor, id, onPointerDown]);
 
-  const onDoubleClick = useCallback(() => {
-    MoveCameraToLayer({
-      targetX: x,
-      targetY: y,
-      targetWidth: width,
-      targetHeight: height,
-      setCamera: setCamera!,
-      setZoom: setZoom!,
-      cameraRef: cameraRef!,
-      zoomRef: zoomRef!,
-      padding: 0.7,
-      duration: 200
-    });
-  }, [cameraRef, zoomRef, height, width, x, y, setCamera, setZoom]);
-
   return (
     <g
       onPointerDown={handlePointerDown}
-      onDoubleClick={onDoubleClick}
       onPointerEnter={() => { if (showOutlineOnHover) { setStrokeColor("#3390FF"); setAddedByLabel?.(addedBy || '') } }}
       onPointerLeave={() => { setStrokeColor(selectionColor || "none"); setAddedByLabel?.('') }}
       pointerEvents="auto"
