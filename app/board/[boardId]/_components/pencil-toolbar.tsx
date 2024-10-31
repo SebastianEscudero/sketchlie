@@ -237,6 +237,10 @@ export const PencilToolbar = memo(({
 PencilToolbar.displayName = 'PencilToolbar';
 
 const areColorsEqual = (color1: Color, color2: Color): boolean => {
+    if (!color1 || !color2) {
+        return false;
+    }
+
     return color1.r === color2.r && 
            color1.g === color2.g && 
            color1.b === color2.b && 
