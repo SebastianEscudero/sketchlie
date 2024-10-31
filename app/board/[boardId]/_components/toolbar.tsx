@@ -131,6 +131,10 @@ export const Toolbar = memo(({
         setToolbarMenu={setToolbarMenu}
         highlighterStrokeSize={highlighterStrokeSize}
         setHighlighterStrokeSize={setHighlighterStrokeSize}
+        undo={undo}
+        redo={redo}
+        canUndo={canUndo}
+        canRedo={canRedo}
       />
     )
   }
@@ -299,16 +303,18 @@ export const Toolbar = memo(({
         />
       </div>
       <div className="border dark:border-zinc-800 shadow-md bg-white dark:bg-zinc-800 rounded-xl p-1.5 sm:w-auto w-[80px] xs:w-[90px] flex flex-row items-center">
-        <Hint label="Undo" sideOffset={14}>
-          <Button disabled={!canUndo} onClick={undo} className="h-8 w-8 xs:h-10 xs:w-10 p-2" variant="ghost">
-            <Undo2 className="h-5 w-5" />
-          </Button>
-        </Hint>
-        <Hint label="Redo" sideOffset={14}>
-          <Button disabled={!canRedo} onClick={redo} className="h-8 w-8 xs:h-10 xs:w-10 p-2" variant="ghost">
-            <Redo2 className="h-5 w-5" />
-          </Button>
-        </Hint>
+        <ToolButton
+          label="Undo"
+          icon={Undo2}
+          onClick={undo}
+          disabled={!canUndo}
+        />
+        <ToolButton
+          label="Redo"
+          icon={Redo2}
+          onClick={redo}
+          disabled={!canRedo}
+        />
       </div>
       {toolbarMenu === ToolbarMenu.Shapes && canvasState.mode === CanvasMode.Inserting && canvasState.layerType !== LayerType.Text && canvasState.layerType !== LayerType.Arrow && canvasState.layerType !== LayerType.Note &&
         <ShapesMenu
