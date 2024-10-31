@@ -47,7 +47,7 @@ export const SmallToolButton = ({ icon: Icon, onClick, isActive, label, disabled
         <Button
             disabled={disabled}
             onClick={onClick}
-            className="h-8 w-8 p-1.5"
+            className="h-9 w-9 p-1.5"
             variant={isActive ? "iconActive" : "icon"}
         >
             <Icon className="h-5 w-5" />
