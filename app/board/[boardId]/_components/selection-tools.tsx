@@ -566,7 +566,7 @@ export const SelectionTools = memo(({
 });
 
 export const ToolbarSeparator = () => {
-    return <div className="h-10 w-[1px] bg-zinc-300 dark:bg-zinc-400" />;
+    return <div className="h-8 w-[1px] bg-zinc-300 dark:bg-zinc-400" />;
 };
 
 SelectionTools.displayName = "SelectionTools";

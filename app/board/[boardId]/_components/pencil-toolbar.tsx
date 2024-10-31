@@ -1,7 +1,7 @@
 import { CanvasMode, Color, ToolbarMenu } from "@/types/canvas";
-import { Pen, Eraser, Highlighter, ChevronDown } from "lucide-react";
+import { Pen, Eraser, Highlighter, ChevronDown, Undo2, Redo2 } from "lucide-react";
 import { CanvasState } from "@/types/canvas";
-import { ToolButton } from "./tool-button";
+import { SmallToolButton } from "./tool-button";
 import { LaserIcon } from "@/public/custom-icons/laser";
 import { ToolbarSeparator } from "./selection-tools";
 import { Button } from "@/components/ui/button";
@@ -10,6 +10,7 @@ import { colorToCss } from "@/lib/utils";
 import { ScribbleIcon } from "@/public/custom-icons/scribble";
 import { PathColorMenu } from "./path-color-menu";
 import { PathStrokeSizeMenu } from "./path-stroke-size-menu";
+import { Hint } from "@/components/hint";
 
 interface PencilToolbarProps {
     setCanvasState: (state: CanvasState) => void;
@@ -24,6 +25,10 @@ interface PencilToolbarProps {
     setToolbarMenu: (menu: ToolbarMenu) => void;
     highlighterStrokeSize: number;
     setHighlighterStrokeSize: (size: number) => void;
+    undo: () => void;
+    redo: () => void;
+    canUndo: boolean;
+    canRedo: boolean;
 }
 
 export const PencilToolbar = memo(({
@@ -38,7 +43,11 @@ export const PencilToolbar = memo(({
     toolbarMenu,
     setToolbarMenu,
     highlighterStrokeSize,
-    setHighlighterStrokeSize
+    setHighlighterStrokeSize,
+    undo,
+    redo,
+    canUndo,
+    canRedo
 }: PencilToolbarProps) => {
     const [pencilPresetColors, setPencilPresetColors] = useState<Color[]>([
         { r: 29, g: 29, b: 29, a: 1 },
@@ -134,54 +143,57 @@ export const PencilToolbar = memo(({
             transition-all duration-300 ease-in-out
         `}
         >
-            <div className="border dark:border-zinc-800 shadow-md bg-white dark:bg-zinc-800 rounded-xl p-1.5 flex gap-x-1 flex-row items-center">
-                <ToolButton
+            <div className="border dark:border-zinc-800 shadow-sm bg-white dark:bg-zinc-800 rounded-xl py-1.5 px-2 flex gap-x-1 flex-row items-center">
+                <SmallToolButton
+                    label="Undo"
+                    icon={Undo2}
+                    onClick={undo}
+                    disabled={!canUndo}
+                />
+                <SmallToolButton
+                    label="Redo"
+                    icon={Redo2}
+                    onClick={redo}
+                    disabled={!canRedo}
+                />
+                <ToolbarSeparator />
+                <SmallToolButton
                     label="Pencil"
                     icon={Pen}
                     onClick={() => setCanvasState({ mode: CanvasMode.Pencil })}
                     isActive={canvasState.mode === CanvasMode.Pencil}
                 />
-                <ToolButton
+                <SmallToolButton
                     label="Highlighter"
                     icon={Highlighter}
                     onClick={() => setCanvasState({ mode: CanvasMode.Highlighter })}
                     isActive={canvasState.mode === CanvasMode.Highlighter}
                 />
-                <ToolButton
+                <SmallToolButton
                     label="Eraser"
                     icon={Eraser}
                     onClick={() => setCanvasState({ mode: CanvasMode.Eraser })}
                     isActive={canvasState.mode === CanvasMode.Eraser}
                 />
-                <ToolButton
+                <SmallToolButton
                     label="Laser"
                     icon={LaserIcon}
                     onClick={() => setCanvasState({ mode: CanvasMode.Laser })}
                     isActive={canvasState.mode === CanvasMode.Laser}
                 />
                 <ToolbarSeparator />
-                <Button
-                    variant="icon"
-                    className="px-3"
+                <SmallToolButton
+                    label="Stroke size"
+                    icon={ScribbleIcon}
                     onClick={strokeSizeButtonPointerDown}
-                >
-                    <ScribbleIcon
-                        className="h-5 w-5"
-                        strokeWidth={
-                            canvasState.mode === CanvasMode.Pencil
-                                ? pathStrokeSize
-                                : canvasState.mode === CanvasMode.Highlighter
-                                    ? highlighterStrokeSize / 10
-                                    : 3
-                        }
-                    />
-                </Button>
+                    isActive={toolbarMenu === ToolbarMenu.PathStrokeSize}
+                />
                 <div className="flex items-center gap-x-1">
                     {currentPresetColors().map((color, index) => (
                         <div key={index} className="relative group">
                             <Button
                                 variant={areColorsEqual(selectedColor()!, color) ? "iconActive" : "icon"}
-                                className="w-10 h-10 p-0 rounded-full"
+                                className="h-8 w-8 p-1.2 rounded-full"
                                 onClick={() => handlePresetColorClick(color)}
                             >
                                 <div

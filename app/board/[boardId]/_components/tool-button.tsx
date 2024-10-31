@@ -8,7 +8,7 @@ interface ToolButtonProps {
     icon: ElementType;
     onClick: () => void;
     isActive?: boolean;
-    isDisabled?: boolean;
+    disabled?: boolean;
     label?: string;
 };
 
@@ -16,11 +16,11 @@ export const ToolButton = ({
     icon: Icon,
     onClick,
     isActive,
-    isDisabled,
+    disabled,
     label
 }: ToolButtonProps) => {
     const button = (
-        <Button disabled={isDisabled} onClick={onClick} className="h-8 w-8 xs:h-10 xs:w-10 p-2 rounded-xl" variant={isActive ? "iconActive" : "icon"}>
+        <Button disabled={disabled} onClick={onClick} className="h-8 w-8 xs:h-10 xs:w-10 p-2 rounded-xl" variant={isActive ? "iconActive" : "icon"}>
             <Icon className="h-5 w-5" />
         </Button>
     );
@@ -39,11 +39,13 @@ interface SmallToolButtonProps {
     onClick: () => void;
     label: string;
     isActive?: boolean;
+    disabled?: boolean;
 }
 
-export const SmallToolButton = ({ icon: Icon, onClick, isActive, label }: SmallToolButtonProps) => (
+export const SmallToolButton = ({ icon: Icon, onClick, isActive, label, disabled }: SmallToolButtonProps) => (
     <Hint side="top" label={label} sideOffset={8}>
         <Button
+            disabled={disabled}
             onClick={onClick}
             className="h-8 w-8 p-1.5"
             variant={isActive ? "iconActive" : "icon"}
