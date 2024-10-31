@@ -83,6 +83,7 @@ import { useLayerTextEditingStore } from "../canvas-objects/utils/use-layer-text
 import { SelectionNet } from "./selection-net";
 import { TableColumnType } from "../canvas-objects/table";
 import { uploadFilesAndInsertThemIntoCanvas } from "../canvas-objects/utils/file-uploading-utils";
+import { HighlighterIcon } from "@/public/custom-icons/highlighter";
 
 const preventDefault = (e: any) => {
     if (e.scale !== 1) {
@@ -2056,7 +2057,8 @@ export const Canvas = ({
                 setCanvasCursor('url(/custom-cursors/pencil.svg) 1 16, auto');
                 selectedLayersRef.current = [];
             } else if (canvasState.mode === CanvasMode.Highlighter) {
-                setCanvasCursor('url(/custom-cursors/highlighter.svg) 2 18, auto');
+                const cursorUrl = HighlighterIcon.getCursor(colorToCss(highlighterColor));
+                setCanvasCursor(`url(${cursorUrl}) 2 18, auto`);
                 selectedLayersRef.current = [];
             } else if (canvasState.mode === CanvasMode.Laser) {
                 setCanvasCursor('url(/custom-cursors/laser.svg) 4 18, auto');
@@ -2076,7 +2078,7 @@ export const Canvas = ({
         }
 
         updateCursor();
-    }, [canvasState, rightClickPanning, setIsEditing]);
+    }, [canvasState, rightClickPanning, setIsEditing, highlighterColor]);
 
     const goToFrame = useCallback((index: number) => {
         const totalFrames = frameIds.length;

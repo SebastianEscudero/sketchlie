@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { colorToCss } from '@/lib/utils';
 import { BaselineIcon } from '@/public/custom-icons/baseline';
 import { TextSizePicker } from './text-size-picker';
-import { HightlighterIcon } from '@/public/custom-icons/highlighter';
+import { HighlighterIcon } from '@/public/custom-icons/highlighter';
 import { useLayerTextEditingStore } from '../canvas-objects/utils/use-layer-text-editing';
 import { ToolbarSeparator } from '../_components/selection-tools';
 import { TextJustifySelector } from './text-justify-selector';
@@ -272,7 +272,7 @@ export const TextOptions = ({
                                         onClick={() => setOpenSelector(openSelector === SelectorType.TextHighlightColor ? null : SelectorType.TextHighlightColor)}
                                         className={`${openSelector === SelectorType.TextHighlightColor ? 'bg-blue-500/20' : ''} pt-1`}
                                     >
-                                        <HightlighterIcon className='w-5 h-5' color={textStyles.highlightColor.a === 0 ? 'transparent' : colorToCss(textStyles.highlightColor)} />
+                                        <HighlighterIcon className='w-5 h-5' color={textStyles.highlightColor.a === 0 ? 'transparent' : colorToCss(textStyles.highlightColor)} />
                                     </Button>
                                 </Hint>
                                 <ToolbarSeparator />
