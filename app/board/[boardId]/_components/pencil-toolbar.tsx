@@ -5,7 +5,7 @@ import { ToolButton } from "./tool-button";
 import { LaserIcon } from "@/public/custom-icons/laser";
 import { ToolbarSeparator } from "./selection-tools";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { colorToCss } from "@/lib/utils";
 import { ScribbleIcon } from "@/public/custom-icons/scribble";
 import { PathColorMenu } from "./path-color-menu";
@@ -26,7 +26,7 @@ interface PencilToolbarProps {
     setHighlighterStrokeSize: (size: number) => void;
 }
 
-export const PencilToolbar = ({
+export const PencilToolbar = memo(({
     setCanvasState,
     canvasState,
     highlighterColor,
@@ -45,11 +45,11 @@ export const PencilToolbar = ({
         { r: 68, g: 101, b: 233, a: 1 },
         { r: 224, g: 49, b: 49, a: 1 }
     ]);
-    
+
     const [highlighterPresetColors, setHighlighterPresetColors] = useState<Color[]>([
-        { r: 255, g: 240, b: 0, a: 0.4 },
-        { r: 7, g: 147, b: 104, a: 0.4 },
-        { r: 75, g: 161, b: 241, a: 0.4 }
+        { r: 255, g: 240, b: 0, a: 1 },
+        { r: 7, g: 147, b: 104, a: 1 },
+        { r: 75, g: 161, b: 241, a: 1 }
     ]);
 
     const [editingPresetIndex, setEditingPresetIndex] = useState<number | null>(null);
@@ -127,6 +127,12 @@ export const PencilToolbar = ({
         }
     };
 
+    currentPresetColors().map((color, index) => (
+        console.log(color, 'THIS IS THE COLOR'),
+        console.log(pathColor, 'THIS IS THE PATH COLOR'),
+        console.log(color === pathColor, 'THIS IS THE COMPARISON')
+    ))
+
     return (
         <div
             className={`
@@ -180,7 +186,7 @@ export const PencilToolbar = ({
                     {currentPresetColors().map((color, index) => (
                         <div key={index} className="relative group">
                             <Button
-                                variant={selectedColor() === color ? "iconActive" : "icon"}
+                                variant={areColorsEqual(selectedColor()!, color) ? "iconActive" : "icon"}
                                 className="w-10 h-10 p-0 rounded-full"
                                 onClick={() => handlePresetColorClick(color)}
                             >
@@ -232,5 +238,14 @@ export const PencilToolbar = ({
             )}
         </div>
     )
-}
+});
+
+PencilToolbar.displayName = 'PencilToolbar';
+
+const areColorsEqual = (color1: Color, color2: Color): boolean => {
+    return color1.r === color2.r && 
+           color1.g === color2.g && 
+           color1.b === color2.b && 
+           color1.a === color2.a;
+};
 
