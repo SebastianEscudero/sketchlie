@@ -281,18 +281,6 @@ export const Toolbar = memo(({
             canvasState.layerType === LayerType.Frame
           }
         />
-        <ToolButton
-          label="Table"
-          icon={Table2}
-          onClick={() => setCanvasState({
-            mode: CanvasMode.Inserting,
-            layerType: LayerType.Table,
-          })}
-          isActive={
-            canvasState.mode === CanvasMode.Inserting &&
-            canvasState.layerType === LayerType.Table
-          }
-        />
         <MediaButton
           label="Media"
           icon={Image}
