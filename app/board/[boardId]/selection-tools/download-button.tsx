@@ -40,7 +40,7 @@ export const DownloadButton = ({ layers }: DownloadButtonProps) => {
     <Hint label="Download">
       <Button
         onClick={handleDownload}
-        variant="board"
+        variant="icon"
         size="icon"
         disabled={isDownloading}
       >

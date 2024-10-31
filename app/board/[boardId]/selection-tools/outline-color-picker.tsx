@@ -84,7 +84,7 @@ const OutlineColorButton = ({
   return (
     <Hint label="Outline Color" side="top">
       <Button
-        variant="board"
+        variant="icon"
         size="icon"
         onClick={() => onClick(color)}
       >

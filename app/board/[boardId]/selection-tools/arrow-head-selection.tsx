@@ -127,7 +127,7 @@ export const ArrowHeadSelection = ({
     return (
         <div className="relative inline-block text-left pl-1">
             <div className='flex flex-row items center justify-center gap-x-1'>
-                <Button variant="board" size="default" className='px-2.5' onClick={() => {
+                <Button variant="icon" size="default" className='px-2.5' onClick={() => {
                     if (openSelector === SelectorType.ArrowHead && selectedHead === 'start') {
                         setOpenSelector(null);
                     } else {
@@ -137,10 +137,10 @@ export const ArrowHeadSelection = ({
                 }}>
                     {startArrowHead === ArrowHead.Triangle ? <MoveLeft className='w-5 h-5'/> : <span className='text-xs'>None</span>}
                 </Button>
-                <Button variant="board" size="icon" onClick={() => reverseHeads(startArrowHead, endArrowHead)}>
+                <Button variant="icon" size="icon" onClick={() => reverseHeads(startArrowHead, endArrowHead)}>
                     <RefreshCcw />
                 </Button>
-                <Button variant="board" size="default" className='px-2.5' onClick={() => {
+                <Button variant="icon" size="default" className='px-2.5' onClick={() => {
                     if (openSelector === SelectorType.ArrowHead && selectedHead === 'end') {
                         setOpenSelector(null);
                     } else {
@@ -150,7 +150,7 @@ export const ArrowHeadSelection = ({
                 }}>
                     {endArrowHead === ArrowHead.Triangle ? <MoveRight className='w-5 h-5'/> : <span className='text-xs'>None</span>}
                 </Button>
-                <Button variant="board" size="default" className='px-2.5' onClick={() => {
+                <Button variant="icon" size="default" className='px-2.5' onClick={() => {
                     if (openSelector === SelectorType.ArrowType) {
                         setOpenSelector(null);
                     } else {
@@ -165,10 +165,10 @@ export const ArrowHeadSelection = ({
                     className={`shadow-sm rounded-lg absolute ${getSelectorPositionClass(expandUp)} ${selectedHead === 'start' ? 'left-[-10px]' : 'left-[84px]'} w-[75px] bg-white dark:bg-[#383838] ring-1 ring-black ring-opacity-5`}
                 >
                     <div className="p-2 grid grid-cols-1 gap-2 w-full text-sm" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                        <Button variant="board" size="default" className="text-xs" onClick={() => handleArrowHeadChange(ArrowHead.None)}>
+                        <Button variant="icon" size="default" className="text-xs" onClick={() => handleArrowHeadChange(ArrowHead.None)}>
                             None
                         </Button>
-                        <Button variant="board" size="default" onClick={() => handleArrowHeadChange(ArrowHead.Triangle)}>
+                        <Button variant="icon" size="default" onClick={() => handleArrowHeadChange(ArrowHead.Triangle)}>
                             {selectedHead === 'start' ? <MoveLeft className='w-5 h-5'/> : <MoveRight className='w-5 h-5'/>}
                         </Button>
                     </div>
@@ -179,13 +179,13 @@ export const ArrowHeadSelection = ({
                     className={`shadow-sm rounded-lg absolute ${getSelectorPositionClass(expandUp)} left-[126px] w-[75px] bg-white dark:bg-[#383838] ring-1 ring-black ring-opacity-5`}
                 >
                     <div className="p-2 grid grid-cols-1 gap-2 w-full text-sm" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                        <Button variant="board" size="default" onClick={() => handleArrowBodyChange(ArrowType.Straight)}>
+                        <Button variant="icon" size="default" onClick={() => handleArrowBodyChange(ArrowType.Straight)}>
                             <MoveUpRight className='w-5 h-5'/>
                         </Button>
-                        <Button variant="board" size="default" onClick={() => handleArrowBodyChange(ArrowType.Curved)}>
+                        <Button variant="icon" size="default" onClick={() => handleArrowBodyChange(ArrowType.Curved)}>
                             <Redo className="w-5 h-5"/>
                         </Button>
-                        <Button variant="board" size="default" onClick={() => handleArrowBodyChange(ArrowType.Diagram)}>
+                        <Button variant="icon" size="default" onClick={() => handleArrowBodyChange(ArrowType.Diagram)}>
                             <TrendingUp className="w-5 h-5"/>
                         </Button>
                     </div>

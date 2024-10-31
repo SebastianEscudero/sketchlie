@@ -19,7 +19,7 @@ export const ArrowShapesButton = ({
     label
 }: ArrowShapesButtonProps) => {
     const button = (
-        <Button disabled={isDisabled} onPointerDown={onClick} className="h-8 w-8 p-2" variant="board">
+        <Button disabled={isDisabled} onPointerDown={onClick} className="h-8 w-8 p-2" variant="icon">
             <Icon className="h-5 w-5" />
         </Button>
     );

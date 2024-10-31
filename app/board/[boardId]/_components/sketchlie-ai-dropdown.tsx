@@ -159,7 +159,7 @@ export const SketchlieAiDropdown = ({
                     </div>
                     <div className="flex flex-col">
                         <Button
-                            variant="board"
+                            variant="icon"
                             size="sm"
                             disabled={amountOfSelectedLayers < 2 || isSummaryLoading}
                             className="mt-1 justify-start"
@@ -171,7 +171,7 @@ export const SketchlieAiDropdown = ({
                             </div>
                         </Button>
                         <Button
-                            variant="board"
+                            variant="icon"
                             size="sm"
                             disabled={!Object.values(layers).some((layer: any) => layer.value === "") || isFillTextsLoading || Object.keys(layers).length < 2}
                             className="mt-1 justify-start"

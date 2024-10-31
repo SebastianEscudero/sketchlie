@@ -408,7 +408,8 @@ export enum ToolbarMenu {
   None,
   Shapes,
   Arrows,
-  PenEraserLaser,
+  PathColor,
+  PathStrokeSize,
   Frames,
   Media,
 }

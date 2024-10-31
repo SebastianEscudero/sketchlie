@@ -136,12 +136,17 @@ export const Canvas = ({
     // Drawing and editing tools
     const [pencilDraft, setPencilDraft] = useState<[number, number, number][]>([]);
     const [erasePath, setErasePath] = useState<[number, number][]>([]);
-    const [pathColor, setPathColor] = useState({ r: 29, g: 29, b: 29, a: 1 });
-    const [pathStrokeSize, setPathStrokeSize] = useState(5);
     const [arrowTypeInserting, setArrowTypeInserting] = useState<ArrowType>(ArrowType.Straight);
 
+    // Pencil
+    const [pathColor, setPathColor] = useState({ r: 29, g: 29, b: 29, a: 1 });
+    const [pathStrokeSize, setPathStrokeSize] = useState(2);
+
+    // Highlighter
+    const [highlighterColor, setHighlighterColor] = useState({ r: 255, g: 240, b: 0, a: 1 });
+    const [highlighterStrokeSize, setHighlighterStrokeSize] = useState(20);
+
     // UI states
-    const [isShowingAIInput, setIsShowingAIInput] = useState(false);
     const [isMoving, setIsMoving] = useState(false);
     const [justChanged, setJustChanged] = useState(false);
     const [isDraggingOverCanvas, setIsDraggingOverCanvas] = useState(false);
@@ -818,18 +823,18 @@ export const Canvas = ({
             pathStrokeSize: canvasState.mode === CanvasMode.Laser
                 ? 5 / zoom
                 : canvasState.mode === CanvasMode.Highlighter
-                    ? 30 / zoom // Increase stroke size for highlighter
+                    ? highlighterStrokeSize
                     : pathStrokeSize,
             pathStrokeColor: canvasState.mode === CanvasMode.Laser
                 ? { r: 255, g: 0, b: 0, a: 1 }
                 : canvasState.mode === CanvasMode.Highlighter
-                    ? { ...pathColor, a: 0.7 } // Semi-transparent yellow
-                    : pathColor,
+                    ? { ...highlighterColor, a: 0.3 }
+                    : highlighterColor,
         };
 
         setMyPresence(newPresence);
 
-    }, [canvasState.mode, pencilDraft, myPresence, setMyPresence, pathColor, pathStrokeSize, zoom, expired]);
+    }, [canvasState.mode, pencilDraft, myPresence, setMyPresence, highlighterColor, highlighterStrokeSize, pathStrokeSize, zoom, expired]);
 
     const insertPath = useCallback((isHighlight: boolean) => {
         if (
@@ -844,8 +849,8 @@ export const Canvas = ({
         }
 
         const id = nanoid();
-        const color = isHighlight ? { ...pathColor, a: 0.7 } : pathColor;
-        const strokeSize = isHighlight ? 30 / zoom : pathStrokeSize;
+        const color = isHighlight ? { ...highlighterColor, a: 0.3 } : pathColor;
+        const strokeSize = isHighlight ? highlighterStrokeSize : pathStrokeSize;
 
         liveLayers[id] = penPointsToPathLayer(pencilDraft, color, strokeSize, User?.information.name);
 
@@ -866,8 +871,8 @@ export const Canvas = ({
         setCanvasState({ mode: isHighlight ? CanvasMode.Highlighter : CanvasMode.Pencil });
     }, [
         expired, pencilDraft, liveLayers, setLiveLayers, setLiveLayerIds,
-        myPresence, org, proModal, socket, boardId, pathColor,
-        performAction, pathStrokeSize, activeTouches, zoom, User
+        myPresence, org, proModal, socket, boardId, pathColor, highlighterColor,
+        performAction, pathStrokeSize, highlighterStrokeSize, activeTouches, User
     ]);
 
     const resizeSelectedLayers = useCallback((point: Point) => {
@@ -1633,10 +1638,8 @@ export const Canvas = ({
         const newPresence: Presence = {
             ...myPresence,
             cursor: null,
-            pencilDraft: null
         };
 
-        setPencilDraft([]);
         setMyPresence(newPresence);
 
         if (socket) {
@@ -2229,13 +2232,13 @@ export const Canvas = ({
                 } else if (key === "e") {
                     setCanvasState({ mode: CanvasMode.Eraser });
                 } else if (key === "h") {
-                    setCanvasState({ mode: CanvasMode.Moving });
+                    setCanvasState({ mode: CanvasMode.Highlighter });
+                } else if (key === "l") {
+                    setCanvasState({ mode: CanvasMode.Laser });
                 } else if (key === "n") {
                     setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Note });
                 } else if (key === "t") {
                     setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Text });
-                } else if (key === "l") {
-                    setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Line });
                 } else if (key === "r") {
                     setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Rectangle });
                 } else if (key === "f") {
@@ -2381,8 +2384,12 @@ export const Canvas = ({
                         <Toolbar
                             pathColor={pathColor}
                             pathStrokeSize={pathStrokeSize}
+                            highlighterColor={highlighterColor}
+                            highlighterStrokeSize={highlighterStrokeSize}
                             setPathColor={setPathColor}
                             setPathStrokeSize={setPathStrokeSize}
+                            setHighlighterColor={setHighlighterColor}
+                            setHighlighterStrokeSize={setHighlighterStrokeSize}
                             isUploading={isUploading}
                             setIsUploading={setIsUploading}
                             canvasState={canvasState}
@@ -2409,7 +2416,7 @@ export const Canvas = ({
                             toolbarMenu={toolbarMenu}
                             setToolbarMenu={setToolbarMenu}
                         />
-                        {!presentationMode && (
+                        {!presentationMode && canvasState.mode !== CanvasMode.Pencil && canvasState.mode !== CanvasMode.Eraser && canvasState.mode !== CanvasMode.Highlighter && canvasState.mode !== CanvasMode.Laser && (
                             <>
                                 {!focusMode && (
                                     <>
@@ -2731,10 +2738,10 @@ export const Canvas = ({
                                         pencilDraft.length > 0 && !pencilDraft.some(array => array.some(isNaN)) && (
                                             <Path
                                                 points={pencilDraft}
-                                                fill={colorToCss(pathColor)}
+                                                fill={canvasState.mode === CanvasMode.Highlighter ? colorToCss(highlighterColor) : colorToCss(pathColor)}
                                                 x={0}
                                                 y={0}
-                                                strokeSize={pathStrokeSize}
+                                                strokeSize={canvasState.mode === CanvasMode.Highlighter ? highlighterStrokeSize : pathStrokeSize}
                                                 isLaser={canvasState.mode === CanvasMode.Laser}
                                                 isHighlighter={canvasState.mode === CanvasMode.Highlighter}
                                                 zoom={zoom}

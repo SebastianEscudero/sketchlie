@@ -128,7 +128,7 @@ export const BottomRightView = memo(({
         return (
             <div className="border dark:border-zinc-800 space-x-1 px-2 shadow-md absolute h-[52px] bottom-4 right-4 rounded-xl py-2 items-center lg:flex hidden bg-white dark:bg-zinc-800 pointer-events-auto">
                 <Hint label="Exit Focus Mode" sideOffset={4}>
-                    <Button onClick={toggleFocusMode} variant="boardActive">
+                    <Button onClick={toggleFocusMode} variant="iconActive">
                         <Focus className="h-4 w-4" />
                     </Button>
                 </Hint>
@@ -140,34 +140,34 @@ export const BottomRightView = memo(({
         <div className="border dark:border-zinc-800 space-x-1 px-2 shadow-md absolute h-[52px] bottom-4 right-4 rounded-xl py-2 items-center lg:flex hidden bg-white dark:bg-zinc-800 pointer-events-auto">
             <div className="flex items-center border-r pr-1">
                 <Hint label="Focus Mode" sideOffset={4}>
-                    <Button onClick={toggleFocusMode} className="px-2" variant="board">
+                    <Button onClick={toggleFocusMode} className="px-2" variant="icon">
                         <Focus className="h-4 w-4" />
                     </Button>
                 </Hint>
             </div>
             <Hint label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"} sideOffset={4}>
-                <Button onClick={toggleFullscreen} className="px-2" variant="board">
+                <Button onClick={toggleFullscreen} className="px-2" variant="icon">
                     {isFullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
                 </Button>
             </Hint>
             <Hint label="Zoom out" sideOffset={4}>
-                <Button onClick={handleZoomOut} className="px-2" variant="board">
+                <Button onClick={handleZoomOut} className="px-2" variant="icon">
                     <Minus className="h-4 w-4" />
                 </Button>
             </Hint>
             <Hint label="Reset zoom" sideOffset={4}>
-                <Button onClick={handleResetZoom} variant="board" className="px-2 text-xs">
+                <Button onClick={handleResetZoom} variant="icon" className="px-2 text-xs">
                     {zoomPercentage}%
                 </Button>
             </Hint>
             <Hint label="Zoom in" sideOffset={4}>
-                <Button onClick={handleZoomIn} className="px-2" variant="board">
+                <Button onClick={handleZoomIn} className="px-2" variant="icon">
                     <Plus className="h-4 w-4" />
                 </Button>
             </Hint>
             <div className="flex items-center border-l pl-1">
                 <Hint label="Frames" sideOffset={4}>
-                    <Button onClick={handleFramesClick} className="px-2" variant="board">
+                    <Button onClick={handleFramesClick} className="px-2" variant="icon">
                         <FramesLayersIcon />
                     </Button>
                 </Hint>

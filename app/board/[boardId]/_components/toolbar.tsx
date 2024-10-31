@@ -32,6 +32,7 @@ import { LinkButton } from "./link-button";
 import { PresentationModeToolbar } from "./presentation-mode-toolbar";
 import { FrameMenu } from "./frame-menu";
 import { MediaMenu } from "./media-menu";
+import { PencilToolbar } from "./pencil-toolbar";
 
 interface ToolbarProps {
   isUploading: boolean;
@@ -63,6 +64,10 @@ interface ToolbarProps {
   insertLayer: (layerType: LayerType, position: any, width: number, height: number) => void;
   toolbarMenu: ToolbarMenu;
   setToolbarMenu: (menu: ToolbarMenu) => void;
+  highlighterColor: Color;
+  setHighlighterColor: (color: Color) => void;
+  highlighterStrokeSize: number;
+  setHighlighterStrokeSize: (size: number) => void;
 }
 
 export const Toolbar = memo(({
@@ -95,23 +100,39 @@ export const Toolbar = memo(({
   toolbarMenu,
   setToolbarMenu,
   insertLayer,
+  highlighterColor,
+  setHighlighterColor,
+  highlighterStrokeSize,
+  setHighlighterStrokeSize,
 }: ToolbarProps) => {
-  const onPathColorChange = (color: any) => {
-    setPathColor(color);
-  }
-
-  const handleStrokeSizeChange = (value: number[]) => {
-    setPathStrokeSize(value[0]);
-  }
 
   useEffect(() => {
-    if (canvasState.mode !== CanvasMode.None && canvasState.mode !== CanvasMode.Inserting && toolbarMenu !== ToolbarMenu.PenEraserLaser) {
+    if (canvasState.mode !== CanvasMode.None && canvasState.mode !== CanvasMode.Inserting && toolbarMenu !== ToolbarMenu.PathColor && toolbarMenu !== ToolbarMenu.PathStrokeSize) {
       setToolbarMenu(ToolbarMenu.None);
     }
   }, [canvasState.mode, toolbarMenu, setToolbarMenu]);
 
   if (expired) {
     return null;
+  }
+
+  if (canvasState.mode === CanvasMode.Pencil || canvasState.mode === CanvasMode.Highlighter || canvasState.mode === CanvasMode.Laser || canvasState.mode === CanvasMode.Eraser) {
+    return (
+      <PencilToolbar
+        setCanvasState={setCanvasState}
+        canvasState={canvasState}
+        highlighterColor={highlighterColor}
+        setHighlighterColor={setHighlighterColor}
+        pathColor={pathColor}
+        setPathColor={setPathColor}
+        pathStrokeSize={pathStrokeSize}
+        setPathStrokeSize={setPathStrokeSize}
+        toolbarMenu={toolbarMenu}
+        setToolbarMenu={setToolbarMenu}
+        highlighterStrokeSize={highlighterStrokeSize}
+        setHighlighterStrokeSize={setHighlighterStrokeSize}
+      />
+    )
   }
 
   if (presentationMode) {
@@ -156,50 +177,9 @@ export const Toolbar = memo(({
           }
         />
         <ToolButton
-          label={
-            toolbarMenu !== ToolbarMenu.PenEraserLaser
-              ? canvasState.mode === CanvasMode.Laser
-                ? "Laser"
-                : canvasState.mode === CanvasMode.Eraser
-                  ? "Eraser"
-                  : canvasState.mode === CanvasMode.Highlighter
-                    ? "Highlighter"
-                    : "Pencil"
-              : undefined
-          }
-          icon={
-            canvasState.mode === CanvasMode.Laser
-              ? LaserIcon
-              : canvasState.mode === CanvasMode.Eraser
-                ? Eraser
-                : canvasState.mode === CanvasMode.Highlighter
-                  ? Highlighter
-                  : Pen
-          }
-          onClick={() => {
-            if (toolbarMenu !== ToolbarMenu.PenEraserLaser) {
-              const newMode = (
-                canvasState.mode !== CanvasMode.Highlighter &&
-                canvasState.mode !== CanvasMode.Eraser &&
-                canvasState.mode !== CanvasMode.Laser
-              ) ? CanvasMode.Pencil : canvasState.mode;
-
-              setCanvasState({
-                mode: newMode,
-              });
-            }
-            setToolbarMenu(
-              toolbarMenu === ToolbarMenu.PenEraserLaser 
-                ? ToolbarMenu.None 
-                : ToolbarMenu.PenEraserLaser
-            );
-          }}
-          isActive={
-            canvasState.mode === CanvasMode.Pencil ||
-            canvasState.mode === CanvasMode.Eraser ||
-            canvasState.mode === CanvasMode.Laser ||
-            canvasState.mode === CanvasMode.Highlighter
-          }
+          label="Pencil"
+          icon={Pen}
+          onClick={() => setCanvasState({mode: CanvasMode.Pencil})}
         />
         <ToolButton
           label={toolbarMenu !== ToolbarMenu.Shapes ? "Shapes" : undefined}
@@ -301,20 +281,6 @@ export const Toolbar = memo(({
             canvasState.layerType === LayerType.Frame
           }
         />
-        {/*
-        <ToolButton
-          label="Table"
-          icon={Table2}
-          onClick={() => setCanvasState({
-            mode: CanvasMode.Inserting,
-            layerType: LayerType.Table,
-          })}
-          isActive={
-            canvasState.mode === CanvasMode.Inserting &&
-            canvasState.layerType === LayerType.Table
-          }
-        />
-        */}
         <MediaButton
           label="Media"
           icon={Image}
@@ -349,17 +315,6 @@ export const Toolbar = memo(({
           setCanvasState={setCanvasState}
           canvasState={canvasState}
           isShapesMenuOpen={toolbarMenu === ToolbarMenu.Shapes}
-        />
-      }
-      {toolbarMenu === ToolbarMenu.PenEraserLaser && (canvasState.mode === CanvasMode.Pencil || canvasState.mode === CanvasMode.Eraser || canvasState.mode === CanvasMode.Laser || canvasState.mode === CanvasMode.Highlighter) &&
-        <PenEraserLaserMenu
-          setCanvasState={setCanvasState}
-          canvasState={canvasState}
-          pathColor={pathColor}
-          pathStrokeSize={pathStrokeSize}
-          onPathColorChange={onPathColorChange}
-          handleStrokeSizeChange={handleStrokeSizeChange}
-          isPenEraserLaserMenuOpen={toolbarMenu === ToolbarMenu.PenEraserLaser}
         />
       }
       {toolbarMenu === ToolbarMenu.Arrows && canvasState.mode === CanvasMode.Inserting && canvasState.layerType === LayerType.Arrow &&

@@ -470,14 +470,9 @@ export const Table = memo(({
     socket,
     forceUpdateLayerLocalLayerState
 }: TableProps) => {
-    const HEADER_HEIGHT = 76;  // Header with buttons
-    const ROW_HEIGHT = 73;     // Each table row
-    const ADD_ROW_HEIGHT = 40; // Add row button
-    
     // Calculate available height for rows after accounting for header and add button
-    const tableContentHeight = height - (HEADER_HEIGHT + ADD_ROW_HEIGHT);
-    const rowHeight = tableContentHeight / data.length;
-    const scale = rowHeight / ROW_HEIGHT;
+    const rowHeight = height / data.length;
+    const scale = rowHeight / 70;
     const baseWidth = width / scale;
 
     const { addRow, addColumn } = useTableOperations();

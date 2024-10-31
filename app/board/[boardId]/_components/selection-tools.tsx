@@ -514,7 +514,7 @@ export const SelectionTools = memo(({
                     <Hint label="Duplicate">
                         <Button
                             onClick={duplicateLayers}
-                            variant="board"
+                            variant="icon"
                             size="icon"
                         >
                             <Copy className="h-5 w-5" />
@@ -524,7 +524,7 @@ export const SelectionTools = memo(({
                     <Hint label="Bring to front">
                         <Button
                             onClick={moveToFront}
-                            variant="board"
+                            variant="icon"
                             size="icon"
                         >
                             <BringToFront className="h-5 w-5" />
@@ -534,7 +534,7 @@ export const SelectionTools = memo(({
                     <Hint label="Send to back">
                         <Button
                             onClick={moveToBack}
-                            variant="board"
+                            variant="icon"
                             size="icon"
                         >
                             <SendToBack className="h-5 w-5" />
@@ -552,7 +552,7 @@ export const SelectionTools = memo(({
                     /> */}
                     <Hint label="Delete">
                         <Button
-                            variant="board"
+                            variant="icon"
                             size="icon"
                             onClick={() => deleteLayers(selectedLayers)}
                         >

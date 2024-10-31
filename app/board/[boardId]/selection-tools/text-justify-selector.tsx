@@ -87,7 +87,7 @@ export const TextJustifySelector = ({
 
             <Hint label={`Align ${alignX}`} side="top">
                 <Button
-                    variant="board"
+                    variant="icon"
                     size="icon"
                     onClick={toggleSelector}
                     className={openSelector === SelectorType.TextJustify ? 'bg-blue-500/20' : ''}

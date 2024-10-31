@@ -151,7 +151,7 @@ export const Info = memo(({
     return (
         <div className="border dark:border-zinc-800 shadow-md absolute bg-white dark:bg-zinc-800 top-2 left-4 rounded-xl p-1 h-12 flex items-center pointer-events-auto">
             <Hint label="Go to Dashboard" side="bottom" sideOffset={10}>
-                <Button asChild variant="infoIcons" className="px-2">
+                <Button asChild variant="icon" className="px-2">
                     <Link href="/dashboard/">
                         <ChevronsLeft className="h-5 w-5" />
                     </Link>
@@ -161,7 +161,7 @@ export const Info = memo(({
                 |
             </div>
             <Hint label="Edit title" side="bottom" sideOffset={10}>
-                <Button disabled={User.information.role !== "Admin"} variant="infoIcons" className="text-base px-2 sm:max-w-[100px] md:max-w-[400px] max-w-[80px] overflow-hidden relative sm:flex hidden" onClick={() => setIsRenameModalOpen(true)}>
+                <Button disabled={User.information.role !== "Admin"} variant="icon" className="text-base px-2 sm:max-w-[100px] md:max-w-[400px] max-w-[80px] overflow-hidden relative sm:flex hidden" onClick={() => setIsRenameModalOpen(true)}>
                     <div className="w-full text-left truncate">
                         {board.title}
                     </div>
@@ -202,7 +202,7 @@ export const Info = memo(({
             >
                 <div className="w-10 flex justify-center items-center">
                     <Hint label="Main menu" side="bottom" sideOffset={10}>
-                        <Button size="icon" variant="infoIcons">
+                        <Button size="icon" variant="icon">
                             <Menu />
                         </Button>
                     </Hint>
@@ -223,7 +223,7 @@ export const Info = memo(({
                             <ShowAllTemplates onClick={onChooseTemplate}>
                                 <div className="justify-center items-center hover:cursor-pointer sm:flex hidden">
                                     <Hint label="Templates" side="bottom" sideOffset={10}>
-                                        <Button variant="infoIcons" size="icon">
+                                        <Button variant="icon" size="icon">
                                             <LayoutTemplate />
                                         </Button>
                                     </Hint>
@@ -240,7 +240,7 @@ export const Info = memo(({
             <TabSeparator />
             <Hint label="Upgrade" side="bottom" sideOffset={10}>
                 <Button 
-                    variant="infoIcons"
+                    variant="icon"
                     onClick={() => proModal.onOpen(orgId)}
                     size="icon"
                 >
@@ -251,7 +251,7 @@ export const Info = memo(({
                 |
             </div>
             <Hint label="Sketchlie AI" side="bottom" sideOffset={10}>
-                <Button variant="board"
+                <Button variant="icon"
                     size="icon"
                     onClick={() => setIsShowingAIInput(!isShowingAIInput)}
                     className="md:flex hidden"

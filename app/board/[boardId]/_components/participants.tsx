@@ -44,7 +44,7 @@ export const Participants = memo(({
         <div className="space-x-2 border dark:border-zinc-800 shadow-md absolute h-12 right-4 top-2 bg-white dark:bg-zinc-800 rounded-xl px-2 flex items-center pointer-events-auto">
             <Hint label="Comments" sideOffset={14}>
                 <Button
-                    variant="board"
+                    variant="icon"
                     size="default"
                     className="px-2"
                     onClick={handleCommentsClick}

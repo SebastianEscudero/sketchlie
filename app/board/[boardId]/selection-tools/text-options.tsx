@@ -187,7 +187,7 @@ export const TextOptions = ({
                     <>
                         <div className="relative">
                             <Button 
-                                variant="board" 
+                                variant="icon" 
                                 className="w-[105px] px-2 justify-start font-normal"
                                 onClick={() => setOpenSelector(openSelector === SelectorType.FontFamily ? null : SelectorType.FontFamily)}
                             >
@@ -250,7 +250,7 @@ export const TextOptions = ({
                         {!isEditing ? (
                             <Hint label="Edit Text" side="top">
                                 <Button
-                                    variant="board"
+                                    variant="icon"
                                     size="icon"
                                     onClick={() => setIsEditing(!isEditing)}
                                     className="flex items-center"
@@ -267,7 +267,7 @@ export const TextOptions = ({
                                 <ToolbarSeparator />
                                 <Hint label="Highlight" side="top">
                                     <Button
-                                        variant="board"
+                                        variant="icon"
                                         size="icon"
                                         onClick={() => setOpenSelector(openSelector === SelectorType.TextHighlightColor ? null : SelectorType.TextHighlightColor)}
                                         className={`${openSelector === SelectorType.TextHighlightColor ? 'bg-blue-500/20' : ''} pt-1`}
@@ -278,7 +278,7 @@ export const TextOptions = ({
                                 <ToolbarSeparator />
                                 <Hint label="Text Color" side="top">
                                     <Button
-                                        variant="board"
+                                        variant="icon"
                                         size="icon"
                                         onClick={() => setOpenSelector(openSelector === SelectorType.TextColor ? null : SelectorType.TextColor)}
                                         className={`${openSelector === SelectorType.TextColor ? 'bg-blue-500/20' : ''} pt-1`}
@@ -345,7 +345,7 @@ export const TextStyleButtons = ({ onStyleChange, activeStyles }: TextStyleButto
     ) => (
         <Hint label={label} side="top">
             <Button
-                variant="board"
+                variant="icon"
                 size="icon"
                 onClick={() => onStyleChange(style)}
                 className={`${activeStyles[style] ? 'bg-blue-500/20' : ''}`}
