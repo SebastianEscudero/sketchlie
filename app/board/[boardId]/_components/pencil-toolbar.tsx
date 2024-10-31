@@ -127,12 +127,6 @@ export const PencilToolbar = memo(({
         }
     };
 
-    currentPresetColors().map((color, index) => (
-        console.log(color, 'THIS IS THE COLOR'),
-        console.log(pathColor, 'THIS IS THE PATH COLOR'),
-        console.log(color === pathColor, 'THIS IS THE COMPARISON')
-    ))
-
     return (
         <div
             className={`
