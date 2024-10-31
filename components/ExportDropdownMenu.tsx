@@ -43,7 +43,7 @@ export const ExportDropdownMenu = ({ id, title }: ExportDropdownMenuProps) => {
         <DropdownMenu>
             <Hint label="Export" side="bottom" sideOffset={10}>
                 <DropdownMenuTrigger asChild>
-                    <Button variant="infoIcons" className="p-2">
+                    <Button variant="icon" className="p-2">
                         <ExportIcon />
                     </Button>
                 </DropdownMenuTrigger>
