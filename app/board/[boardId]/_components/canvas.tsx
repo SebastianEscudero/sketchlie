@@ -168,6 +168,7 @@ export const Canvas = ({
     // Touch and mobile-related states
     const [pinchStartDist, setPinchStartDist] = useState<number | null>(null);
     const [activeTouches, setActiveTouches] = useState(0);
+    const [startMobilePanPoint, setStartMobilePanPoint] = useState<{ x: number, y: number } | null>(null);
 
     // Misc
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -1724,8 +1725,7 @@ export const Canvas = ({
 
         // Reset pinch and pan values at the start of a new touch interaction
         setPinchStartDist(null);
-        setStartPanPoint({ x: 0, y: 0 });
-
+        setStartMobilePanPoint(null);
     }, []);
 
     const onTouchMove = useCallback((e: React.TouchEvent) => {
@@ -1750,7 +1750,7 @@ export const Canvas = ({
 
         if (pinchStartDist === null) {
             setPinchStartDist(dist);
-            setStartPanPoint({ x, y });
+            setStartMobilePanPoint({ x, y });
             return;
         }
 
@@ -1770,9 +1770,9 @@ export const Canvas = ({
 
             setZoom(clampedZoom);
             setCamera({ x: newX, y: newY });
-        } else if (startPanPoint) { // Panning
-            const dx = x - startPanPoint.x;
-            const dy = y - startPanPoint.y;
+        } else if (startMobilePanPoint) { // Panning
+            const dx = x - startMobilePanPoint.x;
+            const dy = y - startMobilePanPoint.y;
 
             const newCameraPosition = {
                 x: camera.x + dx,
@@ -1783,8 +1783,8 @@ export const Canvas = ({
         }
 
         setPinchStartDist(dist);
-        setStartPanPoint({ x, y });
-    }, [zoom, pinchStartDist, camera, startPanPoint]);
+        setStartMobilePanPoint({ x, y });
+    }, [zoom, pinchStartDist, camera, startMobilePanPoint]);
 
     const onTouchEnd = useCallback((e: React.TouchEvent) => {
         setActiveTouches(e.changedTouches.length);
@@ -1794,7 +1794,7 @@ export const Canvas = ({
             setPinchStartDist(null);
         }
         if (e.touches.length === 0) {
-            setStartPanPoint({ x: 0, y: 0 });
+            setStartMobilePanPoint(null);
         }
     }, []);
     const copySelectedLayers = useCallback(() => {
@@ -2547,7 +2547,7 @@ export const Canvas = ({
                                     {/* We render the frames first so they are always shown below the other layers */}
                                     {visibleLayerIds.filter(layerId => liveLayers[layerId] && liveLayers[layerId].type === LayerType.Frame).map((frameId: string) => {
                                         const frameNumber = liveLayerIds.filter(id => liveLayers[id] && liveLayers[id].type === LayerType.Frame).indexOf(frameId) + 1;
-                                        const showOutlineOnHover = (canvasState.mode === CanvasMode.None || (canvasState.mode === CanvasMode.Inserting && canvasState.layerType === LayerType.Arrow)) && !presentationMode;
+                                        const showOutlineOnHover = (canvasState.mode === CanvasMode.None || canvasState.mode === CanvasMode.Moving || (canvasState.mode === CanvasMode.Inserting && canvasState.layerType === LayerType.Arrow)) && !presentationMode;
                                         const isFocused = selectedLayersRef.current.length === 1 && selectedLayersRef.current[0] === frameId && !justChanged;
 
                                         return (
@@ -2569,7 +2569,7 @@ export const Canvas = ({
                                     })}
                                     {visibleLayerIds.map((layerId: string) => {
                                         const isFocused = selectedLayersRef.current.length === 1 && selectedLayersRef.current[0] === layerId && !justChanged;
-                                        const showOutlineOnHover = (canvasState.mode === CanvasMode.None || (canvasState.mode === CanvasMode.Inserting && canvasState.layerType === LayerType.Arrow)) && !presentationMode;
+                                        const showOutlineOnHover = (canvasState.mode === CanvasMode.None || canvasState.mode === CanvasMode.Moving || (canvasState.mode === CanvasMode.Inserting && canvasState.layerType === LayerType.Arrow)) && !presentationMode;
                                         return (
                                             <LayerPreview
                                                 selectionColor={layerIdsToColorSelection[layerId]}
