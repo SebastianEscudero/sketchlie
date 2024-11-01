@@ -79,7 +79,7 @@ export const MoveBackToContent = memo(({ setCamera, setZoom, showButton, liveLay
     if (!showButton) return;
 
     return (
-        <div className="border dark:border-zinc-800 shadow-md bg-white dark:bg-zinc-800 absolute top-16 left-4 rounded-xl p-1 h-12 items-center pointer-events-auto flex" >
+        <div className="border dark:border-zinc-800 shadow-sm bg-white dark:bg-zinc-800 absolute top-16 left-4 rounded-xl p-1 h-12 items-center pointer-events-auto flex" >
             <Hint label="Go to content" side="bottom" sideOffset={10}>
             <Button
                 variant="icon"

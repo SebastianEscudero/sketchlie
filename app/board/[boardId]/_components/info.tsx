@@ -149,7 +149,7 @@ export const Info = memo(({
     if (!board) return <InfoSkeleton />;
 
     return (
-        <div className="border dark:border-zinc-800 shadow-md absolute bg-white dark:bg-zinc-800 top-2 left-4 rounded-xl p-1 h-12 xs:flex hidden items-center pointer-events-auto">
+        <div className="border dark:border-zinc-800 shadow-sm absolute bg-white dark:bg-zinc-800 top-2 left-4 rounded-xl p-1 h-12 xs:flex hidden items-center pointer-events-auto">
             <Hint label="Go to Dashboard" side="bottom" sideOffset={10}>
                 <Button asChild variant="icon" className="px-2">
                     <Link href="/dashboard/">
@@ -267,6 +267,6 @@ Info.displayName = "Info";
 
 export const InfoSkeleton = () => {
     return (
-        <div className="absolute bg-white rounded-lg px-1 h-12 flex items-center shadow-md w-[300px]" />
+        <div className="absolute bg-white rounded-lg px-1 h-12 flex items-center shadow-sm w-[300px]" />
     );
 };

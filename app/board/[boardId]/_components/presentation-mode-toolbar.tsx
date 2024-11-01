@@ -41,7 +41,7 @@ export const PresentationModeToolbar = ({
             ${showToolbar ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
         `}
         >
-            <div className="border dark:border-zinc-800 shadow-md bg-white dark:bg-zinc-800 rounded-xl p-1.5 flex gap-x-1 flex-row items-center">
+            <div className="border dark:border-zinc-800 shadow-sm bg-white dark:bg-zinc-800 rounded-xl p-1.5 flex gap-x-1 flex-row items-center">
                 <ToolButton
                     label="Select"
                     icon={MousePointer2}
@@ -110,7 +110,7 @@ export const PresentationModeToolbar = ({
                     </Button>
                 </Hint>
             </div>
-            <div className="border dark:border-zinc-800 shadow-md bg-white dark:bg-zinc-800 rounded-xl p-1.5 flex flex-row items-center">
+            <div className="border dark:border-zinc-800 shadow-sm bg-white dark:bg-zinc-800 rounded-xl p-1.5 flex flex-row items-center">
                 <Hint label="Undo" sideOffset={14}>
                     <Button
                         disabled={!canUndo}

@@ -41,7 +41,7 @@ export const Participants = memo(({
     };
 
     return (
-        <div className="space-x-2 border dark:border-zinc-800 shadow-md absolute h-12 right-4 top-2 bg-white dark:bg-zinc-800 rounded-xl px-2 flex items-center pointer-events-auto">
+        <div className="space-x-2 border dark:border-zinc-800 shadow-sm absolute h-12 right-4 top-2 bg-white dark:bg-zinc-800 rounded-xl px-2 flex items-center pointer-events-auto">
             <Hint label="Comments" sideOffset={14}>
                 <Button
                     variant="icon"
@@ -119,6 +119,6 @@ Participants.displayName = "Participants";
 
 export const ParticipantsSkeleton = () => {
     return (
-        <div className="absolute h-12 right-0 bg-white rounded-bl-lg p-3 flex items-center shadow-md w-[100px]" />
+        <div className="absolute h-12 right-0 bg-white rounded-bl-lg p-3 flex items-center shadow-sm w-[100px]" />
     );
 };

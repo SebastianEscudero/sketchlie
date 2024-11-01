@@ -63,7 +63,7 @@ export const SketchlieAiInput = ({
     };
 
     return (
-        <div className="pointer-events-auto absolute left-4 top-20 w-[300px] bg-white rounded-md shadow-md overflow-hidden">
+        <div className="pointer-events-auto absolute left-4 top-20 w-[300px] bg-white rounded-md shadow-sm overflow-hidden">
             <div className="flex items-center justify-between px-4 py-2 border-b">
                 <span className="font-semibold">Generate</span>
                 <span className="text-xs text-gray-500">AI beta</span>

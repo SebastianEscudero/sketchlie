@@ -161,7 +161,7 @@ export const Toolbar = memo(({
       ${showToolbar ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
     `}
     >      
-      <div className="border dark:border-zinc-800 shadow-md bg-white dark:bg-zinc-800 rounded-xl p-1.5 flex gap-x-1 flex-row items-center">
+      <div className="border dark:border-zinc-800 shadow-sm bg-white dark:bg-zinc-800 rounded-xl p-1.5 flex gap-x-1 flex-row items-center">
         <ToolButton
           label="Select"
           icon={MousePointer2}
@@ -296,7 +296,7 @@ export const Toolbar = memo(({
           insertMedia={insertMedia}
         />
       </div>
-      <div className="border dark:border-zinc-800 shadow-md bg-white dark:bg-zinc-800 rounded-xl p-1.5 sm:w-auto w-[80px] xs:w-[90px] flex flex-row items-center">
+      <div className="border dark:border-zinc-800 shadow-sm bg-white dark:bg-zinc-800 rounded-xl p-1.5 sm:w-auto w-[80px] xs:w-[90px] flex flex-row items-center">
         <ToolButton
           label="Undo"
           icon={Undo2}
@@ -352,7 +352,7 @@ Toolbar.displayName = "Toolbar";
 
 export const ToolbarSkeleton = () => {
   return (
-    <div className="border dark:border-zinc-800 shadow-md absolute top-[50%] -translate-y-[50%] left-2 flex flex-col gap-y-4 bg-white dark:bg-zinc-800 h-[360px] w-[52px] rounded-xl" />
+    <div className="border dark:border-zinc-800 shadow-sm absolute top-[50%] -translate-y-[50%] left-2 flex flex-col gap-y-4 bg-white dark:bg-zinc-800 h-[360px] w-[52px] rounded-xl" />
   );
 };
 
@@ -370,7 +370,7 @@ export const AnimatedToolbarMenu: React.FC<AnimatedToolbarMenuProps> = ({
   return (
     <div
       className={`
-        absolute p-2 bg-white dark:bg-zinc-800 rounded-lg shadow-md
+        absolute p-2 bg-white dark:bg-zinc-800 rounded-lg shadow-sm
         transition-all duration-300 border dark:border-zinc-800
         ${isOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
         animate-in fade-in slide-in-from-bottom-4

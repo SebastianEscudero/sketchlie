@@ -126,7 +126,7 @@ export const BottomRightView = memo(({
 
     if (focusMode) {
         return (
-            <div className="border dark:border-zinc-800 space-x-1 px-2 shadow-md absolute h-[52px] bottom-4 right-4 rounded-xl py-2 items-center lg:flex hidden bg-white dark:bg-zinc-800 pointer-events-auto">
+            <div className="border dark:border-zinc-800 space-x-1 px-2 shadow-sm absolute h-[52px] bottom-4 right-4 rounded-xl py-2 items-center lg:flex hidden bg-white dark:bg-zinc-800 pointer-events-auto">
                 <Hint label="Exit Focus Mode" sideOffset={4}>
                     <Button onClick={toggleFocusMode} variant="iconActive">
                         <Focus className="h-4 w-4" />
@@ -137,7 +137,7 @@ export const BottomRightView = memo(({
     }
 
     return (
-        <div className="border dark:border-zinc-800 space-x-1 px-2 shadow-md absolute h-[52px] bottom-4 right-4 rounded-xl py-2 items-center lg:flex hidden bg-white dark:bg-zinc-800 pointer-events-auto">
+        <div className="border dark:border-zinc-800 space-x-1 px-2 shadow-sm absolute h-[52px] bottom-4 right-4 rounded-xl py-2 items-center lg:flex hidden bg-white dark:bg-zinc-800 pointer-events-auto">
             <div className="flex items-center border-r pr-1">
                 <Hint label="Focus Mode" sideOffset={4}>
                     <Button onClick={toggleFocusMode} className="px-2" variant="icon">
