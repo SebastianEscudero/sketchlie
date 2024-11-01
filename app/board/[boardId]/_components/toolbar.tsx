@@ -1,7 +1,5 @@
 import {
-  Eraser,
   Frame,
-  Highlighter,
   Image,
   Link,
   MessageCircle,
@@ -20,13 +18,8 @@ import {
 
 import { ArrowType, CanvasMode, CanvasState, Color, LayerType, Point, ToolbarMenu } from "@/types/canvas";
 import { ToolButton } from "./tool-button";
-import { MediaButton } from "./media-button";
-import { Dispatch, memo, SetStateAction, useEffect } from "react";
-import { LaserIcon } from "@/public/custom-icons/laser";
-import { Button } from "@/components/ui/button";
-import { Hint } from "@/components/hint";
+import { memo, useEffect } from "react";
 import { ShapesMenu } from "./shapes-menu";
-import { PenEraserLaserMenu } from "./pen-eraser-laser-menu";
 import { ArrowMenu } from "./arrow-menu";
 import { LinkButton } from "./link-button";
 import { PresentationModeToolbar } from "./presentation-mode-toolbar";
@@ -310,7 +303,7 @@ export const Toolbar = memo(({
           disabled={!canRedo}
         />
       </div>
-      {toolbarMenu === ToolbarMenu.Shapes && canvasState.mode === CanvasMode.Inserting && canvasState.layerType !== LayerType.Text && canvasState.layerType !== LayerType.Arrow && canvasState.layerType !== LayerType.Note &&
+      {toolbarMenu === ToolbarMenu.Shapes && canvasState.mode === CanvasMode.Inserting && ![LayerType.Text, LayerType.Arrow, LayerType.Note, LayerType.Comment, LayerType.Frame, LayerType.Table].includes(canvasState.layerType) &&
         <ShapesMenu
           setCanvasState={setCanvasState}
           canvasState={canvasState}
