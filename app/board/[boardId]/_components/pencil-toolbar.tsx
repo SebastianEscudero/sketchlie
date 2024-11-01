@@ -1,5 +1,5 @@
 import { CanvasMode, Color, ToolbarMenu } from "@/types/canvas";
-import { Pen, Eraser, Highlighter, ChevronDown, Undo2, Redo2 } from "lucide-react";
+import { Pen, Eraser, ChevronDown, Undo2, Redo2 } from "lucide-react";
 import { CanvasState } from "@/types/canvas";
 import { SmallToolButton } from "./tool-button";
 import { LaserIcon } from "@/public/custom-icons/laser";
@@ -10,7 +10,7 @@ import { colorToCss } from "@/lib/utils";
 import { ScribbleIcon } from "@/public/custom-icons/scribble";
 import { PathColorMenu } from "./path-color-menu";
 import { PathStrokeSizeMenu } from "./path-stroke-size-menu";
-import { Hint } from "@/components/hint";
+import { HighlighterIcon } from "@/public/custom-icons/highlighter";
 
 interface PencilToolbarProps {
     setCanvasState: (state: CanvasState) => void;
@@ -165,7 +165,7 @@ export const PencilToolbar = memo(({
                 />
                 <SmallToolButton
                     label="Highlighter"
-                    icon={Highlighter}
+                    icon={() => <HighlighterIcon color={colorToCss(highlighterColor)} />}
                     onClick={() => setCanvasState({ mode: CanvasMode.Highlighter })}
                     isActive={canvasState.mode === CanvasMode.Highlighter}
                 />
