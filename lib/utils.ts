@@ -23,10 +23,8 @@ const COLORS = [
   "#D32F2F", // Red
   "#C2185B", // Pink
   "#7B1FA2", // Purple
-  "#512DA8", // Deep Purple
   "#303F9F", // Indigo
   "#1976D2", // Blue
-  "#0288D1", // Light Blue
   "#0097A7", // Cyan
   "#00796B", // Teal
   "#388E3C", // Green
@@ -35,7 +33,6 @@ const COLORS = [
   "#FFA000", // Amber
   "#F57C00", // Orange
   "#E64A19", // Deep Orange
-  "#5D4037", // Brown
 ];
 
 export function cn(...inputs: ClassValue[]) {
@@ -1680,4 +1677,16 @@ export async function SketchlieCopilot(liveLayers: Layers, visibleLayers: string
 
   const data = await response.json();
   return data;
+}
+
+export const isMouseLeftButton = (e: any) => {
+  return e.buttons === 1;
+}
+
+export const isMouseRightButton = (e: any) => {
+  return e.buttons === 2;
+}
+
+export const isMouseMiddleButton = (e: any) => {
+  return e.buttons === 4;
 }

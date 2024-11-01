@@ -24,6 +24,9 @@ import {
     findIntersectingLayersWithPath,
     isLayerVisible,
     applyStraightnessAssist,
+    isMouseLeftButton,
+    isMouseRightButton,
+    isMouseMiddleButton,
 } from "@/lib/utils";
 
 import {
@@ -115,8 +118,6 @@ export const Canvas = ({
     const [canvasState, setCanvasState] = useState<CanvasState>({ mode: CanvasMode.None });
     const [camera, setCamera] = useState<Camera>({ x: 0, y: 0 });
     const [zoom, setZoom] = useState(1);
-    const [isPanning, setIsPanning] = useState(false);
-    const [rightClickPanning, setIsRightClickPanning] = useState(false);
     const [startPanPoint, setStartPanPoint] = useState({ x: 0, y: 0 });
     const [isNearBorder, setIsNearBorder] = useState(false);
     const [borderMove, setBorderMove] = useState({ x: 0, y: 0 });
@@ -148,7 +149,7 @@ export const Canvas = ({
     const [highlighterStrokeSize, setHighlighterStrokeSize] = useState(20);
 
     // UI states
-    const [isMoving, setIsMoving] = useState(false);
+    const [isTranslatingLayers, setIsTranslatingLayers] = useState(false);
     const [justChanged, setJustChanged] = useState(false);
     const [isDraggingOverCanvas, setIsDraggingOverCanvas] = useState(false);
     const [justInsertedText, setJustInsertedText] = useState(false);
@@ -575,6 +576,7 @@ export const Canvas = ({
             return;
         }
 
+        setIsTranslatingLayers(true);
         const offset = {
             x: (point.x - canvasState.current.x),
             y: (point.y - canvasState.current.y)
@@ -1090,10 +1092,7 @@ export const Canvas = ({
         setIsEditing(false);
         setIsPointerDown(true);
 
-        removeHighlightFromText();
-        unselectLayers();
-
-        if (e.button === 0 && !isPanning) {
+        if (isMouseLeftButton(e)) {
             const point = pointerEventToCanvasPoint(e, cameraRef.current, zoomRef.current, svgRef);
             if (point && selectedLayersRef.current.length > 0) {
                 const bounds = calculateBoundingBox(selectedLayersRef.current.map(id => liveLayers[id]));
@@ -1106,6 +1105,9 @@ export const Canvas = ({
                     return;
                 }
             }
+
+            removeHighlightFromText();
+            unselectLayers();
 
             // and this is to just close the comment box when the user clicks anywhere else
             setOpenCommentBoxId(null);
@@ -1128,7 +1130,6 @@ export const Canvas = ({
             }
 
             if (canvasState.mode === CanvasMode.Moving) {
-                setIsPanning(true);
                 setStartPanPoint({ x: e.clientX, y: e.clientY });
                 return;
             }
@@ -1157,14 +1158,12 @@ export const Canvas = ({
                 }
 
                 setStartPanPoint(point);
-                setIsPanning(false);
                 return;
             }
 
             setCanvasState({ origin: point, mode: CanvasMode.Pressing });
-        } else if (e.button === 2 || e.button === 1) {
+        } else if (isMouseRightButton(e) || isMouseMiddleButton(e)) {
             setPresentationMode(false);
-            setIsRightClickPanning(true);
             setStartPanPoint({ x: e.clientX, y: e.clientY });
         }
 
@@ -1173,7 +1172,7 @@ export const Canvas = ({
                 socket.emit('layer-update', selectedLayersRef.current, liveLayers);
             }
         }
-    }, [canvasState.mode, setCanvasState, startDrawing, setIsPanning, setIsRightClickPanning, activeTouches, expired, isPanning, unselectLayers, liveLayers, socket, setPresentationMode, User, zoom, setCurrentPreviewLayer, currentPreviewLayer, setIsEditing]);
+    }, [canvasState.mode, setCanvasState, startDrawing, activeTouches, expired, unselectLayers, liveLayers, socket, setPresentationMode, User, zoom, setCurrentPreviewLayer, currentPreviewLayer, setIsEditing]);
 
     const onPointerMove = useCallback((e: React.PointerEvent) => {
         e.preventDefault();
@@ -1188,23 +1187,19 @@ export const Canvas = ({
             setShowToolbar(true);
         }
 
-
-        setIsMoving(false);
-        if (rightClickPanning || e.buttons === 2 || e.buttons === 4) {
+        setIsTranslatingLayers(false);
+        if (isMouseRightButton(e) || isMouseMiddleButton(e)) {
             const newCameraPosition = {
                 x: camera.x + e.clientX - startPanPoint.x,
                 y: camera.y + e.clientY - startPanPoint.y,
             };
             setCamera(newCameraPosition);
             setStartPanPoint({ x: e.clientX, y: e.clientY });
-
-            if (!rightClickPanning) {
-                setIsRightClickPanning(true);
-            }
+            setCanvasState({ mode: CanvasMode.Moving });
             return;
         }
 
-        if (canvasState.mode === CanvasMode.Moving && isPanning) {
+        if (canvasState.mode === CanvasMode.Moving) {
             const newCameraPosition = {
                 x: camera.x + e.clientX - startPanPoint.x,
                 y: camera.y + e.clientY - startPanPoint.y,
@@ -1253,20 +1248,19 @@ export const Canvas = ({
             startMultiSelection(current, canvasState.origin);
         } else if (canvasState.mode === CanvasMode.SelectionNet) {
             updateSelectionNet(current, canvasState.origin);
-        } else if (canvasState.mode === CanvasMode.Eraser && e.buttons === 1) {
+        } else if (canvasState.mode === CanvasMode.Eraser && isMouseLeftButton(e)) {
             EraserDeleteLayers(current);
         } else if (canvasState.mode === CanvasMode.Translating) {
-            setIsMoving(true);
             translateSelectedLayers(current);
         } else if (canvasState.mode === CanvasMode.Resizing) {
             resizeSelectedLayers(current);
             removeHighlightFromText();
         } else if (canvasState.mode === CanvasMode.ArrowResizeHandler) {
             resizeSelectedLayers(current);
-        } else if (canvasState.mode === CanvasMode.Pencil && e.buttons === 1 || canvasState.mode === CanvasMode.Laser && e.buttons === 1 || canvasState.mode === CanvasMode.Highlighter && e.buttons === 1) {
+        } else if ([CanvasMode.Pencil, CanvasMode.Laser, CanvasMode.Highlighter].includes(canvasState.mode)) {
             continueDrawing(current, e);
         } else if (
-            e.buttons === 1 &&
+            isMouseLeftButton(e) &&
             canvasState.mode === CanvasMode.Inserting &&
             startPanPoint &&
             canvasState.layerType !== LayerType.Path &&
@@ -1279,7 +1273,6 @@ export const Canvas = ({
             const y = Math.min(point.y, startPanPoint.y);
             const width = Math.abs(point.x - startPanPoint.x);
             const height = Math.abs(point.y - startPanPoint.y);
-            setIsPanning(true);
 
             switch (canvasState.layerType) {
                 case LayerType.Rectangle:
@@ -1411,40 +1404,11 @@ export const Canvas = ({
             }
         }
     },
-        [continueDrawing,
-            camera,
-            canvasState,
-            resizeSelectedLayers,
-            translateSelectedLayers,
-            startMultiSelection,
-            updateSelectionNet,
-            isPanning,
-            rightClickPanning,
-            setCamera,
-            User.userId,
-            zoom,
-            myPresence,
-            startPanPoint,
-            socket,
-            activeTouches,
-            EraserDeleteLayers,
-            arrowTypeInserting,
-            currentPreviewLayer,
-            liveLayerIds,
-            liveLayers,
-            focusMode,
-            setLastMouseMove,
-            presentationMode
-        ]);
+        [continueDrawing, camera, canvasState, resizeSelectedLayers, translateSelectedLayers, startMultiSelection, updateSelectionNet, setCamera, User.userId, zoom, myPresence, startPanPoint, socket, activeTouches, EraserDeleteLayers, arrowTypeInserting, currentPreviewLayer, liveLayerIds, liveLayers, focusMode, setLastMouseMove, presentationMode]);
 
     const onPointerUp = useCallback((e: React.PointerEvent) => {
-        setIsRightClickPanning(false);
         setIsPointerDown(false);
         const point = pointerEventToCanvasPoint(e, camera, zoom, svgRef);
-
-        if (e.button === 2) {
-            return;
-        }
 
         if (
             canvasState.mode === CanvasMode.None ||
@@ -1478,14 +1442,13 @@ export const Canvas = ({
             return;
         } else if (canvasState.mode === CanvasMode.Inserting) {
             const layerType = canvasState.layerType;
-            setIsPanning(false);
 
             if (canvasState.layerType === LayerType.Comment) {
                 // we handle the comment layer insert in the comment component
                 return;
             }
 
-            if (isPanning && currentPreviewLayer) {
+            if (currentPreviewLayer) {
                 if (layerType === LayerType.Arrow && currentPreviewLayer.type === LayerType.Arrow
                     || layerType === LayerType.Line && currentPreviewLayer.type === LayerType.Line
                 ) {
@@ -1510,8 +1473,6 @@ export const Canvas = ({
                     insertLayer(layerType, point, width, height);
                 }
             }
-        } else if (canvasState.mode === CanvasMode.Moving) {
-            setIsPanning(false);
         } else if (canvasState.mode === CanvasMode.Translating) {
             const initialLayer = JSON.stringify(initialLayers[selectedLayersRef.current[0]]);
             const liveLayer = JSON.stringify(liveLayers[selectedLayersRef.current[0]]);
@@ -1610,13 +1571,11 @@ export const Canvas = ({
             canvasState,
             insertLayer,
             insertPath,
-            setIsPanning,
             selectedLayersRef,
             liveLayers,
             camera,
             zoom,
             currentPreviewLayer,
-            isPanning,
             initialLayers,
             socket,
             myPresence,
@@ -1656,7 +1615,7 @@ export const Canvas = ({
             canvasStateRef.current.mode === CanvasMode.Eraser ||
             canvasStateRef.current.mode === CanvasMode.Laser ||
             canvasStateRef.current.mode === CanvasMode.Highlighter ||
-            (e.pointerType && e.button !== 0) ||
+            (isMouseRightButton(e)) ||
             expired === true
         ) {
             return;
@@ -1757,7 +1716,6 @@ export const Canvas = ({
     }, [setIsDraggingOverCanvas, camera, zoom, org, User, insertMedia, expired]);
 
     const onTouchStart = useCallback((e: React.TouchEvent) => {
-        setIsMoving(false);
         setActiveTouches(e.touches.length);
 
         if (e.touches.length > 1) {
@@ -1771,9 +1729,6 @@ export const Canvas = ({
     }, []);
 
     const onTouchMove = useCallback((e: React.TouchEvent) => {
-        if (canvasState.mode === CanvasMode.Translating) {
-            setIsMoving(true);
-        }
         setActiveTouches(e.touches.length);
 
         if (e.touches.length < 2) {
@@ -1801,7 +1756,7 @@ export const Canvas = ({
 
         const isZooming = Math.abs(dist - pinchStartDist) > 10;
 
-        if (isZooming) {
+        if (isZooming) { // Zooming
             const zoomSpeed = 1;
             const zoomFactor = dist / pinchStartDist;
             const targetZoom = zoom * zoomFactor;
@@ -1829,10 +1784,9 @@ export const Canvas = ({
 
         setPinchStartDist(dist);
         setStartPanPoint({ x, y });
-    }, [zoom, pinchStartDist, camera, startPanPoint, canvasState]);
+    }, [zoom, pinchStartDist, camera, startPanPoint]);
 
     const onTouchEnd = useCallback((e: React.TouchEvent) => {
-        setIsMoving(false);
         setActiveTouches(e.changedTouches.length);
 
         // Reset pinch and pan values when the touch interaction ends
@@ -1934,7 +1888,7 @@ export const Canvas = ({
             const deepCopy = JSON.parse(JSON.stringify(liveLayers));
             setInitialLayers(deepCopy);
             setIsArrowPostInsertMenuOpen(false);
-            if (e.buttons === 2 || e.buttons === 4) {
+            if (isMouseRightButton(e) || isMouseMiddleButton(e)) {
                 setStartPanPoint({ x: e.clientX, y: e.clientY });
             }
         }
@@ -2032,11 +1986,6 @@ export const Canvas = ({
 
     useEffect(() => {
         const updateCursor = async () => {
-            if (rightClickPanning) {
-                setCanvasCursor('url(/custom-cursors/grab.svg) 12 12, auto');
-                return;
-            }
-
             if (canvasState.mode === CanvasMode.Inserting) {
                 selectedLayersRef.current = [];
                 if (canvasState.layerType === LayerType.Text) {
@@ -2066,7 +2015,7 @@ export const Canvas = ({
                 setCanvasCursor('url(/custom-cursors/eraser.svg) 8 16, auto');
                 selectedLayersRef.current = [];
             } else if (canvasState.mode === CanvasMode.Moving) {
-                setCanvasCursor('url(/custom-cursors/hand.svg) 12 12, auto');
+                setCanvasCursor('url(/custom-cursors/grab.svg) 12 12, auto');
             } else if (canvasState.mode === CanvasMode.ArrowResizeHandler) {
                 setCanvasCursor('url(/custom-cursors/grab.svg) 12 12, auto');
             } else if (canvasState.mode === CanvasMode.Translating) {
@@ -2077,7 +2026,7 @@ export const Canvas = ({
         }
 
         updateCursor();
-    }, [canvasState, rightClickPanning, setIsEditing, highlighterColor]);
+    }, [canvasState, setIsEditing, highlighterColor]);
 
     const goToFrame = useCallback((index: number) => {
         const totalFrames = frameIds.length;
@@ -2280,7 +2229,6 @@ export const Canvas = ({
                         }
 
                         setCanvasState({ mode: CanvasMode.Translating, current: { x: deltaX, y: deltaY } });
-                        setIsMoving(true);
                         translateSelectedLayersWithDelta({ x: deltaX, y: deltaY });
                     }
                 }
@@ -2299,7 +2247,6 @@ export const Canvas = ({
                     const command = new TranslateLayersCommand(selectedLayersRef.current, initialLayers, liveLayers, setLiveLayers, boardId, socket);
                     performAction(command);
                     setCanvasState({ mode: CanvasMode.None });
-                    setIsMoving(false);
                 }
             }
         }
@@ -2376,10 +2323,10 @@ export const Canvas = ({
                                 boardId={boardId}
                                 expired={expired}
                                 user={User}
-                                isMoving={isMoving}
                                 orgTeammates={filteredOrgTeammates}
                                 deleteLayers={deleteLayers}
                                 forceUpdateLayerLocalLayerState={forceUpdateLayerLocalLayerState}
+                                isTranslating={isTranslatingLayers}
                             />
                         )}
                         <Toolbar
@@ -2496,7 +2443,7 @@ export const Canvas = ({
                                 />
                             </>
                         )}
-                        {!IsArrowPostInsertMenuOpen && !isMoving && canvasState.mode !== CanvasMode.Resizing && canvasState.mode !== CanvasMode.ArrowResizeHandler && canvasState.mode !== CanvasMode.SelectionNet && activeTouches < 2 && (
+                        {!IsArrowPostInsertMenuOpen && canvasState.mode !== CanvasMode.Resizing && canvasState.mode !== CanvasMode.ArrowResizeHandler && canvasState.mode !== CanvasMode.SelectionNet && activeTouches < 2 && (
                             <SelectionTools
                                 boardId={boardId}
                                 setLiveLayerIds={setLiveLayerIds}
@@ -2661,7 +2608,7 @@ export const Canvas = ({
                                         setCanvasState={setCanvasState}
                                         setStartPanPoint={setStartPanPoint}
                                         setArrowTypeInserting={setArrowTypeInserting}
-                                        showHandles={!isMoving && activeTouches < 2 && canvasState.mode !== CanvasMode.ArrowResizeHandler}
+                                        showHandles={activeTouches < 2 && canvasState.mode !== CanvasMode.ArrowResizeHandler}
                                     />
                                     {currentPreviewLayer && currentPreviewLayer.type !== LayerType.Comment && (
                                         <CurrentPreviewLayer
@@ -2687,7 +2634,6 @@ export const Canvas = ({
                                             zoom={zoom}
                                         />
                                     )}
-                                    {/* We render the comments last so they always show on top of other layers */}
                                     <>
                                         {/* This approach is just to make sure the hovered comment is always on top of the other comments */}
                                         {commentIds.filter((commentId) => commentId !== activeHoveredCommentId).map((commentId) => (
@@ -2702,7 +2648,7 @@ export const Canvas = ({
                                                 setOpenCommentBoxId={setOpenCommentBoxId}
                                                 user={User}
                                                 orgTeammates={filteredOrgTeammates}
-                                                isMoving={isMoving}
+                                                isTranslating={isTranslatingLayers}
                                                 setActiveHoveredCommentId={setActiveHoveredCommentId}
                                             />
                                         ))}
@@ -2719,7 +2665,7 @@ export const Canvas = ({
                                                 setOpenCommentBoxId={setOpenCommentBoxId}
                                                 user={User}
                                                 orgTeammates={filteredOrgTeammates}
-                                                isMoving={isMoving}
+                                                isTranslating={isTranslatingLayers}
                                                 setActiveHoveredCommentId={setActiveHoveredCommentId}
                                             />
                                         )}
