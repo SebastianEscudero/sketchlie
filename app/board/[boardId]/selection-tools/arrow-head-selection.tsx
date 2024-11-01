@@ -14,7 +14,6 @@ interface ArrowHeadSelectionProps {
     boardId: string;
     openSelector: SelectorType | null;
     setOpenSelector: (Selector: SelectorType | null) => void;
-    expandUp: boolean;
 };
 
 export const ArrowHeadSelection = ({
@@ -25,7 +24,6 @@ export const ArrowHeadSelection = ({
     boardId,
     openSelector,
     setOpenSelector,
-    expandUp = false
 }: ArrowHeadSelectionProps) => {
     const [selectedHead, setSelectedHead] = useState<'start' | 'end'>('start');
     const layer = liveLayers[selectedLayers[0]]
@@ -162,7 +160,7 @@ export const ArrowHeadSelection = ({
             </div>
             {openSelector === SelectorType.ArrowHead && (
                 <div
-                    className={`shadow-sm rounded-lg absolute ${getSelectorPositionClass(expandUp)} ${selectedHead === 'start' ? 'left-[-10px]' : 'left-[84px]'} w-[75px] bg-white dark:bg-[#383838] ring-1 ring-black ring-opacity-5`}
+                    className={`shadow-sm rounded-lg absolute top-full mt-2 ${selectedHead === 'start' ? 'left-[-10px]' : 'left-[84px]'} w-[75px] bg-white dark:bg-[#383838] ring-1 ring-black ring-opacity-5`}
                 >
                     <div className="p-2 grid grid-cols-1 gap-2 w-full text-sm" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                         <Button variant="icon" size="default" className="text-xs" onClick={() => handleArrowHeadChange(ArrowHead.None)}>
@@ -176,7 +174,7 @@ export const ArrowHeadSelection = ({
             )}
             {openSelector === SelectorType.ArrowType && (
                 <div
-                    className={`shadow-sm rounded-lg absolute ${getSelectorPositionClass(expandUp)} left-[126px] w-[75px] bg-white dark:bg-[#383838] ring-1 ring-black ring-opacity-5`}
+                    className={`shadow-sm rounded-lg absolute top-full mt-2 left-[126px] w-[75px] bg-white dark:bg-[#383838] ring-1 ring-black ring-opacity-5`}
                 >
                     <div className="p-2 grid grid-cols-1 gap-2 w-full text-sm" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                         <Button variant="icon" size="default" onClick={() => handleArrowBodyChange(ArrowType.Straight)}>

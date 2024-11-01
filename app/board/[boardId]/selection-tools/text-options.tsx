@@ -26,7 +26,6 @@ interface TextOptionsProps {
     boardId: string;
     openSelector: SelectorType | null;
     setOpenSelector: (Selector: SelectorType | null) => void;
-    expandUp: boolean;
     layers: any;
 };
 
@@ -38,7 +37,6 @@ export const TextOptions = ({
     boardId,
     openSelector,
     setOpenSelector,
-    expandUp = false,
     layers
 }: TextOptionsProps) => {
     const [fontFamily, setFontFamily] = useState(layers[0].fontFamily || DEFAULT_FONT);
@@ -242,7 +240,6 @@ export const TextOptions = ({
                     boardId={boardId}
                     openSelector={openSelector}
                     setOpenSelector={setOpenSelector}
-                    expandUp={expandUp}
                 />
                 <ToolbarSeparator />
                 <div>

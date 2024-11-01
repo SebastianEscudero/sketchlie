@@ -68,7 +68,6 @@ export const SelectionTools = memo(({
         const isTextType = [LayerType.Text, LayerType.Note, LayerType.Rectangle, LayerType.Ellipse, LayerType.Rhombus, LayerType.Triangle, LayerType.Star, LayerType.Hexagon, LayerType.BigArrowLeft, LayerType.BigArrowRight, LayerType.BigArrowUp, LayerType.BigArrowDown, LayerType.CommentBubble].includes(type);
         const isOutlineType = [LayerType.Note, LayerType.Rectangle, LayerType.Ellipse, LayerType.Rhombus, LayerType.Triangle, LayerType.Star, LayerType.Hexagon, LayerType.BigArrowLeft, LayerType.BigArrowRight, LayerType.BigArrowUp, LayerType.BigArrowDown, LayerType.CommentBubble].includes(type);
 
-        // Update conditions based on the current layer type
         hasText = hasText && isTextType;
         isMediaLayer = isMediaLayer && (type === LayerType.Image || type === LayerType.Video || type === LayerType.Link || type === LayerType.Svg);
         noFill = noFill && (type === LayerType.Image || type === LayerType.Video || type === LayerType.Link || type === LayerType.Frame);
@@ -78,29 +77,11 @@ export const SelectionTools = memo(({
         isPathLayer = isPathLayer && type === LayerType.Path;
     });
 
-    // Continue with the rest of the code
     const layers = selectedLayers.map((id: string) => liveLayers[id]);
-    const [initialPosition, setInitialPosition] = useState<{ x: number, y: number } | null>(null);
+    const [position, setPosition] = useState<{ x: number, y: number } | null>(null);
     const selectionBounds = useSelectionBounds(selectedLayers, liveLayers);
     const isEditingText = useLayerTextEditingStore(state => state.isEditing);
     const containerRef = useRef<HTMLDivElement>(null);
-    const [containerWidth, setContainerWidth] = useState(0);
-
-    useEffect(() => {
-        if (!containerRef.current) return;
-
-        const resizeObserver = new ResizeObserver(entries => {
-            for (let entry of entries) {
-                setContainerWidth(entry.contentRect.width);
-            }
-        });
-
-        resizeObserver.observe(containerRef.current);
-
-        return () => {
-            resizeObserver.disconnect();
-        };
-    }, []);
 
     useEffect(() => {
         if (canvasState !== CanvasMode.None) {
@@ -116,17 +97,13 @@ export const SelectionTools = memo(({
                 const centerY = arrowLayer.center.y
                 const startY = arrowLayer.y
                 const endY = arrowLayer.y + arrowLayer.height
-                x = (arrowLayer.width / 2 + arrowLayer.x) * zoom + camera.x;
+                x = (Math.abs(arrowLayer.width / 2) + arrowLayer.x) * zoom + camera.x;
                 y = Math.min(centerY, startY, endY) * zoom + camera.y;
-
-                if (y < 130) {
-                    y = Math.max(centerY, startY, endY) * zoom + camera.y + 130;
-                }
             } else {
                 x = (selectionBounds.width / 2 + selectionBounds.x) * zoom + camera.x;
                 y = (selectionBounds.y) * zoom + camera.y;
             }
-            setInitialPosition({ x, y });
+            setPosition({ x, y });
         }
     }, [selectedLayers, zoom, camera, liveLayers, isArrowLayer, isLineLayer, selectionBounds]);
 
@@ -383,36 +360,30 @@ export const SelectionTools = memo(({
 
     }, [selectedLayersRef, selectedLayers, myPresence, setLiveLayers, setLiveLayerIds, setMyPresence, org, proModal, socket, liveLayers, performAction, boardId, nanoid]);
 
-    if (!selectionBounds) {
-        return null;
-    }
+    const getSelectionToolsPosition = useCallback(() => {
+        if (!position || !containerRef.current) return undefined;
 
-    let position = 0
-    if (initialPosition) {
-        position = initialPosition.y < 130
-            ? initialPosition.y + selectionBounds.height * zoom + 30
-            : initialPosition.y - 30;
-    }
+        const padding = 30;
 
-    if (canvasState === CanvasMode.Translating) {
+        let x = position.x - containerRef.current.clientWidth / 2;
+        let y = position.y - containerRef.current.clientHeight - padding;
+        
+        x = Math.min(Math.max(x, 0), window.innerWidth - containerRef.current.clientWidth);
+        y = Math.min(Math.max(y, 0), window.innerHeight - containerRef.current.clientHeight);
+
+        return `translate(${x}px, ${y}px)`;
+    }, [position]);
+
+
+    if (canvasState === CanvasMode.Translating || !selectionBounds) {
         return null;
     }
 
     return (
         <div
             ref={containerRef}
-            className="absolute p-1 rounded-xl bg-white dark:bg-zinc-800 border dark:border-zinc-800 shadow-sm flex select-none gap-x-1 items-center pointer-events-auto"
-            style={{
-                transform: initialPosition
-                    ? `translate(
-          calc(${Math.min(Math.max(initialPosition.x, containerWidth / 2), window.innerWidth - containerWidth / 2)}px - 50%),
-          ${initialPosition.y < 130
-                        ? `calc(${initialPosition.y + selectionBounds.height * zoom + 30}px)`
-                        : `calc(${initialPosition.y - 30}px - 100%)`
-                    }
-        )`
-                    : undefined
-            }}
+            className="absolute p-1 px-2 rounded-xl bg-white dark:bg-zinc-800 border dark:border-zinc-800 shadow-sm flex select-none gap-x-1 items-center pointer-events-auto"
+            style={{transform: getSelectionToolsPosition()}}
         >
             {isEditingText ? (
                 // Only show text-related options when editing text
@@ -426,7 +397,6 @@ export const SelectionTools = memo(({
                             boardId={boardId}
                             openSelector={openSelector}
                             setOpenSelector={setOpenSelector}
-                            expandUp={position + 50 + 150 > window.innerHeight}
                             layers={layers}
                         />
                     )}
@@ -442,7 +412,6 @@ export const SelectionTools = memo(({
                                 onChange={setOutlineFill}
                                 openSelector={openSelector}
                                 setOpenSelector={setOpenSelector}
-                                expandUp={position + 50 + 205 > window.innerHeight}
                             />
                             <ToolbarSeparator />
                         </>
@@ -455,7 +424,6 @@ export const SelectionTools = memo(({
                                 onChange={setFill}
                                 openSelector={openSelector}
                                 setOpenSelector={setOpenSelector}
-                                expandUp={position + 50 + 205 > window.innerHeight}
                             />
                             <ToolbarSeparator />
                         </>
@@ -482,7 +450,6 @@ export const SelectionTools = memo(({
                                 boardId={boardId}
                                 openSelector={openSelector}
                                 setOpenSelector={setOpenSelector}
-                                expandUp={position + 50 + 80 > window.innerHeight}
                             />
                             <ToolbarSeparator />
                         </>
@@ -497,7 +464,6 @@ export const SelectionTools = memo(({
                                 boardId={boardId}
                                 openSelector={openSelector}
                                 setOpenSelector={setOpenSelector}
-                                expandUp={position + 50 + 150 > window.innerHeight}
                                 layers={layers}
                             />
                             <ToolbarSeparator />
@@ -541,15 +507,6 @@ export const SelectionTools = memo(({
                         </Button>
                     </Hint>
                     <ToolbarSeparator />
-                    {/* <SketchlieAiDropdown 
-                        title={board.title}
-                        liveLayers={liveLayers}
-                        setLiveLayers={setLiveLayers}
-                        selectedLayersRef={selectedLayersRef}
-                        boardId={boardId}
-                        socket={socket}
-                        performAction={performAction}
-                    /> */}
                     <Hint label="Delete">
                         <Button
                             variant="icon"

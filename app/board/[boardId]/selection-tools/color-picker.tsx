@@ -5,7 +5,6 @@ import { colorToCss } from "@/lib/utils";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { Hint } from "@/components/hint";
-import { getSelectorPositionClass } from "./selectionToolUtils";
 
 interface ColorPickerProps {
   onChange: (color: Color) => void;
@@ -13,7 +12,6 @@ interface ColorPickerProps {
   layers: any;
   openSelector: SelectorType | null;
   setOpenSelector: (Selector: SelectorType | null) => void;
-  expandUp: boolean;
 };
 
 
@@ -23,7 +21,6 @@ export const ColorPicker = ({
   layers,
   openSelector,
   setOpenSelector,
-  expandUp = false
 }: ColorPickerProps) => {
 
   let colorButtonColor = layers[0].fill;
@@ -39,7 +36,7 @@ export const ColorPicker = ({
       <ColorPickerButton color={colorButtonColor} onClick={() => setOpenSelector(openSelector === SelectorType.Color ? null : SelectorType.Color)} />
       {openSelector === SelectorType.Color && (
         <div
-          className={`p-3 pt-5 pb-2 origin-top-right absolute right-0 ${getSelectorPositionClass(expandUp)} w-[165px] translate-x-1/3 rounded-lg shadow-sm bg-white dark:bg-zinc-800`}
+          className={`p-3 pt-5 pb-2 origin-top-right absolute right-0 top-full mt-2 w-[165px] translate-x-1/3 rounded-lg shadow-sm bg-white dark:bg-zinc-800`}
         >
           <Slider
 

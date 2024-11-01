@@ -16,7 +16,6 @@ interface TextJustifySelectorProps {
     boardId: string;
     openSelector: SelectorType | null;
     setOpenSelector: (Selector: SelectorType | null) => void;
-    expandUp: boolean;
 };
 
 export const TextJustifySelector = ({
@@ -27,7 +26,6 @@ export const TextJustifySelector = ({
     boardId,
     openSelector,
     setOpenSelector,
-    expandUp = false
 }: TextJustifySelectorProps) => {
     let alignX = liveLayers[selectedLayers[0]].alignX || "center";
     let alignY = liveLayers[selectedLayers[0]].alignY || "center";
@@ -97,7 +95,7 @@ export const TextJustifySelector = ({
             </Hint>
 
             {openSelector === SelectorType.TextJustify && (
-                <div className={`p-3 absolute ${getSelectorPositionClass(expandUp)} left-1/2 transform -translate-x-1/2 w-[140px] rounded-lg shadow-sm bg-white dark:bg-zinc-800 ring-1 ring-black ring-opacity-5`}>
+                <div className={`p-3 absolute top-full mt-2 left-1/2 transform -translate-x-1/2 w-[140px] rounded-lg shadow-sm bg-white dark:bg-zinc-800 ring-1 ring-black ring-opacity-5`}>
                     <div className='flex flex-row justify-center items-center mb-1'>
                         {/* Horizontal Alignment Buttons */}
                         <Button onClick={() => updateAlignment('left', null)} variant={alignX === 'left' ? "alignedActive" : "aligned"} className='px-1'>
