@@ -35,8 +35,6 @@ import { MediaMenu } from "./media-menu";
 import { PencilToolbar } from "./pencil-toolbar";
 
 interface ToolbarProps {
-  isUploading: boolean;
-  setIsUploading: Dispatch<SetStateAction<boolean>>;
   canvasState: CanvasState;
   setCanvasState: (newState: any) => void;
   org: any;
@@ -71,8 +69,6 @@ interface ToolbarProps {
 }
 
 export const Toolbar = memo(({
-  isUploading,
-  setIsUploading,
   canvasState,
   setCanvasState,
   org,
@@ -285,13 +281,11 @@ export const Toolbar = memo(({
             canvasState.layerType === LayerType.Frame
           }
         />
-        <MediaButton
+        <ToolButton 
           label="Media"
           icon={Image}
-          toolbarMenu={toolbarMenu}
-          setToolbarMenu={setToolbarMenu}
+          onClick={() => toolbarMenu !== ToolbarMenu.Media ? setToolbarMenu(ToolbarMenu.Media) : setToolbarMenu(ToolbarMenu.None)}
           isActive={toolbarMenu === ToolbarMenu.Media}
-          setCanvasState={setCanvasState}
         />
         <LinkButton
           label="Link"
@@ -344,8 +338,6 @@ export const Toolbar = memo(({
         <MediaMenu
           isMediaMenuOpen={toolbarMenu === ToolbarMenu.Media}
           org={org}
-          isUploading={isUploading}
-          setIsUploading={setIsUploading}
           insertMedia={insertMedia}
           camera={camera}
           svgRef={svgRef}

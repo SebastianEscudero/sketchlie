@@ -17,8 +17,6 @@ import { useCurrentUser } from "@/hooks/use-current-user";
 interface MediaMenuProps {
   isMediaMenuOpen: boolean;
   org: any;
-  isUploading: boolean;
-  setIsUploading: React.Dispatch<React.SetStateAction<boolean>>;
   insertMedia: (mediaItems: { layerType: LayerType.Image | LayerType.Video | LayerType.Link | LayerType.Svg, position: Point, info: any, zoom: number }[]) => void;
   camera: any;
   svgRef: any;
@@ -28,8 +26,6 @@ interface MediaMenuProps {
 export const MediaMenu: React.FC<MediaMenuProps> = ({
   isMediaMenuOpen,
   org,
-  isUploading,
-  setIsUploading,
   insertMedia,
   camera,
   svgRef,
@@ -111,9 +107,7 @@ export const MediaMenu: React.FC<MediaMenuProps> = ({
   }, [debouncedSearchTerm, activeTab]);
 
   const handleUpload = useCallback(async (e: React.ChangeEvent<HTMLInputElement> | { target: { files: File[] } }) => {
-    setIsUploading(true);
     if (!e.target.files || e.target.files.length === 0) {
-      setIsUploading(false);
       toast.error("No file selected, please try again.");
       return;
     }
@@ -133,8 +127,7 @@ export const MediaMenu: React.FC<MediaMenuProps> = ({
       insertMedia
     );
 
-    setIsUploading(false);
-  }, [setIsUploading, insertMedia, camera, svgRef, zoom, org, user]);
+  }, [insertMedia, camera, svgRef, zoom, org, user]);
 
   const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -165,8 +158,6 @@ export const MediaMenu: React.FC<MediaMenuProps> = ({
   }, [handleUpload]);
 
   const handleMediaSelect = async (media: any) => {
-    setIsUploading(true);
-
     try {
       let info;
       let originalWidth, originalHeight;
@@ -237,15 +228,12 @@ export const MediaMenu: React.FC<MediaMenuProps> = ({
       console.error('Error:', error);
       toast.error(`Failed to add ${activeTab.slice(0, -1)}`);
     } finally {
-      setIsUploading(false);
       setIsDialogOpen(false);
     }
   };
 
   const handleIconSelect = async (icon: any) => {
     try {
-      setIsUploading(true);
-
       if (!icon.icon_url) {
         throw new Error('Icon URL is missing');
       }
@@ -275,8 +263,6 @@ export const MediaMenu: React.FC<MediaMenuProps> = ({
     } catch (error) {
       console.error('Error:', error);
       toast.error('Failed to add icon');
-    } finally {
-      setIsUploading(false);
     }
   };
 
