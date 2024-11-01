@@ -1210,7 +1210,7 @@ export const Canvas = ({
         const current = pointerEventToCanvasPoint(e, cameraRef.current, zoomRef.current, svgRef);
         setMousePosition(current);
 
-        if (canvasState.mode !== CanvasMode.None) {
+        if (isMouseLeftButton(e)) {
             const borderThreshold = 2; // pixels from the edge to start moving
             const moveSpeed = 5; // pixels to move per frame
 
@@ -2326,7 +2326,7 @@ export const Canvas = ({
                                 orgTeammates={filteredOrgTeammates}
                                 deleteLayers={deleteLayers}
                                 forceUpdateLayerLocalLayerState={forceUpdateLayerLocalLayerState}
-                                isTranslating={isTranslatingLayers}
+                                isMoving={isTranslatingLayers}
                             />
                         )}
                         <Toolbar
@@ -2648,7 +2648,7 @@ export const Canvas = ({
                                                 setOpenCommentBoxId={setOpenCommentBoxId}
                                                 user={User}
                                                 orgTeammates={filteredOrgTeammates}
-                                                isTranslating={isTranslatingLayers}
+                                                isMoving={isTranslatingLayers}
                                                 setActiveHoveredCommentId={setActiveHoveredCommentId}
                                             />
                                         ))}
@@ -2665,7 +2665,7 @@ export const Canvas = ({
                                                 setOpenCommentBoxId={setOpenCommentBoxId}
                                                 user={User}
                                                 orgTeammates={filteredOrgTeammates}
-                                                isTranslating={isTranslatingLayers}
+                                                isMoving={isTranslatingLayers}
                                                 setActiveHoveredCommentId={setActiveHoveredCommentId}
                                             />
                                         )}

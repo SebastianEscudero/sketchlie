@@ -22,11 +22,11 @@ interface CommentProps {
     setOpenCommentBoxId: (id: string | null) => void;
     user: User;
     orgTeammates: any;
-    isTranslating: boolean;
+    isMoving: boolean;
     setActiveHoveredCommentId: (id: string | null) => void;
 }
 
-export const Comment = memo(({ id, layer, zoom, onPointerDown, selectionColor, setOpenCommentBoxId, isCommentBoxOpen, user, isTranslating, setActiveHoveredCommentId }: CommentProps) => {
+export const Comment = memo(({ id, layer, zoom, onPointerDown, selectionColor, setOpenCommentBoxId, isCommentBoxOpen, user, isMoving, setActiveHoveredCommentId }: CommentProps) => {
     const [isCommentPreviewOpen, setIsCommentPreviewOpen] = useState(false);
 
     useEffect(() => {
@@ -46,7 +46,7 @@ export const Comment = memo(({ id, layer, zoom, onPointerDown, selectionColor, s
                 y={-height}
                 width={commentContainerWidth}
                 height={height}
-                className={`relative overflow-visible pointer-events-auto ${isTranslating ? 'cursor-move' : 'cursor-default'}`}
+                className={`relative overflow-visible pointer-events-auto ${isMoving ? 'cursor-move' : 'cursor-default'}`}
             >
                 <div className='h-full w-full relative flex items-end'>
                     <CommentAvatar
@@ -60,7 +60,7 @@ export const Comment = memo(({ id, layer, zoom, onPointerDown, selectionColor, s
                         isCommentPreviewOpen={isCommentPreviewOpen}
                         setIsCommentPreviewOpen={setIsCommentPreviewOpen}
                         user={user}
-                        isTranslating={isTranslating}
+                        isMoving={isMoving}
                         setActiveHoveredCommentId={setActiveHoveredCommentId}
                     />
                 </div>
@@ -69,7 +69,7 @@ export const Comment = memo(({ id, layer, zoom, onPointerDown, selectionColor, s
     );
 });
 
-const CommentAvatar = memo(({ id, layer, initial, onPointerDown, setOpenCommentBoxId, isCommentBoxOpen, selectionColor, isCommentPreviewOpen, setIsCommentPreviewOpen, user, isTranslating, setActiveHoveredCommentId }: { id: string, layer: CommentType, initial: string, onPointerDown?: (e: any, id: string) => void, showOutlineOnHover?: boolean, setOpenCommentBoxId: (commentId: string) => void, isCommentBoxOpen: boolean, selectionColor?: string, isCommentPreviewOpen: boolean, setIsCommentPreviewOpen: (isOpen: boolean) => void, user: User, isTranslating: boolean, setActiveHoveredCommentId: (id: string | null) => void }) => {
+const CommentAvatar = memo(({ id, layer, initial, onPointerDown, setOpenCommentBoxId, isCommentBoxOpen, selectionColor, isCommentPreviewOpen, setIsCommentPreviewOpen, user, isMoving, setActiveHoveredCommentId }: { id: string, layer: CommentType, initial: string, onPointerDown?: (e: any, id: string) => void, showOutlineOnHover?: boolean, setOpenCommentBoxId: (commentId: string) => void, isCommentBoxOpen: boolean, selectionColor?: string, isCommentPreviewOpen: boolean, setIsCommentPreviewOpen: (isOpen: boolean) => void, user: User, isMoving: boolean, setActiveHoveredCommentId: (id: string | null) => void }) => {
     const { author, createdAt, height, width, content, replies } = layer;
     const [hoverHeight, setHoverHeight] = useState(52);
     const [isHovered, setIsHovered] = useState(false);
@@ -90,11 +90,11 @@ const CommentAvatar = memo(({ id, layer, initial, onPointerDown, setOpenCommentB
     }, [content, isCommentPreviewOpen]);
 
     useEffect(() => {
-        if (isTranslating) {
+        if (isMoving) {
             setActiveHoveredCommentId(null);
             setIsCommentPreviewOpen(false);
         }
-    }, [isTranslating, setIsCommentPreviewOpen, setActiveHoveredCommentId]);
+    }, [isMoving, setIsCommentPreviewOpen, setActiveHoveredCommentId]);
 
     const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
         e.stopPropagation();
@@ -109,7 +109,7 @@ const CommentAvatar = memo(({ id, layer, initial, onPointerDown, setOpenCommentB
 
     const getBackgroundColor = () => {
         if (isMentioned) {
-            return isHovered && !isTranslating ? 'bg-blue-50 dark:bg-blue-900' : 'bg-zinc-300 dark:bg-zinc-800';
+            return isHovered && !isMoving ? 'bg-blue-50 dark:bg-blue-900' : 'bg-zinc-300 dark:bg-zinc-800';
         }
 
         return isHovered ? 'bg-white dark:bg-zinc-800' : 'bg-zinc-300 dark:bg-zinc-800';
@@ -119,7 +119,7 @@ const CommentAvatar = memo(({ id, layer, initial, onPointerDown, setOpenCommentB
         if (selectionColor) {
             return selectionColor;
         }
-        if (isMentioned || isHovered) {
+        if (isMentioned || isHovered || isCommentBoxOpen) {
             return '#3390FF'; // blue-500
         }
         return document.documentElement.classList.contains("dark") ? '#e4e4e7' : '#a1a1aa'; // zinc-200 for dark, zinc-400 for light
@@ -133,15 +133,15 @@ const CommentAvatar = memo(({ id, layer, initial, onPointerDown, setOpenCommentB
                 height: isCommentPreviewOpen ? `${hoverHeight}px` : `${height}px`,
                 padding: isCommentPreviewOpen ? '6px' : '0px',
                 outline: getStrokeColor() !== 'none' ? `2px solid ${getStrokeColor()}` : 'none',
-                boxShadow: 'drop-shadow(0 4px 3px rgb(0 0 0 / 0.07)) drop-shadow(0 2px 2px rgb(0 0 0 / 0.06))',
+                filter: 'drop-shadow(0 4px 3px rgb(0 0 0 / 0.07)) drop-shadow(0 2px 2px rgb(0 0 0 / 0.06))', // Add this line
             }}
             onPointerDown={handlePointerDown}
             onPointerUp={handlePointerUp}
             onPointerEnter={() => {
-                if (!isTranslating) {
+                if (!isMoving && !isCommentBoxOpen) {
                     setActiveHoveredCommentId(id);
                     setIsHovered(true);
-                    !isCommentBoxOpen && setIsCommentPreviewOpen(true);
+                    setIsCommentPreviewOpen(true);
                 }
             }}
             onPointerLeave={() => {
@@ -203,7 +203,7 @@ export const CommentBox = memo(({
     expired,
     socket,
     user,
-    isTranslating,
+    isMoving,
     orgTeammates,
     deleteLayers,
     forceUpdateLayerLocalLayerState
@@ -217,7 +217,7 @@ export const CommentBox = memo(({
     expired: boolean,
     socket: Socket | null,
     user: User,
-    isTranslating: boolean,
+    isMoving: boolean,
     orgTeammates: any,
     deleteLayers: (layerIds: string[]) => void,
     forceUpdateLayerLocalLayerState: (layerId: string, updatedLayer: CommentType) => void,
@@ -282,8 +282,8 @@ export const CommentBox = memo(({
     }, [layer?.x, layer?.y, layer?.height, layer?.width, cameraRef, zoomRef]);
 
     useEffect(() => {
-        if (isTranslating) setOpenCommentBoxId(null);
-    }, [isTranslating, setOpenCommentBoxId]);
+        if (isMoving) setOpenCommentBoxId(null);
+    }, [isMoving, setOpenCommentBoxId]);
 
     const onPointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
         e.stopPropagation();
@@ -701,4 +701,3 @@ export function formatTimeAgo(date: Date | number): string {
 Comment.displayName = "Comment";
 CommentAvatar.displayName = "CommentAvatar";
 CommentBox.displayName = "CommentBox";
-
