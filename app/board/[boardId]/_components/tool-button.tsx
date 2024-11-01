@@ -34,16 +34,8 @@ export const ToolButton = ({
     );
 }
 
-interface SmallToolButtonProps {
-    icon: ElementType;
-    onClick: () => void;
-    label: string;
-    isActive?: boolean;
-    disabled?: boolean;
-}
-
-export const SmallToolButton = ({ icon: Icon, onClick, isActive, label, disabled }: SmallToolButtonProps) => (
-    <Hint side="top" label={label} sideOffset={8}>
+export const SmallToolButton = ({ icon: Icon, onClick, isActive, label, disabled }: ToolButtonProps) => {
+    const button = (
         <Button
             disabled={disabled}
             onClick={onClick}
@@ -52,5 +44,29 @@ export const SmallToolButton = ({ icon: Icon, onClick, isActive, label, disabled
         >
             <Icon className="h-5 w-5" />
         </Button>
-    </Hint>
-);
+    );
+
+    return label ? (
+        <Hint side="top" label={label} sideOffset={14}>
+            {button}
+        </Hint>
+    ) : (
+        button
+    );
+};
+
+export const ExtraSmallToolButton = ({ icon: Icon, onClick, isActive, label, disabled }: ToolButtonProps) => {
+    const button = (
+        <Button disabled={disabled} onClick={onClick} className="h-8 w-8 p-1.5" variant={isActive ? "iconActive" : "icon"}>
+            <Icon className="h-5 w-5" />
+        </Button>
+    );
+
+    return label ? (
+        <Hint side="top" label={label} sideOffset={14}>
+            {button}
+        </Hint>
+    ) : (
+        button
+    );
+}
