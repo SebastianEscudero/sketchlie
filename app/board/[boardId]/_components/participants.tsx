@@ -58,7 +58,7 @@ export const Participants = memo(({
                 orgId={org.id}
                 socket={socket}
             >
-                <div className="hidden xs:flex items-center bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-600 dark:hover:bg-zinc-700 rounded-full px-1 py-0.5">
+                <div className="flex items-center bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-600 dark:hover:bg-zinc-700 rounded-full px-1 py-0.5">
                     <div className="flex -space-x-2 mr-1">
                         {otherUsers && otherUsers.slice(0, MAX_SHOWN_USERS)
                             .map(({ userId, connectionId, information }) => {
