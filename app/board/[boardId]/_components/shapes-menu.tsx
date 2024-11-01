@@ -12,7 +12,7 @@ import {
   Star,
   Triangle,
 } from "lucide-react";
-import { ToolButton } from "./tool-button";
+import { ExtraSmallToolButton } from "./tool-button";
 import { LineIcon } from "@/public/custom-icons/line";
 import { AnimatedToolbarMenu } from "./toolbar";
 
@@ -27,143 +27,42 @@ export const ShapesMenu = ({
   canvasState,
   isShapesMenuOpen,
 }: ShapesMenuProps) => {
+  const shapes = [
+    { icon: Square, type: LayerType.Rectangle },
+    { icon: Circle, type: LayerType.Ellipse },
+    { icon: Diamond, type: LayerType.Rhombus },
+    { icon: Triangle, type: LayerType.Triangle },
+    { icon: Star, type: LayerType.Star },
+    { icon: Hexagon, type: LayerType.Hexagon },
+    { icon: MessageSquare, type: LayerType.CommentBubble },
+    { icon: LineIcon, type: LayerType.Line },
+    { icon: ArrowBigLeft, type: LayerType.BigArrowLeft },
+    { icon: ArrowBigUp, type: LayerType.BigArrowUp },
+    { icon: ArrowBigDown, type: LayerType.BigArrowDown },
+    { icon: ArrowBigRight, type: LayerType.BigArrowRight },
+  ];
+
   return (
     <AnimatedToolbarMenu
       isOpen={isShapesMenuOpen}
-      className="left-[20px] bottom-16 grid grid-cols-4 grid-rows-3 gap-2 h-[144px] w-[160px] sm:w-[192px] items-center cursor-default"
+      className="left-[20px] bottom-16"
     >
-      <ToolButton
-        icon={Square}
-        onClick={() => setCanvasState({
-          mode: CanvasMode.Inserting,
-          layerType: LayerType.Rectangle,
-        })}
-        isActive={
-          canvasState.mode === CanvasMode.Inserting &&
-          canvasState.layerType === LayerType.Rectangle
-        }
-      />
-      <ToolButton
-        icon={Circle}
-        onClick={() => setCanvasState({
-          mode: CanvasMode.Inserting,
-          layerType: LayerType.Ellipse,
-        })}
-        isActive={
-          canvasState.mode === CanvasMode.Inserting &&
-          canvasState.layerType === LayerType.Ellipse
-        }
-      />
-      <ToolButton
-        icon={Diamond}
-        onClick={() => setCanvasState({
-          mode: CanvasMode.Inserting,
-          layerType: LayerType.Rhombus,
-        })}
-        isActive={
-          canvasState.mode === CanvasMode.Inserting &&
-          canvasState.layerType === LayerType.Rhombus
-        }
-      />
-      <ToolButton
-        icon={Triangle}
-        onClick={() => setCanvasState({
-          mode: CanvasMode.Inserting,
-          layerType: LayerType.Triangle,
-        })}
-        isActive={
-          canvasState.mode === CanvasMode.Inserting &&
-          canvasState.layerType === LayerType.Triangle
-        }
-      />
-      <ToolButton
-        icon={Star}
-        onClick={() => setCanvasState({
-          mode: CanvasMode.Inserting,
-          layerType: LayerType.Star,
-        })}
-        isActive={
-          canvasState.mode === CanvasMode.Inserting &&
-          canvasState.layerType === LayerType.Star
-        }
-      />
-      <ToolButton
-        icon={Hexagon}
-        onClick={() => setCanvasState({
-          mode: CanvasMode.Inserting,
-          layerType: LayerType.Hexagon,
-        })}
-        isActive={
-          canvasState.mode === CanvasMode.Inserting &&
-          canvasState.layerType === LayerType.Hexagon
-        }
-      />
-      <ToolButton
-        icon={LineIcon}
-        onClick={() => setCanvasState({
-          mode: CanvasMode.Inserting,
-          layerType: LayerType.Line,
-        })}
-        isActive={
-          canvasState.mode === CanvasMode.Inserting &&
-          canvasState.layerType === LayerType.Line
-        }
-      />
-      <ToolButton
-        icon={MessageSquare}
-        onClick={() => setCanvasState({
-          mode: CanvasMode.Inserting,
-          layerType: LayerType.CommentBubble,
-        })}
-        isActive={
-          canvasState.mode === CanvasMode.Inserting &&
-          canvasState.layerType === LayerType.CommentBubble
-        }
-      />
-      <ToolButton
-        icon={ArrowBigLeft}
-        onClick={() => setCanvasState({
-          mode: CanvasMode.Inserting,
-          layerType: LayerType.BigArrowLeft,
-        })}
-        isActive={
-          canvasState.mode === CanvasMode.Inserting &&
-          canvasState.layerType === LayerType.BigArrowLeft
-        }
-      />
-      <ToolButton
-        icon={ArrowBigUp}
-        onClick={() => setCanvasState({
-          mode: CanvasMode.Inserting,
-          layerType: LayerType.BigArrowUp,
-        })}
-        isActive={
-          canvasState.mode === CanvasMode.Inserting &&
-          canvasState.layerType === LayerType.BigArrowUp
-        }
-      />
-      <ToolButton
-        icon={ArrowBigDown}
-        onClick={() => setCanvasState({
-          mode: CanvasMode.Inserting,
-          layerType: LayerType.BigArrowDown,
-        })}
-        isActive={
-          canvasState.mode === CanvasMode.Inserting &&
-          canvasState.layerType === LayerType.BigArrowDown
-        }
-      />
-      <ToolButton
-        icon={ArrowBigRight}
-        onClick={() => setCanvasState({
-          mode: CanvasMode.Inserting,
-          layerType: LayerType.BigArrowRight,
-        })}
-        isActive={
-          canvasState.mode === CanvasMode.Inserting &&
-          canvasState.layerType === LayerType.BigArrowRight
-        }
-      />
+      <div className="grid grid-cols-4 gap-1 auto-rows-auto">
+        {shapes.map((shape) => (
+          <ExtraSmallToolButton
+            key={shape.type}
+            icon={shape.icon}
+            onClick={() => setCanvasState({
+              mode: CanvasMode.Inserting,
+              layerType: shape.type,
+            })}
+            isActive={
+              canvasState.mode === CanvasMode.Inserting &&
+              canvasState.layerType === shape.type
+            }
+          />
+        ))}
+      </div>
     </AnimatedToolbarMenu>
   );
 };
