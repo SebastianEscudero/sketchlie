@@ -11,17 +11,12 @@ const buttonVariants = cva(
       variant: {
         golden: "bg-yellow-400 text-black",
         default: "bg-primary text-primary-foreground hover:bg-primary/90",
-        destructive:
-          "bg-red-500 text-destructive-foreground hover:bg-red-600",
-        destructive2:
-          "bg-white text-red-500 border border-red-500 hover:bg-red-500/90 hover:text-white",
-        outline:
-          "border border-black bg-white hover:bg-gray-100 dark:text-black",
+        destructive:"bg-red-500 text-destructive-foreground hover:bg-red-600",
+        destructive2:"bg-white text-red-500 border border-red-500 hover:bg-red-500/90 hover:text-white",
+        outline:"border border-black bg-white hover:bg-gray-100 dark:text-black",
         dashboard: "hover:bg-zinc-200 text-black dark:text-white dark:hover:text-white dark:hover:bg-accent-foreground/10 dark:hover:text-accent-foreground",
-        dashboardActive:
-          "dark:bg-zinc-200 bg-zinc-800 text-white hover:bg-[#383838] dark:text-black dark:hover:bg-zinc-200",
-        secondary:
-          "bg-white text-black",
+        dashboardActive:"dark:bg-zinc-200 bg-zinc-800 text-white hover:bg-[#383838] dark:text-black dark:hover:bg-zinc-200",
+        secondary:"bg-white text-black",
         ghost: "hover:text-accent-foreground hover:bg-accent-foreground/10",
         ghostDark: "hover:bg-zinc-600",
         blog: "hover:bg-custom-blue hover:text-accent-foreground border border-black rounded-md hover:text-[#FFF] hover:border-none",
