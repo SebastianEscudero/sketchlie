@@ -187,6 +187,7 @@ export const PencilToolbar = memo(({
                     icon={ScribbleIcon}
                     onClick={strokeSizeButtonPointerDown}
                     isActive={toolbarMenu === ToolbarMenu.PathStrokeSize}
+                    disabled={canvasState.mode !== CanvasMode.Pencil && canvasState.mode !== CanvasMode.Highlighter}
                 />
                 <div className="flex items-center gap-x-1">
                     {currentPresetColors().map((color, index) => (
@@ -195,6 +196,7 @@ export const PencilToolbar = memo(({
                                 variant={areColorsEqual(selectedColor()!, color) ? "iconActive" : "icon"}
                                 className="h-8 w-8 p-1.2 rounded-full"
                                 onClick={() => handlePresetColorClick(color)}
+                                disabled={canvasState.mode !== CanvasMode.Pencil && canvasState.mode !== CanvasMode.Highlighter}
                             >
                                 <div
                                     className="w-5 h-5 border border-zinc-600 dark:border-zinc-200 rounded-full group-hover:opacity-90"
