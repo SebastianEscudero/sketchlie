@@ -1,28 +1,21 @@
 import { memo } from "react";
 import { InsertVideo } from "../canvas-objects/media/video";
 import { InsertLink } from "../canvas-objects/media/link";
-import { CanvasState, Layer, LayerType } from "@/types/canvas";
+import { Layer, LayerType } from "@/types/canvas";
 
 interface MediaPreviewProps {
   id: string;
-  layer: Layer; // Replace with the appropriate type
+  layer: Layer;
   onPointerDown: (e: React.PointerEvent, id: string) => void;
   focused?: boolean;
-  zoom: number;
-  camera: { x: number; y: number };
-  canvasState: CanvasState;
-  svgRef: React.RefObject<SVGSVGElement>;
+  showOverlay: boolean;
 }
 
 export const MediaPreview = memo(({
     id,
     layer,
     onPointerDown,
-    focused,
-    zoom,
-    camera,
-    canvasState,
-    svgRef,
+    showOverlay,
 }: MediaPreviewProps) => {
 
   switch (layer.type) {
@@ -32,11 +25,7 @@ export const MediaPreview = memo(({
           id={id}
           layer={layer}
           onPointerDown={onPointerDown}
-          focused={focused}
-          zoom={zoom}
-          camera={camera}
-          svgRef={svgRef}
-          canvasState={canvasState}
+          showOverlay={showOverlay}
         />
       );
     case LayerType.Link:
@@ -45,11 +34,7 @@ export const MediaPreview = memo(({
           id={id}
           layer={layer}
           onPointerDown={onPointerDown}
-          focused={focused}
-          zoom={zoom}
-          camera={camera}
-          canvasState={canvasState}
-          svgRef={svgRef}
+          showOverlay={showOverlay}
         />
       );
     default:

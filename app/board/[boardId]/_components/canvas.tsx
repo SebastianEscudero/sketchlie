@@ -536,17 +536,17 @@ export const Canvas = ({
                 newLayerIds.push(frameLayerId);
 
                 // Add some padding around the content
-                const framePadding = 10/zoom;
-                
+                const framePadding = 10 / zoom;
+
                 const frameLayer: FrameLayer = {
                     type: LayerType.Frame,
-                    x: position.x - framePadding/2,
-                    y: position.y - framePadding/2,
+                    x: position.x - framePadding / 2,
+                    y: position.y - framePadding / 2,
                     height: info.dimensions.height + framePadding,
                     width: info.dimensions.width + framePadding,
                     addedBy: User?.information.name
                 };
-                
+
                 newLayers.push(frameLayer);
             }
         });
@@ -577,9 +577,9 @@ export const Canvas = ({
             y: (point.y - canvasState.current.y)
         };
 
-        const MOVEMENT_THRESHOLD = 120/zoom;
+        const MOVEMENT_THRESHOLD = 120 / zoom;
         const movementDistance = Math.sqrt(offset.x * offset.x + offset.y * offset.y);
-        
+
         if (e.pointerType === 'touch' && movementDistance > MOVEMENT_THRESHOLD) {
             // If movement is too large on mobile, cancel the translation (might be trying to pan)
             return;
@@ -901,7 +901,8 @@ export const Canvas = ({
             liveLayers[id].type === LayerType.Text ||
             liveLayers[id].type === LayerType.Video ||
             liveLayers[id].type === LayerType.Svg ||
-            liveLayers[id].type === LayerType.Table
+            liveLayers[id].type === LayerType.Table ||
+            liveLayers[id].type === LayerType.Link
         );
         let mantainAspectRatio = hasMediaOrText
         let singleLayer = selectedLayersRef.current.length === 1
@@ -2504,9 +2505,17 @@ export const Canvas = ({
                             contain: 'paint layout'
                         }}
                     >
-                        <div className="z-10 pointer-events-auto">
+                        <div 
+                            className="z-10 pointer-events-auto" 
+                            style={{
+                                transform: `translate(${camera.x}px, ${camera.y}px) scale(${zoom})`,
+                                transformOrigin: 'top left',
+                                willChange: 'transform',
+                            }}
+                        >
                             {visibleLayerIds.map((layerId: string) => {
                                 const layer = liveLayers[layerId];
+                                const showOverlay = canvasState.mode === CanvasMode.None || canvasState.mode === CanvasMode.Pressing || canvasState.mode === CanvasMode.Translating;
                                 if (layer && (layer.type === LayerType.Video || layer.type === LayerType.Link)) {
                                     return (
                                         <MediaPreview
@@ -2514,11 +2523,7 @@ export const Canvas = ({
                                             id={layerId}
                                             layer={layer}
                                             onPointerDown={onLayerPointerDown}
-                                            focused={selectedLayersRef.current.includes(layerId)}
-                                            zoom={zoom}
-                                            camera={camera}
-                                            canvasState={canvasState}
-                                            svgRef={svgRef}
+                                            showOverlay={showOverlay}
                                         />
                                     );
                                 }

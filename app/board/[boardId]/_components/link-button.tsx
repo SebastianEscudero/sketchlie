@@ -48,7 +48,7 @@ export const LinkButton = ({
     const handleConfirm = () => {
         const convertedLink = convertToEmbedURL(link);
         const centerPoint = getCenterOfScreen(camera, zoom, svgRef);
-        const dimensions = { width: 1600, height: 900 };
+        const dimensions = { width: 1200, height: 675 };
         const info = { dimensions, url: convertedLink };
 
         insertMedia([{layerType: LayerType.Link, position: centerPoint, info, zoom}]);
