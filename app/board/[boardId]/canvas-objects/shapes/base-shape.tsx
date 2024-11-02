@@ -117,6 +117,7 @@ export const BaseShape = memo(({
             innerRef={shapeRef}
             draggable={false}
             disabled={!focused}
+            spellCheck={false}
             html={editableValue || ""}
             onChange={handleContentChange}
             onPaste={handlePaste}
