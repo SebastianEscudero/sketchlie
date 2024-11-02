@@ -70,8 +70,6 @@ export const BaseShape = memo(({
   }, [updateValue, boardId, id, layer, expired, socket]);
 
   const contentEditablePointerDown = (e: React.PointerEvent) => {
-    console.log('contentEditablePointerDown', id, focused)
-
     if (focused) {
       setIsEditing(true);
       e.stopPropagation();
@@ -81,8 +79,6 @@ export const BaseShape = memo(({
   }
 
   const handlePointerDown = (e: React.PointerEvent) => {
-    console.log('handlePointerDown', id, focused)
-
     if (focused) {
       setIsEditing(true);
       e.stopPropagation();
