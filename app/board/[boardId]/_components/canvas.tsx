@@ -561,9 +561,8 @@ export const Canvas = ({
 
     }, [socket, org, proModal, setLiveLayers, setLiveLayerIds, boardId, performAction, expired, User]);
 
-    const translateSelectedLayers = useCallback((point: Point) => {
-
-        if (expired) {
+    const translateSelectedLayers = useCallback((e: any, point: Point) => {
+        if (expired || activeTouches > 1 || canvasState.mode !== CanvasMode.Translating) {
             selectedLayersRef.current = [];
             const newPresence: Presence = {
                 ...myPresence,
@@ -573,15 +572,20 @@ export const Canvas = ({
             return;
         }
 
-        if (canvasState.mode !== CanvasMode.Translating || activeTouches > 1) {
-            return;
-        }
-
-        setIsTranslatingLayers(true);
         const offset = {
             x: (point.x - canvasState.current.x),
             y: (point.y - canvasState.current.y)
         };
+
+        const MOVEMENT_THRESHOLD = 120/zoom;
+        const movementDistance = Math.sqrt(offset.x * offset.x + offset.y * offset.y);
+        
+        if (e.pointerType === 'touch' && movementDistance > MOVEMENT_THRESHOLD) {
+            // If movement is too large on mobile, cancel the translation (might be trying to pan)
+            return;
+        }
+
+        setIsTranslatingLayers(true);
 
         const newLayers = { ...liveLayers };
         const updatedLayers: any = [];
@@ -1252,7 +1256,7 @@ export const Canvas = ({
         } else if (canvasState.mode === CanvasMode.Eraser && isMouseLeftButton(e)) {
             EraserDeleteLayers(current);
         } else if (canvasState.mode === CanvasMode.Translating) {
-            translateSelectedLayers(current);
+            translateSelectedLayers(e, current);
         } else if (canvasState.mode === CanvasMode.Resizing) {
             resizeSelectedLayers(current);
             removeHighlightFromText();

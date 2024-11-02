@@ -55,6 +55,7 @@ export const BaseShape = memo(({
   const updateValue = useUpdateValue();
   const handlePaste = useHandlePaste();
   const setIsEditing = useLayerTextEditingStore(state => state.setIsEditing);
+  const isEditingText = useLayerTextEditingStore(state => state.isEditing);
 
   useEffect(() => {
     setEditableValue(value);
@@ -69,6 +70,8 @@ export const BaseShape = memo(({
   }, [updateValue, boardId, id, layer, expired, socket]);
 
   const contentEditablePointerDown = (e: React.PointerEvent) => {
+    console.log('contentEditablePointerDown', id, focused)
+
     if (focused) {
       setIsEditing(true);
       e.stopPropagation();
@@ -78,36 +81,17 @@ export const BaseShape = memo(({
   }
 
   const handlePointerDown = (e: React.PointerEvent) => {
+    console.log('handlePointerDown', id, focused)
+
     if (focused) {
       setIsEditing(true);
       e.stopPropagation();
       e.preventDefault();
-      shapeRef.current?.focus();
     }
 
     if (onPointerDown) onPointerDown(e, id);
     setStrokeColor(selectionColor || colorToCss(outlineFill || fill));
   };
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    if (e.touches.length > 1) return;
-
-    if (e.target === shapeRef.current) {
-      if (focused) {
-        setIsEditing(true);
-        e.stopPropagation();
-      } else {
-        e.preventDefault();
-        if (onPointerDown) onPointerDown(e, id);
-      }
-      return;
-    } else if (focused) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-
-    if (onPointerDown) onPointerDown(e, id);
-  }
 
   const { width: divWidth, height: divHeight, x: foreignObjectX, y: foreignObjectY } = foreignObjectDimensions;
 
@@ -116,7 +100,6 @@ export const BaseShape = memo(({
       transform={`translate(${x}, ${y})`}
       pointerEvents="auto"
       onPointerDown={handlePointerDown}
-      onTouchStart={handleTouchStart}
       onPointerEnter={() => { if (showOutlineOnHover) { setStrokeColor("#3390FF"); setAddedByLabel?.(addedBy || '') } }}
       onPointerLeave={() => { setStrokeColor(selectionColor || colorToCss(outlineFill || fill)); setAddedByLabel?.('') }}
     >
@@ -132,6 +115,8 @@ export const BaseShape = memo(({
           <ContentEditable
             id={id}
             innerRef={shapeRef}
+            draggable={false}
+            disabled={!focused}
             html={editableValue || ""}
             onChange={handleContentChange}
             onPaste={handlePaste}
@@ -140,13 +125,11 @@ export const BaseShape = memo(({
             style={{
               fontSize: textFontSize,
               color: fill ? getContrastingTextColor(fill) : "#000",
+              cursor: isEditingText && 'text',
               WebkitUserSelect: 'auto',
               textAlign: alignX,
-              cursor: focused && 'text',
               fontFamily: fontFamily || DEFAULT_FONT,
             }}
-            spellCheck={false}
-            onDragStart={(e) => e.preventDefault()}
           />
         </div>
       </foreignObject>
