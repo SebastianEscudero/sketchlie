@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Hint } from "@/components/hint";
-import { ChevronsLeft, LayoutTemplate, Menu, Rocket } from "lucide-react";
+import { ChevronDown, ChevronsLeft, LayoutTemplate, Menu, Rocket } from "lucide-react";
 import { Actions } from "@/components/actions";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { toast } from "sonner";
@@ -11,7 +11,7 @@ import { ShowAllTemplates } from "@/app/dashboard/_components/show-all-templates
 import { Layer, LayerType, User } from "@/types/canvas";
 import { InsertLayerCommand } from "@/lib/commands";
 import { memo, useState } from "react";
-import { RenameBoardDialog } from "@/components/modals/rename-modal";
+import { RenameBoardDialog, RenameBoardInput } from "@/components/modals/rename-modal";
 import { ExportDropdownMenu } from "@/components/ExportDropdownMenu";
 
 interface InfoProps {
@@ -69,7 +69,6 @@ export const Info = memo(({
 
     const proModal = useProModal();
     const orgId = board.orgId;
-    const [isRenameModalOpen, setIsRenameModalOpen] = useState(false);
 
     const onChooseTemplate = async (templateName: string, templateLayerIds: any, templateLayers: any) => {
         try {
@@ -149,9 +148,9 @@ export const Info = memo(({
     if (!board) return <InfoSkeleton />;
 
     return (
-        <div className="border dark:border-zinc-800 shadow-sm absolute bg-white dark:bg-zinc-800 top-2 left-4 rounded-xl p-1 h-12 xs:flex hidden items-center pointer-events-auto">
+        <div className="border dark:border-zinc-800 shadow-sm absolute bg-white dark:bg-zinc-800 top-2 left-4 rounded-xl p-1 px-2 h-12 xs:flex hidden items-center pointer-events-auto">
             <Hint label="Go to Dashboard" side="bottom" sideOffset={10}>
-                <Button asChild variant="icon" className="px-2">
+                <Button asChild variant="icon" className="px-2" size="sm">
                     <Link href="/dashboard/">
                         <ChevronsLeft className="h-5 w-5" />
                     </Link>
@@ -160,23 +159,10 @@ export const Info = memo(({
             <div className="text-neutral-300 px-1 sm:flex hidden">
                 |
             </div>
-            <Hint label="Edit title" side="bottom" sideOffset={10}>
-                <Button disabled={User.information.role !== "Admin"} variant="icon" className="text-base px-2 sm:max-w-[100px] md:max-w-[400px] max-w-[80px] overflow-hidden relative sm:flex hidden" onClick={() => setIsRenameModalOpen(true)}>
-                    <div className="w-full text-left truncate">
-                        {board.title}
-                    </div>
-                </Button>
-            </Hint>
-            {isRenameModalOpen && (
-                <RenameBoardDialog
-                    isOpen={isRenameModalOpen}
-                    onClose={() => setIsRenameModalOpen(false)}
-                    boardTitle={board.title}
-                    id={board._id}
-                />
-            )}
-
-            <TabSeparator />
+            <RenameBoardInput
+                boardTitle={board.title}
+                id={board._id}
+            />
             <Actions
                 id={board._id}
                 title={board.title}
@@ -201,64 +187,51 @@ export const Info = memo(({
                 setEraserDeleteAnyLayer={setEraserDeleteAnyLayer}
             >
                 <div className="w-10 flex justify-center items-center">
-                    <Hint label="Main menu" side="bottom" sideOffset={10}>
-                        <Button size="icon" variant="icon">
-                            <Menu />
+                    <Hint label="Options" side="bottom" sideOffset={10}>
+                        <Button className="px-1 w-8 h-7" variant="icon">
+                            <ChevronDown className="h-4 w-4 text-zinc-500" />
                         </Button>
                     </Hint>
                 </div>
             </Actions>
             <TabSeparator />
-            {User.information.role !== "Guest" && (
-                <>
-                    {(() => {
-                        if (org.subscription) {
-                            const now = new Date().getTime();
-                            const expiration = new Date(org.subscription.mercadoPagoCurrentPeriodEnd).getTime();
-                            if (now > expiration) {
-                                return null; // Don't show the templates if the subscription is expired
+            <div className="flex items-center space-x-1">
+                {User.information.role !== "Guest" && (
+                    <>
+                        {(() => {
+                            if (org.subscription) {
+                                const now = new Date().getTime();
+                                const expiration = new Date(org.subscription.mercadoPagoCurrentPeriodEnd).getTime();
+                                if (now > expiration) {
+                                    return null; // Don't show the templates if the subscription is expired
+                                }
                             }
-                        }
-                        return (
-                            <ShowAllTemplates onClick={onChooseTemplate}>
-                                <div className="justify-center items-center hover:cursor-pointer sm:flex hidden">
-                                    <Hint label="Templates" side="bottom" sideOffset={10}>
-                                        <Button variant="icon" size="icon">
-                                            <LayoutTemplate />
-                                        </Button>
-                                    </Hint>
-                                </div>
-                            </ShowAllTemplates>
-                        );
-                    })()}
-                </>
-            )}
-            <div className="text-neutral-300 px-1 sm:flex hidden">
-                |
+                            return (
+                                <ShowAllTemplates onClick={onChooseTemplate}>
+                                    <div className="justify-center items-center hover:cursor-pointer sm:flex hidden">
+                                        <Hint label="Templates" side="bottom" sideOffset={10}>
+                                            <Button variant="icon" className="px-2" size="sm">
+                                                <LayoutTemplate className="w-5 h-5"/>
+                                            </Button>
+                                        </Hint>
+                                    </div>
+                                </ShowAllTemplates>
+                            );
+                        })()}
+                    </>
+                )}
+                <ExportDropdownMenu id={board._id} title={board.title} />
+                <Hint label="Upgrade" side="bottom" sideOffset={10}>
+                    <Button 
+                        className="px-2"
+                        variant="icon"
+                        onClick={() => proModal.onOpen(orgId)}
+                        size="sm"
+                    >
+                        <Rocket className="w-4 h-4 fill-blue-600 stroke-blue-600 flex-shrink-0" />
+                    </Button>
+                </Hint>
             </div>
-            <ExportDropdownMenu id={board._id} title={board.title} />
-            <TabSeparator />
-            <Hint label="Upgrade" side="bottom" sideOffset={10}>
-                <Button 
-                    variant="icon"
-                    onClick={() => proModal.onOpen(orgId)}
-                    size="icon"
-                >
-                    <Rocket className="w-4 h-4 fill-blue-600 stroke-blue-600 flex-shrink-0" />
-                </Button>
-            </Hint>
-            {/* <div className="text-neutral-300 px-1 md:flex hidden">
-                |
-            </div>
-            <Hint label="Sketchlie AI" side="bottom" sideOffset={10}>
-                <Button variant="icon"
-                    size="icon"
-                    onClick={() => setIsShowingAIInput(!isShowingAIInput)}
-                    className="md:flex hidden"
-                >
-                    <Sparkles className="h-5 w-5 fill-custom-blue text-custom-blue"/>
-                </Button>
-            </Hint> */}
         </div>
     )
 });

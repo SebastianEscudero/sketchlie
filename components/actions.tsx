@@ -1,7 +1,7 @@
 "use client";
 
 import { toast } from "sonner";
-import { Link2, LockKeyhole, LockKeyholeOpen, Pencil, Trash2 } from "lucide-react";
+import { ArrowLeftRight, Link2, LockKeyhole, LockKeyholeOpen, Pencil, Trash2 } from "lucide-react";
 import { DropdownMenuContentProps } from "@radix-ui/react-dropdown-menu";
 
 import { ConfirmModal } from "@/components/confirm-modal";
@@ -139,42 +139,20 @@ export const Actions = ({
           onClick={(e) => e.stopPropagation()}
           side={side}
           sideOffset={sideOffset}
-          className="w-60"
+          className="w-52 p-2 shadow-sm"
         >
           <DropdownMenuItem
             disabled={User !== undefined ? User.information.role !== "Admin" : usersRole !== "Admin"}
-            onClick={() => setIsRenameModalOpen(true)}
-            className="p-3 cursor-pointer"
-          >
-            <Pencil className="h-4 w-4 mr-2" />
-            {usersRole === "Admin" ? "Rename" : "Rename (Admin)"}
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            disabled={User !== undefined ? User.information.role !== "Admin" : usersRole !== "Admin"}
             onClick={() => setIsPrivateModalOpen(true)}
-            className="p-3 cursor-pointer"
+            className="p-3 cursor-pointer flex justify-between"
           >
-            {isPrivate ? <LockKeyhole className="h-4 w-4 mr-2" /> : <LockKeyholeOpen className="h-4 w-4 mr-2" />}
-            {isPrivate ? "Private" : "Public"}
-            {(User?.information.role !== "Admin" && usersRole !== "Admin") &&
-              <span className="text-sm ml-2">(Admin)</span>
-            }
+            <span className="flex items-center">
+              {isPrivate ? <LockKeyhole className="h-4 w-4 mr-2" /> : <LockKeyholeOpen className="h-4 w-4 mr-2" />}
+              {isPrivate ? "Private" : "Public"}
+            </span>
+            <ArrowLeftRight className="h-4 w-4" />
           </DropdownMenuItem>
-          <ConfirmModal
-            header="Delete board?"
-            description="This will delete the board and all of its contents."
-            disabled={pending}
-            onConfirm={onDelete}
-          >
-            <Button
-              disabled={User !== undefined ? User.information.role !== "Admin" : usersRole !== "Admin"}
-              className="p-3 cursor-pointer w-full justify-start font-semibold text-red-500 bg-white dark:bg-inherit hover:bg-accent dark:hover:bg-[#2C2C2C]"
-            >
-              <Trash2 className="h-4 w-4 mr-2" />
-              {usersRole === "Admin" ? "Delete" : "Delete (Admin)"}
-            </Button>
-          </ConfirmModal>
-          {canvasActions &&
+          {canvasActions ? (
             <>
               <ImportDropdownMenu
                 id={id}
@@ -188,15 +166,40 @@ export const Actions = ({
                 User={User}
               />
               <BackgroundMenu setBackground={setBackground} background={Background} setForcedRender={setForcedRender} />
-              <PreferencesMenu 
-                  setQuickInserting={setQuickInserting} 
-                  quickInserting={quickInserting}
-                  eraserDeleteAnyLayer={eraserDeleteAnyLayer}
-                  setEraserDeleteAnyLayer={setEraserDeleteAnyLayer}
+              <PreferencesMenu
+                setQuickInserting={setQuickInserting}
+                quickInserting={quickInserting}
+                eraserDeleteAnyLayer={eraserDeleteAnyLayer}
+                setEraserDeleteAnyLayer={setEraserDeleteAnyLayer}
               />
               <HelpDropdownMenu setCanvasState={setCanvasState} />
             </>
-          }
+          ) : (
+            <DropdownMenuItem
+              disabled={User !== undefined ? User.information.role !== "Admin" : usersRole !== "Admin"}
+              onClick={() => setIsRenameModalOpen(true)}
+              className="p-3 cursor-pointer"
+            >
+              <Pencil className="h-4 w-4 mr-2" />
+              Rename
+            </DropdownMenuItem>
+          )}
+          <div className="pt-1 border-t border-zinc-200 dark:border-zinc-800">
+            <ConfirmModal
+              header="Delete board?"
+              description="This will delete the board and all of its contents."
+              disabled={pending}
+              onConfirm={onDelete}
+            >
+              <Button
+                disabled={User !== undefined ? User.information.role !== "Admin" : usersRole !== "Admin"}
+                className="p-3 cursor-pointer w-full justify-start font-semibold text-red-500 bg-white dark:bg-inherit hover:bg-accent dark:hover:bg-[#2C2C2C]"
+              >
+                <Trash2 className="h-4 w-4 mr-2" />
+                Delete
+              </Button>
+            </ConfirmModal>
+          </div>
         </DropdownMenuContent >
       )}
     </DropdownMenu>
