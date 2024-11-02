@@ -186,7 +186,7 @@ export const Info = memo(({
                 eraserDeleteAnyLayer={eraserDeleteAnyLayer}
                 setEraserDeleteAnyLayer={setEraserDeleteAnyLayer}
             >
-                <div className="w-10 flex justify-center items-center">
+                <div className="flex justify-center items-center">
                     <Hint label="Options" side="bottom" sideOffset={10}>
                         <Button className="px-1 w-8 h-7" variant="icon">
                             <ChevronDown className="h-4 w-4 text-zinc-500" />

@@ -114,6 +114,8 @@ export const RenameBoardInput = ({
   const { mutate, pending } = useApiMutation(api.board.update);
   const user = useCurrentUser();
   const [title, setTitle] = useState(boardTitle);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const measureRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     setTitle(boardTitle);
@@ -129,7 +131,11 @@ export const RenameBoardInput = ({
       id,
       title: title.trim(),
       userId: user.id
-    })
+    }).then(() => {
+      toast.success("Board renamed");
+    }).catch(() => {
+      toast.error("Failed to rename board");
+    });
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -138,29 +144,22 @@ export const RenameBoardInput = ({
     }
   };
 
-  const spanRef = useRef<HTMLSpanElement>(null);
-
   useLayoutEffect(() => {
-    if (spanRef.current) {
-      const width = spanRef.current.offsetWidth;
-      const inputWidth = Math.min(Math.max(width + 4, 100), 200);
-      spanRef.current.parentElement?.style.setProperty('--input-width', `${inputWidth}px`);
+    if (measureRef.current && inputRef.current) {
+      measureRef.current.textContent = title || 'Board title';
+      const width = Math.min(Math.max(measureRef.current.offsetWidth + 8, 60), 200);
+      inputRef.current.style.width = `${width}px`;
     }
   }, [title]);
 
   return (
-    <div className="relative inline-block">
+    <div className="inline-block relative">
       <span
-        ref={spanRef}
-        className="invisible absolute whitespace-pre"
-        style={{
-          font: 'inherit',
-          padding: 'inherit',
-        }}
-      >
-        {title || boardTitle || 'Board title'}
-      </span>
+        ref={measureRef}
+        className="invisible absolute whitespace-pre text-sm px-2"
+      />
       <Input
+        ref={inputRef}
         disabled={pending}
         maxLength={60}
         value={title}
@@ -168,7 +167,7 @@ export const RenameBoardInput = ({
         onBlur={handleSubmit}
         onKeyDown={handleKeyDown}
         placeholder="Board title"
-        className="text-sm px-2 h-8 hover:ring-2 hover:ring-zinc-800 focus-visible:ring-0 focus-visible:ring-offset-0 border-none bg-transparent dark:bg-transparent w-[var(--input-width)]"
+        className="text-sm px-2 h-8 hover:ring-2 hover:ring-zinc-800 focus-visible:ring-0 focus-visible:ring-offset-0 border-none bg-transparent dark:bg-transparent"
       />
     </div>
   );
