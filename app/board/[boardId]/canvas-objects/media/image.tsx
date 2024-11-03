@@ -74,12 +74,12 @@ export const InsertImage = memo(({
         strokeLinecap='round'
         strokeLinejoin='round'
       />
-      {isLoading && (
+      {true && (
         <svg
-          x={x + width / 2 - 12}
-          y={y + height / 2 - 12}
-          width="24"
-          height="24"
+          x={x + width / 2 - (Math.min(width, height) * 0.05)}
+          y={y + height / 2 - (Math.min(width, height) * 0.05)}
+          width={Math.min(width, height) * 0.1}
+          height={Math.min(width, height) * 0.1}
           viewBox="0 0 24 24"
           fill="none"
         >
