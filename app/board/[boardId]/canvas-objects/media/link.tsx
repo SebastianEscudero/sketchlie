@@ -1,7 +1,9 @@
 import { LinkLayer } from "@/types/canvas";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
-import { Play, FileText, Table, Presentation, LoaderCircleIcon } from "lucide-react";
+import { LoaderCircleIcon } from "lucide-react";
+import { SiGooglesheets, SiGoogledocs, SiGoogleslides } from "react-icons/si";
+import { FaYoutube } from "react-icons/fa";
 
 interface LinkProps {
   id: string;
@@ -28,13 +30,15 @@ export const InsertLink = ({
   const buttonHeight = height * 0.1;
   const fontSize = height * 0.04;
   const iconSize = width * 0.02;
+  const spacing = height * 0.01;
   const borderRadius = Math.min(Math.max(width * 0.01, 4), 12);
+  const padding = fontSize * 0.5;
+
 
   useEffect(() => {
     if (!showOverlay) setIsEditing(false);
   }, [showOverlay]);
 
-  // Determine embed type and configuration
   const getEmbedConfig = (url: string) => {
     try {
       const urlObj = new URL(url);
@@ -43,38 +47,54 @@ export const InsertLink = ({
       if (hostname.includes('docs.google.com')) {
         if (url.includes('/spreadsheets/')) {
           return {
-            Icon: () => <Table className="text-[#34A853]" size={iconSize} />,
+            Icon: () => <SiGooglesheets 
+              className="text-[#34A853]" 
+              size={iconSize} 
+            />,
             buttonText: 'Edit sheet',
+            title: 'Google Sheet'
           };
         }
         if (url.includes('/document/')) {
           return {
-            Icon: () => <FileText className="text-[#4285F4]" size={iconSize} />,
+            Icon: () => <SiGoogledocs 
+              className="text-[#4285F4]" 
+              size={iconSize} 
+            />,
             buttonText: 'Edit doc',
+            title: 'Google Doc'
           };
         }
         if (url.includes('/presentation/')) {
           return {
-            Icon: () => <Presentation className="text-[#FBBC05]" size={iconSize} />,
+            Icon: () => <SiGoogleslides 
+              className="text-[#FBBC05]" 
+              size={iconSize} 
+            />,
             buttonText: 'Edit slide',
+            title: 'Google Slides'
           };
         }
       }
 
       if (hostname.includes('youtube.com') || hostname.includes('youtu.be')) {
         return {
-          Icon: () => <Play className="text-[#FF0000] fill-[#FF0000]" size={iconSize} />,
+          Icon: () => <FaYoutube 
+            className="text-[#FF0000]" 
+            size={iconSize} 
+          />,
           buttonText: 'Watch video',
+          title: 'YouTube'
         };
       }
 
-      return { buttonText: 'Edit', Icon: null };
+      return { buttonText: 'Edit', Icon: null, title: 'Link' };
     } catch {
-      return { buttonText: 'Edit', Icon: null };
+      return { buttonText: 'Edit', Icon: null, title: 'Link' };
     }
   };
 
-  const { buttonText, Icon } = getEmbedConfig(src);
+  const { buttonText, Icon, title } = getEmbedConfig(src);
 
   const handleAction = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -95,7 +115,7 @@ export const InsertLink = ({
       onMouseLeave={() => setShowEditButton(false)}
       onWheel={(e) => { e.preventDefault() }}
     >
-      <div className="relative w-full h-full overflow-hidden">
+      <div className="relative w-full h-full">
         <iframe
           className="h-full w-full drop-shadow-md"
           style={{
@@ -115,6 +135,18 @@ export const InsertLink = ({
           onLoad={() => setIsLoading(false)}
           onBlur={() => setIsEditing(false)}
         />
+        {/* Title */}
+        <div 
+          className="absolute flex items-center justify-center"
+          style={{
+            top: -padding*4.5,
+            left: padding * 4.5,
+            transform: `scale(${1.5})`,
+          }}
+        >
+          {Icon && <Icon />}
+          {title && <span style={{ marginLeft: spacing, fontSize: fontSize }}>{title}</span>}
+        </div>
 
         {!isEditing && showOverlay && (
           <div
@@ -139,8 +171,12 @@ export const InsertLink = ({
               onClick={handleAction}
             >
               {Icon && <Icon />}
-              {buttonText && <span className="ml-2">{buttonText}</span>}
-            </button>
+              {buttonText && (
+                <span style={{ marginLeft: spacing }}>
+                  {buttonText}
+                </span>
+              )}            
+              </button>
           </div>
         )}
 
