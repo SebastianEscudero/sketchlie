@@ -924,6 +924,10 @@ export const Canvas = ({
         selectedLayersRef.current.forEach(id => {
             const newLayer = { ...liveLayers[id] };
 
+            if (newLayer.type === LayerType.Comment) {
+                return;
+            }
+
             if (canvasState.mode === CanvasMode.Resizing) {
                 const newBoundingBox = resizeBounds(
                     canvasState.initialBounds,
@@ -1016,7 +1020,7 @@ export const Canvas = ({
             updatedLayers[id] = newLayer;
 
             // Update connected arrows
-            if (newLayer.type !== LayerType.Arrow && newLayer.type !== LayerType.Line && newLayer.type !== LayerType.Comment && newLayer.connectedArrows) {
+            if (newLayer.type !== LayerType.Arrow && newLayer.type !== LayerType.Line && newLayer.connectedArrows) {
                 newLayer.connectedArrows.forEach(arrowId => {
                     if (!updatedLayerIds.includes(arrowId)) {
                         const arrowLayer = liveLayers[arrowId] as ArrowLayer;
