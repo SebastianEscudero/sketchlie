@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { FramesLayersIcon } from "@/public/custom-icons/frames";
 import { Minus, Plus, Maximize2, Minimize2, Focus } from "lucide-react";
 import React, { memo, useState, useCallback, useEffect } from "react";
-import { getRestrictedZoom, maxZoom, minZoom } from "./canvasUtils";
+import { getRestrictedZoom, maxZoom, minZoom } from "./utils/zoom-utils";
 
 interface BottomRightViewProps {
     zoom: number;

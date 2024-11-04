@@ -23,7 +23,7 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import { updateR2Bucket } from '@/lib/r2-bucket-functions';
 import { Socket } from "socket.io-client";
-import { MoveCameraToLayer } from "./canvasUtils";
+import { MoveCameraToLayer } from "./utils/zoom-utils";
 import { exportFramesToPdf } from "@/lib/export";
 import { ExportIcon } from "@/public/custom-icons/export";
 

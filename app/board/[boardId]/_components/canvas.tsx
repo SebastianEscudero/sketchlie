@@ -51,7 +51,6 @@ import {
     XYWH,
 } from "@/types/canvas";
 
-import { useDisableScrollBounce } from "@/hooks/use-disable-scroll-bounce";
 import { Info } from "./info";
 import { Path } from "../canvas-objects/path";
 import { Toolbar } from "./toolbar";
@@ -75,7 +74,7 @@ import { Background } from "./background";
 import { MediaPreview } from "./media-preview";
 import { MoveBackToContent } from "./move-back-to-content";
 import { Frame } from "../canvas-objects/frame";
-import { getRestrictedZoom, MoveCameraToLayer } from "./canvasUtils";
+import { getRestrictedZoom, MoveCameraToLayer } from "./utils/zoom-utils";
 import { DragIndicatorOverlay } from "./drag-indicator-overlay";
 import { AddedLayerByLabel } from "./added-layer-by-label";
 import { Comment, CommentBox } from "../canvas-objects/comment";
@@ -242,7 +241,18 @@ export const Canvas = ({
         [User.userId, org]
     );
 
-    useDisableScrollBounce();
+    const updatePresence = useCallback((presenceUpdates: Partial<Presence>) => {
+        const newPresence: Presence = {
+            ...myPresence,
+            ...presenceUpdates
+        };
+    
+        setMyPresence(newPresence);
+    
+        if (socket) {
+            socket.emit('presence', newPresence, User.userId);
+        }
+    }, [myPresence, socket, User.userId]);
 
     const performAction = useCallback(async (command: Command, addToHistory = true) => {
         command.execute(liveLayerIds, liveLayers);
@@ -392,7 +402,7 @@ export const Canvas = ({
             }
         } else if (layerType === LayerType.Table) {
             const ratio = 3;
-            const width = innerWidth / (2 * zoom);
+            const width = innerWidth / 2;
             const height = width / ratio;
 
             // Define columns first
@@ -467,6 +477,7 @@ export const Canvas = ({
 
         const command = new InsertLayerCommand([layerId], [layer], setLiveLayers, setLiveLayerIds, boardId, socket, org, proModal);
         performAction(command);
+        updatePresence({ selection: [layerId] });
         setCurrentPreviewLayer(null);
 
         if (layer.type === LayerType.Comment) {
@@ -482,7 +493,7 @@ export const Canvas = ({
             setCanvasState({ mode: CanvasMode.None });
         }
 
-    }, [User, socket, org, proModal, setLiveLayers, setLiveLayerIds, boardId, arrowTypeInserting, liveLayers, performAction, expired, quickInserting, setCurrentPreviewLayer, setOpenCommentBoxId]);
+    }, [User, socket, org, proModal, setLiveLayers, setLiveLayerIds, boardId, arrowTypeInserting, liveLayers, performAction, expired, quickInserting, setCurrentPreviewLayer, setOpenCommentBoxId, updatePresence]);
 
     useEffect(() => {
         if (justInsertedText && layerRef && layerRef.current) {
@@ -1205,6 +1216,10 @@ export const Canvas = ({
             return;
         }
 
+        const current = pointerEventToCanvasPoint(e, cameraRef.current, zoomRef.current, svgRef);
+        setMousePosition(current);
+        updatePresence({ cursor: { x: current.x, y: current.y } });
+
         if (canvasState.mode === CanvasMode.Moving) {
             const newCameraPosition = {
                 x: camera.x + e.clientX - startPanPoint.x,
@@ -1213,12 +1228,10 @@ export const Canvas = ({
             setCamera(newCameraPosition);
             setStartPanPoint({ x: e.clientX, y: e.clientY });
         }
-        const current = pointerEventToCanvasPoint(e, cameraRef.current, zoomRef.current, svgRef);
-        setMousePosition(current);
 
         if (isMouseLeftButton(e)) {
-            const borderThreshold = 2; // pixels from the edge to start moving
-            const moveSpeed = 5; // pixels to move per frame
+            const borderThreshold = 2;
+            const moveSpeed = 5;
 
             const viewportWidth = window.innerWidth;
             const viewportHeight = window.innerHeight;
@@ -1237,17 +1250,6 @@ export const Canvas = ({
         } else {
             setIsNearBorder(false);
             setBorderMove({ x: 0, y: 0 });
-        }
-
-        const newPresence: Presence = {
-            ...myPresence,
-            cursor: { x: current.x, y: current.y },
-        };
-
-        setMyPresence(newPresence);
-
-        if (socket) {
-            socket.emit('presence', myPresence, User.userId);
         }
 
         if (canvasState.mode === CanvasMode.Pressing) {
@@ -1410,7 +1412,7 @@ export const Canvas = ({
             }
         }
     },
-        [continueDrawing, camera, canvasState, resizeSelectedLayers, translateSelectedLayers, startMultiSelection, updateSelectionNet, setCamera, User.userId, zoom, myPresence, startPanPoint, socket, activeTouches, EraserDeleteLayers, arrowTypeInserting, currentPreviewLayer, liveLayerIds, liveLayers, focusMode, setLastMouseMove, presentationMode]);
+        [continueDrawing, camera, canvasState, resizeSelectedLayers, translateSelectedLayers, startMultiSelection, updateSelectionNet, setCamera, zoom, startPanPoint, activeTouches, EraserDeleteLayers, arrowTypeInserting, currentPreviewLayer, liveLayerIds, liveLayers, focusMode, setLastMouseMove, presentationMode, updatePresence]);
 
     const onPointerUp = useCallback((e: React.PointerEvent) => {
         setIsPointerDown(false);
@@ -1429,14 +1431,7 @@ export const Canvas = ({
             insertPath(true);
         } else if (canvasState.mode === CanvasMode.Laser) {
             setPencilDraft([]);
-            const newPresence: Presence = {
-                ...myPresence,
-                pencilDraft: null,
-            };
-            setMyPresence(newPresence);
-            if (socket && expired !== true) {
-                socket.emit('presence', newPresence, User.userId);
-            }
+            updatePresence({ pencilDraft: null });
         } else if (canvasState.mode === CanvasMode.Eraser) {
             setErasePath([]);
             if (layersToDeleteEraserRef.current.size > 0) {
@@ -1546,30 +1541,13 @@ export const Canvas = ({
         }
 
         if (e.pointerType !== "mouse") {
-            const newPresence: Presence = {
-                ...myPresence,
-                cursor: null,
-                pencilDraft: null
-            };
-
             setPencilDraft([]);
-            setMyPresence(newPresence);
-
-            if (socket) {
-                socket.emit('presence', newPresence, User.userId);
-            }
+            updatePresence({ cursor: null, pencilDraft: null });
             return;
         }
 
         if (selectedLayersRef.current.length === 0) {
-            const newPresence: Presence = {
-                ...myPresence,
-                selection: [],
-                pencilDraft: null,
-            };
-            if (socket) {
-                socket.emit('presence', newPresence, User.userId);
-            }
+            updatePresence({ selection: [], pencilDraft: null });
         }
     },
         [
@@ -1581,39 +1559,26 @@ export const Canvas = ({
             liveLayers,
             camera,
             zoom,
+            socket,
             currentPreviewLayer,
             initialLayers,
-            socket,
-            myPresence,
-            User.userId,
             boardId,
-            expired,
             liveLayerIds,
             performAction,
             setLiveLayerIds,
             setLiveLayers,
+            updatePresence
         ]);
 
     const onPointerLeave = useCallback((e: any) => {
-
         if (e.pointerType !== "mouse") {
             return;
         }
 
-        const newPresence: Presence = {
-            ...myPresence,
-            cursor: null,
-        };
-
-        setMyPresence(newPresence);
-
-        if (socket) {
-            socket.emit('presence', newPresence, User.userId);
-        }
-    }, [setMyPresence, myPresence, socket, User.userId]);
+        updatePresence({ cursor: null });
+    }, [updatePresence]);
 
     const onLayerPointerDown = useCallback((e: React.PointerEvent, layerId: string) => {
-
         if (
             canvasStateRef.current.mode === CanvasMode.Pencil ||
             canvasStateRef.current.mode === CanvasMode.Inserting ||
@@ -1644,20 +1609,9 @@ export const Canvas = ({
             newSelection = [layerId];
         }
 
-        const newPresence: Presence = {
-            selection: newSelection,
-            cursor: point
-        };
-
-        setMyPresence(newPresence);
-
         selectedLayersRef.current = newSelection;
-
-        if (socket) {
-            socket.emit('presence', newPresence, User.userId);
-        }
-
-    }, [selectedLayersRef, expired, socket, User.userId, setIsEditing]);
+        updatePresence({ selection: newSelection, cursor: point });
+    }, [selectedLayersRef, expired, setIsEditing, updatePresence]);
 
     const layerIdsToColorSelection = useMemo(() => {
         const layerIdsToColorSelection: Record<string, string> = {};
@@ -2150,16 +2104,7 @@ export const Canvas = ({
                     if ((e.ctrlKey || e.metaKey)) {
                         e.preventDefault();
                         selectedLayersRef.current = liveLayerIds;
-
-                        if (socket) {
-                            const newPresence: Presence = {
-                                ...myPresence,
-                                selection: liveLayerIds
-                            };
-                            socket.emit('presence', newPresence, User.userId);
-                            setMyPresence(newPresence);
-                        }
-
+                        updatePresence({ selection: liveLayerIds });
                         setForceSelectionBoxRender(!forceSelectionBoxRender);
                     } else {
                         setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Arrow });
@@ -2264,8 +2209,8 @@ export const Canvas = ({
             document.removeEventListener("keyup", onKeyUp);
         }
 
-    }, [deleteLayers, insertMedia, copySelectedLayers, pasteCopiedLayers, camera, zoom, liveLayers, copiedLayerIds, liveLayerIds, myPresence, socket, User.userId, forceSelectionBoxRender, canvasState, presentationMode,
-        boardId, history.length, mousePosition, performAction, redo, redoStack.length, setLiveLayerIds, setLiveLayers, undo, unselectLayers, expired, translateSelectedLayersWithDelta, initialLayers, goToNextFrame, goToPreviousFrame, User, org]);
+    }, [deleteLayers, insertMedia, copySelectedLayers, pasteCopiedLayers, socket, camera, zoom, liveLayers, copiedLayerIds, liveLayerIds, forceSelectionBoxRender, canvasState, presentationMode,
+        boardId, history.length, mousePosition, performAction, redo, redoStack.length, setLiveLayerIds, setLiveLayers, undo, unselectLayers, expired, translateSelectedLayersWithDelta, initialLayers, goToNextFrame, goToPreviousFrame, User, org, updatePresence]);
 
     useEffect(() => {
         if (presentationMode) {
@@ -2463,8 +2408,7 @@ export const Canvas = ({
                                 performAction={performAction}
                                 org={org}
                                 proModal={proModal}
-                                myPresence={myPresence}
-                                setMyPresence={setMyPresence}
+                                updatePresence={updatePresence}
                                 canvasState={canvasState.mode}
                                 deleteLayers={deleteLayers}
                             />

@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Layers } from "@/types/canvas";
 import { ArrowRightIcon } from "lucide-react";
 import { memo, useCallback } from "react";
-import { getRestrictedZoom } from "./canvasUtils";
+import { getRestrictedZoom } from "./utils/zoom-utils";
 
 interface MoveBackToContentProps {
     setCamera: (camera: { x: number, y: number }) => void;

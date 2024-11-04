@@ -32,8 +32,7 @@ interface SelectionToolsProps {
     performAction: (command: any) => void;
     org: any;
     proModal: any;
-    myPresence: Presence | null;
-    setMyPresence: (presence: Presence) => void;
+    updatePresence: (presence: Presence) => void;
     canvasState: CanvasMode;
     deleteLayers: (layerIds: string[]) => void;
 };
@@ -52,8 +51,7 @@ export const SelectionTools = memo(({
     performAction,
     org,
     proModal,
-    myPresence,
-    setMyPresence,
+    updatePresence,
     canvasState,
     deleteLayers,
 }: SelectionToolsProps) => {
@@ -350,15 +348,8 @@ export const SelectionTools = memo(({
         performAction(command);
 
         selectedLayersRef.current = newIds;
-
-        const newPresence: Presence = {
-            ...myPresence,
-            selection: newIds
-        };
-
-        setMyPresence(newPresence);
-
-    }, [selectedLayersRef, selectedLayers, myPresence, setLiveLayers, setLiveLayerIds, setMyPresence, org, proModal, socket, liveLayers, performAction, boardId, nanoid]);
+        updatePresence({ selection: newIds });
+    }, [selectedLayersRef, selectedLayers, setLiveLayers, setLiveLayerIds, org, proModal, socket, liveLayers, performAction, boardId, nanoid, updatePresence]);
 
     const getSelectionToolsPosition = useCallback(() => {
         if (!position || !containerRef.current) return undefined;

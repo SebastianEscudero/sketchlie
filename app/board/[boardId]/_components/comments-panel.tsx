@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Comment as CommentType } from "@/types/canvas";
 import { formatTimeAgo } from "../canvas-objects/comment";
 import { cn } from "@/lib/utils";
-import { MoveCameraToLayer } from "./canvasUtils";
+import { MoveCameraToLayer } from "./utils/zoom-utils";
 import { useCallback, useMemo, useState } from "react";
 import { User } from "@/types/canvas";
 import {
