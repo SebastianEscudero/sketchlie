@@ -46,9 +46,9 @@ export const Comment = memo(({ id, layer, zoom, onPointerDown, selectionColor, s
                 y={-height}
                 width={commentContainerWidth}
                 height={height}
-                className={`relative overflow-visible pointer-events-auto ${isMoving ? 'cursor-move' : 'cursor-default'}`}
+                className={`overflow-visible pointer-events-auto ${isMoving ? 'cursor-move' : 'cursor-default'}`}
             >
-                <div className='h-full w-full relative flex items-end'>
+                <div className='h-full w-full flex items-end'>
                     <CommentAvatar
                         id={id}
                         layer={layer}
@@ -127,13 +127,12 @@ const CommentAvatar = memo(({ id, layer, initial, onPointerDown, setOpenCommentB
 
     return (
         <div
-            className={`flex flex-row rounded-tr-[18px] rounded-tl-[18px] rounded-br-[18px] transition-all duration-100 ${getBackgroundColor()} relative`}
+            className={`flex flex-row rounded-tr-[18px] rounded-tl-[18px] rounded-br-[18px] transition-all duration-100 ${getBackgroundColor()}`}
             style={{
                 minWidth: isCommentPreviewOpen ? `${Math.max(width, minWidth)}px` : `${width}px`,
                 height: isCommentPreviewOpen ? `${hoverHeight}px` : `${height}px`,
                 padding: isCommentPreviewOpen ? '6px' : '0px',
                 outline: getStrokeColor() !== 'none' ? `2px solid ${getStrokeColor()}` : 'none',
-                filter: 'drop-shadow(0 4px 3px rgb(0 0 0 / 0.07)) drop-shadow(0 2px 2px rgb(0 0 0 / 0.06))', // Add this line
             }}
             onPointerDown={handlePointerDown}
             onPointerUp={handlePointerUp}
