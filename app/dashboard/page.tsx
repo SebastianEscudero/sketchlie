@@ -96,6 +96,10 @@ const DashboardPage = () => {
     });
   };
 
+  useEffect(() => {
+    document.title = 'Dashboard | Sketchlie';
+  }, []);
+
   if (!user) return <Loading />;
 
   return (
