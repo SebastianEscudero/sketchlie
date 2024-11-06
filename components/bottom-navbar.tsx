@@ -11,13 +11,70 @@ import {
 } from "@/components/ui/accordion"
 import { LogoSlider } from "./logo-slider";
 import { usePathname } from "next/navigation";
-import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
+import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter, FaWindows, FaApple, FaLinux } from "react-icons/fa";
 import bottomNavbarTranslations from "@/public/locales/bottom-navbar";
 import { Language } from "@/types/canvas";
 import { LanguageContext } from "@/providers/language-provider";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 
 export const BotNavbar = () => {
+    const [downloadUrls, setDownloadUrls] = useState<{
+        windows: string;
+        mac: string;
+        linux: string;
+    }>({
+        windows: '',
+        mac: '',
+        linux: ''
+    });
+
+    useEffect(() => {
+        const owner = process.env.NEXT_PUBLIC_GITHUB_OWNER;
+        const repo = process.env.NEXT_PUBLIC_GITHUB_REPO;
+        
+        // Fetch latest release from GitHub
+        fetch(`https://api.github.com/repos/${owner}/${repo}/releases/latest`)
+            .then(res => res.json())
+            .then(release => {
+                const urls = {
+                    windows: '',
+                    mac: '',
+                    linux: ''
+                };
+                
+                release.assets.forEach((asset: any) => {
+                    if (asset.name.endsWith('.exe')) {
+                        urls.windows = asset.browser_download_url;
+                    } else if (asset.name.endsWith('.dmg')) {
+                        urls.mac = asset.browser_download_url;
+                    } else if (asset.name.endsWith('.AppImage')) {
+                        urls.linux = asset.browser_download_url;
+                    }
+                });
+                
+                setDownloadUrls(urls);
+            })
+            .catch(error => {
+                console.error('Error fetching release:', error);
+            });
+    }, []);
+
+    // Add this to detect user's platform
+    const getPlatform = () => {
+        if (typeof window === 'undefined') return null;
+        const userAgent = window.navigator.userAgent.toLowerCase();
+        if (userAgent.indexOf('windows') !== -1) return 'windows';
+        if (userAgent.indexOf('mac') !== -1) return 'mac';
+        if (userAgent.indexOf('linux') !== -1) return 'linux';
+        return 'windows'; // default to windows
+    };
+
+    const currentPlatform = getPlatform();
+
+    const getButtonVariant = (platform: string) => {
+        return currentPlatform === platform ? 'sketchlieBlue' : 'outline';
+    };
+
     const pathname = usePathname();
     const lang = useContext(LanguageContext);
     const t = bottomNavbarTranslations[lang as Language];
@@ -205,6 +262,37 @@ export const BotNavbar = () => {
                 <p className="ml-2 text-center mt-3">
                     {t.copyright}
                 </p>
+            </div>
+            <div className="flex flex-wrap gap-4 justify-center mt-6">
+                {downloadUrls.windows && (
+                    <Button
+                        onClick={() => window.location.href = downloadUrls.windows}
+                        variant={getButtonVariant('windows')}
+                        className="flex items-center gap-2"
+                    >
+                        <FaWindows /> {'Download for Windows'}
+                    </Button>
+                )}
+                
+                {downloadUrls.mac && (
+                    <Button
+                        onClick={() => window.location.href = downloadUrls.mac}
+                        variant={getButtonVariant('mac')}
+                        className="flex items-center gap-2"
+                    >
+                        <FaApple /> {'Download for Mac'}
+                    </Button>
+                )}
+                
+                {downloadUrls.linux && (
+                    <Button
+                        onClick={() => window.location.href = downloadUrls.linux}
+                        variant={getButtonVariant('linux')}
+                        className="flex items-center gap-2"
+                    >
+                        <FaLinux /> {'Download for Linux'}
+                    </Button>
+                )}
             </div>
         </footer>
     )

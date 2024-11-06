@@ -2,12 +2,40 @@
   "name": "whiteboard-online",
   "version": "0.1.0",
   "private": true,
+  "main": "dist/electron/main.js",
+  "author": "Sketchlie",
+  "description": "We're here to bring back collaboration.",
+  "build": {
+    "appId": "com.sketchlie.app",
+    "productName": "Sketchlie",
+    "files": [
+      "dist/electron/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "public/logos/logo-white-bg.png"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "public/logos/logo-white-bg.png"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "public/logos/logo-white-bg.png"
+    }
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "electron-tsc": "tsc -p electron/tsconfig.json && copy electron\\navbar.html dist\\electron\\navbar.html",
+    "electron-dev": "npm run electron-tsc && electron .",
+    "electron-win": "npm run build && npm run electron-tsc && electron-builder --win",
+    "electron-mac": "npm run build && npm run electron-tsc && electron-builder --mac",
+    "electron-linux": "npm run build && npm run electron-tsc && electron-builder --linux"
   },
   "dependencies": {
     "@amplitude/analytics-browser": "^2.11.7",
@@ -130,6 +158,8 @@
     "@types/react-beautiful-dnd": "^13.1.8",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.0.1",
+    "electron": "^33.1.0",
+    "electron-builder": "^25.1.8",
     "eslint": "^8",
     "eslint-config-next": "14.1.0",
     "postcss": "^8",

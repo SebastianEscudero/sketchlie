@@ -1,0 +1,86 @@
+name: Build Sketchlie Desktop
+
+on:
+  push:
+    tags:
+      - 'v*' # This will trigger on version tags like v1.0.0
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+        
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+          
+      - name: Install Dependencies
+        run: |
+          npm install
+          
+      # macOS specific dependencies
+      - name: Install macOS Dependencies
+        if: matrix.os == 'macos-latest'
+        run: |
+          brew install pkg-config cairo pango libpng jpeg giflib librsvg
+          
+      # Linux specific dependencies
+      - name: Install Linux Dependencies
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgtk-3-dev webkit2gtk-4.0 libappindicator3-dev librsvg2-dev patchelf
+      
+      # Build the app
+      - name: Build App
+        run: |
+          npm run build
+          if [ "${{ matrix.os }}" == "windows-latest" ]; then
+            npm run electron-win
+          elif [ "${{ matrix.os }}" == "macos-latest" ]; then
+            npm run electron-mac
+          else
+            npm run electron-linux
+          fi
+        shell: bash
+        
+      # Upload artifacts
+      - name: Upload Windows Artifacts
+        if: matrix.os == 'windows-latest'
+        uses: actions/upload-artifact@v2
+        with:
+          name: windows-installer
+          path: dist/*.exe
+          
+      - name: Upload macOS Artifacts
+        if: matrix.os == 'macos-latest'
+        uses: actions/upload-artifact@v2
+        with:
+          name: macos-installer
+          path: dist/*.dmg
+          
+      - name: Upload Linux Artifacts
+        if: matrix.os == 'ubuntu-latest'
+        uses: actions/upload-artifact@v2
+        with:
+          name: linux-installer
+          path: dist/*.AppImage
+
+      # Create GitHub Release
+      - name: Create Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            dist/*.exe
+            dist/*.dmg
+            dist/*.AppImage
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
