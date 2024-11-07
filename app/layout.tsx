@@ -37,6 +37,9 @@ export default function RootLayout({
 }>) {
   return (
     <html>
+      <head>
+        <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
+      </head>
       <body className={`${mainFont.className}`}>
         <AmplitudeAnalytics />
         <Suspense fallback={<Loading />}>
