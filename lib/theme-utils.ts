@@ -1,8 +1,21 @@
+export const updateThemeColor = (theme: 'light' | 'dark') => {
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (!meta) {
+        const newMeta = document.createElement('meta');
+        newMeta.name = 'theme-color';
+        document.head.appendChild(newMeta);
+    }
+    
+    const color = theme === 'dark' ? '#101011' : '#F9FAFB';
+    meta?.setAttribute('content', color);
+};
+
 export const themeCheck = () => {
     const userTheme = localStorage.getItem("theme");
     const defaultTheme = 'light';
     const theme = userTheme || defaultTheme;
     document.documentElement.classList.add(theme);
+    updateThemeColor(theme as 'light' | 'dark');
     return theme;
 }
 
@@ -10,11 +23,13 @@ export const themeSwitch = () => {
     if (document.documentElement.classList.contains("dark")) {
         document.documentElement.classList.remove("dark");
         localStorage.setItem("theme", "light");
+        updateThemeColor('light');
         return "light";
     }
 
     document.documentElement.classList.add("dark");
     localStorage.setItem("theme", "dark");
+    updateThemeColor('dark');
     return "dark";
 }
 

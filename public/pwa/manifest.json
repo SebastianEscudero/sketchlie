@@ -1,22 +1,9 @@
 {
-    "theme_color": "#000000",
-    "background_color": "#000000",
-    "icons": [
-        {
-            "purpose": "maskable",
-            "sizes": "512x512",
-            "src": "icon512_maskable.png",
-            "type": "image/png"
-        },
-        {
-            "purpose": "any",
-            "sizes": "512x512",
-            "src": "icon512_rounded.png",
-            "type": "image/png"
-        }
-    ],
+    "theme_color": "transparent",
+    "background_color": "transparent",
     "orientation": "any",
-    "display": "standalone",
+    "display": "minimal-ui",
+    "display_override": ["window-controls-overlay"],
     "dir": "auto",
     "name": "Sketchlie",
     "short_name": "sketchlie",
@@ -28,6 +15,26 @@
             "name": "Dashboard",
             "url": "/dashboard/",
             "description": "View your boards"
+        }
+    ],
+    "icons": [
+        {
+            "purpose": "maskable",
+            "sizes": "512x512",
+            "src": "../favicon/android-chrome-512x512.png",
+            "type": "image/png"
+        },
+        {
+            "purpose": "any",
+            "sizes": "192x192",
+            "src": "../favicon/android-chrome-192x192.png",
+            "type": "image/png"
+        },
+        {
+            "purpose": "any",
+            "sizes": "180x180",
+            "src": "../favicon/apple-touch-icon.png",
+            "type": "image/png"
         }
     ]
 }
