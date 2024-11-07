@@ -6,7 +6,7 @@
     "display_override": ["window-controls-overlay"],
     "dir": "auto",
     "name": "Sketchlie",
-    "short_name": "sketchlie",
+    "short_name": "Sketchlie",
     "description": "Online workspace for collaboration",
     "scope": "/",
     "start_url": "/dashboard/",
