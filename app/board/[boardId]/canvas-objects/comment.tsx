@@ -109,7 +109,7 @@ const CommentAvatar = memo(({ id, layer, initial, onPointerDown, setOpenCommentB
 
     const getBackgroundColor = () => {
         if (isMentioned) {
-            return isHovered && !isMoving ? 'bg-blue-50 dark:bg-blue-900' : 'bg-zinc-300 dark:bg-zinc-800';
+            return isHovered && !isMoving ? 'bg-blue-50 dark:bg-blue-50' : 'bg-zinc-300 dark:bg-zinc-800';
         }
 
         return isHovered ? 'bg-white dark:bg-zinc-800' : 'bg-zinc-300 dark:bg-zinc-800';
