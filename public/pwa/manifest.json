@@ -3,7 +3,9 @@
     "background_color": "transparent",
     "orientation": "any",
     "display": "minimal-ui",
-    "display_override": ["window-controls-overlay"],
+    "display_override": [
+        "window-controls-overlay"
+    ],
     "dir": "auto",
     "name": "Sketchlie",
     "short_name": "Sketchlie",
@@ -21,13 +23,13 @@
         {
             "purpose": "maskable",
             "sizes": "512x512",
-            "src": "../logos/logo-white-bg.png",
+            "src": "icon512_maskable.png",
             "type": "image/png"
         },
         {
             "purpose": "any",
-            "sizes": "192x192",
-            "src": "../favicon/apple-touch-icon.png",
+            "sizes": "512x512",
+            "src": "icon512_rounded.png",
             "type": "image/png"
         }
     ]
