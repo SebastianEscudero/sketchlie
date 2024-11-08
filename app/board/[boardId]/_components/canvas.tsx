@@ -1615,7 +1615,7 @@ export const Canvas = ({
 
         selectedLayersRef.current = newSelection;
         updatePresence({ selection: newSelection, cursor: point });
-    }, [selectedLayersRef, expired, setIsEditing, updatePresence]);
+    }, [selectedLayersRef, expired, setIsEditing]);
 
     const layerIdsToColorSelection = useMemo(() => {
         const layerIdsToColorSelection: Record<string, string> = {};

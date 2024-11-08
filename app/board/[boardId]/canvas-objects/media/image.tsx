@@ -1,29 +1,11 @@
-import React, { useCallback, useState, useEffect, memo, useMemo } from 'react';
+import { memo, useCallback, useState, useEffect } from 'react';
 import { ImageLayer } from "@/types/canvas";
-import { MoveCameraToLayer } from '../../_components/utils/zoom-utils';
-
-// Image cache for preloading
-const imageCache = new Map<string, HTMLImageElement>();
-
-const preloadImage = (src: string) => {
-  if (!imageCache.has(src)) {
-    const img = new Image();
-    img.crossOrigin = "anonymous";
-    img.src = src;
-    imageCache.set(src, img);
-    return img;
-  }
-  return imageCache.get(src)!;
-};
+import { useImagePreloader } from '../../_components/utils/use-preload-image';
 
 interface ImageProps {
   id: string;
   layer: ImageLayer;
   onPointerDown: (e: React.PointerEvent, id: string) => void;
-  setCamera?: (camera: any) => void;
-  setZoom?: (zoom: number) => void;
-  cameraRef?: React.RefObject<any>;
-  zoomRef?: React.RefObject<any>;
   selectionColor?: string;
   showOutlineOnHover?: boolean;
   setAddedByLabel?: (addedBy: string) => void;
@@ -34,33 +16,65 @@ export const InsertImage = memo(({
   layer,
   onPointerDown,
   selectionColor,
-  setCamera,
-  setZoom,
-  cameraRef,
-  zoomRef,
   showOutlineOnHover = false,
   setAddedByLabel,
 }: ImageProps) => {
   const { x, y, width, height, src, addedBy } = layer;
   const [strokeColor, setStrokeColor] = useState(selectionColor || "none");
   const [isLoading, setIsLoading] = useState(true);
+  const { preloadImage } = useImagePreloader();
 
-  // Preload image
   useEffect(() => {
-    const img = preloadImage(src);
-    img.onload = () => setIsLoading(false);
+    let isMounted = true;
+
+    preloadImage(src)
+      .then(() => {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      })
+      .catch(() => {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
   }, [src]);
 
   const handlePointerDown = useCallback((e: React.PointerEvent) => {
+    e.stopPropagation();
     setStrokeColor(selectionColor || "none");
     onPointerDown(e, id);
-  }, [selectionColor, id, onPointerDown]);
+  }, [id, onPointerDown, selectionColor]);
+
+  const handlePointerEnter = useCallback(() => {
+    if (showOutlineOnHover) {
+      setStrokeColor("#3390FF");
+      setAddedByLabel?.(addedBy || '');
+    }
+  }, [showOutlineOnHover, addedBy, setAddedByLabel]);
+
+  const handlePointerLeave = useCallback(() => {
+    setStrokeColor(selectionColor || "none");
+    setAddedByLabel?.('');
+  }, [selectionColor, setAddedByLabel]);
+
+  console.log('Image rerender, props changed:', {
+    id,
+    layer,
+    selectionColor,
+    showOutlineOnHover,
+    hasSetAddedByLabel: !!setAddedByLabel
+  });
 
   return (
     <g
       onPointerDown={handlePointerDown}
-      onPointerEnter={() => { if (showOutlineOnHover) { setStrokeColor("#3390FF"); setAddedByLabel?.(addedBy || '') } }}
-      onPointerLeave={() => { setStrokeColor(selectionColor || "none"); setAddedByLabel?.('') }}
+      onPointerEnter={handlePointerEnter}
+      onPointerLeave={handlePointerLeave}
       pointerEvents="auto"
     >
       <rect
@@ -74,7 +88,7 @@ export const InsertImage = memo(({
         strokeLinecap='round'
         strokeLinejoin='round'
       />
-      {true && (
+      {isLoading && (
         <svg
           x={x + width / 2 - (Math.min(width, height) * 0.05)}
           y={y + height / 2 - (Math.min(width, height) * 0.05)}
@@ -103,7 +117,6 @@ export const InsertImage = memo(({
         y={y}
         width={width}
         height={height}
-        onLoad={() => setIsLoading(false)}
       />
     </g>
   );

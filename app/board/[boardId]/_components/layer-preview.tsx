@@ -332,10 +332,6 @@ export const LayerPreview = memo(({
           layer={layer}
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
-          setCamera={setCamera}
-          setZoom={setZoom}
-          cameraRef={cameraRef}
-          zoomRef={zoomRef}
           showOutlineOnHover={showOutlineOnHover}
           setAddedByLabel={setAddedByLabel}
         />
