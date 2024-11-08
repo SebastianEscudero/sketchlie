@@ -2,8 +2,9 @@
     "theme_color": "transparent",
     "background_color": "transparent",
     "orientation": "any",
-    "display": "minimal-ui",
+    "display": "standalone",
     "display_override": [
+        "standalone",
         "window-controls-overlay"
     ],
     "dir": "auto",
