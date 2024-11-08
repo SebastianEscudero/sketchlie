@@ -13,7 +13,6 @@ interface StarProps {
   socket?: Socket;
   focused?: boolean;
   forcedRender?: boolean;
-  showOutlineOnHover?: boolean;
   setAddedByLabel?: (addedBy: string) => void;
 }; 
 
@@ -31,11 +30,10 @@ export const Star = memo(({ ...props }: StarProps) => {
   return (
     <BaseShape
       {...props}
-      renderShape={(fillColor, strokeColor) => (
+      renderShape={(fillColor) => (
         <path
           d={`M ${width * 0.5}, 0 L ${width * 0.67},${height * 0.35} L ${width},${height * 0.38} L ${width * 0.72},${height * 0.6} L ${width * 0.83},${height} L ${width * 0.5},${height * 0.77} L ${width * 0.17},${height} L ${width * 0.28},${height * 0.6} L 0,${height * 0.38} L ${width * 0.33},${height * 0.35} Z`}
           fill={fillColor}
-          stroke={strokeColor}
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"

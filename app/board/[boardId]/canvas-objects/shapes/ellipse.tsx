@@ -13,7 +13,6 @@ interface EllipseProps {
   socket?: Socket;
   focused?: boolean;
   forcedRender?: boolean;
-  showOutlineOnHover?: boolean;
   setAddedByLabel?: (addedBy: string) => void;
 }; 
 
@@ -31,14 +30,13 @@ export const Ellipse = memo(({ ...props }: EllipseProps) => {
   return (
     <BaseShape
       {...props}
-      renderShape={(fillColor, strokeColor) => (
+      renderShape={(fillColor) => (
         <ellipse
           cx={width / 2}    // Center X coordinate
           cy={height / 2}   // Center Y coordinate
           rx={width / 2}    // Radius X (half the width)
           ry={height / 2}   // Radius Y (half the height)
           fill={fillColor}
-          stroke={strokeColor}
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"

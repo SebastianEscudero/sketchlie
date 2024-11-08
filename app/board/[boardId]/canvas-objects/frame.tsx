@@ -1,6 +1,7 @@
 import { FrameLayer } from "@/types/canvas";
 import React, { memo, useState, useEffect } from "react";
 import { useUpdateValue } from "./utils/canvas-objects-utils";
+import { cn } from "@/lib/utils";
 
 interface FrameProps {
     id: string;
@@ -12,7 +13,6 @@ interface FrameProps {
     frameNumber?: number;
     forcedRender?: boolean;
     selectionColor?: string;
-    showOutlineOnHover?: boolean;
     setAddedByLabel?: (addedBy: string) => void;
     focused?: boolean; // Added focused prop
 };
@@ -27,9 +27,8 @@ export const Frame = memo(({
     frameNumber,
     selectionColor,
     forcedRender,
-    showOutlineOnHover,
     setAddedByLabel,
-    focused // Destructure focused prop
+    focused
 }: FrameProps) => {
     const { x, y, width, height, value: initialValue, addedBy } = layer;
     const fontSize = Math.min(width, height) * 0.05;
@@ -68,14 +67,14 @@ export const Frame = memo(({
 
     return (
         <g
-            style={{pointerEvents: showOutlineOnHover ? "auto" : "none"}}
             transform={`translate(${x}, ${y})`}
             onPointerDown={(e) => onPointerDown?.(e, id)}
             onDoubleClick={handleDoubleClick}
             pointerEvents="auto"
             data-id={`frame-${frameNumber}`}
-            onPointerEnter={() => { if (showOutlineOnHover) { setAddedByLabel?.(addedBy || '') } }}
-            onPointerLeave={() => { setAddedByLabel?.('') }}
+            onPointerEnter={() => setAddedByLabel?.(addedBy || '')}
+            onPointerLeave={() => setAddedByLabel?.('')}
+            className="group"
         >
             {isEditing ? (
                 <foreignObject x={padding} y={-(padding + fontSize)} width={width - 2 * padding} height={fontSize + 10}>
@@ -108,17 +107,24 @@ export const Frame = memo(({
                     </text>
                 )
             )}
-        <defs>
-            <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-                <feDropShadow dx="0" dy="2" stdDeviation="2" floodColor="rgba(0, 0, 0, 0.25)" />
-            </filter>
-        </defs>
+            <defs>
+                <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                    <feDropShadow dx="0" dy="2" stdDeviation="2" floodColor="rgba(0, 0, 0, 0.25)" />
+                </filter>
+            </defs>
             <rect
                 width={width}
                 height={height}
                 fill={document.documentElement.classList.contains("dark") ? "#2c2c2c" : "#FFFFFF"}
-                stroke={strokeColor}
-                strokeWidth="1"
+                style={{
+                    '--base-stroke': strokeColor
+                } as React.CSSProperties}
+                className={cn(
+                    "transition-[stroke]",
+                    "stroke-[var(--base-stroke)]",
+                    "[#canvas.shapes-hoverable_.group:hover_&]:stroke-[#3390FF]"
+                )}
+                strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 filter="url(#shadow)"

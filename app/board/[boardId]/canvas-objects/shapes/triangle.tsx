@@ -13,7 +13,6 @@ interface TriangleProps {
   socket?: Socket;
   focused?: boolean;
   forcedRender?: boolean;
-  showOutlineOnHover?: boolean;
   setAddedByLabel?: (addedBy: string) => void;
 }; 
 
@@ -31,11 +30,10 @@ export const Triangle = memo(({ ...props }: TriangleProps) => {
   return (
     <BaseShape
       {...props}
-      renderShape={(fillColor, strokeColor) => (
+      renderShape={(fillColor) => (
         <polygon
           points={`${width / 2}, 0 ${width},${height} 0,${height}`}
           fill={fillColor}
-          stroke={strokeColor}
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"

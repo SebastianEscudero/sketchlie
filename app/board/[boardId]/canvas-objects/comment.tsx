@@ -69,7 +69,7 @@ export const Comment = memo(({ id, layer, zoom, onPointerDown, selectionColor, s
     );
 });
 
-const CommentAvatar = memo(({ id, layer, initial, onPointerDown, setOpenCommentBoxId, isCommentBoxOpen, selectionColor, isCommentPreviewOpen, setIsCommentPreviewOpen, user, isMoving, setActiveHoveredCommentId }: { id: string, layer: CommentType, initial: string, onPointerDown?: (e: any, id: string) => void, showOutlineOnHover?: boolean, setOpenCommentBoxId: (commentId: string) => void, isCommentBoxOpen: boolean, selectionColor?: string, isCommentPreviewOpen: boolean, setIsCommentPreviewOpen: (isOpen: boolean) => void, user: User, isMoving: boolean, setActiveHoveredCommentId: (id: string | null) => void }) => {
+const CommentAvatar = memo(({ id, layer, initial, onPointerDown, setOpenCommentBoxId, isCommentBoxOpen, selectionColor, isCommentPreviewOpen, setIsCommentPreviewOpen, user, isMoving, setActiveHoveredCommentId }: { id: string, layer: CommentType, initial: string, onPointerDown?: (e: any, id: string) => void, setOpenCommentBoxId: (commentId: string) => void, isCommentBoxOpen: boolean, selectionColor?: string, isCommentPreviewOpen: boolean, setIsCommentPreviewOpen: (isOpen: boolean) => void, user: User, isMoving: boolean, setActiveHoveredCommentId: (id: string | null) => void }) => {
     const { author, createdAt, height, width, content, replies } = layer;
     const [hoverHeight, setHoverHeight] = useState(52);
     const [isHovered, setIsHovered] = useState(false);

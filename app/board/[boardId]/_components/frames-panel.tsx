@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, memo } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
-import { Frame, Play } from "lucide-react";
+import { Frame, MoreHorizontal, Play, Trash2 } from "lucide-react";
 import { Layers, LayerType, FrameLayer } from "@/types/canvas";
 import { LayerPreview } from "@/app/board/[boardId]/_components/layer-preview";
 import {
@@ -26,6 +26,8 @@ import { Socket } from "socket.io-client";
 import { MoveCameraToLayer } from "./utils/zoom-utils";
 import { exportFramesToPdf } from "@/lib/export";
 import { ExportIcon } from "@/public/custom-icons/export";
+import { DropdownMenu, DropdownMenuItem, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { toast } from "sonner";
 
 interface FramesPanelProps {
     liveLayers: Layers;
@@ -40,6 +42,7 @@ interface FramesPanelProps {
     socket: Socket | null;
     setPresentationMode: (mode: boolean) => void;
     title: string;
+    deleteLayers: (layerIds: string[]) => void;
 }
 
 export const FramesPanel = memo<FramesPanelProps>(({
@@ -54,7 +57,8 @@ export const FramesPanel = memo<FramesPanelProps>(({
     boardId,
     socket,
     setPresentationMode,
-    title
+    title,
+    deleteLayers
 }) => {
     // Calculate frameIds directly instead of using state
     const frameIds = liveLayerIds.filter(id => 
@@ -121,6 +125,7 @@ export const FramesPanel = memo<FramesPanelProps>(({
                                                 cameraRef={cameraRef}
                                                 zoomRef={zoomRef}
                                                 forceRender={forceRender}
+                                                deleteLayers={deleteLayers}
                                             />
                                         </div>
                                     )
@@ -160,6 +165,7 @@ interface SortableFramePreviewProps {
     cameraRef: React.RefObject<{ x: number; y: number }>;
     zoomRef: React.RefObject<number>;
     forceRender: boolean;
+    deleteLayers: (layerIds: string[]) => void;
 }
 
 const SortableFramePreview = memo<SortableFramePreviewProps>(({
@@ -172,6 +178,7 @@ const SortableFramePreview = memo<SortableFramePreviewProps>(({
     cameraRef,
     zoomRef,
     forceRender,
+    deleteLayers
 }) => {
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: frameId });
 
@@ -218,6 +225,11 @@ const SortableFramePreview = memo<SortableFramePreviewProps>(({
         });
     }, [frame, cameraRef, zoomRef, setCamera, setZoom]);
 
+    const handleDelete = useCallback((frameId: string) => {
+        deleteLayers([frameId]);
+        toast.success("Frame deleted");
+    }, [deleteLayers]);
+
     return (
         <div 
             ref={setNodeRef} 
@@ -252,8 +264,23 @@ const SortableFramePreview = memo<SortableFramePreviewProps>(({
                     ))}
                 </g>
             </svg>
-            {/* Transparent overlay to prevent interactions */}
-            <div className="absolute inset-0" />
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <div className="absolute top-3 right-3 cursor-pointer bg-zinc-100 rounded-sm p-1 z-50">
+                        <MoreHorizontal className="h-4 w-4" />
+                    </div>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent 
+                    align="center" 
+                    side="bottom" 
+                    sideOffset={5}
+                >
+                    <DropdownMenuItem onPointerDown={() => handleDelete(frameId)} className="text-red-500 hover:text-red-600">
+                        Delete
+                        <Trash2 className="h-4 w-4 ml-2" />
+                    </DropdownMenuItem>
+                </DropdownMenuContent>
+            </DropdownMenu>
         </div>
     );
 });

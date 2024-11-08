@@ -18,6 +18,7 @@ interface RightMiddleContainerProps {
     socket: Socket | null;
     setPresentationMode: (mode: boolean) => void;
     setRightMiddleContainerView: (view: string | null) => void;
+    deleteLayers: (layerIds: string[]) => void;
     setCamera: (camera: { x: number, y: number }) => void;
     setZoom: (zoom: number) => void;
     commentIds: string[];
@@ -39,6 +40,7 @@ export const RightMiddleContainer = memo(({
     socket,
     setPresentationMode,
     setRightMiddleContainerView,
+    deleteLayers,
     setCamera,
     setZoom,
     commentIds,
@@ -71,6 +73,7 @@ export const RightMiddleContainer = memo(({
                     zoomRef={zoomRef}
                     forceRender={forcedRender}
                     boardId={boardId}
+                    deleteLayers={deleteLayers}
                     socket={socket}
                     setPresentationMode={setPresentationMode}
                     title={title}

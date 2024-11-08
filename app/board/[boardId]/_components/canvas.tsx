@@ -27,6 +27,7 @@ import {
     isMouseLeftButton,
     isMouseRightButton,
     isMouseMiddleButton,
+    cn,
 } from "@/lib/utils";
 
 import {
@@ -2375,6 +2376,7 @@ export const Canvas = ({
                                     socket={socket}
                                     setPresentationMode={setPresentationMode}
                                     setRightMiddleContainerView={setRightMiddleContainerView}
+                                    deleteLayers={deleteLayers}
                                     setCamera={setCamera}
                                     setZoom={setZoom}
                                     commentIds={commentIds}
@@ -2436,7 +2438,14 @@ export const Canvas = ({
                     </div>
                     <div
                         id="canvas"
-                        className="z-10 absolute selection-keep-text-color"
+                        className={cn(
+                            "z-10 absolute selection-keep-text-color",
+                            (canvasState.mode === CanvasMode.None || 
+                            canvasState.mode === CanvasMode.Moving || 
+                            (canvasState.mode === CanvasMode.Inserting && 
+                            canvasState.layerType === LayerType.Arrow)) && 
+                            !presentationMode && "shapes-hoverable"
+                        )}                        
                         onWheel={onWheel}
                         onDragOver={onDragOver}
                         onDrop={onDrop}
@@ -2504,9 +2513,7 @@ export const Canvas = ({
                                     {/* We render the frames first so they are always shown below the other layers */}
                                     {visibleLayerIds.filter(layerId => liveLayers[layerId] && liveLayers[layerId].type === LayerType.Frame).map((frameId: string) => {
                                         const frameNumber = liveLayerIds.filter(id => liveLayers[id] && liveLayers[id].type === LayerType.Frame).indexOf(frameId) + 1;
-                                        const showOutlineOnHover = (canvasState.mode === CanvasMode.None || canvasState.mode === CanvasMode.Moving || (canvasState.mode === CanvasMode.Inserting && canvasState.layerType === LayerType.Arrow)) && !presentationMode;
                                         const isFocused = selectedLayersRef.current.length === 1 && selectedLayersRef.current[0] === frameId && !justChanged;
-
                                         return (
                                             <Frame
                                                 key={frameId}
@@ -2518,7 +2525,6 @@ export const Canvas = ({
                                                 socket={socket}
                                                 boardId={boardId}
                                                 forcedRender={forceLayerPreviewRender}
-                                                showOutlineOnHover={showOutlineOnHover}
                                                 setAddedByLabel={setAddedByLabel}
                                                 focused={isFocused}
                                             />
@@ -2526,7 +2532,6 @@ export const Canvas = ({
                                     })}
                                     {visibleLayerIds.map((layerId: string) => {
                                         const isFocused = selectedLayersRef.current.length === 1 && selectedLayersRef.current[0] === layerId && !justChanged;
-                                        const showOutlineOnHover = (canvasState.mode === CanvasMode.None || canvasState.mode === CanvasMode.Moving || (canvasState.mode === CanvasMode.Inserting && canvasState.layerType === LayerType.Arrow)) && !presentationMode;
                                         return (
                                             <LayerPreview
                                                 selectionColor={layerIdsToColorSelection[layerId]}
@@ -2545,7 +2550,6 @@ export const Canvas = ({
                                                 setZoom={setZoom}
                                                 cameraRef={cameraRef}
                                                 zoomRef={zoomRef}
-                                                showOutlineOnHover={showOutlineOnHover}
                                                 setAddedByLabel={setAddedByLabel}
                                                 orgTeammates={filteredOrgTeammates}
                                                 forceUpdateLayerLocalLayerState={forceUpdateLayerLocalLayerState}

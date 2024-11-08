@@ -13,7 +13,6 @@ interface NoteProps {
   socket?: Socket;
   focused?: boolean;
   forcedRender?: boolean;
-  showOutlineOnHover?: boolean;
   setAddedByLabel?: (addedBy: string) => void;
 }; 
 
@@ -31,14 +30,12 @@ export const Note = memo(({ ...props }: NoteProps) => {
   return (
     <BaseShape
       {...props}
-      renderShape={(fillColor, strokeColor) => (
-        // Adding g element for the shadow filter
+      renderShape={(fillColor) => (
         <g filter="url(#drop-shadow)">
           <rect
             width={width}
             height={height}
             fill={fillColor}
-            stroke={strokeColor}
             strokeWidth="1"
           />
         </g>

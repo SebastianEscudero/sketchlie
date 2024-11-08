@@ -1,14 +1,12 @@
 import { colorToCss } from '@/lib/utils';
 import { LineLayer } from '@/types/canvas';
-import React, { useState, useEffect } from 'react';
+import { cn } from '@/lib/utils';
 
 interface LineProps {
   id: string;
   layer: LineLayer;
   onPointerDown?: (e: React.PointerEvent, id: string) => void;
   selectionColor?: string;
-  forcedRender?: boolean;
-  showOutlineOnHover?: boolean;
   setAddedByLabel?: (addedBy: string) => void;
 };
 
@@ -17,45 +15,40 @@ export const Line = ({
   layer,
   selectionColor,
   onPointerDown,
-  forcedRender = false,
-  showOutlineOnHover = false,
   setAddedByLabel,
 }: LineProps) => {
   const { fill, x, y, width, height, center, addedBy } = layer;
   const fillColor = colorToCss(fill);
-  const [strokeColor, setStrokeColor] = useState(selectionColor || colorToCss(fill));
-  const end = { x: x + width, y: y + height };
-
-  useEffect(() => {
-    setStrokeColor(selectionColor || colorToCss(fill));
-  }, [selectionColor, fill, forcedRender]);
-
   const isTransparent = fillColor === 'rgba(0,0,0,0)';
+  const baseStroke = selectionColor || (isTransparent ? "rgba(29, 29, 29, 1)" : fillColor);
+  const end = { x: x + width, y: y + height };
 
   let pathData;
   if (center) {
     pathData = `M ${x} ${y} L ${center.x} ${center.y} L ${end.x} ${end.y}`;
   }
 
-  const handlePointerDown = (e: React.PointerEvent) => {
-    setStrokeColor(selectionColor || colorToCss(fill));
-    if (onPointerDown) {
-      onPointerDown(e, id);
-    }
-  }
-
   return (
-    <path
-      onPointerDown={handlePointerDown}
-      d={pathData}
-      fill="none"
-      stroke={selectionColor || (isTransparent ? "rgba(29, 29, 29, 1)" : strokeColor)}
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      pointerEvents="auto"
-      onPointerEnter={() => { if (showOutlineOnHover) { setStrokeColor("#3390FF"); setAddedByLabel?.(addedBy || '') } }}
-      onPointerLeave={() => { setStrokeColor(selectionColor || colorToCss(fill)); setAddedByLabel?.('') }}
-    />
+    <g className="group">
+      <path
+        onPointerDown={(e) => onPointerDown?.(e, id)}
+        onPointerEnter={() => setAddedByLabel?.(addedBy || '')}
+        onPointerLeave={() => setAddedByLabel?.('')}
+        d={pathData}
+        style={{
+          '--base-stroke': baseStroke
+        } as React.CSSProperties}
+        className={cn(
+          "transition-[stroke]",
+          "stroke-[var(--base-stroke)]",
+          "[#canvas.shapes-hoverable_.group:hover_&]:stroke-[#3390FF]"
+        )}
+        fill="none"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        pointerEvents="auto"
+      />
+    </g>
   );
 };

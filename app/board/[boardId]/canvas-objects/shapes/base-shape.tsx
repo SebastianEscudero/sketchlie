@@ -19,9 +19,8 @@ interface BaseShapeProps {
   socket?: Socket;
   focused?: boolean;
   forcedRender?: boolean;
-  showOutlineOnHover?: boolean;
   setAddedByLabel?: (addedBy: string) => void;
-  renderShape: (fillColor: string, strokeColor: string) => React.ReactNode;
+  renderShape: (fillColor: string) => React.ReactNode;
   foreignObjectDimensions: {
     width: number;
     height: number;
@@ -40,7 +39,6 @@ export const BaseShape = memo(({
   socket,
   focused = false,
   forcedRender = false,
-  showOutlineOnHover = false,
   setAddedByLabel,
   renderShape,
   foreignObjectDimensions
@@ -49,8 +47,8 @@ export const BaseShape = memo(({
   const alignX = layer.alignX || "center";
   const alignY = layer.alignY || "center";
   const [editableValue, setEditableValue] = useState(value);
-  const [strokeColor, setStrokeColor] = useState(selectionColor || colorToCss(outlineFill || fill));
   const fillColor = colorToCss(fill);
+  const defaultStroke = colorToCss(outlineFill || fill);
   const shapeRef = useRef<HTMLDivElement>(null);
   const updateValue = useUpdateValue();
   const handlePaste = useHandlePaste();
@@ -60,10 +58,6 @@ export const BaseShape = memo(({
   useEffect(() => {
     setEditableValue(value);
   }, [value]);
-
-  useEffect(() => {
-    setStrokeColor(selectionColor || colorToCss(outlineFill || fill));
-  }, [selectionColor, outlineFill, fill, forcedRender]);
 
   const handleContentChange = useCallback((e: ContentEditableEvent) => {
     updateValue(boardId!, id, layer, e.target.value, expired!, socket!, setEditableValue);
@@ -86,8 +80,15 @@ export const BaseShape = memo(({
     }
 
     if (onPointerDown) onPointerDown(e, id);
-    setStrokeColor(selectionColor || colorToCss(outlineFill || fill));
   };
+
+  const handlePointerEnter = useCallback(() => {
+    setAddedByLabel?.(addedBy || '');
+  }, [addedBy, setAddedByLabel]);
+
+  const handlePointerLeave = useCallback(() => {
+    setAddedByLabel?.('');
+  }, [setAddedByLabel]);
 
   const { width: divWidth, height: divHeight, x: foreignObjectX, y: foreignObjectY } = foreignObjectDimensions;
 
@@ -96,10 +97,22 @@ export const BaseShape = memo(({
       transform={`translate(${x}, ${y})`}
       pointerEvents="auto"
       onPointerDown={handlePointerDown}
-      onPointerEnter={() => { if (showOutlineOnHover) { setStrokeColor("#3390FF"); setAddedByLabel?.(addedBy || '') } }}
-      onPointerLeave={() => { setStrokeColor(selectionColor || colorToCss(outlineFill || fill)); setAddedByLabel?.('') }}
+      onPointerEnter={handlePointerEnter}
+      onPointerLeave={handlePointerLeave}
+      className="group"
     >
-      {renderShape(fillColor, strokeColor)}
+      <g 
+        style={{
+          '--base-stroke': selectionColor || defaultStroke
+        } as React.CSSProperties}
+        className={cn(
+          "transition-[stroke]",
+          "stroke-[var(--base-stroke)]",
+          "[#canvas.shapes-hoverable_.group:hover_&]:stroke-[#3390FF]"
+        )}
+      >
+        {renderShape(fillColor)}
+      </g>
       <foreignObject
         x={foreignObjectX}
         y={foreignObjectY}

@@ -1,6 +1,7 @@
 import React, { useCallback, useState, useEffect, memo } from 'react';
 import { SvgLayer } from "@/types/canvas";
 import { colorToCss } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 
 interface SVGLayerProps {
     isUploading: boolean;
@@ -13,8 +14,6 @@ interface SVGLayerProps {
     cameraRef?: React.RefObject<any>;
     zoomRef?: React.RefObject<any>;
     selectionColor?: string;
-    showOutlineOnHover?: boolean;
-    forcedRender?: boolean;
     setAddedByLabel?: (addedBy: string) => void;
 }
 
@@ -59,16 +58,10 @@ export const SVGLayer = memo(({
     focused,
     cameraRef,
     zoomRef,
-    showOutlineOnHover,
     setAddedByLabel
 }: SVGLayerProps) => {
     const { x, y, width, height, src, fill, addedBy } = layer;
-    const [strokeColor, setStrokeColor] = useState(selectionColor || "none");
     const [svgContent, setSvgContent] = useState<React.ReactNode[]>([]);
-
-    useEffect(() => {
-        setStrokeColor(selectionColor || "none");
-    }, [selectionColor]);
 
     useEffect(() => {
         const content = parseSVGContent(src);
@@ -76,13 +69,12 @@ export const SVGLayer = memo(({
     }, [src]);
 
     const handlePointerDown = useCallback((e: React.PointerEvent) => {
-        setStrokeColor(selectionColor || "none");
         if (focused) {
             e.preventDefault();
         } else {
             onPointerDown(e, id);
         }
-    }, [focused, selectionColor, id, onPointerDown]);
+    }, [focused, id, onPointerDown]);
 
     const onDoubleClick = useCallback(() => {
         const viewportWidth = window.innerWidth;
@@ -136,7 +128,7 @@ export const SVGLayer = memo(({
     }, [cameraRef, zoomRef, height, width, x, y, setCamera, setZoom]);
 
     if (!fill) {
-        return;
+        return null;
     }
 
     const fillColor = fill.a === 0 ? 'currentColor' : colorToCss(fill);
@@ -145,17 +137,25 @@ export const SVGLayer = memo(({
         <g
             onPointerDown={handlePointerDown}
             onDoubleClick={onDoubleClick}
-            onPointerEnter={() => { if (showOutlineOnHover) { setStrokeColor("#3390FF"); setAddedByLabel?.(addedBy || '') } }}
-            onPointerLeave={() => { setStrokeColor(selectionColor || "none"); setAddedByLabel?.('') }}
+            onPointerEnter={() => setAddedByLabel?.(addedBy || '')}
+            onPointerLeave={() => setAddedByLabel?.('')}
             pointerEvents="auto"
+            className="group"
         >
             <rect
                 x={x}
                 y={y}
                 width={width}
                 height={height}
-                stroke={strokeColor}
-                strokeWidth="1"
+                style={{
+                    '--base-stroke': selectionColor || 'none'
+                } as React.CSSProperties}
+                className={cn(
+                    "transition-[stroke]",
+                    "stroke-[var(--base-stroke)]",
+                    "[#canvas.shapes-hoverable_.group:hover_&]:stroke-[#3390FF]"
+                )}
+                strokeWidth="2"
                 fill="transparent"
                 strokeLinecap='round'
                 strokeLinejoin='round'

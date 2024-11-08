@@ -39,7 +39,6 @@ interface LayerPreviewProps {
   zoomRef?: React.RefObject<any>;
   forcedRender?: boolean;
   cameraRef?: React.RefObject<any>;
-  showOutlineOnHover?: boolean;
   setAddedByLabel?: (label: string) => void;
   orgTeammates?: any;
   forceUpdateLayerLocalLayerState?: (layerId: string, updatedLayer: any) => void;
@@ -61,7 +60,6 @@ export const LayerPreview = memo(({
   setZoom,
   cameraRef,
   zoomRef,
-  showOutlineOnHover,
   setAddedByLabel,
   orgTeammates,
   forceUpdateLayerLocalLayerState
@@ -100,7 +98,6 @@ export const LayerPreview = memo(({
           fill={layer.fill ? colorToCss(layer.fill) : "#000"}
           selectionColor={selectionColor}
           strokeSize={layer.strokeSize}
-          showOutlineOnHover={showOutlineOnHover}
           addedBy={layer.addedBy}
           setAddedByLabel={setAddedByLabel}
         />
@@ -117,7 +114,6 @@ export const LayerPreview = memo(({
           expired={expired}
           focused={focused}
           forcedRender={forcedRender}
-          showOutlineOnHover={showOutlineOnHover}
           setAddedByLabel={setAddedByLabel}
         />
       );
@@ -135,7 +131,6 @@ export const LayerPreview = memo(({
           focused={focused}
           boardId={boardId}
           forcedRender={forcedRender}
-          showOutlineOnHover={showOutlineOnHover}
           setAddedByLabel={setAddedByLabel}
         />
       );
@@ -151,7 +146,6 @@ export const LayerPreview = memo(({
           expired={expired}
           focused={focused}
           forcedRender={forcedRender}
-          showOutlineOnHover={showOutlineOnHover}
           setAddedByLabel={setAddedByLabel}
         />
       );
@@ -167,7 +161,6 @@ export const LayerPreview = memo(({
           expired={expired}
           focused={focused}
           forcedRender={forcedRender}
-          showOutlineOnHover={showOutlineOnHover}
           setAddedByLabel={setAddedByLabel}
         />
       );
@@ -183,7 +176,6 @@ export const LayerPreview = memo(({
           expired={expired}
           focused={focused}
           forcedRender={forcedRender}
-          showOutlineOnHover={showOutlineOnHover}
           setAddedByLabel={setAddedByLabel}
         />
       );
@@ -213,7 +205,6 @@ export const LayerPreview = memo(({
           expired={expired}
           focused={focused}
           forcedRender={forcedRender}
-          showOutlineOnHover={showOutlineOnHover}
           setAddedByLabel={setAddedByLabel}
         />
       );
@@ -229,7 +220,6 @@ export const LayerPreview = memo(({
           expired={expired}
           focused={focused}
           forcedRender={forcedRender}
-          showOutlineOnHover={showOutlineOnHover}
           setAddedByLabel={setAddedByLabel}
         />
       );
@@ -245,7 +235,6 @@ export const LayerPreview = memo(({
           expired={expired}
           focused={focused}
           forcedRender={forcedRender}
-          showOutlineOnHover={showOutlineOnHover}
           setAddedByLabel={setAddedByLabel}
         />
       );
@@ -256,8 +245,6 @@ export const LayerPreview = memo(({
           layer={layer}
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
-          forcedRender={forcedRender}
-          showOutlineOnHover={showOutlineOnHover}
           setAddedByLabel={setAddedByLabel}
         />
       );
@@ -273,7 +260,6 @@ export const LayerPreview = memo(({
           expired={expired}
           focused={focused}
           forcedRender={forcedRender}
-          showOutlineOnHover={showOutlineOnHover}
           setAddedByLabel={setAddedByLabel}
         />
       );
@@ -289,7 +275,6 @@ export const LayerPreview = memo(({
           expired={expired}
           focused={focused}
           forcedRender={forcedRender}
-          showOutlineOnHover={showOutlineOnHover}
           setAddedByLabel={setAddedByLabel}
         />
       );
@@ -305,7 +290,6 @@ export const LayerPreview = memo(({
           expired={expired}
           focused={focused}
           forcedRender={forcedRender}
-          showOutlineOnHover={showOutlineOnHover}
           setAddedByLabel={setAddedByLabel}
         />
       );
@@ -321,7 +305,6 @@ export const LayerPreview = memo(({
           expired={expired}
           focused={focused}
           forcedRender={forcedRender}
-          showOutlineOnHover={showOutlineOnHover}
           setAddedByLabel={setAddedByLabel}
         />
       );
@@ -332,7 +315,6 @@ export const LayerPreview = memo(({
           layer={layer}
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
-          showOutlineOnHover={showOutlineOnHover}
           setAddedByLabel={setAddedByLabel}
         />
       );
@@ -349,8 +331,6 @@ export const LayerPreview = memo(({
           focused={focused}
           cameraRef={cameraRef}
           zoomRef={zoomRef}
-          showOutlineOnHover={showOutlineOnHover}
-          forcedRender={forcedRender}
           setAddedByLabel={setAddedByLabel}
         />
       );
@@ -362,7 +342,6 @@ export const LayerPreview = memo(({
           onPointerDown={onLayerPointerDown}
           selectionColor={selectionColor}
           forcedRender={forcedRender}
-          showOutlineOnHover={showOutlineOnHover}
           setAddedByLabel={setAddedByLabel}
         />
       );

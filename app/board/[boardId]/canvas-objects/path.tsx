@@ -1,7 +1,7 @@
 import { getSvgPathFromPoints } from "@/lib/utils";
-import { useState, useEffect, memo } from "react";
+import { memo } from "react";
 import { Laser } from "./laser";
-import { colorToCss } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 
 interface PathProps {
     x: number;
@@ -11,7 +11,6 @@ interface PathProps {
     onPointerDown?: (e: React.PointerEvent) => void;
     selectionColor?: string;
     strokeSize?: number;
-    showOutlineOnHover?: boolean;
     addedBy?: string;
     setAddedByLabel?: (label: string) => void;
     isLaser?: boolean;
@@ -44,44 +43,35 @@ const StandardPath = memo(({
     strokeSize, 
     onPointerDown,
     selectionColor,
-    showOutlineOnHover,
     addedBy,
     setAddedByLabel 
 }: Omit<PathProps, 'isLaser' | 'isHighlighter' | 'zoom'>) => {
-    const [strokeColor, setStrokeColor] = useState(selectionColor || "none");
     const isTransparent = fill === 'rgba(0,0,0,0)';
-
-    useEffect(() => {
-        setStrokeColor(selectionColor || fill);
-    }, [selectionColor, fill]);
-
-    const handlePointerDown = (e: React.PointerEvent) => {
-        if (onPointerDown) onPointerDown(e);
-        setStrokeColor(selectionColor || "none");
-    }
+    const baseStroke = selectionColor || (isTransparent ? '#000' : fill);
 
     return (
-        <path
-            onPointerEnter={() => { 
-                if (showOutlineOnHover) { 
-                    setStrokeColor("#3390FF"); 
-                    setAddedByLabel?.(addedBy || '') 
-                } 
-            }}
-            onPointerLeave={() => { 
-                setStrokeColor(selectionColor || "none"); 
-                setAddedByLabel?.('') 
-            }}
-            onPointerDown={handlePointerDown}
-            d={getSvgPathFromPoints(points)}
-            style={{ transform: `translate(${x}px, ${y}px)` }}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            fill="none"
-            stroke={strokeColor !== "none" ? (isTransparent ? '#000' : strokeColor) : (isTransparent ? '#000' : fill)}
-            strokeWidth={strokeSize}
-            pointerEvents="auto"
-        />
+        <g className="group">
+            <path
+                onPointerEnter={() => setAddedByLabel?.(addedBy || '')}
+                onPointerLeave={() => setAddedByLabel?.('')}
+                onPointerDown={onPointerDown}
+                d={getSvgPathFromPoints(points)}
+                style={{ 
+                    transform: `translate(${x}px, ${y}px)`,
+                    '--base-stroke': baseStroke
+                } as React.CSSProperties}
+                className={cn(
+                    "transition-[stroke]",
+                    "stroke-[var(--base-stroke)]",
+                    "[#canvas.shapes-hoverable_.group:hover_&]:stroke-[#3390FF]"
+                )}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                fill="none"
+                strokeWidth={strokeSize}
+                pointerEvents="auto"
+            />
+        </g>
     );
 });
 
@@ -93,7 +83,6 @@ export const Path = memo(({
     onPointerDown,
     selectionColor,
     strokeSize = 1,
-    showOutlineOnHover,
     addedBy,
     setAddedByLabel,
     isLaser = false,
@@ -140,7 +129,6 @@ export const Path = memo(({
             strokeSize={getAdjustedStrokeSize()}
             onPointerDown={onPointerDown}
             selectionColor={selectionColor}
-            showOutlineOnHover={showOutlineOnHover}
             addedBy={addedBy}
             setAddedByLabel={setAddedByLabel}
         />

@@ -13,7 +13,6 @@ interface BigArrowLeftProps {
   socket?: Socket;
   focused?: boolean;
   forcedRender?: boolean;
-  showOutlineOnHover?: boolean;
   setAddedByLabel?: (addedBy: string) => void;
 }; 
 
@@ -34,11 +33,10 @@ export const BigArrowLeft = memo(({ ...props }: BigArrowLeftProps) => {
   return (
     <BaseShape
       {...props}
-      renderShape={(fillColor, strokeColor) => (
+      renderShape={(fillColor) => (
         <path
           d={`M ${arrowHeadWidth / 2} ${height} L 0 ${height / 2} L ${arrowHeadWidth / 2} 0 L ${arrowHeadWidth / 2} ${height / 4} L ${width} ${height / 4} L ${width} ${height * 3 / 4} L ${arrowHeadWidth / 2} ${height * 3 / 4} Z`}
           fill={fillColor}
-          stroke={strokeColor}
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"

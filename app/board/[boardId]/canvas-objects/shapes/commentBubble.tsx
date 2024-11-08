@@ -13,7 +13,6 @@ interface CommentBubbleProps {
   socket?: Socket;
   focused?: boolean;
   forcedRender?: boolean;
-  showOutlineOnHover?: boolean;
   setAddedByLabel?: (addedBy: string) => void;
 }; 
 
@@ -36,7 +35,7 @@ export const CommentBubble = memo(({ ...props }: CommentBubbleProps) => {
   return (
     <BaseShape
       {...props}
-      renderShape={(fillColor, strokeColor) => (
+      renderShape={(fillColor) => (
         <path
           d={`M 0 0 
              L ${width} 0 
@@ -47,7 +46,6 @@ export const CommentBubble = memo(({ ...props }: CommentBubbleProps) => {
              L 0 ${bubbleHeight} 
              Z`}
           fill={fillColor}
-          stroke={strokeColor}
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"

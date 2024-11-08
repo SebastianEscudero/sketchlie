@@ -12,13 +12,12 @@ interface TextProps {
   onPointerDown?: (e: any, id: string) => void;
   selectionColor?: string;
   updateLayer?: UpdateLayerMutation;
+  forcedRender?: boolean;
   expired?: boolean;
   socket?: any;
   onRefChange?: (ref: React.RefObject<any>) => void;
   focused?: boolean;
   boardId?: string;
-  forcedRender?: boolean;
-  showOutlineOnHover?: boolean;
   setAddedByLabel?: (addedBy: string) => void;
 };
 
@@ -37,14 +36,11 @@ export const Text = memo(({
   socket,
   focused = false,
   boardId,
-  forcedRender = false,
-  showOutlineOnHover,
   setAddedByLabel,
 }: TextProps) => {
   const { x, y, width, height, fill, value: initialValue, textFontSize, fontFamily, addedBy } = layer;
   const alignX = layer.alignX || "center";
   const [value, setValue] = useState(initialValue);
-  const [strokeColor, setStrokeColor] = useState(selectionColor || "none");
   const textRef = useRef<any>(null);
   const fillColor = colorToCss(fill);
   const isTransparent = fillColor === 'rgba(0,0,0,0)';
@@ -55,15 +51,10 @@ export const Text = memo(({
   }, [id, layer]);
 
   useEffect(() => {
-    setStrokeColor(selectionColor || "none");
-  }, [selectionColor, fill, forcedRender]);
-
-  useEffect(() => {
     onRefChange?.(textRef);
   }, [onRefChange]);
 
   const handlePointerDown = useCallback((e: React.PointerEvent) => {
-    setStrokeColor(selectionColor || "none");
     if (e.pointerType === "touch") {
       return;
     }
@@ -88,7 +79,7 @@ export const Text = memo(({
     if (onPointerDown) {
       onPointerDown(e, id);
     }
-  }, [onPointerDown, id, onRefChange, focused, selectionColor]);
+  }, [onPointerDown, id, onRefChange, focused]);
 
   const handleTouchStart = (e: React.TouchEvent) => {
     if (e.touches.length > 1) {
@@ -146,15 +137,23 @@ export const Text = memo(({
     <g
       transform={`translate(${x}, ${y})`}
       pointerEvents="auto"
-      onPointerEnter={(e) => {if (showOutlineOnHover) {setStrokeColor("#3390FF"); setAddedByLabel?.(addedBy || '')}}}
-      onPointerLeave={() => {setStrokeColor(selectionColor || "none"); setAddedByLabel?.('')}}
+      onPointerEnter={() => setAddedByLabel?.(addedBy || '')}
+      onPointerLeave={() => setAddedByLabel?.('')}
+      className="group"
     >
       <rect
         width={width}
         height={height}
-        stroke={strokeColor}
+        style={{
+          '--base-stroke': selectionColor || 'none'
+        } as React.CSSProperties}
+        className={cn(
+          "transition-[stroke]",
+          "stroke-[var(--base-stroke)]",
+          "[#canvas.shapes-hoverable_.group:hover_&]:stroke-[#3390FF]",
+          "fill-transparent"
+        )}
         strokeWidth="1"
-        className="fill-transparent"
         strokeLinecap="round"
         strokeLinejoin="round"
       />  

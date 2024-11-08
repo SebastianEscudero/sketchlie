@@ -13,7 +13,6 @@ interface HexagonProps {
   socket?: Socket;
   focused?: boolean;
   forcedRender?: boolean;
-  showOutlineOnHover?: boolean;
   setAddedByLabel?: (addedBy: string) => void;
 }; 
 
@@ -41,11 +40,10 @@ export const Hexagon = memo(({ ...props }: HexagonProps) => {
   return (
     <BaseShape
       {...props}
-      renderShape={(fillColor, strokeColor) => (
+      renderShape={(fillColor) => (
         <path
           d={`M ${width * 0.5},0 L ${width},${height * 0.25} L ${width},${height * 0.75} L ${width * 0.5},${height} L 0,${height * 0.75} L 0,${height * 0.25} Z`}
           fill={fillColor}
-          stroke={strokeColor}
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
