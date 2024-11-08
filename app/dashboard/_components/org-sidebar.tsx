@@ -103,23 +103,6 @@ export const OrgSidebar = ({
                             Favorite boards
                         </Link>
                     </Button>
-
-                    <ShowAllTemplates
-                        usersRole={usersRole}
-                        pending={pending}
-                        onClick={onClick}
-                    >
-                        <div className="w-full">
-                            <Button
-                                variant="dashboard"
-                                className="justify-start px-4 w-full font-semibold"
-                                size="sm"
-                            >
-                                <LayoutTemplate className="h-4 w-4 mr-2" />
-                                Templates
-                            </Button>
-                        </div>
-                    </ShowAllTemplates>
                     <NewFolderButton org={activeOrg}>
                         <Button
                             variant="dashboard"
