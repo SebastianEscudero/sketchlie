@@ -1131,8 +1131,6 @@ export const Canvas = ({
             removeHighlightFromText();
             unselectLayers();
 
-            // and this is to just close the comment box when the user clicks anywhere else
-            setOpenCommentBoxId(null);
             // when the user is inserting a comment and then clicks somewhere else, we close the comment preview
             if (currentPreviewLayer) {
                 setCurrentPreviewLayer(null);
