@@ -2491,11 +2491,6 @@ export const Canvas = ({
                                 className="h-[100vh] w-[100vw]"
                                 viewBox={`0 0 ${window.innerWidth} ${window.innerHeight}`}
                             >
-                                <defs >
-                                    <filter id="drop-shadow" x="-20%" y="-20%" width="140%" height="140%">
-                                        <feDropShadow dx="0" dy="2" stdDeviation="2" floodColor="rgba(0, 0, 0, 0.25)" />
-                                    </filter>
-                                </defs>
                                 <g
                                     style={{
                                         transform: `translate(${camera.x}px, ${camera.y}px) scale(${zoom})`,

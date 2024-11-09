@@ -35,21 +35,11 @@ export const Frame = memo(({
     const padding = fontSize * 0.5;
     const [isEditing, setIsEditing] = useState(false);
     const [value, setValue] = useState(initialValue || `Frame ${frameNumber || ""}`);
-    const [strokeColor, setStrokeColor] = useState(
-        selectionColor || (document.documentElement.classList.contains("dark") ? "#404040" : "#e5e5e5")
-    );
+    const updateValue = useUpdateValue();
 
     useEffect(() => {
         setValue(initialValue || `Frame ${frameNumber || ""}`);
     }, [frameNumber, initialValue]);
-
-    useEffect(() => {
-        setStrokeColor(
-            selectionColor || (document.documentElement.classList.contains("dark") ? "#404040" : "#e5e5e5")
-        );
-    }, [selectionColor, forcedRender]);
-
-    const updateValue = useUpdateValue();
 
     const handleDoubleClick = (e: React.MouseEvent) => {
         e.stopPropagation();
@@ -107,26 +97,21 @@ export const Frame = memo(({
                     </text>
                 )
             )}
-            <defs>
-                <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-                    <feDropShadow dx="0" dy="2" stdDeviation="2" floodColor="rgba(0, 0, 0, 0.25)" />
-                </filter>
-            </defs>
             <rect
                 width={width}
                 height={height}
                 fill={document.documentElement.classList.contains("dark") ? "#2c2c2c" : "#FFFFFF"}
                 style={{
-                    '--base-stroke': strokeColor
+                    '--base-stroke': document.documentElement.classList.contains("dark") ? "white" : "black"
                 } as React.CSSProperties}
                 className={cn(
                     "stroke-[var(--base-stroke)]",
-                    "[#canvas.shapes-hoverable_.group:hover_&]:stroke-[#3390FF]"
+                    "[#canvas.shapes-hoverable_.group:hover_&]:stroke-[#3390FF]",
+                    "drop-shadow-md"
                 )}
                 strokeWidth="1"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                filter="url(#shadow)"
             />
         </g>
     );

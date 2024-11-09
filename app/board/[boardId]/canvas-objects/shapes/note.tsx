@@ -31,14 +31,13 @@ export const Note = memo(({ ...props }: NoteProps) => {
     <BaseShape
       {...props}
       renderShape={(fillColor) => (
-        <g filter="url(#drop-shadow)">
-          <rect
-            width={width}
-            height={height}
-            fill={fillColor}
-            strokeWidth="1"
-          />
-        </g>
+        <rect
+          width={width}
+          height={height}
+          fill={fillColor}
+          strokeWidth="1"
+          className="drop-shadow-md"
+        />
       )}
       foreignObjectDimensions={textContainer}
     />
