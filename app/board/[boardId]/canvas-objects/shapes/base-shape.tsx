@@ -103,13 +103,9 @@ export const BaseShape = memo(({
     >
       <g 
         style={{
-          '--base-stroke': selectionColor || defaultStroke
+          '--base-stroke': selectionColor || defaultStroke,
         } as React.CSSProperties}
-        className={cn(
-          "transition-[stroke]",
-          "stroke-[var(--base-stroke)]",
-          "[#canvas.shapes-hoverable_.group:hover_&]:stroke-[#3390FF]"
-        )}
+        className={cn("shape-stroke-effect")}
       >
         {renderShape(fillColor)}
       </g>
@@ -131,7 +127,10 @@ export const BaseShape = memo(({
             onChange={handleContentChange}
             onPaste={handlePaste}
             onPointerDown={contentEditablePointerDown}
-            className={cn("outline-none w-full p-1 text-wrap", defaultFont.className)}
+            className={cn(
+              "outline-none w-full p-1 break-words whitespace-pre-wrap",
+              defaultFont.className
+            )}
             style={{
               fontSize: textFontSize,
               color: fill ? getContrastingTextColor(fill) : "#000",
@@ -139,6 +138,8 @@ export const BaseShape = memo(({
               WebkitUserSelect: 'auto',
               textAlign: alignX,
               fontFamily: fontFamily || DEFAULT_FONT,
+              wordWrap: 'break-word',
+              overflowWrap: 'break-word',
             }}
           />
         </div>

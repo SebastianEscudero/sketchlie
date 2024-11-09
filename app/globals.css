@@ -108,3 +108,32 @@ html {
 .active:active {
   cursor: pointer !important;
 }
+
+.app-region-drag {
+  app-region: drag;
+}
+
+.app-region-no-drag {
+  app-region: no-drag;
+}
+
+@layer components {
+  .shape-hover-effect {
+    @apply transition-colors duration-200
+    [#canvas.shapes-hoverable_.group:hover_&]:outline-[#3390FF]
+    [#canvas.shapes-hoverable_.group:hover_&]:outline-1
+    [#canvas.shapes-hoverable_.group:hover_&]:outline;
+  }
+
+  .shape-stroke-effect {
+    @apply stroke-[var(--base-stroke)]
+    [#canvas.shapes-hoverable_.group:hover_&]:stroke-[#3390FF];
+  }
+
+  .path-stroke-effect {
+    @apply stroke-[var(--base-stroke)]
+    [#canvas.shapes-hoverable_.group:hover_&]:stroke-[#3390FF];
+  }
+}
+
+

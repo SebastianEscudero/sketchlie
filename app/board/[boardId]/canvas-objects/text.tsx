@@ -145,14 +145,9 @@ export const Text = memo(({
         width={width}
         height={height}
         style={{
-          '--base-stroke': selectionColor || 'none'
+          '--base-stroke': selectionColor || 'none',
         } as React.CSSProperties}
-        className={cn(
-          "transition-[stroke]",
-          "stroke-[var(--base-stroke)]",
-          "[#canvas.shapes-hoverable_.group:hover_&]:stroke-[#3390FF]",
-          "fill-transparent"
-        )}
+        className={cn("shape-stroke-effect", "fill-transparent")}
         strokeWidth="1"
         strokeLinecap="round"
         strokeLinejoin="round"

@@ -49,12 +49,9 @@ export const InsertVideo = ({
         <div 
           className={cn(
             "absolute w-full h-full flex items-center justify-center top-0 left-0",
-            "transition-colors duration-200",
             "bg-black bg-opacity-0",
             "[#canvas.shapes-hoverable_.group:hover_&]:bg-opacity-20",
-            "[#canvas.shapes-hoverable_.group:hover_&]:outline-[#3390FF]",
-            "[#canvas.shapes-hoverable_.group:hover_&]:outline-1",
-            "[#canvas.shapes-hoverable_.group:hover_&]:outline"
+            "shape-hover-effect"
           )}
           onClick={() => setVisibleControls(true)}
         />
