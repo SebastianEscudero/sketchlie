@@ -169,9 +169,14 @@ export const TextOptions = ({
         }, 0);
     };
 
+    const getFontLabel = (fontFamilyValue: string) => {
+        const font = fontFamilies.find(f => f.value === fontFamilyValue);
+        return font?.label || fontFamilyValue;
+    };
+
     return (
         <div className="relative text-left">
-            <div className='flex flex-row items-center justify-center space-x-2'>
+            <div className='flex flex-row items-center justify-center space-x-1'>
                 <TextSizePicker
                     layers={layers}
                     setLiveLayers={setLiveLayers}
@@ -186,11 +191,11 @@ export const TextOptions = ({
                         <div className="relative">
                             <Button 
                                 variant="icon" 
-                                className="w-[105px] px-2 justify-start font-normal"
+                                className="px-2 justify-start font-normal"
                                 onClick={() => setOpenSelector(openSelector === SelectorType.FontFamily ? null : SelectorType.FontFamily)}
                             >
                                 <span className="truncate" style={{ fontFamily }}>
-                                    Lorem ipsum
+                                    {getFontLabel(fontFamily)}
                                 </span>
                             </Button>
                             {openSelector === SelectorType.FontFamily && (
