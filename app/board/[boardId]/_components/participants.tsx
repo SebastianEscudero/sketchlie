@@ -46,7 +46,7 @@ export const Participants = memo(({
                 <Button
                     variant="icon"
                     size="default"
-                    className="px-2"
+                    className="px-2 xs:flex hidden"
                     onClick={handleCommentsClick}
                 >
                     <CommentsIcon className="h-7 w-7" />
