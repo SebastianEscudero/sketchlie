@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { CanvasMode, CanvasState, VideoLayer } from "@/types/canvas";
+import { VideoLayer } from "@/types/canvas";
 import { useEffect, useState } from "react";
 
 interface VideoProps {
@@ -7,13 +7,15 @@ interface VideoProps {
   layer: VideoLayer;
   onPointerDown: (e: React.PointerEvent, id: string) => void;
   showOverlay: boolean;
+  selectionColor?: string;
 }
 
 export const InsertVideo = ({
   id,
   layer,
   onPointerDown,
-  showOverlay,
+  selectionColor,
+  showOverlay
 }: VideoProps) => {
   const { x, y, width, height, src } = layer;
   const [visibleControls, setVisibleControls] = useState(false);
@@ -24,17 +26,17 @@ export const InsertVideo = ({
 
   return (
     <div
-      className="absolute"
+      className="absolute group"
       style={{
         left: x,
         top: y,
         width: width,
         height: height,
+        outline: selectionColor ? `1px solid ${selectionColor}` : visibleControls ? '1px solid #3390FF' : 'none',
       }}
       onPointerDown={(e) => onPointerDown(e, id)}
     >
       <video
-        className="h-full w-full"
         loop
         playsInline
         controls={visibleControls}
@@ -44,15 +46,19 @@ export const InsertVideo = ({
         }}
       />
       {!visibleControls && (
-          <div 
-            className={cn(
-              "absolute w-full h-full flex items-center justify-center top-0 left-0",
-              "transition-all duration-200",
-              "bg-black bg-opacity-0 hover:bg-opacity-20"
-            )}
-            onClick={() => setVisibleControls(true)}
-          />
-        )}
+        <div 
+          className={cn(
+            "absolute w-full h-full flex items-center justify-center top-0 left-0",
+            "transition-colors duration-200",
+            "bg-black bg-opacity-0",
+            "[#canvas.shapes-hoverable_.group:hover_&]:bg-opacity-20",
+            "[#canvas.shapes-hoverable_.group:hover_&]:outline-[#3390FF]",
+            "[#canvas.shapes-hoverable_.group:hover_&]:outline-1",
+            "[#canvas.shapes-hoverable_.group:hover_&]:outline"
+          )}
+          onClick={() => setVisibleControls(true)}
+        />
+      )}
     </div>
   );
 };

@@ -2457,7 +2457,7 @@ export const Canvas = ({
                         onPointerUp={onPointerUp}
                         style={{
                             cursor: canvasCursor,
-                            contain: 'paint layout'
+                            contain: 'paint layout',
                         }}
                     >
                         <div 
@@ -2470,7 +2470,7 @@ export const Canvas = ({
                         >
                             {visibleLayerIds.map((layerId: string) => {
                                 const layer = liveLayers[layerId];
-                                const showOverlay = canvasState.mode === CanvasMode.None || canvasState.mode === CanvasMode.Pressing || canvasState.mode === CanvasMode.Translating;
+                                const showOverlay = canvasState.mode === CanvasMode.None;
                                 if (layer && (layer.type === LayerType.Video || layer.type === LayerType.Link)) {
                                     return (
                                         <MediaPreview
@@ -2478,6 +2478,7 @@ export const Canvas = ({
                                             id={layerId}
                                             layer={layer}
                                             onPointerDown={onLayerPointerDown}
+                                            selectionColor={layerIdsToColorSelection[layerId]}
                                             showOverlay={showOverlay}
                                         />
                                     );

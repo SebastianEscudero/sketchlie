@@ -10,6 +10,7 @@ interface LinkProps {
   layer: LinkLayer;
   onPointerDown: (e: React.PointerEvent, id: string) => void;
   showOverlay: boolean;
+  selectionColor?: string;
 }
 
 export const InsertLink = ({
@@ -17,6 +18,7 @@ export const InsertLink = ({
   layer,
   onPointerDown,
   showOverlay,
+  selectionColor,
 }: LinkProps) => {
   const { x, y, width, height, src } = layer;
   const [showEditButton, setShowEditButton] = useState(false);
@@ -33,7 +35,6 @@ export const InsertLink = ({
   const spacing = height * 0.01;
   const borderRadius = Math.min(Math.max(width * 0.01, 4), 12);
   const padding = fontSize * 0.5;
-
 
   useEffect(() => {
     if (!showOverlay) setIsEditing(false);
@@ -103,17 +104,17 @@ export const InsertLink = ({
 
   return (
     <div
-      className="absolute"
+      className="absolute group"
       style={{
         left: x,
         top: y,
         width: width,
         height: height,
+        outline: selectionColor ? `1px solid ${selectionColor}` : isEditing ? '1px solid #3390FF' : 'none'
       }}
       onPointerDown={(e) => !isEditing && onPointerDown(e, id)}
       onMouseEnter={() => !isEditing && showOverlay && setShowEditButton(true)}
       onMouseLeave={() => setShowEditButton(false)}
-      onWheel={(e) => { e.preventDefault() }}
     >
       <div className="relative w-full h-full">
         <iframe
@@ -152,8 +153,11 @@ export const InsertLink = ({
           <div
             className={cn(
               "absolute w-full h-full flex items-center justify-center top-0 left-0",
-              "transition-all duration-200",
-              "bg-black bg-opacity-0 hover:bg-opacity-20"
+              "transition-colors duration-200",
+              "bg-black bg-opacity-0 hover:bg-opacity-20",
+              "[#canvas.shapes-hoverable_.group:hover_&]:outline-[#3390FF]",
+              "[#canvas.shapes-hoverable_.group:hover_&]:outline-1",
+              "[#canvas.shapes-hoverable_.group:hover_&]:outline"
             )}
           >
             <button
@@ -168,7 +172,7 @@ export const InsertLink = ({
                 borderRadius: borderRadius,
                 fontSize: fontSize,
               }}
-              onClick={handleAction}
+              onPointerDown={handleAction}
             >
               {Icon && <Icon />}
               {buttonText && (

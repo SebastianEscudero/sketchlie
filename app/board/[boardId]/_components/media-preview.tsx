@@ -9,6 +9,7 @@ interface MediaPreviewProps {
   onPointerDown: (e: React.PointerEvent, id: string) => void;
   focused?: boolean;
   showOverlay: boolean;
+  selectionColor?: string;
 }
 
 export const MediaPreview = memo(({
@@ -16,6 +17,7 @@ export const MediaPreview = memo(({
     layer,
     onPointerDown,
     showOverlay,
+    selectionColor,
 }: MediaPreviewProps) => {
 
   switch (layer.type) {
@@ -26,6 +28,7 @@ export const MediaPreview = memo(({
           layer={layer}
           onPointerDown={onPointerDown}
           showOverlay={showOverlay}
+          selectionColor={selectionColor}
         />
       );
     case LayerType.Link:
@@ -35,6 +38,7 @@ export const MediaPreview = memo(({
           layer={layer}
           onPointerDown={onPointerDown}
           showOverlay={showOverlay}
+          selectionColor={selectionColor}
         />
       );
     default:
