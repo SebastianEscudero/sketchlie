@@ -120,11 +120,10 @@ export const Frame = memo(({
                     '--base-stroke': strokeColor
                 } as React.CSSProperties}
                 className={cn(
-                    "transition-[stroke]",
                     "stroke-[var(--base-stroke)]",
                     "[#canvas.shapes-hoverable_.group:hover_&]:stroke-[#3390FF]"
                 )}
-                strokeWidth="2"
+                strokeWidth="1"
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 filter="url(#shadow)"
