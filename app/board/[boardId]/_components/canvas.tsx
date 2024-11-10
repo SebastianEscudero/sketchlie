@@ -172,7 +172,6 @@ export const Canvas = ({
 
     // Misc
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-    const [layerRef, setLayerRef] = useState<any>(null);
     const [currentFrameIndex, setCurrentFrameIndex] = useState(0);
     const [forceSelectionBoxRender, setForceSelectionBoxRender] = useState(false);
     const [forceLayerPreviewRender, setForceLayerPreviewRender] = useState(false);
@@ -495,13 +494,6 @@ export const Canvas = ({
         }
 
     }, [User, socket, org, proModal, setLiveLayers, setLiveLayerIds, boardId, arrowTypeInserting, liveLayers, performAction, expired, quickInserting, setCurrentPreviewLayer, setOpenCommentBoxId, updatePresence]);
-
-    useEffect(() => {
-        if (justInsertedText && layerRef && layerRef.current) {
-            console.log('focusing');
-            layerRef.current?.focus();
-        }
-    }, [justInsertedText, layerRef]);
 
     const insertMedia = useCallback((
         mediaItems: Array<{
@@ -1018,7 +1010,7 @@ export const Canvas = ({
             socket.emit('layer-update', updatedLayerIds, Object.values(updatedLayers));
         }
 
-    }, [canvasState, liveLayers, liveLayerIds, selectedLayersRef, layerRef, zoom, expired, socket, setLiveLayers, updatePresence]);
+    }, [canvasState, liveLayers, liveLayerIds, selectedLayersRef, zoom, expired, socket, setLiveLayers, updatePresence]);
 
     const onResizeHandlePointerDown = useCallback((
         corner: Side,
@@ -2495,16 +2487,16 @@ export const Canvas = ({
                                     })}
                                     {visibleLayerIds.map((layerId: string) => {
                                         const isFocused = selectedLayersRef.current.length === 1 && selectedLayersRef.current[0] === layerId && !justChanged;
+                                        const layer = liveLayers[layerId];
                                         return (
                                             <LayerPreview
                                                 selectionColor={layerIdsToColorSelection[layerId]}
                                                 onLayerPointerDown={onLayerPointerDown}
                                                 focused={isFocused}
-                                                layer={liveLayers[layerId]}
+                                                layer={layer}
                                                 setLiveLayers={setLiveLayers}
                                                 key={layerId}
                                                 id={layerId}
-                                                onRefChange={setLayerRef}
                                                 socket={socket}
                                                 expired={expired}
                                                 boardId={boardId}
@@ -2516,6 +2508,7 @@ export const Canvas = ({
                                                 setAddedByLabel={setAddedByLabel}
                                                 orgTeammates={filteredOrgTeammates}
                                                 forceUpdateLayerLocalLayerState={forceUpdateLayerLocalLayerState}
+                                                justInsertedText={justInsertedText && layer.type === LayerType.Text}
                                             />
                                         );
                                     })}

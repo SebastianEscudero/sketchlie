@@ -34,7 +34,6 @@ interface LayerPreviewProps {
   focused?: boolean;
   setCamera?: (camera: any) => void;
   setZoom?: (zoom: number) => void;
-  onRefChange?: (ref: React.RefObject<any>) => void;
   selectionColor?: string;
   zoomRef?: React.RefObject<any>;
   forcedRender?: boolean;
@@ -42,6 +41,7 @@ interface LayerPreviewProps {
   setAddedByLabel?: (label: string) => void;
   orgTeammates?: any;
   forceUpdateLayerLocalLayerState?: (layerId: string, updatedLayer: any) => void;
+  justInsertedText?: boolean;
 };
 
 export const LayerPreview = memo(({
@@ -51,7 +51,6 @@ export const LayerPreview = memo(({
   selectionColor,
   layer,
   setLiveLayers,
-  onRefChange,
   socket,
   expired,
   boardId,
@@ -62,7 +61,8 @@ export const LayerPreview = memo(({
   zoomRef,
   setAddedByLabel,
   orgTeammates,
-  forceUpdateLayerLocalLayerState
+  forceUpdateLayerLocalLayerState,
+  justInsertedText
 }: LayerPreviewProps) => {
 
   if (!layer) {
@@ -120,7 +120,6 @@ export const LayerPreview = memo(({
     case LayerType.Text:
       return (
         <Text
-          onRefChange={onRefChange}
           setLiveLayers={setLiveLayers}
           id={id}
           layer={layer}
@@ -132,6 +131,7 @@ export const LayerPreview = memo(({
           boardId={boardId}
           forcedRender={forcedRender}
           setAddedByLabel={setAddedByLabel}
+          justInsertedText={justInsertedText}
         />
       );
     case LayerType.Ellipse:
