@@ -329,6 +329,7 @@ export const LayerPreview = memo(({
           setCamera={setCamera}
           setZoom={setZoom}
           focused={focused}
+          forcedRender={forcedRender}
           cameraRef={cameraRef}
           zoomRef={zoomRef}
           setAddedByLabel={setAddedByLabel}
