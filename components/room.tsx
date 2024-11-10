@@ -3,7 +3,7 @@ import React, { createContext, ReactNode, Suspense, useContext, useEffect, useSt
 import { Socket } from "socket.io-client";
 import { addUserToOrganization } from "@/actions/accept-invite";
 import { useCurrentUser } from "@/hooks/use-current-user";
-import useWebSocket from "@/app/board/[boardId]/_components/use-websocket";
+import useWebSocket from "@/app/board/[boardId]/_components/hooks/use-websocket";
 import { RoomLoading } from "./auth/room-loading";
 
 interface RoomContextValue {
@@ -141,11 +141,11 @@ export const Room = React.memo(({ children, roomId, fallback, board, layers, lay
     'https://sketchlie-server.fly.dev',
     roomId,
     User,
-    isUserPartOfOrg
+    isUserPartOfOrg && !!User?.userId && !isLoading
   );
 
   useEffect(() => {
-    if (!socket) return;
+    if (!socket || !User?.userId) return;
 
     socket.on('users', (users: User[]) => {
       setOtherUsers(users.filter(user => user.userId !== User.userId));
@@ -213,7 +213,22 @@ export const Room = React.memo(({ children, roomId, fallback, board, layers, lay
       socket.off('layer-send');
       socket.off('role-update');
     };
-  }, [socket, User]);
+  }, [socket, User?.userId]);
+
+  useEffect(() => {
+    if (userInfo && !User.userId) {
+      setUser({
+        userId: userInfo.id,
+        connectionId: Math.floor(Math.random() * 1000000),
+        presence: null,
+        information: {
+          role: role,
+          name: userInfo.name || "Teammate",
+          picture: userInfo.image || undefined,
+        }
+      });
+    }
+  }, [userInfo, role]);
 
   if (isLoading) {
     return <RoomLoading label="Joining organization..."/>;
@@ -223,8 +238,12 @@ export const Room = React.memo(({ children, roomId, fallback, board, layers, lay
     return <RoomLoading label="You are not part of this organization"/>;
   }
 
+  if (!User.userId) {
+    return <RoomLoading label="Loading user data..."/>;
+  }
+
   if (!isConnected) {
-    return <RoomLoading label="Getting things ready..."/>;
+    return <RoomLoading label="Connecting to server..."/>;
   }
 
   return (

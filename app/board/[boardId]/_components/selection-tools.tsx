@@ -16,7 +16,7 @@ import { customAlphabet } from "nanoid";
 import { updateR2Bucket } from "@/lib/r2-bucket-functions";
 import { InsertLayerCommand } from "@/lib/commands";
 import { DownloadButton } from "../selection-tools/download-button";
-import { useLayerTextEditingStore } from "../canvas-objects/utils/use-layer-text-editing";
+import { useLayerTextEditingStore } from "../canvas-objects/hooks/use-layer-text-editing";
 
 interface SelectionToolsProps {
     boardId: string;

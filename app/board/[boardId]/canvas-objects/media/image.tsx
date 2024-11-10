@@ -1,6 +1,6 @@
 import { memo, useCallback, useState, useEffect } from 'react';
 import { ImageLayer } from "@/types/canvas";
-import { useImagePreloader } from '../../_components/utils/use-preload-image';
+import { useImagePreloader } from '../hooks/use-preload-image';
 import { cn } from '@/lib/utils';
 
 interface ImageProps {

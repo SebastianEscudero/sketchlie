@@ -7,7 +7,7 @@ import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import { DEFAULT_FONT, defaultFont } from "../../selection-tools/selectionToolUtils";
 import { useHandlePaste, useUpdateValue } from "../utils/canvas-objects-utils";
 import { Socket } from "socket.io-client";
-import { useLayerTextEditingStore } from "../utils/use-layer-text-editing";
+import { useLayerTextEditingStore } from "../hooks/use-layer-text-editing";
 
 interface BaseShapeProps {
   id: string;

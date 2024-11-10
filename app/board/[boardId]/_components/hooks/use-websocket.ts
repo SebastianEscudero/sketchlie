@@ -3,23 +3,26 @@ import { useState, useEffect, useCallback } from 'react';
 import { User } from "@/types/canvas";
 
 const RECONNECTION_INTERVAL = 5000; // 5 seconds
+const MAX_RETRIES = 5;
+const TIMEOUT = 10 // seconds
 
 function useWebSocket(url: string, roomId: string, user: User, isUserPartOfOrg: boolean) {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [isConnected, setIsConnected] = useState(false);
 
   const connect = useCallback(() => {
-    if (!isUserPartOfOrg) {
-      console.log('User is not part of the organization. Connection aborted.');
+    if (!user?.userId || !isUserPartOfOrg) {
+      console.log('Waiting for user data or organization access...');
       return () => {};
     }
 
     const newSocket = io(url, {
       query: { roomId },
       reconnection: true,
-      reconnectionAttempts: Infinity,
+      reconnectionAttempts: MAX_RETRIES,
       reconnectionDelay: RECONNECTION_INTERVAL,
       reconnectionDelayMax: RECONNECTION_INTERVAL,
+      timeout: TIMEOUT * 1000,
     });
 
     newSocket.on('connect', () => {
