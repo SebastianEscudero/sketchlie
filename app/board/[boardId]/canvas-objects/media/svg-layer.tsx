@@ -13,6 +13,7 @@ interface SVGLayerProps {
     focused?: boolean;
     cameraRef?: React.RefObject<any>;
     zoomRef?: React.RefObject<any>;
+    forcedRender?: boolean;
     selectionColor?: string;
     setAddedByLabel?: (addedBy: string) => void;
 }
@@ -58,6 +59,7 @@ export const SVGLayer = memo(({
     focused,
     cameraRef,
     zoomRef,
+    forcedRender,
     setAddedByLabel
 }: SVGLayerProps) => {
     const { x, y, width, height, src, fill, addedBy } = layer;
