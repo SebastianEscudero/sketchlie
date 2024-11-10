@@ -82,7 +82,7 @@ import { Comment, CommentBox } from "../canvas-objects/comment";
 import { Comment as CommentType } from "@/types/canvas";
 import { RightMiddleContainer } from "./right-middle-container";
 import { CommentPreview } from "../canvas-objects/comment-preview";
-import { useLayerTextEditingStore } from "../canvas-objects/utils/use-layer-text-editing";
+import { useLayerTextEditingStore } from "../canvas-objects/hooks/use-layer-text-editing";
 import { SelectionNet } from "./selection-net";
 import { TableColumnType } from "../canvas-objects/table";
 import { uploadFilesAndInsertThemIntoCanvas } from "../canvas-objects/utils/file-uploading-utils";
@@ -498,6 +498,7 @@ export const Canvas = ({
 
     useEffect(() => {
         if (justInsertedText && layerRef && layerRef.current) {
+            console.log('focusing');
             layerRef.current?.focus();
         }
     }, [justInsertedText, layerRef]);
@@ -576,11 +577,7 @@ export const Canvas = ({
     const translateSelectedLayers = useCallback((e: any, point: Point) => {
         if (expired || activeTouches > 1 || canvasState.mode !== CanvasMode.Translating) {
             selectedLayersRef.current = [];
-            const newPresence: Presence = {
-                ...myPresence,
-                selection: []
-            };
-            setMyPresence(newPresence);
+            updatePresence({ selection: [] });
             return;
         }
 
@@ -657,16 +654,12 @@ export const Canvas = ({
 
         setLiveLayers(newLayers);
         setCanvasState({ mode: CanvasMode.Translating, current: point });
-    }, [canvasState, setCanvasState, setLiveLayers, socket, liveLayers, expired, zoom, setMyPresence, myPresence, activeTouches]);
+    }, [canvasState, setCanvasState, setLiveLayers, socket, liveLayers, expired, zoom, activeTouches, updatePresence]);
 
     const translateSelectedLayersWithDelta = useCallback((delta: Point) => {
         if (expired) {
             selectedLayersRef.current = [];
-            const newPresence: Presence = {
-                ...myPresence,
-                selection: []
-            };
-            setMyPresence(newPresence);
+            updatePresence({ selection: [] });
             return;
         }
 
@@ -727,19 +720,14 @@ export const Canvas = ({
         }
 
         setLiveLayers(newLayers);
-    }, [setLiveLayers, socket, liveLayers, expired, zoom, setMyPresence, myPresence]);
+    }, [setLiveLayers, socket, liveLayers, expired, zoom, updatePresence]);
 
     const unselectLayers = useCallback(() => {
         if (selectedLayersRef.current.length > 0) {
             selectedLayersRef.current = ([]);
-            const newPresence: Presence = {
-                ...myPresence,
-                selection: []
-            };
-
-            setMyPresence(newPresence);
+            updatePresence({ selection: [] });
         }
-    }, [setMyPresence, myPresence]);
+    }, [updatePresence]);
 
     const updateSelectionNet = useCallback((current: Point, origin: Point) => {
         setCanvasState({
@@ -757,15 +745,8 @@ export const Canvas = ({
         );
 
         selectedLayersRef.current = ids;
-
-        const newPresence: Presence = {
-            ...myPresence,
-            selection: ids,
-            cursor: current,
-        };
-
-        setMyPresence(newPresence);
-    }, [liveLayers, liveLayerIds, setMyPresence, myPresence, presentationMode]);
+        updatePresence({ selection: ids, cursor: current });
+    }, [liveLayers, liveLayerIds, updatePresence, presentationMode]);
 
     const EraserDeleteLayers = useCallback((current: Point) => {
 
@@ -811,15 +792,10 @@ export const Canvas = ({
     const startDrawing = useCallback((point: Point, pressure: number) => {
         const pencilDraft: [number, number, number][] = [[point.x, point.y, pressure]];
         setPencilDraft(pencilDraft);
-        const newPresence: Presence = {
-            ...myPresence,
-            pencilDraft: pencilDraft
-        };
-
         if (pencilDraft.length > 1) {
-            setMyPresence(newPresence);
+            updatePresence({ pencilDraft });
         }
-    }, [myPresence, setMyPresence]);
+    }, [updatePresence]);
 
     const continueDrawing = useCallback((point: Point, e: React.PointerEvent) => {
         if (
@@ -834,26 +810,30 @@ export const Canvas = ({
         const smoothedPoints = smoothLastPoint([...pencilDraft, newPoint]);
         setPencilDraft(smoothedPoints);
 
+        const presenceStrokeSize = canvasState.mode === CanvasMode.Laser
+            ? 5 / zoom
+            : canvasState.mode === CanvasMode.Highlighter
+                ? highlighterStrokeSize
+                : canvasState.mode === CanvasMode.Pencil
+                    ? pathStrokeSize
+                    : pathStrokeSize;
 
-        const newPresence: Presence = {
-            ...myPresence,
+        const presenceStrokeColor = canvasState.mode === CanvasMode.Laser
+            ? { r: 255, g: 0, b: 0, a: 1 }
+            : canvasState.mode === CanvasMode.Highlighter
+                ? { ...highlighterColor, a: 0.3 }
+                : canvasState.mode === CanvasMode.Pencil
+                    ? pathColor
+                    : pathColor;
+
+        updatePresence({
             cursor: point,
             pencilDraft: smoothedPoints,
-            pathStrokeSize: canvasState.mode === CanvasMode.Laser
-                ? 5 / zoom
-                : canvasState.mode === CanvasMode.Highlighter
-                    ? highlighterStrokeSize
-                    : pathStrokeSize,
-            pathStrokeColor: canvasState.mode === CanvasMode.Laser
-                ? { r: 255, g: 0, b: 0, a: 1 }
-                : canvasState.mode === CanvasMode.Highlighter
-                    ? { ...highlighterColor, a: 0.3 }
-                    : highlighterColor,
-        };
+            pathStrokeSize: presenceStrokeSize,
+            pathStrokeColor: presenceStrokeColor,
+        });
 
-        setMyPresence(newPresence);
-
-    }, [canvasState.mode, pencilDraft, myPresence, setMyPresence, highlighterColor, highlighterStrokeSize, pathStrokeSize, zoom, expired]);
+    }, [canvasState.mode, pencilDraft, updatePresence, highlighterColor, highlighterStrokeSize, pathStrokeSize, zoom, expired, pathColor]);
 
     const insertPath = useCallback((isHighlight: boolean) => {
         if (
@@ -863,7 +843,7 @@ export const Canvas = ({
             expired
         ) {
             setPencilDraft([]);
-            setMyPresence({ ...myPresence, pencilDraft: null });
+            updatePresence({ pencilDraft: null });
             return;
         }
 
@@ -886,11 +866,11 @@ export const Canvas = ({
 
         performAction(command);
         setPencilDraft([]);
-        setMyPresence({ ...myPresence, pencilDraft: null });
+        updatePresence({ pencilDraft: null });
         setCanvasState({ mode: isHighlight ? CanvasMode.Highlighter : CanvasMode.Pencil });
     }, [
         expired, pencilDraft, liveLayers, setLiveLayers, setLiveLayerIds,
-        myPresence, org, proModal, socket, boardId, pathColor, highlighterColor,
+        updatePresence, org, proModal, socket, boardId, pathColor, highlighterColor,
         performAction, pathStrokeSize, highlighterStrokeSize, activeTouches, User
     ]);
 
@@ -898,11 +878,7 @@ export const Canvas = ({
 
         if (expired) {
             selectedLayersRef.current = [];
-            const newPresence: Presence = {
-                ...myPresence,
-                selection: []
-            };
-            setMyPresence(newPresence);
+            updatePresence({ selection: [] });
             return;
         }
 
@@ -934,14 +910,12 @@ export const Canvas = ({
                     canvasState.initialBounds,
                     canvasState.corner,
                     point,
-                    mantainAspectRatio
+                    mantainAspectRatio,
+                    newLayer,
+                    id
                 );
 
-                if (newLayer.type === LayerType.Text) {
-                    bounds = resizeBox(initialBoundingBox, newBoundingBox, newLayer, canvasState.corner, singleLayer, layerRef);
-                } else {
-                    bounds = resizeBox(initialBoundingBox, newBoundingBox, newLayer, canvasState.corner, singleLayer);
-                }
+                bounds = resizeBox(initialBoundingBox, newBoundingBox, newLayer, singleLayer);
             } else if (canvasState.mode === CanvasMode.ArrowResizeHandler) {
                 if (newLayer.type === LayerType.Arrow) {
                     let intersectingStartLayer = newLayer.startConnectedLayerId
@@ -1044,7 +1018,7 @@ export const Canvas = ({
             socket.emit('layer-update', updatedLayerIds, Object.values(updatedLayers));
         }
 
-    }, [canvasState, liveLayers, liveLayerIds, selectedLayersRef, layerRef, zoom, expired, socket, setLiveLayers, setMyPresence, myPresence]);
+    }, [canvasState, liveLayers, liveLayerIds, selectedLayersRef, layerRef, zoom, expired, socket, setLiveLayers, updatePresence]);
 
     const onResizeHandlePointerDown = useCallback((
         corner: Side,
@@ -1824,15 +1798,9 @@ export const Canvas = ({
         performAction(command);
 
         selectedLayersRef.current = newIds;
+        updatePresence({ selection: newIds });
 
-        const newPresence: Presence = {
-            ...myPresence,
-            selection: newIds
-        };
-
-        setMyPresence(newPresence);
-
-    }, [copiedLayerIds, myPresence, setLiveLayers, setLiveLayerIds, setMyPresence, org, proModal, socket, boardId, performAction, liveLayers]);
+    }, [copiedLayerIds, setLiveLayers, setLiveLayerIds, org, proModal, socket, boardId, performAction, liveLayers, updatePresence]);
 
     const deleteLayers = useCallback((layerIds: string[]) => {
         const command = new DeleteLayerCommand(layerIds, liveLayers, liveLayerIds, setLiveLayers, setLiveLayerIds, boardId, socket);

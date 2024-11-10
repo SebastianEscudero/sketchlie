@@ -11,7 +11,7 @@ import { colorToCss } from '@/lib/utils';
 import { BaselineIcon } from '@/public/custom-icons/baseline';
 import { TextSizePicker } from './text-size-picker';
 import { HighlighterIcon } from '@/public/custom-icons/highlighter';
-import { useLayerTextEditingStore } from '../canvas-objects/utils/use-layer-text-editing';
+import { useLayerTextEditingStore } from '../canvas-objects/hooks/use-layer-text-editing';
 import { ToolbarSeparator } from '../_components/selection-tools';
 import { TextJustifySelector } from './text-justify-selector';
 import { ColorPalette } from './color-palette';

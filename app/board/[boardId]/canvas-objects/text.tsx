@@ -6,7 +6,7 @@ import { updateR2Bucket } from '@/lib/r2-bucket-functions';
 import { DEFAULT_FONT, defaultFont } from '../selection-tools/selectionToolUtils';
 import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
 import { useUpdateValue, useHandlePaste } from './utils/canvas-objects-utils';
-import { useLayerTextEditingStore } from './utils/use-layer-text-editing';
+import { useLayerTextEditingStore } from './hooks/use-layer-text-editing';
 
 interface TextProps {
   setLiveLayers?: (layers: any) => void;
@@ -54,10 +54,6 @@ export const Text = memo(({
   useEffect(() => {
     setEditableValue(layer.value);
   }, [id, layer]);
-
-  useEffect(() => {
-    onRefChange?.(textRef);
-  }, [onRefChange]);
 
   useEffect(() => {
     if (textRef.current) {

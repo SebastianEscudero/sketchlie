@@ -127,9 +127,10 @@ export function resizeBounds(
   bounds: XYWH,
   corner: Side,
   point: Point,
-  maintainAspectRatio = false
-): XYWH {
-
+  maintainAspectRatio = false,
+  layer: Layer,
+  id: string
+): XYWH {  
   const result = {
     x: bounds.x,
     y: bounds.y,
@@ -137,6 +138,40 @@ export function resizeBounds(
     height: bounds.height,
   };
 
+  const isHorizontalEdge = corner === Side.Left || corner === Side.Right;
+  const isTextLayer = layer?.type === LayerType.Text;
+
+  // Special case: Text layer horizontal resize
+  if (isTextLayer && isHorizontalEdge) {    
+    if (corner === Side.Left) {
+      if (point.x < bounds.x + bounds.width) {
+        // Normal case: dragging left
+        result.x = point.x;
+        result.width = bounds.x + bounds.width - point.x;
+      } else {
+        // Flip case: dragging past right edge
+        result.x = bounds.x + bounds.width;
+        result.width = point.x - (bounds.x + bounds.width);
+      }
+    } else { // Right
+      if (point.x > bounds.x) {
+        // Normal case: dragging right
+        result.width = point.x - bounds.x;
+      } else {
+        // Flip case: dragging past left edge
+        result.x = point.x;
+        result.width = bounds.x - point.x;
+      }
+    }
+    
+    // Keep original height or use textarea height
+    const contentEditableHeight = document.getElementById(id)?.scrollHeight;
+    console.log(contentEditableHeight);
+    result.height = contentEditableHeight || bounds.height;
+    return result;
+  }
+
+  // Normal resize logic
   const aspectRatio = bounds.width / bounds.height;
 
   if (corner === Side.Right) {
@@ -1134,12 +1169,8 @@ export function resizeBox(
   initialBoundingBox: XYWH,
   newBoundingBox: XYWH,
   newLayer: Layer,
-  corner: Side,
   singleLayer: boolean,
-  textareaRef?: React.RefObject<HTMLTextAreaElement>,
 ) {
-  const isCorner = corner === (Side.Top + Side.Left) || corner === (Side.Top + Side.Right) || corner === (Side.Bottom + Side.Left) || corner === (Side.Bottom + Side.Right);
-
   // Calculate the scale factors based on the initial bounding box
   const epsilon = 0.000001; // Sometimes it bugs out check it out if it causes
   const scaleX = newBoundingBox.width !== 0 ? newBoundingBox.width / initialBoundingBox.width : epsilon;
@@ -1205,16 +1236,6 @@ export function resizeBox(
     center: center,
     textFontSize: textFontSize,
     points: points
-  }
-
-  if (newLayer && Math.abs((newLayer?.height / newLayer?.width) - (bounds.height / bounds.width)) < 0.0001 && newLayer.height !== bounds.height && newLayer.width !== bounds.width
-    && textareaRef && textareaRef.current && newLayer.type === LayerType.Text) {
-    const newFontSize = bounds.width / newLayer.width * newLayer.textFontSize
-    bounds.textFontSize = newFontSize
-  }
-
-  if (!isCorner && textareaRef && textareaRef.current && newLayer.type === LayerType.Text && singleLayer) {
-    bounds.height = textareaRef.current.scrollHeight;
   }
 
   return bounds
