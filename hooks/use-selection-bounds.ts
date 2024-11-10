@@ -60,6 +60,10 @@ export const boundingBox = (layers: Layer[]): any | null => {
     let y1 = layer.y;
     let y2 = layer.y + layer.height;
   
+    if (!x1 || !x2 || !y1 || !y2) {
+      continue;
+    }
+
     if (layer.type === LayerType.Arrow && layer.center || layer.type === LayerType.Line && layer.center) {
       const end = { x: layer.x + layer.width, y: layer.y + layer.height };
   
