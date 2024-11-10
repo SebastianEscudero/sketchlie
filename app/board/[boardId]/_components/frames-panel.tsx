@@ -264,6 +264,9 @@ const SortableFramePreview = memo<SortableFramePreviewProps>(({
                     ))}
                 </g>
             </svg>
+
+            <div className="absolute inset-0 z-20" />
+
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <div className="absolute top-3 right-3 cursor-pointer bg-zinc-100 rounded-sm p-1 z-50">
