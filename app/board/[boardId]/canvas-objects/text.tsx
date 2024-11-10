@@ -4,6 +4,9 @@ import { cn, colorToCss } from "@/lib/utils";
 import { throttle } from 'lodash';
 import { updateR2Bucket } from '@/lib/r2-bucket-functions';
 import { DEFAULT_FONT, defaultFont } from '../selection-tools/selectionToolUtils';
+import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
+import { useUpdateValue, useHandlePaste } from './utils/canvas-objects-utils';
+import { useLayerTextEditingStore } from './utils/use-layer-text-editing';
 
 interface TextProps {
   setLiveLayers?: (layers: any) => void;
@@ -40,94 +43,74 @@ export const Text = memo(({
 }: TextProps) => {
   const { x, y, width, height, fill, value: initialValue, textFontSize, fontFamily, addedBy } = layer;
   const alignX = layer.alignX || "center";
-  const [value, setValue] = useState(initialValue);
-  const textRef = useRef<any>(null);
+  const [editableValue, setEditableValue] = useState(initialValue);
+  const textRef = useRef<HTMLDivElement>(null);
   const fillColor = colorToCss(fill);
   const isTransparent = fillColor === 'rgba(0,0,0,0)';
-  const [isFocused, setIsFocused] = useState(false);
+  const handlePaste = useHandlePaste();
+  const setIsEditing = useLayerTextEditingStore(state => state.setIsEditing);
+  const isEditingText = useLayerTextEditingStore(state => state.isEditing);
 
   useEffect(() => {
-    setValue(layer.value);
+    setEditableValue(layer.value);
   }, [id, layer]);
 
   useEffect(() => {
     onRefChange?.(textRef);
   }, [onRefChange]);
 
-  const handlePointerDown = useCallback((e: React.PointerEvent) => {
-    if (e.pointerType === "touch") {
-      return;
+  useEffect(() => {
+    if (textRef.current) {
+      textRef.current.style.height = `${textFontSize * 1.5}px`;
+      textRef.current.style.height = `${textRef.current.scrollHeight}px`;
     }
+  }, [width, editableValue, id, height, layer, textFontSize]);
 
-    onRefChange?.(textRef);
-
-    if (e.target === textRef.current) {
-
-      if (focused) {
-        e.stopPropagation();
-      } else {
-        e.preventDefault();
-        if (onPointerDown) onPointerDown(e, id);
-      }
-      return;
-    } else if (focused) {
-      e.preventDefault();
-      e.stopPropagation();
-      textRef.current.focus();
-    }
-
-    if (onPointerDown) {
-      onPointerDown(e, id);
-    }
-  }, [onPointerDown, id, onRefChange, focused]);
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    if (e.touches.length > 1) {
-      return;
-    }
-
-    onRefChange?.(textRef);
-
-    if (e.target === textRef.current) {
-
-      if (focused) {
-        e.stopPropagation();
-        textRef.current.focus();
-      } else {
-        e.preventDefault();
-        if (onPointerDown) onPointerDown(e, id);
-      }
-      return;
-    } else if (focused) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-
-    if (onPointerDown) {
-      onPointerDown(e, id);
-    }
-  }
-
-  const handleContentChange = useCallback((newValue: string) => {
-    setValue(newValue);
+  const handleContentChange = useCallback((e: ContentEditableEvent) => {
+    const newValue = e.target.value;
+    setEditableValue(newValue);
     const newLayer = { ...layer, value: newValue };
-    textRef.current.style.height = `${textFontSize * 1.5}px`;
-    newLayer.height = textRef.current.scrollHeight;
+    if (textRef.current) {
+      textRef.current.style.height = `${textFontSize * 1.5}px`;
+      newLayer.height = textRef.current.scrollHeight;
+    }
     if (setLiveLayers) {
       setLiveLayers((prevLayers: any) => {
         return { ...prevLayers, [id]: { ...newLayer } };
       });
-      throttledUpdateLayer(boardId, id, newLayer); // Pass newLayer instead of layer
+      throttledUpdateLayer(boardId, id, newLayer);
       if (socket) {
         socket.emit('layer-update', id, newLayer);
       }
     }
   }, [layer, textFontSize, setLiveLayers, socket, boardId, id]);
 
-  useEffect(() => {
-    textRef.current.style.height = `${textFontSize * 1.5}px`;
-    textRef.current.style.height = `${textRef.current.scrollHeight}px`;
-  }, [width, value, id, height, layer, textFontSize]);
+  const contentEditablePointerDown = (e: React.PointerEvent) => {
+    if (focused) {
+      setIsEditing(true);
+      e.stopPropagation();
+    } else {
+      e.preventDefault();
+    }
+  }
+
+  const handlePointerDown = (e: React.PointerEvent) => {
+    if (focused) {
+      setIsEditing(true);
+      e.stopPropagation();
+      e.preventDefault();
+    }
+
+    if (onPointerDown) onPointerDown(e, id);
+  };
+
+  const handlePointerEnter = useCallback(() => {
+    setAddedByLabel?.(addedBy || '');
+  }, [addedBy, setAddedByLabel]);
+
+  const handlePointerLeave = useCallback(() => {
+    setAddedByLabel?.('');
+  }, [setAddedByLabel]);
 
   if (!fill) {
     return null;
@@ -137,8 +120,9 @@ export const Text = memo(({
     <g
       transform={`translate(${x}, ${y})`}
       pointerEvents="auto"
-      onPointerEnter={() => setAddedByLabel?.(addedBy || '')}
-      onPointerLeave={() => setAddedByLabel?.('')}
+      onPointerEnter={handlePointerEnter}
+      onPointerLeave={handlePointerLeave}
+      onPointerDown={handlePointerDown}
       className="group"
     >
       <rect
@@ -148,46 +132,39 @@ export const Text = memo(({
           '--base-stroke': selectionColor || 'none',
         } as React.CSSProperties}
         className={cn("shape-stroke-effect", "fill-transparent")}
-        strokeWidth="1"
+        strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-      />  
+      />
       <foreignObject
         width={width}
         height={height}
-        onPointerDown={(e) => handlePointerDown(e)}
-        onTouchStart={(e) => handleTouchStart(e)}
       >
-        <textarea
-          ref={textRef}
-          value={value || ""}
-          onChange={e => handleContentChange(e.target.value)}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
-          autoComplete="off"
-          autoCapitalize="off"
-          autoCorrect="off"
+        <ContentEditable
+          id={id}
+          innerRef={textRef}
+          draggable={false}
+          disabled={!focused}
           spellCheck={false}
-          disabled={expired}
-          placeholder={isFocused ? "" : 'Type something...'}
+          html={editableValue || ""}
+          onChange={handleContentChange}
+          onPaste={handlePaste}
+          onPointerDown={contentEditablePointerDown}
           className={cn(
-            "outline-none w-full h-full text-left flex px-0.5 bg-transparent",
+            "outline-none w-full px-0.5 break-words whitespace-pre-wrap",
             defaultFont.className
           )}
           style={{
+            fontSize: textFontSize,
             color: isTransparent
               ? (document.documentElement.classList.contains("dark") ? "#FFF" : "#000")
               : fillColor,
+            cursor: isEditingText && 'text',
+            WebkitUserSelect: 'auto',
+            textAlign: alignX,
+            fontFamily: fontFamily || DEFAULT_FONT,
             wordWrap: 'break-word',
             overflowWrap: 'break-word',
-            resize: "none",
-            overflowY: "hidden",
-            overflowX: "hidden",
-            userSelect: "none",
-            fontSize: textFontSize,
-            textAlign: alignX,
-            cursor: focused ? 'text' : 'default',
-            fontFamily: fontFamily || DEFAULT_FONT,
           }}
         />
       </foreignObject>
