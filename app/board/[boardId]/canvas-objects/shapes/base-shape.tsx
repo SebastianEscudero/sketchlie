@@ -49,7 +49,6 @@ export const BaseShape = memo(({
   const [editableValue, setEditableValue] = useState(value);
   const fillColor = colorToCss(fill);
   const defaultStroke = colorToCss(outlineFill || fill);
-  const shapeRef = useRef<HTMLDivElement>(null);
   const updateValue = useUpdateValue();
   const handlePaste = useHandlePaste();
   const setIsEditing = useLayerTextEditingStore(state => state.setIsEditing);
@@ -119,7 +118,6 @@ export const BaseShape = memo(({
         <div className={`h-full w-full flex ${alignY === 'top' ? 'items-start' : alignY === 'bottom' ? 'items-end' : 'items-center'} ${alignX === 'left' ? 'justify-start' : alignX === 'right' ? 'justify-end' : 'justify-center'} p-1`}>
           <ContentEditable
             id={id}
-            innerRef={shapeRef}
             draggable={false}
             disabled={!focused}
             spellCheck={false}
