@@ -42,6 +42,7 @@ interface FramesPanelProps {
     socket: Socket | null;
     setPresentationMode: (mode: boolean) => void;
     title: string;
+    frameIds: string[];
     deleteLayers: (layerIds: string[]) => void;
 }
 
@@ -58,13 +59,9 @@ export const FramesPanel = memo<FramesPanelProps>(({
     socket,
     setPresentationMode,
     title,
+    frameIds,
     deleteLayers
 }) => {
-    // Calculate frameIds directly instead of using state
-    const frameIds = liveLayerIds.filter(id => 
-        liveLayers[id] && liveLayers[id].type === LayerType.Frame
-    );
-
     const sensors = useSensors(
         useSensor(PointerSensor),
         useSensor(KeyboardSensor, {
@@ -82,7 +79,7 @@ export const FramesPanel = memo<FramesPanelProps>(({
             const newOrder = arrayMove(frameIds, oldIndex, newIndex);
             const nonFrameLayerIds = liveLayerIds.filter(id => liveLayers[id].type !== LayerType.Frame);
             const newLayerIds = [...newOrder, ...nonFrameLayerIds];
-            
+
             setLiveLayerIds(newLayerIds);
 
             // Update R2 bucket
@@ -231,10 +228,10 @@ const SortableFramePreview = memo<SortableFramePreviewProps>(({
     }, [deleteLayers]);
 
     return (
-        <div 
-            ref={setNodeRef} 
-            style={style} 
-            {...attributes} 
+        <div
+            ref={setNodeRef}
+            style={style}
+            {...attributes}
             {...listeners}
             onDoubleClick={onDoubleClick}
             className="hover:bg-blue-500/20 relative flex flex-col items-center border rounded-sm border-zinc-200 h-[180px] cursor-hand active:cursor-grab transition-colors duration-200"
@@ -269,16 +266,22 @@ const SortableFramePreview = memo<SortableFramePreviewProps>(({
 
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                    <div className="absolute top-3 right-3 cursor-pointer bg-zinc-100 rounded-sm p-1 z-50">
+                    <div className="absolute top-3 right-3 cursor-pointer bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-600 dark:hover:bg-zinc-700 rounded-sm p-1 z-50">
                         <MoreHorizontal className="h-4 w-4" />
                     </div>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent 
-                    align="center" 
-                    side="bottom" 
+                <DropdownMenuContent
+                    align="center"
+                    side="bottom"
                     sideOffset={5}
                 >
-                    <DropdownMenuItem onPointerDown={() => handleDelete(frameId)} className="text-red-500 hover:text-red-600">
+                    <DropdownMenuItem
+                        onPointerDown={(e) => {
+                            e.stopPropagation(); // Prevent drag start
+                            handleDelete(frameId);
+                        }}
+                        className="text-red-500 hover:text-red-600"
+                    >
                         Delete
                         <Trash2 className="h-4 w-4 ml-2" />
                     </DropdownMenuItem>

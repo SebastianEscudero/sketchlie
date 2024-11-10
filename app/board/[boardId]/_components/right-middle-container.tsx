@@ -26,6 +26,7 @@ interface RightMiddleContainerProps {
     setOpenCommentBoxId: (commentId: string | null) => void;
     user: User;
     title: string;
+    frameIds: string[];
 }
 
 export const RightMiddleContainer = memo(({
@@ -47,7 +48,8 @@ export const RightMiddleContainer = memo(({
     openCommentBoxId,
     setOpenCommentBoxId,
     user,
-    title
+    title,
+    frameIds
 }: RightMiddleContainerProps) => {
     if (rightMiddleContainerView === null) return null;
 
@@ -77,6 +79,7 @@ export const RightMiddleContainer = memo(({
                     socket={socket}
                     setPresentationMode={setPresentationMode}
                     title={title}
+                    frameIds={frameIds}
                 />
             )}
             {rightMiddleContainerView === "comments" && 

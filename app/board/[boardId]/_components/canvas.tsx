@@ -2382,6 +2382,7 @@ export const Canvas = ({
                                     setOpenCommentBoxId={setOpenCommentBoxId}
                                     user={User}
                                     title={board.title}
+                                    frameIds={frameIds}
                                 />
                                 <AddedLayerByLabel
                                     addedByLabel={addedByLabel}
