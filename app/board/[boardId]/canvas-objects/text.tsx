@@ -5,7 +5,7 @@ import { throttle } from 'lodash';
 import { updateR2Bucket } from '@/lib/r2-bucket-functions';
 import { DEFAULT_FONT, defaultFont } from '../selection-tools/selectionToolUtils';
 import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
-import { useUpdateValue, useHandlePaste } from './utils/canvas-objects-utils';
+import { useHandlePaste } from './utils/canvas-objects-utils';
 import { useLayerTextEditingStore } from './hooks/use-layer-text-editing';
 
 interface TextProps {
@@ -22,6 +22,7 @@ interface TextProps {
   focused?: boolean;
   boardId?: string;
   setAddedByLabel?: (addedBy: string) => void;
+  justInsertedText?: boolean;
 };
 
 const throttledUpdateLayer = throttle((boardId, layerId, layerUpdates) => {
@@ -34,12 +35,11 @@ export const Text = memo(({
   id,
   selectionColor,
   setLiveLayers,
-  onRefChange,
-  expired,
   socket,
   focused = false,
   boardId,
   setAddedByLabel,
+  justInsertedText = false,
 }: TextProps) => {
   const { x, y, width, height, fill, value: initialValue, textFontSize, fontFamily, addedBy } = layer;
   const alignX = layer.alignX || "center";
@@ -61,6 +61,13 @@ export const Text = memo(({
       textRef.current.style.height = `${textRef.current.scrollHeight}px`;
     }
   }, [width, editableValue, id, height, layer, textFontSize]);
+
+  useEffect(() => {
+    if (justInsertedText && textRef.current) {
+      console.log('just inserted')
+      textRef.current.focus();
+    }
+  }, [justInsertedText]);
 
   const handleContentChange = useCallback((e: ContentEditableEvent) => {
     const newValue = e.target.value;
@@ -140,7 +147,6 @@ export const Text = memo(({
           id={id}
           innerRef={textRef}
           draggable={false}
-          disabled={!focused}
           spellCheck={false}
           html={editableValue || ""}
           onChange={handleContentChange}

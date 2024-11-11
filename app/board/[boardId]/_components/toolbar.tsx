@@ -318,6 +318,7 @@ export const Toolbar = memo(({
           setCanvasState={setCanvasState}
           canvasState={canvasState}
           isShapesMenuOpen={toolbarMenu === ToolbarMenu.Shapes}
+          setToolbarMenu={setToolbarMenu}
         />
       }
       {toolbarMenu === ToolbarMenu.Arrows && canvasState.mode === CanvasMode.Inserting && canvasState.layerType === LayerType.Arrow &&
@@ -326,6 +327,7 @@ export const Toolbar = memo(({
           arrowTypeInserting={arrowTypeInserting}
           setArrowTypeInserting={setArrowTypeInserting}
           isArrowsMenuOpen={toolbarMenu === ToolbarMenu.Arrows}
+          setToolbarMenu={setToolbarMenu}
         />
       }
       {toolbarMenu === ToolbarMenu.Frames && canvasState.mode === CanvasMode.Inserting && canvasState.layerType === LayerType.Frame &&
@@ -335,6 +337,7 @@ export const Toolbar = memo(({
           zoom={zoom}
           insertLayer={insertLayer}
           svgRef={svgRef}
+          setToolbarMenu={setToolbarMenu}
         />
       }
       {toolbarMenu === ToolbarMenu.Media &&

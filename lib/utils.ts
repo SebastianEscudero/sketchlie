@@ -124,47 +124,44 @@ export function getCenterOfScreen(
 
 
 export function resizeBounds(
-  bounds: XYWH,
+  bounds: { x: number, y: number, width: number, height: number, textFontSize?: number },
   corner: Side,
   point: Point,
   maintainAspectRatio = false,
   layer: Layer,
   id: string
-): XYWH {  
+): { x: number, y: number, width: number, height: number, textFontSize?: number } {
   const result = {
     x: bounds.x,
     y: bounds.y,
     width: bounds.width,
     height: bounds.height,
+    textFontSize: bounds.textFontSize,
   };
 
   const isHorizontalEdge = corner === Side.Left || corner === Side.Right;
   const isTextLayer = layer?.type === LayerType.Text;
 
-  // Special case: Text layer horizontal resize
-  if (isTextLayer && isHorizontalEdge) {    
+  // Special case: Text layer horizontal edge resizing
+  if (isTextLayer && isHorizontalEdge) {
     if (corner === Side.Left) {
       if (point.x < bounds.x + bounds.width) {
-        // Normal case: dragging left
         result.x = point.x;
         result.width = bounds.x + bounds.width - point.x;
       } else {
-        // Flip case: dragging past right edge
         result.x = bounds.x + bounds.width;
         result.width = point.x - (bounds.x + bounds.width);
       }
     } else { // Right
       if (point.x > bounds.x) {
-        // Normal case: dragging right
         result.width = point.x - bounds.x;
       } else {
-        // Flip case: dragging past left edge
         result.x = point.x;
         result.width = bounds.x - point.x;
       }
     }
-    
-    // Keep original height or use textarea height
+
+    // Keep original height
     const contentEditableHeight = document.getElementById(id)?.scrollHeight;
     result.height = contentEditableHeight || bounds.height;
     return result;
@@ -324,6 +321,12 @@ export function resizeBounds(
       result.height = Math.abs(result.height);
       result.y -= result.height;
     }
+  }
+
+  // Scale font size for text layer corner resizing
+  if (isTextLayer && !isHorizontalEdge && layer.textFontSize) {
+    result.textFontSize = result.width / layer.width * layer.textFontSize;
+    layer.textFontSize = result.textFontSize;
   }
 
   return result;
@@ -639,7 +642,7 @@ export function findIntersectingLayersWithPath(
 
   layerIds.forEach(layerId => {
     const layer = layers[layerId];
-    
+
     if (!layer) return;
 
     if (layer.type === LayerType.Path && layer.points) {
@@ -649,7 +652,7 @@ export function findIntersectingLayersWithPath(
           const startEraserPoint = eraserPathPoints[j];
           const endEraserPoint = eraserPathPoints[j + 1];
 
-          if (doLinesIntersect([layer.x-2, layer.y-2], [layer.x+2, layer.y+2], startEraserPoint, endEraserPoint)) {
+          if (doLinesIntersect([layer.x - 2, layer.y - 2], [layer.x + 2, layer.y + 2], startEraserPoint, endEraserPoint)) {
             intersectingLayerIds.push(layerId);
             break;
           }
@@ -1211,10 +1214,10 @@ export function resizeBox(
     newLayer.type !== LayerType.Comment &&
     newLayer.type !== LayerType.Table
   ) {
-    if (!singleLayer) {
-      textFontSize = newLayer.textFontSize * scaleY;
-    } else {
+    if (singleLayer) {
       textFontSize = newLayer.textFontSize;
+    } else {
+      textFontSize = newLayer.textFontSize * scaleY;
     }
   }
 

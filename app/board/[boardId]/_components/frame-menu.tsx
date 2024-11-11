@@ -1,4 +1,4 @@
-import { LayerType } from "@/types/canvas";
+import { LayerType, ToolbarMenu } from "@/types/canvas";
 import { AnimatedToolbarMenu } from "./toolbar";
 import { getCenterOfScreen } from "@/lib/utils";
 
@@ -8,6 +8,7 @@ interface FrameMenuProps {
   zoom: number;
   insertLayer: (layerType: LayerType, position: any, width: number, height: number) => void;
   svgRef: any;
+  setToolbarMenu: (menu: ToolbarMenu) => void;
 }
 
 const FRAME_TYPES = [
@@ -22,6 +23,7 @@ export const FrameMenu = ({
   zoom,
   insertLayer,
   svgRef,
+  setToolbarMenu
 }: FrameMenuProps) => {
   const handleFrameSelect = (ratio: number) => {
     const baseHeight = window.innerHeight * 0.6;
@@ -47,7 +49,10 @@ export const FrameMenu = ({
           <button
             key={frameType.label}
             className="p-2 hover:bg-neutral-100 dark:hover:bg-zinc-700 rounded-lg transition-colors flex flex-col justify-between items-center space-y-2"
-            onClick={() => handleFrameSelect(frameType.ratio)}
+            onClick={() => {
+              handleFrameSelect(frameType.ratio);
+              setToolbarMenu(ToolbarMenu.None);
+            }}
           >
             <div className="flex items-center justify-center h-[70%]">
                 <div 
