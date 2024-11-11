@@ -82,6 +82,8 @@ export const PencilToolbar = memo(({
         } else if (canvasState.mode === CanvasMode.Highlighter) {
             setHighlighterStrokeSize(value * 10);
         }
+
+        setToolbarMenu(ToolbarMenu.None);
     }
 
     const strokeSizeButtonPointerDown = () => {
@@ -232,6 +234,7 @@ export const PencilToolbar = memo(({
                             newPresetColors[editingPresetIndex] = color;
                             setCurrentPresetColors(newPresetColors);
                             onPathColorChange(color);
+                            setToolbarMenu(ToolbarMenu.None);
                         }
                     }}
                     selectedColor={selectedColor()}
