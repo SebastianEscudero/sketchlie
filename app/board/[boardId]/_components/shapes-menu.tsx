@@ -1,4 +1,4 @@
-import { CanvasMode, LayerType } from "@/types/canvas";
+import { CanvasMode, LayerType, ToolbarMenu } from "@/types/canvas";
 import {
   ArrowBigDown,
   ArrowBigLeft,
@@ -20,12 +20,14 @@ interface ShapesMenuProps {
   setCanvasState: (state: any) => void;
   canvasState: any;
   isShapesMenuOpen: boolean;
+  setToolbarMenu: (menu: ToolbarMenu) => void;
 }
 
 export const ShapesMenu = ({
   setCanvasState,
   canvasState,
   isShapesMenuOpen,
+  setToolbarMenu,
 }: ShapesMenuProps) => {
   const shapes = [
     { icon: Square, type: LayerType.Rectangle },
@@ -52,10 +54,13 @@ export const ShapesMenu = ({
           <ExtraSmallToolButton
             key={shape.type}
             icon={shape.icon}
-            onClick={() => setCanvasState({
-              mode: CanvasMode.Inserting,
-              layerType: shape.type,
-            })}
+            onClick={() => {
+              setCanvasState({
+                mode: CanvasMode.Inserting,
+                layerType: shape.type,
+              })
+              setToolbarMenu(ToolbarMenu.None)
+            }}
             isActive={
               canvasState.mode === CanvasMode.Inserting &&
               canvasState.layerType === shape.type

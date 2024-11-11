@@ -308,6 +308,7 @@ export const Toolbar = memo(({
           setCanvasState={setCanvasState}
           canvasState={canvasState}
           isShapesMenuOpen={toolbarMenu === ToolbarMenu.Shapes}
+          setToolbarMenu={setToolbarMenu}
         />
       }
       {toolbarMenu === ToolbarMenu.Arrows && canvasState.mode === CanvasMode.Inserting && canvasState.layerType === LayerType.Arrow &&
