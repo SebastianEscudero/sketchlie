@@ -272,7 +272,7 @@ export const MediaMenu: React.FC<MediaMenuProps> = ({
 
   return (
     <>
-      <AnimatedToolbarMenu isOpen={isMediaMenuOpen} className="bottom-16 right-28">
+      <AnimatedToolbarMenu isOpen={isMediaMenuOpen} className="bottom-16 right-0 sm:right-28">
         <div className="flex flex-col space-y-2">
           <Button onClick={() => inputFileRef.current?.click()} variant="ghost" className="justify-start">
             <MonitorUp className="mr-2 h-4 w-4" />
