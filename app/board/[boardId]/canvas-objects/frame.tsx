@@ -31,8 +31,6 @@ export const Frame = memo(({
     focused
 }: FrameProps) => {
     const { x, y, width, height, value: initialValue, addedBy } = layer;
-    const fontSize = Math.min(width, height) * 0.05;
-    const padding = fontSize * 0.5;
     const [isEditing, setIsEditing] = useState(false);
     const [value, setValue] = useState(initialValue || `Frame ${frameNumber || ""}`);
     const updateValue = useUpdateValue();
@@ -55,15 +53,26 @@ export const Frame = memo(({
         setIsEditing(false);
     };
 
+    const fontSize = Math.min(width, height) * 0.05;
+    const padding = fontSize * 0.5;
+    const borderWidth = Math.min(width, height) * 0.04;
+    const baseStroke = selectionColor ? selectionColor : document.documentElement.classList.contains("dark") ? "#a4a2a1" : "black";
+
+    const borders = [
+        // Top border
+        { x: 0, y: 0, width, height: borderWidth },
+        // Bottom border
+        { x: 0, y: height - borderWidth, width, height: borderWidth },
+        // Left border
+        { x: 0, y: borderWidth, width: borderWidth, height: height - 2 * borderWidth },
+        // Right border
+        { x: width - borderWidth, y: borderWidth, width: borderWidth, height: height - 2 * borderWidth }
+    ];
+
     return (
         <g
             transform={`translate(${x}, ${y})`}
-            onPointerDown={(e) => onPointerDown?.(e, id)}
-            onDoubleClick={handleDoubleClick}
-            pointerEvents="auto"
             data-id={`frame-${frameNumber}`}
-            onPointerEnter={() => setAddedByLabel?.(addedBy || '')}
-            onPointerLeave={() => setAddedByLabel?.('')}
             className="group"
         >
             {isEditing ? (
@@ -79,40 +88,69 @@ export const Frame = memo(({
                             background: 'transparent',
                             border: 'none',
                             outline: 'none',
-                            color: document.documentElement.classList.contains("dark") ? "#FFFFFF" : "#000000",
+                            color: baseStroke,
                         }}
                         autoFocus
                     />
                 </foreignObject>
             ) : (
-                focused && ( // Conditionally render text based on focused
+                focused && (
                     <text
                         x={padding}
                         y={-(padding)}
                         fontSize={fontSize}
-                        fill={document.documentElement.classList.contains("dark") ? "#FFFFFF" : "#000000"}
-                        className="font-semibold"
+                        fill={baseStroke}
+                        className="font-semibold cursor-text pointer-events-auto"
+                        onPointerDown={(e) => {
+                            console.log("pointer down");
+                            e.stopPropagation();
+                            setIsEditing(true);
+                        }}
                     >
                         {value}
                     </text>
                 )
             )}
-            <rect
-                width={width}
-                height={height}
-                fill={document.documentElement.classList.contains("dark") ? "#2c2c2c" : "#FFFFFF"}
+
+            <g
                 style={{
-                    '--base-stroke': document.documentElement.classList.contains("dark") ? "white" : "black"
+                    '--base-stroke': baseStroke
                 } as React.CSSProperties}
                 className={cn(
                     "stroke-[var(--base-stroke)]",
                     "[#canvas.shapes-hoverable_.group:hover_&]:stroke-[#3390FF]",
-                    "drop-shadow-md"
                 )}
-                strokeWidth="1"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-            />
+            >
+                {/* Interactive border areas */}
+                <g className="group/borders">
+                    {borders.map((border, index) => (
+                        <rect
+                            key={index}
+                            {...border}
+                            className="transition-colors duration-200 group-hover/borders:fill-blue-500/10"
+                            fill="transparent"
+                            onPointerDown={(e) => onPointerDown?.(e, id)}
+                            onDoubleClick={handleDoubleClick}
+                            onPointerEnter={() => setAddedByLabel?.(addedBy || '')}
+                            onPointerLeave={() => setAddedByLabel?.('')}
+                            pointerEvents="auto"
+                            stroke="none"
+                        />
+                    ))}
+                </g>
+
+                {/* Visual border */}
+                <rect
+                    width={width}
+                    height={height}
+                    fill="transparent"
+                    strokeWidth={Math.min(Math.max(1, borderWidth / 10), 5)}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeDasharray={Math.min(Math.max(2, borderWidth / 10 * 2), 10)}
+                    pointerEvents="none"
+                />
+            </g>
         </g>
     );
 });

@@ -498,7 +498,6 @@ export const Canvas = ({
 
     useEffect(() => {
         if (justInsertedText && layerRef && layerRef.current) {
-            console.log('focusing');
             layerRef.current?.focus();
         }
     }, [justInsertedText, layerRef]);
@@ -2467,32 +2466,6 @@ export const Canvas = ({
                                         willChange: 'transform',
                                     }}
                                 >
-                                    {currentPreviewLayer && currentPreviewLayer.type === LayerType.Frame && (
-                                        <Frame
-                                            id="FramePreview"
-                                            layer={currentPreviewLayer}
-                                        />
-                                    )}
-                                    {/* We render the frames first so they are always shown below the other layers */}
-                                    {visibleLayerIds.filter(layerId => liveLayers[layerId] && liveLayers[layerId].type === LayerType.Frame).map((frameId: string) => {
-                                        const frameNumber = liveLayerIds.filter(id => liveLayers[id] && liveLayers[id].type === LayerType.Frame).indexOf(frameId) + 1;
-                                        const isFocused = selectedLayersRef.current.length === 1 && selectedLayersRef.current[0] === frameId && !justChanged;
-                                        return (
-                                            <Frame
-                                                key={frameId}
-                                                id={frameId}
-                                                layer={liveLayers[frameId] as FrameLayer}
-                                                onPointerDown={onLayerPointerDown}
-                                                frameNumber={frameNumber}
-                                                expired={expired}
-                                                socket={socket}
-                                                boardId={boardId}
-                                                forcedRender={forceLayerPreviewRender}
-                                                setAddedByLabel={setAddedByLabel}
-                                                focused={isFocused}
-                                            />
-                                        );
-                                    })}
                                     {visibleLayerIds.map((layerId: string) => {
                                         const isFocused = selectedLayersRef.current.length === 1 && selectedLayersRef.current[0] === layerId && !justChanged;
                                         return (
@@ -2519,26 +2492,38 @@ export const Canvas = ({
                                             />
                                         );
                                     })}
-                                    <SelectionBox
-                                        zoom={zoom}
-                                        liveLayers={liveLayers}
-                                        selectedLayers={selectedLayersRef.current.filter(layerId => liveLayers[layerId] && liveLayers[layerId].type !== LayerType.Comment)}
-                                        onResizeHandlePointerDown={onResizeHandlePointerDown}
-                                        onArrowResizeHandlePointerDown={onArrowResizeHandlePointerDown}
-                                        setLiveLayers={setLiveLayers}
-                                        forceRender={forceSelectionBoxRender}
-                                        setCurrentPreviewLayer={setCurrentPreviewLayer}
-                                        mousePosition={mousePosition}
-                                        setCanvasState={setCanvasState}
-                                        setStartPanPoint={setStartPanPoint}
-                                        setArrowTypeInserting={setArrowTypeInserting}
-                                        showHandles={activeTouches < 2 && canvasState.mode !== CanvasMode.ArrowResizeHandler}
-                                    />
                                     {currentPreviewLayer && currentPreviewLayer.type !== LayerType.Comment && (
                                         <CurrentPreviewLayer
                                             layer={currentPreviewLayer}
                                         />
                                     )}
+                                    {currentPreviewLayer && currentPreviewLayer.type === LayerType.Frame && (
+                                        <Frame
+                                            id="FramePreview"
+                                            layer={currentPreviewLayer}
+                                        />
+                                    )}
+                                    {/* We render the frames after the layers so they are always shown above */}
+                                    {visibleLayerIds.filter(layerId => liveLayers[layerId] && liveLayers[layerId].type === LayerType.Frame).map((frameId: string) => {
+                                        const frameNumber = liveLayerIds.filter(id => liveLayers[id] && liveLayers[id].type === LayerType.Frame).indexOf(frameId) + 1;
+                                        const isFocused = selectedLayersRef.current.length === 1 && selectedLayersRef.current[0] === frameId && !justChanged;
+                                        return (
+                                            <Frame
+                                                key={frameId}
+                                                id={frameId}
+                                                layer={liveLayers[frameId] as FrameLayer}
+                                                onPointerDown={onLayerPointerDown}
+                                                frameNumber={frameNumber}
+                                                expired={expired}
+                                                socket={socket}
+                                                boardId={boardId}
+                                                forcedRender={forceLayerPreviewRender}
+                                                selectionColor={layerIdsToColorSelection[frameId]}
+                                                setAddedByLabel={setAddedByLabel}
+                                                focused={isFocused}
+                                            />
+                                        );
+                                    })}
                                     {((canvasState.mode === CanvasMode.ArrowResizeHandler && selectedLayersRef.current.length === 1) || (currentPreviewLayer?.type === LayerType.Arrow)) && (
                                         <ArrowConnectionOutlinePreview
                                             zoom={zoom}
@@ -2620,6 +2605,21 @@ export const Canvas = ({
                                     {otherUsers &&
                                         <CursorsPresence otherUsers={otherUsers} zoom={zoom} />
                                     }
+                                    <SelectionBox
+                                        zoom={zoom}
+                                        liveLayers={liveLayers}
+                                        selectedLayers={selectedLayersRef.current.filter(layerId => liveLayers[layerId] && liveLayers[layerId].type !== LayerType.Comment)}
+                                        onResizeHandlePointerDown={onResizeHandlePointerDown}
+                                        onArrowResizeHandlePointerDown={onArrowResizeHandlePointerDown}
+                                        setLiveLayers={setLiveLayers}
+                                        forceRender={forceSelectionBoxRender}
+                                        setCurrentPreviewLayer={setCurrentPreviewLayer}
+                                        mousePosition={mousePosition}
+                                        setCanvasState={setCanvasState}
+                                        setStartPanPoint={setStartPanPoint}
+                                        setArrowTypeInserting={setArrowTypeInserting}
+                                        showHandles={activeTouches < 2 && canvasState.mode !== CanvasMode.ArrowResizeHandler}
+                                    />
                                 </g>
                             </svg>
                         </div>

@@ -188,12 +188,11 @@ const SortableFramePreview = memo<SortableFramePreviewProps>(({
     const layersInFrame = liveLayerIds
         .map(id => liveLayers[id])
         .filter(layer =>
-            layer &&
-            layer !== frame &&
-            layer.x >= frame.x &&
-            layer.x + layer.width <= frame.x + frame.width &&
-            layer.y >= frame.y &&
-            layer.y + layer.height <= frame.y + frame.height
+            layer && 
+            layer.x < frame.x + frame.width && 
+            layer.x + layer.width > frame.x && 
+            layer.y < frame.y + frame.height && 
+            layer.y + layer.height > frame.y
         );
 
     const a4Width = 842;

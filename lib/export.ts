@@ -100,10 +100,11 @@ function generateFrameSvg(frame: Layer, liveLayers: Layers, liveLayerIds: string
     .map(id => liveLayers[id])
     .filter(layer => 
       layer !== frame && 
-      layer.x >= frame.x && 
-      layer.x + layer.width <= frame.x + frame.width && 
-      layer.y >= frame.y && 
-      layer.y + layer.height <= frame.y + frame.height
+      // Check if there's any overlap between layer and frame
+      layer.x < frame.x + frame.width && 
+      layer.x + layer.width > frame.x && 
+      layer.y < frame.y + frame.height && 
+      layer.y + layer.height > frame.y
     );
 
   const layersHtml = layersInFrame.map(layer => 

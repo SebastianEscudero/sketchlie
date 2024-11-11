@@ -52,8 +52,11 @@ export const InsertImage = memo(({
       onPointerDown={handlePointerDown}
       onPointerEnter={handlePointerEnter}
       onPointerLeave={handlePointerLeave}
-      pointerEvents="auto"
-      className="group"
+      className={cn(
+        "group",
+        "[#canvas.shapes-hoverable_&]:pointer-events-auto",
+        "[#canvas:not(.shapes-hoverable)_&]:pointer-events-none"
+      )}
     >
       <rect
         x={x}

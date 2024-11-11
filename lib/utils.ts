@@ -166,7 +166,6 @@ export function resizeBounds(
     
     // Keep original height or use textarea height
     const contentEditableHeight = document.getElementById(id)?.scrollHeight;
-    console.log(contentEditableHeight);
     result.height = contentEditableHeight || bounds.height;
     return result;
   }
