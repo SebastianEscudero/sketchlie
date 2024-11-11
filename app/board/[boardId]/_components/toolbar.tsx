@@ -317,6 +317,7 @@ export const Toolbar = memo(({
           arrowTypeInserting={arrowTypeInserting}
           setArrowTypeInserting={setArrowTypeInserting}
           isArrowsMenuOpen={toolbarMenu === ToolbarMenu.Arrows}
+          setToolbarMenu={setToolbarMenu}
         />
       }
       {toolbarMenu === ToolbarMenu.Frames && canvasState.mode === CanvasMode.Inserting && canvasState.layerType === LayerType.Frame &&
