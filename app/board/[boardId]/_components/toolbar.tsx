@@ -256,16 +256,6 @@ export const Toolbar = memo(({
           }
         />
         <ToolButton
-          label="Table"
-          icon={Table2}
-          onClick={() => {
-            setCanvasState({
-              mode: CanvasMode.Inserting,
-              layerType: LayerType.Table,
-            });
-          }}
-        />
-        <ToolButton
           label="Frame"
           icon={Frame}
           onClick={() => {
