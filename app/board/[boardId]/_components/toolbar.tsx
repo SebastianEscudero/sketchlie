@@ -327,6 +327,7 @@ export const Toolbar = memo(({
           zoom={zoom}
           insertLayer={insertLayer}
           svgRef={svgRef}
+          setToolbarMenu={setToolbarMenu}
         />
       }
       {toolbarMenu === ToolbarMenu.Media &&
