@@ -1,9 +1,10 @@
 import { Hint } from "@/components/hint";
 import { Button } from "@/components/ui/button";
 import { FramesLayersIcon } from "@/public/custom-icons/frames";
-import { Minus, Plus, Maximize2, Minimize2, Focus } from "lucide-react";
+import { Minus, Plus, Maximize2, Minimize2, Focus, Hand } from "lucide-react";
 import React, { memo, useState, useCallback, useEffect } from "react";
 import { getRestrictedZoom, maxZoom, minZoom } from "./utils/zoom-utils";
+import { CanvasMode } from "@/types/canvas";
 
 interface BottomRightViewProps {
     zoom: number;
@@ -13,6 +14,8 @@ interface BottomRightViewProps {
     setFocusMode: (mode: boolean) => void;
     focusMode: boolean;
     setRightMiddleContainerView: (view: string | null) => void;
+    setCanvasState: (newState: any) => void;
+    canvasState: CanvasMode
 }
 
 const PREDEFINED_PERCENTAGES = [10, 25, 50, 100, 150, 200, 300, 400];
@@ -25,6 +28,8 @@ export const BottomRightView = memo(({
     setFocusMode,
     focusMode,
     setRightMiddleContainerView,
+    setCanvasState,
+    canvasState
 }: BottomRightViewProps) => {
     const [isFullscreen, setIsFullscreen] = useState(false);
 
@@ -138,7 +143,21 @@ export const BottomRightView = memo(({
 
     return (
         <div className="border dark:border-zinc-800 space-x-1 px-2 shadow-sm absolute h-[52px] bottom-4 right-4 rounded-xl py-2 items-center lg:flex hidden bg-white dark:bg-zinc-800 pointer-events-auto">
-            <div className="flex items-center border-r pr-1">
+            <div className="flex items-center border-r pr-1 space-x-1">
+                <Hint label="Move" sideOffset={4}>
+                    <Button
+                        className="px-2"
+                        variant = {canvasState === CanvasMode.Moving ? "iconActive" : "icon"}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setCanvasState({
+                                mode: CanvasMode.Moving
+                            })
+                        }}
+                    >
+                        <Hand className="h-4 w-4" />     
+                    </Button>
+                </Hint>
                 <Hint label="Focus Mode" sideOffset={4}>
                     <Button onClick={toggleFocusMode} className="px-2" variant="icon">
                         <Focus className="h-4 w-4" />

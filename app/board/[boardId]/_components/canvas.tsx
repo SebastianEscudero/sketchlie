@@ -149,6 +149,7 @@ export const Canvas = ({
     const [highlighterStrokeSize, setHighlighterStrokeSize] = useState(20);
 
     // UI states
+    const [isRightClickPanning, setIsRightClickPanning] = useState(false);
     const [isTranslatingLayers, setIsTranslatingLayers] = useState(false);
     const [justChanged, setJustChanged] = useState(false);
     const [isDraggingOverCanvas, setIsDraggingOverCanvas] = useState(false);
@@ -1081,6 +1082,11 @@ export const Canvas = ({
         setIsPointerDown(true);
 
         if (isMouseLeftButton(e)) {
+            if (canvasState.mode === CanvasMode.Moving) {
+                setStartPanPoint({ x: e.clientX, y: e.clientY });
+                return;
+            }
+
             const point = pointerEventToCanvasPoint(e, cameraRef.current, zoomRef.current, svgRef);
             if (point && selectedLayersRef.current.length > 0) {
                 const bounds = calculateBoundingBox(selectedLayersRef.current.map(id => liveLayers[id]));
@@ -1115,11 +1121,6 @@ export const Canvas = ({
                 return;
             }
 
-            if (canvasState.mode === CanvasMode.Moving) {
-                setStartPanPoint({ x: e.clientX, y: e.clientY });
-                return;
-            }
-
             if (canvasState.mode === CanvasMode.Inserting) {
                 // If the layer type is comment, set the current preview layer to the comment layer (we insert it once the user writes something)
                 if (canvasState.layerType === LayerType.Comment) {
@@ -1151,6 +1152,8 @@ export const Canvas = ({
         } else if (isMouseRightButton(e) || isMouseMiddleButton(e)) {
             setPresentationMode(false);
             setStartPanPoint({ x: e.clientX, y: e.clientY });
+            setIsRightClickPanning(true);
+            setCanvasState({ mode: CanvasMode.Moving })
         }
 
         if (selectedLayersRef.current.length > 0) {
@@ -1181,7 +1184,6 @@ export const Canvas = ({
             };
             setCamera(newCameraPosition);
             setStartPanPoint({ x: e.clientX, y: e.clientY });
-            setCanvasState({ mode: CanvasMode.Moving });
             return;
         }
 
@@ -1190,6 +1192,13 @@ export const Canvas = ({
         updatePresence({ cursor: { x: current.x, y: current.y } });
 
         if (canvasState.mode === CanvasMode.Moving) {
+            if (!isRightClickPanning) {
+                if (!isMouseLeftButton(e)) {
+                    console.log('no left button')
+                    return;
+                }
+            }
+
             const newCameraPosition = {
                 x: camera.x + e.clientX - startPanPoint.x,
                 y: camera.y + e.clientY - startPanPoint.y,
@@ -1384,6 +1393,14 @@ export const Canvas = ({
         [continueDrawing, camera, canvasState, resizeSelectedLayers, translateSelectedLayers, startMultiSelection, updateSelectionNet, setCamera, zoom, startPanPoint, activeTouches, EraserDeleteLayers, arrowTypeInserting, currentPreviewLayer, liveLayerIds, liveLayers, focusMode, setLastMouseMove, presentationMode, updatePresence]);
 
     const onPointerUp = useCallback((e: React.PointerEvent) => {
+        if (isRightClickPanning) {
+            setIsRightClickPanning(false);
+        }
+        
+        if (canvasState.mode === CanvasMode.Moving && !isRightClickPanning) {
+            return;
+        }
+        
         setIsPointerDown(false);
         const point = pointerEventToCanvasPoint(e, camera, zoom, svgRef);
 
@@ -2320,6 +2337,8 @@ export const Canvas = ({
                                     focusMode={focusMode}
                                     setFocusMode={setFocusMode}
                                     setRightMiddleContainerView={setRightMiddleContainerView}
+                                    setCanvasState={setCanvasState}
+                                    canvasState={canvasState.mode}
                                 />
                                 {/* this contains frames/comments preview */}
                                 <RightMiddleContainer
