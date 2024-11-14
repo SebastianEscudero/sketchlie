@@ -3,7 +3,7 @@ import { AnimatedToolbarMenu } from "./toolbar";
 import { Upload, Library, Search, X, Loader2, MonitorUp } from "lucide-react";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { LayerType, Point } from "@/types/canvas";
+import { Camera, LayerType, Point } from "@/types/canvas";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useDebounce } from "usehooks-ts";
@@ -18,8 +18,7 @@ interface MediaMenuProps {
   isMediaMenuOpen: boolean;
   org: any;
   insertMedia: (mediaItems: { layerType: LayerType.Image | LayerType.Video | LayerType.Link | LayerType.Svg, position: Point, info: any, zoom: number }[]) => void;
-  camera: any;
-  svgRef: any;
+  camera: Camera;
   zoom: number;
 }
 
@@ -28,7 +27,6 @@ export const MediaMenu: React.FC<MediaMenuProps> = ({
   org,
   insertMedia,
   camera,
-  svgRef,
   zoom
 }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -113,7 +111,7 @@ export const MediaMenu: React.FC<MediaMenuProps> = ({
     }
 
     const files = Array.from(e.target.files);
-    const centerPoint = getCenterOfScreen(camera, zoom, svgRef);
+    const centerPoint = getCenterOfScreen(camera, zoom);
     
     setIsDialogOpen(false);
 
@@ -127,7 +125,7 @@ export const MediaMenu: React.FC<MediaMenuProps> = ({
       insertMedia
     );
 
-  }, [insertMedia, camera, svgRef, zoom, org, user]);
+  }, [insertMedia, camera, zoom, org, user]);
 
   const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -210,7 +208,7 @@ export const MediaMenu: React.FC<MediaMenuProps> = ({
         case "icons":
           return;
       }
-      const centerPoint = getCenterOfScreen(camera, zoom, svgRef);
+      const centerPoint = getCenterOfScreen(camera, zoom);
       const adjustedPoint = {
         x: centerPoint.x - info.dimensions.width / 2,
         y: centerPoint.y - info.dimensions.height / 2
@@ -245,7 +243,7 @@ export const MediaMenu: React.FC<MediaMenuProps> = ({
       }
       const svgData = await response.text();
 
-      const centerPoint = getCenterOfScreen(camera, zoom, svgRef);
+      const centerPoint = getCenterOfScreen(camera, zoom);
 
       const desiredSize = 100;
       const info = {

@@ -97,29 +97,19 @@ export function colorToCss(color: Color) {
 export function getCenterOfScreen(
   camera: Camera,
   zoom: number,
-  svgRef: React.RefObject<SVGSVGElement>
 ) {
-  const svg = svgRef.current;
-  if (!svg) return { x: 0, y: 0 };
-
-  const rect = svg.getBoundingClientRect();
-  const width = rect.width;
-  const height = rect.height;
+  const width = window.innerWidth;
+  const height = window.innerHeight;
 
   const centerX = width / 2;
   const centerY = height / 2;
 
-  const point = svg.createSVGPoint();
-  point.x = centerX;
-  point.y = centerY;
+  const centerPoint = {
+    x: (Math.round(centerX) - camera.x) / zoom,
+    y: (Math.round(centerY) - camera.y) / zoom,
+  };    
 
-  // Transform the point from screen coordinates to SVG coordinates
-  const transformedPoint = point.matrixTransform(svg.getScreenCTM()!.inverse());
-
-  return {
-    x: (Math.round(transformedPoint.x) - camera.x) / zoom,
-    y: (Math.round(transformedPoint.y) - camera.y) / zoom,
-  };
+  return centerPoint;
 }
 
 

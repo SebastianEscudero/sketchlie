@@ -7,7 +7,6 @@ interface FrameMenuProps {
   camera: { x: number; y: number };
   zoom: number;
   insertLayer: (layerType: LayerType, position: any, width: number, height: number) => void;
-  svgRef: any;
   setToolbarMenu: (menu: ToolbarMenu) => void;
 }
 
@@ -22,7 +21,6 @@ export const FrameMenu = ({
   camera,
   zoom,
   insertLayer,
-  svgRef,
   setToolbarMenu
 }: FrameMenuProps) => {
   const handleFrameSelect = (ratio: number) => {
@@ -30,7 +28,7 @@ export const FrameMenu = ({
     const height = baseHeight / zoom;
     const width = height * ratio;
 
-    const centerPoint = getCenterOfScreen(camera, zoom, svgRef);
+    const centerPoint = getCenterOfScreen(camera, zoom);
     insertLayer(
       LayerType.Frame,
       { x: centerPoint.x - width/2, y: centerPoint.y - height/2 },

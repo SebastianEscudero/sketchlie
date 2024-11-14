@@ -326,7 +326,6 @@ export const Toolbar = memo(({
           camera={camera}
           zoom={zoom}
           insertLayer={insertLayer}
-          svgRef={svgRef}
           setToolbarMenu={setToolbarMenu}
         />
       }
@@ -336,7 +335,6 @@ export const Toolbar = memo(({
           org={org}
           insertMedia={insertMedia}
           camera={camera}
-          svgRef={svgRef}
           zoom={zoom}
         />
       }

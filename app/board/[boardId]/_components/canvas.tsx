@@ -36,7 +36,6 @@ import {
     ArrowLayer,
     ArrowOrientation,
     ArrowType,
-    Camera,
     CanvasMode,
     CanvasState,
     FrameLayer,
@@ -87,6 +86,8 @@ import { SelectionNet } from "./selection-net";
 import { TableColumnType } from "../canvas-objects/table";
 import { uploadFilesAndInsertThemIntoCanvas } from "../canvas-objects/utils/file-uploading-utils";
 import { HighlighterIcon } from "@/public/custom-icons/highlighter";
+import { useZoom } from "./hooks/use-zoom";
+import { useCamera } from "./hooks/use-camera";
 
 const preventDefault = (e: any) => {
     if (e.scale !== 1) {
@@ -116,14 +117,15 @@ export const Canvas = ({
     // Canvas state and controls
     const [toolbarMenu, setToolbarMenu] = useState<ToolbarMenu>(ToolbarMenu.None);
     const [canvasState, setCanvasState] = useState<CanvasState>({ mode: CanvasMode.None });
-    const [camera, setCamera] = useState<Camera>({ x: 0, y: 0 });
-    const [zoom, setZoom] = useState(1);
+    const { camera, setCamera } = useCamera();
+    const { zoom, setZoom } = useZoom();
     const [startPanPoint, setStartPanPoint] = useState({ x: 0, y: 0 });
     const [isNearBorder, setIsNearBorder] = useState(false);
     const [borderMove, setBorderMove] = useState({ x: 0, y: 0 });
     const [presentationMode, setPresentationMode] = useState(false);
     const [background, setBackground] = useState(() => localStorage.getItem('background') || 'circular-grid');
     const setIsEditing = useLayerTextEditingStore(state => state.setIsEditing);
+    const [isRightClickPanning, setIsRightClickPanning] = useState(false);
 
     // Layer management
     const [initialLayers, setInitialLayers] = useState<Layers>({});
@@ -149,7 +151,6 @@ export const Canvas = ({
     const [highlighterStrokeSize, setHighlighterStrokeSize] = useState(20);
 
     // UI states
-    const [isRightClickPanning, setIsRightClickPanning] = useState(false);
     const [isTranslatingLayers, setIsTranslatingLayers] = useState(false);
     const [justChanged, setJustChanged] = useState(false);
     const [isDraggingOverCanvas, setIsDraggingOverCanvas] = useState(false);
@@ -501,7 +502,7 @@ export const Canvas = ({
             layerType: LayerType.Image | LayerType.Video | LayerType.Link | LayerType.Svg
             position: Point,
             info: any,
-            zoom: number,
+            zoom?: number,
             isPdfPage?: boolean
         }>
     ) => {
@@ -1063,12 +1064,12 @@ export const Canvas = ({
 
             setZoom(clampedZoom);
         } else {
-            setCamera(prev => ({
-                x: prev.x - e.deltaX,
-                y: prev.y - e.deltaY,
-            }));
+            setCamera({
+                x: camera.x - e.deltaX,
+                y: camera.y - e.deltaY,
+            });
         }
-    }, [zoom, camera]);
+    }, [zoom, camera, setCamera, setZoom]);
 
     const onPointerDown = useCallback((
         e: React.PointerEvent,
@@ -1082,11 +1083,6 @@ export const Canvas = ({
         setIsPointerDown(true);
 
         if (isMouseLeftButton(e)) {
-            if (canvasState.mode === CanvasMode.Moving) {
-                setStartPanPoint({ x: e.clientX, y: e.clientY });
-                return;
-            }
-
             const point = pointerEventToCanvasPoint(e, cameraRef.current, zoomRef.current, svgRef);
             if (point && selectedLayersRef.current.length > 0) {
                 const bounds = calculateBoundingBox(selectedLayersRef.current.map(id => liveLayers[id]));
@@ -1121,6 +1117,11 @@ export const Canvas = ({
                 return;
             }
 
+            if (canvasState.mode === CanvasMode.Moving) {
+                setStartPanPoint({ x: e.clientX, y: e.clientY });
+                return;
+            }
+
             if (canvasState.mode === CanvasMode.Inserting) {
                 // If the layer type is comment, set the current preview layer to the comment layer (we insert it once the user writes something)
                 if (canvasState.layerType === LayerType.Comment) {
@@ -1152,8 +1153,8 @@ export const Canvas = ({
         } else if (isMouseRightButton(e) || isMouseMiddleButton(e)) {
             setPresentationMode(false);
             setStartPanPoint({ x: e.clientX, y: e.clientY });
-            setIsRightClickPanning(true);
-            setCanvasState({ mode: CanvasMode.Moving })
+            setCanvasState({ mode: CanvasMode.Moving });
+            setIsRightClickPanning(true)
         }
 
         if (selectedLayersRef.current.length > 0) {
@@ -1177,34 +1178,20 @@ export const Canvas = ({
         }
 
         setIsTranslatingLayers(false);
-        if (isMouseRightButton(e) || isMouseMiddleButton(e)) {
-            const newCameraPosition = {
-                x: camera.x + e.clientX - startPanPoint.x,
-                y: camera.y + e.clientY - startPanPoint.y,
-            };
-            setCamera(newCameraPosition);
-            setStartPanPoint({ x: e.clientX, y: e.clientY });
-            return;
-        }
-
+        
         const current = pointerEventToCanvasPoint(e, cameraRef.current, zoomRef.current, svgRef);
         setMousePosition(current);
         updatePresence({ cursor: { x: current.x, y: current.y } });
 
         if (canvasState.mode === CanvasMode.Moving) {
-            if (!isRightClickPanning) {
-                if (!isMouseLeftButton(e)) {
-                    console.log('no left button')
-                    return;
-                }
+            if (isPointerDown) {
+                const newCameraPosition = {
+                    x: camera.x + e.clientX - startPanPoint.x,
+                    y: camera.y + e.clientY - startPanPoint.y,
+                };
+                setCamera(newCameraPosition);
+                setStartPanPoint({ x: e.clientX, y: e.clientY });
             }
-
-            const newCameraPosition = {
-                x: camera.x + e.clientX - startPanPoint.x,
-                y: camera.y + e.clientY - startPanPoint.y,
-            };
-            setCamera(newCameraPosition);
-            setStartPanPoint({ x: e.clientX, y: e.clientY });
         }
 
         if (isMouseLeftButton(e)) {
@@ -1393,14 +1380,6 @@ export const Canvas = ({
         [continueDrawing, camera, canvasState, resizeSelectedLayers, translateSelectedLayers, startMultiSelection, updateSelectionNet, setCamera, zoom, startPanPoint, activeTouches, EraserDeleteLayers, arrowTypeInserting, currentPreviewLayer, liveLayerIds, liveLayers, focusMode, setLastMouseMove, presentationMode, updatePresence]);
 
     const onPointerUp = useCallback((e: React.PointerEvent) => {
-        if (isRightClickPanning) {
-            setIsRightClickPanning(false);
-        }
-        
-        if (canvasState.mode === CanvasMode.Moving && !isRightClickPanning) {
-            return;
-        }
-        
         setIsPointerDown(false);
         const point = pointerEventToCanvasPoint(e, camera, zoom, svgRef);
 
@@ -1520,6 +1499,13 @@ export const Canvas = ({
             setCanvasState({
                 mode: CanvasMode.None,
             });
+        } else if (canvasState.mode === CanvasMode.Moving) {
+            if (isRightClickPanning) {
+                setIsRightClickPanning(false);
+                setCanvasState({
+                    mode: CanvasMode.None,
+                });
+            }
         } else {
             setCanvasState({
                 mode: CanvasMode.None,
@@ -1729,7 +1715,7 @@ export const Canvas = ({
 
         setPinchStartDist(dist);
         setStartMobilePanPoint({ x, y });
-    }, [zoom, pinchStartDist, camera, startMobilePanPoint]);
+    }, [zoom, pinchStartDist, camera, startMobilePanPoint, setCamera, setZoom]);
 
     const onTouchEnd = useCallback((e: React.TouchEvent) => {
         setActiveTouches(e.changedTouches.length);
@@ -1873,10 +1859,10 @@ export const Canvas = ({
 
         const moveCameraLoop = () => {
             if (isNearBorder) {
-                setCamera(prevCamera => ({
-                    x: prevCamera.x + borderMove.x,
-                    y: prevCamera.y + borderMove.y
-                }));
+                setCamera({
+                    x: camera.x + borderMove.x,
+                    y: camera.y + borderMove.y
+                });
                 animationFrameId = requestAnimationFrame(moveCameraLoop);
             }
         };
@@ -1890,7 +1876,7 @@ export const Canvas = ({
                 cancelAnimationFrame(animationFrameId);
             }
         };
-    }, [isNearBorder, borderMove, setCamera, canvasState.mode, presentationMode, isPointerDown]);
+    }, [isNearBorder, borderMove, setCamera, canvasState.mode, presentationMode, isPointerDown, camera]);
 
     useEffect(() => {
         // prevent safari from going back/forward
@@ -1954,7 +1940,11 @@ export const Canvas = ({
                 setCanvasCursor('url(/custom-cursors/eraser.svg) 8 16, auto');
                 selectedLayersRef.current = [];
             } else if (canvasState.mode === CanvasMode.Moving) {
-                setCanvasCursor('url(/custom-cursors/grab.svg) 12 12, auto');
+                if (isPointerDown) {
+                    setCanvasCursor('url(/custom-cursors/grab.svg) 12 12, auto');
+                } else {
+                    setCanvasCursor('url(/custom-cursors/hand.svg) 12 12, auto');
+                }
             } else if (canvasState.mode === CanvasMode.ArrowResizeHandler) {
                 setCanvasCursor('url(/custom-cursors/grab.svg) 12 12, auto');
             } else if (canvasState.mode === CanvasMode.Translating) {
@@ -1965,7 +1955,7 @@ export const Canvas = ({
         }
 
         updateCursor();
-    }, [canvasState, setIsEditing, highlighterColor]);
+    }, [canvasState, setIsEditing, highlighterColor, isPointerDown]);
 
     const goToFrame = useCallback((index: number) => {
         const totalFrames = frameIds.length;
@@ -2292,43 +2282,52 @@ export const Canvas = ({
                             toolbarMenu={toolbarMenu}
                             setToolbarMenu={setToolbarMenu}
                         />
+                         <div className={cn(
+                            "transition-all duration-200",
+                            (!presentationMode && 
+                             !focusMode &&
+                             canvasState.mode !== CanvasMode.Pencil && 
+                             canvasState.mode !== CanvasMode.Eraser && 
+                             canvasState.mode !== CanvasMode.Highlighter && 
+                             canvasState.mode !== CanvasMode.Laser)
+                            ? "opacity-100 visible"
+                            : "opacity-0 invisible pointer-events-none"
+                        )}>
+                            <Info
+                                board={board}
+                                org={org}
+                                setBackground={setBackground}
+                                Background={background}
+                                setLiveLayerIds={setLiveLayerIds}
+                                setLiveLayers={setLiveLayers}
+                                performAction={performAction}
+                                socket={socket}
+                                setCanvasState={setCanvasState}
+                                nanoid={nanoid}
+                                zoom={zoom}
+                                camera={camera}
+                                selectedLayersRef={selectedLayersRef}
+                                setForcedRender={setForceLayerPreviewRender}
+                                User={User}
+                                quickInserting={quickInserting}
+                                setQuickInserting={setQuickInserting}
+                                eraserDeleteAnyLayer={eraserDeleteAnyLayer}
+                                setEraserDeleteAnyLayer={setEraserDeleteAnyLayer}
+                            />
+                            <Participants
+                                org={org}
+                                otherUsers={otherUsers}
+                                User={User}
+                                socket={socket}
+                                expired={expired}
+                                board={board}
+                                setPresentationMode={setPresentationMode}
+                                setRightMiddleContainerView={setRightMiddleContainerView}
+                                insertMedia={insertMedia}
+                            />
+                        </div>
                         {!presentationMode && canvasState.mode !== CanvasMode.Pencil && canvasState.mode !== CanvasMode.Eraser && canvasState.mode !== CanvasMode.Highlighter && canvasState.mode !== CanvasMode.Laser && (
                             <>
-                                {!focusMode && (
-                                    <>
-                                        <Info
-                                            board={board}
-                                            org={org}
-                                            setBackground={setBackground}
-                                            Background={background}
-                                            setLiveLayerIds={setLiveLayerIds}
-                                            setLiveLayers={setLiveLayers}
-                                            performAction={performAction}
-                                            socket={socket}
-                                            setCanvasState={setCanvasState}
-                                            nanoid={nanoid}
-                                            zoom={zoom}
-                                            camera={camera}
-                                            selectedLayersRef={selectedLayersRef}
-                                            setForcedRender={setForceLayerPreviewRender}
-                                            User={User}
-                                            quickInserting={quickInserting}
-                                            setQuickInserting={setQuickInserting}
-                                            eraserDeleteAnyLayer={eraserDeleteAnyLayer}
-                                            setEraserDeleteAnyLayer={setEraserDeleteAnyLayer}
-                                        />
-                                        <Participants
-                                            org={org}
-                                            otherUsers={otherUsers}
-                                            User={User}
-                                            socket={socket}
-                                            expired={expired}
-                                            board={board}
-                                            setPresentationMode={setPresentationMode}
-                                            setRightMiddleContainerView={setRightMiddleContainerView}
-                                        />
-                                    </>
-                                )}
                                 <BottomRightView
                                     zoom={zoom}
                                     setZoom={setZoom}
@@ -2419,7 +2418,6 @@ export const Canvas = ({
                         className={cn(
                             "z-10 absolute selection-keep-text-color",
                             (canvasState.mode === CanvasMode.None || 
-                            canvasState.mode === CanvasMode.Moving || 
                             (canvasState.mode === CanvasMode.Inserting && 
                             canvasState.layerType === LayerType.Arrow)) && 
                             !presentationMode && "shapes-hoverable"

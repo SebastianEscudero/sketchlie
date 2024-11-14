@@ -150,7 +150,9 @@ export const BottomRightView = memo(({
                         variant = {canvasState === CanvasMode.Moving ? "iconActive" : "icon"}
                         onClick={(e) => {
                             e.stopPropagation();
-                            setCanvasState({
+                            canvasState === CanvasMode.Moving ? setCanvasState({
+                                mode: CanvasMode.None
+                            }) : setCanvasState({
                                 mode: CanvasMode.Moving
                             })
                         }}

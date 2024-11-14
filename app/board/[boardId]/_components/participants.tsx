@@ -1,7 +1,7 @@
 "use client";
 
 import { connectionIdToColor } from "@/lib/utils";
-import { User } from "@/types/canvas";
+import { LayerType, Point, User } from "@/types/canvas";
 import { UserAvatar } from "./user-avatar";
 import { Button } from "@/components/ui/button";
 import { OrganizationInvite } from "@/components/auth/organization-invite";
@@ -10,6 +10,7 @@ import { ChevronDown, Play, UserPlus } from "lucide-react";
 import { memo } from "react";
 import { Hint } from "@/components/hint";
 import { CommentsIcon } from "@/public/custom-icons/comments";
+import { RecordingButton } from "./recording-button";
 
 const MAX_SHOWN_USERS = 5;
 
@@ -22,6 +23,7 @@ interface ParticipantsProps {
     board: any;
     setPresentationMode: (mode: boolean) => void;
     setRightMiddleContainerView: (view: string | null) => void;
+    insertMedia: (mediaItems: { layerType: LayerType.Image | LayerType.Video | LayerType.Link | LayerType.Svg, position: Point, info: any, zoom?: number }[]) => void;
 }
 
 export const Participants = memo(({
@@ -33,6 +35,7 @@ export const Participants = memo(({
     board,
     setPresentationMode,
     setRightMiddleContainerView,
+    insertMedia,
 }: ParticipantsProps) => {
 
     const hasMoreUsers = otherUsers && otherUsers.length > MAX_SHOWN_USERS;
@@ -42,6 +45,7 @@ export const Participants = memo(({
 
     return (
         <div className="space-x-2 border dark:border-zinc-800 shadow-sm absolute h-12 right-4 top-2 bg-white dark:bg-zinc-800 rounded-xl px-2 flex items-center pointer-events-auto">
+            {/*<RecordingButton insertMedia={insertMedia} userId={User.userId} />*/}
             <Hint label="Comments" sideOffset={14}>
                 <Button
                     variant="icon"

@@ -64,7 +64,6 @@ export const Text = memo(({
 
   useEffect(() => {
     if (justInsertedText && textRef.current) {
-      console.log('just inserted')
       textRef.current.focus();
     }
   }, [justInsertedText]);

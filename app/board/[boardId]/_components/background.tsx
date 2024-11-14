@@ -43,9 +43,7 @@ export const Background = memo(({
         if (!showGrid) return 'none';
         return background === 'circular-grid' ? `${25 * zoom}px ${25 * zoom}px` : `${65 * zoom}px ${65 * zoom}px`;
     };
-
     const getBackgroundColor = () => {
-        if (presentationMode) return 'black';
         return isDark ? '#101011' : '#F9FAFB';
     };
 
