@@ -2270,7 +2270,6 @@ export const Canvas = ({
                             expired={expired}
                             insertMedia={insertMedia}
                             camera={cameraRef.current}
-                            svgRef={svgRef}
                             zoom={zoom}
                             presentationMode={presentationMode}
                             setPresentationMode={setPresentationMode}

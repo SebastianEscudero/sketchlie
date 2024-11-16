@@ -15,7 +15,6 @@ interface MediaButtonProps {
     icon: LucideIcon;
     label: string;
     camera: any;
-    svgRef: any;
     zoom: number;
     isActive?: boolean;
     isDisabled?: boolean;
@@ -26,7 +25,6 @@ export const LinkButton = ({
     icon: Icon,
     label,
     camera,
-    svgRef,
     zoom,
     isActive,
     isDisabled,
@@ -47,7 +45,7 @@ export const LinkButton = ({
 
     const handleConfirm = () => {
         const convertedLink = convertToEmbedURL(link);
-        const centerPoint = getCenterOfScreen(camera, zoom, svgRef);
+        const centerPoint = getCenterOfScreen(camera, zoom);
         const dimensions = { width: 1200, height: 675 };
         const info = { dimensions, url: convertedLink };
 

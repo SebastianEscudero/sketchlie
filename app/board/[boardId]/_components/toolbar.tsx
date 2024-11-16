@@ -44,7 +44,6 @@ interface ToolbarProps {
   expired: boolean;
   insertMedia: (mediaItems: { layerType: LayerType.Image | LayerType.Video | LayerType.Link | LayerType.Svg, position: Point, info: any, zoom: number }[]) => void;
   camera: any;
-  svgRef: any;
   zoom: number;
   presentationMode: boolean;
   setPresentationMode: (mode: boolean) => void;
@@ -78,7 +77,6 @@ export const Toolbar = memo(({
   expired,
   insertMedia,
   camera,
-  svgRef,
   zoom,
   presentationMode,
   setPresentationMode,
@@ -284,7 +282,6 @@ export const Toolbar = memo(({
           label="Link"
           icon={Link}
           camera={camera}
-          svgRef={svgRef}
           zoom={zoom}
           insertMedia={insertMedia}
         />
