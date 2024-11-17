@@ -49,7 +49,7 @@ export const ShowAllTemplates = ({
         const filtered = templates.filter(template => {
             const nameLower = template.name.toLowerCase();
             if (nameLower.includes(searchLower)) return true;
-            
+
             for (const [key, values] of Object.entries(searchTerms)) {
                 if (key.includes(searchLower) || values.some(v => v.includes(searchLower))) {
                     if (nameLower.includes(key) || values.some(v => nameLower.includes(v))) {
@@ -64,25 +64,25 @@ export const ShowAllTemplates = ({
 
     return (
         <Dialog>
-        <DialogTrigger asChild>{children}</DialogTrigger>
-        <DialogContent className="w-full max-w-4xl h-[90vh] flex flex-col dark:bg-zinc-900 dark:text-white">
-            <div className="p-3 border-b dark:border-zinc-700">
-                <DialogTitle className="text-2xl font-bold mb-2">Choose a template</DialogTitle>
-                <p className="text-zinc-400">Start with a template to accelerate your workflow</p>
-            </div>
-            <div className="relative mb-6 px-3 pt-3">
-                <Search className="absolute left-6 top-1/2 transform -translate-y-[25%] text-zinc-400" />
-                <Input
-                    className="w-full pl-10 py-2 dark:bg-zinc-800 border-zinc-700 text-white placeholder-zinc-500 focus:ring-2 focus:ring-blue-500"
-                    placeholder="Search templates..."
-                    onChange={handleSearchChange}
-                    value={searchValue}
-                />
-            </div>
-            <ScrollArea className="flex-grow px-3">
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 pb-4">
-                            {filteredTemplates.map((template, index) => (
-                                <DialogClose
+            <DialogTrigger asChild>{children}</DialogTrigger>
+            <DialogContent className="w-full max-w-4xl h-[90vh] flex flex-col dark:bg-zinc-900 dark:text-white">
+                <div className="p-3 border-b dark:border-zinc-700">
+                    <DialogTitle className="text-2xl font-bold mb-2">Choose a template</DialogTitle>
+                    <p className="text-zinc-400">Start with a template to accelerate your workflow</p>
+                </div>
+                <div className="relative mb-6 px-3 pt-3">
+                    <Search className="absolute left-6 top-1/2 transform -translate-y-[25%] text-zinc-400" />
+                    <Input
+                        className="w-full pl-10 py-2 dark:bg-zinc-800 border-zinc-700 text-white placeholder-zinc-500 focus:ring-2 focus:ring-blue-500"
+                        placeholder="Search templates..."
+                        onChange={handleSearchChange}
+                        value={searchValue}
+                    />
+                </div>
+                <ScrollArea className="flex-grow px-3" onWheel={(e) => e.stopPropagation()}>
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 pb-4">
+                        {filteredTemplates.map((template, index) => (
+                            <DialogClose
                                 key={index}
                                 disabled={usersRole !== 'Admin'}
                                 onClick={() => onClick(template.name, template.layerIds, template.layers)}
@@ -103,9 +103,9 @@ export const ShowAllTemplates = ({
                                     + {template.name}
                                 </h2>
                             </DialogClose>
-                            ))}
-                        </div>
-                    </ScrollArea>
+                        ))}
+                    </div>
+                </ScrollArea>
             </DialogContent>
         </Dialog>
     )
