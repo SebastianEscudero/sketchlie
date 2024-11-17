@@ -3,15 +3,15 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Hint } from "@/components/hint";
-import { ChevronDown, ChevronsLeft, LayoutTemplate, Menu, Rocket } from "lucide-react";
+import { ChevronDown, ChevronsLeft, LayoutTemplate, Rocket } from "lucide-react";
 import { Actions } from "@/components/actions";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { toast } from "sonner";
 import { ShowAllTemplates } from "@/app/dashboard/_components/show-all-templates";
 import { Layer, LayerType, User } from "@/types/canvas";
 import { InsertLayerCommand } from "@/lib/commands";
-import { memo, useState } from "react";
-import { RenameBoardDialog, RenameBoardInput } from "@/components/modals/rename-modal";
+import { memo } from "react";
+import { RenameBoardInput } from "@/components/modals/rename-modal";
 import { ExportDropdownMenu } from "@/components/ExportDropdownMenu";
 import { CanvasOverlayWrapper } from "./canvas-overlay-wrapper";
 
@@ -67,10 +67,7 @@ export const Info = memo(({
     eraserDeleteAnyLayer,
     setEraserDeleteAnyLayer
 }: InfoProps) => {
-
     const proModal = useProModal();
-    const orgId = board.orgId;
-
     const onChooseTemplate = async (templateName: string, templateLayerIds: any, templateLayers: any) => {
         try {
             const idMap = new Map();
@@ -226,7 +223,7 @@ export const Info = memo(({
                     <Button 
                         className="px-2"
                         variant="icon"
-                        onClick={() => proModal.onOpen(orgId)}
+                        onClick={() => proModal.onOpen()}
                         size="sm"
                     >
                         <Rocket className="w-4 h-4 fill-blue-600 stroke-blue-600 flex-shrink-0" />

@@ -23,7 +23,7 @@ const buttonVariants = cva(
         landing: "hover:bg-[#FBFBFB] hover:text-accent-foreground border border-zinc-400 rounded-md bg-[#FFF]",
         link: "text-black underline-offset-4 hover:underline",
         auth: "border-input bg-custom-blue text-white hover:bg-custom-blue-dark hover:text-white",
-        premium: "bg-zinc-100 text-blue-500 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-blue-500 dark:hover:bg-zinc-700 border-2 border-zinc-300 dark:border-zinc-700",
+        premium: "bg-zinc-100 text-blue-500 hover:bg-zinc-200 dark:bg-zinc-700 dark:text-blue-500 dark:hover:bg-zinc-600 border-2 border-zinc-300 dark:border-zinc-400",
         selectOrg: "text-custom-blue hover:bg-accent",
         gratis: "bg-accent text-accent-foreground hover:bg-accent/90",
         starter: "bg-yellow-500 text-black hover:bg-yellow-600",

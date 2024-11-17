@@ -4,37 +4,37 @@ import { useApiMutation } from '@/hooks/use-api-mutation';
 import { api } from '@/convex/_generated/api';
 import { ConfirmBoardModal } from '@/components/create-board-modal';
 import { useCurrentUser } from '@/hooks/use-current-user';
+import { useOrganization } from '@/app/contexts/organization-context';
 
 interface NewFolderButtonProps {
-  org: any;
   disabled?: boolean;
   children: React.ReactNode;
 }
 
-export const NewFolderButton = ({ org, disabled, children }: NewFolderButtonProps) => {
+export const NewFolderButton = ({ 
+  disabled, 
+  children 
+}: NewFolderButtonProps) => {
   const user = useCurrentUser();
+  const { currentOrganization } = useOrganization();
   const { mutate: createFolder, pending } = useApiMutation(api.folders.create);
   const [folderName, setFolderName] = useState('New Folder');
 
   const handleClick = () => {
-    if (disabled) return;
+    if (disabled || !currentOrganization || !user) return;
 
-    if (folderName) {
-      createFolder({
-        userId: user?.id,
-        userName: user?.name,
-        orgId: org.id,
-        name: folderName
+    createFolder({
+      userId: user.id,
+      userName: user.name,
+      orgId: currentOrganization.id,
+      name: folderName
+    })
+      .then(() => {
+        toast.success('Folder created successfully');
       })
-        .then(() => {
-          toast.success('Folder created successfully');
-        })
-        .catch(() => {
-          toast.error('Failed to create folder');
-        })
-        .finally(() => {
-        });
-    }
+      .catch(() => {
+        toast.error('Failed to create folder');
+      });
   };
 
   return (
@@ -42,7 +42,7 @@ export const NewFolderButton = ({ org, disabled, children }: NewFolderButtonProp
       header="Name your folder!"
       description="Folders are a great way to organize your boards."
       placeHolderText='Folder 1'
-      disabled={pending}
+      disabled={pending || !currentOrganization}
       onConfirm={handleClick}
       setTitle={setFolderName}
     >

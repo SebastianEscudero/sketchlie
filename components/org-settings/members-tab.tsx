@@ -8,24 +8,38 @@ import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "../ui/scroll-area";
 import { Role } from "@prisma/client";
+import { deleteOrganization } from "@/actions/delete-organization";
+import { useApiMutation } from "@/hooks/use-api-mutation";
+import { api } from "@/convex/_generated/api";
+import { useQuery } from "convex/react";
+import { useOrganization } from "@/app/contexts/organization-context";
+import { useCurrentUser } from "@/hooks/use-current-user";
 
 interface MembersTabProps {
-    activeOrg: any;
-    user: any;
-    usersRole: any;
-    setActiveOrganization: any;
+    onClose: () => void;
 }
 
-export const MembersTab = ({ activeOrg, user, usersRole, setActiveOrganization }: MembersTabProps) => {
+export const MembersTab = ({ onClose }: MembersTabProps) => {
+    const { currentOrganization, setCurrentOrganizationId, userRole } = useOrganization();
+    const user = useCurrentUser();
+
     const { update } = useSession();
+    const { mutate } = useApiMutation(api.board.remove);
+
+    const data = useQuery(api.boards.get, {
+        orgId: currentOrganization?.id!,
+        userId: user?.id,
+    });
+
+    if (!currentOrganization || !user) return null;
 
     const handleRoleChange = async (userId: string, newRole: Role) => {
-        if (usersRole !== 'Admin') {
+        if (userRole !== 'Admin') {
             toast.error("Only admins can change roles");
             return;
         }
 
-        const result = await editUserRole(activeOrg.id, userId, newRole);
+        const result = await editUserRole(currentOrganization.id, userId, newRole);
         if (result.error) {
             toast.error(result.error);
         } else {
@@ -34,33 +48,65 @@ export const MembersTab = ({ activeOrg, user, usersRole, setActiveOrganization }
         }
     };
 
-    const handleLeaveOrganization = async (userId: string) => {
-        leaveOrganization(activeOrg.id, userId)
-        .then((result) => {
-            if (result.isOrgDeleted || userId === user?.id) {
-                if (user && user.organizations && user?.organizations?.length > 0) {
-                    const firstOrgId = user.organizations[0].id;
-                    setActiveOrganization(firstOrgId);
-                    localStorage.setItem("activeOrganization", firstOrgId);
-                } else {
-                    setActiveOrganization(null);
-                    localStorage.setItem("activeOrganization", '');
-                }
-            }
-            update();
-            if (result.isOrgDeleted) {
-                toast.success("Organization deleted successfully");
-            } else if (userId === user?.id) {
-                toast.success("You have left the organization");
+    const handleDelete = async () => {
+        try {
+            // Delete all boards first
+            await Promise.all(
+                (data?.map(board => mutate({ id: board._id, userId: user.id })) || [])
+            );
+            
+            await deleteOrganization(currentOrganization.id);
+            
+            if (user.organizations && user.organizations.length > 0) {
+                const firstOrgId = user.organizations[0].id;
+                setCurrentOrganizationId(firstOrgId);
             } else {
-                toast.success("User removed successfully");
+                setCurrentOrganizationId(null);
             }
-        })
-    }
+            
+            update();
+            onClose();
+            toast.success("Organization deleted successfully");
+        } catch (error) {
+            toast.error("Failed to delete organization");
+        }
+    };
+
+    const handleLeaveOrganization = async (userId: string) => {
+        try {
+            // If user is the last member, delete the organization
+            if (currentOrganization.users.length <= 1) {
+                await handleDelete();
+                return;
+            }
+
+            const result = await leaveOrganization(currentOrganization.id, userId);
+            
+            if (result.error) {
+                toast.error(result.error);
+                return;
+            }
+
+            if (userId === user.id) {
+                if (user.organizations && user.organizations.length > 0) {
+                    const firstOrgId = user.organizations[0].id;
+                    setCurrentOrganizationId(firstOrgId);
+                } else {
+                    setCurrentOrganizationId(null);
+                }
+                onClose();
+            }
+
+            update();
+            toast.success(userId === user.id ? "You have left the organization" : "User removed successfully");
+        } catch (error) {
+            toast.error("Failed to process request");
+        }
+    };
 
     return (
         <ScrollArea className="h-[50vh] w-full rounded-md">
-            {activeOrg.users
+            {currentOrganization.users
                 .sort((a: any, b: any) => (a.id === user?.id ? -1 : b.id === user?.id ? 1 : 0))
                 .map((orgUser: any) => (
                     <div key={orgUser.id} className="flex items-center justify-between p-2 border dark:border-zinc-300 rounded-md mb-2">
@@ -82,7 +128,7 @@ export const MembersTab = ({ activeOrg, user, usersRole, setActiveOrganization }
                             </div>
                         </div>
                         <div className="flex items-center space-x-1">
-                            {usersRole === 'Admin' && orgUser.id !== user?.id ? (
+                            {userRole === 'Admin' && orgUser.id !== user?.id ? (
                                 <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
                                         <Button variant="ghost" size="sm" className="text-sm text-gray-500">
@@ -104,7 +150,7 @@ export const MembersTab = ({ activeOrg, user, usersRole, setActiveOrganization }
                             ) : (
                                 <span className="text-sm text-gray-500 px-4">{orgUser.role}</span>
                             )}
-                            {usersRole === 'Admin' && (
+                            {userRole === 'Admin' && (
                                 <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
                                         <Button variant="ghost" size="sm">

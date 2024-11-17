@@ -10,10 +10,9 @@ import { FolderList } from "./folder-list";
 import Link from "next/link";
 import { ChevronsLeft } from "lucide-react";
 import { useCurrentUser } from "@/hooks/use-current-user";
+import { useOrganization } from "@/app/contexts/organization-context";
 
 interface BoardListProps {
-  userId: string;
-  org: any;
   query: {
     search?: string;
     favorites?: string;
@@ -21,34 +20,44 @@ interface BoardListProps {
   };
 }
 
-export const BoardList = ({
-  org,
-  query,
-  userId,
-}: BoardListProps) => {
+export const BoardListSkeleton = ({ count = 6 }: { count?: number }) => {
+  return (
+    <div>
+      <div className="flex items-center gap-x-2">
+        <div className="h-8 w-48 bg-zinc-200 dark:bg-zinc-700 rounded-md animate-pulse" />
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 gap-5 mt-8 pb-10">
+        {Array.from({ length: count }).map((_, index) => (
+          <div 
+            key={index}
+            className="aspect-[100/100] rounded-lg bg-zinc-200 dark:bg-zinc-700 animate-pulse" 
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export const BoardList = ({ query }: BoardListProps) => {
   const user = useCurrentUser();
-  const usersRole = org?.users?.find((u: any) => u.id === user?.id)?.role;
-  const folders = useQuery(api.folders.get, { orgId: org.id });
+  const { currentOrganization, isLoading } = useOrganization();
+
+  const folders = useQuery(api.folders.get, { 
+    orgId: currentOrganization?.id ?? "" 
+  });
+  
   const boards = useQuery(api.boards.get, {
-    orgId: org.id,
+    orgId: currentOrganization?.id ?? "",
     ...query,
-    userId: userId,
+    userId: user?.id,
   });
 
+  if (!currentOrganization || isLoading || !user) {
+    return <BoardListSkeleton />;
+  }
+
   if (folders === undefined || boards === undefined) {
-    return (
-      <div>
-        <h2 className="text-xl font-semibold mb-4">
-          {query.favorites ? "Favorite boards" : "Team boards"}
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 gap-5 mt-8 pb-10">
-          <NewBoardButton user={user} usersRole={usersRole} org={org} disabled />
-          <BoardCard.Skeleton />
-          <BoardCard.Skeleton />
-          <BoardCard.Skeleton />
-        </div>
-      </div>
-    );
+    return <BoardListSkeleton />;
   }
 
   if (!boards?.length && query.search) {
@@ -70,21 +79,23 @@ export const BoardList = ({
 
   return (
     <div>
-      <h2 className="text-xl font-semibold mb-4 flex flex-row">
+      <h2 className="text-xl font-semibold mb-4 flex items-center gap-x-2">
         {query.folderId && (
-          <Link href="/dashboard/" className="flex flex-row items-center">
-            <ChevronsLeft className="mr-3 h-8 w-8" />
+          <Link href="/dashboard/" className="hover:opacity-75 transition">
+            <ChevronsLeft className="h-8 w-8" />
           </Link>
         )}
-        {query.favorites ? "Favorite boards" : "Team boards"}
+        <span>
+          {query.favorites ? "Favorite boards" : "Team boards"}
+        </span>
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 mt-8 pb-10 gap-5">
         {query.folderId ? (
           <>
-            <NewBoardButton user={user} usersRole={usersRole} org={org} query={query} />
+            <NewBoardButton query={query} />
             {boards.map((board: any) => (
               <BoardCard
-                org={org}
+                org={currentOrganization}
                 key={board._id}
                 id={board._id}
                 title={board.title}
@@ -101,17 +112,17 @@ export const BoardList = ({
           </>
         ) : (
           <>
-            <NewBoardButton user={user} usersRole={usersRole} org={org} />
+            <NewBoardButton />
             {!query.favorites && (
               <FolderList
                 folders={folders}
                 groupedBoards={groupedBoards}
-                org={org}
+                org={currentOrganization}
               />
             )}
             {groupedBoards['uncategorized']?.map((board: any) => (
               <BoardCard
-                org={org}
+                org={currentOrganization}
                 key={board._id}
                 id={board._id}
                 title={board.title}

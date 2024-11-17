@@ -17,7 +17,7 @@ interface ConfirmModalProps {
     disabled?: boolean;
     header: string;
     onConfirm: () => void;
-    description?: string;
+    description?: string | React.ReactNode;
 }
 
 export const ConfirmModal = ({ children, disabled, header, onConfirm, description }: ConfirmModalProps) => {

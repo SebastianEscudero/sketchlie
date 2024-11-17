@@ -8,6 +8,7 @@ import { ProModalProvider } from "@/providers/max-layers-provider";
 import { SettingsModalProvider } from "@/providers/settings";
 import { AmplitudeAnalytics } from "@/components/AmplitudeAnalytics";
 import { mainFont } from "@/lib/font";
+import { OrganizationProvider } from "@/app/contexts/organization-context";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.sketchlie.com"),
@@ -44,10 +45,12 @@ export default function RootLayout({
         <AmplitudeAnalytics />
         <Suspense fallback={<Loading />}>
           <ConvexClientProvider>
-            <Toaster />
-            <ProModalProvider />
-            <SettingsModalProvider />
-            {children}
+            <OrganizationProvider>
+              <Toaster />
+              <ProModalProvider />
+              <SettingsModalProvider />
+              {children}
+            </OrganizationProvider>
           </ConvexClientProvider>
         </Suspense>
       </body>

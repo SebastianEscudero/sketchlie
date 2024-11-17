@@ -1,40 +1,32 @@
 "use server";
 
-import { update } from "@/auth";
 import { db } from "@/lib/db";
+import { Role } from "@prisma/client";
 
 export const leaveOrganization = async (orgId: string, userId: string) => {
-    const organizationUser = await db.organizationUser.findUnique({
-        where: {
-            userId_organizationId: {
-                userId: userId,
-                organizationId: orgId
-            }
+    const organization = await db.organization.findUnique({
+        where: { id: orgId },
+        include: {
+            users: true
         }
     });
 
-    if (!organizationUser) {
+    if (!organization) {
+        return { error: "Organization not found" };
+    }
+
+    const userToLeave = organization.users.find(u => u.userId === userId);
+    
+    if (!userToLeave) {
         return { error: "User is not a member of the organization" };
     }
 
-    const organizationUsersCount = await db.organizationUser.count({
-        where: {
-            organizationId: orgId
+    // Check if user is the last admin and there are other users
+    if (userToLeave.role === "Admin") {
+        const adminCount = organization.users.filter(u => u.role === "Admin").length;
+        if (adminCount === 1 && organization.users.length > 1) {
+            return { error: "Cannot leave: You must transfer admin rights to another user first" };
         }
-    });
-
-    if (organizationUsersCount <= 1) {
-        await db.organizationUser.deleteMany({
-            where: {
-                organizationId: orgId
-            }
-        });
-        await db.organization.delete({
-            where: {
-                id: orgId
-            }
-        });
-        return { success: "Organization deleted as it has no more members", isOrgDeleted: true };
     }
 
     await db.organizationUser.delete({
@@ -46,5 +38,5 @@ export const leaveOrganization = async (orgId: string, userId: string) => {
         }
     });
 
-    return { success: "User left the organization", isOrgDeleted: false };
+    return { success: "User left the organization" };
 };

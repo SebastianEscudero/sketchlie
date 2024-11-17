@@ -6,13 +6,7 @@ import { useCurrentUser } from "@/hooks/use-current-user";
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu"
 import { Bell } from "lucide-react"
 
-interface NotificationsMenuProps {
-    setActiveOrganization: any;
-}
-
-export const NotificationsMenu = ({
-    setActiveOrganization
-}: NotificationsMenuProps) => {
+export const NotificationsMenu = () => {
     const user = useCurrentUser();
     if (!user) return null;
     const invitations = user.invitations;
@@ -36,10 +30,7 @@ export const NotificationsMenu = ({
                         </div>
                     </div>
                     {invitations.length > 0 ? (
-                        <InviteMenu
-                            invitations={invitations}
-                            setActiveOrganization={setActiveOrganization}
-                        />
+                        <InviteMenu invitations={invitations} />
                     ) :
                         <div className="flex flex-col p-5">
                             <p className="text-sm">

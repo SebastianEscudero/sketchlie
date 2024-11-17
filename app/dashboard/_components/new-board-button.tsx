@@ -12,13 +12,10 @@ import { useQuery } from "convex/react";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { getMaxBoards } from "@/lib/planLimits";
 import { updateR2Bucket } from "@/lib/r2-bucket-functions";
-
-
+import { useOrganization } from "@/app/contexts/organization-context";
+import { useCurrentUser } from "@/hooks/use-current-user";
 
 interface NewBoardButtonProps {
-    user: any;
-    usersRole: any;
-    org: any
     disabled?: boolean;
     query?: {
         search?: string;
@@ -28,32 +25,29 @@ interface NewBoardButtonProps {
 }
 
 export const NewBoardButton = ({
-    user,
-    usersRole,
-    org,
     disabled,
     query,
 }: NewBoardButtonProps) => {
-
-    const maxAmountOfBoards = getMaxBoards(org);
+    const { currentOrganization, userRole } = useOrganization();
+    const user = useCurrentUser();
+    const maxAmountOfBoards = getMaxBoards(currentOrganization);
     const data = useQuery(api.boards.get, {
-        orgId: org.id,
+        orgId: currentOrganization?.id!,
     });
-
 
     const proModal = useProModal();
     const router = useRouter();
     const [title, setTitle] = useState('New Board');
     const { mutate, pending } = useApiMutation(api.board.create);
 
-    if (!user) {
+    if (!user || !currentOrganization) {
         return null;
     }
 
     const onClick = async () => {
         try {
             const id = await mutate({
-                orgId: org.id,
+                orgId: currentOrganization.id,
                 title,
                 userId: user.id,
                 userName: user.name,
@@ -71,9 +65,10 @@ export const NewBoardButton = ({
         if (maxAmountOfBoards !== null && (data?.length ?? 0) < maxAmountOfBoards) {
             onClick();
         } else {
-            proModal.onOpen(org.id);
+            proModal.onOpen();
         }
     }
+
     return (
         <ConfirmBoardModal
             header="Name your board!"
@@ -84,10 +79,10 @@ export const NewBoardButton = ({
             setTitle={setTitle}
         >
             <button
-                disabled={pending || disabled || usersRole !== 'Admin'}
+                disabled={pending || disabled || userRole !== 'Admin'}
                 className={cn(
                     "col-span-1 aspect-[100/100] bg-blue-600 rounded-lg hover:bg-blue-800 flex flex-col items-center justify-center",
-                    (pending || disabled || usersRole !== 'Admin') && "opacity-75 hover:bg-blue-600 cursor-not-allowed"
+                    (pending || disabled || userRole !== 'Admin') && "opacity-75 hover:bg-blue-600 cursor-not-allowed"
                 )}
             >
                 {pending ? <LoaderCircle className="animate-spin w-12 h-12 text-white stroke-1" /> :
@@ -98,7 +93,7 @@ export const NewBoardButton = ({
                         </p>
                     </>
                 }
-                {usersRole !== 'Admin' &&
+                {userRole !== 'Admin' &&
                     <p className="text-xs text-white font-light mx-[20%] pt-2">
                         Only <span className="font-bold">Admins</span> can create boards
                     </p>}

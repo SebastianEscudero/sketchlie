@@ -106,7 +106,6 @@ export const Participants = memo(({
             </Button>
             {org && expired !== true && User.information.role === "Admin" && (
                 <OrganizationInvite
-                    activeOrganization={org.id}
                     isPrivate={board.private}
                     boardId={board._id}
                 >

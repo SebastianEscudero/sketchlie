@@ -1,81 +1,36 @@
 "use client";
 
 import Link from "next/link";
-import { OrganizationSwitcher } from "@/components/auth/org-switcher";
-import { Folder, LayoutDashboard, LayoutTemplate, Star } from "lucide-react";
+import { Folder, LayoutDashboard, Rocket, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSearchParams } from "next/navigation";
-import { useCurrentUser } from "@/hooks/use-current-user";
-import { SubscriptionPlanDropdown } from "./subscription-plan-dropdown";
-import { ShowAllTemplates } from "./show-all-templates";
-import { useApiMutation } from "@/hooks/use-api-mutation";
-import { api } from "@/convex/_generated/api";
-import { useQuery } from "convex/react";
-import { getMaxBoards } from "@/lib/planLimits";
-import { useProModal } from "@/hooks/use-pro-modal";
-import { updateR2Bucket } from "@/lib/r2-bucket-functions";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 import { SearchInput } from "./search-input";
 import { SketchlieButton } from "./sketchlie-button";
 import { NewFolderButton } from "./new-folder-button";
+import { useOrganization } from "@/app/contexts/organization-context";
+import { cn } from "@/lib/utils";
+import { OrganizationSwitcher } from "@/components/auth/org-switcher";
+import { useProModal } from "@/hooks/use-pro-modal";
 
 interface OrgSidebarProps {
-    activeOrganization: string | null;
-    setActiveOrganization: (id: string) => void;
     mobile: boolean;
 }
 
-export const OrgSidebar = ({
-    activeOrganization,
-    setActiveOrganization,
-    mobile
-}: OrgSidebarProps) => {
-
-    const searchParams = useSearchParams();
+export const OrgSidebar = ({ mobile }: OrgSidebarProps) => {
     const proModal = useProModal();
-    const router = useRouter();
+    const searchParams = useSearchParams();
     const favorites = searchParams.get("favorites");
-    const user = useCurrentUser();
-    const activeOrg = user?.organizations.find(org => org.id === activeOrganization);
-    const usersRole = activeOrg.users.find((u: any) => u.id === user?.id)?.role;
-    const maxAmountOfBoards = getMaxBoards(activeOrg);
-    const subscriptionPlan = activeOrg ? activeOrg.subscriptionPlan : null;
-    const { mutate, pending } = useApiMutation(api.board.create);
-    const data = useQuery(api.boards.get, {
-        orgId: activeOrg.id,
-    });
+    const { currentOrganization, isLoading } = useOrganization();
 
-    if (!user) {
-        return null;
-    }
-
-    const onClick = async (templateName: string, templateLayerIds: any, templateLayers: any) => {
-        if (maxAmountOfBoards !== null && (data?.length ?? 0) < maxAmountOfBoards) {
-            try {
-                const id = await mutate({
-                    orgId: activeOrg.id,
-                    title: templateName,
-                    userId: user.id,
-                    userName: user.name,
-                });
-                await updateR2Bucket('/api/r2-bucket/createBoard', id, templateLayerIds, templateLayers);
-                toast.success("Board created");
-                await router.push(`/board/${id}`);
-            } catch (error) {
-                toast.error("Failed to create board");
-            }
-        } else {
-            proModal.onOpen(activeOrg.id);
-        }
-    }
+    if (isLoading || !currentOrganization) return <OrgSidebarSkeleton mobile={mobile} />;
 
     return (
-        <div className={`${mobile ? '' : 'hidden lg:'}flex flex-col h-full dark:bg-[#2C2C2C] text-black dark:text-white bg-zinc-100 space-y-2 justify-between w-[240px] pt-5 select-none`}>
+        <div className={cn(
+            "flex flex-col h-full dark:bg-[#2C2C2C] text-black dark:text-white bg-zinc-100 space-y-2 justify-between w-[240px] pt-5 select-none",
+            mobile ? "" : "hidden lg:flex"
+        )}>
             <div className="flex flex-col space-y-4 px-5">
-                <SketchlieButton
-                    activeOrg={activeOrg}
-                />
+                <SketchlieButton />
                 <SearchInput />
                 <div className="w-full space-y-1">
                     <Button
@@ -103,7 +58,7 @@ export const OrgSidebar = ({
                             Favorite boards
                         </Link>
                     </Button>
-                    <NewFolderButton org={activeOrg}>
+                    <NewFolderButton>
                         <Button
                             variant="dashboard"
                             asChild
@@ -119,17 +74,51 @@ export const OrgSidebar = ({
                 </div>
                 <div className="flex flex-col space-y-2 border-t dark:border-zinc-600 pt-2">
                     <p className="text-sm font-semibold">Organization</p>
-                    <OrganizationSwitcher
-                        setActiveOrganization={setActiveOrganization}
-                        activeOrganization={activeOrganization}
-                    />
+                    <OrganizationSwitcher />
                 </div>
-                {activeOrg && (
-                    <SubscriptionPlanDropdown
-                        activeOrg={activeOrg}
-                        subscriptionPlan={subscriptionPlan}
-                    />
-                )}
+                <Button
+                    onClick={proModal.onOpen}
+                    className="text-sm font-semibold rounded-md flex flex-row items-center justyf-center w-full bg-transparent dark:bg-transparent border dark:border-zinc-600 text-black dark:text-white hover:bg-zinc-200 dark:hover:bg-zinc-800"
+                    size="sm"
+                >
+                <Rocket className="w-4 h-4 mr-2 fill-blue-600 stroke-blue-600" />
+                    Upgrade organization
+                </Button>
+            </div>
+        </div>
+    );
+};
+
+OrgSidebar.displayName = "OrgSidebar";
+
+export const OrgSidebarSkeleton = ({ mobile }: { mobile: boolean }) => {
+    return (
+        <div className={cn(
+            "flex flex-col h-full dark:bg-[#2C2C2C] text-black dark:text-white bg-zinc-100 space-y-2 justify-between w-[240px] pt-5 select-none animate-pulse",
+            mobile ? "" : "hidden lg:flex"
+        )}>
+            <div className="flex flex-col space-y-4 px-5">
+                {/* Sketchlie Button Skeleton */}
+                <div className="h-10 bg-zinc-200 dark:bg-zinc-700 rounded-md" />
+                
+                {/* Search Input Skeleton */}
+                <div className="h-10 bg-zinc-200 dark:bg-zinc-700 rounded-md" />
+                
+                {/* Navigation Buttons Skeleton */}
+                <div className  ="w-full space-y-1">
+                    <div className="h-8 bg-zinc-200 dark:bg-zinc-700 rounded-md" />
+                    <div className="h-8 bg-zinc-200 dark:bg-zinc-700 rounded-md" />
+                    <div className="h-8 bg-zinc-200 dark:bg-zinc-700 rounded-md" />
+                </div>
+
+                {/* Organization Section Skeleton */}
+                <div className="flex flex-col space-y-2 border-t dark:border-zinc-600 pt-2">
+                    <div className="h-4 w-24 bg-zinc-200 dark:bg-zinc-700 rounded" />
+                    <div className="h-10 bg-zinc-200 dark:bg-zinc-700 rounded-md" />
+                </div>
+
+                {/* Subscription Plan Skeleton */}
+                <div className="h-10 bg-zinc-200 dark:bg-zinc-700 rounded-md" />
             </div>
         </div>
     );

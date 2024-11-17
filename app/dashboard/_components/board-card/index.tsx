@@ -3,12 +3,10 @@
 import { toast } from "sonner";
 import Link from "next/link";
 import Image from "next/image";
-import { MoreHorizontal, Star } from "lucide-react";
+import { Star } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 
 import { api } from "@/convex/_generated/api";
-import { Actions } from "@/components/actions";
-import { Skeleton } from "@/components/ui/skeleton";
 import { useApiMutation } from "@/hooks/use-api-mutation";
 
 import { Footer } from "./footer";
@@ -204,13 +202,5 @@ export const BoardCard = ({
         setTitle={setFolderName}
       />
     </Link>
-  );
-};
-
-BoardCard.Skeleton = function BoardCardSkeleton() {
-  return (
-    <div className="aspect-[100/100] rounded-lg overflow-hidden">
-      <Skeleton className="h-full w-full" />
-    </div>
   );
 };

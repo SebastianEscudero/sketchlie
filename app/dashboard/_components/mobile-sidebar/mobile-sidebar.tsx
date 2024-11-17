@@ -3,15 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 import { OrgSidebar } from "../org-sidebar";
 
-interface SideBarProps {
-    activeOrganization: string | null;
-    setActiveOrganization: (id: string) => void;
-}
-
-export const MobileSidebar = ({
-    activeOrganization,
-    setActiveOrganization
-}: SideBarProps) => {
+export const MobileSidebar = () => {
     return (
         <Sheet>
             <SheetTrigger className="lg:hidden" asChild>
@@ -20,11 +12,7 @@ export const MobileSidebar = ({
                 </Button>
             </SheetTrigger>
             <SheetContent side="left" className="h-full flex flex-col text-white w-[240px] p-0 dark:bg-[#2C2C2C] bg-gray-800">
-                <OrgSidebar
-                    setActiveOrganization={setActiveOrganization}
-                    activeOrganization={activeOrganization}
-                    mobile={true}
-                />
+                <OrgSidebar mobile={true} />
             </SheetContent>
         </Sheet>
     )

@@ -7,11 +7,12 @@ import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { useState, useEffect, ChangeEvent } from "react";
 import { useDebounce } from "usehooks-ts";
+import { Role } from "@prisma/client";
+import { useOrganization } from "@/app/contexts/organization-context";
 
 interface ShowAllTemplatesProps {
     onClick: (templateName: string, templateLayerIds: any, templateLayers: any) => void;
     pending?: boolean;
-    usersRole?: string;
     children: React.ReactNode;
 }
 
@@ -33,9 +34,9 @@ const searchTerms: { [key: string]: string[] } = {
 export const ShowAllTemplates = ({
     onClick,
     pending = false,
-    usersRole = "Admin",
     children
 }: ShowAllTemplatesProps) => {
+    const { userRole } = useOrganization();
     const [searchValue, setSearchValue] = useState("");
     const debouncedSearchValue = useDebounce(searchValue, 300);
     const [filteredTemplates, setFilteredTemplates] = useState(templates);
@@ -84,7 +85,7 @@ export const ShowAllTemplates = ({
                         {filteredTemplates.map((template, index) => (
                             <DialogClose
                                 key={index}
-                                disabled={usersRole !== 'Admin'}
+                                disabled={userRole !== 'Admin'}
                                 onClick={() => onClick(template.name, template.layerIds, template.layers)}
                                 className={cn(
                                     "flex flex-col hover:cursor-pointer items-center justify-center",

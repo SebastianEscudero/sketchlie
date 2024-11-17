@@ -11,20 +11,15 @@ import { useCurrentUser } from "@/hooks/use-current-user";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { subscriptionPlans } from "@/lib/subscriptionPlans";
 import { ScrollArea } from "./ui/scroll-area";
+import { useOrganization } from "@/app/contexts/organization-context";
 
 const paidPlans = subscriptionPlans.filter(plan => plan.label !== "Gratis");
 
 export const ProModal = () => {
     const proModal = useProModal();
-    const liveOrg = proModal.activeOrganization;
-    const [selectedOrganization, setSelectedOrganization] = useState<any>(liveOrg || localStorage.getItem("activeOrganization") || "");
+    const { currentOrganization, setCurrentOrganizationId } = useOrganization();
     const user = useCurrentUser();
-    const activeOrg = user?.organizations.find(org => org.id === selectedOrganization);
     const organizations = user?.organizations;
-
-    useEffect(() => {
-        setSelectedOrganization(liveOrg);
-    }, [liveOrg]);
 
     if (!organizations) {
         return null;
@@ -41,7 +36,7 @@ export const ProModal = () => {
                             <span className="text-xl mr-3">Organization:</span>
                             <DropdownMenu>
                                 <DropdownMenuTrigger className="text-xl flex flex-row items-center text-blue-600 dark:text-blue-400">
-                                    {activeOrg ? activeOrg.name : "Select organization"}
+                                    {currentOrganization ? currentOrganization.name : "Select organization"}
                                     <ChevronsDown className="ml-2" />
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent>
@@ -50,15 +45,15 @@ export const ProModal = () => {
                                             <DropdownMenuItem
                                                 className="w-[200px] truncate text-blue-600 dark:text-blue-500 hover:bg-accent hover:cursor-pointer"
                                                 key={organization.id}
-                                                onClick={() => {
-                                                    setSelectedOrganization(organization.id)
-                                                }}
+                                                onClick={() => setCurrentOrganizationId(organization.id)}
                                             >
                                                 <div className="flex flex-col ml-2">
                                                     <p className="text-sm truncate">
                                                         {organization.name}
                                                     </p>
-                                                    <p className="truncate text-[10px] md:text-[12px] text-zinc-400">{organization.subscriptionPlan} - {organization.users.length} members </p>
+                                                    <p className="truncate text-[10px] md:text-[12px] text-zinc-400">
+                                                        {organization.subscriptionPlan} - {organization.users.length} members
+                                                    </p>
                                                 </div>
                                             </DropdownMenuItem>
                                         ))}
@@ -137,7 +132,7 @@ export const ProModal = () => {
                                         </div>
                                         <SubscriptionButton
                                             plan={subscriptionPlan}
-                                            selectedOrganization={selectedOrganization}
+                                            selectedOrganization={currentOrganization}
                                             className={`w-full mt-6 text-lg ${
                                                 subscriptionPlan.label === "Enterprise"
                                                     ? "bg-purple-600 text-white hover:bg-purple-700 dark:bg-purple-700 dark:hover:bg-purple-600"

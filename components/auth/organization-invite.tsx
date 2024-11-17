@@ -30,41 +30,40 @@ import { toast } from "sonner";
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { QRCodeSVG } from 'qrcode.react';
+import { useOrganization } from '@/app/contexts/organization-context';
+import { Role } from '@prisma/client';
 
 interface OrganizationInviteProps {
-    activeOrganization: string | null;
     isPrivate?: boolean;
     boardId?: string;
     children: React.ReactNode;
 }
 
-type MemberRole = "Admin" | "Member" | "Guest";
-
 type Member = {
     email: string;
-    role: MemberRole;
+    role: Role;
 };
 
 const roleOptions = [
     { value: "Guest", label: "Can view" },
     { value: "Member", label: "Can edit" },
     { value: "Admin", label: "Can manage" },
-];
+] as const;
 
 export const OrganizationInvite = ({
-    activeOrganization,
     isPrivate,
     boardId,
     children
 }: OrganizationInviteProps) => {
+    const { currentOrganization } = useOrganization();
     const currentUser = useCurrentUser();
     const [isPending, setIsPending] = useState(false);
     const [error, setError] = useState<string | undefined>();
     const [members, setMembers] = useState<Member[]>([]);
-    const [selectedRole, setSelectedRole] = useState<MemberRole>("Member");
-    const [publicInviteRole, setPublicInviteRole] = useState<MemberRole>("Member");
+    const [selectedRole, setSelectedRole] = useState<Role>("Member");
+    const [publicInviteRole, setPublicInviteRole] = useState<Role>("Member");
     const { mutate: togglePrivate } = useApiMutation(api.board.togglePrivate);
-    const activeOrg = currentUser?.organizations.find(org => org.id === activeOrganization);
+    const [showQRCode, setShowQRCode] = useState(false);
 
     const form = useForm<z.infer<typeof OrganizationInviteSchema>>({
         resolver: zodResolver(OrganizationInviteSchema),
@@ -74,22 +73,23 @@ export const OrganizationInvite = ({
     });
 
     const onSubmit = (values: z.infer<typeof OrganizationInviteSchema>) => {
+        if (!currentOrganization) return;
+
         setIsPending(true);
         startTransition(() => {
-            invite({ members: values.members }, activeOrg)
+            invite({ members: values.members }, currentOrganization)
                 .then((data) => {
                     if (data.error) {
                         setError(data.error);
                     }
-
                     if (data.success) {
                         toast.success(data.success);
                         setError(undefined);
                     }
                 })
                 .finally(() => setIsPending(false));
-        })
-    }
+        });
+    };
 
     const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
@@ -148,13 +148,13 @@ export const OrganizationInvite = ({
         }
     }, [boardId, currentUser, togglePrivate]);
 
-    const [showQRCode, setShowQRCode] = useState(false);
-
     const toggleQRCode = useCallback(() => {
         setShowQRCode(prev => !prev);
     }, []);
 
     const inviteLink = boardId ? `https://www.sketchlie.com/board/${boardId}` : '';
+
+    if (!currentOrganization) return null;
 
     return (
         <Dialog>
@@ -163,7 +163,9 @@ export const OrganizationInvite = ({
             </DialogTrigger>
             <DialogContent className="max-h-[90%] w-full max-w-[100%] lg:max-w-[50%] xl:max-w-[40%] overflow-y-auto">
                 <DialogHeader>
-                    <DialogTitle className="text-2xl truncate">Invite to &quot;{activeOrg?.name}&quot;</DialogTitle>
+                    <DialogTitle className="text-2xl truncate">
+                        Invite to &quot;{currentOrganization.name}&quot;
+                    </DialogTitle>
                 </DialogHeader>
                 {!showQRCode ? (
                     <div className="flex-1">
@@ -196,7 +198,7 @@ export const OrganizationInvite = ({
                                                         />
                                                         <Select
                                                             value={selectedRole}
-                                                            onValueChange={(value: MemberRole) => setSelectedRole(value)}
+                                                            onValueChange={(value: Role) => setSelectedRole(value)}
                                                         >
                                                             <SelectTrigger className="w-[150px] ml-2">
                                                                 <SelectValue placeholder="Select role" />
@@ -248,7 +250,7 @@ export const OrganizationInvite = ({
                                                 {!isPrivate && (
                                                     <Select
                                                         value={publicInviteRole}
-                                                        onValueChange={(value: MemberRole) => setPublicInviteRole(value)}
+                                                        onValueChange={(value: Role) => setPublicInviteRole(value)}
                                                     >
                                                         <SelectTrigger className="w-[140px]">
                                                             <SelectValue placeholder="Select role" />
@@ -321,7 +323,7 @@ export const OrganizationInvite = ({
                                             </p>
                                             <Select
                                                 value={publicInviteRole}
-                                                onValueChange={(value: MemberRole) => setPublicInviteRole(value)}
+                                                onValueChange={(value: Role) => setPublicInviteRole(value)}
                                             >
                                                 <SelectTrigger className="w-[120px] h-8 text-sm border-2 border-blue-500">
                                                     <SelectValue placeholder="Select role" />

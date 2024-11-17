@@ -23,26 +23,24 @@ import { useProModal } from "@/hooks/use-pro-modal";
 import { getMaxOrganizations } from "@/lib/planLimits";
 import { LoaderCircle } from "lucide-react";
 import { toast } from "sonner";
+import { useOrganization } from "@/app/contexts/organization-context";
 
 interface CreateOrganizationProps {
-    activeOrganization: string | null;
-    setActiveOrganization: (id: string) => void;
     isOpen?: boolean;
     setIsOpen?: (open: boolean) => void;
     label?: string;
     showCloseButton?: boolean;
-};
-
+}
 
 export const CreateOrganization = ({
-    activeOrganization,
-    setActiveOrganization,
     isOpen,
     setIsOpen,
     label = "Create Organization",
     showCloseButton = true,
 }: CreateOrganizationProps) => {
     const user = useCurrentUser();
+    const { setCurrentOrganizationId } = useOrganization();
+
     const { update } = useSession();
     const [isPending, startTransition] = useTransition();
     const proModal = useProModal();
@@ -56,13 +54,12 @@ export const CreateOrganization = ({
     });
 
     if (!user) {
-        return;
+        return null;
     }
 
     const onSubmit = (values: z.infer<typeof OrganizationSchema>) => {
-
         if (user.organizations.length >= maxOrganizations) {
-            proModal.onOpen(activeOrganization);
+            proModal.onOpen();
         } else {
             startTransition(() => {
                 organization(values, user.id)
@@ -70,8 +67,7 @@ export const CreateOrganization = ({
                         if (data.success) {
                             update({ event: "session" });
                             if (data.id) {
-                                setActiveOrganization(data.id);
-                                localStorage.setItem("activeOrganization", data.id)
+                                setCurrentOrganizationId(data.id);
                                 toast.success(`Organization ${values.name} created successfully`);
                                 setIsOpen?.(false);
                             }
@@ -86,7 +82,10 @@ export const CreateOrganization = ({
 
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            <DialogContent className="w-[80%] sm:w-[60%] lg:w-[40%] xl:w-[30%] rounded-xl" showCloseButton={showCloseButton}>
+            <DialogContent 
+                className="w-[80%] sm:w-[60%] lg:w-[40%] xl:w-[30%] rounded-xl" 
+                showCloseButton={showCloseButton}
+            >
                 <DialogHeader>
                     <DialogTitle>{label}</DialogTitle>
                 </DialogHeader>
@@ -121,11 +120,15 @@ export const CreateOrganization = ({
                             variant="sketchlieBlue"
                             className="w-48"
                         >
-                            {isPending ? <LoaderCircle className="animate-spin w-5 h-5 text-white" /> : "Create organization"}
+                            {isPending ? (
+                                <LoaderCircle className="animate-spin w-5 h-5 text-white" />
+                            ) : (
+                                "Create organization"
+                            )}
                         </Button>
                     </form>
                 </Form>
             </DialogContent>
         </Dialog>
-    )
-}
+    );
+};

@@ -5,18 +5,18 @@ import { OrgImage } from "./org-image";
 import { getPlanColor } from "@/lib/orgUtils";
 import { acceptInvite } from "@/actions/accept-invite";
 import { useSession } from "next-auth/react";
+import { useOrganization } from "@/app/contexts/organization-context";
 
 interface InviteMenuProps {
     invitations: any;
-    setActiveOrganization: any;
 
 }
 
 export const InviteMenu = ({
     invitations,
-    setActiveOrganization
 }: InviteMenuProps) => {
     const { update } = useSession();
+    const { setCurrentOrganizationId } = useOrganization();
 
     return (
         <div className="py-2">
@@ -56,8 +56,7 @@ export const InviteMenu = ({
                                 onClick={() => {
                                     acceptInvite(invitation.organization.id, invitation.id)
                                         .then(() => {
-                                            setActiveOrganization(invitation.organization.id);
-                                            localStorage.setItem("activeOrganization", invitation.organization.id);
+                                            setCurrentOrganizationId(invitation.organization.id);
                                             update({ event: "session" });
                                         });
                                 }}
