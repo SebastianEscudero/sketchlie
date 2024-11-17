@@ -115,8 +115,8 @@ export const ColorPickerButton = ({
         size="icon"
       >
         <div
-          className="h-5 w-5 rounded-[50%] relative"
-          style={{ background: colorToCss(color), border: color.a === 0 ? '1px solid #d4d4d4' : 'none' }}
+          className="h-5 w-5 rounded-[50%] relative border dark:border-zinc-300 border-zinc-500"
+          style={{ background: colorToCss(color) }}
         >
           {color.r === 0 && color.g === 0 && color.b === 0 && color.a === 0 && (
             <svg className="absolute top-0 left-0 w-full h-full bg-white rounded-xl" viewBox="0 0 1 1">
