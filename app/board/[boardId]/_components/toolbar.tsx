@@ -26,6 +26,7 @@ import { PresentationModeToolbar } from "./presentation-mode-toolbar";
 import { FrameMenu } from "./frame-menu";
 import { MediaMenu } from "./media-menu";
 import { PencilToolbar } from "./pencil-toolbar";
+import { CanvasOverlayWrapper } from "./canvas-overlay-wrapper";
 
 interface ToolbarProps {
   canvasState: CanvasState;
@@ -152,7 +153,7 @@ export const Toolbar = memo(({
       ${showToolbar ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
     `}
     >      
-      <div className="border dark:border-zinc-800 shadow-sm bg-white dark:bg-zinc-800 rounded-xl p-1.5 flex gap-x-1 flex-row items-center">
+      <CanvasOverlayWrapper className="flex gap-x-1 flex-row h-auto">
         <ToolButton
           label="Select"
           icon={MousePointer2}
@@ -285,8 +286,8 @@ export const Toolbar = memo(({
           zoom={zoom}
           insertMedia={insertMedia}
         />
-      </div>
-      <div className="border dark:border-zinc-800 shadow-sm bg-white dark:bg-zinc-800 rounded-xl p-1.5 sm:w-auto w-[80px] xs:w-[90px] flex flex-row items-center">
+      </CanvasOverlayWrapper>
+      <CanvasOverlayWrapper className="sm:w-auto w-[80px] xs:w-[90px] flex flex-row h-auto">
         <ToolButton
           label="Undo"
           icon={Undo2}
@@ -299,7 +300,7 @@ export const Toolbar = memo(({
           onClick={redo}
           disabled={!canRedo}
         />
-      </div>
+      </CanvasOverlayWrapper>
       {toolbarMenu === ToolbarMenu.Shapes && canvasState.mode === CanvasMode.Inserting && ![LayerType.Text, LayerType.Arrow, LayerType.Note, LayerType.Comment, LayerType.Frame, LayerType.Table].includes(canvasState.layerType) &&
         <ShapesMenu
           setCanvasState={setCanvasState}

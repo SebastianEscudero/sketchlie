@@ -13,6 +13,7 @@ import { InsertLayerCommand } from "@/lib/commands";
 import { memo, useState } from "react";
 import { RenameBoardDialog, RenameBoardInput } from "@/components/modals/rename-modal";
 import { ExportDropdownMenu } from "@/components/ExportDropdownMenu";
+import { CanvasOverlayWrapper } from "./canvas-overlay-wrapper";
 
 interface InfoProps {
     board: any;
@@ -148,7 +149,7 @@ export const Info = memo(({
     if (!board) return <InfoSkeleton />;
 
     return (
-        <div className="border dark:border-zinc-800 shadow-sm absolute bg-white dark:bg-zinc-800 top-2 left-4 rounded-xl p-1 px-2 h-12 xs:flex hidden items-center pointer-events-auto">
+        <CanvasOverlayWrapper className="absolute top-2 left-2 xs:flex hidden px-2">
             <Hint label="Go to Dashboard" side="bottom" sideOffset={10}>
                 <Button asChild variant="icon" className="px-2" size="sm">
                     <Link href="/dashboard/">
@@ -232,7 +233,7 @@ export const Info = memo(({
                     </Button>
                 </Hint>
             </div>
-        </div>
+        </CanvasOverlayWrapper>
     )
 });
 

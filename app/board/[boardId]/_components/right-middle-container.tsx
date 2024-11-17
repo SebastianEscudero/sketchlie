@@ -5,6 +5,7 @@ import { Socket } from "socket.io-client";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import { CommentsPanel } from "./comments-panel";
+import { CanvasOverlayWrapper } from "./canvas-overlay-wrapper";
 
 interface RightMiddleContainerProps {
     rightMiddleContainerView: string | null;
@@ -54,48 +55,47 @@ export const RightMiddleContainer = memo(({
     if (rightMiddleContainerView === null) return null;
 
     return (
-        <div
-            onWheel={(e) => e.stopPropagation()}
-            className="rounded-lg border dark:border-zinc-800 pointer-events-auto absolute top-[64px] right-4 bottom-[80px] w-[320px] bg-white dark:bg-zinc-800 shadow-lg overflow-hidden"
-        >
-            <div className="flex justify-between items-center p-4 border-b dark:border-zinc-400">
-                <h2 className="text-lg font-semibold">{rightMiddleContainerView.charAt(0).toUpperCase() + rightMiddleContainerView.slice(1)}</h2>
-                <Button onClick={() => setRightMiddleContainerView(null)} variant="ghost" size="sm">
-                    <X className="h-4 w-4" />
-                </Button>
+        <CanvasOverlayWrapper className="absolute top-[64px] right-4 bottom-[80px] w-[320px] overflow-hidden h-auto">
+            <div onWheel={(e) => e.stopPropagation()} className="h-full">
+                <div className="flex justify-between items-center p-4 border-b dark:border-zinc-400">
+                    <h2 className="text-lg font-semibold">{rightMiddleContainerView.charAt(0).toUpperCase() + rightMiddleContainerView.slice(1)}</h2>
+                    <Button onClick={() => setRightMiddleContainerView(null)} variant="ghost" size="sm">
+                        <X className="h-4 w-4" />
+                    </Button>
+                </div>
+                {rightMiddleContainerView === "frames" && (
+                    <FramesPanel
+                        liveLayers={liveLayers}
+                        liveLayerIds={liveLayerIds}
+                        setLiveLayerIds={setLiveLayerIds}
+                        setCamera={setCamera}
+                        setZoom={setZoom}
+                        cameraRef={cameraRef}
+                        zoomRef={zoomRef}
+                        forceRender={forcedRender}
+                        boardId={boardId}
+                        deleteLayers={deleteLayers}
+                        socket={socket}
+                        setPresentationMode={setPresentationMode}
+                        title={title}
+                        frameIds={frameIds}
+                    />
+                )}
+                {rightMiddleContainerView === "comments" &&
+                    <CommentsPanel
+                        commentIds={commentIds}
+                        liveLayers={liveLayers}
+                        openCommentBoxId={openCommentBoxId}
+                        setOpenCommentBoxId={setOpenCommentBoxId}
+                        setCamera={setCamera}
+                        setZoom={setZoom}
+                        cameraRef={cameraRef}
+                        zoomRef={zoomRef}
+                        user={user}
+                    />
+                }
             </div>
-            {rightMiddleContainerView === "frames" && (
-                <FramesPanel
-                    liveLayers={liveLayers}
-                    liveLayerIds={liveLayerIds}
-                    setLiveLayerIds={setLiveLayerIds}
-                    setCamera={setCamera}
-                    setZoom={setZoom}
-                    cameraRef={cameraRef}
-                    zoomRef={zoomRef}
-                    forceRender={forcedRender}
-                    boardId={boardId}
-                    deleteLayers={deleteLayers}
-                    socket={socket}
-                    setPresentationMode={setPresentationMode}
-                    title={title}
-                    frameIds={frameIds}
-                />
-            )}
-            {rightMiddleContainerView === "comments" && 
-                <CommentsPanel
-                    commentIds={commentIds}
-                    liveLayers={liveLayers}
-                    openCommentBoxId={openCommentBoxId}
-                    setOpenCommentBoxId={setOpenCommentBoxId}
-                    setCamera={setCamera}
-                    setZoom={setZoom}
-                    cameraRef={cameraRef}
-                    zoomRef={zoomRef}
-                    user={user}
-                />
-            }
-        </div>
+        </CanvasOverlayWrapper>
     )
 });
 
