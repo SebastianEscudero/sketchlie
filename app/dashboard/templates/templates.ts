@@ -12,14 +12,7 @@ import { PlantillaMapaDeProceso } from "./mapa-de-proceso";
 import { PlantillaMapaMental } from "./mapa-mental";
 import { PlantillaModeloCanvas } from "./modelo-canvas";
 
-interface Template {
-    name: string;
-    image: string;
-    layerIds: string[];
-    layers: Layers;
-}
-
-export const templates: Template[] = [
+export const templates = [
     PlantillaMapaConceptual,
     PlantillaDiagramaDeFlujo,
     PlantillaModeloCanvas,
