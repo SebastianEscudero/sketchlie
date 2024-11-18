@@ -15,13 +15,12 @@ import {
 import { Button } from "../ui/button";
 import { FormError } from "../form-error";
 import { invite } from "@/actions/invite";
-import { X, Link as LinkIcon, Lock, Users, QrCode } from "lucide-react";
+import { X, Link as LinkIcon, Lock, Users, QrCode, MoreHorizontal, Shield, User, Users as UsersIcon } from "lucide-react";
 import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
-    SelectValue,
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { useApiMutation } from "@/hooks/use-api-mutation";
@@ -32,6 +31,13 @@ import { useCurrentUser } from '@/hooks/use-current-user';
 import { QRCodeSVG } from 'qrcode.react';
 import { useOrganization } from '@/app/contexts/organization-context';
 import { Role } from '@prisma/client';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Badge } from "@/components/ui/badge";
 
 interface OrganizationInviteProps {
     isPrivate?: boolean;
@@ -49,6 +55,12 @@ const roleOptions = [
     { value: "Member", label: "Can edit" },
     { value: "Admin", label: "Can manage" },
 ] as const;
+
+const roleIcons = {
+    'Admin': <Shield className="h-4 w-4 text-blue-600" />,
+    'Member': <UsersIcon className="h-4 w-4 text-green-600" />,
+    'Guest': <User className="h-4 w-4 text-gray-600" />
+};
 
 export const OrganizationInvite = ({
     isPrivate,
@@ -91,16 +103,24 @@ export const OrganizationInvite = ({
         });
     };
 
+    const isValidEmail = (email: string) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    };
+
     const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         if (value.endsWith(',') || value.endsWith(' ')) {
             const newEmail = value.slice(0, -1).trim();
-            if (newEmail && !members.some(member => member.email === newEmail)) {
+            if (newEmail &&
+                !members.some(member => member.email === newEmail) &&
+                isValidEmail(newEmail)
+            ) {
                 const newMember: Member = { email: newEmail, role: selectedRole };
                 setMembers(prev => [...prev, newMember]);
                 form.setValue('members', [...members, newMember]);
+                e.target.value = '';
             }
-            e.target.value = '';
         }
     }, [members, selectedRole, form]);
 
@@ -108,12 +128,15 @@ export const OrganizationInvite = ({
         if (e.key === 'Enter') {
             e.preventDefault();
             const newEmail = e.currentTarget.value.trim();
-            if (newEmail && !members.some(member => member.email === newEmail)) {
+            if (newEmail &&
+                !members.some(member => member.email === newEmail) &&
+                isValidEmail(newEmail)
+            ) {
                 const newMember: Member = { email: newEmail, role: selectedRole };
                 setMembers(prev => [...prev, newMember]);
                 form.setValue('members', [...members, newMember]);
+                e.currentTarget.value = '';
             }
-            e.currentTarget.value = '';
         }
     }, [members, selectedRole, form]);
 
@@ -154,6 +177,15 @@ export const OrganizationInvite = ({
 
     const inviteLink = boardId ? `https://www.sketchlie.com/board/${boardId}` : '';
 
+    const updateMemberRole = useCallback((email: string, newRole: Role) => {
+        setMembers(prev => prev.map(member =>
+            member.email === email ? { ...member, role: newRole } : member
+        ));
+        form.setValue('members', members.map(member =>
+            member.email === email ? { ...member, role: newRole } : member
+        ));
+    }, [members, form]);
+
     if (!currentOrganization) return null;
 
     return (
@@ -177,36 +209,83 @@ export const OrganizationInvite = ({
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormControl>
-                                                <div className="flex flex-wrap gap-2 p-2 border rounded-md">
+                                                <div className="flex flex-wrap gap-2 p-3 border rounded-md bg-background">
                                                     {members.map((member, index) => (
-                                                        <div key={index} className="flex items-center bg-blue-100 text-blue-800 rounded-full px-3 py-1">
-                                                            <span>{member.email} ({roleOptions.find(r => r.value === member.role)?.label})</span>
-                                                            <X
-                                                                className="ml-2 h-4 w-4 cursor-pointer"
-                                                                onClick={() => removeMember(member.email)}
-                                                            />
+                                                        <div
+                                                            key={index}
+                                                            className="flex items-center bg-blue-50 dark:bg-blue-900/20 text-blue-800 dark:text-blue-100 rounded-full px-3 py-1.5 text-sm group hover:bg-blue-100 dark:hover:bg-blue-900/30 transition"
+                                                        >
+                                                            <span>{member.email}</span>
+                                                            <Badge
+                                                                variant="secondary"
+                                                                className="ml-2 mr-1 flex items-center gap-1"
+                                                            >
+                                                                {roleIcons[member.role as keyof typeof roleIcons]}
+                                                                {member.role}
+                                                            </Badge>
+                                                            <div className="flex items-center">
+                                                                <DropdownMenu>
+                                                                    <DropdownMenuTrigger asChild>
+                                                                        <Button
+                                                                            variant="ghost"
+                                                                            size="sm"
+                                                                            className="h-4 w-4 p-0 hover:bg-transparent"
+                                                                        >
+                                                                            <MoreHorizontal className="h-4 w-4" />
+                                                                        </Button>
+                                                                    </DropdownMenuTrigger>
+                                                                    <DropdownMenuContent align="end" className="w-[160px]">
+                                                                        {roleOptions.map((option) => (
+                                                                            <DropdownMenuItem
+                                                                                key={option.value}
+                                                                                onClick={() => updateMemberRole(member.email, option.value)}
+                                                                                className="flex items-center"
+                                                                            >
+                                                                                {roleIcons[option.value as keyof typeof roleIcons]}
+                                                                                <span className="ml-2">{option.label}</span>
+                                                                            </DropdownMenuItem>
+                                                                        ))}
+                                                                        <DropdownMenuItem
+                                                                            onClick={() => removeMember(member.email)}
+                                                                            className="flex items-center text-red-600 hover:text-red-700 focus:text-red-700"
+                                                                        >
+                                                                            <X className="h-4 w-4 mr-2" />
+                                                                            Remove
+                                                                        </DropdownMenuItem>
+                                                                    </DropdownMenuContent>
+                                                                </DropdownMenu>
+                                                            </div>
                                                         </div>
                                                     ))}
-                                                    <div className="flex-grow flex items-center">
+                                                    <div className="flex-grow flex items-center gap-2">
                                                         <Input
                                                             disabled={isPending}
                                                             placeholder="Enter email addresses"
                                                             type="text"
                                                             onChange={handleInputChange}
                                                             onKeyDown={handleKeyDown}
-                                                            className="flex-grow border-none focus:ring-0"
+                                                            className="flex-grow border-none focus-visible:ring-0 px-2 placeholder:text-muted-foreground/60"
                                                         />
                                                         <Select
                                                             value={selectedRole}
                                                             onValueChange={(value: Role) => setSelectedRole(value)}
                                                         >
-                                                            <SelectTrigger className="w-[150px] ml-2">
-                                                                <SelectValue placeholder="Select role" />
+                                                            <SelectTrigger className="w-[160px]">
+                                                                <div className="flex items-center gap-2">
+                                                                    {roleIcons[selectedRole as keyof typeof roleIcons]}
+                                                                    <span>{roleOptions.find(r => r.value === selectedRole)?.label}</span>
+                                                                </div>
                                                             </SelectTrigger>
                                                             <SelectContent>
                                                                 {roleOptions.map((option) => (
-                                                                    <SelectItem key={option.value} value={option.value}>
-                                                                        {option.label}
+                                                                    <SelectItem
+                                                                        key={option.value}
+                                                                        value={option.value}
+                                                                    >
+                                                                        <div className="flex items-center gap-2">
+                                                                            {roleIcons[option.value as keyof typeof roleIcons]}
+                                                                            <span>{option.label}</span>
+                                                                        </div>
                                                                     </SelectItem>
                                                                 ))}
                                                             </SelectContent>
@@ -253,7 +332,7 @@ export const OrganizationInvite = ({
                                                         onValueChange={(value: Role) => setPublicInviteRole(value)}
                                                     >
                                                         <SelectTrigger className="w-[140px]">
-                                                            <SelectValue placeholder="Select role" />
+                                                            <span>{roleOptions.find(r => r.value === publicInviteRole)?.label}</span>
                                                         </SelectTrigger>
                                                         <SelectContent>
                                                             {roleOptions.map((option) => (
@@ -326,7 +405,7 @@ export const OrganizationInvite = ({
                                                 onValueChange={(value: Role) => setPublicInviteRole(value)}
                                             >
                                                 <SelectTrigger className="w-[120px] h-8 text-sm border-2 border-blue-500">
-                                                    <SelectValue placeholder="Select role" />
+                                                    <span>{roleOptions.find(r => r.value === publicInviteRole)?.label}</span>
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {roleOptions.map((option) => (
