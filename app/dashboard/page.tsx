@@ -16,11 +16,13 @@ import { useSession } from "next-auth/react";
 import { useOrganization } from "../contexts/organization-context";
 import { Templates } from "./_components/templates";
 import { BoardList } from "./_components/board-list";
+import { CreateOrganization } from "@/components/auth/create-organization";
 
 const DashboardPage = () => {
   const { update } = useSession();
   const searchParams = useSearchParams();
   const proModal = useProModal();
+  const user = useCurrentUser();
   const { currentOrganization, setCurrentOrganizationId } = useOrganization();
 
   const params = {
@@ -88,6 +90,9 @@ const DashboardPage = () => {
             <BoardList query={params} />
           </div>
         </ScrollArea>
+        {user?.organizations.length === 0 && (
+          <CreateOrganization isOpen={true} />
+        )}
       </div>
     </main>
   );
