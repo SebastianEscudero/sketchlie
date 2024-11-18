@@ -18,7 +18,7 @@ export const OrganizationList = () => {
     return (
         <div className="hidden lg:flex flex-row space-x-3 p-3 flex-1 overflow-hidden">
              <Hint label="Create Organization" side="bottom" align="center" sideOffset={18}>
-                <button className="hover:bg-zinc-200 dark:hover:bg-zinc-500 border-2 dark:border-zinc-500 lg:h-[36px] lg:w-[36px] h-[45px] w-[45px] rounded-md flex items-center justify-center transition"
+                <button className="bg-zinc-50 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-500 border-2 border-zinc-500 dark:border-zinc-500 lg:h-[36px] lg:w-[36px] h-[45px] w-[45px] rounded-md flex items-center justify-center transition"
                     onClick={() => setIsCreateBoardDialogOpen(true)}
                 >
                     <Plus className="text-black dark:text-white sm:h-5 sm:w-5 h-8 w-8" />
