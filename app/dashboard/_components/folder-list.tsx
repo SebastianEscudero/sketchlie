@@ -2,7 +2,7 @@ import { useApiMutation } from '@/hooks/use-api-mutation';
 import { api } from '@/convex/_generated/api';
 import { toast } from 'sonner';
 import Image from 'next/image';
-import { ChevronRight, Folder, Import, MoreHorizontal } from 'lucide-react';
+import { Folder, Import, MoreHorizontal } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { FolderActions } from '@/components/folder-actions';
 import React from 'react';
@@ -120,11 +120,5 @@ export const FolderList = ({ folders, groupedBoards, org }: FolderListProps) => 
         </Link>
       ))}
     </>
-  );
-};
-
-FolderList.Skeleton = function FolderListSkeleton() {
-  return (
-    <div className="col-span-1 aspect-[100/100] bg-gray-200 rounded animate-pulse"></div>
   );
 };

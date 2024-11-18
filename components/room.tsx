@@ -230,20 +230,12 @@ export const Room = React.memo(({ children, roomId, fallback, board, layers, lay
     }
   }, [userInfo, role]);
 
-  if (isLoading) {
-    return <RoomLoading label="Joining organization..."/>;
+  if (isLoading || !board || layers === null || layerIds === null) {
+    return <RoomLoading />;
   }
 
   if (!isUserPartOfOrg) {
     return <RoomLoading label="You are not part of this organization"/>;
-  }
-
-  if (!User.userId) {
-    return <RoomLoading label="Loading user data..."/>;
-  }
-
-  if (!isConnected) {
-    return <RoomLoading label="Connecting to server..."/>;
   }
 
   return (

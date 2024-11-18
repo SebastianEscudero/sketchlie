@@ -143,8 +143,6 @@ export const Info = memo(({
         }
     }
 
-    if (!board) return <InfoSkeleton />;
-
     return (
         <CanvasOverlayWrapper className="absolute top-2 left-2 xs:flex hidden px-2">
             <Hint label="Go to Dashboard" side="bottom" sideOffset={10}>
@@ -235,9 +233,3 @@ export const Info = memo(({
 });
 
 Info.displayName = "Info";
-
-export const InfoSkeleton = () => {
-    return (
-        <div className="absolute bg-white rounded-lg px-1 h-12 flex items-center shadow-sm w-[300px]" />
-    );
-};

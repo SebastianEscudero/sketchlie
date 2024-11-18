@@ -342,12 +342,6 @@ export const Toolbar = memo(({
 
 Toolbar.displayName = "Toolbar";
 
-export const ToolbarSkeleton = () => {
-  return (
-    <div className="border dark:border-zinc-800 shadow-sm absolute top-[50%] -translate-y-[50%] left-2 flex flex-col gap-y-4 bg-white dark:bg-zinc-800 h-[360px] w-[52px] rounded-xl" />
-  );
-};
-
 interface AnimatedToolbarMenuProps {
   isOpen: boolean;
   children: React.ReactNode;

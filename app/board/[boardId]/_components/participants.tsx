@@ -120,9 +120,3 @@ export const Participants = memo(({
 });
 
 Participants.displayName = "Participants";
-
-export const ParticipantsSkeleton = () => {
-    return (
-        <div className="absolute h-12 right-0 bg-white rounded-bl-lg p-3 flex items-center shadow-sm w-[100px]" />
-    );
-};

@@ -10,6 +10,7 @@ import { Loading } from "@/components/auth/loading";
 import { Layers } from "@/types/canvas";
 import { themeCheck } from "@/lib/theme-utils";
 import { useQuery } from "convex/react";
+import { RoomLoading } from "@/components/auth/room-loading";
 
 interface BoardIdPageProps {
   params: {
@@ -53,7 +54,7 @@ const BoardIdPage = ({
   }, [board]);
 
   if (!user || !board || layers === null || layerIds === null) {
-    return <Loading />;
+    return <RoomLoading />;
   }
 
   return (
