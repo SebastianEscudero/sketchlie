@@ -6,7 +6,6 @@ import { useProModal } from "@/hooks/use-pro-modal";
 import { Check, ChevronsDown, Zap, Infinity } from "lucide-react";
 import { Badge } from "./ui/badge";
 import { SubscriptionButton } from "./subscription-button";
-import { useEffect, useState } from "react";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { subscriptionPlans } from "@/lib/subscriptionPlans";

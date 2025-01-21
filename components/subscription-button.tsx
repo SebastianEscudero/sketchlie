@@ -1,16 +1,16 @@
 "use client";
 
-import { LoaderCircle, Zap } from "lucide-react";
+import { LoaderCircle } from "lucide-react";
 import { Button } from "./ui/button";
 import axios from "axios";
 import { toast } from "sonner";
-import { useCurrentUser } from "@/hooks/use-current-user";
 import { useState } from "react";
 import { getUsersCurrency } from "@/lib/utils";
 import Link from "next/link";
+import { Organization } from "@prisma/client";
 
 interface SubscriptionButtonProps {
-    selectedOrganization: any;
+    selectedOrganization: Organization | null;
     plan: any;
     className?: string;
     children: React.ReactNode;
@@ -23,9 +23,6 @@ export const SubscriptionButton = ({
     children,
 }: SubscriptionButtonProps) => {
 
-    const user = useCurrentUser();
-    const activeOrg = user?.organizations.find((org: any) => org.id === selectedOrganization);
-
     const [isLoading, setIsLoading] = useState(false);
 
     const onClick = async () => {
@@ -35,7 +32,7 @@ export const SubscriptionButton = ({
         setIsLoading(true);
         try {
             const usersCurrency = await getUsersCurrency();
-            const { data } = await axios.post("/api/mercadoPago", { organization: activeOrg, plan, currency: usersCurrency });
+            const { data } = await axios.post("/api/mercadoPago", { organization: selectedOrganization, plan, currency: usersCurrency });
             window.location.href = data.init_point;
         } catch (error) {
             console.error("Mercado Pago", error);
