@@ -28,6 +28,13 @@ export const metadata: Metadata = {
     apple: "/favicon/apple-touch-icon.png",
   },
   manifest: "/pwa/manifest.json",
+  openGraph: {
+    images: [{
+      url: '/opengraph-image',
+      width: 1200,
+      height: 630,
+    }],
+  },
 };
 
 
